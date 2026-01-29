@@ -1,0 +1,11 @@
+.table-of-contents__link.toc-highlight.table-of-contents__link--active::before {
+	content: "";
+	height: 1.25rem;
+	left: calc(-1 * var(--ifm-toc-padding-horizontal));
+	border-left: 10px solid var(--ifm-color-primary);
+	position: absolute;
+
+	/* NOTE: it should be left:0 but for some reasons the width doesn't work so left needs to be commented */
+	width: 1px;
+	/* left: 0; */
+}
