@@ -1,0 +1,30 @@
+aside {
+	--ifm-toc-border-color: transparent;
+
+	/* MARK: Sidebar entries container */
+	.menu {
+		/* rm padding-top in order to have sticky category labels */
+		padding-top: 0;
+
+		/* MARK: Category label */
+		.sidebar__category-label {
+			padding: calc(2 * var(--ifm-menu-link-padding-vertical))
+				var(--ifm-menu-link-padding-horizontal)
+				var(--ifm-menu-link-padding-vertical)
+				var(--ifm-menu-link-padding-horizontal);
+			display: block;
+			position: sticky;
+			top: 0;
+			background-color: light-dark(
+				var(--ifm-background-surface-color),
+				var(--ifm-background-background-color)
+			);
+			z-index: 10;
+			margin-top: 1.5rem;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+	}
+}

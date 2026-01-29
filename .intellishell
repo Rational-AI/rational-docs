@@ -1,0 +1,56 @@
+#!intelli-shell
+
+# MARK: Help
+
+# [alias:help] Show quick info about the website dev commands
+echo -e "\nWelcome to RationalAI Docs!\nMade with Docusaurus by RationalAI\n\nShow available commands with `ctrl+space` (intelli-shell)\nDefault URL: http://localhost:3000/"
+
+
+# MARK: Website (Docusaurus) Commands
+
+# [alias:doc] Run an arbitrary docusaurus script`
+yarn --cwd website run {{yarn_script}} {{--no-open # don't auto-open browser}}
+
+# [alias:start] Start local dev server
+yarn --cwd website run start {{--no-open # don't auto-open browser}}
+
+# [alias:build] Build the static site
+yarn --cwd website run build {{--no-open # don't auto-open browser}}
+
+# [alias:serve] Serve the built site locally
+yarn --cwd website run serve {{--no-open # don't auto-open browser}}
+
+# [alias:swizzle] Swizzle a Docusaurus component
+yarn --cwd website run swizzle {{--no-open # don't auto-open browser}}
+
+# [alias:deploy] Deploy the site
+yarn --cwd website run deploy {{--no-open # don't auto-open browser}}
+
+# [alias:clear] Clear Docusaurus caches/build
+yarn --cwd website run clear {{--no-open # don't auto-open browser}}
+
+# [alias:write-translations] Extract translations
+yarn --cwd website run write-translations {{--no-open # don't auto-open browser}}
+
+# [alias:write-heading-ids] Generate heading ids
+yarn --cwd website run write-heading-ids {{--no-open # don't auto-open browser}}
+
+# [alias:typecheck] Run TypeScript typecheck
+yarn --cwd website run typecheck {{--no-open # don't auto-open browser}}
+
+# [alias:biome] Run Biome commands for #format and #linting with option to write to file
+yarn --cwd website biome {{biome_cmds}} {{--write}}
+
+# [alias:format] Run Biome for #Format and #Linting + write edits to files
+yarn --cwd website biome check --write
+
+
+# MARK: Completions
+$ yarn_script: echo -e "docusaurus\nstart\nbuild\nswizzle\ndeploy\nclear\nserve\nwrite-translations\nwrite-heading-ids\ntypecheck"
+$ biome_cmds: echo -e "check\nlint\nformat\nci"
+
+
+# Quick examples
+# web start -> starts dev server
+# web build  -> builds site
+# web deploy -> deploys site

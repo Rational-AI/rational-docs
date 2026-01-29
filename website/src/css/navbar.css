@@ -1,0 +1,6 @@
+nav.theme-layout-navbar.navbar.navbar--fixed-top {
+	box-shadow: none;
+	border-bottom: 1px solid var(--ifm-table-border-color);
+	background-color: transparent;
+	backdrop-filter: blur(1rem);
+}

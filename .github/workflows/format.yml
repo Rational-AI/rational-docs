@@ -1,0 +1,31 @@
+name: Format
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    paths:
+      - "website/**"
+      - ".github/workflows/format.yaml"
+
+jobs:
+  lint:
+    name: Lint+Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: website/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --cwd website install --frozen-lockfile
+
+      - name: Linting
+        run: yarn --cwd website ci
