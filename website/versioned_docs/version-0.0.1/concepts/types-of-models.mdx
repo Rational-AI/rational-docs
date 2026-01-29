@@ -1,0 +1,28 @@
+---
+sidebar_position: 1
+---
+
+
+# Types of models
+In Rational AI you can add three types of models: Fine-tuned, Open source and Third party.
+
+## 1) Fine-tuned model
+
+A model that’s been **trained further on your own data** (or a specific dataset) to behave a certain way—tone, domain knowledge, formats, policies, etc.
+
+* **Best for:** consistent behavior for a specific use case (support, internal tooling, company style).
+* **What you usually manage:** which fine-tune to use, and its base model lineage.
+
+## 2) Open source model
+
+A model you **download and run yourself** (commonly from Hugging Face), often as a local file format like GGUF with a chosen quantization.
+
+* **Best for:** running on your own infrastructure, cost control, offline/air-gapped use, customization.
+* **Tradeoffs:** you own the hosting + compute + storage; model sizes can be large.
+
+## 3) Third-party model (proxy)
+
+A model that’s **hosted by an external provider** (e.g., OpenAI / Anthropic / Google). Your platform stores a configuration that routes requests to that provider.
+
+* **Best for:** fast setup, strong quality, no hosting burden.
+* **Key concept:** you don’t “install” the model; you configure access (provider + model + key) and your platform talks to their API.
