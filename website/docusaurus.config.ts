@@ -5,7 +5,13 @@ import { themes as prismThemes } from "prism-react-renderer";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
+  title: "Rational AI",
+  tagline: "Your Data, Your AI",
   favicon: "img/favicon.ico",
+
+  // TODO: ALGOLIA SEARCH
+  // Theme for algolia search
+  // themes: ["@docusaurus/theme-search-algolia"],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -67,26 +73,39 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: "img/rational-social-card.jpg",
     colorMode: {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: "My Site",
+      title: "Rational AI",
       logo: {
-        alt: "My Site Logo",
+        alt: "Rational AI",
         src: "img/logo.svg",
       },
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "docsSidebar",
           position: "left",
-          label: "Tutorial",
+          label: "Docs",
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
+          type: "search",
+          position: "left",
+        },
+        // {
+        //   href: "https://github.com/Rational-AI/",
+        //   label: "GitHub",
+        //   position: "right",
+        // },
+        // { to: "/blog", label: "Blog", position: "left" },
+        {
+          type: "docsVersionDropdown",
+          position: "right",
+        },
+        {
+          type: "localeDropdown",
           position: "right",
         },
       ],
@@ -98,26 +117,30 @@ const config: Config = {
           title: "Docs",
           items: [
             {
-              label: "Tutorial",
+              label: "Docs",
               to: "/docs/intro",
             },
           ],
         },
         {
-          title: "Community",
+          title: "Resources",
           items: [
-           {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: "Rational AI",
+              to: "https://rational.is",
             },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
+            // {
+            //   label: "Stack Overflow",
+            //   href: "",
+            // },
+            // {
+            //   label: "Discord",
+            //   href: "",
+            // },
+            // {
+            //   label: "X",
+            //   href: "",
+            // },
           ],
         },
         {
@@ -129,12 +152,12 @@ const config: Config = {
             },
             {
               label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              href: "https://github.com/Rational-AI/",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Rational AI, Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
