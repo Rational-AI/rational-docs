@@ -12,7 +12,11 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "lint": "biome lint",
+    "check": "biome check",
+    "format": "biome check --write",
+    "ci": "biome ci"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
@@ -24,6 +28,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.13",
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
     "@docusaurus/module-type-aliases": "3.9.2",
