@@ -9,34 +9,34 @@ echo -e "\nWelcome to RationalAI Docs!\nMade with Docusaurus by RationalAI\n\nSh
 # MARK: Website (Docusaurus) Commands
 
 # [alias:doc] Run an arbitrary docusaurus script`
-yarn --cwd website run {{yarn_script}} {{--no-open # don't auto-open browser}}
+yarn --cwd website run {{yarn_script}} {{--no-open}}
 
 # [alias:start] Start local dev server
-yarn --cwd website run start {{--no-open # don't auto-open browser}}
+yarn --cwd website run start {{--no-open}}
 
 # [alias:build] Build the static site
-yarn --cwd website run build {{--no-open # don't auto-open browser}}
+yarn --cwd website run build {{--no-open}}
 
 # [alias:serve] Serve the built site locally
-yarn --cwd website run serve {{--no-open # don't auto-open browser}}
+yarn --cwd website run serve {{--no-open}}
 
 # [alias:swizzle] Swizzle a Docusaurus component
-yarn --cwd website run swizzle {{--no-open # don't auto-open browser}}
+yarn --cwd website run swizzle {{--no-open}}
 
 # [alias:deploy] Deploy the site
-yarn --cwd website run deploy {{--no-open # don't auto-open browser}}
+yarn --cwd website run deploy {{--no-open}}
 
 # [alias:clear] Clear Docusaurus caches/build
-yarn --cwd website run clear {{--no-open # don't auto-open browser}}
+yarn --cwd website run clear {{--no-open}}
 
 # [alias:write-translations] Extract translations
-yarn --cwd website run write-translations {{--no-open # don't auto-open browser}}
+yarn --cwd website run write-translations {{--no-open}}
 
 # [alias:write-heading-ids] Generate heading ids
-yarn --cwd website run write-heading-ids {{--no-open # don't auto-open browser}}
+yarn --cwd website run write-heading-ids {{--no-open}}
 
 # [alias:typecheck] Run TypeScript typecheck
-yarn --cwd website run typecheck {{--no-open # don't auto-open browser}}
+yarn --cwd website run typecheck {{--no-open}}
 
 # [alias:biome] Run Biome commands for #format and #linting with option to write to file
 yarn --cwd website biome {{biome_cmds}} {{--write}}
