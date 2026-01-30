@@ -122,11 +122,27 @@ const config: Config = {
 			},
 			items: [
 				{
-					type: "docSidebar",
-					sidebarId: "docsSidebar",
-					position: "left",
-					label: "Docs",
+				type: 'dropdown',
+				label: 'Documentazione',
+				position: 'left',
+				items: [
+					{
+					type: 'doc',
+					docId: 'quick-start',
+					label: 'Intro',
+					},
+					{
+					href: '/docs/concepts/types-of-models',
+					label: 'Concepts',
+					},
+				],
 				},
+				// {
+				// 	type: "docSidebar",
+				// 	sidebarId: "docsSidebar",
+				// 	position: "left",
+				// 	label: "Docs",
+				// },
 				{
 					type: "search",
 					position: "left",
@@ -145,6 +161,7 @@ const config: Config = {
 					type: "localeDropdown",
 					position: "right",
 				},
+
 			],
 		},
 		footer: {
