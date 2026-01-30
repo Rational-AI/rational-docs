@@ -1,0 +1,12 @@
+{
+	"label": "Operational guides",
+	"position": 3,
+	"link": {
+		"type": "generated-index",
+		"description": "Learn flows and processes."
+	},
+	"customProps": {
+		"staticLabel": "Operational guides",
+		"showStaticLabel": true
+	}
+}
