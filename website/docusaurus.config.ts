@@ -121,22 +121,22 @@ const config: Config = {
 				src: "img/logo.svg",
 			},
 			items: [
-				{
-				type: 'dropdown',
-				label: 'Documentazione',
-				position: 'left',
-				items: [
-					{
-					type: 'doc',
-					docId: 'quick-start',
-					label: 'Intro',
-					},
-					{
-					href: '/docs/concepts/types-of-models',
-					label: 'Concepts',
-					},
-				],
-				},
+				// {
+				// type: 'dropdown',
+				// label: 'Documentazione',
+				// position: 'left',
+				// items: [
+				// 	{
+				// 	type: 'doc',
+				// 	docId: 'quick-start',
+				// 	label: 'Intro',
+				// 	},
+				// 	{
+				// 	href: '/docs/concepts/types-of-models',
+				// 	label: 'Concepts',
+				// 	},
+				// ],
+				// },
 				// {
 				// 	type: "docSidebar",
 				// 	sidebarId: "docsSidebar",

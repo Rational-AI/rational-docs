@@ -7,6 +7,6 @@
 	},
 	"customProps": {
 		"staticLabel": "Glossary",
-		"showStaticLabel": true
+		"showStaticLabel": false
 	}
 }

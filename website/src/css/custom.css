@@ -100,3 +100,30 @@
 	margin: 0 6px;
 }
 /* END FEATURE BOX */
+
+/* Only apply flex layout to category header links */
+.theme-doc-sidebar-menu .menu__list-item.menu__list-item--category > .menu__link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.theme-doc-sidebar-menu .menu__list-item.menu__list-item--category > .menu__link svg {
+  flex-shrink: 0 !important;
+}
+
+/* Reset non-category links so they remain normal block links */
+.theme-doc-sidebar-menu .menu__list-item:not(.menu__list-item--category) > .menu__link,
+.theme-doc-sidebar-menu .menu__list-item:not(.menu__list-item--category) .menu__link {
+  display: block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* Spacing only for category list items */
+.theme-doc-sidebar-menu .menu__list-item.menu__list-item--category {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}

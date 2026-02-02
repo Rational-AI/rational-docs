@@ -1,12 +1,11 @@
 {
 	"label": "AI Control Room",
-	"position": 2,
+	"position": 3,
+	"collapsible": true,  
+ 	"collapsed": true,
 	"link": {
 		"type": "generated-index",
 		"description": "Start here to learn about the AI Control Room."
-	},
-	"customProps": {
-		"staticLabel": "AI Control Room",
-		"showStaticLabel": true
 	}
 }
+
