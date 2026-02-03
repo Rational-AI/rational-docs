@@ -1,0 +1,44 @@
+
+/* Rounded corners for all tables */
+table {
+	border-radius: 8px;
+	overflow: hidden; /* Ensures corners are respected */
+	border-collapse: separate;
+	border-spacing: 0;
+	width: fit-content;
+	border: #e4e4e7 solid 1px;
+}
+
+/* Optional: style header and cells */
+th,
+td {
+	border: none;
+}
+
+th:first-child,
+td:first-child {
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	width: auto;
+	min-width: 120px; /* Ensure the first column has a minimum width */
+}
+th:nth-child(2),
+td:nth-child(2) {
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	width: auto;
+	min-width: 200px; /* Ensure the middle column has a minimum width */
+}
+th:last-child,
+td:last-child {
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	width: auto;
+	min-width: 200px; /* Ensure the third column has a minimum width */
+}
+
+/* Remove alternating row colors - keep only header styling */
+tbody tr:nth-child(odd) {
+	background: none;
+}
+
+tbody tr:nth-child(even) {
+	background: none;
+}
