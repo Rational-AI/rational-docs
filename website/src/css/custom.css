@@ -100,3 +100,76 @@
 	margin: 0 6px;
 }
 /* END FEATURE BOX */
+
+/* Only apply flex layout to category header links */
+.theme-doc-sidebar-menu .menu__list-item.menu__list-item--category > .menu__link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.theme-doc-sidebar-menu .menu__list-item.menu__list-item--category > .menu__link svg {
+  flex-shrink: 0 !important;
+}
+
+/* Reset non-category links so they remain normal block links */
+.theme-doc-sidebar-menu .menu__list-item:not(.menu__list-item--category) > .menu__link,
+.theme-doc-sidebar-menu .menu__list-item:not(.menu__list-item--category) .menu__link {
+  display: block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* Spacing only for category list items */
+.theme-doc-sidebar-menu .menu__list-item.menu__list-item--category {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+/* Rounded corners for all tables */
+table {
+  border-radius: 8px;
+  overflow: hidden; /* Ensures corners are respected */
+  border-collapse: separate;
+  border-spacing: 0;
+  width: fit-content;
+  border:#E4E4E7 solid 1px;
+}
+
+/* Optional: style header and cells */
+th, td {
+  border: none;
+}
+
+th:first-child, td:first-child {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  width: auto;
+  min-width: 120px; /* Ensure the first column has a minimum width */
+}
+th:nth-child(2), td:nth-child(2) {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  width: auto;
+  min-width: 200px; /* Ensure the middle column has a minimum width */
+
+}
+th:last-child, td:last-child {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  width: auto;
+  min-width: 200px; /* Ensure the third column has a minimum width */
+
+}
+
+/* Remove alternating row colors - keep only header styling */
+tbody tr {
+  background-color: transparent !important;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: transparent !important;
+}
+
+tbody tr:nth-child(even) {
+  background-color: transparent !important;
+}
