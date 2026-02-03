@@ -161,7 +161,6 @@ const config: Config = {
 					type: "localeDropdown",
 					position: "right",
 				},
-
 			],
 		},
 		footer: {

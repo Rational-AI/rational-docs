@@ -1,8 +1,8 @@
 {
 	"label": "Operational guides",
 	"position": 3,
-	"collapsible": true,  
- 	"collapsed": true,
+	"collapsible": true,
+	"collapsed": true,
 	"link": {
 		"type": "generated-index",
 		"description": "Learn flows and processes."
