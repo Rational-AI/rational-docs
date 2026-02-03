@@ -1,15 +1,20 @@
+---
+sidebar_position: 1
+sidebar_label: Integrate external data
+---
+
 # Integrating external data
 
-This guide explains how to integrate external data into Rational AI using connectors and sources. This process involves two distinct steps:
+This guide explains how to connect Rational AI to external platforms (such as Google, AWS, or OpenAI) and synchronize their data using connectors and sources.   
+The process consists of two steps:
 
-1. Creating and authorizing a <u>connector</u>;
-2. Defining a <u>source</u> that uses the connector to retrieve data.
+1. Create and authorize a [connector](#) to access an external provider;
+2. Define a [source](#) that uses the connector to retrieve data.
 
 Both steps are _required_ for the platform to securely access and synchronize external content.
 
 ## Establishing the connector
-
-To manage connectors open the settings and navigate to connectors from the left-hand sidebar.
+Connectors handle authentication and permissions for external services. To manage connectors open the **Settings** and navigate to **Connectors** from the left-hand sidebar.
 
 <img
   src="/img/screens/connectors-view.png"
@@ -26,32 +31,35 @@ To manage connectors open the settings and navigate to connectors from the left-
 
 The connectors page is divided into two sections:
 1. **Left panel**: a list of all configured connectors.
-2. **Right panel**: detailed information about the selected connector, including: name and description, provider, next scheduled synchronization, usage by AI models, sources, and tools.
+2. **Right panel**: details of the selected connector, including:
+    * Name and description
+    * Provider
+    * Next scheduled synch
+    * Usage by AI models, sources, and tools.
 
-    For some providers, such as Google, additional details are displayed, including enabled services and linked projects.
+    Some providers (for example, Google) also display enabled services and linked projects.
 
 ### Creating a new connector
-If you’re a first-time user, this page may be empty. To start, simply click the **+ Add** button and select a provider from the available catalog (for example: Google, AWS, OpenAI).
+If no connectors are configured, the page will be empty. To start, simply click the **+ Add** button and select a provider from the available catalog (e.g., Google, AWS, OpenAI).
 Each provider has specific authentication requirements. Some providers require only an API key, while others, such as Google, use a full OAuth authorization flow.
 
-In each provider-specific modal you will find a guide on how to obtain the required keys.
-
+Each configuration modal includes a link to a guide for obtaining the required credentials.
 
 After selecting a provider, you will be presented with a configuration form. 
 You must provide:
-* A recognizable name (for example: Admin Google access);
-* A short description (optional but **strongly recommended** for long term maintenance and team collaboration);
-* Security credentials obtained from the provider;
-* Click **Add** once done, and the connector will appear in the list on the left.
+* A **name** (e.g., _Admin Google access_);
+* A **description**, optional but **strongly recommended** for long term maintenance and team collaboration;
+* **Credentials** obtained from the provider (key, tokens, or OAuth configuration);
+When finished click **Add**. The connector will appear in the list on the left.
 
-For some providers, like Google, some extra steps will be needed:
-* In order to create a connector, you first must specify which services the connector is allowed to access (e.g., for Google you will have the choice of Calendar, Gmail, and Google Drive).
-* After clicking **Add and authorize** you will be redirected to the provider’s authentication page. Log in with the desired account and grant permissions to complete the flow.
+Some providers require extra configuration steps.  
+For example, when integrating with Google, you must specify which services the connector is allowed to access (such as Calendar, Gmail, and Google Drive).
+After clicking **Add and authorize**, you will be redirected to Google’s authentication page, where you can sign in with the desired account and grant the required permissions to complete the setup.
 
 ### Authentication issues 
 If authentication fails or permissions are incomplete, a red broken-link icon <img
   src="/img/screens/auth-error.png"
-  alt="Dashboard interface displaying the Connectors page."
+  alt="Broken chain link icon, indicating an authentication error or disconnected access."
   style={{ 
     width: '1.5em', 
     maxHeight: '1.5em', 
@@ -63,37 +71,63 @@ If authentication fails or permissions are incomplete, a red broken-link icon <i
     }}
 />  will appear next to the connector name. 
 
-In this case open the connector’s option menu, select complete authentication, and repeat the authorization process.
+To resolve the issue:
+1. Open the connector’s option menu;
+2. Select **Complete authentication**;
+3. Repeat the authorization process.
+
+import Admonition from "@theme/Admonition";
+
+<Admonition type="warning" icon="⚠️" title="WARNING">  
 Always resolve authentication errors before creating sources.
+</Admonition>
 
 ## Adding a data source
-After configuring a connector, you can define a source to tell the platform exactly what data to retrieve. 
-Navigate to sources in the left-hand sidebar and click the + New button.
+Once a connector is active, you can define one or more sources to specify which data should be retrieved and synchronized. 
+Navigate to **Sources** in the left-hand sidebar and click the **+ New** button.
 
 ### Creating a source
-In the source creation form:
-Enter a clear name (es. Marketing assets 2024)
-Add a description explaining the content and purpose (this information helps your team understand and maintain the integration).
-Select the source type (es. Google Drive)
-Choose a compatible connector and pick the one created in the previous phase.
-Because the connector is already authenticated the system will allow you to browse available resources. Therefore, choose all the folders you wish to include and synchronize.
+In the source creation form, provide the following information:
+* A **name** (es. _Marketing assets 2024_);
+* A **description** explaining the content and purpose for long term maintenance and team collaboration;
+* Select the source type (es. Google Drive);
+* Choose a compatible connector and pick the one created in the previous phase.  
+    Because the connector is already authenticated, the system will allow you to browse available resources. Select the folders you wish to synchronize.
+    
+    <Admonition type="warning" icon="⚠️" title="WARNING">  
+    If a connector with authentication issues has been selected, it won't be able to access external data and no folder will be available for selection. Return to the **Connectors** page and re-authenticate before continuing.
+    </Admonition>
 
-
-Click add once done.
+* Click **Add** to confirm.
 
 ### Configuring synchronization settings
-All sources are created with their sync configuration set to manual. You can freely change how data is synchronized over time from the synchronization setting menu (accessed from the option menu).
+By default, new sources are created with manual synchronization. You can freely change this from the **Synchronization settings** (available in the <img
+  src="/img/screens/more-vert.png"
+  alt="Three vertical dots icon that opens a menu with additional options."
+  style={{ 
+    width: '1.5em', 
+    maxHeight: '1.5em', 
+    objectFit: 'contain',
+    border: '1px solid #E4E4E7',
+    borderRadius: '6px',
+    boxSizing: 'border-box',
+    verticalAlign: 'middle',
+    }}
+/>  options menu).
 
 You can choose between two modes:
-* **Periodic**: data is synchronized automatically at scheduled intervals.
 * **Manual**: synchronization only occurs when triggered manually.
+* **Periodic**: data is synchronized automatically at scheduled intervals.
 <!-- * **Instantaneous**: changes are automatically synchronzed in near real time on source change. -->
 
-For automatic synchronization, you can define a schedule, such as: every number of minutes, every hour, once a day, once a week, once a month.
+For periodic synchronization, you can define a schedule, such as: every number of minutes, every hour, once a day, once a week, once a month.  
+Choose a frequency based on how often your external data changes.
 
-You must also define how deletions are handled.
-Available options include:
-* **Cascade delete**: files deleted from the original source (e.g., deleted from Google Drive) are also removed from the Rational AI knowledge.
-* **Keep**: files remain stored in the platform even if they are deleted from the external source.
+You must also define how deletions are handled:
+* **Cascade delete**: files deleted from the original source (e.g., from Google Drive) are also removed from the Rational AI.
+* **Keep**: deleted external files remain stored in Rational AI.
 
-Once done, click complete and the source is now active, and the initial ingestion of data will begin according to your schedule.
+## Related concepts
+[Connectors](#)  
+[Sources](#)  
+[?](#)

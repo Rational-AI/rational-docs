@@ -1,1 +1,57 @@
+---
+sidebar_position: 3
+sidebar_label: Create a processing rule
+---
+
+
 # Create a processing rule
+This guide explains how to create, configure, and manage processing rules in the AI Control Room. 
+
+import Admonition from "@theme/Admonition";
+
+<Admonition type="info" icon="📖" title="GLOSSARY">  
+What is a [`processing rule?`](#)  
+Processing rules define how incoming data is interpreted, validated, filtered, and transformed before or during workflow execution.
+While workflows describe _how_ a process runs, processing rules define _how data is evaluated and controlled within that process_.
+</Admonition>
+
+To manage processing rules, open the **Settings** area and navigate to **Workflows** from the left sidebar. 
+Then switch to the **Processing rules** tab from the top-left section of the page.
+
+## Understanding the interface
+The Processing Rules page follows the same structure as the workflows section and is divided into two main areas.
+[IMAGE]
+
+### Rules list
+The left panel displays all processing rules that have been created.
+For each rule, you can see:
+* The rule name.
+* An enable/disable toggle.
+
+This list allows you to quickly identify which rules are active and which are currently inactive.
+
+### Rule editor
+When you select a rule, its configuration is displayed in the editor on the right side.
+
+The editor includes:
+* The rule name and description.
+* The editable logic or configuration area (JSON or script-based input).
+* An action menu that allows you to:
+    * Edit the rule details (name, description, and logic).
+    * Delete the rule.
+
+## Creating your first processing rule
+If you’re a new user, the page will appear empty. In this case, you can create your first rule in a few simple steps.
+* Click the **+ New** button in the center of the page.
+* Enter a clear and descriptive name.  
+    Example: _Lorem ipsum_
+* Optionally, add a short description explaining the rule’s purpose and scope.  This is strongly recommended for long-term maintainability.
+* Define the rule logic in the JSON or configuration input area.
+
+Once these fields are filled, you can proceed to enabling and testing the rule.
+
+## Logic @Francesco
+
+## Related concepts
+[Workflows](#)  
+[Lorem](#) 
