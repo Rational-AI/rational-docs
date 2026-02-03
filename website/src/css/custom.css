@@ -114,7 +114,7 @@
 	.menu__list-item.menu__list-item--category
 	> .menu__link
 	svg {
-	flex-shrink: 0 !important;
+	flex-shrink: 0;
 }
 
 /* Reset non-category links so they remain normal block links */
