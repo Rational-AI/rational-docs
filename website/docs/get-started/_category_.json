@@ -1,8 +1,8 @@
 {
 	"label": "Rational products",
 	"position": 2,
-	"collapsible": true,  
- 	"collapsed": true,
+	"collapsible": true,
+	"collapsed": true,
 	"link": {
 		"type": "generated-index",
 		"description": "Start here to learn about the Rational AI and its products."
