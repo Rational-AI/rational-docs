@@ -51,9 +51,84 @@ If you’re a new user, the workflow page may initially be empty. In this case, 
     This is strongly recommended for long-term maintainability.
 * Enable your workflow from the list and you’re done. 
 
-## Logic @Francesco
+## Logic
+
+Let's create a simple, yet effective, workflow that takes as input a lorem-ipsum markdown file, creates a Rational Resource associated with it
+and performs chunking and embedding automatically, to allow semantic retrieval in a RAG scenario.
+
+The workflow business logic is defined as below:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "rational-client",
+# ]
+#
+# ///
+
+from rational_client.core import (
+    Knowledge,
+    SyncedResource,
+)
+from rational_client.utils import run
 
 
-## Related concepts
-[Workflows](#)  
-[Lorem](#) 
+def process(document: SyncedResource, options: dict):
+    # Read document content (bytes)
+    content = document.get_data()
+
+    # Convert to string (assumes content is textual)
+    text = content.decode("utf-8")
+    
+    # Obtain the Knowledge instance
+    knowledge = Knowledge(document.knowledge_id)
+
+    # Create a new Rational Resource in the Knowledge
+    new_resource = knowledge.create_resource(
+        name=document.name,
+        category="document_category",
+        tags=["some", "tags"],
+        synced_resource_id=document.id,
+    )
+
+    # Return the content for chunking and embedding (optional)
+    return {str(new_resource.resource_id): text}
+
+
+run(process)
+```
+
+Let's break it down:
+- the workflow starts with an incipit which species the script dependencies (in the PEP 723 format): this allows to specify arbitrary script dependencies in your workflow, no whitelisted packages!
+- at the bottom we can find the workflow entrypoint, the `run(process)` function, which is an utility function to invoke the `process` function defined
+- the workflow business logic is specified in the `process` function: it takes as input the document over which the workflow is applied, and some options that might be used to store values later used in the workflow code
+- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, i.e. `knowledge = Knowledge(document.knowledge_id)`
+- the workflow might return a dictionary specifying the Rational Resources created and their textual content, i.e. text/markdown, to be automatically chunked and embedded according to the Knowledge settings
+
+## Testing your workflow locally
+
+It is convenient to perform workflow development on your local machine, before using them into Rational AI.
+This is not only possible, but also encouraged, as it allows to use your favourite IDE and debugging tools.
+
+To run your workflow locally, you just need to make it executable and pass a properly formatted input as argument to it.
+
+Let's suppose to call the above-defined workflow as `lorem-ipsum-wf.py`. We can make it executable by running the command:
+```
+chmod +x lorem-ipsum-wf.py
+```
+Then, we need to prepare a Json file as input, let's call it `worfklow_input.json`. This file needs to have this structure:
+```json
+{
+    "knowledge_id": "<YOUR KNOWLEDGE ID>",
+    "path": "<YOUR DOCUMENT FILEPATH>",
+    "options": {}
+}
+```
+
+Once configured, we can pass the `workflow_input.json` file as input to our workflow, as:
+```
+./lorem-ipsum-wf.py workflow_input.json
+```
+to test our workflow locally!
