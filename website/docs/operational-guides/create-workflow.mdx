@@ -51,8 +51,73 @@ If you’re a new user, the workflow page may initially be empty. In this case, 
     This is strongly recommended for long-term maintainability.
 * Enable your workflow from the list and you’re done. 
 
-## Logic @Francesco
+## Logic
 
+Let's create a simple, yet effective, workflow that takes as input a lorem-ipsum markdown file, creates a Rational Resource associated with it
+and performs chunking and embedding automatically, to allow semantic retrieval in a RAG scenario.
+
+The workflow business logic is defined as below:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "rational-client",
+# ]
+#
+# ///
+
+from rational_client.core import (
+    Knowledge,
+    SyncedResource,
+)
+from rational_client.utils import run
+
+
+def process(document: SyncedResource, options: dict):
+    # Read document content (bytes)
+    content = document.get_data()
+
+    # Convert to string (assumes content is textual)
+    text = content.decode("utf-8")
+    
+    # Obtain the Knowledge instance
+    knowledge = Knowledge(document.knowledge_id)
+
+    # Create a new Rational Resource in the Knowledge
+    new_resource = knowledge.create_resource(
+        name=document.name,
+        category="document_category",
+        tags=["some", "tags"],
+        synced_resource_id=document.id,
+    )
+
+    # Return the content for chunking and embedding (optional)
+    return {str(new_resource.resource_id): text}
+
+
+run(process)
+```
+
+Let's break it down:
+- the workflow starts with an incipit which species the script dependencies (in the PEP 723 format): this allows to specify arbitrary script dependencies in your workflow, no whitelisted packages!
+- at the bottom we can find the workflow entrypoint, the `run(process)` function, which is an utility function to invoke the `process` function defined
+- the workflow business logic is specified in the `process` function: it takes as input the document over which the workflow is applied, and some options that might be used to store values later used in the workflow code
+- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, i.e. `knowledge = Knowledge(document.knowledge_id)`
+- the workflow might return a dictionary specifying the Rational Resources created and their textual content, i.e. text/markdown, to be automatically chunked and embedded according to the Knowledge settings
+
+
+# TODO
+1. Explain workflow entrypoint:
+
+    Create an "Hello world" workflow that creates a Rational Resource in a Knowledge using the [rational-client](https://github.com/Rational-AI/rational-client) python package
+
+    It takes a SR as input and creates a rational resource and return its content
+
+2. PDF processing Example: Docling example for PDFs
+
+3. Test your workflow locally: how to specify a `workflow_input.json` file to test your workflow
 
 ## Related concepts
 [Workflows](#)  
