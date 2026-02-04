@@ -107,18 +107,28 @@ Let's break it down:
 - the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, i.e. `knowledge = Knowledge(document.knowledge_id)`
 - the workflow might return a dictionary specifying the Rational Resources created and their textual content, i.e. text/markdown, to be automatically chunked and embedded according to the Knowledge settings
 
+## Testing your workflow locally
 
-# TODO
-1. Explain workflow entrypoint:
+It is convenient to perform workflow development on your local machine, before using them into Rational AI.
+This is not only possible, but also encouraged, as it allows to use your favourite IDE and debugging tools.
 
-    Create an "Hello world" workflow that creates a Rational Resource in a Knowledge using the [rational-client](https://github.com/Rational-AI/rational-client) python package
+To run your workflow locally, you just need to make it executable and pass a properly formatted input as argument to it.
 
-    It takes a SR as input and creates a rational resource and return its content
+Let's suppose to call the above-defined workflow as `lorem-ipsum-wf.py`. We can make it executable by running the command:
+```
+chmod +x lorem-ipsum-wf.py
+```
+Then, we need to prepare a Json file as input, let's call it `worfklow_input.json`. This file needs to have this structure:
+```json
+{
+    "knowledge_id": "<YOUR KNOWLEDGE ID>",
+    "path": "<YOUR DOCUMENT FILEPATH>",
+    "options": {}
+}
+```
 
-2. PDF processing Example: Docling example for PDFs
-
-3. Test your workflow locally: how to specify a `workflow_input.json` file to test your workflow
-
-## Related concepts
-[Workflows](#)  
-[Lorem](#) 
+Once configured, we can pass the `workflow_input.json` file as input to our workflow, as:
+```
+./lorem-ipsum-wf.py workflow_input.json
+```
+to test our workflow locally!
