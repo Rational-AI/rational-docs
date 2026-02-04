@@ -3,13 +3,15 @@ sidebar_position: 1
 sidebar_label: Integrate external data
 ---
 
+import Admonition from "@theme/Admonition";
+
 # Integrating external data
 
 This guide explains how to connect Rational AI to external platforms (such as Google, AWS, or OpenAI) and synchronize their data using connectors and sources.   
 The process consists of two steps:
 
-1. Create and authorize a [connector](#) to access an external provider;
-2. Define a [source](#) that uses the connector to retrieve data.
+1. **Create and authorize a connector** to access an external provider;
+2. **Define a source** that uses the connector to retrieve data.
 
 Both steps are _required_ for the platform to securely access and synchronize external content.
 
@@ -52,9 +54,8 @@ You must provide:
 * **Credentials** obtained from the provider (key, tokens, or OAuth configuration);
 When finished click **Add**. The connector will appear in the list on the left.
 
-Some providers require extra configuration steps.  
-For example, when integrating with Google, you must specify which services the connector is allowed to access (such as Calendar, Gmail, and Google Drive).
-After clicking **Add and authorize**, you will be redirected to Google’s authentication page, where you can sign in with the desired account and grant the required permissions to complete the setup.
+Some providers require additional configuration steps or authorization flows.
+Consult the **provider-specific guides** to learn how to add each one from start to finish.
 
 ### Authentication issues 
 If authentication fails or permissions are incomplete, a red broken-link icon <img
@@ -75,8 +76,6 @@ To resolve the issue:
 1. Open the connector’s option menu;
 2. Select **Complete authentication**;
 3. Repeat the authorization process.
-
-import Admonition from "@theme/Admonition";
 
 <Admonition type="warning" icon="⚠️" title="WARNING">  
 Always resolve authentication errors before creating sources.
@@ -127,7 +126,57 @@ You must also define how deletions are handled:
 * **Cascade delete**: files deleted from the original source (e.g., from Google Drive) are also removed from the Rational AI.
 * **Keep**: deleted external files remain stored in Rational AI.
 
-## Related concepts
-[Connectors](#)  
-[Sources](#)  
-[?](#)
+
+## Integrating AWS data
+To integrate your application with Amazon S3, you must first establish a secure connection. 
+This is done by generating a pair of security credentials (keys) that act like a username and password for your automated processes.
+
+### Generate IAM Credentials
+Before configuring the connector, you need an **Identity and Access Management (IAM)** user with the correct permissions.
+* **Sign in** to the [AWS Management Console](https://aws.amazon.com/console/) and navigate to **IAM Dashboard > Users**. 
+* **Create a new user**: 
+    * Click **Create user**.
+    * Under **Permissions options**, select **Attach policies directly**. 
+    * Search for and check `AmazonS3FullAccess` (or a more restricted policy if required).  
+* **Create Access keys**:
+   * Click username of newly created user.
+   * **Security credentials > Access keys** and click **Create access key**.
+   * Select `Application running outside AWS` as the use case.   
+* You will see your **Access Key ID** and **Secret Access Key**. Download the `.csv` file
+
+<Admonition type="warning" icon="⚠️" title="WARNING">  
+THe Secret Access Key is **only shown once**. If lost, you must delete the old key and create a new one.
+</Admonition>
+
+
+### Configure the connector
+Now that you have your credentials, set up the AWS connector in Rational AI.
+
+* Navigate to **Settings** and select **Connectors** from the left sidebar.
+* Add a new connector: Click the **+ Add** button and select **AWS** from the list of available providers.
+* Fill out the configuration form:
+    * **Name** (e.g., S3 Access for Marketing Data).
+    * **Description** (optional but strongly reccomended).
+    * **Access Key ID**: paste the public key generated in Step 1.
+    * **Secret Access Key**: paste the pricate key.
+    * Click **Add** to save and activate the connector.
+      
+The AWS S3 connector is now **ready for use**. You can link it to specific buckets in the next step.
+
+### Configure the AWS S3 source
+After configuring the connector, you need to define the source to specify which S3 buckets should be synchronized.
+* Navigate to **Sources** and click **+ New**.
+* Select the **AWS connector** you created earlier.
+* Fill out the source form:
+    * **Name** (e.g., S3 Log Bucket).
+    * **Description** to explain the content.
+    * **Source type*: select `AWS S3`.
+    * **Specify** the AWS **region** where the bucket is located (e.g., eu-central-1).	
+    *	**S3 Endpoint** is usually s3.amazonaws.com or a region-specific endpoint.
+*	The system will allow you to **browse the S3 buckets accessible** via the selected connector:
+    * Select the buckets and, optionally, define specific prefixes/paths within those buckets that you wish to include in the synchronization.
+* Click **Add** to create the source.
+
+<Admonition type="info" icon="ℹ️" title="REMEMBER:">  
+This source, like all sources, is created with **manual synchronization** by default. Check the [Synchronization settings section](#configuring-synchronization-settings) to learn how to update them.
+</Admonition>
