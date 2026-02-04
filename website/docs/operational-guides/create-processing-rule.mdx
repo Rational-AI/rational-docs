@@ -43,15 +43,60 @@ The editor includes:
 ## Creating your first processing rule
 If you’re a new user, the page will appear empty. In this case, you can create your first rule in a few simple steps.
 * Click the **+ New** button in the center of the page.
-* Enter a clear and descriptive name.  
-    Example: _Lorem ipsum_
-* Optionally, add a short description explaining the rule’s purpose and scope.  This is strongly recommended for long-term maintainability.
-* Define the rule logic in the JSON or configuration input area.
+* Enter a clear and descriptive name (for example: "MyProcessingRule")
+* Optionally, add a short description explaining the rule’s purpose and scope.
+* Define the rule logic in the code input area.
 
 Once these fields are filled, you can proceed to enabling and testing the rule.
 
-## Logic @Francesco
+## Logic
+
+A processing rule allows to devise which workflow to apply to the Knowledge documents.
+Being code, you can develop arbitrarly complex conditions to decide which worfklow applies to your document, for example:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12,<3.13"
+# dependencies = [
+#     "rational-client",
+# ]
+# ///
+
+from rational_client.core import SyncedResource
+
+
+def router(resource: SyncedResource, options: dict):
+    """Routes the resource to the correct workflow based on file extension."""
+    filename = resource.name
+    if not filename:
+        return None
+
+    # Main switch
+    if filename == "orders.json":
+        workflow = "Workflow Orders"
+    elif filename == "products.json":
+        workflow = "Workflow Products"
+    elif filename == "orgchart.json":
+        workflow = "Workflow Orgchart"
+    elif filename == "stores.json":
+        workflow = "Workflow Stores"
+    elif filename.endswith(".pdf"):
+        workflow = "Workflow PDF"
+    elif filename.endswith(".doc") or filename.endswith(".docx"):
+        workflow = "Workflow Docling"
+    elif filename.endswith(".urls"):
+        workflow = "Workflow Urls"
+    else:
+        workflow = None
+
+    return workflow
+
+run(router)
+```
+
+As for the workflows, the entrypoint is the `run` function which triggers the processing rule business logic, the `router` function.
+Basically, here we decide the workflow to apply, based on some characteristics of the Knowledge document, e.g. its filename.
 
 ## Related concepts
-[Workflows](#)  
-[Lorem](#) 
+[Workflows](/docs/operational-guides/create-workflow)
