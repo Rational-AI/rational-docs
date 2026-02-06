@@ -221,10 +221,10 @@ With the project ready, you can generate the keys.
     * **Web application** (most common): for websites built with React, Node, PHP, etc.
     * **Android/iOS**: for native mobile apps.
     * **Desktop app**: for command-line tools (CLI) or installable software.
-* Set **Authroized redirect URIs**: this is the URL Google uses to return an authorization code after login.
+* Set **Authorized redirect URIs**: this is the URL Google uses to return an authorization code after login.
     * Must start with `http://` or `https://`
     * Cannot contain fragments, relative paths, wildcards, or public IPs.
-    * Use the following URL: https://[your-domain].rational.is/api/management/v0/oauth/callback.
+    * Use the following URL: `https://[your-domain].rational.is/api/management/v0/oauth/callback`.
 
 <Admonition type="info" icon="ℹ️" title="REMEMBER">  
 Replace `[tenant-name]` with your own tenant identifier.
@@ -253,10 +253,10 @@ The Google connector is now ready to define specific data sources, such as Drive
 ### Configure the Google Drive source
 * Got to **Sources** and click **+ New**.
 * Complete the source form:
-    * Name: for example `Marketing team Drive`.
-    * Description: optional but strongly recommended for long-term maintenance and team collaboration purposes.
-    * Source type: select **Google Drive**
-    * Select the connector created in the previous step.
+    * **Name**: for example `Marketing team Drive`.
+    * **Description**: optional but strongly recommended for long-term maintenance and team collaboration purposes.
+    * **Source type**: select **Google Drive**
+    * Select the **connector** created in the previous step.
 * Browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
 * Click **Add** to create the source.
 
