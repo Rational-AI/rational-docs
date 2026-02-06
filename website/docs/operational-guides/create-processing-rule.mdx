@@ -20,7 +20,19 @@ Then switch to the **Processing rules** tab from the top-left section of the pag
 
 ## Understanding the interface
 The Processing Rules page follows the same structure as the workflows section and is divided into two main areas.
-[IMAGE]
+
+<img
+  src={require('@site/static/img/screens/processing-rules.png').default}
+  alt="Dashboard interface displaying the Workflow page."
+  style={{ 
+    width: '100%', 
+    maxHeight: '100%', 
+    objectFit: 'contain',
+    border: '1px solid #E4E4E7',
+    borderRadius: '6px',
+    boxSizing: 'border-box',
+    }}
+/> 
 
 ### Rules list
 The left panel displays all processing rules that have been created.
@@ -43,13 +55,13 @@ The editor includes:
 ## Creating your first processing rule
 If you’re a new user, the page will appear empty. In this case, you can create your first rule in a few simple steps.
 * Click the **+ New** button in the center of the page.
-* Enter a clear and descriptive name (for example: "MyProcessingRule")
-* Optionally, add a short description explaining the rule’s purpose and scope.
-* Define the rule logic in the code input area.
+* Enter a clear and descriptive **name**: for example `MyProcessingRule`
+* Optionally, add a short **description** explaining the rule’s purpose and scope.
+* Define the **rule logic** in the code input area.
 
 Once these fields are filled, you can proceed to enabling and testing the rule.
 
-## Logic
+## Processing rule logic
 
 A processing rule allows to devise which workflow to apply to the Knowledge documents.
 Being code, you can develop arbitrarly complex conditions to decide which worfklow applies to your document, for example:
