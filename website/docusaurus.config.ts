@@ -171,7 +171,7 @@ const config: Config = {
 					items: [
 						{
 							label: "Docs",
-							to: "/docs/category/operational-guides"
+							to: "/docs/category/operational-guides",
 						},
 					],
 				},
