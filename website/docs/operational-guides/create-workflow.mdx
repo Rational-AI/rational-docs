@@ -18,8 +18,20 @@ To start working with workflows, open the **Settings** area and navigate to **Wo
 This page is the central workspace for creating and managing all your workflows (and processing rules as we will see later).
 
 ## Understanding the interface
-The workflow page is divided into two main areas: the workflow list and the workflow editor.
-[IMAGE]
+The workflow page is divided into two main areas: the **workflow list** and the **workflow editor**.
+
+<img
+  src={require('@site/static/img/screens/workflows.png').default}
+  alt="Dashboard interface displaying the Workflow page."
+  style={{ 
+    width: '100%', 
+    maxHeight: '100%', 
+    objectFit: 'contain',
+    border: '1px solid #E4E4E7',
+    borderRadius: '6px',
+    boxSizing: 'border-box',
+    }}
+/> 
 
 ### Workflow list
 The left panel displays all workflows that have been created in your environment.
@@ -33,10 +45,10 @@ This list gives you a high-level view of which processes are active and which ar
 When you select a workflow from the list, its details are displayed on the right side. This is where you define how your workflow behaves.
 
 The editor includes:
-* The workflow name and description.
-* The editable logic or configuration area (JSON or script-based input).
+* The workflow **name and description**.
+* The **editable logic** or configuration area (JSON or script-based input).
 * An action menu that allows you to:
-    * Open the workflow in the Lab.
+    <!-- * Open the workflow in the Lab. -->
     * Edit its logic.
     * Delete the workflow.
 
@@ -45,13 +57,11 @@ The editor includes:
 If you’re a new user, the workflow page may initially be empty. In this case, you can create your first workflow in a few simple steps.
 
 * Click the **+ New** button in the center of the page.
-* Enter a clear and descriptive name.  
-    Example: _PDF processing workflow_.
-* Optionally, add a short description explaining the purpose of the workflow.  
-    This is strongly recommended for long-term maintainability.
-* Enable your workflow from the list and you’re done. 
+* Enter a clear and descriptive **name**: for example `PDF processing workflow`.
+* Optionally, add a short **description** explaining the purpose of the workflow. This is _strongly_ recommended for long-term maintainability.
+* **Enable your workflow** from the list and you’re done. 
 
-## Logic
+### Workflow logic
 
 Let's create a simple, yet effective, workflow that takes as input a lorem-ipsum markdown file, creates a Rational Resource associated with it
 and performs chunking and embedding automatically, to allow semantic retrieval in a RAG scenario.
@@ -107,7 +117,7 @@ Let's break it down:
 - the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, i.e. `knowledge = Knowledge(document.knowledge_id)`
 - the workflow might return a dictionary specifying the Rational Resources created and their textual content, i.e. text/markdown, to be automatically chunked and embedded according to the Knowledge settings
 
-## Testing your workflow locally
+### Testing your workflow locally
 
 It is convenient to perform workflow development on your local machine, before using them into Rational AI.
 This is not only possible, but also encouraged, as it allows to use your favourite IDE and debugging tools.
@@ -131,4 +141,4 @@ Once configured, we can pass the `workflow_input.json` file as input to our work
 ```
 ./lorem-ipsum-wf.py workflow_input.json
 ```
-to test our workflow locally!
+to test our workflow locally.

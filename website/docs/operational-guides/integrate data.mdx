@@ -5,7 +5,7 @@ sidebar_label: Integrate external data
 
 import Admonition from "@theme/Admonition";
 
-# Integrating external data
+# Integrate external data
 
 This guide explains how to connect Rational AI to external platforms (such as Google, AWS, or OpenAI) and synchronize their data using connectors and sources.   
 The process consists of two steps:
@@ -19,7 +19,7 @@ Both steps are _required_ for the platform to securely access and synchronize ex
 Connectors handle authentication and permissions for external services. To manage connectors open the **Settings** and navigate to **Connectors** from the left-hand sidebar.
 
 <img
-  src={require('@site/static/img/screens/connectors-view.png').default}
+  src={require('@site/static/img/screens/connectors.png').default}
   alt="Dashboard interface displaying the Connectors page."
   style={{ 
     width: '100%', 
@@ -114,6 +114,20 @@ By default, new sources are created with manual synchronization. You can freely 
     }}
 />  options menu).
 
+<img
+  src={require('@site/static/img/screens/sync-settings.png').default}
+  alt="Dashboard interface displaying a source's synchronization settings."
+  style={{ 
+    width: '100%', 
+    maxHeight: '100%', 
+    objectFit: 'contain',
+    border: '1px solid #E4E4E7',
+    borderRadius: '6px',
+    boxSizing: 'border-box',
+    }}
+/> 
+
+
 You can choose between two modes:
 * **Manual**: synchronization only occurs when triggered manually.
 * **Periodic**: data is synchronized automatically at scheduled intervals.
@@ -127,7 +141,7 @@ You must also define how deletions are handled:
 * **Keep**: deleted external files remain stored in Rational AI.
 
 
-## Integrating AWS data
+## Integrate AWS data
 To integrate your application with Amazon S3, you must first establish a secure connection. 
 This is done by generating a pair of security credentials (keys) that act like a username and password for your automated processes.
 
@@ -145,7 +159,7 @@ Before configuring the connector, you need an **Identity and Access Management (
 * You will see your **Access Key ID** and **Secret Access Key**. Download the `.csv` file
 
 <Admonition type="warning" icon="⚠️" title="WARNING">  
-THe Secret Access Key is **only shown once**. If lost, you must delete the old key and create a new one.
+The Secret Access Key is **only shown once**. If lost, you must delete the old key and create a new one.
 </Admonition>
 
 
@@ -170,9 +184,9 @@ After configuring the connector, you need to define the source to specify which 
 * Fill out the source form:
     * **Name** (e.g., S3 Log Bucket).
     * **Description** to explain the content.
-    * **Source type*: select `AWS S3`.
+    * **Source type**: select `AWS S3`.
     * **Specify** the AWS **region** where the bucket is located (e.g., eu-central-1).	
-    *	**S3 Endpoint** is usually s3.amazonaws.com or a region-specific endpoint.
+    *	**S3 Endpoint** is usually `s3.amazonaws.com` or a region-specific endpoint.
 *	The system will allow you to **browse the S3 buckets accessible** via the selected connector:
     * Select the buckets and, optionally, define specific prefixes/paths within those buckets that you wish to include in the synchronization.
 * Click **Add** to create the source.
@@ -180,3 +194,103 @@ After configuring the connector, you need to define the source to specify which 
 <Admonition type="info" icon="ℹ️" title="REMEMBER:">  
 This source, like all sources, is created with **manual synchronization** by default. Check the [Synchronization settings section](#configuring-synchronization-settings) to learn how to update them.
 </Admonition>
+
+## Integrate Google Drive data
+This procedure is essential to allow your application to securely access Google services (such as Drive, Calendar, or Gmail) on behalf of your users.
+
+### Prepare your Google Cloud project
+Before creating credentials, you need an **active Google Cloud project**:
+* Go to the [Google Cloud Console](https://console.cloud.google.com/).
+* In the upper-left project menu, select **New Project** (or choose an existing project).
+* Enable the required APIs (e.g., `Google Drive API`), via **APIs & Services > Library**.
+
+### Configure OAuth consent screen
+Google requires an OAuth consent screen to inform users about the access your app is requesting:
+* Go to **APIs & Services > OAuth consent screen**.
+* Choose the **User type**:
+    * **Internal**: only for your Google Workspace team.
+    * **External**: For any user with a Google account.
+* Click **Create** and fill in the basic info: App name, User support email, Developer contact email.
+* Save and continue. You can skip the **Scopes** section for initial testing.
+
+### Create credentials (Client ID)
+With the project ready, you can generate the keys.
+* Go to **APIs & Services > Credentials**.
+* Click **+ CREATE CREDENTIALS** and select **OAuth client ID**.
+* Choose the **Application type**:
+    * **Web application** (most common): for websites built with React, Node, PHP, etc.
+    * **Android/iOS**: for native mobile apps.
+    * **Desktop app**: for command-line tools (CLI) or installable software.
+* Set **Authroized redirect URIs**: this is the URL Google uses to return an authorization code after login.
+    * Must start with `http://` or `https://``
+    * Cannot contain fragments, relative paths, wildcards, or public IPs.
+    * Example: `https://[your-domain].rational.is/api/management/v0/oauth/callback``
+
+### Download credentials
+* After clicking **Create**, a pop-up displays your **Client ID** and **Client Secret**.
+* Click **Download JSON** to save a local copy containing all the credentials.
+
+<Admonition type="warning" icon="⚠️" title="WARNING">  
+The Client Secret is private. **Never** share it or publish it.
+</Admonition>
+
+### Configure the connector
+* Navigate to **Settings > Connectors** and click **+ Add**.
+* Select **Google** from the provider list.
+* Fill out the configuration form:
+    * Name: for example `Google Drive access for marketing`.
+    * Description: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * Client ID: paste the public Client ID from the previous step.
+    * Client secret: paste the private Client Secret ID from the previous step.
+* Click **Add** to save and activate the connector.
+
+The Google connector is now ready to define specific data sources, such as Drive folders or BigQuery datasets.
+
+### Configure the Google Drive source
+* Got to **Sources** and click **+ New**.
+* Complete the source form:
+    * Name: for example `Marketing team Drive`.
+    * Description: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * Source type: select **Google Drive**
+    * Select the connector created in the previous step.
+* Browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
+* Click **Add** to create the source.
+
+<Admonition type="info" icon="ℹ️" title="REMEMBER:">  
+This source, like all sources, is created with **manual synchronization** by default. Check the [Synchronization settings section](#configuring-synchronization-settings) to learn how to update them.
+</Admonition>
+
+## Integrate OpenRouter data
+This procedure allows your application to access OpenRouter endpoints using API keys, enabling Rational AI to interact with OpenRouter models and data.
+
+### Generate API key
+* **Log In**: visit [OpenRouter](https://openrouter.ai/) ￼and login with your account, or create a new one if you don't have one already (use email, Google, or GitHub).
+* Click your profile icon and select **Keys**.
+* Click **Create API Key**:
+    * Provide a recognizable **name** to track its usage.
+    * Optionally define a credit limit to manage spending and/or an expiration date for the key.
+    * Immediately **copy the generated key** (starting with `sk-or-v1-`). <u>You will not be able to see it again after leaving the page.</u>
+
+<Admonition type="warning" icon="⚠️" title="WARNING">  
+Treat your API key like a password. **Never** share it publicly or commit it to repositories.
+</Admonition>
+
+### Configure the connector
+* Navigate to **Settings > Connectors** and click **+ Add**.
+* Select **OpenRouter** from the provider list.
+* Fill out the configuration form:
+    * **Name**: for example `OpenRouter access for marketing`.
+    * **Description**: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * **API key**: paste the key you generated in the previous step.
+* Click **Add** to save and activate the connector.
+
+The OpenRouter connector is now ready to define specific resources, such as model endpoints or datasets.
+
+### Configure the OpenRouter source
+* Got to **Sources** and click **+ New**.
+* Complete the source form:
+    * Name: for example `Marketing AI Models`.
+    * Description: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * Source type: select **OpenRouter**
+    * Select the connector created in the previous step.
+* Click **Add** to create the source.
