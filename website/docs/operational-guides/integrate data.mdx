@@ -131,7 +131,7 @@ By default, new sources are created with manual synchronization. You can freely 
 You can choose between two modes:
 * **Manual**: synchronization only occurs when triggered manually.
 * **Periodic**: data is synchronized automatically at scheduled intervals.
-<!-- * **Instantaneous**: changes are automatically synchronzed in near real time on source change. -->
+/* * **Instantaneous**: changes are automatically synchronized in near real time on source change. */
 
 For periodic synchronization, you can define a schedule, such as: every number of minutes, every hour, once a day, once a week, once a month.  
 Choose a frequency based on how often your external data changes.
@@ -170,9 +170,9 @@ Now that you have your credentials, set up the AWS connector in Rational AI.
 * Add a new connector: Click the **+ Add** button and select **AWS** from the list of available providers.
 * Fill out the configuration form:
     * **Name** (e.g., S3 Access for Marketing Data).
-    * **Description** (optional but strongly reccomended).
+    * **Description** (optional but strongly recommended).
     * **Access Key ID**: paste the public key generated in Step 1.
-    * **Secret Access Key**: paste the pricate key.
+    * **Secret Access Key**: paste the private key.
     * Click **Add** to save and activate the connector.
       
 The AWS S3 connector is now **ready for use**. You can link it to specific buckets in the next step.
@@ -222,9 +222,13 @@ With the project ready, you can generate the keys.
     * **Android/iOS**: for native mobile apps.
     * **Desktop app**: for command-line tools (CLI) or installable software.
 * Set **Authroized redirect URIs**: this is the URL Google uses to return an authorization code after login.
-    * Must start with `http://` or `https://``
+    * Must start with `http://` or `https://`
     * Cannot contain fragments, relative paths, wildcards, or public IPs.
-    * Example: `https://[your-domain].rational.is/api/management/v0/oauth/callback``
+    * Use the following URL: https://[your-domain].rational.is/api/management/v0/oauth/callback.
+
+<Admonition type="info" icon="ℹ️" title="REMEMBER">  
+Replace `[tenant-name]` with your own tenant identifier.
+</Admonition>
 
 ### Download credentials
 * After clicking **Create**, a pop-up displays your **Client ID** and **Client Secret**.
@@ -239,7 +243,7 @@ The Client Secret is private. **Never** share it or publish it.
 * Select **Google** from the provider list.
 * Fill out the configuration form:
     * Name: for example `Google Drive access for marketing`.
-    * Description: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * Description: optional but strongly recommended for long-term maintenance and team collaboration purposes.
     * Client ID: paste the public Client ID from the previous step.
     * Client secret: paste the private Client Secret ID from the previous step.
 * Click **Add** to save and activate the connector.
@@ -250,7 +254,7 @@ The Google connector is now ready to define specific data sources, such as Drive
 * Got to **Sources** and click **+ New**.
 * Complete the source form:
     * Name: for example `Marketing team Drive`.
-    * Description: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * Description: optional but strongly recommended for long-term maintenance and team collaboration purposes.
     * Source type: select **Google Drive**
     * Select the connector created in the previous step.
 * Browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
@@ -280,7 +284,7 @@ Treat your API key like a password. **Never** share it publicly or commit it to 
 * Select **OpenRouter** from the provider list.
 * Fill out the configuration form:
     * **Name**: for example `OpenRouter access for marketing`.
-    * **Description**: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * **Description**: optional but strongly recommended for long-term maintenance and team collaboration purposes.
     * **API key**: paste the key you generated in the previous step.
 * Click **Add** to save and activate the connector.
 
@@ -290,7 +294,7 @@ The OpenRouter connector is now ready to define specific resources, such as mode
 * Got to **Sources** and click **+ New**.
 * Complete the source form:
     * Name: for example `Marketing AI Models`.
-    * Description: optional but strongly reccomended for long-term maintenance and team collaboration purposes.
+    * Description: optional but strongly recommended for long-term maintenance and team collaboration purposes.
     * Source type: select **OpenRouter**
     * Select the connector created in the previous step.
 * Click **Add** to create the source.
