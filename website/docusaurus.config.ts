@@ -44,6 +44,9 @@ const config: Config = {
 			"classic",
 			{
 				docs: {
+					// https://docusaurus.io/docs/next/docs-introduction#docs-only-mode
+					routeBasePath: '/', // Serve the docs at the site's root
+
 					sidebarPath: "./sidebars.ts",
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
@@ -171,7 +174,7 @@ const config: Config = {
 					items: [
 						{
 							label: "Docs",
-							to: "/docs/category/operational-guides",
+							to: "/",
 						},
 					],
 				},
