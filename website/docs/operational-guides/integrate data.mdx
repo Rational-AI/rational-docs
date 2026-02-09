@@ -131,7 +131,6 @@ By default, new sources are created with manual synchronization. You can freely 
 You can choose between two modes:
 * **Manual**: synchronization only occurs when triggered manually.
 * **Periodic**: data is synchronized automatically at scheduled intervals.
-/* * **Instantaneous**: changes are automatically synchronized in near real time on source change. */
 
 For periodic synchronization, you can define a schedule, such as: every number of minutes, every hour, once a day, once a week, once a month.  
 Choose a frequency based on how often your external data changes.
@@ -221,7 +220,7 @@ With the project ready, you can generate the keys.
     * **Web application** (most common): for websites built with React, Node, PHP, etc.
     * **Android/iOS**: for native mobile apps.
     * **Desktop app**: for command-line tools (CLI) or installable software.
-* Set **Authorized redirect URIs**: this is the URL Google uses to return an authorization code after login.
+- Set **Authorized redirect URIs**: this is the URL Google uses to return an authorization code after login.
     * Must start with `http://` or `https://`
     * Cannot contain fragments, relative paths, wildcards, or public IPs.
     * Use the following URL: `https://[your-domain].rational.is/api/management/v0/oauth/callback`.
@@ -273,7 +272,7 @@ This procedure allows your application to access OpenRouter endpoints using API 
 * Click **Create API Key**:
     * Provide a recognizable **name** to track its usage.
     * Optionally define a credit limit to manage spending and/or an expiration date for the key.
-    * Immediately **copy the generated key** (starting with `sk-or-v1-`). <u>You will not be able to see it again after leaving the page.</u>
+    * Immediately **copy the generated key** (starting with `sk-or-v1-`). You will **not be able to see it again** after leaving the page.
 
 <Admonition type="warning" icon="⚠️" title="WARNING">  
 Treat your API key like a password. **Never** share it publicly or commit it to repositories.
