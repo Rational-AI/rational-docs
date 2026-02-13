@@ -3,25 +3,30 @@ sidebar_position: 2
 sidebar_label: Create a workflow
 ---
 
-# Creating a workflow
-This guide explains how to create, configure, and manage workflows in the AI Control Room. 
+# Create a workflow
+
+Workflows automate data transformation in Rational AI. This guide covers creating, configuring, and testing workflows that convert raw data into AI-ready knowledge using AI.
 
 import Admonition from "@theme/Admonition";
 
-<Admonition type="info" icon="📖" title="GLOSSARY">  
-What is a [`workflow?`](#)  
-Workflows automate the transformation of raw data into AI-ready knowledge. They handle the heavy lifting: extracting key information, augmenting it, identifying connections between data, and structuring everything into a queryable knowledge base your AI applications can use.
+<Admonition type="info" icon="📖" title="WHAT IS A WORKFLOW?">  
+Workflows automate the transformation of raw data into AI-ready knowledge. They extract key information, augment it, identify connections between data points, and structure everything into a queryable knowledge base that your AI applications can use.
 </Admonition>
 
-To start working with workflows, open the **Settings** area and navigate to **Workflows** from the left sidebar.
-This page is the central workspace for creating and managing all your workflows (and processing rules as we will see later).
+## Prerequisites
 
-## Understanding the interface
-The workflow page is divided into two main areas: the **workflow list** and the **workflow editor**.
+Before creating workflows, ensure you have:
+- Permissions to access to the AI Control Room Settings area
+- A Knowledge base created (workflows operate on Knowledge bases)
+- Python and `uv` package manager installed ([installation guide](https://docs.astral.sh/uv/))
+
+## Access the workflow interface
+
+Navigate to **Settings** → **Workflows** from the left sidebar. This is the central workspace for creating and managing workflows and processing rules.
 
 <img
   src={require('@site/static/img/screens/workflows.png').default}
-  alt="Dashboard interface displaying the Workflow page."
+  alt="Workflow management interface showing the workflow list and editor"
   style={{ 
     width: '100%', 
     maxHeight: '100%', 
@@ -91,10 +96,10 @@ def process(document: SyncedResource, options: dict):
     # Convert to string (assumes content is textual)
     text = content.decode("utf-8")
     
-    # Obtain the Knowledge instance
+    # Get the Knowledge instance this document belongs to
     knowledge = Knowledge(document.knowledge_id)
 
-    # Create a new Rational Resource in the Knowledge
+    # Create a new Rational Resource in the Knowledge Base
     new_resource = knowledge.create_resource(
         name=document.name,
         category="document_category",
