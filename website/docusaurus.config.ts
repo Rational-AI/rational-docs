@@ -45,7 +45,7 @@ const config: Config = {
 			{
 				docs: {
 					// https://docusaurus.io/docs/next/docs-introduction#docs-only-mode
-					routeBasePath: '/', // Serve the docs at the site's root
+					routeBasePath: "/", // Serve the docs at the site's root
 
 					sidebarPath: "./sidebars.ts",
 					// Please change this to your repo.
