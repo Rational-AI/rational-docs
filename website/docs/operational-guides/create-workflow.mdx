@@ -80,12 +80,12 @@ The workflow business logic is defined as below:
 
 from rational_client.core import (
     Knowledge,
-    SyncedResource,
+    File,
 )
 from rational_client.utils import run
 
 
-def process(document: SyncedResource, options: dict):
+def process(document: File, options: dict):
     # Read document content (bytes)
     content = document.get_data()
 
@@ -100,7 +100,7 @@ def process(document: SyncedResource, options: dict):
         name=document.name,
         category="document_category",
         tags=["some", "tags"],
-        synced_resource_id=document.id,
+        file_id=document.id,
     )
 
     # Return the content for chunking and embedding (optional)
