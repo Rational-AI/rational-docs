@@ -1,0 +1,167 @@
+---
+sidebar_position: 18
+sidebar_label: Retrieval-Augmented Generation 
+---
+
+# Retrieval-Augmented Generation (RAG)
+**Retrieval-Augmented Generation (RAG)** is a technique that enhances Large Language Models (LLMs) by retrieving relevant information from a knowledge base before generating a response.
+
+Instead of relying only on what the model learned during training, a RAG system actively searches your organization’s knowledge, selects the most relevant resources, and provides them to the model as context.  
+The response is therefore **grounded in your data**, not only in general knowledge.
+
+This approach improves: **accuracy**, **relevance**, **domain alignment**, **transparency of sources**, and **user trust**.
+
+The Rational Knowledge RAG System provides two tools for information retrieval and knowledge access:
+1. **Naive RAG**: fast semantic search for unstructured knowledge
+2. **Graph RAG** advanced semantic search with relationship-based expansion
+
+## Naive RAG
+Naive RAG is the simplest and fastest retrieval approach. It performs semantic search using vector similarity (embedding-based matching) and **retrieves** the most relevant documents **based purely on meaning**.
+
+It is ideal for:
+* Unstructured document collections
+* Knowledge bases without explicit relationships
+* Direct question-and-answer scenarios
+* Situations where the answer is likely contained in a single document or small group of related documents
+
+### How Naive RAG works
+Naive RAG follows a straightforward pipeline:
+**User Query → Embedding → Vector Search → Top-K Results → Context Window Filter → LLM**  
+1. The process begins by converting the user query into an embedding (a numerical representation of meaning).
+2. The system compares this embedding with document embeddings stored in the knowledge base.
+
+3. Similarity is calculated using cosine similarity.
+4. Results above a semantic threshold are ranked.
+5. The top results that fit within the model’s context window are selected.
+6. These documents are provided to the LLM to generate a response.
+
+Naive RAG is characterized by **single-phase retrieval**, meaning it performs only one search operation. 
+It uses pure **semantic matching** based entirely on meaning similarity, executes fast with no additional expansion or traversal steps, and treats each document as independent, evaluating results individually without considering relationships.
+
+
+For example, if the query is:
+
+```
+What are the symptoms of diabetes
+```
+
+Naive RAG retrieves documents discussing diabetes symptoms based on semantic similarity, without considering related documents (e.g., treatment guidelines or clinical studies).
+
+## Graph RAG
+Graph RAG extends semantic search by incorporating knowledge graph relationships. It **retrieves** not only directly relevant documents, but **also related resources connected through explicit relationships**.
+
+It is designed for:
+* Knowledge bases with structured relationships
+* Complex or multi-layered queries
+* Research documents with citations
+* Legal documents with references
+* Product catalogs with related items
+* Medical or scientific knowledge graphs
+* Organizational or hierarchical knowledge structures
+
+### How Graph RAG works
+Graph RAG implements a more sophisticated pipeline:
+**User Query → Embedding → Vector Search → Top-K Results → Graph Expansion → Relevance Filtering → Final Ranking → Context Window Filter → LLM.**
+
+The process occurs in three main phases:
+1. **Semantic search**: operates identically to Naive RAG. It converts the query to an embedding, finds semantically similar documents, and filters them by a semantic threshold.  
+
+2. **Graph expansion**: 
+	* For documents that score above the graph expansion threshold, the system considers their relationships to find related resources.   
+	* It calculates **combined scores** that factor in both **semantic similarity** and **keyword overlap**.
+	* Results are filtered by a relevance threshold to ensure quality.
+3. **Final ranking**: combines all results from semantic search and graph expansion. The system sorts everything by the combined score, fits results into the available context window, and returns the enriched set of documents to the LLM.
+
+Graph RAG performs **multi-phase retrieval** with multiple search and expansion operations. 
+It is **relationship-aware**, following explicit connections between documents. 
+The **hybrid scoring system** combines **semantic similarity** with **keyword matching** to ensure both conceptual relevance and term overlap. 
+This approach provides **context enrichment** by bringing in related information that might not be semantically similar to the original query but is connected through the knowledge graph.
+
+For example, if the query is:
+```
+What are the side effects of metformin?
+```
+
+Graph RAG:
+1. Step one: retrieves documents about metformin.
+2. Step two: expands to related resources such as:
+	* Clinical trials
+	* Drug interactions
+	* Related medications
+	* Patient case studies
+3. Step three: combines all retrieved and expanded results into a comprehensive context window.
+
+## Naive RAG vs Graph RAG
+| Aspect                 | Naive RAG                      | Graph RAG                      |
+|:-----------------------|:-------------------------------|:-------------------------------|
+| Retrieval Type         | Single-phase                   | Multi-phase                    |
+| Relationship Awareness | No                             | Yes                            |
+| Scoring                | Semantic only                  | Semantic + keyword             |
+| Speed                  | Faster                         | Slower                         |
+| Best For               | Flat document sets             | Graph-structured knowledge     |
+| Output                 | Direct matches                 | Direct + related resources     |
+
+### When to use Naive RAG 
+* The knowledge base has **no** document **relationships**
+* The **query is specific** and well-defined
+*The answer is likely contained in one resource
+***Fast response time** is a priority
+
+### When to use Graph RAG
+* **Relationships** between documents **matter**
+* The **query is broad**, vague, or multi-dimensional
+* **Context** from related resources **improves answer quality**
+* The knowledge base is structured as a graph
+
+## RAG and SQL tools
+Rational AI agents are not limited to RAG-based retrieval. They may also have access to structured database tools such as **SQLite** and **Postgres**, which allow the execution of SQL queries over relational databases.
+For this reason, proper Touchpoint configuration requires more than choosing between Naive RAG and Graph RAG. It also requires determining when structured database queries are more appropriate than semantic retrieval.
+
+### Tool Enablement
+Tool availability should reflect the actual structure of the Knowledge environment.  
+
+For example:
+* If no database is available, SQL tools **should not** be enabled.
+* If no documents have been ingested, RAG tools **should not** be enabled.
+* If documents exist but have no relationships, Naive RAG **is sufficient**.
+* If documents include explicit relationships, Graph RAG **can be enabled** (optionally alongside Naive RAG).
+
+Proper configuration avoids unnecessary complexity and ensures predictable behavior.
+
+
+### Retrieval Strategy
+As a general rule, **RAG** should be the **default retrieval method**. Most user queries are expressed in natural language and do not include precise identifiers. **Semantic search is therefore the most reliable starting point.**
+
+When both RAG tools are available:
+* **Naive RAG** should be **preferred for simple, well-defined questions** where the answer is likely contained in a single document and relational context is not required.
+* **Graph RAG** should be **preferred for broader or more complex queries** where relationships between documents add value (e.g., citations, references, hierarchies, interconnected content).
+
+Graph RAG may return a richer result set but requires more processing time.
+
+Because RAG returns a limited number of results, the model may need to execute multiple retrieval passes for complex queries.
+
+
+### When to Use SQL
+SQL tools are *not* suitable for general semantic search; they are best used for structured operations, such as:
+* Exact matches using unique identifiers (IDs, exact names)  
+When generating SQL without a unique identifier, the query should maximize matching coverage, for example by using LIKE or ILIKE operators and including relevant synonyms.
+* Aggregations such as COUNT, SUM, or AVG
+* Numerical filters (e.g., price thresholds)
+* Deterministic database queries
+
+
+### Combined Usage
+In more advanced scenarios, RAG and SQL should be used together.
+
+A typical pattern is:
+1. **Use RAG** to identify relevant entities or retrieve contextual information.
+2. **Extract** structured **data** (e.g., IDs, categories).
+3. **Use SQL** for precise filtering or aggregation.
+
+RAG provides semantic alignment; SQL provides structured precision. Used *together*, they enable accurate and context-aware retrieval across both unstructured and structured knowledge.
+
+## Related concepts
+(LLMs)[#]  
+(NLP)[#] 
+(Hallucinations)[#]   
+(Knowledge graphs)[#]

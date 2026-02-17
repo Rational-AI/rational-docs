@@ -1,0 +1,44 @@
+---
+sidebar_position: 6
+sidebar_label: Hallucinations
+---
+
+# Hallucinations
+In the context of Generative AI and Large Language Models (LLMs), **hallucinations** refer to the phenomenon in which a model generates information that is fluent and plausible but false, misleading, or unsupported by reliable evidence.
+
+These outputs are not random errors, they are coherent responses produced by the model based on learned statistical patterns rather than verified knowledge.
+
+##Causes of hallucinations
+Hallucinations arise from structural characteristics of LLMs, such as:
+1. **Probabilistic generation**: LLMs generate text by predicting the most likely next word, not by validating facts.
+As a result, they prioritize fluency and linguistic coherence over factual accuracy.
+2. **Training data limitations**: models learn from imperfect, incomplete, and sometimes contradictory data sources, which can introduce inaccuracies.
+3. **Lack of real-time knowledge**: most LLMs do not have native access to live databases or external verification systems during generation.
+4. **Ambiguous or incomplete prompts**: vague or under-specified inputs can lead models to "fill in gaps" with fabricated information.
+5. **Overgeneralization**: models may apply learned patterns inappropriately to contexts where they are not valid.
+
+##Types of hallucinations
+| Type                     | Description                                   |
+|:-------------------------|:----------------------------------------------| 
+| Factual hallucination    | Incorrect dates, names, statistics, or events |  
+| Source hallucination     | Invented citations or references              |
+| Logical hallucination    | Internally incorrect reasoning or logic       |
+| Contextual hallucination | Misinterpretation of user intent              |
+| Fabricated content       | Creation of non-existent entities or concepts |
+
+While there are a number of methods to identify hallucinations (such as human review, fact-checking, automated verification system, etc.), fully automated detection remains an open research challenge.
+
+##Mitigation strategies
+To reduce the occurrence of hallucinations, several approaches can be employed:
+1. Retrieval-augmented generation: integrates external knowledge bases or search engines to ground model responses in verified data.
+2. Fine-tuning and alignment: improves reliability through topic-specific training and human feedback.
+3. Prompt engineering: crafting clearer and more structured prompts to reduce ambiguity and guide the model towards accurate outputs.
+4. Confidence calibration: encourages models to express uncertainty when appropriate, which can help users identify potentially unreliable outputs.
+5. Human-in-the-loop systems: combines automated generation with human oversight to review and correct outputs before they are presented to end-users.
+
+##Related concepts
+RAG (Retrieval-Augmented Generation)
+Fine-tuning
+Prompt engineering
+GenAI
+LLMs

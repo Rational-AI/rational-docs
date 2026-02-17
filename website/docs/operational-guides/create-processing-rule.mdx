@@ -75,10 +75,10 @@ Being code, you can develop arbitrarily complex conditions to decide which workf
 # ]
 # ///
 
-from rational_client.core import SyncedResource
+from rational_client.core import File
 
 
-def router(resource: SyncedResource, options: dict):
+def router(resource: File, options: dict):
     """Routes the resource to the correct workflow based on file extension."""
     filename = resource.name
     if not filename:
