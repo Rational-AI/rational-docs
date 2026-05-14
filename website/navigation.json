@@ -1,0 +1,71 @@
+[
+  {
+    "label": "Docs",
+    "type": "tab",
+    "path": "docs",
+    "children": [
+      {
+        "label": "QUICK START",
+        "type": "group",
+        "children": [
+          {
+            "label": "Rational AI",
+            "type": "page",
+            "path": "docs/quick-start/rational-ai.mdx"
+          },
+          {
+            "label": "Rational Knowledge",
+            "type": "page",
+            "path": "docs/quick-start/rational-knowledge.mdx"
+          },
+          {
+            "label": "Rational Gen",
+            "type": "page",
+            "path": "docs/quick-start/rational-gen.mdx"
+          },
+          {
+            "label": "Rational BI",
+            "type": "page",
+            "path": "docs/quick-start/rational-bi.mdx"
+          }
+        ]
+      },
+      {
+        "label": "GUIDES",
+        "type": "group",
+        "children": [
+          {
+            "label": "Create a knowledge",
+            "type": "page",
+            "path": "docs/guides/create-a-knowledge.mdx"
+          },
+          {
+            "label": "Debug mode",
+            "type": "page",
+            "path": "docs/guides/debug-mode.mdx"
+          },
+          {
+            "label": "Integrate external data",
+            "type": "page",
+            "path": "docs/operational-guides/integrate data.mdx"
+          },
+          {
+            "label": "Create a workflow",
+            "type": "page",
+            "path": "docs/operational-guides/create-workflow.mdx"
+          },
+          {
+            "label": "Create a processing rule",
+            "type": "page",
+            "path": "docs/operational-guides/create-processing-rule.mdx"
+          },
+          {
+            "label": " Set up roles and permissions",
+            "type": "page",
+            "path": "docs/guides/-set-up-roles-and-permissions.mdx"
+          }
+        ]
+      }
+    ]
+  }
+]
