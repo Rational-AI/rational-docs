@@ -1,0 +1,99 @@
+---
+sidebar_position: 3
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Datasets
+
+Datasets are the curated collections of examples you use to fine-tune models in Rational AI. Each dataset stores its entries in a standard training format, keeps a full version history as you add more data, and can be downloaded or reused across fine-tuning jobs. Use this section to build, organise and maintain the training data that powers your custom models.
+
+<div className="featureBox">
+  <div className="featureBox__title">Who can use this feature</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Available on <a href="/pricing">any plan</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Anyone with <span className="featureBox__pill">can edit</span>
+      access can create and manage datasets
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <CrossIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Datasets are used to fine-tune models, which is only available with Pro Plans
+    </div>
+  </div>
+
+</div>
+
+## Supported formats
+
+When you create a dataset you choose the format its entries follow. The structure of any file you upload must match the selected format:
+
+| Format | Description |
+|--------|-------------|
+| **Alpaca** | Instruction-style entries, each pairing an instruction (and optional input) with the expected response. Best for single-turn, task-oriented fine-tuning. |
+| **ShareGPT** | Conversation-style entries, each containing a list of turns labelled by role (e.g. `human`, `gpt`). Best for multi-turn, chat-oriented fine-tuning. |
+
+## Create a dataset
+
+Click **New** in the top-right corner and choose how you want to build the dataset:
+
+* **From file** – Upload an existing JSON file of training entries.
+* **From events** – Generate a dataset from conversational events already captured in the platform.
+
+### Create from file
+
+* Choose **From file**
+* Enter a **Name** and an optional **Description**
+* Pick the **Format** (Alpaca or ShareGPT) that matches your file
+* Drag a file into the upload area, or click **Click or drag here your dataset** to select one from your computer
+* Click **Save**
+
+The uploaded file must follow the structure of the selected format, otherwise the import is rejected.
+
+### Create from events
+
+Choose **From events** to assemble a dataset from conversations and interactions that have already taken place in Rational AI. This is a convenient way to turn real usage into training data without exporting and reformatting it by hand.
+
+## Work with a dataset
+
+Click a dataset row to open its detail view. The page shows the dataset name, its description and a paginated table of entries under the **content** column. Each row is one training entry stored as JSON; click the arrow at the start of a row to expand it and inspect the full entry.
+
+### Manage versions
+
+Every dataset keeps a version history. The version selector in the top-right corner (for example, **v1**) lets you switch between versions. A new version is created each time you append entries, so you can always trace how the dataset evolved and roll back to an earlier state if needed.
+
+### Append new entries
+
+Use **Append new entries** (from the row menu or the detail-view menu) to add more examples to an existing dataset. Appending entries produces a new version while preserving the previous one.
+
+## Manage datasets
+
+Open the options menu (the three vertical dots) on any dataset row, or the menu in the detail view, to access the following actions:
+
+| Action | Description |
+|--------|-------------|
+| **Append new entries** | Add more entries to the dataset, creating a new version. |
+| **Rename** | Change the dataset's name. |
+| **Download** | Export the dataset to a JSON file in its current format. |
+| **Delete** | Permanently remove the dataset. |
+
+## Browse datasets
+
+The Datasets list shows every dataset with columns for **Name**, **Format**, **Entries** (the number of training examples), **Created at**, **Updated at** and **Current version**.
+
+* **Search** – Use the search box above the list to filter datasets by name.
+* **Sort** – Click the arrows next to any column header to sort the list by that column.

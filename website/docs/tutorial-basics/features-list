@@ -1,0 +1,169 @@
+rational-ai
+    cr>settings>ai-model-registry
+        cr>settings>ai-model-registry>add
+            cr>settings>ai-model-registry>add>fine-tuned
+            cr>settings>ai-model-registry>add>open-source
+            cr>settings>ai-model-registry>add>third-party
+        cr>settings>ai-model-registry>list
+            cr>settings>ai-model-registry>list>item
+        cr>settings>ai-model-registry>details
+            cr>settings>ai-model-registry>details>edit
+            cr>settings>ai-model-registry>details>delete
+
+    cr>settings>fine-tuning
+        cr>settings>fine-tuning>new
+            cr>settings>fine-tuning>new>launch
+        cr>settings>fine-tuning>list
+            cr>settings>fine-tuning>list>search
+            cr>settings>fine-tuning>list>sort
+
+    cr>settings>datasets
+        cr>settings>datasets>new
+        cr>settings>datasets>append-entries
+        cr>settings>datasets>rename
+        cr>settings>datasets>delete
+        cr>settings>datasets>download
+        cr>settings>datasets>list
+            cr>settings>datasets>list>search
+            cr>settings>datasets>list>sort
+            cr>settings>datasets>dateset>view-edit
+                cr>settings>datasets>dataset>view-edit>manage-versions
+
+    cr>settings>extensions
+        cr>settings>extensions>add
+
+        cr>settings>extensions>list
+            cr>settings>extensions>list>search
+            cr>settings>extensions>list>sort
+            cr>settings>extensions>list>item
+                cr>settings>extensions>list>item>enable-disable
+                cr>settings>extensions>list>item>details
+                cr>settings>extensions>list>item>details>settings
+                cr>settings>extensions>list>item>details>uninstall
+                cr>settings>extensions>list>item>details>update
+
+    cr>settings>sources
+        cr>settings>sourcs>add
+        cr>settings>sources>list
+                cr>settings>sources>list>search
+                cr>settings>sources>list>sort
+                cr>settings>sources>list>item>delete
+                cr>settings>sources>list>item>edit
+
+    cr>settings>connectors
+        cr>settings>connectors>add
+        cr>settings>connectors>list
+            cr>settings>connectors>list>search
+            cr>settings>connectors>list>item
+                cr>settings>connectors>list>item>delete
+                cr>settings>connectors>list>item>details
+                    cr>settings>connectors>list>item>details>edit-configuration
+
+    cr>settings>conversations
+        cr>settings>conversations>conversational-model-settings
+        cr>settings>conversations>title-generation-model
+        cr>settings>conversations>topic-detection-settings
+        cr>settings>conversations>sentiment-analysis-settings
+
+    cr>settings>touchpoints
+        cr>settings>touchpoints>new
+        cr>settings>touchpoints>list
+            cr>settings>touchpoints>list>search
+            cr>settings>touchpoints>list>item
+                cr>settings>touchpoints>list>item>details
+                    cr>settings>touchpoints>list>item>details>view-edit
+                    cr>settings>touchpoints>list>item>details>delete
+                    cr>settings>touchpoints>list>item>details>disable
+                    cr>settings>touchpoints>list>item>details>settings
+                    cr>settings>touchpoints>list>item>details>models
+                    cr>settings>touchpoints>list>item>details>sources
+                    cr>settings>touchpoints>list>item>details>tools
+
+    cr>goverance>dashboard
+        cr>goverance>dashboard>filters
+
+        cr>governance>audit-logs 
+            cr>governance>audit-logs>filters
+
+    cr>knowledge
+        cr>knowledge>sidebar
+            cr>knowledge>sidebar>new
+            cr>knowledge>sidebar>search
+            cr>knowledge>sidebar>filter
+        
+        cr>knowledge>graph-view
+
+        cr>knowledge>resources
+            cr>knowledge>resources>details>view-edit
+                cr>knowledge>resources>details>view-edit>toggle-edit
+                cr>knowledge>resources>details>view-edit>open-resource
+                cr>knowledge>resources>details>view-edit>manage-tags
+                cr>knowledge>resources>details>view-edit>manage-relations
+
+            cr>knowledge>resources>annotations
+            cr>knowledge>resources>chunks
+
+            cr>knowledge>resources>reprocess
+            cr>knowledge>resources>download
+
+        cr>knowledge>table-view
+            cr>knowledge>table-view>add
+            cr>knowledge>table-view>search
+
+    cr>internationalization
+
+    cr>conversations
+        cr>conversations>list
+            cr>conversations>list>search
+            cr>conversations>list>sort
+        cr>conversations>chat-details
+            cr>conversations>chat-details>search
+            cr>conversations>chat-details>enable-disable-debug
+            cr>conversations>chat-details>reply
+            cr>conversations>chat-details>show-info
+
+    cr>chats
+
+    cr>documentation
+
+    cr>ui-toolkit
+    
+    core
+        core>documentation
+        core>management
+            core>management>apikeys
+            core>management>authentication
+            core>management>channels
+            core>management>connectors
+            core>management>diagnostics
+            core>management>extensions
+            core>management>extensions-registry
+            core>management>groups
+            core>management>mcpservers
+            core>management>mcpserversconfigurations
+            core>management>mcpservertools
+            core>management>models
+            core>management>providers
+            core>management>proxies
+            core>management>room-configurations
+            core>management>settings
+            core>management>sources
+            core>management>supported
+            core>management>touchpoints
+            core>management>touchpointtools
+            core>management>users
+
+    ops
+        ops>seeding
+
+    tests
+        tests>e2e
+        tests>e2e>knowledge
+
+    rational-chat
+
+    rational-knowledge-widget
+
+    rational-playground
+
+    rational-seeds

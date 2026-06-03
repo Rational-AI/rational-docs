@@ -1,0 +1,64 @@
+---
+sidebar_position: 6
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Connectors
+
+A connector stores the credentials and configuration needed to talk to an external provider—such as Google, AWS, OpenAI, Anthropic, OpenRouter, Brave Search or Azure. Once a connector is set up, it can be reused across the platform: by [AI models](ai-model-registry.mdx) (to reach a provider's API), by [sources](sources.mdx) (to read your data) and by [tools](extensions.mdx). Use this section to add connectors and review where each one is used.
+
+<div className="featureBox">
+  <div className="featureBox__title">Who can use this feature</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Available on <a href="/pricing">any plan</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Anyone with <span className="featureBox__pill">can edit</span>
+      access can add and manage connectors
+    </div>
+  </div>
+
+</div>
+
+## Browse connectors
+
+<img
+  src={require('/img/screens/connectors.png').default}
+  style={{
+    border: '1px solid #e4e4e7',
+    borderRadius: '10px',
+  }}
+  alt="The Connectors page showing the connector list and the details panel with provider, services and usage breakdown"
+/>
+
+The Connectors page lists every connector as a card on the left, each showing its name and provider icon. Use the **search** box to filter by name, and click a card to open its details on the right.
+
+The details panel shows the connector's description, its **Provider**, and how many times it is used. A usage breakdown reports how many **AI Models**, **Sources** and **Tools** rely on the connector, so you can see what would be affected before changing or removing it.
+
+## Add a connector
+
+Click **Add** in the top-right corner to open the connector catalogue. Browse the available providers (Google, AWS, OpenAI, Anthropic, OpenRouter, Brave Search, Google Service Account Key, Azure and more), select one and click **Add** to configure it. Provide the required credentials—such as an API key or service account details—to complete setup.
+
+:::caution
+Connectors hold sensitive credentials. Removing or editing a connector affects every AI model, source and tool that depends on it. Check the usage breakdown in the details panel before making changes.
+:::
+
+## Manage a connector
+
+Open the options menu (the three vertical dots) in the details panel to:
+
+| Action | Description |
+|--------|-------------|
+| **Edit configuration** | Update the connector's stored credentials and settings. |
+| **Delete** | Remove the connector from the platform. |

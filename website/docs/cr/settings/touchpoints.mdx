@@ -1,0 +1,71 @@
+---
+sidebar_position: 8
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Touchpoints
+
+A touchpoint is a configured entry point through which users interact with an AI agent—for example, a chat assistant for a specific product or customer-care flow. Each touchpoint binds together a channel, a model and system prompt, the knowledge sources it can draw on and the tools it can call. Use this section to create touchpoints and tailor each one to a specific use case.
+
+<div className="featureBox">
+  <div className="featureBox__title">Who can use this feature</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Available on <a href="/pricing">any plan</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Anyone with <span className="featureBox__pill">can edit</span>
+      access can create and manage touchpoints
+    </div>
+  </div>
+
+</div>
+
+## Browse touchpoints
+
+The Touchpoints page lists every touchpoint as a card on the left. Each card shows its name, a toggle to enable or disable it, the channel it uses (for example, *Rational AI Chat*) and the number of tools it has enabled. Use the **search** box to filter by name, and click a card to open its details on the right.
+
+## Create a touchpoint
+
+Click **New** in the top-right corner. A new touchpoint is created and opened for editing so you can configure it through the tabs described below. Remember to **Save** your changes.
+
+## Configure a touchpoint
+
+The details panel is organised into four tabs:
+
+### Settings
+
+* **Touchpoint ID** – The unique identifier of the touchpoint (use the copy icon to copy it, for example when integrating an external client).
+* **Channel** – The channel the touchpoint is exposed through.
+
+### Models
+
+* **System prompt** – The instructions that define the agent's role and behaviour for this touchpoint.
+* **Default model** – The model that powers the touchpoint's responses, overriding the platform default from [Conversations settings](conversations.mdx).
+
+### Sources
+
+Choose which [knowledge sources](sources.mdx) the touchpoint can draw on when answering, so the agent only uses the relevant data for its use case.
+
+### Tools
+
+Enable the [tools](extensions.mdx) the agent is allowed to call during a conversation.
+
+## Manage a touchpoint
+
+Use the toggle on each card to enable or disable a touchpoint, or open the options menu (the three vertical dots) in the details panel to:
+
+| Action | Description |
+|--------|-------------|
+| **Disable** | Take the touchpoint out of service without deleting it. |
+| **Delete** | Permanently remove the touchpoint. |

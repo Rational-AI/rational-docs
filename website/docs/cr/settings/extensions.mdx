@@ -1,0 +1,65 @@
+---
+sidebar_position: 4
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Extensions
+
+Extensions are [Model Context Protocol (MCP)](https://modelcontextprotocol.io) servers that expand what your models can do in Rational AI. Each extension packages a set of capabilities—tools, prompts and resources—that agents can call during a conversation, such as fetching web pages, querying a database or searching the web. Use this section to install extensions from the registry, enable or disable them, configure their settings and review the tools they expose.
+
+<div className="featureBox">
+  <div className="featureBox__title">Who can use this feature</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Available on <a href="/pricing">any plan</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Anyone with <span className="featureBox__pill">can edit</span>
+      access can install and manage extensions
+    </div>
+  </div>
+
+</div>
+
+## Browse installed extensions
+
+The Extensions page lists every installed extension as a card on the left. Each card shows the extension's name and icon, a toggle to enable or disable it, and counters summarising the capabilities it provides.
+
+* **Search** – Use the search box above the list to filter extensions by name.
+* **Select** – Click a card to open its details in the panel on the right.
+
+Selecting an extension shows its description, the number of **tools provided**, and a card for each tool with the tool's name and a short description of what it does.
+
+## Add an extension
+
+Click **Add** in the top-right corner to open the extension registry. From here you can:
+
+* **Search** the registry for an extension by name.
+* **Select** an extension to install (for example, Telegram, Fetch, GitHub, Postgres, Brave Search or Time).
+* Click **Configure extension** to set it up and complete the installation.
+
+Some extensions require configuration values—such as API keys, connection strings or endpoints—before they can be used. Provide these during the configuration step.
+
+## Enable or disable an extension
+
+Use the toggle on each extension card to turn it on or off. A disabled extension stays installed and keeps its configuration, but its tools are not available to agents until you re-enable it. This is useful for temporarily taking an extension out of service without uninstalling it.
+
+## Manage an extension
+
+With an extension selected, open the options menu (the three vertical dots) in the details panel to access:
+
+| Action | Description |
+|--------|-------------|
+| **Settings** | View and edit the extension's configuration (for example, credentials or connection details). |
+| **Update** | Install a newer version of the extension when one is available. The option is disabled when the extension is already up to date. |
+| **Uninstall** | Remove the extension and its configuration from the platform. |

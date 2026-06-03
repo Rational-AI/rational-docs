@@ -1,0 +1,66 @@
+---
+sidebar_position: 7
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Conversations
+
+The Conversations settings control how Rational AI enriches and processes end-user conversations behind the scenes. From here you choose the default conversational model and configure three automatic analyses—**title generation**, **topic detection** and **sentiment analysis**—each of which can be enabled independently and assigned its own model and prompt. These settings apply across the platform unless a [touchpoint](touchpoints.mdx) overrides them.
+
+<div className="featureBox">
+  <div className="featureBox__title">Who can use this feature</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Available on <a href="/pricing">any plan</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Anyone with <span className="featureBox__pill">can edit</span>
+      access can change these settings
+    </div>
+  </div>
+
+</div>
+
+## Conversational model settings
+
+Set the **Default conversational model**—the model used for all conversations unless a different one is selected in the touchpoint settings. This is the model that generates the replies users see.
+
+## Title generation model
+
+When enabled, Rational AI automatically generates a short title for each conversation so it's easy to recognise later.
+
+* **Enable title generation** – Turn the feature on or off.
+* **Title generation frequency** – How many messages to receive before a title is generated (for example, *every 1 message*).
+* **Messages to analyze** – The number of most recent messages used to generate the title.
+* **Title generation model** – The model used to produce the title.
+* **Title generation prompt** – The instruction sent to the model, returning the title as a JSON object.
+
+## Topics detection settings
+
+When enabled, each conversation is classified into one of a defined set of topics—useful for reporting and routing.
+
+* **Enable topic detection** – Turn the feature on or off.
+* **Topics detection model** – The model used to classify the conversation.
+* **Detection frequency** – How many messages to receive before topics are detected.
+* **Messages to analyze** – The number of most recent messages used for classification.
+* **Topic list** – The set of allowed topics (for example, *Order Status*, *Billing Request*, *Tech Support*). Remove a topic with its **×**, or add your own with **+ New**.
+* **Topic detection template prompt** – The instruction sent to the model. The model must choose exactly one label from the topic list and return it as a JSON object.
+
+## Sentiment analysis settings
+
+When enabled, Rational AI estimates the sentiment of user messages.
+
+* **Enable sentiment analysis** – Turn the feature on or off.
+* **Sentiment analysis model** – The model used to calculate the sentiment of users' messages.
+
+Use **Save** to apply your changes, or **Undo** to discard them.

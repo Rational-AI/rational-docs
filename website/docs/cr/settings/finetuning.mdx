@@ -1,0 +1,59 @@
+---
+sidebar_position: 2
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Fine-Tuning
+
+Fine-tuning lets you customise an AI model with your own data so it performs better on the tasks that matter to you. You pick a base model and a [training dataset](datasets.mdx), set a few training parameters, and launch a job that produces a tailored model. Use this section to start fine-tuning jobs and track the ones you've already run.
+
+<div className="featureBox">
+  <div className="featureBox__title">Who can use this feature</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Available with <a href="/pricing">Pro Plans</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Anyone with <span className="featureBox__pill">can edit</span>
+      access can launch and manage fine-tunings
+    </div>
+  </div>
+
+</div>
+
+## Start a fine-tuning
+
+Click **New** to open the fine-tuning form. Select the base model and the training dataset, then personalise the job by entering the desired parameters:
+
+| Field | Description |
+|-------|-------------|
+| **Name** | A name to identify the fine-tuning job and its resulting model. |
+| **Description** | Optional notes about the job's purpose. |
+| **Base model** | The model to fine-tune, chosen from your [AI Model Registry](ai-model-registry.mdx). |
+| **Dataset** | The [training dataset](datasets.mdx) whose entries the model learns from. |
+| **Learning Rate** | How large an adjustment the model makes at each training step. |
+| **Batch Size** | The number of training examples processed together in one step. |
+| **Epochs** | The number of times the training run passes over the full dataset. |
+
+When you're ready, click **Launch** to start the job. The new fine-tuning then appears in the list, where you can follow its progress.
+
+:::tip
+If you're unsure about Learning Rate, Batch Size or Epochs, hover the information icon next to each field for guidance, or start from the defaults and adjust based on results.
+:::
+
+## Browse fine-tunings
+
+The Fine-Tuning list shows every job with columns for **Name**, **Base model**, **Training dataset** and **Created at**. When no jobs exist yet, the page invites you to add one.
+
+* **Search** – Use the search box to filter jobs by name.
+* **Sort** – Click the arrows next to any column header to sort the list by that column.
