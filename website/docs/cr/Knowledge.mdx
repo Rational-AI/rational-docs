@@ -1,48 +1,69 @@
+---
+sidebar_position: 2
+sidebar_label: Knowledge
+---
+
 # Knowledge
 
-![](/img/screens/cr>knowledge.png)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-**Rational** **Knowledge** is where you store, organize, and manage the information your AI works with. Ingest documents and data sources, structure them into a searchable **knowledge base**, and explore relationships between resources so your models always have the right context.
+<img
+  src="/img/screens/cr>knowledge.png"
+  alt="Stylized illustration of a knowledge graph with interconnected nodes and edges"
+  style={{ width: '100%', maxHeight: 600, objectFit: 'contain' }}
+/> 
 
-Every knowledge base is a collection of related resources (documents, product catalogs, structured data) organized into two built-in views: an **interactive graph** and a **searchable table**. Additional views can be configured to match your team's workflow.
+## Introduction
+
+The **Knowledge** module is your central hub for storing, exploring and maintaining domain‑specific information used by Rational AI.  A knowledge collects related resources—documents, like product catalogs, graphs—and organizes them into an interactive graph and searchable table.  Use this module to ingest data, add metadata, view relationships between resources and prepare content for model ingestion.
 
 ## Navigate your knowledge sets
 
-Open the **Knowledge** section from the top navigation bar of the Control Room.  From the main screen you can:
+Use the top navigation bar of the Control Room to open the **Knowledge** section.  From here you can:
 
-- Search and browse existing knowledge bases**,** each showing its name and resource count;
-- Create a new one by selecting **New** and providing a name and description.
+* **Browse existing knowledge bases** – Each card shows the name of the knowledge set and a resource count.  Use the search bar to filter by name.
+* **Create a new knowledge base** – Select **New** and supply a name and description.  Each knowledge set can have its own categories and tags to help organize resources.
 
-Each knowledge base supports its own **categories** and **tags**, which you define to keep resources organized across your team.
+Once inside a knowledge base, the header displays the set name and provides two view modes:
 
-## Views
+* **Graph view** – An interactive network visualisation of resources and their relationships.  Nodes represent resources; edges show links.  You can pan, zoom, re‑layout the graph or filter by tags.  Use this view to understand how pieces of your data connect.
+* **Table view** – A tabular list of resources with columns for `Name`, `Tags`, `Category` and `Related`.  Use the search box or tag filters to quickly locate specific items.  Pagination controls appear at the bottom when there are many entries.
 
-Once inside a knowledge base, two views are available. You can switch between views using the toggle in the header.
+Switch between views using the graph and table icons in the header.
 
-The **Graph view** shows an interactive network of resources and their relationships. You can pan, zoom, re‑layout the graph or filter by tags.  Use this view to understand how pieces of your data connect.
+## Work with resources
 
-The **Table view** shows a paginated list of resources with columns for name, tags, category, and related resource count. A search box and tag filters help you locate items quickly. &#x20;
+In table view, each row represents a resource.  To see more about an item:
 
-From either view, expand any resource to open its detail panel. There you can view and edit metadata, review **annotations**, and inspect or adjust the **chunks** generated during ingestion (the text segments the model will actually read). You can also download the original file or delete the resource from here.
+1. **Open the details drawer** by clicking the row, the “open” icon, or selecting **See details** from the options menu (three vertical dots).  The drawer contains:
+   * **Details tab** – Description, category, tags, original source, last sync time, hash digest and counts of incoming/outgoing relationships.  Use the edit icon to update metadata or the external‑link icon to view the original source.
+   * **Annotations tab** – A place to review or add annotations.  Annotations help enrich resources with user‑defined metadata such as named entities, sentiment or custom notes.
+   * **Chunks tab** – This lists the chunks created during ingestion.  A chunk is a segment of the resource’s text used by the model.  Each card shows the chunk ID, token count and a preview.  Expand a card to see its full text, copy it to the clipboard or delete it.  Use the plus icon to create additional chunks when needed.
 
-## Adding resources
+2. **Download or delete** – Use the options menu to download the original resource file.  Deletion is available from within the drawer or the menu depending on your permissions.
 
-Resources can be added to a knowledge base in two ways.
+3. **Navigate relationships** – The `Related` column shows how many other resources link to this one.  Clicking the number opens a contextual view of related resources, making it easy to traverse the graph.
 
-**Manually**, from the **Files** tab. Open the Files tab inside your knowledge base, click **Actions** and select **Add file**. Drop your files into the upload area, or use **Add a folder** / **Add a file** to browse your computer, then click **Upload**. In the **Review files** dialog, select a processing workflow for each file or skip processing entirely. Files are added as resources by default. Click **Confirm** to complete the upload.
+## Add new resources
 
-**Automatically**, from connected **sources**. If you have configured data sources in the settings, resources are imported automatically as new data becomes available. See [How to integrate data](<../operational-guides/integrate data.mdx>) for a step-by-step guide on connecting external sources.
+To ingest new files into a knowledge set:
+
+1. Click **Add resources** in the header of the table view.
+2. Drag‑and‑drop files into the modal or use **Add a folder** / **Add a file** to select items from your computer.  Accepted formats include text documents (PDF, DOCX), spreadsheets (CSV, XLSX) and images.  Optionally adjust the analysis pipeline to specify chunk size, languages or other preprocessing steps.
+3. Click **Upload** to start processing.  When the upload completes, your new resources appear in the table and graph.  Tags and categories can be edited via the details drawer.
 
 ## Best practices
 
-- **Organize by concept.** Create separate knowledge bases for distinct domains (e.g. product catalogues vs. customer support documents) to keep data manageable.
-- **Use consistent naming.** Define a shared glossary for your team. Descriptive, uniform tags and categories make resources easy to find and reduce duplication.
-- **Review chunks after ingestion**.  Check the generated segments in the detail painelò. Adjust chunk size and boundaries to ensure meaningful context for the models you plan to use.
-- **Link related documents.** When two resources related (e.g., a purchase order and its invoce), connect them. Rich relationhips improve the context quality your models can draw on.
+* **Organize by concept** – Create separate knowledge sets for distinct domains (e.g. product catalogues vs. customer support documents) to keep data manageable.
+* **Use descriptive tags and categories** so resources are easy to find.  Define a shared glossary for your team and stick to consistent names.
+* **Review generated chunks** after ingestion.  Adjust chunk size and boundaries to ensure meaningful segments for the models you plan to use.
+* **Leverage search and filters** to quickly locate resources.  Use the graph to discover indirect relationships and hidden patterns in your data.
+* **Maintain relationships** – When you know that two documents relate (e.g. a purchase order and its invoice), link them.  Rich relationships improve model context.
 
-***
+---
 
 ### Related resources
 
-- [Governance](./Governance.mdx): audit and monitor how your knowledge is used within AI workflows.
-- [AI Model Registry](./settings/ai-model-registry.mdx): use your knowledge sets when deploying and testing models.
+* [Governance](./Governance.mdx) – Audit and monitor how your knowledge is used within AI workflows.
+* [AI Model Registry](./settings/ai-model-registry.mdx) – Use your knowledge sets when deploying and testing models.
