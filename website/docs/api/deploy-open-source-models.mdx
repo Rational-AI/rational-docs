@@ -1,0 +1,211 @@
+---
+sidebar_position: 1
+sidebar_label: Add open-source models via API
+---
+
+import Admonition from "@theme/Admonition";
+
+# Adding open-source models via API
+
+This guide explains how to register and deploy an open-source model (such as one from Hugging Face) in the Rational AI Control Room through the Management API. The process consists of two steps:
+
+1. **Register** the model — creates a catalog record pointing at a Hugging Face repo via `huggingFaceId`.
+2. **Deploy** the model — spins up the serving pod (consumes GPU) and exposes an in-cluster service URL.
+
+```
+POST /management/v0/models/register      ->  returns model id
+POST /management/v0/models/{id}/deploy   ->  returns deploymentId
+```
+
+You can register a model without deploying it, and deploy whenever you’re ready.
+
+The Management API (group `backend-management-v0`) is served under `https://[your-domain].rational.is/api`. You can browse it interactively in the Swagger UI at `https://[your-domain].rational.is/api/swagger/index.html`.
+
+<Admonition type="info" icon="ℹ️" title="REMEMBER">  
+Replace `[your-domain]` with your own tenant identifier throughout this guide.
+</Admonition>
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- An authenticated session or API key with admin/management rights on the Control Room.
+- The exact Hugging Face repo ID of the model you want (e.g. `google/gemma-4-12B-it`). Verify it exists on [huggingface.co](https://huggingface.co) before registering — the API stores the string as-is.
+- Available GPU capacity in the cluster if you intend to deploy immediately.
+
+<Admonition type="info" icon="ℹ️" title="AUTHENTICATION">  
+All examples below assume you replace `$TOKEN` with a valid bearer token / API key. If you’re driving this from an authenticated browser session, the session cookie is used automatically and you can drop the `Authorization` header.
+</Admonition>
+
+## Step 1 — Check what’s already registered
+
+Avoid duplicates by listing the current catalog first.
+
+```bash
+curl -s "https://[your-domain].rational.is/api/management/v0/models?page=0&size=50" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+Each entry includes `id`, `name`, `type`, `publisher`, and `huggingFaceId`. If the model already appears, skip to [Step 3 — Deploy the model](#step-3--deploy-the-model) using its existing `id`.
+
+## Step 2 — Register the model
+
+`POST /management/v0/models/register` with a `RegisterModelRequest` body.
+
+### Required fields
+
+| Field         | Type    | Notes                                                |
+|---------------|---------|------------------------------------------------------|
+| `name`        | string  | Catalog name. Convention: the HF repo ID, e.g. `google/gemma-4-12B-it`. |
+| `type`        | enum    | One of `base`, `awq`, `ggml`, `gguf`. Use `base` for full-precision HF weights; use `gguf`/`awq` for quantized variants. |
+| `isFineTuned` | boolean | `false` for a stock open-source model.               |
+
+### Optional but recommended fields
+
+| Field               | Type   | Notes                                              |
+|---------------------|--------|----------------------------------------------------|
+| `huggingFaceId`     | string | The HF repo ID. This is what makes it an open-source / HF model. |
+| `publisher`         | string | e.g. `google`.                                     |
+| `numberOfParams`    | string | Parameter count as a string, e.g. `"12000000000"`. |
+| `quant`             | string | Quantization label, if applicable.                 |
+| `size`              | string | On-disk size, if known.                            |
+| `description`       | string | Free text / model card summary.                    |
+| `card`              | uri    | Link to the HF model card.                         |
+| `defaultParameters` | object | `ModelDefaultParameters` — context length, GPU offload, RoPE settings, etc. |
+
+### Example
+
+```bash
+curl -s -X POST "https://[your-domain].rational.is/api/management/v0/models/register" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "name": "google/gemma-4-12B-it",
+    "type": "base",
+    "isFineTuned": false,
+    "publisher": "google",
+    "numberOfParams": "12000000000",
+    "description": "Gemma 4 12B instruction-tuned",
+    "card": "https://huggingface.co/google/gemma-4-12B-it",
+    "huggingFaceId": "google/gemma-4-12B-it"
+  }'
+```
+
+**Success:** `201 Created`, returns the full model record including its `id` (a UUID). Save that `id`.
+
+<Admonition type="warning" icon="⚠️" title="409 CONFLICT">  
+A model with that name already exists. List the catalog and reuse the existing `id`.
+</Admonition>
+
+## Step 3 — Deploy the model
+
+`POST /management/v0/models/{id}/deploy` with a `DeploymentParameters` body. `{id}` is the model UUID from Step 2.
+
+### Body fields
+
+| Field               | Type    | Required | Notes                                        |
+|---------------------|---------|----------|----------------------------------------------|
+| `forceDeployment`   | boolean | yes      | `true` to proceed even if a deployment exists / to force a fresh rollout. |
+| `temperature`       | float   | no       | Default sampling temperature.                |
+| `topP`              | float   | no       | Nucleus sampling.                            |
+| `topK`              | float   | no       | Top-k sampling.                              |
+| `minP`              | float   | no       | Minimum-probability cutoff.                  |
+| `repetitionPenalty` | float   | no       | Repetition penalty.                          |
+| `maxOutputTokens`   | int     | no       | Default max output tokens.                   |
+
+<Admonition type="info" icon="ℹ️" title="REMEMBER">  
+Existing deployments in this cluster also carry an `adapterScale` value (e.g. `1`). Include `"adapterScale": 1` to match the established pattern.
+</Admonition>
+
+### Example
+
+```bash
+curl -s -X POST "https://[your-domain].rational.is/api/management/v0/models/<MODEL_ID>/deploy" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "forceDeployment": true,
+    "adapterScale": 1
+  }'
+```
+
+**Success:** `201 Created`, returns the `deploymentId` as plain text, e.g. `model-google-gemma-4-12-b-it-420f1c9176bc`.
+
+## Step 4 — Verify deployment status
+
+Fetch the model record and inspect its `deployments` array:
+
+```bash
+curl -s "https://[your-domain].rational.is/api/management/v0/models/<MODEL_ID>" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+Each deployment shows:
+
+- `deploymentId` — the serving instance name.
+- `status` — provisioning lifecycle (e.g. `waitingForChat` once the pod is up and accepting traffic).
+- `gpuCount` — GPUs allocated.
+- `serviceUrl` — in-cluster endpoint, e.g. `http://<deploymentId>.rational-ai.svc.cluster.local/v1/` (OpenAI-compatible `/v1/` path).
+
+You can also poll the dedicated status endpoint:
+
+```bash
+curl -s "https://[your-domain].rational.is/api/management/v0/models/<DEPLOYMENT_ID>/deployment-status" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+<Admonition type="info" icon="ℹ️" title="REMEMBER">  
+Deployment takes a few minutes — the pod must pull the weights before it becomes ready.
+</Admonition>
+
+## Managing deployments
+
+| Action               | Endpoint                                              |
+|----------------------|------------------------------------------------------|
+| List all deployments | `GET  /management/v0/models/deployments`             |
+| Pause a deployment   | `POST /management/v0/models/{deploymentId}/pause`    |
+| Cancel a deployment  | `POST /management/v0/models/{deploymentId}/cancel`   |
+| Update model record  | `PATCH /management/v0/models/{id}`                   |
+| Delete model         | `DELETE /management/v0/models/{id}`                  |
+
+## Choosing the right `type`
+
+- **`base`** — full-precision Hugging Face weights (FP16/BF16). Highest quality, highest VRAM. Use for standard `*-it` repos.
+- **`gguf`** — GGUF-quantized (llama.cpp family). Smaller footprint, runs on less VRAM. Point `huggingFaceId` at a GGUF repo.
+- **`awq`** — AWQ-quantized. Good quality/size tradeoff for supported architectures.
+- **`ggml`** — legacy GGML format.
+
+Pick the `type` that matches the actual format of the HF repo you reference — the field tells the serving backend how to load the weights.
+
+## Troubleshooting
+
+- **`404 Cannot POST ...`** — you hit the wrong origin/path. Calls must go to `https://[your-domain].rational.is/api/...`. If scripting from a browser, make sure the active page is on the Control Room origin so relative `/api/...` fetches resolve correctly.
+- **`409 Conflict` on register** — name already taken; reuse the existing model `id`.
+- **Deployment stuck before `waitingForChat`** — the pod is still pulling weights or waiting on GPU scheduling. Check cluster GPU capacity; large models need proportionally more.
+- **Architecture mismatch** — the Control Room may record a generic `architecture` value on register. For newer/multimodal architectures, confirm the serving backend actually supports that model architecture before relying on non-text capabilities.
+
+## Quick reference — full flow
+
+```bash
+# 1. Register
+MODEL_ID=$(curl -s -X POST "https://[your-domain].rational.is/api/management/v0/models/register" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{"name":"google/gemma-4-12B-it","type":"base","isFineTuned":false,
+       "publisher":"google","huggingFaceId":"google/gemma-4-12B-it",
+       "card":"https://huggingface.co/google/gemma-4-12B-it"}' \
+  | jq -r '.id')
+
+# 2. Deploy
+curl -s -X POST "https://[your-domain].rational.is/api/management/v0/models/$MODEL_ID/deploy" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{"forceDeployment":true,"adapterScale":1}'
+
+# 3. Verify
+curl -s "https://[your-domain].rational.is/api/management/v0/models/$MODEL_ID" \
+  -H "Authorization: Bearer $TOKEN" | jq '.deployments'
+```

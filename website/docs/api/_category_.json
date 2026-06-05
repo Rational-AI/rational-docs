@@ -1,0 +1,10 @@
+{
+	"label": "API",
+	"position": 5,
+	"collapsible": true,
+	"collapsed": true,
+	"link": {
+		"type": "generated-index",
+		"description": "Learn how to drive the Rational AI Control Room programmatically through the Management API."
+	}
+}
