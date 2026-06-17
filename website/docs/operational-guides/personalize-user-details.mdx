@@ -1,0 +1,230 @@
+---
+sidebar_position: 4
+sidebar_label: Personalize the user details panel
+---
+
+# Personalize the user details panel
+
+When an operator opens a conversation in the AI Control Room, the right-hand
+details sidebar shows a **User** panel with information about the person on the
+other side of the chat. This guide explains what the panel renders by default
+and how to enrich it with your own user data — extra fields and fully custom
+widgets — so agents see the business context they need without leaving the
+conversation.
+
+import Admonition from "@theme/Admonition";
+
+<Admonition type="info" icon="📖" title="WHAT IS THE USER DETAILS PANEL?">
+The user details panel is the **User** view of a conversation's details
+sidebar. It resolves the user behind the conversation, fetches their record,
+and renders their profile next to the chat. Beyond the built-in **Basic info**,
+the panel can be extended per user with custom widgets that display data you
+attach to that user.
+</Admonition>
+
+## What the panel shows by default
+
+Open **Conversations** from the left sidebar, select a conversation, then open
+the **User** view in the details sidebar. Out of the box the panel renders a
+**Basic info** card built entirely from the real user record:
+
+- An **avatar** generated from the user's name (initials are shown when no
+  picture is available).
+- The user's **given name** and **family name**.
+- The date of the **last message** in the conversation.
+- The total number of **conversations** the user has taken part in.
+
+For anonymous conversations (a visitor with no account) the panel falls back to
+the name supplied with the conversation and shows no further data.
+
+Everything beyond Basic info is **opt-in per user**: it appears only when you
+attach data and widget definitions to that user, as described below.
+
+## How personalization works
+
+Each user record carries two fields that drive personalization:
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `context` | free-form JSON object | The **data** you want to surface — any key/value pairs (loyalty tier, orders, account number, …). |
+| `contextConfiguration.widgets` | list of widget definitions | The **widgets** that render that data inside the panel. |
+
+A *widget* is a [custom element](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
+(web component) hosted as a JavaScript bundle. Each widget definition declares:
+
+- `tagName` — the custom element tag to render, e.g. `orders-list`.
+- `url` — the URL of the script that registers that custom element.
+- `inputs` — the list of properties to feed the element. For each input
+  `{ name }`, the panel sets the element's `name` property from
+  `context[name]`. The optional `type` field is an informational hint and is
+  not enforced.
+
+When the panel opens, it loads each declared widget's script (once), creates the
+element, copies the matching values from the user's `context` onto it, and
+appends it below the Basic info card. The widget itself decides how to render
+that data.
+
+<Admonition type="note" icon="🔌" title="THE WIDGET OWNS THE RENDERING">
+Rational AI only loads your widget and hands it the data. The layout, styling,
+and behaviour of what's displayed live entirely inside your web component, so
+you are free to render tables, badges, timelines, or anything else.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- Permission to manage users (the same access required to edit a user in the
+  Control Room).
+- The **ID** of the user you want to personalize.
+- A place to host a small JavaScript bundle that the browser can fetch over
+  HTTPS (a CDN, object storage, or any static host).
+
+## Step 1 — Build a profile widget
+
+A profile widget is a standard custom element that reads its data from a
+property. The example below defines an `orders-list` element that renders an
+`orders` array attached to the user.
+
+```js
+// orders-list.js — host this file at a public HTTPS URL
+class OrdersList extends HTMLElement {
+  // The panel assigns this property from context.orders
+  set orders(value) {
+    this._orders = value ?? [];
+    this.render();
+  }
+
+  render() {
+    if (!this._orders) return;
+    this.innerHTML = `
+      <h2>Recent orders</h2>
+      <ul>
+        ${this._orders
+          .map((o) => `<li>${o.name} — <code>${o.sku}</code></li>`)
+          .join("")}
+      </ul>`;
+  }
+}
+
+customElements.define("orders-list", OrdersList);
+```
+
+Host the bundle so the browser can load it, for example
+`https://cdn.example.com/widgets/orders-list.js`.
+
+<Admonition type="tip" icon="✅" title="KEEP TAG NAMES UNIQUE">
+The `tagName` you register must be globally unique and contain a hyphen, as the
+custom-elements spec requires (`orders-list`, not `orders`). The panel skips
+loading a script if an element with that tag is already registered, so reusing
+a tag across widgets can lead to the wrong component rendering.
+</Admonition>
+
+## Step 2 — Attach data to the user's `context`
+
+Put the data your widget needs into the user's `context` bag. Keys here must
+match the `inputs` your widget declares in the next step.
+
+```json
+{
+  "context": {
+    "loyaltyTier": "Gold",
+    "orders": [
+      { "name": "Paracetamolo", "sku": "FA-4294953" },
+      { "name": "Ibuprofene", "sku": "FA-1485914" }
+    ]
+  }
+}
+```
+
+`context` is **merged**, not replaced: the keys you send are added or updated,
+and any keys already stored on the user are preserved.
+
+## Step 3 — Register the widget on the user
+
+Declare the widget in `contextConfiguration.widgets`, mapping each `context`
+key your widget needs to an input:
+
+```json
+{
+  "contextConfiguration": {
+    "widgets": [
+      {
+        "tagName": "orders-list",
+        "url": "https://cdn.example.com/widgets/orders-list.js",
+        "inputs": [{ "name": "orders", "type": "array" }]
+      }
+    ]
+  }
+}
+```
+
+With this configuration the panel will set `ordersListElement.orders =
+context.orders` before rendering — exactly the property the widget in Step 1
+reads.
+
+<Admonition type="caution" icon="⚠️" title="CONFIGURATION IS REPLACED">
+Unlike `context`, `contextConfiguration` is **replaced** on every update. Always
+send the **complete** list of widgets you want the user to have, otherwise the
+ones you omit are removed.
+</Admonition>
+
+## Putting it together
+
+Persist both the data and the widget configuration in a single call to the
+management API:
+
+```bash
+curl -X PUT "$BASE_URL/api/management/v0/users/$USER_ID" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "givenName": "Jane",
+    "familyName": "Doe",
+    "context": {
+      "loyaltyTier": "Gold",
+      "orders": [
+        { "name": "Paracetamolo", "sku": "FA-4294953" },
+        { "name": "Ibuprofene", "sku": "FA-1485914" }
+      ]
+    },
+    "contextConfiguration": {
+      "widgets": [
+        {
+          "tagName": "orders-list",
+          "url": "https://cdn.example.com/widgets/orders-list.js",
+          "inputs": [{ "name": "orders", "type": "array" }]
+        }
+      ]
+    }
+  }'
+```
+
+`givenName` and `familyName` are required; `context` and `contextConfiguration`
+are optional. The next time an operator opens a conversation with this user, the
+**orders-list** widget appears below Basic info, populated with the user's
+orders.
+
+## How the panel loads your data
+
+Under the hood, when the **User** view renders it:
+
+1. Resolves the conversation's user and fetches the full user record (including
+   `context` and `contextConfiguration`).
+2. Renders the built-in **Basic info** card from the record.
+3. For each widget in `contextConfiguration.widgets`:
+   - Loads the widget's `url` script if its `tagName` is not already a
+     registered custom element.
+   - Creates the `tagName` element.
+   - For each declared input, copies `context[input.name]` onto the matching
+     element property.
+   - Appends the element to the panel.
+
+## Troubleshooting
+
+| Symptom | Likely cause |
+|---------|--------------|
+| Only Basic info shows | The user has no `contextConfiguration.widgets`, or the conversation is anonymous (no linked user). |
+| The widget renders but is empty | The `inputs` names don't match the keys in `context`, or those keys weren't sent. |
+| The widget never appears | The `url` failed to load, or the script doesn't register the declared `tagName`. Check the browser console for load errors. |
+| Your changes disappeared on the next update | `contextConfiguration` was sent without the full widget list — it is replaced, not merged. |
