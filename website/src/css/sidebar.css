@@ -75,6 +75,11 @@ aside {
 			font-weight: 400;
 			line-height: 1.3;
 
+			/* Single line with ellipsis instead of wrapping */
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
 			&:hover {
 				background-color: var(--ifm-color-emphasis-100);
 				color: var(--ifm-color-emphasis-800);
@@ -97,11 +102,35 @@ aside {
 		.menu__link--sublist {
 			color: var(--ifm-color-emphasis-800);
 			font-weight: 500;
+			/* Allow the label to shrink so its span can truncate before the caret */
+			min-width: 0;
 
 			/* Active parent folder gets the brand teal */
 			&.menu__link--active {
 				color: var(--sidebar-active-color);
 				background: transparent;
+			}
+
+			> span {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+
+		/* MARK: Collapsible category row - keep caret centred with the label */
+		.menu__list-item-collapsible {
+			align-items: center;
+		}
+
+		/* MARK: Expand/collapse chevron - scale down to match the design (20px)
+		   and stop it overflowing its 20px box (Infima defaults to 32px) */
+		.menu__caret {
+			padding-left: 0;
+			padding-right: 0.25rem;
+
+			&::before {
+				background-size: 1.25rem 1.25rem;
 			}
 		}
 
