@@ -11,6 +11,13 @@ aside {
 		padding: 0.5rem 0.75rem 1.5rem;
 		font-size: 0.9rem;
 
+		/* No gap between list items (Infima adds 0.25rem); each item's own 4px
+		   padding is the only vertical spacing. The 4px label-to-first-item gap
+		   still comes from the group list's own margin-top. */
+		.menu__list-item {
+			margin-top: 0;
+		}
+
 		/* MARK: Static section label (swizzled DocSidebarItem/Category) */
 		.sidebar__category-label {
 			padding: calc(2 * var(--ifm-menu-link-padding-vertical))
@@ -54,8 +61,10 @@ aside {
 				font-size: 0.78rem;
 				letter-spacing: 0.04em;
 				color: var(--ifm-heading-color);
-				padding-top: var(--ifm-menu-link-padding-vertical);
-				padding-bottom: var(--ifm-menu-link-padding-vertical);
+				/* No internal padding; the 4px gap to the first item comes from
+				   the group list's margin-top */
+				padding: 0;
+				margin: 0;
 
 				/* Headers are wayfinding, not interactive-looking */
 				&:hover {
