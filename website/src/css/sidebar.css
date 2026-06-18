@@ -10,7 +10,7 @@ aside {
 
 	/* MARK: Sidebar entries container */
 	.menu {
-		padding: 0.5rem 0.75rem 1.5rem;
+		padding: 1.5rem;
 		font-size: 0.9rem;
 
 		/* 2px between list items (overrides Infima's 0.25rem); first item in a
