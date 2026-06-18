@@ -1,12 +1,33 @@
 aside {
 	--ifm-toc-border-color: transparent;
 
+	/* Deep teal used for active text and the accent bar */
+	--sidebar-active-color: #11615c;
+	/* Rest colour for page and folder labels */
+	--sidebar-text-rest: #71717a;
+	/* Mint tint used for the active item background, derived from the brand teal */
+	--sidebar-active-bg: color-mix(
+		in srgb,
+		var(--ifm-color-primary) 12%,
+		transparent
+	);
+
 	/* MARK: Sidebar entries container */
 	.menu {
-		/* rm padding-top in order to have sticky category labels */
-		padding-top: 0;
+		padding: 1.5rem;
+		font-size: 0.9rem;
 
-		/* MARK: Category label */
+		/* 2px between list items (overrides Infima's 0.25rem); first item in a
+		   group has no top margin - its gap comes from the label's padding. */
+		.menu__list-item {
+			margin-top: 2px;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+
+		/* MARK: Static section label (swizzled DocSidebarItem/Category) */
 		.sidebar__category-label {
 			padding: calc(2 * var(--ifm-menu-link-padding-vertical))
 				var(--ifm-menu-link-padding-horizontal)
@@ -24,6 +45,155 @@ aside {
 
 			&:first-child {
 				margin-top: 0;
+			}
+		}
+
+		/* MARK: Top-level sections rendered as flat, bold headers.
+		   These are non-collapsible categories (collapsible:false), so the
+		   label is a plain link with no caret. */
+		.theme-doc-sidebar-item-category-level-1 {
+			/* 24px between groups */
+			margin-top: 24px;
+
+			&:first-child {
+				margin-top: 0;
+			}
+
+			/* Headers stay plain even when their index page is active */
+			> .menu__list-item-collapsible--active {
+				background: transparent;
+			}
+
+			> .menu__list-item-collapsible > .menu__link,
+			> .menu__link {
+				text-transform: uppercase;
+				font-weight: 700;
+				font-size: 0.78rem;
+				letter-spacing: 0.04em;
+				color: var(--ifm-heading-color);
+				padding: 6px;
+				margin: 0;
+
+				/* Headers are wayfinding, not interactive-looking */
+				&:hover {
+					background: transparent;
+				}
+
+				&.menu__link--active {
+					color: var(--ifm-heading-color);
+					background: transparent;
+				}
+			}
+		}
+
+		/* MARK: Regular items - muted by default */
+		.menu__link {
+			color: var(--sidebar-text-rest);
+			font-weight: 500;
+			line-height: 1.3;
+			overflow: hidden;
+
+			/* The label text lives in an inner <span>; truncate it there as a
+			   block so the ellipsis actually renders (the link alone just clips) */
+			> span {
+				display: block;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			&:hover {
+				background-color: var(--ifm-color-emphasis-100);
+				color: var(--ifm-color-emphasis-800);
+			}
+		}
+
+		/* MARK: Active item - teal text on a mint background */
+		.menu__link--active:not(.menu__link--sublist) {
+			color: var(--sidebar-active-color);
+			background-color: var(--sidebar-active-bg);
+			font-weight: 600;
+
+			&:hover {
+				color: var(--sidebar-active-color);
+				background-color: var(--sidebar-active-bg);
+			}
+		}
+
+		/* MARK: Nested folder (e.g. Settings) - collapsible sublist */
+		.menu__link--sublist {
+			color: var(--sidebar-text-rest);
+			font-weight: 500;
+			/* Allow the label to shrink so its span can truncate before the caret */
+			min-width: 0;
+
+			/* Active parent folder gets the brand teal */
+			&.menu__link--active {
+				color: var(--sidebar-active-color);
+				background: transparent;
+			}
+		}
+
+		/* MARK: Collapsible category row - keep caret centred with the label */
+		.menu__list-item-collapsible {
+			align-items: center;
+		}
+
+		/* MARK: Expand/collapse chevron - square (1:1) container with the 20px
+		   chevron centred inside it (Infima defaults to a rectangular button
+		   and a 32px glyph) */
+		.menu__caret {
+			width: 2rem;
+			height: 2rem;
+			padding: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+
+			&::before {
+				background-size: 1.25rem 1.25rem;
+			}
+		}
+
+		/* Vertical guide line down the left of nested folder groups
+		   (e.g. the pages inside Settings) - direct section items stay flush */
+		.theme-doc-sidebar-item-category-level-2 > .menu__list {
+			margin-left: 0.85rem;
+			padding-left: 0.5rem;
+			border-left: 1px solid var(--ifm-color-emphasis-300);
+
+			/* Nested items extend left to the inner edge of the guide line and
+			   square their left corners, so the hover background sits flush
+			   against the line without rounded corners or bleeding over it */
+			.menu__link {
+				margin-left: -0.5rem;
+				padding-left: calc(var(--ifm-menu-link-padding-horizontal) + 0.5rem);
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			/* Active nested item: the pill extends 1px further onto the line so
+			   the teal accent bar cleanly covers it; bar is its square left edge */
+			.menu__link--active:not(.menu__link--sublist) {
+				position: relative;
+				margin-left: calc(-0.5rem - 1px);
+				padding-left: calc(
+					var(--ifm-menu-link-padding-horizontal) +
+					0.5rem +
+					1px
+				);
+
+				&::before {
+					content: "";
+					position: absolute;
+					left: 0;
+					top: 0;
+					bottom: 0;
+					width: 1px;
+					border-radius: 0;
+					background-color: var(--sidebar-active-color);
+				}
 			}
 		}
 	}

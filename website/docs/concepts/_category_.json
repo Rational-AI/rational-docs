@@ -1,6 +1,8 @@
 {
 	"label": "Concepts",
 	"position": 4,
+	"collapsible": false,
+	"collapsed": false,
 	"link": {
 		"type": "generated-index",
 		"description": "Start here to learn about the AI Control Room."

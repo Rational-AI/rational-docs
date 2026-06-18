@@ -126,12 +126,16 @@
 	display: block !important;
 	align-items: initial !important;
 	justify-content: initial !important;
-	margin-top: 3px;
-	margin-bottom: 3px;
+	/* List-item rhythm: 6px vertical padding, gap handled via item margins */
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 
-/* Spacing only for category list items */
+/* No extra gap around category items; group separation comes from the
+   level-1 category margin in sidebar.css */
 .theme-doc-sidebar-menu .menu__list-item.menu__list-item--category {
-	margin-top: 6px;
-	margin-bottom: 6px;
+	margin-top: 0;
+	margin-bottom: 0;
 }

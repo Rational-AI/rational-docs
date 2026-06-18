@@ -1,8 +1,8 @@
 {
 	"label": "Operational guides",
 	"position": 3,
-	"collapsible": true,
-	"collapsed": true,
+	"collapsible": false,
+	"collapsed": false,
 	"link": {
 		"slug": "/",
 		"type": "generated-index",
