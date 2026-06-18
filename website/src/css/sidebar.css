@@ -112,14 +112,18 @@ aside {
 			padding-left: 0.5rem;
 			border-left: 1px solid var(--ifm-color-emphasis-300);
 
-			/* Active nested item: the mint pill extends left onto the guide line
-			   so the teal accent bar is its flush left edge - no gap between them */
-			.menu__link--active:not(.menu__link--sublist) {
-				position: relative;
+			/* Every nested item extends left onto the guide line so the hover
+			   and active backgrounds sit flush against the left boundary */
+			.menu__link {
 				margin-left: calc(-0.5rem - 1px);
 				padding-left: calc(
 					var(--ifm-menu-link-padding-horizontal) + 0.5rem + 1px
 				);
+			}
+
+			/* Active nested item: square left corners + flush teal accent bar */
+			.menu__link--active:not(.menu__link--sublist) {
+				position: relative;
 				border-top-left-radius: 0;
 				border-bottom-left-radius: 0;
 
@@ -130,7 +134,7 @@ aside {
 					top: 0;
 					bottom: 0;
 					width: 3px;
-					border-radius: 3px 0 0 3px;
+					border-radius: 0;
 					background-color: var(--sidebar-active-color);
 				}
 			}
