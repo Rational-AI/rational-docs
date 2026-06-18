@@ -1,12 +1,16 @@
 aside {
 	--ifm-toc-border-color: transparent;
 
+	/* Mint tint used for the active item background, derived from the brand teal */
+	--sidebar-active-bg: color-mix(in srgb, var(--ifm-color-primary) 12%, transparent);
+
 	/* MARK: Sidebar entries container */
 	.menu {
 		/* rm padding-top in order to have sticky category labels */
 		padding-top: 0;
+		font-size: 0.9rem;
 
-		/* MARK: Category label */
+		/* MARK: Static section label (swizzled DocSidebarItem/Category) */
 		.sidebar__category-label {
 			padding: calc(2 * var(--ifm-menu-link-padding-vertical))
 				var(--ifm-menu-link-padding-horizontal)
@@ -24,6 +28,92 @@ aside {
 
 			&:first-child {
 				margin-top: 0;
+			}
+		}
+
+		/* MARK: Top-level sections rendered as flat, bold headers.
+		   These are non-collapsible categories (collapsible:false), so the
+		   label is a plain link with no caret. */
+		.theme-doc-sidebar-item-category-level-1 {
+			margin-top: 1.5rem;
+
+			&:first-child {
+				margin-top: 0;
+			}
+
+			/* Headers stay plain even when their index page is active */
+			> .menu__list-item-collapsible--active {
+				background: transparent;
+			}
+
+			> .menu__list-item-collapsible > .menu__link,
+			> .menu__link {
+				text-transform: uppercase;
+				font-weight: 700;
+				font-size: 0.78rem;
+				letter-spacing: 0.04em;
+				color: var(--ifm-heading-color);
+				padding-top: var(--ifm-menu-link-padding-vertical);
+				padding-bottom: var(--ifm-menu-link-padding-vertical);
+
+				/* Headers are wayfinding, not interactive-looking */
+				&:hover {
+					background: transparent;
+				}
+
+				&.menu__link--active {
+					color: var(--ifm-heading-color);
+					background: transparent;
+				}
+			}
+		}
+
+		/* MARK: Regular items - muted by default */
+		.menu__link {
+			color: var(--ifm-color-emphasis-700);
+			font-weight: 400;
+			line-height: 1.3;
+
+			&:hover {
+				background-color: var(--ifm-color-emphasis-100);
+				color: var(--ifm-color-emphasis-800);
+			}
+		}
+
+		/* MARK: Active item - teal text on a mint background */
+		.menu__link--active:not(.menu__link--sublist) {
+			color: var(--ifm-color-primary-dark);
+			background-color: var(--sidebar-active-bg);
+			font-weight: 600;
+
+			&:hover {
+				color: var(--ifm-color-primary-dark);
+				background-color: var(--sidebar-active-bg);
+			}
+		}
+
+		/* MARK: Nested folder (e.g. Settings) - collapsible sublist */
+		.menu__link--sublist {
+			color: var(--ifm-color-emphasis-800);
+			font-weight: 500;
+
+			/* Active parent folder gets the brand teal */
+			&.menu__link--active {
+				color: var(--ifm-color-primary-dark);
+				background: transparent;
+			}
+		}
+
+		/* Vertical guide line down the left of nested folder groups
+		   (e.g. the pages inside Settings) - direct section items stay flush */
+		.theme-doc-sidebar-item-category-level-2 > .menu__list {
+			margin-left: 0.85rem;
+			padding-left: 0.5rem;
+			border-left: 1px solid var(--ifm-color-emphasis-300);
+
+			/* Active nested item gets a teal accent bar along the guide line */
+			.menu__link--active:not(.menu__link--sublist) {
+				box-shadow: inset 2px 0 0 var(--ifm-color-primary);
 			}
 		}
 	}

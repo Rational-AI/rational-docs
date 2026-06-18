@@ -1,6 +1,8 @@
 {
 	"label": "Settings",
 	"position": 5,
+	"collapsible": true,
+	"collapsed": true,
 	"link": {
 		"type": "generated-index",
 		"description": "This sections documents the settings available in the AI Control Room."
