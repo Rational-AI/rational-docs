@@ -112,20 +112,26 @@ aside {
 			padding-left: 0.5rem;
 			border-left: 1px solid var(--ifm-color-emphasis-300);
 
-			/* Every nested item extends left onto the guide line so the hover
-			   and active backgrounds sit flush against the left boundary */
+			/* Nested items extend left to the inner edge of the guide line and
+			   square their left corners, so the hover background sits flush
+			   against the line without rounded corners or bleeding over it */
 			.menu__link {
+				margin-left: -0.5rem;
+				padding-left: calc(
+					var(--ifm-menu-link-padding-horizontal) + 0.5rem
+				);
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			/* Active nested item: the pill extends 1px further onto the line so
+			   the teal accent bar cleanly covers it; bar is its square left edge */
+			.menu__link--active:not(.menu__link--sublist) {
+				position: relative;
 				margin-left: calc(-0.5rem - 1px);
 				padding-left: calc(
 					var(--ifm-menu-link-padding-horizontal) + 0.5rem + 1px
 				);
-			}
-
-			/* Active nested item: square left corners + flush teal accent bar */
-			.menu__link--active:not(.menu__link--sublist) {
-				position: relative;
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
 
 				&::before {
 					content: "";
