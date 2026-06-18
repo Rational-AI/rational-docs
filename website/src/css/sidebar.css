@@ -1,13 +1,14 @@
 aside {
 	--ifm-toc-border-color: transparent;
 
+	/* Deep teal used for active text and the accent bar */
+	--sidebar-active-color: #11615c;
 	/* Mint tint used for the active item background, derived from the brand teal */
 	--sidebar-active-bg: color-mix(in srgb, var(--ifm-color-primary) 12%, transparent);
 
 	/* MARK: Sidebar entries container */
 	.menu {
-		/* rm padding-top in order to have sticky category labels */
-		padding-top: 0;
+		padding: 0.5rem 0.75rem 1.5rem;
 		font-size: 0.9rem;
 
 		/* MARK: Static section label (swizzled DocSidebarItem/Category) */
@@ -82,12 +83,12 @@ aside {
 
 		/* MARK: Active item - teal text on a mint background */
 		.menu__link--active:not(.menu__link--sublist) {
-			color: var(--ifm-color-primary-dark);
+			color: var(--sidebar-active-color);
 			background-color: var(--sidebar-active-bg);
 			font-weight: 600;
 
 			&:hover {
-				color: var(--ifm-color-primary-dark);
+				color: var(--sidebar-active-color);
 				background-color: var(--sidebar-active-bg);
 			}
 		}
@@ -99,7 +100,7 @@ aside {
 
 			/* Active parent folder gets the brand teal */
 			&.menu__link--active {
-				color: var(--ifm-color-primary-dark);
+				color: var(--sidebar-active-color);
 				background: transparent;
 			}
 		}
@@ -111,20 +112,26 @@ aside {
 			padding-left: 0.5rem;
 			border-left: 1px solid var(--ifm-color-emphasis-300);
 
-			/* Active nested item: a detached, rounded teal bar sitting on the
-			   guide line, separated from the mint pill by the list padding */
+			/* Active nested item: the mint pill extends left onto the guide line
+			   so the teal accent bar is its flush left edge - no gap between them */
 			.menu__link--active:not(.menu__link--sublist) {
 				position: relative;
+				margin-left: calc(-0.5rem - 1px);
+				padding-left: calc(
+					var(--ifm-menu-link-padding-horizontal) + 0.5rem + 1px
+				);
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
 
 				&::before {
 					content: "";
 					position: absolute;
-					left: calc(-0.5rem - 2px);
-					top: 0.3rem;
-					bottom: 0.3rem;
+					left: 0;
+					top: 0;
+					bottom: 0;
 					width: 3px;
-					border-radius: 3px;
-					background-color: var(--ifm-color-primary);
+					border-radius: 3px 0 0 3px;
+					background-color: var(--sidebar-active-color);
 				}
 			}
 		}
