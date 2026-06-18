@@ -6,7 +6,11 @@ aside {
 	/* Rest colour for page and folder labels */
 	--sidebar-text-rest: #71717a;
 	/* Mint tint used for the active item background, derived from the brand teal */
-	--sidebar-active-bg: color-mix(in srgb, var(--ifm-color-primary) 12%, transparent);
+	--sidebar-active-bg: color-mix(
+		in srgb,
+		var(--ifm-color-primary) 12%,
+		transparent
+	);
 
 	/* MARK: Sidebar entries container */
 	.menu {
@@ -164,9 +168,7 @@ aside {
 			   against the line without rounded corners or bleeding over it */
 			.menu__link {
 				margin-left: -0.5rem;
-				padding-left: calc(
-					var(--ifm-menu-link-padding-horizontal) + 0.5rem
-				);
+				padding-left: calc(var(--ifm-menu-link-padding-horizontal) + 0.5rem);
 				border-top-left-radius: 0;
 				border-bottom-left-radius: 0;
 			}
@@ -177,7 +179,9 @@ aside {
 				position: relative;
 				margin-left: calc(-0.5rem - 1px);
 				padding-left: calc(
-					var(--ifm-menu-link-padding-horizontal) + 0.5rem + 1px
+					var(--ifm-menu-link-padding-horizontal) +
+					0.5rem +
+					1px
 				);
 
 				&::before {
