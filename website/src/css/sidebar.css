@@ -74,11 +74,16 @@ aside {
 			color: var(--ifm-color-emphasis-700);
 			font-weight: 400;
 			line-height: 1.3;
-
-			/* Single line with ellipsis instead of wrapping */
-			white-space: nowrap;
 			overflow: hidden;
-			text-overflow: ellipsis;
+
+			/* The label text lives in an inner <span>; truncate it there as a
+			   block so the ellipsis actually renders (the link alone just clips) */
+			> span {
+				display: block;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 
 			&:hover {
 				background-color: var(--ifm-color-emphasis-100);
@@ -109,12 +114,6 @@ aside {
 			&.menu__link--active {
 				color: var(--sidebar-active-color);
 				background: transparent;
-			}
-
-			> span {
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
 			}
 		}
 
@@ -168,7 +167,7 @@ aside {
 					left: 0;
 					top: 0;
 					bottom: 0;
-					width: 3px;
+					width: 1px;
 					border-radius: 0;
 					background-color: var(--sidebar-active-color);
 				}
