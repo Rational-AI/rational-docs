@@ -122,11 +122,17 @@ aside {
 			align-items: center;
 		}
 
-		/* MARK: Expand/collapse chevron - scale down to match the design (20px)
-		   and stop it overflowing its 20px box (Infima defaults to 32px) */
+		/* MARK: Expand/collapse chevron - square (1:1) container with the 20px
+		   chevron centred inside it (Infima defaults to a rectangular button
+		   and a 32px glyph) */
 		.menu__caret {
-			padding-left: 0;
-			padding-right: 0.25rem;
+			width: 2rem;
+			height: 2rem;
+			padding: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
 
 			&::before {
 				background-size: 1.25rem 1.25rem;
