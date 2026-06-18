@@ -111,9 +111,21 @@ aside {
 			padding-left: 0.5rem;
 			border-left: 1px solid var(--ifm-color-emphasis-300);
 
-			/* Active nested item gets a teal accent bar along the guide line */
+			/* Active nested item: a detached, rounded teal bar sitting on the
+			   guide line, separated from the mint pill by the list padding */
 			.menu__link--active:not(.menu__link--sublist) {
-				box-shadow: inset 2px 0 0 var(--ifm-color-primary);
+				position: relative;
+
+				&::before {
+					content: "";
+					position: absolute;
+					left: calc(-0.5rem - 2px);
+					top: 0.3rem;
+					bottom: 0.3rem;
+					width: 3px;
+					border-radius: 3px;
+					background-color: var(--ifm-color-primary);
+				}
 			}
 		}
 	}
