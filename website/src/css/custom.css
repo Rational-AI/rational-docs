@@ -126,11 +126,11 @@
 	display: block !important;
 	align-items: initial !important;
 	justify-content: initial !important;
-	/* Tight list-item rhythm: 4px vertical padding, no gap between items */
+	/* List-item rhythm: 6px vertical padding, gap handled via item margins */
 	margin-top: 0;
 	margin-bottom: 0;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 
 /* No extra gap around category items; group separation comes from the

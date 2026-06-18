@@ -67,7 +67,7 @@ aside {
 				font-size: 0.78rem;
 				letter-spacing: 0.04em;
 				color: var(--ifm-heading-color);
-				padding: 4px;
+				padding: 6px;
 				margin: 0;
 
 				/* Headers are wayfinding, not interactive-looking */
@@ -85,7 +85,7 @@ aside {
 		/* MARK: Regular items - muted by default */
 		.menu__link {
 			color: var(--sidebar-text-rest);
-			font-weight: 400;
+			font-weight: 500;
 			line-height: 1.3;
 			overflow: hidden;
 
