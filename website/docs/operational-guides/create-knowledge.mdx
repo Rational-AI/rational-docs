@@ -1,0 +1,73 @@
+---
+sidebar_position: 4
+sidebar_label: Create a knowledge
+---
+import Admonition from '@theme/Admonition';
+
+# Create a Knowledge
+ 
+A Knowledge is the store of resources your AI searches when answering questions. This guide takes you from an empty Knowledge to a configured one you can chat with.
+ 
+<Admonition type="info" icon="📖" title="WHAT IS A KNOWLEDGE?">
+A Knowledge holds your resources (documents, FAQs, manuals) and the rules for processing them. It is what Rational AI's RAG system searches to ground its answers in your own data.
+</Admonition>
+## Prerequisites
+ 
+Before you start, make sure you have:
+ 
+- **Administrative access:** an account with Knowledge management privileges.
+- **A list of your data sources:** the documents, FAQs, or manuals that will feed the Knowledge (see **Settings** → **Sources**).
+- **The required extensions installed:**
+  - **Time Server:** needed for time-based searches (filtering by date or temporal relevance).
+  - **Rational Knowledge - RAG Query Server:** enables advanced queries and the RAG model on the Knowledge.
+- **AI models configured:** at least one **Text Generation** model and one **Embedding** model, active in the **AI Model Registry** (see **Settings** → **AI Model Registry**).
+## Add a Knowledge
+ 
+1. Go to **Settings** → **Knowledge** and select **+ New**.
+2. Enter a clear **name** (for example `Data Marketing 2026 KB`).
+3. Add a **description** of the content and purpose. This helps your team maintain it later.
+
+{/* Immagine knowledge list with new button */}
+
+## Configure AI Search
+ 
+The **AI Search** tab controls how resources are prepared for retrieval. Configure these in order:
+ 
+1. Turn on **Allow AI search**. This enables the RAG process for the Knowledge.
+2. Select an **Embedding model**. This model converts text into vectors so the system can measure how similar a resource is to a query.
+3. Choose a **Chunking type**. Chunking splits each resource into smaller pieces before embedding. **Semantic Chunker** is a good default.
+4. Select **Save**.
+<Admonition type="note" icon="📝" title="EMBEDDING WORKS ON CHUNKS">
+Embedding runs on the small chunks of a resource, not the whole text. The resulting vectors are what RAG compares against a user's question.
+</Admonition>
+## Default Touchpoint
+ 
+Creating a Knowledge also creates a Touchpoint with default settings, including a working Graph RAG tool. Customize it in **Settings** → **Touchpoints**, where you can set the conversation model and the system prompt for this Knowledge.
+ 
+By default, the AI agent answers in a set order:
+ 
+1. **Analyze data structure:** the agent examines the schema of the data in the Knowledge.
+2. **SQL query:** if a database can answer the query, the agent runs a SQL query and uses the result.
+3. **Graph RAG:** if no database has the answer, the agent uses the Graph RAG tool to search the whole Knowledge.
+To tune how Graph RAG retrieves, see {/* TODO: link to the Configure Graph RAG guide */}.
+ 
+## Start a chat with your Knowledge
+ 
+Your Knowledge is created but still empty. You can open a chat against it now and add data as you go.
+ 
+1. Open the **Knowledge** tab from the main navigation.
+2. Select the **card** for the Knowledge you created. This opens its management view.
+3. In the left panel, select the **+** (Add) icon.
+4. A new chat panel opens, ready for queries.
+
+{/* Knowledge open with chat panel */}
+
+## Add files to the Knowledge
+ 
+A new Knowledge is empty. To fill it, connect a data source and sync its content. This is covered in its own guide: [Integrate external data](/operational-guides/integrate-data).
+
+## Result
+ 
+You have a configured Knowledge with AI Search enabled, a default Touchpoint, and an open chat. Once you add files, the AI can answer using your own data.
+
+{/* Related with link to Configure graph rag guide, sources in control room, rag concept page */}

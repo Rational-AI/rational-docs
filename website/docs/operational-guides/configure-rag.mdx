@@ -1,0 +1,142 @@
+---
+sidebar_position: 5
+sidebar_label: Configure Graph RAG
+---
+
+import Admonition from '@theme/Admonition';
+ 
+# Configure Graph RAG
+ 
+Graph RAG is a retrieval tool you add to a Touchpoint. It searches your Knowledge for relevant resources, then follows the relationships between them to find more. This guide takes you from a new Knowledge to a working, tuned Graph RAG tool.
+ 
+<Admonition type="info" icon="📖" title="WHAT IS GRAPH RAG?">
+A basic (naive) RAG search finds resources that match the meaning of a query. Graph RAG does that first, then traverses the knowledge graph to pull in related resources the meaning-only search would miss.
+</Admonition>
+
+## Prerequisites
+ 
+Before you start, make sure you have:
+ 
+- Access to the AI Control Room **Settings** area.
+- An embedding model available in the **AI Model Registry**.
+- Content (documents or other resources) ready to add to a Knowledge.
+## How the setup works
+ 
+Graph RAG comes together in three parts:
+ 
+1. **Create a Knowledge:** the set of resources to search, plus the rules for how resources are processed.
+2. **Configure its Touchpoint:** the model and instructions for answering questions.
+3. **Tune the Graph RAG tool:** how broad and how strict the retrieval is.
+You do the first two once. You return to the third whenever you want to adjust quality.
+ 
+## Create a Knowledge
+ 
+A Knowledge holds your resources and defines how they are processed when added. Creating one is the first step, because Graph RAG searches a Knowledge.
+ 
+1. Go to **Settings** → **Knowledge** and select **+ New**.
+2. Give the Knowledge a name and an optional description.
+3. Open the **AI Search** tab to set up processing.
+
+{/* Manca immagine Knowledge, tab AI Search, allinea design a app */}
+
+### Set up AI Search
+ 
+The **AI Search** tab controls how resources are prepared for retrieval. Configure these in order:
+ 
+1. Turn on **Allow AI search**. This enables the RAG process for the Knowledge.
+2. Select an **Embedding model**. This model converts text into vectors so the system can measure how similar a resource is to a query.
+3. Choose a **Chunking type**. Chunking splits each resource into smaller pieces before embedding. See the chunking reference below.
+<Admonition type="note" icon="📝" title="PROCESSING APPLIES TO TEXT">
+Chunking, embedding, and keyword extraction currently run on textual resources only.
+</Admonition>
+
+### Set up keyword extraction (optional)
+ 
+Keyword extraction tags each chunk with its most representative terms. Graph RAG uses these terms as an extra signal when ranking results.
+ 
+1. Turn on **Allow Keywords Extraction**.
+2. Set the **maximum number of entities per chunk**.
+3. Choose an extraction approach:
+
+| Approach | How it works | When to use |
+| :--- | :--- | :--- |
+| **Rule-based** | Counts the most frequent terms after cleaning and lemmatizing the text. | Faster, lower precision. |
+| **LLM-based** | A language model reads each chunk and picks the key terms. Uses the Touchpoint's model. | Better quality, slightly slower. |
+ 
+With the LLM-based approach you can edit the system prompt sent to the model, which helps when terms should be domain-specific.
+
+## Configure the Touchpoint
+ 
+Creating a Knowledge also creates a Touchpoint with default settings, including a working Graph RAG tool. Adjust it in **Settings** → **Touchpoints**.
+ 
+ {/* The Touchpoint editor open on the Models tab](path) * */}
+
+- **Conversational Model:** the model that writes the answers. Choose from the available models.
+- **System prompt:** the instructions for that model. You can edit the default.
+By default, the model answers in a set order: it checks the structure of the data, runs a SQL query if the answer is in a database, and falls back to the Graph RAG tool for anything else.
+ ## Tune the Graph RAG tool
+ 
+The Graph RAG tool runs in three phases. Each phase has settings that trade breadth against precision.
+ 
+### Core settings
+ 
+- **Knowledge IDs:** the Knowledge bases this tool searches. Select one or more.
+- **Use Graph Expansion:** the master switch for following relationships. Off means a basic semantic search only.
+### Phase 1: semantic search
+ 
+The tool first finds resources that match the meaning of the query.
+ 
+| Setting | What it does | Effect |
+| :--- | :--- | :--- |
+| **Initial Search Limit** | How many results to fetch before filtering. | Higher (e.g. 200) widens the pool but adds latency. |
+| **Semantic Threshold** (0.0 to 1.0) | Minimum similarity score to keep a result. | Lower (0.3) = more results; higher (0.7) = more precise. |
+ 
+### Phase 2: graph expansion
+ 
+The tool takes the strongest Phase 1 results and follows their relationships to find related resources.
+ 
+| Setting | What it does | Effect |
+| :--- | :--- | :--- |
+| **Graph Expansion Threshold** (0.0 to 1.0) | Minimum Phase 1 score for a resource to have its relationships explored. | Keeps low-relevance results from pulling in irrelevant neighbors. |
+| **Relationship Types** | Which kinds of relationships to follow (for example "is part of", "references"). | Leave empty to follow all types. |
+| **Max Graph Results** (minimum 1) | How many related resources to retrieve per starting resource. | Controls breadth and performance. |
+ 
+### Phase 3: final ranking
+ 
+The tool combines results from both phases, scores them, and fits them into the model's context window. Phase 2 resources get a hybrid score that blends meaning and keyword overlap.
+ 
+The hybrid score is calculated as:
+ 
+```text
+combined_score = (semanticWeight * semantic_score) + (keywordWeight * keyword_overlap_score)
+```
+ 
+| Setting | What it does | Effect |
+| :--- | :--- | :--- |
+| **Semantic Weight** / **Keyword Weight** (must add to 1.0) | Balances meaning against exact-term overlap. | High Semantic Weight (0.8) favors topic; high Keyword Weight (0.8) favors matching terms. |
+| **Keyword Overlap Method** | The algorithm for scoring term overlap. | **Fuzzy** is recommended (handles partial matches and typos). Jaccard, dice, and cosine are also available. |
+| **Relevance Threshold** (0.0 to 1.0) | Final filter for Phase 2 resources. | Only resources at or above this score are kept. |
+| **Target Context Utilization** (0.5 to 0.95) | Share of the context window to fill with retrieved text. | Leave room for the prompts and the model's answer (e.g. 0.9 fills 90%). |
+ 
+## Result
+ 
+Your Touchpoint can now answer questions using Graph RAG: it finds resources by meaning, expands the search across relationships, and ranks the combined set before answering.
+ 
+## Chunking types reference
+ 
+Chunking splits a resource into smaller pieces before embedding. Choose the type when you set up AI Search.
+ 
+| Type | How it splits | Notes |
+| :--- | :--- | :--- |
+| **Semantic Chunker** | Detects shifts in meaning using embeddings. | Best retrieval quality, but slower and needs an embedding model. |
+| **Sentence Chunker** | Splits at sentence boundaries, within size limits. | Keeps sentences whole. |
+| **Token Chunker** | Splits into fixed-length token windows. | Simple, size-based. |
+| **SDPM Chunker** | Semantic chunking plus a second pass that merges related chunks. | Preserves context across gaps. |
+ 
+
+ 
+{/* ## Related TODO: link to the RAG concept page, touchpoint control room page, knowledge control room page */}
+
+ 
+
+

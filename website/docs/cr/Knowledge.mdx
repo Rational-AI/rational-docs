@@ -1,8 +1,3 @@
----
-sidebar_position: 2
-sidebar_label: Knowledge
----
-
 # Knowledge
 
 import Tabs from '@theme/Tabs';
@@ -16,54 +11,61 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-The **Knowledge** module is your central hub for storing, exploring and maintaining domain‑specific information used by Rational AI.  A knowledge collects related resources—documents, like product catalogs, graphs—and organizes them into an interactive graph and searchable table.  Use this module to ingest data, add metadata, view relationships between resources and prepare content for model ingestion.
+The **Knowledge** module is your central hub for storing, exploring and maintaining domain-specific information used by Rational AI. A knowledge set collects related resources (documents such as product catalogs and graphs) and organizes them into an interactive graph and searchable table. Use this module to ingest data, add metadata, view relationships between resources and prepare content for model ingestion.
+
 
 ## Navigate your knowledge sets
 
-Use the top navigation bar of the Control Room to open the **Knowledge** section.  From here you can:
-
-* **Browse existing knowledge bases** – Each card shows the name of the knowledge set and a resource count.  Use the search bar to filter by name.
-* **Create a new knowledge base** – Select **New** and supply a name and description.  Each knowledge set can have its own categories and tags to help organize resources.
+Use the top navigation bar of the Control Room to open the **Knowledge** section. From here you can:
+ 
+* **Browse existing knowledge bases:** each card shows the name of the knowledge set and a resource count. Use the search bar to filter by name.
+* **Create a new knowledge base:** select **New** and supply a name and description. Each knowledge set can have its own categories and tags to help organize resources.
 
 Once inside a knowledge base, the header displays the set name and provides two view modes:
-
-* **Graph view** – An interactive network visualisation of resources and their relationships.  Nodes represent resources; edges show links.  You can pan, zoom, re‑layout the graph or filter by tags.  Use this view to understand how pieces of your data connect.
-* **Table view** – A tabular list of resources with columns for `Name`, `Tags`, `Category` and `Related`.  Use the search box or tag filters to quickly locate specific items.  Pagination controls appear at the bottom when there are many entries.
-
+ 
+* **Graph view:** an interactive network visualisation of resources and their relationships. Nodes represent resources; edges show links. You can pan, zoom, re-layout the graph or filter by tags. Use this view to understand how pieces of your data connect.
+* **Table view:** a tabular list of resources with columns for `Name`, `Tags`, `Category` and `Related`. Use the search box or tag filters to quickly locate specific items. Pagination controls appear at the bottom when there are many entries.
 Switch between views using the graph and table icons in the header.
+
 
 ## Work with resources
 
-In table view, each row represents a resource.  To see more about an item:
+In table view, each row represents a resource. To see more about an item:
+ 
+1. **Open the details drawer** by clicking the row, the 'open' icon, or selecting **See details** from the options menu (three vertical dots). The drawer contains:
 
-1. **Open the details drawer** by clicking the row, the “open” icon, or selecting **See details** from the options menu (three vertical dots).  The drawer contains:
-   * **Details tab** – Description, category, tags, original source, last sync time, hash digest and counts of incoming/outgoing relationships.  Use the edit icon to update metadata or the external‑link icon to view the original source.
-   * **Annotations tab** – A place to review or add annotations.  Annotations help enrich resources with user‑defined metadata such as named entities, sentiment or custom notes.
-   * **Chunks tab** – This lists the chunks created during ingestion.  A chunk is a segment of the resource’s text used by the model.  Each card shows the chunk ID, token count and a preview.  Expand a card to see its full text, copy it to the clipboard or delete it.  Use the plus icon to create additional chunks when needed.
+   * **Details tab:** description, category, tags, original source, last sync time, hash digest and counts of incoming/outgoing relationships. Use the edit icon to update metadata or the external-link icon to view the original source.
 
-2. **Download or delete** – Use the options menu to download the original resource file.  Deletion is available from within the drawer or the menu depending on your permissions.
+   * **Annotations tab:** a place to review or add annotations. Annotations help enrich resources with user-defined metadata such as named entities, sentiment or custom notes.
 
-3. **Navigate relationships** – The `Related` column shows how many other resources link to this one.  Clicking the number opens a contextual view of related resources, making it easy to traverse the graph.
+   * **Chunks tab:** this lists the chunks created during ingestion. A chunk is a segment of the resource's text used by the model. Each card shows the chunk ID, token count and a preview. Expand a card to see its full text, copy it to the clipboard or delete it. Use the plus icon to create additional chunks when needed.
+
+2. **Download or delete:** use the options menu to download the original resource file. Deletion is available from within the drawer or the menu depending on your permissions.
+
+3. **Navigate relationships:** the `Related` column shows how many other resources link to this one. Clicking the number opens a contextual view of related resources, making it easy to traverse the graph.
+
 
 ## Add new resources
 
 To ingest new files into a knowledge set:
-
+ 
 1. Click **Add resources** in the header of the table view.
-2. Drag‑and‑drop files into the modal or use **Add a folder** / **Add a file** to select items from your computer.  Accepted formats include text documents (PDF, DOCX), spreadsheets (CSV, XLSX) and images.  Optionally adjust the analysis pipeline to specify chunk size, languages or other preprocessing steps.
-3. Click **Upload** to start processing.  When the upload completes, your new resources appear in the table and graph.  Tags and categories can be edited via the details drawer.
+
+2. Drag-and-drop files into the modal or use **Add a folder** / **Add a file** to select items from your computer. Accepted formats include text documents (PDF, DOCX), spreadsheets (CSV, XLSX) and images. Optionally adjust the analysis pipeline to specify chunk size, languages or other preprocessing steps.
+
+3. Click **Upload** to start processing. When the upload completes, your new resources appear in the table and graph. Tags and categories can be edited via the details drawer.
+
 
 ## Best practices
 
-* **Organize by concept** – Create separate knowledge sets for distinct domains (e.g. product catalogues vs. customer support documents) to keep data manageable.
-* **Use descriptive tags and categories** so resources are easy to find.  Define a shared glossary for your team and stick to consistent names.
-* **Review generated chunks** after ingestion.  Adjust chunk size and boundaries to ensure meaningful segments for the models you plan to use.
-* **Leverage search and filters** to quickly locate resources.  Use the graph to discover indirect relationships and hidden patterns in your data.
-* **Maintain relationships** – When you know that two documents relate (e.g. a purchase order and its invoice), link them.  Rich relationships improve model context.
-
+* **Organize by concept:** create separate knowledge sets for distinct domains (e.g. product catalogues vs. customer support documents) to keep data manageable.
+* **Use descriptive tags and categories** so resources are easy to find. Define a shared glossary for your team and stick to consistent names.
+* **Review generated chunks** after ingestion. Adjust chunk size and boundaries to ensure meaningful segments for the models you plan to use.
+* **Use search and filters** to quickly locate resources. Use the graph to discover indirect relationships and hidden patterns in your data.
+* **Maintain relationships:** when you know that two documents relate (e.g. a purchase order and its invoice), link them. Rich relationships improve model context.
 ---
 
 ### Related resources
 
-* [Governance](./Governance.mdx) – Audit and monitor how your knowledge is used within AI workflows.
-* [AI Model Registry](./settings/ai-model-registry.mdx) – Use your knowledge sets when deploying and testing models.
+* [Governance](./Governance.mdx): audit and monitor how your knowledge is used within AI workflows.
+* [AI Model Registry](./settings/ai-model-registry.mdx): use your knowledge sets when deploying and testing models.
