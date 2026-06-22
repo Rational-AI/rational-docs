@@ -1,0 +1,66 @@
+---
+sidebar_position: 21
+sidebar_label: Configure sources
+---
+import Admonition from '@theme/Admonition';
+
+# Configure data sources
+
+Data sources tell Rational AI where to fetch the content that feeds your Knowledge. This guide covers the source types you can configure today: extension-contributed sources such as **ArXiv Catchup**, the **HTTP** source dialog, and the configurable robots.txt behaviour of the **Fetch** extension.
+
+<Admonition type="info" icon="📖" title="WHAT IS A DATA SOURCE?">
+A data source defines where Rational AI pulls files from when it syncs a Knowledge. Some sources are built in (such as HTTP), while others are contributed by extensions: installing an extension that declares a source provider makes a new source type available, with its own configuration form.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with source and extension management privileges.
+- **A Knowledge to attach the source to** (see **Settings** → **Knowledge**).
+- **The relevant extension installed** when configuring an extension-contributed source (see **Settings** → **Extensions**).
+
+## Configure an extension-contributed source (ArXiv Catchup)
+
+Extensions can contribute their own data sources. ArXiv Catchup is the first example: it lists the PDFs to sync from a chosen arXiv category and downloads them during sync.
+
+1. Go to **Settings** → **Extensions** and install the **ArXiv Catchup** extension. A source-provider-only extension installs directly, with no MCP configuration step.
+2. Go to **Settings** → **Sources** and add a new source, choosing the **ArXiv Catchup** type. Extension sources are shown with their own icon.
+3. Select a **Group**, then an **Archive**, then a **Category**. These cascade through the static arXiv taxonomy.
+4. Choose a **window** for how far back to look for papers.
+5. Set the **max-papers limit** (default `500`) to bound how many papers each sync fetches.
+6. Optionally add a **cron** schedule to sync the source automatically.
+7. **Save** the source, then run a **Sync** to pull the PDFs into the Knowledge.
+
+<Admonition type="note" icon="📝" title="WHY THE PAPER LIMIT MATTERS">
+arXiv rate-limits bulk access. The max-papers limit (default `500`) caps how many papers each sync downloads, so leave it in place unless you have a specific reason to raise it.
+</Admonition>
+
+## Configure an HTTP source
+
+The HTTP source type fetches content from one or more web URLs.
+
+1. Go to **Settings** → **Sources** and add a new source.
+2. In the **Type** dropdown, select **HTTP**. The HTTP type now shows a globe icon alongside the other types.
+3. Enter at least one **URL**. Each URL must be a valid `http://` or `https://` address.
+4. Select **Save**.
+
+<Admonition type="note" icon="📝" title="URL VALIDATION">
+**Save** stays disabled until you provide at least one non-empty URL, and remains disabled if any URL is not a valid `http://` or `https://` address. An inline error appears under the offending field so you can correct it before saving.
+</Admonition>
+
+## Make the Fetch extension ignore robots.txt
+
+By default the **Fetch** extension respects `robots.txt` on every call, which can cause direct, user-initiated fetches (for example, an API endpoint disallowed in `robots.txt`) to be refused as if they were crawler traffic. You can make this behaviour configurable.
+
+1. Go to **Settings** → **Extensions** and open the **Fetch** extension configuration.
+2. Toggle the **Ignore robots.txt** checkbox. Boolean parameters render as an inline checkbox in the extension config UI.
+3. Save the configuration.
+
+<Admonition type="note" icon="📝" title="REINSTALL TO PICK UP THE TOGGLE">
+The extension config schema is stored at install time. An existing **Fetch** install must be reinstalled to expose the **Ignore robots.txt** toggle. When the toggle is off (the default), `robots.txt` is respected; when on, the previously-blocked fetch succeeds.
+</Admonition>
+
+## Result
+
+You have configured the data sources your Knowledge needs: an extension-contributed source such as **ArXiv Catchup** that syncs PDFs from a chosen category, validated **HTTP** sources that fetch from one or more web URLs, and a **Fetch** extension whose `robots.txt` handling matches how you intend to use it. Once a source is saved and synced, its content is available for the Knowledge to process.
