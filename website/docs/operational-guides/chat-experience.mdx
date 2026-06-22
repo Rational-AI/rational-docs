@@ -27,15 +27,15 @@ Every conversation begins by choosing who you want to talk to.
 
 1. Select **New chat**.
 2. The first time, a **touchpoint picker** opens. Choose the touchpoint you want to chat with.
-3. The chat opens with a personalized greeting instead of a blank prompt — for example *"Morning, Admin. Ready when you are."* The greeting is aware of the time of day (morning, afternoon, or evening) and uses your first name. If your name isn't available, you'll see a natural no-name variant such as *"Good morning. Where should we start?"*.
+3. The chat opens with a personalized greeting instead of a blank prompt. The greeting is generated dynamically from the time of day (morning, afternoon, or evening) and your name, so the exact wording varies from visit to visit — for example *"Hi Admin, what do you need this evening?"*, *"Good evening, Admin."*, or *"Evening, Admin. How can I assist?"*.
 
 <img
   src={require('@site/static/img/screens/chat-greeting.png').default}
   alt="A new chat opening with a personalized, time-aware greeting"
-  style={{ width: '100%', maxWidth: '640px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+  style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*A new chat greets you by name and time of day.*
+*A new chat opens with a personalized, time-aware greeting.*
 
 <Admonition type="note" icon="📝" title="THE PICKER IS SKIPPED NEXT TIME">
 Rational AI remembers the last touchpoint you chatted with. The next time you select **New chat**, the chat is created directly with that touchpoint and the picker is skipped. If that touchpoint has since been disabled or deleted, the picker reopens so you can pick a valid one.
@@ -102,11 +102,11 @@ Give a chat a clear title so you can find it later — type one yourself or let 
 
 <img
   src={require('@site/static/img/screens/chat-rename-ai.png').default}
-  alt="The Rename chat dialog with the Generate with AI button on the right"
-  style={{ width: '100%', maxWidth: '520px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+  alt="The Rename chat dialog with the spark button to regenerate the title with AI"
+  style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The Rename chat dialog, with Generate with AI to the right of the title field.*
+*The **Rename chat** dialog. The spark button to the right of the field regenerates the title with AI.*
 
 ## Take over an AI-managed conversation (agents)
 
