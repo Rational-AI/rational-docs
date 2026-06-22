@@ -1,0 +1,105 @@
+---
+sidebar_position: 9
+sidebar_label: Use the chat
+---
+import Admonition from '@theme/Admonition';
+
+# Use the chat
+
+The chat is where you talk to your Rational AI agent. This guide walks through the everyday chat experience: starting a conversation, queueing follow-ups, exploring alternative answers, attaching files, renaming chats, and (for support agents) taking over an AI-managed conversation.
+
+<Admonition type="info" icon="📖" title="WHAT IS THE CHAT?">
+The chat is the end-user conversation view. Each chat lives in a room tied to a touchpoint, keeps your message history, and lets you regenerate, edit, and branch answers. Support agents can also step into an AI-managed conversation and take manual control.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Access to the chat:** an account that can open the chat view.
+- **At least one enabled touchpoint:** the touchpoint determines which model and knowledge the chat uses.
+- **For document attachments:** files in a supported format (images, PDF, DOCX, or text/markdown/CSV/JSON).
+- **For takeover:** an operator account with access to the backoffice conversation view.
+
+## Start a new chat
+
+1. Select **New chat**.
+2. The first time, a **touchpoint picker** opens. Choose the touchpoint you want to chat with.
+3. The chat opens with a dynamic, personalized greeting in place of a static prompt — for example *"Morning, Admin. Ready when you are."* The greeting is time-of-day aware (morning, afternoon, or evening) and uses your first name. When your name is unavailable, a natural no-name variant is shown, such as *"Good morning. Where should we start?"*.
+
+<Admonition type="note" icon="📝" title="THE PICKER IS SKIPPED NEXT TIME">
+The last touchpoint you started a chat with is remembered. The next time you select **New chat**, the chat is created directly with that touchpoint and the picker is skipped. If that touchpoint has since been disabled or deleted, the picker opens again so you can pick a valid one.
+</Admonition>
+
+## Send and queue messages
+
+1. Type your message in the composer and send it.
+2. While the agent is still generating a response, you cannot fire a second message in parallel. Instead, the message is **queued** and shown as a removable chip above the input.
+3. Queued messages are sent **automatically and in order** as soon as the previous turn completes.
+4. To cancel a pending send, hover the chip and select the **x**. Hovering also shows the tooltip **"Message waiting to be sent"**.
+
+<Admonition type="note" icon="📝" title="THE QUEUE SURVIVES RELOADS">
+The queue is saved per chat in your browser, so queued messages survive a page reload or navigating between chats and resume sending once the agent is idle. Queued chips are text only — attachments apply to messages you send directly, not to queued ones.
+</Admonition>
+
+## Attach files to a message
+
+You can attach images and documents to a message so the agent can use them in its answer.
+
+1. In the composer, add one or more attachments (images, or PDF / DOCX / text / markdown / CSV / JSON documents).
+2. A preview of each attachment appears in the composer before you send.
+3. Send the message. Attachments are uploaded first, then linked to the message; the chips also appear on the sent message in the history.
+
+Images are passed to the model as vision input. For documents, the text is extracted in the background and fed to the model as reference content, so generation never has to wait on extraction.
+
+<Admonition type="note" icon="📝" title="LARGE CORPORA BELONG IN A KNOWLEDGE">
+Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the agent to search over, use a Knowledge (RAG) instead of message attachments.
+</Admonition>
+
+## Work with answers: actions and branches
+
+Each AI message has a hover-revealed **action row** with **regenerate**, **edit**, and **copy**, plus inline branch arrows **‹ ›** with a variant counter (for example **1/2**) when alternatives exist.
+
+### Generate an alternative answer
+
+1. On an AI message, select **regenerate**.
+2. A new variant is added and the counter updates (for example **2/2**). The chat auto-advances to the latest variant.
+3. Use the **‹ ›** arrows to move between variants. If you navigate back to an older variant and regenerate again, you stay on the variant you were viewing.
+
+### Edit your message to branch
+
+1. On one of your own messages, select **edit**.
+2. An inline edit card opens with a hint that **saving creates a new branch**.
+3. Adjust the text and select **Save** (or press Enter).
+4. A new branch is created and the agent answers it. Attachments on the original message are carried onto the edited branch, so they survive the edit.
+
+## Rename a chat
+
+1. Open the **Rename chat** modal for the chat.
+2. Edit the title manually, or select the **Generate with AI** spark button to the right of the title input.
+3. When you use **Generate with AI**, the icon shows a loading throbber while the title is regenerated, then the AI-generated title replaces the input text and the field is marked as AI-generated (purple background).
+4. Save the new title.
+
+## Take over an AI-managed conversation (agents)
+
+In the backoffice conversation view, an AI agent answers automatically while the room is assigned to it. The composer is disabled with the hint **"Take over the conversation to reply"**.
+
+1. Select **Take over conversation**. The room is assigned to you, the AI pauses, and the composer is enabled.
+2. The button toggles to **Release conversation** (with a sparkles icon). Reply as needed.
+3. When you are done, select **Release conversation** to hand control back to the AI.
+
+<Admonition type="note" icon="📝" title="FIRST COME, FIRST SERVED">
+Takeover is exclusive. If another operator has already taken the conversation, your takeover is blocked with a toast. Control never returns to the AI on its own — it returns only when you explicitly release the conversation.
+</Admonition>
+
+### Read the AI conversation summary
+
+1. Select **Summary** to open the conversation summary modal.
+2. The modal shows a read-only, AI-generated summary covering the main problem, key points, and resolution status. A resolution status badge (**Open / In progress / Resolved**) and the room sentiment badge are shown.
+3. Select **Copy summary** to copy it, or take over the conversation directly from the modal.
+
+Summary behaviour is governed by the **Summary generation settings** section on the Conversation Settings page, where you can toggle generation and set the model, the number of messages to consider (`0` means all), and the prompt template (with a restore-default option).
+
+## Result
+
+You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting, line up follow-up messages while answers generate, attach files, explore and branch alternative answers, rename chats with AI-generated titles, and — as a support agent — take over a conversation and review its AI-generated summary before stepping in.
