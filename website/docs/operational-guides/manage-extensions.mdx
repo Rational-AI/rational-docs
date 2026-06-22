@@ -28,14 +28,7 @@ Before you start, make sure you have:
 
 ## Read an extension card
 
-Every extension appears as a card on the **Extensions** page, and the card is your at-a-glance status check before you open anything. The **version** from the manifest sits right next to the extension name, so you can confirm which release is installed without digging into details. Each card also carries an enable toggle for turning the extension on or off.
-
-<img
-  src={require('@site/static/img/screens/extension-card-version.png').default}
-  alt="An extension card showing its version next to the name, with an enable toggle"
-  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
-/>
-*An extension card: the version reads from the manifest, and the toggle enables or disables it.*
+Every extension appears as a card on the **Extensions** page, and the card is your at-a-glance status check before you open anything. When an extension declares a version in its manifest, that **version** appears right next to the extension name, so you can confirm which release is installed without digging into details. Each card also carries an enable toggle for turning the extension on or off.
 
 ## Make an extension available
 
@@ -73,10 +66,10 @@ Open the extension's **details** page and find the **MCP servers** section. Each
 
 <img
   src={require('@site/static/img/screens/extension-mcp-tools.png').default}
-  alt="An extension detail view showing the tools it provides and the local and remote MCP servers it connects to"
-  style={{ width: '100%', maxWidth: '560px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+  alt="An extension detail view showing the tools it provides and the MCP servers it connects to"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
-*An extension's details: the tools it provides and the MCP servers it connects to, local and remote.*
+*An extension’s detail view: the **tools** it provides and the **MCP servers** it connects to (local or remote).*
 
 ### Add authentication for a remote server
 
