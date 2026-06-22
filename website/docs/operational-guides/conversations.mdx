@@ -31,11 +31,21 @@ The 2026 design gives the header and table consistent padding and a flatter, lig
 
 Each row is one conversation. Scan across the columns to size up a conversation without opening it:
 
+<img
+  src={require('@site/static/img/screens/conversations-list.png').default}
+  alt="Conversations list table"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The Conversations list: every conversation with its detected topic, sentiment and status — sortable and searchable.*
+
 - **User** — who the conversation was with.
 - **Status** — **open** (teal) or **closed** (grey).
 - **Sentiment** — the mood the AI detected in the conversation.
 - **Topics** — one chip per subject the conversation covered (see the next section).
 - **Date** — when the conversation took place, formatted `MMM d, y h:mm a`.
+
+The topics and sentiment shown here are produced by your [Configure conversation processing](/operational-guides/conversation-processing) settings.
 
 ## Work with multiple topics
 
