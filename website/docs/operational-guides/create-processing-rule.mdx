@@ -10,7 +10,7 @@ This guide explains how to create, configure, and manage processing rules in the
 import Admonition from "@theme/Admonition";
 
 <Admonition type="info" icon="📖" title="GLOSSARY">  
-What is a [`processing rule?`](#)  
+What is a **processing rule**?  
 Processing rules define how incoming data is interpreted, validated, filtered, and transformed before or during workflow execution.
 While workflows describe _how_ a process runs, processing rules define _how data is evaluated and controlled within that process_.
 </Admonition>
@@ -76,6 +76,7 @@ Being code, you can develop arbitrarily complex conditions to decide which workf
 # ///
 
 from rational_client.core import File
+from rational_client.utils import run
 
 
 def router(resource: File, options: dict):
