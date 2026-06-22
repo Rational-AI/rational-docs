@@ -6,10 +6,10 @@ import Admonition from '@theme/Admonition';
 
 # Manage channels
 
-Channels define how Rational AI produces its draft responses. This guide covers naming a channel uniquely and the fields you'll see in the channel create and edit dialog.
+A channel is the recipe Rational AI follows when it drafts a response: which provider generates the text, and how many drafts you get to choose from. This guide walks through creating a channel, the fields in the create and edit dialog, and what changes once a channel exists.
 
 <Admonition type="info" icon="📖" title="WHAT IS A CHANNEL?">
-A channel groups the settings used to generate draft responses, including its provider and the number of drafts to produce. Channels are referenced by name elsewhere in the product (for example, when configuring touchpoints), so a clear, unique name keeps them easy to tell apart.
+A channel bundles the settings used to generate draft responses, mainly its provider and the number of drafts to produce. Other parts of the product refer to channels by name (for example, when [configuring touchpoints](/operational-guides/configure-touchpoints)), so a clear, unique name keeps them easy to tell apart at a glance.
 </Admonition>
 
 ## Prerequisites
@@ -17,28 +17,38 @@ A channel groups the settings used to generate draft responses, including its pr
 Before you start, make sure you have:
 
 - **Administrative access:** an account with channel management privileges.
-- **A channel provider (extension):** the provider is selected when you create a channel and is fixed afterwards, so confirm the right one before creating.
+- **A provider in mind:** the provider is an [extension](/operational-guides/manage-extensions) that does the actual drafting. You pick it when you create the channel, and it is locked from that point on, so decide which one you want before you begin.
 
 ## Create a channel
 
+Create a channel whenever you need a new way to draft responses, for instance a dedicated channel for support replies or one tied to a specific provider.
+
 1. Go to **Settings** → **Channels** and select **New channel**.
-2. Enter a **name** for the channel. The name must be unique across all channels (see the note below).
-3. Select the channel **Extension** (provider). This field is only available when creating a channel.
-4. Set the **Number of drafts**. This field defaults to `2`, with the placeholder `Number of drafts...`. Adjust it if you want the channel to generate a different number of drafts.
+2. Enter a **name**. It must be unique across all channels (see the note below).
+3. Select the channel **Extension**. This is the provider that generates the drafts, and it can only be set here, while creating the channel.
+4. Set the **Number of drafts**. The field defaults to `2` and shows the placeholder `Number of drafts...`. Increase it if you want more options to choose from per response, or lower it for fewer.
 5. Save the channel.
 
 <Admonition type="note" icon="📝" title="CHANNEL NAMES MUST BE UNIQUE">
-Each channel name must be unique. If you enter a name that another channel already uses, the channel is not saved and an error appears under the **name** field. Matching is case-sensitive and exact, so `Support` and `support` are treated as different names.
+If you enter a name another channel already uses, the channel is not saved and an error appears under the **name** field. Matching is case-sensitive and exact, so `Support` and `support` count as two different names.
 </Admonition>
 
 ## Edit a channel
+
+Edit a channel to rename it or change how many drafts it produces. The provider is the one thing you cannot touch.
 
 1. Go to **Settings** → **Channels** and open the channel you want to change.
 2. Update the **name** or **Number of drafts** as needed.
 3. Save your changes.
 
-When editing, the **provider** field is not shown. A channel's provider is fixed at creation and cannot be changed afterwards. As with creating a channel, the **name** must remain unique; renaming a channel to a name already used by another channel is rejected with a field-level error under the **name** field.
+### What you can change
+
+Both the **name** and the **Number of drafts** are editable at any time. The same uniqueness rule applies as when creating: renaming a channel to a name already in use is rejected with a field-level error under the **name** field.
+
+### What you cannot change
+
+The **provider** field does not appear when editing. A channel's provider is fixed at creation, so if you need a different provider, create a new channel instead.
 
 ## Result
 
-Your channel is saved with a unique name, a fixed provider chosen at creation, and a defined number of drafts (defaulting to `2`). Because each name is guaranteed to be unique, channels stay easy to identify wherever they're referenced across the product.
+Your channel is saved with a unique name, a provider locked in at creation, and a set number of drafts (defaulting to `2`). Because every name is guaranteed unique, your channels stay easy to identify wherever they're referenced across the product.
