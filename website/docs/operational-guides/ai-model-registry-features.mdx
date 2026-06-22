@@ -1,0 +1,100 @@
+---
+sidebar_position: 14
+sidebar_label: AI Model Registry
+---
+import Admonition from '@theme/Admonition';
+
+# Manage AI models in the registry
+
+The AI Model Registry is where you connect providers, register models, and choose which models the platform uses by default. This guide walks through reading a model's pricing and details, setting platform defaults per task type, and adding new provider connectors.
+
+<Admonition type="info" icon="📖" title="WHAT IS THE AI MODEL REGISTRY?">
+The AI Model Registry is the central catalogue of every AI model available to Rational AI. From here you add providers (connectors), register the models they expose, inspect each model's pricing, publisher and usage, and pick the platform default model for each task type so consumers such as conversations and knowledge bases inherit a sensible fallback.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with AI model management privileges.
+- **At least one connector:** a configured provider (for example OpenAI, OpenRouter, Xference, or an OpenAI Compatible endpoint) so the registry has models to list.
+
+## Read a model's pricing
+
+When a model has pricing configured, the registry surfaces it as read-only chips in the model overview.
+
+1. Go to **Settings** → **AI Model Registry** and select a model to open its details.
+2. In the overview, review the pricing chips. The platform scales the stored values back into human-readable units, so you may see any of:
+   - **Per request**
+   - **Per hour** (the stored per-second cost × 3600)
+   - **Per 1M input tokens** (the stored per-token cost × 1,000,000)
+   - **Per 1M output tokens** (the stored per-token cost × 1,000,000)
+
+<Admonition type="note" icon="📝" title="ONLY PRICED ROWS ARE SHOWN">
+Pricing chips appear only when pricing is enabled for the model. Any row with no cost is hidden, so a model priced only per token will not show a per-request chip.
+</Admonition>
+
+## Read publisher and architecture in the picker
+
+When you register an open source model, the picker and overview show both who published the model and its architecture.
+
+1. Go to **Settings** → **AI Models** and select **New** → **Choose an open source model**.
+2. In the picker list, each model shows a **publisher** chip (with the provider icon, falling back to the Hugging Face mark) next to its **architecture** chip.
+3. After registering, open the model's overview to see the dedicated **Publisher** field alongside **Architecture**.
+
+## See where a model is used
+
+The model details include a **Used in** section that lists every entity referencing the model, so you can check its impact before changing or removing it.
+
+1. Go to **Settings** → **AI Model Registry** and open a model's details.
+2. Scroll to the **Used in** section, below the overview. Each entry shows its kind, the roles the model fills, and a link through to that consumer. Coverage includes:
+   - **Touchpoint** — roles: default, available, sentiment, topic, title.
+   - **Knowledge base** — role: embedding.
+   - **Conversations** (room configuration) — roles: conversational, sentiment, topic, title.
+   - **Fine-tuning** — role: base model.
+3. If a model is referenced nowhere, the section shows an empty state.
+
+## Set default platform models per task type
+
+The **Default models** panel lets you pick a platform-wide default model for each task type. These defaults act as fallbacks when a specific consumer does not pin its own model.
+
+1. Go to **Settings** → **AI Models**.
+2. Open the **Default models** panel above the models table.
+3. Set any of the following fields (all optional and clearable):
+   - **Conversational model** — default model for conversations. Lists **Text generation** models. Used by chat when a touchpoint has no model of its own.
+   - **Coding model** — default model for code generation. Lists **Text generation** models. Stored for future use.
+   - **Embedding model** — default model for embeddings. Lists **Embedding** models. Used by knowledge creation when no embedding model is supplied.
+   - **Image generation model** — default model for image generation. Lists **Image generation** models. Stored for future use.
+4. Your selection is saved to the active platform configuration.
+
+<Admonition type="note" icon="📝" title="WHICH DEFAULTS ARE ACTIVE TODAY">
+The **Conversational** and **Embedding** defaults are wired into chat and knowledge creation right now. The **Coding** and **Image generation** defaults are stored and surfaced so those features inherit them when they land, but there is no execution path that consumes them yet.
+</Admonition>
+
+## Add Xference as a provider
+
+Xference is a one-click LLM connector: you supply only an API key, and the platform uses a fixed OpenAI-compatible endpoint, so you never enter the URL yourself.
+
+1. Go to **Settings** → **AI Models** and open the **Add connector** dialog.
+2. Choose **Xference**.
+3. Enter your **API key**.
+4. Save. The platform discovers the available models from the Xference endpoint and proxies chat through the same path as OpenRouter.
+
+<Admonition type="note" icon="📝" title="TRIAL ENDPOINT ONLY">
+Xference currently resolves only its trial host (`api-trial.xference.ai`). There is no production endpoint yet, so this connector targets the trial host until a production host is available.
+</Admonition>
+
+## Add an OpenAI Compatible provider
+
+When a provider exposes an OpenAI-compatible API but is not listed as a dedicated connector, use the generic **OpenAI Compatible** connector, where you supply the endpoint yourself.
+
+1. Go to **Settings** → **AI Models** and open the **Add a new connector** browser.
+2. Choose **OpenAI Compatible**.
+3. Fill in both required fields:
+   - **Base URL** — the OpenAI-compatible endpoint of your provider.
+   - **API Key** — the key for that endpoint.
+4. Save. The connector behaves like the OpenAI connector but talks to your custom base URL.
+
+## Result
+
+You can now read a model's pricing, publisher, architecture, and usage from the AI Model Registry, set platform default models per task type, and add Xference or OpenAI Compatible providers so new models are available to your conversations and knowledge bases.
