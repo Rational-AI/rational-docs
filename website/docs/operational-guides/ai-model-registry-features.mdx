@@ -1,0 +1,123 @@
+---
+sidebar_position: 14
+sidebar_label: AI Model Registry
+---
+import Admonition from '@theme/Admonition';
+
+# Manage AI models in the registry
+
+The AI Model Registry is where every AI model the platform can use lives in one place. From here you connect providers, register their models, read what each model costs and where it's already in use, and pick the defaults the rest of the platform falls back on. This guide covers all of that, end to end.
+
+<Admonition type="info" icon="📖" title="WHAT IS THE AI MODEL REGISTRY?">
+A [large language model](/concepts/LLMs), or LLM, is the AI that actually generates text, embeddings, or images. Those models come from providers (OpenAI, OpenRouter, Xference, and others), and each provider is wired in through a *connector*. The registry is the catalogue that ties it together: add a connector, register the models it exposes, inspect each model's pricing, publisher, and usage, and choose the platform default model for each kind of task so the rest of the platform inherits a sensible fallback.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access** — an account with AI model management privileges.
+- **At least one connector** — a configured provider (for example OpenAI, OpenRouter, Xference, or an OpenAI Compatible endpoint) so the registry has models to list.
+
+## Inspect a model
+
+Open any model to see its full profile: what it costs, who published it, how it's built, and what's relying on it. Go to **Settings** → **AI Model Registry** and select a model to open its details. The sections below walk through each part of that view.
+
+### Read a model's pricing
+
+Check what a model costs before you make it a default or point a new workload at it.
+
+The **Pricing** section appears on a model's overview only for models that have pricing configured (for example a self-hosted model with a cost set). The platform stores raw per-second and per-token costs internally and scales them back into human-readable units, so you may see any of:
+
+- **Per request**
+- **Per hour** — the stored per-second cost × 3600
+- **Per 1M input tokens** — the stored per-token cost × 1,000,000
+- **Per 1M output tokens** — the stored per-token cost × 1,000,000
+
+<Admonition type="note" icon="📝" title="ONLY PRICED ROWS ARE SHOWN">
+Pricing chips appear only when pricing is enabled for the model, and any row with no cost is hidden. A model priced only per token, for instance, won't show a per-request chip.
+</Admonition>
+
+### Read publisher and architecture
+
+When a model is open source, knowing who published it and what architecture it's built on tells you what you're actually running.
+
+Both facts show up in two places. In the model picker, each entry carries a **publisher** chip (with the provider's icon, falling back to the Hugging Face mark) next to an **architecture** chip — the architecture being the model's underlying design family, such as Llama or Mistral. Once the model is registered, its overview shows dedicated **Publisher** and **Architecture** fields.
+
+<img
+  src={require('@site/static/img/screens/model-picker.png').default}
+  alt="The model picker showing each model's publisher and architecture"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Adding a model: install your own fine-tuned model, proxy a third-party model (OpenAI, Gemini, Claude…), or pull an open-source model from Hugging Face.*
+
+### See where a model is used
+
+Before you change or remove a model, see what's leaning on it — so you don't quietly break a conversation or a [Knowledge](/operational-guides/create-knowledge).
+
+Scroll to the **Used in** section, below the overview. Each entry shows its kind, the roles the model fills there, and a link through to that consumer:
+
+- **Touchpoint** — roles: default, available, sentiment, topic, title. A touchpoint is a configured entry point where users talk to the AI, such as a chat widget or channel.
+- **Knowledge base** — role: embedding. An embedding is the numeric representation of text that powers search and retrieval.
+- **Conversations** (room configuration) — roles: conversational, sentiment, topic, title.
+- **Fine-tuning** — role: base model.
+
+If nothing references the model, the section shows an empty state.
+
+<img
+  src={require('@site/static/img/screens/model-used-in.png').default}
+  alt="Model details: the Used in section lists every touchpoint that references the model"
+  style={{ width: '100%', maxWidth: '560px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*A model’s details: the **Used in** section lists every touchpoint and conversation that references it.*
+
+## Set default platform models per task type
+
+Pick the model the platform reaches for when a specific consumer hasn't pinned one of its own. These defaults are pure fallbacks: a [touchpoint](/operational-guides/configure-touchpoints) or Knowledge with its own model always wins.
+
+1. Go to **Settings** → **AI Models**.
+2. Open the **Default models** panel above the models table.
+3. Set any of these fields — all are optional and can be cleared:
+   - **Conversational model** — the default for conversations. Lists **Text generation** models. Used by chat when a touchpoint has no model of its own.
+   - **Coding model** — the default for code generation. Lists **Text generation** models. Stored for future use.
+   - **Embedding model** — the default for embeddings. Lists **Embedding** models. Used by knowledge creation when no embedding model is supplied.
+   - **Image generation model** — the default for image generation. Lists **Image generation** models. Stored for future use.
+4. Your selection is saved to the active platform configuration.
+
+<Admonition type="note" icon="📝" title="WHICH DEFAULTS ARE ACTIVE TODAY">
+Only the **Conversational** and **Embedding** defaults are wired into chat and knowledge creation right now. The **Coding** and **Image generation** defaults are stored and shown so those features inherit them when they ship, but nothing consumes them yet.
+</Admonition>
+
+## Add a provider connector
+
+A connector is the bridge between the registry and an external model provider. Open **Settings** → **AI Models**, start the **Add connector** flow, and pick the connector that matches your provider. The two below cover the cases where the setup isn't obvious.
+
+### Add Xference
+
+Reach for Xference when you want a model provider running with nothing but an API key — no endpoint URL to look up or paste.
+
+Xference is a one-click connector that uses a fixed OpenAI-compatible endpoint behind the scenes.
+
+1. In the **Add connector** dialog, choose **Xference**.
+2. Enter your **API key**.
+3. Save. The platform discovers the available models from the Xference endpoint and proxies chat through the same path as OpenRouter.
+
+<Admonition type="note" icon="📝" title="TRIAL ENDPOINT ONLY">
+Xference currently resolves only its trial host (`api-trial.xference.ai`). There is no production host yet, so this connector targets the trial endpoint until one is available.
+</Admonition>
+
+### Add an OpenAI Compatible provider
+
+Use this when your provider speaks the OpenAI API but isn't one of the dedicated connectors — here you supply the endpoint yourself.
+
+1. In the **Add a new connector** browser, choose **OpenAI Compatible**.
+2. Fill in both required fields:
+   - **Base URL** — the OpenAI-compatible endpoint of your provider.
+   - **API Key** — the key for that endpoint.
+3. Save. The connector behaves exactly like the OpenAI connector but talks to your custom base URL.
+
+## Result
+
+You can now inspect any model's pricing, publisher, architecture, and usage from the AI Model Registry, set platform default models per task type, and add Xference or OpenAI Compatible providers so their models are available to your conversations and knowledge bases.

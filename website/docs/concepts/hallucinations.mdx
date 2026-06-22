@@ -1,37 +1,67 @@
 ---
 sidebar_position: 6
 sidebar_label: Hallucinations
+title: Hallucinations
+description: What hallucinations are in generative AI, why they happen, the main types, and how to reduce them.
 ---
 
-# Hallucinations
-In the context of Generative AI and Large Language Models (LLMs), **hallucinations** refer to the phenomenon in which a model generates information that is fluent and plausible but false, misleading, or unsupported by reliable evidence.
+import Admonition from '@theme/Admonition';
 
-These outputs are not random errors, they are coherent responses produced by the model based on learned statistical patterns rather than verified knowledge.
+# Hallucinations
+
+In the context of Generative AI and Large Language Models (LLMs), **hallucinations** refer to the phenomenon in which a model generates outputs that are fluent and plausible but factually incorrect, misleading, or unsupported by reliable evidence.
+
+These outputs are not random errors. They are coherent responses produced by the model based on learned statistical patterns rather than verified knowledge.
+
+<Admonition type="note" icon="📝" title="HALLUCINATIONS ARE NOT LIES">
+The model has no intentionality or awareness that it is producing false information. A hallucination is a pattern-based prediction that happens to be wrong, not a deliberate falsehood.
+</Admonition>
+
+## Why "hallucinations"?
+
+The term draws an analogy with human hallucinations, where the brain perceives things that are not present in reality. Similarly, LLMs "perceive" and generate content based on internal patterns rather than external truth.
 
 ## Causes of hallucinations
+
 Hallucinations arise from structural characteristics of LLMs, such as:
-1. **Probabilistic generation**: LLMs generate text by predicting the most likely next word, not by validating facts.
-As a result, they prioritize fluency and linguistic coherence over factual accuracy.
+
+1. **Probabilistic generation**: LLMs generate text by predicting the most likely next token, not by validating facts. As a result, they prioritize linguistic coherence over factual accuracy.
 2. **Training data limitations**: models learn from imperfect, incomplete, and sometimes contradictory data sources, which can introduce inaccuracies.
-3. **Lack of real-time knowledge**: most LLMs do not have native access to live databases or external verification systems during generation.
-4. **Ambiguous or incomplete prompts**: vague or under-specified inputs can lead models to "fill in gaps" with fabricated information.
-5. **Overgeneralization**: models may apply learned patterns inappropriately to contexts where they are not valid.
+3. **Parametric knowledge compression**: information is compressed into model weights, leading to lossy reconstruction where details may be distorted or conflated.
+4. **Lack of real-time knowledge**: most LLMs do not have native access to live databases or external verification systems during generation.
+5. **Ambiguous or incomplete prompts**: vague or under-specified inputs can lead models to "fill in gaps" with fabricated information.
+6. **Overgeneralization**: models may apply learned patterns to contexts where they are not valid.
 
 ## Types of hallucinations
-| Type                     | Description                                   |
-|:-------------------------|:----------------------------------------------| 
-| Factual hallucination    | Incorrect dates, names, statistics, or events |  
-| Source hallucination     | Invented citations or references              |
-| Logical hallucination    | Internally incorrect reasoning or logic       |
-| Contextual hallucination | Misinterpretation of user intent              |
-| Fabricated content       | Creation of non-existent entities or concepts |
 
-While there are a number of methods to identify hallucinations (such as human review, fact-checking, automated verification system, etc.), fully automated detection remains an open research challenge.
+| Type | Description | Example |
+| :--- | :--- | :--- |
+| Factual hallucination | Incorrect dates, names, statistics, or events | "The Eiffel Tower was built in 1867" (actually 1889) |
+| Source hallucination | Invented citations or references | Citing a paper with DOI 10.1234/fake.2023 that does not exist |
+| Logical hallucination | Internally inconsistent reasoning | "All cats are mammals. Dogs are cats. Therefore, dogs are mammals." |
+| Contextual hallucination | Misinterpretation of user intent | A user asks about Python (programming) but receives information about pythons (snakes) |
+| Fabricated content | Creation of non-existent entities or concepts | Inventing a historical figure or scientific discovery |
+
+<Admonition type="info" icon="📖" title="A NON-EXHAUSTIVE SET">
+The table above shows a small, non-exhaustive set of examples. While there are several methods to identify hallucinations (human review, fact-checking, automated verification systems), fully automated detection remains an open research challenge.
+</Admonition>
 
 ## Mitigation strategies
+
 To reduce the occurrence of hallucinations, several approaches can be employed:
-1. **Retrieval-augmented generation**: integrates external knowledge bases or search engines to ground model responses in verified data.
-2. **Fine-tuning and alignment**: improves reliability through topic-specific training and human feedback.
-3. **Prompt engineering**: crafting clearer and more structured prompts to reduce ambiguity and guide the model towards accurate outputs.
-4. **Confidence calibration**: encourages models to express uncertainty when appropriate, which can help users identify potentially unreliable outputs.
-5. **Human-in-the-loop systems**: combines automated generation with human oversight to review and correct outputs before they are presented to end-users.
+
+1. **Retrieval-augmented generation (RAG)**: integrates external knowledge sources to ground model responses in verified data.
+2. **Fine-tuning and alignment**: improves reliability through high-quality, curated data and human feedback.
+3. **Prompt engineering**: carefully structured prompts reduce ambiguity and guide accurate responses.
+4. **Confidence calibration**: encourages the model to express uncertainty when appropriate.
+5. **Human-in-the-loop systems**: maintain human oversight for critical outputs.
+6. **Multi-model verification**: cross-checks outputs across different models to identify inconsistencies.
+7. **Temperature and sampling parameters**: lower temperature settings reduce randomness and creative divergence.
+
+## Related concepts
+
+- [Retrieval-Augmented Generation](/concepts/RAG) 
+- [Generative AI](/concepts/Generative-AI)
+- [Large Language Models](/concepts/LLMs)
+- [Prompts](/concepts/Prompts)
+{/* TODO: link to the Fine-tuning concept page */}

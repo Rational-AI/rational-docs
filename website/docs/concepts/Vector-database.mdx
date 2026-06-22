@@ -1,0 +1,41 @@
+---
+sidebar_position: 17
+sidebar_label: Vector database
+title: Vector database
+description: What a vector database is, how similarity search works, how it differs from a traditional database, and its role in retrieval in Rational AI.
+---
+
+# Vector database
+
+A **vector database** is a database built to store and search [embeddings](./Embeddings-chunks-and-annotations.mdx), the numerical vectors that represent the meaning of text. Its special skill is finding, very quickly, the items whose meaning is closest to a query, even across millions of entries.
+
+Where a traditional database answers "find the rows where this field equals that value", a vector database answers a different question: "find the items most **similar in meaning** to this one". That shift, from exact matching to similarity, is what makes semantic search possible.
+
+## How similarity search works
+
+Every chunk of your knowledge is stored as a vector, a point in a high‑dimensional space. When a query arrives, it is turned into a vector too, and the database returns the **nearest** stored vectors, the ones whose meaning is closest. These nearest matches are the most relevant pieces of knowledge for that query.
+
+To stay fast at scale, vector databases use specialised indexes that find near‑neighbours without comparing against every single entry.
+
+## Vector database vs traditional database
+
+| | Traditional database | Vector database |
+| :-- | :-- | :-- |
+| **Stores** | Structured rows and fields | Vectors (embeddings) |
+| **Finds by** | Exact values and ranges | Similarity of meaning |
+| **Best for** | Precise, structured queries | Open‑ended, semantic search |
+| **Example query** | "orders where total > 100" | "passages about late deliveries" |
+
+The two are complementary, not rivals: structured questions still belong in a traditional database, which is why retrieval and SQL tools often work side by side.
+
+## In Rational AI
+
+The vector database is the engine behind [retrieval](./RAG.mdx). The embeddings generated from your [Knowledge](../cr/Knowledge.mdx) are stored there, and at answer time it supplies the most relevant chunks as context for the model. You don't manage it directly; it works quietly underneath the Knowledge and RAG features.
+
+---
+
+## Additional resources
+
+* [Embeddings, chunks and annotations](./Embeddings-chunks-and-annotations.mdx): what a vector database stores.
+* [Retrieval-Augmented Generation](./RAG.mdx): how similarity search feeds an answer.
+* [Knowledge](../cr/Knowledge.mdx): the source of the vectors that get searched.

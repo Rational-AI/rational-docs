@@ -1,0 +1,45 @@
+---
+sidebar_position: 8
+sidebar_label: Model training
+title: Model training
+description: How models are trained, the main stages from pre-training to alignment, and where training fits alongside finetuning in Rational AI.
+---
+
+# Model training
+
+**Model training** is the process of teaching a neural network by showing it many examples and letting it adjust its internal [parameters](./Model-architecture.mdx) until its predictions improve. Nothing is programmed by hand: the model gradually learns the patterns in the [data](./Dataset-and-training-data.mdx) it is given.
+
+A useful mental image is learning by feedback. The model makes a guess, the guess is compared to the right answer, and a small correction is applied. Repeat this billions of times across a huge dataset and the model becomes capable of producing fluent, relevant output.
+
+## How training works, in short
+
+Most training follows the same loop:
+
+1. **Forward pass:** the model makes a prediction for an example.
+2. **Loss:** the prediction is compared to the expected result, producing a number that measures how wrong it was.
+3. **Backpropagation:** that error is used to nudge the parameters in a direction that reduces it.
+4. **Repeat:** the loop runs across the whole dataset many times, in small batches.
+
+The goal is to **generalise**, not to memorise. A model that simply memorised its examples would fail on anything new, a problem known as overfitting.
+
+## The stages of training a language model
+
+Modern language models are usually built in stages, each smaller and more targeted than the last:
+
+| Stage              | What happens                                                        |
+| :----------------- | :----------------------------------------------------------------- |
+| **Pre‑training**   | The model learns general language from a huge, broad text corpus    |
+| **Finetuning**     | It is refined on a narrower dataset for a specific task or domain    |
+| **Alignment**      | Its behaviour is shaped to be helpful and safe, often with [RLHF](./RLHF.mdx) |
+
+## Training in Rational AI
+
+You don't train a base model from scratch in the platform, but the later stages are within reach. Through [finetuning](./Finetuning.mdx) you can adapt an existing model to your own [datasets](../cr/settings/datasets.mdx), producing a tailored model that performs better on your tasks while reusing the general knowledge the base model already learned.
+
+---
+
+## Additional resources
+
+* [Finetuning](./Finetuning.mdx): adapt a pre‑trained model to your data and tasks.
+* [RLHF](./RLHF.mdx): align a model's behaviour using human feedback.
+* [Dataset and training data](./Dataset-and-training-data.mdx): the raw material every training stage depends on.

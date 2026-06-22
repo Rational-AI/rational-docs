@@ -1,0 +1,38 @@
+---
+sidebar_position: 16
+sidebar_label: Embeddings, chunks and annotations
+title: Embeddings, chunks and annotations
+description: What chunks, embeddings and annotations are, how they turn documents into retrievable knowledge, and how they appear in Rational AI.
+---
+
+# Embeddings, chunks and annotations
+
+Before a model can use your documents, they have to be broken down and translated into a form it can search. **Chunks**, **embeddings** and **annotations** are the three pieces of that preparation. Together they turn a pile of files into retrievable knowledge.
+
+## Chunks
+
+A **chunk** is a small segment of a document, a paragraph or a passage rather than the whole file. Documents are split into chunks because retrieval works best on focused pieces: a single chunk can be matched precisely to a question, and it fits neatly into the model's [context window](./Context-window.mdx).
+
+Chunk size is a balance. Too large, and a chunk mixes several ideas and dilutes relevance; too small, and it loses the context needed to make sense. Good chunking keeps each segment meaningful on its own.
+
+## Embeddings
+
+An **embedding** is a numerical representation of meaning. An [embedding model](./Model-architecture.mdx) turns each chunk into a list of numbers (a vector) positioned so that texts with similar meaning sit close together, even when they use different words.
+
+This is the key to **semantic search**: instead of matching keywords, the system compares meaning. A question about "shipping delays" can retrieve a chunk about "late deliveries" because their embeddings are near each other. These vectors are kept in a [vector database](./Vector-database.mdx) for fast lookup.
+
+## Annotations
+
+**Annotations** are extra, user‑ or machine‑defined metadata attached to a resource or chunk, such as named entities, sentiment, topics or custom notes. They enrich raw content with structure, making it easier to filter, organise and retrieve, and giving the model useful signals beyond the plain text.
+
+## In Rational AI
+
+When you add a resource to [Knowledge](../cr/Knowledge.mdx), the platform chunks it, generates embeddings and lets you review the results. In a resource's details you can inspect its **chunks** (with token counts and previews) and add **annotations**, while the embeddings work behind the scenes to power [retrieval](./RAG.mdx).
+
+---
+
+## Additional resources
+
+* [Vector database](./Vector-database.mdx): where embeddings are stored and searched.
+* [Retrieval-Augmented Generation](./RAG.mdx): how chunks are retrieved and used as context.
+* [Knowledge](../cr/Knowledge.mdx): inspect chunks and annotations for each resource.

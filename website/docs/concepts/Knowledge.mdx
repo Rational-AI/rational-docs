@@ -1,0 +1,39 @@
+---
+sidebar_position: 14
+sidebar_label: Knowledge
+title: Knowledge
+description: What a knowledge base is in the context of AI, how it differs from a model's built-in knowledge, and how Knowledge works in Rational AI.
+---
+
+# Knowledge
+
+In the context of AI, **knowledge** is the organised, domain‑specific information a model can draw on to answer questions, separate from whatever it absorbed during [training](./Model-training.mdx). It is the difference between what a model knows in general and what your organisation knows in particular.
+
+A language model's built‑in knowledge is broad but fixed, frozen at the moment its training ended, and unaware of your products, policies or records. A knowledge base fills that gap with current, proprietary information the model can consult at answer time.
+
+## Built‑in knowledge vs a knowledge base
+
+| | Model's built‑in knowledge | A knowledge base |
+| :-- | :-- | :-- |
+| **Source** | General training data | Your own documents and data |
+| **Freshness** | Fixed at training time | Updated whenever you add to it |
+| **Scope** | Broad and generic | Specific to your domain |
+| **Traceability** | Hard to attribute | Answers can cite their source |
+
+This is why grounding answers in a knowledge base, the core idea behind [RAG](./RAG.mdx), produces responses that are more accurate, more current and easier to trust.
+
+## How knowledge becomes usable
+
+Raw documents are not directly searchable by a model. To make them useful, content is split into [chunks, turned into embeddings and enriched with annotations](./Embeddings-chunks-and-annotations.mdx), then stored in a [vector database](./Vector-database.mdx) so the most relevant pieces can be retrieved on demand. Relationships between resources can also be captured, which is what enables graph‑based retrieval.
+
+## Knowledge in Rational AI
+
+The [Knowledge](../cr/Knowledge.mdx) module is where you build and maintain this information: you ingest resources, organise them with tags and categories, view how they relate in a graph, and prepare them for retrieval. Kept up to date through [sources](./Source-and-resources.mdx), it becomes the foundation your agents reason over.
+
+---
+
+## Additional resources
+
+* [Knowledge module](../cr/Knowledge.mdx): build and maintain your organisation's knowledge.
+* [Embeddings, chunks and annotations](./Embeddings-chunks-and-annotations.mdx): how documents are prepared for retrieval.
+* [Retrieval-Augmented Generation](./RAG.mdx): how knowledge is brought into an answer.

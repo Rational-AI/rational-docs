@@ -1,0 +1,66 @@
+---
+sidebar_position: 4
+sidebar_label: Conversations
+---
+
+# Conversations
+
+The **Conversations** module is where every exchange between your users and Rational AI's agents comes together. Whenever someone interacts with a [touchpoint](./settings/touchpoints.mdx), the messages are captured here as a single conversation and automatically enriched with a title, topic and sentiment. Use this module to monitor activity, review what your agents are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
+
+## Navigate your conversations
+
+Open the **Conversations** section from the top navigation bar of the Control Room. The page presents a paginated table in which each row is one conversation. From here you can:
+
+* **Search** across conversations using the search box in the top‑right corner.
+* **Sort and filter** the table by column to focus on what matters.
+* **Open a conversation** to read the full thread and take action.
+* **Select rows** with their checkboxes to run bulk **Actions**.
+
+## The conversations table
+
+Each row summarises a single conversation across the following columns:
+
+| Column           | Description                                                                                                              |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| **User**         | The end user who took part in the conversation.                                                                           |
+| **Conversation** | A preview of the most recent message in the thread.                                                                       |
+| **Topic**        | The topic detected for the conversation (for example, *Market Research/SEO*, *Grant Application* or *Data/Security Concern*). Conversations with no clear match show *No Topic*. |
+| **Sentiment**    | The estimated emotional tone of the conversation, shown as a coloured dot with a label (for example, *Neutral*).          |
+| **Last message** | The date and time of the most recent message. The table is sorted by this column, newest first, by default.              |
+| **Status**       | Whether the conversation is **Open** or **Closed**.                                                                       |
+| **Favourite**    | A star you can click to flag a conversation so it's easy to return to later.                                              |
+
+The title, topic and sentiment shown here are produced by the automatic analyses you configure in [Conversations settings](./settings/conversations.mdx). All labels can be re‑run. Useful after you change your topic list or models in settings.
+
+## Open a conversation
+
+Click any row (or choose **Open** from the row's options menu) to open the conversation in a panel on the right. The panel shows the full thread, with the user's messages and the agent's replies in order. Hover over a message to reveal quick actions such as regenerate, edit and copy.
+
+The panel header gives you several tools:
+
+* **Search** within the conversation.
+* **Star** to add the conversation to your favourites.
+* **Debug mode (`{}`)** toggles a developer view that exposes the underlying message objects: tool calls, JSON payloads, `tool_call_id`s and any errors the agent encountered. Use it to understand exactly what happened behind a reply.
+* **Info** opens a profile panel for the participant, with their **Basic info** (given and family name), the date of their last message and the total number of conversations they've had.
+
+At the bottom of the panel you can:
+
+* **Ask a question:** type into the message box to send a reply into the conversation yourself, optionally attaching a file, code or a Canvas.
+* **Take over conversation:** hand the conversation from the agent to a human, so you can respond directly when a user needs personal attention.
+* **Summary:** generate an AI summary of the conversation in a pop‑up for a quick recap of a long thread.
+
+
+## Best practices
+
+* **Triage with filters:** combine the **Sentiment** and **Status** filters to surface conversations that may need attention, such as open threads with a *Frustrated* or *Angry* sentiment.
+* **Take over when it counts:** when an agent is struggling or a user asks for a person, use **Take over conversation** rather than letting the thread stall.
+* **Keep labels current:** after editing your topic list or switching models, select the affected conversations and **Refresh labels** so reporting stays accurate.
+* **Debug with the raw view:** when a reply looks wrong, open the `{}` view to inspect the tool calls and errors behind it before changing a prompt or model.
+
+---
+
+## Related resources
+
+* [Conversations settings](./settings/conversations.mdx): choose the default conversational model and configure title generation, topic detection and sentiment analysis.
+* [Governance](./Governance.mdx): review aggregated metrics and audit logs for conversational activity.
+* [Knowledge](./Knowledge.mdx): manage the information your agents draw on during conversations.

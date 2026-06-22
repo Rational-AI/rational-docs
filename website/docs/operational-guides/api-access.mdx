@@ -1,0 +1,101 @@
+---
+sidebar_position: 15
+sidebar_label: Access via API
+---
+import Admonition from '@theme/Admonition';
+
+# Access Rational AI via API
+
+Rational AI's models are available not just in the chat interface but also to your own code. This guide walks you through creating the key your application needs to authenticate, and finding a working code snippet for any model.
+
+<Admonition type="info" icon="📖" title="WHAT IS API ACCESS?">
+An API (Application Programming Interface) is the channel your own applications and scripts use to talk to Rational AI's models directly, instead of a person typing into the chat UI. You prove who you are with an **API key** — a long secret string you generate in **Settings** — and send requests to your workspace's gateway.
+
+That gateway is **OpenAI-compatible**, meaning it understands the same request format as OpenAI's widely-used API. The practical payoff: you can reuse the standard OpenAI SDKs (the official code libraries) and existing tooling without writing anything custom.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Access to the API keys settings page.** The **API keys** entry must be visible in your **Settings** navigation.
+- **At least one active model.** A model configured in the **AI Model Registry** that you intend to call. See [AI Model Registry features](/operational-guides/ai-model-registry-features) if you need to set one up.
+- **An HTTP client or OpenAI SDK.** For example cURL, the Python OpenAI SDK, or the TypeScript OpenAI SDK.
+
+## Manage your API keys
+
+Your API keys live on a dedicated settings page that lists every key with its name, a masked value, and the date it was created. From here you create new keys and revoke ones you no longer trust.
+
+<img
+  src={require('@site/static/img/screens/apikeys-settings.png').default}
+  alt="The API Keys settings page"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The **API Keys** page: create and manage the keys used for programmatic access.*
+
+### Create an API key
+
+Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key makes it easy to track usage and revoke access later without disrupting anything else.
+
+1. Go to **Settings** → **API keys**.
+2. Select **+ New** (shown as **+ Add new** when the list is empty).
+3. In the **Generate new key** dialog, enter a **name** for the key, for example `My personal api key`.
+4. Confirm to generate the key.
+5. A **one-time secret** dialog appears showing the full key. Use the **copy-to-clipboard** button to copy it, then store it somewhere safe.
+
+<Admonition type="note" icon="📝" title="THE KEY IS SHOWN ONLY ONCE">
+The full key is returned a single time, on creation. Once you close the one-time secret dialog, the list only ever shows a masked value — there is no way to reveal the secret again. If you lose it, revoke the key and generate a new one.
+</Admonition>
+
+### Revoke an API key
+
+Revoke a key the moment it is no longer needed or might be compromised — for example a key that was committed to a shared repository or belonged to someone who has left.
+
+1. Go to **Settings** → **API keys**.
+2. Find the key in the list and start the revoke action.
+3. Confirm in the **Revoke API key** dialog.
+
+<Admonition type="note" icon="📝" title="REVOKING IS PERMANENT">
+Revoking an API key is a hard delete, not a pause. Any application still using that key stops working immediately, so make sure nothing you depend on is still relying on it.
+</Admonition>
+
+## Call a model
+
+With a key in hand, the fastest way to get a request working is to copy a ready-made snippet for the exact model you want, then plug in your key.
+
+### Find the code for a model
+
+Every model in the registry comes with a snippet you can copy and run, pre-filled for that specific model.
+
+1. Open the **AI Model Registry** and select the model you want to call to open its details drawer.
+2. In the model overview, find the **Use via API** section below the capabilities block and expand it (it is collapsed by default).
+3. Choose the tab for your language:
+   - **cURL**
+   - **Python** (OpenAI SDK)
+   - **TypeScript** (OpenAI SDK)
+4. Use the **copy-to-clipboard** button on the snippet to copy it.
+
+<img
+  src={require('@site/static/img/screens/model-use-via-api.png').default}
+  alt="The Use via API section with code snippets"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+***Use via API**: ready-made cURL, Python and TypeScript snippets that call the model through the OpenAI-compatible API.*
+
+Each snippet points at your workspace's OpenAI-compatible endpoint group at `/compat/v0/openai` (for example `/api/compat/v0/openai/chat/completions`). The request's `model` field is already set to the model's identifier, which the backend uses to route your request to the right model — so you don't have to look it up yourself.
+
+### Authenticate your requests
+
+Requests are authenticated with the API key you generated, passed as a **Bearer token** — a standard way of attaching a secret to an HTTP request in its `Authorization` header:
+
+```
+Authorization: Bearer $RATIONAL_AI_API_KEY
+```
+
+Set the `RATIONAL_AI_API_KEY` environment variable (or your own secret store) to the key value from the one-time secret dialog. The copied snippet reads from that variable, so once it's set the snippet authenticates on its own.
+
+## Result
+
+You now have an API key for authenticating programmatic requests and a copied, model-specific snippet pointing at the OpenAI-compatible gateway. Your application can call Rational AI's models directly, reusing standard OpenAI SDKs and tooling.

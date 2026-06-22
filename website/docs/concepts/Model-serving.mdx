@@ -1,0 +1,37 @@
+---
+sidebar_position: 12
+sidebar_label: Model serving
+title: Model serving
+description: What model serving and inference are, the metrics that describe serving performance, and how serving connects to models and governance in Rational AI.
+---
+
+# Model serving
+
+**Model serving** is what makes a trained model usable: it takes a model and runs it behind an interface so that applications can send it a request and get a response back. That act of running the model to produce an output is called **inference**.
+
+Training and serving are two different jobs. Training is building the model, done once and at great expense. Serving is running it, done constantly, every time a user asks a question. A model that is never served is just a file on disk.
+
+## What serving has to handle
+
+Serving a model well is largely about doing inference quickly, reliably and affordably, often for many users at once. The performance of a served model is usually described with a few metrics:
+
+| Metric                   | What it measures                                            |
+| :----------------------- | :--------------------------------------------------------- |
+| **Time to first token**  | How long until the first piece of the response appears      |
+| **Tokens per second**    | How fast the rest of the response streams out               |
+| **End‑to‑end latency**   | The total time to complete a request                        |
+| **Cost per inference**   | What a single request costs to run                          |
+
+These trade off against each other, and against quality: a larger model may give better answers but serve them more slowly and at higher cost.
+
+## Serving in Rational AI
+
+When you register a model and use it in a [touchpoint](../cr/settings/touchpoints.mdx), the platform serves it for you: each message becomes an inference request handled by the model behind the scenes. The [Governance](../cr/Governance.mdx) module then reports exactly these serving metrics, time to first token, tokens per second, latency and cost, so you can see how your models perform in practice and tune your choices accordingly.
+
+---
+
+## Additional resources
+
+* [AI model registry](./AI-model-registry.mdx): where the models you serve are catalogued and managed.
+* [Governance](../cr/Governance.mdx): monitor serving performance, throughput and cost.
+* [Model architecture](./Model-architecture.mdx): why model size and design affect serving speed and cost.

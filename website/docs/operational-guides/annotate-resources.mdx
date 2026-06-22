@@ -1,0 +1,62 @@
+---
+sidebar_position: 12
+sidebar_label: Annotate resources
+---
+import Admonition from '@theme/Admonition';
+
+# Annotate resources
+
+Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document — flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer.
+
+<Admonition type="info" icon="📖" title="WHAT IS AN ANNOTATION?">
+An annotation marks a specific range of a resource and pairs it with a label and a colour. For text resources, the range is stored as character offsets — the exact start and end positions in the raw file — which are the same positions used when Rational AI splits the file into chunks (the smaller pieces it searches over). Because the highlight is anchored to those positions, it always points to the exact text you selected. Annotations show up inline in the viewer and are listed in the **Annotations** sidebar.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A Knowledge** containing at least one resource. A [Knowledge](/operational-guides/create-knowledge) is the container that holds your data in Rational AI.
+- **A text resource** in a supported format: `.txt` or `.md`. Other formats such as `json`, `xml`, and `html` open in the syntax-highlighted editor and can't be annotated here.
+
+<Admonition type="note" icon="📝" title="MARKDOWN IS SHOWN AS RAW SOURCE">
+Markdown resources appear as raw source, not as rendered HTML. This keeps each highlight's character offsets aligned 1:1 with the stored file, so your annotations always point to the right text. The same viewer is shared by `.txt` and `.md`.
+</Admonition>
+
+## Open a text resource
+
+Start in the resource you want to mark up.
+
+1. Open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge that holds your resource.
+2. Find your `.txt` or `.md` resource and open it. It renders in the **text viewer** as selectable raw text, with the **Annotations** sidebar on the right.
+
+## Create an annotation
+
+Highlight a passage to attach a label and colour to it.
+
+1. In the viewer, **select the text** you want to annotate by dragging across it.
+2. When you release the selection, the **label/colour popover** opens.
+3. Choose or enter a **label** and pick a **colour**.
+4. Confirm to create the annotation.
+
+The selected passage is highlighted inline in your chosen colour, and the new annotation is added to the **Annotations** sidebar with its label and colour.
+
+<Admonition type="note" icon="📝" title="OVERLAPPING SELECTIONS">
+If a new selection overlaps an existing annotation, the highlight clamps to the first range — the one that starts earlier. Nested or overlapping highlights aren't currently supported.
+</Admonition>
+
+## Review and manage annotations
+
+The **Annotations** sidebar lists every annotation on the resource, and is where you go back to find, jump to, or clean up your highlights.
+
+### Focus an annotation
+
+When a resource has many highlights, use the sidebar to jump straight to one. Select an entry to scroll the viewer to that passage and briefly flash its highlight.
+
+### Delete an annotation
+
+To remove a highlight you no longer need, delete its entry in the sidebar. The inline highlight is cleared from the text.
+
+## Result
+
+Your text resource now carries one or more labelled annotations. Each highlight appears inline in the viewer, anchored to the exact text you selected, and every annotation is listed in the **Annotations** sidebar where you can focus or delete it.

@@ -1,0 +1,68 @@
+---
+sidebar_position: 19
+sidebar_label: Roles and users
+---
+import Admonition from '@theme/Admonition';
+
+# Manage roles and users
+
+Roles decide what people on your team are allowed to do in Rational AI. Users are the accounts those roles apply to. This guide walks through tuning the permissions on a role and creating a user with a password you control.
+
+<Admonition type="info" icon="📖" title="WHAT ARE ROLES AND USERS?">
+A **role** is a named bundle of permissions. Every permission is granted or revoked on its own, so you can shape exactly what a role can see and do. A **user** is an individual account that signs in to Rational AI, and each user is governed by the role you assign to it.
+</Admonition>
+
+## Prerequisites
+
+- **Administrative access:** an account with privileges to manage settings, roles, and users.
+
+## Configure roles
+
+Adjust a role's permissions when a group of people needs more or less access than it currently has. You do this from one screen, the permissions matrix, where every permission is an independent toggle.
+
+1. Go to **Settings** → **Roles**.
+2. Select the **role** you want to configure from the list.
+3. In the **permissions matrix**, use the **chip controls** to grant or revoke each permission. Each chip toggles a single permission on or off.
+4. Repeat for any other roles you need to adjust.
+
+<img
+  src={require('@site/static/img/screens/roles-settings.png').default}
+  alt="Roles and permissions matrix"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+***Roles and permissions**: built-in roles on the left, the permission matrix (per feature: List, Read, Create, Update, Delete, Use) for the selected role on the right.*
+
+<Admonition type="note" icon="📝" title="ONE PERMISSION AT A TIME">
+Toggling a chip changes only that one permission, nothing else. Scan the whole matrix for a role so its access lines up with what that group actually needs, rather than checking a single chip in isolation.
+</Admonition>
+
+## Create a user
+
+Add a user to give someone their own account to sign in with. When you create the account, you set its first password yourself instead of handing over an auto-generated value you never see.
+
+### Set the password
+
+A random password is generated the moment the **Create new user** dialog opens, so a working password already exists before you touch anything. The subtitle says as much: *"A random password is generated automatically, but you can change it."*
+
+1. Open the **Create new user** dialog and fill in the user's details.
+2. In the **Password** field, keep the generated password or type your own. The field is editable and required.
+3. Use the **copy** button inside the field to grab the current password value when you need to share it with the user.
+
+### Decide how the first sign-in works
+
+Leave **Require password change at first login** checked if you want the user to set their own password the first time they sign in. It is checked by default, so the user lands on a password-reset prompt and the value you shared is only ever temporary.
+
+If you uncheck it, the password you set is the one the user keeps until they change it themselves.
+
+### Create the account
+
+Submit the dialog to create the user. The account is created with the role and password you chose.
+
+<Admonition type="note" icon="📝" title="YOU ONLY EDIT THE PASSWORD IF YOU WANT TO">
+Because a password is generated automatically, you can leave the **Password** field untouched and still create a valid account. Only type in it when you need a specific value.
+</Admonition>
+
+## Result
+
+You have a set of roles whose permissions match what each group can do, and a new user account secured with a password you either accepted or chose. If you left **Require password change at first login** checked, the user is prompted to change the password on their first sign-in.

@@ -1,0 +1,39 @@
+---
+sidebar_position: 21
+sidebar_label: Touchpoint
+title: Touchpoint
+description: What a touchpoint is, what it binds together, and how touchpoints turn a model into a purpose-built agent in Rational AI.
+---
+
+# Touchpoint
+
+A **touchpoint** is a configured entry point through which users interact with an AI agent, for example a chat assistant for a specific product or a customer‑care flow. It is the unit that turns a general‑purpose model into a purpose‑built agent for one job.
+
+Where a model is generic, a touchpoint is specific. The same underlying model can power many touchpoints, each with its own personality, knowledge and rules, in the same way one engine can power very different vehicles.
+
+## What a touchpoint binds together
+
+A touchpoint brings several ingredients into a single configuration:
+
+* **A [channel](./Channels.mdx):** how and where users reach the agent.
+* **A model and system prompt:** the [model](./Model-architecture.mdx) that generates replies and the instructions that shape its behaviour.
+* **Knowledge:** the [knowledge](./Knowledge.mdx) sources the agent is allowed to draw on.
+* **Tools:** the actions it can take, such as semantic retrieval or database queries.
+
+Because all of this lives in one place, each touchpoint can be tailored precisely to its use case, and changed without affecting the others.
+
+## Why touchpoints matter
+
+Touchpoints are how you put AI in front of real users safely and deliberately. They let you decide exactly what an agent knows, how it speaks and what it can do, and they make each interaction measurable: every conversation through a touchpoint can be reviewed and its usage tracked.
+
+## Touchpoints in Rational AI
+
+You build and tailor them in the [Touchpoints](../cr/settings/touchpoints.mdx) settings. Once configured, a touchpoint is what you select in [Chat](../cr/Chats.mdx), and the conversations it produces appear in the [Conversations](../cr/Conversations.mdx) module and are metered in [Governance](../cr/Governance.mdx).
+
+---
+
+## Additional resources
+
+* [Touchpoints settings](../cr/settings/touchpoints.mdx): create and configure your agents.
+* [Channels](./Channels.mdx): the ways users reach a touchpoint.
+* [Connectors](./Connectors.mdx): the credentials a touchpoint uses to reach models and data.

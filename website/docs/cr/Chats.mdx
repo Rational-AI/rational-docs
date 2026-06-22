@@ -1,0 +1,50 @@
+---
+sidebar_position: 1
+sidebar_label: Chat
+---
+
+# Chat
+
+The **Chat** module is an interactive workspace where you can talk to your agents directly. Choose a [touchpoint](./settings/touchpoints.mdx), ask a question in natural language, and the agent answers using the data, knowledge and tools configured for it. Use this module to explore your data, test how a touchpoint behaves before you share it, and pick up where past conversations left off.
+
+## Start a chat
+
+Open the **Chat** section from the top navigation bar of the Control Room. To begin:
+
+* **Choose a touchpoint** from the selector in the top‑left corner. This sets which agent you're talking to, along with the knowledge and data sources it can reach.
+* **Ask a question**, or click one of the **suggested prompts** beneath the greeting to start with a ready‑made question. The suggestions are defined per touchpoint.
+
+The agent replies in the thread, drawing on its connected sources. While it works, it shows the tools it's using (for example, an `execute sql` step that queries a data source) so you can see how the answer is built.
+
+## The composer
+
+The message box gives you a few tools for shaping a request:
+
+| Control            | What it does                                                                                          |
+| :----------------- | :--------------------------------------------------------------------------------------------------- |
+| **Attach**         | Add one or more files to your message for the agent to use.                                           |
+| **Advanced mode (`{}`)** | Expand each reply to reveal the underlying tool calls and raw JSON, such as the SQL queries and widgets behind an answer. Useful for understanding or debugging a response. |
+| **Canvas**         | Generate the response in a Canvas, an editable side panel, instead of inline. Best for longer documents and visualisations. |
+| **Send**           | Send your message to the agent.                                                                       |
+
+## The sidebar
+
+The panel on the left keeps your chats within reach. You can collapse or expand it with the toggle at the top.
+
+* **New chat** starts a fresh conversation with the selected touchpoint.
+* **Search** finds an earlier chat by its content.
+* **Chat history** lists your past threads, each given an automatic title. Open the options menu (three vertical dots) on a thread to **Rename chat** or **Delete** it.
+
+## Working in a conversation
+
+Each thread shows your messages alongside the agent's replies in order. Hover over a message to reveal quick actions such as regenerate, edit and copy. Every chat you start is saved to your history and recorded in the [Conversations](./Conversations.mdx) module, where it can be reviewed, labelled and audited.
+
+
+---
+
+## Related resources
+
+* [Touchpoints](./settings/touchpoints.mdx): configure the agents, knowledge and suggested prompts available in Chat.
+* [Conversations](./Conversations.mdx): review, label and audit the chats your agents have had.
+* [Knowledge](./Knowledge.mdx): manage the information your agents draw on when they answer.
+* [Governance](./Governance.mdx): track usage, cost and performance across conversations.

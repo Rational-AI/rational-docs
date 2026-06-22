@@ -1,0 +1,43 @@
+---
+sidebar_position: 23
+sidebar_label: Connectors
+title: Connectors
+description: What a connector is, why credentials are centralised, and how connectors link the platform to external providers in Rational AI.
+---
+
+# Connectors
+
+A **connector** stores the credentials and configuration needed to talk to an external provider, such as a cloud platform, a model provider or a search service. Set up once, a connector can then be reused safely across the platform wherever that provider is needed.
+
+A connector is like a saved login kept in one secure place. Instead of entering the same keys into every feature that needs them, you store them once and let each feature reference the connector. The secret lives in a single, controlled location.
+
+## Why centralise credentials
+
+Scattering API keys and passwords across many settings is both unsafe and hard to maintain. A connector solves this by giving you:
+
+* **Security:** sensitive credentials are stored in one place rather than copied around.
+* **Reuse:** the same connection can serve several features at once.
+* **Visibility:** you can see where each connector is used before you change or remove it.
+* **Control:** rotating or revoking access is done once, in one place.
+
+## What connectors link to
+
+Once configured, a connector can be used by different parts of the platform:
+
+* **[Models](./AI-model-registry.mdx):** to reach a model provider's API.
+* **[Sources](./Source-and-resources.mdx):** to read data from an external system.
+* **Tools:** to let an agent call an external service.
+
+This is also central to [sovereign AI](./Sovereign-AI.mdx): because every external connection is explicit, you stay in control of exactly which providers your data reaches.
+
+## Connectors in Rational AI
+
+The [Connectors](../cr/settings/connectors.mdx) section is where you add connectors and review where each one is used, so the rest of the platform can reach the outside world without ever handling raw credentials directly.
+
+---
+
+## Additional resources
+
+* [Connectors settings](../cr/settings/connectors.mdx): add and manage connections to external providers.
+* [Source and resources](./Source-and-resources.mdx): connections that bring your data in.
+* [Sovereign AI](./Sovereign-AI.mdx): why explicit, controlled connections matter.

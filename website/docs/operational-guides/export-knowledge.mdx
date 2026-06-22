@@ -1,0 +1,38 @@
+---
+sidebar_position: 8
+sidebar_label: Export a knowledge
+---
+import Admonition from '@theme/Admonition';
+
+# Export a Knowledge
+
+You can export a Knowledge to a `.zip` archive that bundles its resources and configuration. This guide shows how to export a Knowledge from its detail page in **Settings** → **Knowledge**.
+
+<Admonition type="info" icon="📖" title="WHEN TO EXPORT">
+Exporting serializes a Knowledge into a single downloadable archive. Use it to move a Knowledge between environments (for example staging → production), to keep a backup, or to share a curated Knowledge with another tenant. To bring the archive back into Rational AI, see [Import a Knowledge](/operational-guides/import-knowledge).
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with Knowledge management privileges.
+- **An existing Knowledge:** the Knowledge you want to export must already exist (see [Create a Knowledge](/operational-guides/create-knowledge)).
+
+## Export a Knowledge
+
+1. Go to **Settings** → **Knowledge** and open the Knowledge you want to export.
+2. Open the **kebab menu** (the three-dots icon) on the detail page.
+3. Select **Export**.
+
+Rational AI queues an export job that serializes the Knowledge into a `.zip` archive on the server.
+
+<Admonition type="note" icon="📝" title="EXPORT RUNS IN THE BACKGROUND">
+The export is an asynchronous job. Rational AI prepares the archive, polls the job until it is ready, and then downloads it automatically, you don't need to refresh the page or trigger the download yourself.
+</Admonition>
+
+## Result
+
+A progress toast (*"Preparing export, the download will start automatically when it's ready…"*) appears while the job runs. As soon as the archive is ready it downloads automatically and a confirmation toast (*"Export downloaded"*) is shown. If the job fails, an error toast explains what went wrong.
+
+The downloaded `.zip` is a complete export archive. Bring it into another environment with [Import a Knowledge](/operational-guides/import-knowledge).

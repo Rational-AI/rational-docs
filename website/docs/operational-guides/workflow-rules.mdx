@@ -1,0 +1,75 @@
+---
+sidebar_position: 22
+sidebar_label: Workflow rules
+---
+import Admonition from '@theme/Admonition';
+
+# Import, export, and time out workflow rules
+
+Once you've built a few [workflows](/operational-guides/create-workflow) and [processing rules](/operational-guides/create-processing-rule), you'll want to reuse them. Rather than rebuilding a rule by hand in every environment, Rational AI lets you save its definition to a file, load it somewhere else, and cap how long a workflow is allowed to run. This guide covers all three: exporting a rule, importing one or many from JSON, and setting an execution timeout.
+
+<img
+  src={require('@site/static/img/screens/workflows-settings.png').default}
+  alt="Settings Workflows tab"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+***Settings → Workflows**: the **Workflows** and **Processing rules** tabs, with the selected workflow’s script on the right.*
+
+<Admonition type="info" icon="📖" title="WHAT IS A RULE DEFINITION?">
+A workflow or processing rule is just a recipe for transforming data. Rational AI can save that recipe as a portable JSON file (a plain-text format that travels cleanly between environments) or as the underlying Python code that actually runs it. Exporting a rule writes one of these files; importing reads a JSON file back in as a draft. A workflow can also carry an execution timeout, so a run that takes too long is stopped instead of hanging indefinitely.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- Permissions to access the AI Control Room **Settings** area.
+- At least one workflow or processing rule already created (needed for export and timeout).
+- A JSON definition file on hand, if you intend to import.
+
+## Export a rule
+
+Export a rule when you want to copy it into another environment, hand it to a teammate, or look at exactly how it works under the hood. You can save it as a portable JSON definition or as the runnable Python code behind it.
+
+1. Navigate to **Settings** → **Workflows** from the left sidebar.
+2. Select the workflow or processing rule you want to export from the list.
+3. Open the rule's **three-dot menu**.
+4. Choose the format you need:
+   - **Export (JSON)** downloads the rule's portable JSON definition.
+   - **Download Python code** downloads the rule's underlying Python script.
+
+<Admonition type="note" icon="📝" title="JSON FOR MOVING, PYTHON FOR READING">
+Reach for **JSON** when the goal is to move a rule into another environment via import — it's the only format the importer accepts. The **Python code** download is for inspecting or running the rule's logic locally; you can't import it back in.
+</Admonition>
+
+## Import rules from JSON
+
+Import when you're bringing in a rule someone exported elsewhere, instead of building it from scratch. You can load several at once.
+
+1. Navigate to **Settings** → **Workflows** from the left sidebar.
+2. Select **+ New**.
+3. When prompted, choose to **import JSON** rather than create from scratch.
+4. Select one or more JSON definition files.
+
+Each imported definition lands in the list as an unsaved draft. Review each one, then save the ones you want to keep — nothing is persisted until you do.
+
+<Admonition type="note" icon="📝" title="DRAFTS, NOT LIVE RULES">
+Importing never overwrites or activates anything on its own. Even when you import a batch of definitions in a single action, they all arrive as drafts and stay inert until you explicitly save each one.
+</Admonition>
+
+## Set a workflow execution timeout
+
+Give a workflow a timeout when you want a safety cap on its run time — so a run that gets stuck is stopped automatically instead of hanging.
+
+1. Navigate to **Settings** → **Workflows** from the left sidebar.
+2. Select the workflow you want to configure.
+3. Open the workflow's **three-dot menu** and select **Workflow Settings** (it sits between **Export (JSON)** and **Delete**).
+4. In the modal, enter the **timeout in minutes**. It must be a whole number of one minute or more (the field shows the placeholder _Enter timeout in minutes_).
+5. Select **Save**.
+
+The timeout is stored on the workflow and applied to every future run.
+
+## Result
+
+You can now carry workflow and processing rules between environments — export a rule as JSON (or as Python code to inspect locally), and import JSON definitions as drafts you save when ready. And you can keep any workflow from running away by capping its execution time in minutes.

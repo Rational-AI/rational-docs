@@ -1,0 +1,44 @@
+---
+sidebar_position: 9
+sidebar_label: Finetuning
+title: Finetuning
+description: What finetuning is, when to use it versus retrieval or prompting, the main approaches, and how finetuning works in Rational AI.
+---
+
+# Finetuning
+
+**Finetuning** takes a model that has already been trained on broad, general data and continues its [training](./Model-training.mdx) on a smaller, focused dataset. The result is a model that keeps its general abilities but performs noticeably better on your specific task, domain or style.
+
+The analogy is hiring an experienced professional and giving them a few weeks of training on how your company works. They already know their craft; you are adapting that expertise to your particular needs.
+
+## When to finetune
+
+Finetuning is one of several ways to make a model more useful, and it is not always the right one:
+
+* **Prompting** changes the instructions you give the model. Quick and cheap, and often enough.
+* **[Retrieval (RAG)](./RAG.mdx)** gives the model the right facts at answer time. Best when the issue is missing or changing knowledge.
+* **Finetuning** changes the model itself. Best when you need a consistent format, tone or behaviour, or strong performance on a specialised task that prompting and retrieval can't reliably achieve.
+
+A good rule of thumb: reach for retrieval when the model lacks **knowledge**, and for finetuning when it lacks a **skill or behaviour**.
+
+## What you need
+
+A finetuning job generally requires:
+
+* A **base model** to start from.
+* A **[training dataset](./Dataset-and-training-data.mdx)** of high‑quality examples in a consistent format.
+* A few **training parameters** that control how the job runs.
+
+The quality and consistency of the dataset matters far more than its size. A small, clean set of examples usually beats a large, noisy one.
+
+## Finetuning in Rational AI
+
+The platform provides a dedicated [Fine‑Tuning](../cr/settings/finetuning.mdx) section where you pick a base model and a [dataset](../cr/settings/datasets.mdx), set the parameters and launch a job. When it finishes, the tailored model becomes available in the [AI Model Registry](../cr/settings/ai-model-registry.mdx), ready to use like any other model.
+
+---
+
+## Additional resources
+
+* [Fine‑Tuning settings](../cr/settings/finetuning.mdx): start and track finetuning jobs.
+* [Datasets](../cr/settings/datasets.mdx): build the training data a job needs.
+* [RLHF](./RLHF.mdx): a specialised form of finetuning that uses human preferences.
