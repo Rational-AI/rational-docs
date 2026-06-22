@@ -6,73 +6,79 @@ import Admonition from '@theme/Admonition';
 
 # Work with Conversations
 
-The Conversations page is where you review the chats your AI has handled. This guide walks you through the 2026 redesign of the page and explains how each conversation can surface more than one topic as chips.
+Every chat your AI handles lands on the Conversations page, where you can review who it spoke with, how it went, and what was discussed. This guide covers the 2026 redesign and shows how a single conversation can surface more than one topic at once.
 
 <Admonition type="info" icon="📖" title="WHAT IS THE CONVERSATIONS PAGE?">
-The Conversations page lists every conversation (room) your AI has taken part in, with its user, status, sentiment, topics, and date. A single conversation can span more than one subject, so each one can carry several topics, each shown as its own chip.
+A conversation (sometimes called a *room*) is one back-and-forth exchange between a user and your AI. The Conversations page lists every conversation your AI has taken part in, along with its user, status, sentiment, topics, and date. Because a single exchange can wander across several subjects, each conversation can carry several topics, shown as separate chips.
 </Admonition>
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Access to the Conversations page:** an account that can view conversations.
-- **Existing conversations:** at least one conversation handled by your AI, so the table has rows to work with.
+- **Access to the Conversations page** — an account that can view conversations.
+- **At least one conversation** handled by your AI, so the table has rows to work with.
 
 ## Open the Conversations page
 
-1. From the topbar, select the **Conversations** navigation icon. The active tab is marked with a teal underline.
-2. The page opens with its header and the conversations table. The header shows the page title and a **search** field next to an **Actions** menu.
+From the topbar, select the **Conversations** navigation icon. The active tab is marked with a teal underline. The page opens to its header — page title, a **search** field, and an **Actions** menu — above the conversations table.
 
 <Admonition type="note" icon="📝" title="A REFRESHED LAYOUT">
-The 2026 design gives the header and table consistent padding and a flat, lighter look: a white table header, no vertical column separators, and a colored status (open = teal, closed = grey). Dates are shown as `MMM d, y h:mm a`.
+The 2026 design gives the header and table consistent padding and a flatter, lighter look: a white table header, no vertical column separators, and color-coded status (open = teal, closed = grey). Dates appear as `MMM d, y h:mm a`.
 </Admonition>
 
 ## Read the table
 
-Each row is one conversation. The columns show:
+Each row is one conversation. Scan across the columns to size up a conversation without opening it:
 
-- **User:** who the conversation was with.
-- **Status:** **open** (teal) or **closed** (grey).
-- **Sentiment:** the detected sentiment of the conversation.
-- **Topics:** one chip per subject the conversation covered (see below).
-- **Date:** when the conversation took place, formatted `MMM d, y h:mm a`.
+- **User** — who the conversation was with.
+- **Status** — **open** (teal) or **closed** (grey).
+- **Sentiment** — the mood the AI detected in the conversation.
+- **Topics** — one chip per subject the conversation covered (see the next section).
+- **Date** — when the conversation took place, formatted `MMM d, y h:mm a`.
 
 ## Work with multiple topics
 
-A conversation can cover several subjects at once. Instead of a single topic, the **Topics** column renders one chip per subject.
+Topics tell you what each conversation was actually about, so you can spot patterns across many chats at a glance. They're classified automatically — the AI reads each conversation and tags it without any manual work from you.
 
-- A single-topic conversation shows **one chip** (for example, `Billing`).
-- A multi-topic conversation shows **several chips** (for example, `Billing`, `Refund request`, and `Account access`).
-- When a conversation has no topics, the column shows a **dash** (`—`).
+Because one exchange can cover several subjects, the **Topics** column shows a separate chip for each:
 
-Topics are classified automatically for each conversation, so the chips reflect what the AI detected without any manual tagging.
+- A **single-topic** conversation shows one chip — for example, `Billing`.
+- A **multi-topic** conversation shows several chips — for example, `Billing`, `Refund request`, and `Account access`.
+- A conversation with **no topics** shows a dash (`—`).
 
 ## Filter and search
 
-Narrow the table down to the conversations you care about.
+Narrow a long table down to the conversations you care about. You can search across users from the header, or filter one column at a time.
 
-1. Use the **search** field in the header to find conversations by user.
-2. To filter a single column, select the **funnel** icon in that column's header:
-   - **User:** enter text to match.
-   - **Sentiment:** choose from the available options.
-   - **Status:** choose from the available options.
-3. While a column filter is active, its **funnel** icon turns **teal** so you can see at a glance which columns are filtered.
+### Search by user
+
+Use the **search** field in the header to find conversations by user. This matches against the **User** column.
+
+### Filter a single column
+
+To filter on one column's values, select the **funnel** icon in that column's header:
+
+- **User** — enter text to match.
+- **Sentiment** — choose from the available options.
+- **Status** — choose from the available options.
+
+While a filter is active, its **funnel** icon turns **teal**, so you can tell at a glance which columns are filtered.
 
 <Admonition type="note" icon="📝" title="USER FILTER AND SEARCH SHARE A QUERY">
-The **User** column filter and the header **search** field use the same query, so the **User** funnel also lights up when search is in use.
+The **User** column filter and the header **search** field run the same query. Because of this, the **User** funnel also lights up teal whenever you're searching.
 </Admonition>
 
 ## Run bulk actions
 
-The header **Actions** menu lets you act on several conversations at once.
+When you want to act on many conversations at once — say, clearing out test chats — the **Actions** menu handles them in a single step.
 
-1. Select the rows you want to act on using their checkboxes.
+1. Select the rows you want using their checkboxes.
 2. Open the **Actions** menu next to the search field.
-3. Choose either:
-   - **Recompute** the selected conversations, or
-   - **Delete** the selected conversations.
+3. Choose one of:
+   - **Recompute** — re-run the automatic analysis (such as sentiment and topics) on the selected conversations.
+   - **Delete** — remove the selected conversations.
 
 ## Result
 
-You can browse every conversation in a cleaner, consistently padded table, read each conversation's user, status, sentiment, topics, and date at a glance, filter or search to find specific rooms, and act on a selection in bulk from the **Actions** menu. Conversations that span several subjects now make that clear by showing one topic chip per subject.
+You can browse every conversation in a cleaner, evenly padded table; read each one's user, status, sentiment, topics, and date at a glance; search or filter to find specific rooms; and act on a selection in bulk from the **Actions** menu. Conversations that span several subjects make that clear by showing one topic chip per subject.
