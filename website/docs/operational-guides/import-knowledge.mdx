@@ -1,0 +1,39 @@
+---
+sidebar_position: 7
+sidebar_label: Import a knowledge
+---
+import Admonition from '@theme/Admonition';
+
+# Import a Knowledge
+
+You can move a Knowledge between environments by importing a `.zip` archive that was previously exported from Rational AI. This guide shows how to import a Knowledge from the **Settings** → **Knowledge** page.
+
+<Admonition type="info" icon="📖" title="WHEN TO IMPORT">
+Importing recreates a Knowledge, with its resources and configuration, from an export archive. Use it to copy a Knowledge from one environment to another (for example staging → production), to restore a backup, or to share a curated Knowledge with another tenant. To produce the archive, see [Export a Knowledge](/operational-guides/export-knowledge).
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with Knowledge management privileges.
+- **An export archive:** a `.zip` file produced by the [Export a Knowledge](/operational-guides/export-knowledge) action.
+
+## Import a Knowledge
+
+1. Go to **Settings** → **Knowledge**.
+2. Select the **New** button. Instead of creating an empty Knowledge directly, the button now opens a dropdown with two options:
+   * **New knowledge** — creates an empty Knowledge (see [Create a Knowledge](/operational-guides/create-knowledge)).
+   * **Import knowledge** — imports a Knowledge from an archive.
+3. Select **Import knowledge** and choose the `.zip` archive from your computer.
+4. The archive uploads and the Knowledge is recreated.
+
+<Admonition type="note" icon="📝" title="EMPTY ENVIRONMENTS">
+The **New** button also opens this dropdown on the empty-state page. A fresh tenant with no Knowledge can import one straight away, without creating an empty Knowledge first.
+</Admonition>
+
+## Result
+
+When the import finishes, the Knowledge list reloads and Rational AI navigates you to the newly imported Knowledge. A success toast confirms the import; if the archive is invalid or the upload fails, an error toast explains what went wrong.
+
+The imported Knowledge keeps the resources and configuration captured in the archive. Review its settings (AI Search, Touchpoint, processing rules) before putting it into use, since environment-specific values such as AI models may differ between tenants.
