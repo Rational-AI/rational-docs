@@ -26,6 +26,14 @@ Before you start, make sure you have:
 
 Your API keys live on a dedicated settings page that lists every key with its name, a masked value, and the date it was created. From here you create new keys and revoke ones you no longer trust.
 
+<img
+  src={require('@site/static/img/screens/apikeys-settings.png').default}
+  alt="The API Keys settings page"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The **API Keys** page: create and manage the keys used for programmatic access.*
+
 ### Create an API key
 
 Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key makes it easy to track usage and revoke access later without disrupting anything else.
@@ -67,6 +75,14 @@ Every model in the registry comes with a snippet you can copy and run, pre-fille
    - **Python** (OpenAI SDK)
    - **TypeScript** (OpenAI SDK)
 4. Use the **copy-to-clipboard** button on the snippet to copy it.
+
+<img
+  src={require('@site/static/img/screens/model-use-via-api.png').default}
+  alt="The Use via API section with code snippets"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+***Use via API**: ready-made cURL, Python and TypeScript snippets that call the model through the OpenAI-compatible API.*
 
 Each snippet points at your workspace's OpenAI-compatible endpoint group at `/compat/v0/openai` (for example `/api/compat/v0/openai/chat/completions`). The request's `model` field is already set to the model's identifier, which the backend uses to route your request to the right model — so you don't have to look it up yourself.
 
