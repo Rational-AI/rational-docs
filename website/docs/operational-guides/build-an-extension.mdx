@@ -1,0 +1,392 @@
+---
+sidebar_position: 6
+sidebar_label: Build an extension
+---
+
+# Build an extension
+
+Extensions are how you add new capabilities to Rational AI without changing the
+platform itself. A single extension is a small package — a manifest plus,
+optionally, some code — that the platform installs and wires into the right
+place: a tool an agent can call, a messaging channel users can write to, a
+source your Knowledge bases sync from, or a workflow that processes incoming
+files. This guide explains the kinds of extensions you can build, the manifest
+that describes each one, and how to package and install them.
+
+import Admonition from "@theme/Admonition";
+
+<Admonition type="info" icon="📖" title="WHAT IS AN EXTENSION?">
+An extension is a package described by a single `manifest.json`. The manifest
+declares one or more **providers** — capabilities the platform installs. The
+same package can ship several providers at once, but most extensions declare
+just one. Installing an extension reads its manifest and registers whatever it
+provides; uninstalling reverses that.
+</Admonition>
+
+<Admonition type="note" icon="🔌" title="BUILDING VS. INSTALLING">
+This page is the **authoring** guide — how to *create* an extension. If you only
+need to install, configure, enable or disable extensions from the registry, see
+[Settings → Extensions](/cr/settings/extensions) instead.
+</Admonition>
+
+## The four kinds of provider
+
+What an extension can do is determined entirely by which provider arrays its
+manifest fills in. There are four:
+
+| Provider | Manifest key | What it adds | Ships code? |
+|----------|--------------|--------------|-------------|
+| **MCP server** | `mcpServerProviders` | Tools, prompts and resources an agent can call during a conversation (fetch a page, query a database, search the web). | Local: yes. Remote: no. |
+| **Channel** | `channelProviders` | An inbound/outbound messaging channel users talk to the assistant through (e.g. Telegram). | No |
+| **Source** | `sourceProviders` | A data source your Knowledge bases sync files from, with an optional retention window. | Usually yes |
+| **Workflow** | `workflowProviders` | A processing workflow that transforms files as they enter a Knowledge base. | Yes |
+
+A manifest always lists all four arrays; leave the ones you don't use empty
+(`[]`).
+
+## Anatomy of an extension
+
+A code-bearing extension is a directory named `<name>-<version>` with a standard
+layout:
+
+```
+my-extension-1.0.0/
+├── manifest.json        # metadata + provider declarations (required)
+├── icon.png             # extension icon shown in the registry
+├── <name>-server/       # MCP server source (TypeScript or Python)
+├── dist/                # built server / scripts the manifest points at
+└── make-tar.sh          # builds the distributable .tar.bz2
+```
+
+A **remote** extension (an MCP server hosted elsewhere) ships no code at all —
+it is just the `manifest.json`.
+
+### Common manifest fields
+
+Every manifest starts with the same identifying fields, regardless of which
+providers it declares:
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `id` | yes | A stable UUID for the extension. Generate it once (`uuidgen`) and keep it for the life of the extension. |
+| `nameIdentifier` | yes | A short machine slug, e.g. `time`, `github-remote`. Matches the folder name prefix. |
+| `version` | yes | Semantic version, matching the folder suffix (`1.0.0`). |
+| `name` | yes | Display name shown in the registry. |
+| `description` | no | A sentence or two describing what the extension does. Shown to the user before they install. |
+| `icon` | no | Icon for the extension. May be empty (the bundled `icon.png` is used), a remote URL, or an embedded `data:` URI. |
+| `link` | no | URL to upstream docs or the project homepage. |
+
+The remaining keys are the four provider arrays described below.
+
+## 1. MCP server extensions
+
+The most common kind. An MCP server exposes **tools** (and optionally prompts and
+resources) following the [Model Context Protocol](https://modelcontextprotocol.io);
+agents call them during a conversation. There are two transports.
+
+### Local (stdio)
+
+A local server runs as a process the platform spawns. This is the default — omit
+`transportType` and supply a `command` and `arguments`:
+
+```json
+{
+  "id": "fcb66d0a-1557-4041-8f93-2adc1999608f",
+  "nameIdentifier": "time",
+  "version": "1.0.0",
+  "name": "Time",
+  "description": "Get the current time and convert between IANA timezones.",
+  "icon": "",
+  "link": "https://mcp.so/server/time/modelcontextprotocol",
+  "channelProviders": [],
+  "mcpServerProviders": [
+    {
+      "name": "Time-server",
+      "path": "",
+      "command": "uvx",
+      "arguments": ["mcp-server-time", "--local-timezone=Europe/Rome"],
+      "allowedSources": [],
+      "configuration": {}
+    }
+  ]
+}
+```
+
+Useful fields on a local `mcpServerProviders` entry:
+
+| Field | Description |
+|-------|-------------|
+| `command` / `arguments` | The process to spawn and its arguments. |
+| `path` | Working directory the process is spawned in, relative to the install dir (e.g. `dist`). |
+| `environment` | Environment variables for the process. Values support `${config.*}` interpolation, so secrets come from the user's configuration. |
+| `installScript` / `uninstallScript` | Commands run once when the extension is installed / removed (e.g. to fetch dependencies). |
+| `beforeCallScript` / `afterCallScript` | Commands run around each tool call. |
+| `configuration` | The user-facing config schema (see [Configuration fields](#configuration-fields)). |
+
+### Remote (HTTP)
+
+A remote server already runs somewhere else; the platform connects to it over
+HTTP instead of spawning anything. Set `transportType` to `"http"` and give a
+`url` and optional `headers`:
+
+```json
+{
+  "id": "407134fe-a77a-4fe5-8d9e-5ab08c4a01ad",
+  "nameIdentifier": "github-remote",
+  "version": "1.0.0",
+  "name": "GitHub (Remote)",
+  "description": "GitHub's official remote MCP server.",
+  "channelProviders": [],
+  "mcpServerProviders": [
+    {
+      "name": "GitHub Remote MCP Server",
+      "transportType": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${accessToken}" },
+      "configuration": {
+        "accessToken": {
+          "title": "GitHub Personal Access Token",
+          "provider": { "kind": "value", "type": "{ \"type\": \"string\" }" },
+          "isRequired": true,
+          "isHidden": false
+        }
+      }
+    }
+  ]
+}
+```
+
+Both `url` and header values support `${config.*}` interpolation, so per-user
+credentials (an access token, a base URL) are filled in from the configuration
+the user provides at install time.
+
+<Admonition type="note" icon="🔌" title="REMOTE EXTENSIONS SHIP NO CODE">
+A remote extension has no server to build, so it is distributed as a **plain
+`manifest.json`** — upload the file directly, no `.tar.bz2`. With no bundled
+`icon.png`, set the manifest's `icon` field to a URL or an embedded `data:` URI.
+</Admonition>
+
+<Admonition type="tip" icon="✅" title="OAUTH IS NOT YET SUPPORTED">
+Remote providers authenticate with a static value (a token or key) carried in a
+header. Servers that require an interactive OAuth 2.1 / DCR flow can't yet be
+expressed in a manifest — use a token-based server where one is offered.
+</Admonition>
+
+### Agent skills
+
+Agent skills are delivered as a specialised MCP server extension: a sandbox
+server (`mcpServerProviders`) that loads `SKILL.md` skills from the package and
+offers them to the model with progressive disclosure. You author the skills as
+Markdown with frontmatter and bundle them alongside the server — the manifest
+shape is the same local-stdio form shown above.
+
+## 2. Channel extensions
+
+A channel lets users reach the assistant through an external messaging platform.
+Declare it under `channelProviders` and pick a `type` (`Telegram`, `RationalAI`,
+`OpenAIApi`):
+
+```json
+{
+  "channelProviders": [
+    {
+      "id": "4c0369fa-ac30-4851-993f-ada2965d5e0c",
+      "name": "Telegram chat service",
+      "description": "Exchange messages via Telegram infrastructure.",
+      "type": "Telegram",
+      "configuration": {
+        "token": {
+          "alias": "Bot Token",
+          "description": "The bot token issued by Telegram's BotFather.",
+          "type": "{\"type\": \"string\"}",
+          "isRequired": true,
+          "isHidden": false,
+          "defaultValue": ""
+        }
+      }
+    }
+  ]
+}
+```
+
+The channel's `configuration` follows the same field shape as everything else
+(see [Configuration fields](#configuration-fields)). Hidden, pre-filled fields —
+such as a webhook URL the platform owns — are marked `isHidden: true`.
+
+## 3. Source extensions
+
+A source provider becomes a selectable data source when you create or sync a
+Knowledge base. A source is **program-driven**: at sync time the platform runs
+the program declared in `runtime`, hands it the source configuration as JSON on
+stdin, and reads back a `{ "files": [...] }` list to download.
+
+```json
+{
+  "sourceProviders": [
+    {
+      "id": "c0b2f8d3-4e5a-4b7c-9d2e-3f6a8b0c1d22",
+      "name": "ArXiv Catchup",
+      "description": "Download arXiv PDFs matching a category and time window.",
+      "runtime": {
+        "path": "dist",
+        "command": "uv",
+        "arguments": ["run", "arxiv_catchup.py", "list"],
+        "protocol": "list-json-v1"
+      },
+      "expiry": { "mode": "window" },
+      "configuration": {
+        "category": {
+          "alias": "Category",
+          "description": "arXiv category to fetch, e.g. cs.AI.",
+          "type": "{\"type\":\"string\"}",
+          "isRequired": true,
+          "isHidden": false
+        }
+      }
+    }
+  ]
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `runtime.command` / `arguments` | The resolver program. It receives the source config on stdin and prints `{ "files": [...] }` on stdout. |
+| `runtime.path` | Working directory for the program, relative to the install dir. |
+| `runtime.protocol` | Contract version the worker expects (`list-json-v1`). |
+| `expiry.mode` | `window` removes any previously-synced file the resolver no longer returns; `none` never deletes. |
+
+<Admonition type="note" icon="🔌" title="THE RESOLVER ONLY LISTS — THE PLATFORM DOWNLOADS">
+Your program's job is to return *which* files to sync, not to fetch them. The
+worker downloads each returned file and applies the `expiry` policy, so a
+resolver that returns only items inside the configured window gets out-of-window
+files cleaned up for free.
+</Admonition>
+
+## 4. Workflow extensions
+
+<Admonition type="info" icon="🆕" title="NEW">
+Workflow providers are a recent addition to the extension system. They let an
+extension ship a ready-made [processing workflow](/operational-guides/create-workflow)
+that the platform installs and assigns to Knowledge files.
+</Admonition>
+
+A workflow provider points at a script in the package; on install, the platform
+reads that script and registers it as a global processing workflow. Because the
+script follows the same stdin/stdout contract as any
+[hand-written workflow](/operational-guides/create-workflow), the existing
+worker runs it unchanged — no extra wiring.
+
+```json
+{
+  "id": "565fde73-85e4-4dce-b3a0-19423b472bb9",
+  "nameIdentifier": "transcribe",
+  "version": "1.0.0",
+  "name": "RationalAI Transcribe Extension",
+  "description": "Transcribe audio or video files into Markdown.",
+  "channelProviders": [],
+  "mcpServerProviders": [],
+  "sourceProviders": [],
+  "workflowProviders": [
+    {
+      "id": "transcribe-media",
+      "name": "Transcribe Audio/Video",
+      "description": "Transcribe an audio or video file into a Markdown resource.",
+      "path": "dist",
+      "script": "transcribe_workflow.py",
+      "timeout": 30,
+      "isActive": true
+    }
+  ]
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `path` | Directory inside the package the script lives in (e.g. `dist`). |
+| `script` | Filename of the workflow script, relative to `path`. |
+| `timeout` | Per-run timeout in minutes passed to the activity. |
+| `isActive` | Whether the workflow is assignable immediately after install. |
+
+The script itself is an ordinary processing workflow — a `process(document,
+options)` function wired up with `run(process)`, with its dependencies declared
+inline in [PEP 723](https://peps.python.org/pep-0723/) format so the worker
+resolves them at run time:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["rational-client", "faster-whisper"]
+# ///
+from rational_client.core import File, Knowledge
+from rational_client.utils import run
+
+
+def process(document: File, options: dict):
+    knowledge = Knowledge(document.knowledge_id)
+    resource = knowledge.create_resource(name=document.name, file_id=document.id)
+    markdown = transcribe(document.get_data())  # your logic here
+    return {str(resource.resource_id): markdown}
+
+
+run(process)
+```
+
+<Admonition type="caution" icon="⚠️" title="EXTENSION WORKFLOWS ARE READ-ONLY">
+A workflow installed from an extension is **read-only**: it appears in
+**Settings → Workflows** and can be assigned to files, but it can't be edited or
+deleted from the UI — its owning extension manages it. Uninstalling the
+extension is how you remove it.
+</Admonition>
+
+## Configuration fields
+
+Every provider that needs user input — credentials, endpoints, options — declares
+a `configuration` map. Each entry is a field the platform renders at install
+time. The fields are consistent across provider types:
+
+| Field | Description |
+|-------|-------------|
+| `title` / `alias` | The label shown to the user. (`title` on MCP providers, `alias` on channels and sources.) |
+| `description` | Help text. Plain HTML links are allowed for "how to get this value" instructions. |
+| `type` | A JSON Schema fragment **encoded as a string**, e.g. `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
+| `isRequired` | Whether the user must supply a value. |
+| `isHidden` | `true` for values the platform fills in itself (e.g. a webhook URL) — they don't appear in the form. |
+| `defaultValue` | Pre-filled value. |
+| `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly. |
+
+Reference a configured value elsewhere in the manifest with `${fieldName}` —
+that's how the GitHub example above pulls `accessToken` into its
+`Authorization` header.
+
+## Package and install
+
+A code-bearing extension is built into a distributable archive by the
+`make-tar.sh` script in its directory:
+
+```bash
+cd my-extension-1.0.0
+./make-tar.sh
+```
+
+This installs dependencies, builds the server, and produces a `.tar.bz2`
+containing the built files, `icon.png` and `manifest.json`. A **remote**
+extension skips this entirely — its `manifest.json` *is* the distributable.
+
+Install the result from the Control Room: open **Settings → Extensions**, click
+**Add**, and upload the archive (or, for a remote extension, the manifest). Once
+installed, configure any required fields, then enable it. See
+[Settings → Extensions](/cr/settings/extensions) for the full install,
+configure and management flow.
+
+<Admonition type="tip" icon="✅" title="START FROM AN EXISTING EXTENSION">
+The fastest way to build a new extension is to copy one that already does
+something similar and adjust its manifest. Keep `id` unique (generate a fresh
+UUID), and keep `nameIdentifier` and `version` consistent with the folder name.
+</Admonition>
+
+## Related guides
+
+- [Settings → Extensions](/cr/settings/extensions) — install and manage extensions.
+- [Create a workflow](/operational-guides/create-workflow) — author the processing workflow a workflow extension ships.
+- [Create a processing rule](/operational-guides/create-processing-rule) — route files to the right workflow.
