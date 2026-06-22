@@ -6,14 +6,16 @@ import Admonition from '@theme/Admonition';
 
 # Manage extensions
 
-Extensions add capabilities to Rational AI, such as MCP servers your agents can call. This guide covers managing and installing extensions in the UI: making them available in the registry, installing them into your tenant, and reading what each extension card tells you.
+Extensions are how you give Rational AI new capabilities, most often by connecting it to outside tools your agents can call. This guide walks through everything you do with extensions in the UI: publishing them to the registry, installing them into your tenant, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
 
 <Admonition type="info" icon="📖" title="WHAT IS AN EXTENSION?">
-An extension is a bundle that adds a capability to Rational AI, most commonly one or more MCP (Model Context Protocol) servers. Making an extension *available* uploads it to the shared registry; *installing* it adds it into your tenant. These are two separate, explicit steps.
+An extension is a bundle that adds a capability to Rational AI, most commonly one or more **MCP** servers. MCP (Model Context Protocol) is an open standard for connecting AI agents to external tools and data sources, so an MCP server is essentially a set of tools your agents can call.
+
+Two distinct steps put an extension to work. Making one **available** uploads its bundle to a shared registry so anyone can install it. **Installing** it then adds it into your tenant, where it actually runs. These steps are separate and explicit, so publishing a bundle never silently turns it on for everyone.
 </Admonition>
 
-<Admonition type="note" icon="📝" title="LOOKING TO BUILD AN EXTENSION?">
-This guide is about managing and installing extensions in the UI. To create your own extension and its manifest, see the extension authoring guide.
+<Admonition type="note" icon="📝" title="LOOKING TO BUILD YOUR OWN?">
+This page covers managing and installing existing extensions. To create one from scratch, including its manifest, see [Build an extension](/operational-guides/build-an-extension).
 </Admonition>
 
 ## Prerequisites
@@ -21,53 +23,69 @@ This guide is about managing and installing extensions in the UI. To create your
 Before you start, make sure you have:
 
 - **Administrative access:** an account with extension management privileges.
-- **The extension bundle (if uploading your own):** a `.tar.bz2`, `.zip`, `.mcpb` file, or a bare `manifest.json`. The format is auto-detected.
-- **Any required configuration values:** for remote (HTTP) MCP servers, the endpoint URL and authentication token or header the server expects.
+- **The extension bundle (only if you're uploading your own):** a `.tar.bz2`, `.zip`, `.mcpb` file, or a bare `manifest.json`. The format is detected automatically.
+- **Any required configuration values:** for remote MCP servers reached over the network, the endpoint URL plus whatever authentication token or header the server expects.
 
-## Read the extension card
+## Read an extension card
 
-Each extension is shown as a card on the **Extensions** page.
+Every extension appears as a card on the **Extensions** page, and the card is your at-a-glance status check before you open anything. The **version** from the manifest sits right next to the extension name, so you can confirm which release is installed without digging into details. Each card also carries an enable toggle for turning the extension on or off.
 
-- The **version** from the manifest is shown next to the extension name, so you can see the installed version at a glance.
+<img
+  src={require('@site/static/img/screens/extension-card-version.png').default}
+  alt="An extension card showing its version next to the name, with an enable toggle"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+*An extension card: the version reads from the manifest, and the toggle enables or disables it.*
 
 ## Make an extension available
 
-Uploading a bundle to the registry makes it available for anyone to install. Nothing is installed locally by this step.
+Do this when you have a bundle you want others to be able to install. Uploading it adds it to the shared registry only; nothing runs in your tenant yet, and your list of installed extensions stays exactly as it was.
 
 1. Go to **Settings** → **Extensions**.
-2. Drag an extension bundle from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag.
-3. Release the file to upload it. A toast confirms the extension is now available.
-
-The list of installed extensions is unchanged by this step; the bundle is only added to the registry.
+2. Drag an extension bundle from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag, confirming the page will accept the file.
+3. Release the file. A toast confirms the extension is now available in the registry.
 
 <Admonition type="note" icon="📝" title="ACCEPTED FILES AND CONFLICTS">
-Accepted bundles are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`. Dropping an unsupported file shows a warning toast and nothing is uploaded. Re-uploading a bundle whose name identifier and version already exist in the registry surfaces a conflict as an error toast.
+The registry accepts `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`. Dropping anything else shows a warning toast and uploads nothing. Re-uploading a bundle whose name identifier and version already exist surfaces a conflict as an error toast, so you'll know to bump the version first.
 </Admonition>
 
-You can also drag a bundle directly onto the registry list inside the **Add extension** dialog. The bundle is added to the registry and the new entry is selected automatically.
+You can also publish a bundle without leaving the install flow: drag it directly onto the registry list inside the **Add extension** dialog. The bundle is added to the registry and the new entry is selected for you automatically, ready to install.
 
 ## Install an extension into your tenant
 
+This is the step that actually makes an extension usable. Installing pulls an available extension out of the registry and adds it into your tenant.
+
 1. Go to **Settings** → **Extensions** and select **+ Add**.
-2. In the registry picker, browse the available extensions. The detail pane shows the first non-installed extension automatically, so it is never blank.
+2. In the registry picker, browse the available extensions. The detail pane opens on the first not-yet-installed extension, so it's never blank when the dialog appears.
 3. Select the extension you want, then confirm to install it into your tenant.
 
-<Admonition type="note" icon="📝" title="ALREADY-INSTALLED EXTENSIONS ARE SHOWN">
-Extensions you have already installed stay visible in the registry list, rendered **disabled** and not selectable, with an **Already installed** tag. This lets you see what is already added without being able to re-select it.
+<Admonition type="note" icon="📝" title="ALREADY-INSTALLED EXTENSIONS STAY VISIBLE">
+Extensions you've already installed remain in the registry list, shown **disabled** with an **Already installed** tag. You can see what's in place at a glance, but you can't re-select or double-install it.
 </Admonition>
 
 ## Configure remote (HTTP) MCP servers
 
-Extensions can include MCP servers reached over HTTP (streamable-HTTP or SSE), not just local ones spawned as a process. A single extension can bundle both local and remote servers.
+Many extensions connect to MCP servers running on your own machine, spawned as a local process. Others reach servers across the network over HTTP, and a single extension can bundle both kinds. Remote servers are the ones that need a little setup, because Rational AI has to know where they live and how to authenticate.
 
-1. Open the extension's **details** page.
-2. In the **MCP servers** section, review each server. A remote server shows a **Remote** chip and its endpoint URL; a local one shows a **Local** chip.
-3. For a remote server that requires authentication, enter the token or header value in the extension-configuration form. The value comes from your configuration and is never stored in the manifest. Headers that resolve to empty are dropped, so a public no-auth server sends no blank header.
+### Tell local and remote servers apart
+
+Open the extension's **details** page and find the **MCP servers** section. Each server is labelled: a remote server shows a **Remote** chip alongside its endpoint URL, while a local one shows a **Local** chip. The same view also lists the tools the extension provides, so you can see at a glance what your agents will be able to call.
+
+<img
+  src={require('@site/static/img/screens/extension-mcp-tools.png').default}
+  alt="An extension detail view showing the tools it provides and the local and remote MCP servers it connects to"
+  style={{ width: '100%', maxWidth: '560px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+*An extension's details: the tools it provides and the MCP servers it connects to, local and remote.*
+
+### Add authentication for a remote server
+
+For a remote server that requires authentication, enter the token or header value in the extension-configuration form. That value comes from your configuration and is never written into the manifest, so credentials stay out of the shared bundle. Headers that resolve to empty are dropped automatically, which means a public, no-auth server is never sent a blank header.
 
 <Admonition type="note" icon="📝" title="READY-MADE REMOTE EXTENSIONS">
-Rational AI ships ready-to-use remote MCP extension manifests for many connectors (for example GitHub, Linear, Atlassian, monday, Airtable, Supabase, Snowflake, Sentry, PagerDuty, Shopify and more). Each takes an endpoint URL plus an authentication header from your configuration. A generic **remote-mcp** extension lets you add any remote MCP server by supplying its URL and an optional `Authorization` header.
+Rational AI ships ready-to-use remote MCP manifests for many popular connectors, including GitHub, Linear, Atlassian, monday, Airtable, Supabase, Snowflake, Sentry, PagerDuty, and Shopify. Each one just needs an endpoint URL and an authentication header from your configuration. There's also a generic **remote-mcp** extension for connecting any other remote MCP server: supply its URL and, if needed, an `Authorization` header.
 </Admonition>
 
 ## Result
 
-You can read each extension's version from its card, upload bundles to make extensions available, and install them into your tenant from the **Add** dialog, where already-installed extensions stay visible but disabled. For extensions with remote MCP servers, you can identify them by the **Remote** chip and endpoint URL and supply their authentication through the extension-configuration form.
+You can read an extension's version straight from its card, upload bundles to make extensions available in the registry, and install them into your tenant from the **Add** dialog, where already-installed extensions stay visible but disabled. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
