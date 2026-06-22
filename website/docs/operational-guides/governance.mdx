@@ -1,0 +1,92 @@
+---
+sidebar_position: 23
+sidebar_label: Governance
+---
+import Admonition from '@theme/Admonition';
+
+# Monitor usage, cost, and audit logs
+
+Once your AI is in use, you'll want to know how much it's being used, what it's costing you, how fast it responds, and exactly what happened on any given request. The **Governance** area gives you all of that in one place.
+
+<Admonition type="info" icon="📖" title="WHAT IS GOVERNANCE?">
+Governance is a top-navigation area (alongside Chat, Knowledge, Conversations, and [BI](/operational-guides/rational-bi)) that reports on your AI's usage. It answers three practical questions: how much am I spending, where is it slow or expensive, and what exactly did the model do on a specific call? It has two tabs: **Dashboard** for the big picture, and **Audit log** for the call-by-call record.
+</Admonition>
+
+Before going further, two terms show up everywhere in this area:
+
+- An **inference** is a single call to a model: one question in, one answer out.
+- A **token** is the small chunk of text that models read and write, and the unit they're billed by. A short sentence is a handful of tokens; a long document is thousands. (For more on the models behind these calls, see [LLMs](/concepts/LLMs).)
+
+## Read the dashboard
+
+Open **Governance** and you'll land on the **Dashboard** tab. It's split into two parts: a row of headline cards at the top, and a set of charts below.
+
+The **Overview** row gives you the totals for the period you've selected, at a glance:
+
+- **Total costs** — what your AI usage has cost over the period (for example, €18.72).
+- **Total inferences** — how many model calls were made (for example, 25).
+- **Total input tokens** — the volume of text sent *into* the models.
+- **Total output tokens** — the volume of text the models generated *back*.
+
+Below the cards, the **Details** section plots each metric over time, so you can see trends rather than just a single number. There's one chart per metric:
+
+- **Total tokens** — input versus output, side by side.
+- **Tokens per second (avg)** — how fast the models are generating text.
+- **Inferences** — call volume over the period.
+- **Tokens per inference (avg)** — how large your typical request-and-response is.
+- **Costs** — spend over time.
+- **Cost per inference (avg)** — the average price of a single call, useful for spotting an expensive model or touchpoint.
+- **Time to first token (avg)** — how long, on average, before a response starts coming back.
+
+<img
+  src={require('@site/static/img/screens/governance-dashboard.png').default}
+  alt="Governance Dashboard with overview cards and per-metric charts"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The Governance **Dashboard**: cost, inference and token totals for the selected period, with a chart for each metric below.*
+
+### Filter what you're looking at
+
+Across the top of the page sit four filters that scope everything you see — both the cards and the charts, on either tab:
+
+- **Type** — narrow to a kind of usage, for example **APIs**.
+- **Touchpoints** — focus on one or more [touchpoints](/operational-guides/configure-touchpoints) (the entry points your users actually talk to).
+- **Models** — focus on specific models from your [AI Model Registry](/operational-guides/ai-model-registry-features).
+- **Period** — set the time window, for example **Last 30 days**.
+
+These filters are how you turn a broad overview into a real answer. Want to know which touchpoint is driving spend? Set **Period** to the last 30 days and switch **Touchpoints** one at a time while you watch the **Costs** chart. Suspect one model is slow? Filter to it and check **Time to first token (avg)**.
+
+## Inspect individual calls in the audit log
+
+When you need to look past the averages at a single call, switch to the **Audit log** tab. It's a sortable, paginated table with one row per inference — a complete record of every call your AI has made within the current filters.
+
+<img
+  src={require('@site/static/img/screens/governance-audit.png').default}
+  alt="Governance Audit log table, one row per inference"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The **Audit log**: one row per inference, with the model, touchpoint, token counts, cost, and latency.*
+
+Each column tells you one thing about the call:
+
+- **Timestamp** — when the call happened.
+- **Model** — which model handled it.
+- **Touchpoint** — which entry point the call came through.
+- **Tokens** — the count in, then out (input → output).
+- **Costs** — what that single call cost.
+- **TTFT** — *time to first token*: how long until the first piece of the answer came back. This is what a user experiences as the "wait" before a response starts.
+- **E2E latency** — *end-to-end latency*: the total time from request to the last token.
+- **Speed** — generation rate in tokens per second.
+- **Finish** — why the call ended, for example `stop` (the model finished its answer normally).
+
+Click a column header to sort. Sorting by **Costs** surfaces your most expensive calls; sorting by **TTFT** or **E2E latency** brings the slowest ones to the top.
+
+<Admonition type="note" icon="📝" title="TTFT VS E2E LATENCY">
+These two measure different kinds of "slow." A high **TTFT** means the model took a while to *start* answering — the user stares at a blank screen. A high **E2E latency** with a low TTFT usually just means a long answer that streamed steadily. When a touchpoint feels sluggish, check TTFT first.
+</Admonition>
+
+## Result
+
+You now know where to track spend and performance over time on the **Dashboard**, how to use the **Type**, **Touchpoints**, **Models**, and **Period** filters to scope to exactly what you care about, and how to drill into any single call in the **Audit log** to see its tokens, cost, and latency. Together they let you keep your AI usage understood, accountable, and under control.
