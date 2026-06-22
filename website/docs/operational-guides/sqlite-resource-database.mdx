@@ -1,0 +1,67 @@
+---
+sidebar_position: 13
+sidebar_label: SQLite resource database
+---
+import Admonition from '@theme/Admonition';
+
+# Work with a SQLite resource database
+
+When a resource is a SQLite file, Rational AI loads it into a knowledge database and renders it directly in the resource detail panel. This guide shows you how to browse, query and edit that database inline, instead of only downloading the file.
+
+<Admonition type="info" icon="📖" title="WHAT IS A SQLITE RESOURCE DATABASE?">
+A SQLite resource is a resource whose underlying file is a SQLite database. When such a resource is ingested, the worker loads it into a knowledge database (a sqld namespace) named after the resource. The **SQLite resource database viewer/editor** then connects to that knowledge database — using its `knowledgeId` and database name — so you can browse tables and views, run SQL, filter, sort and inline-edit the data without leaving the Control Room.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A Knowledge** containing at least one **SQLite resource** (a resource whose file is recognised as SQLite by its extension or MIME type).
+- **Access** to the Knowledge and its resources in the Control Room.
+- The resource fully ingested, so the worker has created its knowledge database.
+
+## Open the viewer
+
+The viewer appears automatically when a resource's file looks like SQLite.
+
+1. Open the **Knowledge** tab and select the **card** for the Knowledge that holds your SQLite resource.
+2. In **Table view**, open the resource's **details drawer** by clicking the row (or selecting **See details** from the options menu).
+3. Because the file is recognised as SQLite, the resource viewer renders the **SQLite resource database** inline. The database name shown is the resource name created by the worker.
+
+<Admonition type="note" icon="📝" title="NO DOWNLOAD REQUIRED">
+For non-SQLite resources you can only download the original file. SQLite resources are loaded into a knowledge database and rendered directly, so you can explore the data in place.
+</Admonition>
+
+## Browse tables and views
+
+The viewer presents the database structure as tabs along the tab bar.
+
+1. Select a **table** or **view** tab to load its contents into the grid.
+2. Use the **column header sort arrows** to order rows. The arrow reflects the current sort state: **up** for ascending, **down** for descending, and **both** when unsorted.
+3. Select the **filter glyph** in a column header to add a filter row, then type to narrow the rows shown.
+
+Column headers always keep their icons visible — the column name ellipsizes if space is tight, so the sort and filter controls stay reachable.
+
+## View a table or view schema
+
+1. Open the **Actions** menu next to the search box.
+2. Select **View schema** to see the DDL for the selected object. This works for both **tables** and **views**.
+
+## Run SQL
+
+1. Use the viewer's **SQL** input to enter a statement.
+2. Run it to execute against the knowledge database. Every statement is routed through the backend `executeKnowledgeDatabase` connector (statements can also be sent in bulk through `batchExecuteKnowledgeDatabase`), so it runs against the resource's sqld namespace.
+3. The grid updates with the result.
+
+<Admonition type="note" icon="📝" title="IDENTIFIERS WITH SPACES">
+Identifier quoting accepts column and table names that contain spaces, for example `"Location HQ"`. Quote such identifiers in your SQL so they resolve correctly.
+</Admonition>
+
+## Edit data inline
+
+1. In the grid, click a **cell** to edit its value in place.
+2. Confirm the edit to persist the change to the knowledge database.
+
+## Result
+
+You can browse the tables and views of a SQLite resource, sort and filter rows, inspect schemas, run SQL and edit values inline — all from the resource detail panel in the Control Room, with every change applied directly to the resource's knowledge database.
