@@ -63,6 +63,18 @@ Submit the dialog to create the user. The account is created with the role and p
 Because a password is generated automatically, you can leave the **Password** field untouched and still create a valid account. Only type in it when you need a specific value.
 </Admonition>
 
+## Organize users into groups
+
+**Settings** → **Groups** lets you organize users into groups so you can manage permissions in bulk: instead of granting access user by user, you assign rights to a whole group at once, which keeps access consistent across everyone in it. The page lists your groups with their **Name**, **Description**, and **Users** count, and a fresh tenant simply shows "No groups yet" until you add one. To create a group, click **New**, give it a **Name** and a **Description**, and then add the users who belong to it. Keep in mind that a user's effective permissions come from their [role](#) combined with any groups they belong to, so it is worth reviewing both when you check what someone can do.
+
+<img
+  src={require('@site/static/img/screens/groups-list.png').default}
+  alt="Groups list"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Settings → Groups: organize users into groups so you can assign permissions in bulk.*
+
 ## Result
 
 You have a set of roles whose permissions match what each group can do, and a new user account secured with a password you either accepted or chose. If you left **Require password change at first login** checked, the user is prompted to change the password on their first sign-in.
