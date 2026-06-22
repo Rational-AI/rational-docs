@@ -1,0 +1,46 @@
+---
+sidebar_position: 5
+sidebar_label: Context window
+title: Context window
+description: What a context window is, why it is limited, how tokens are counted, and how it shapes retrieval, conversations and prompts in Rational AI.
+---
+
+import Admonition from "@theme/Admonition";
+
+# Context window
+
+The **context window** is the maximum amount of text a model can consider at one time. It covers everything the model reads and writes for a single request: the system instructions, the knowledge retrieved for it, the conversation so far, the user's latest question and the reply it generates. Anything that doesn't fit in the window is invisible to the model.
+
+Think of it as the model's short‑term memory, or the size of its desk. A larger desk lets you spread out more documents and work with all of them at once; a smaller one forces you to put some away. The model is not "forgetting", it simply never sees what is left off the desk.
+
+## Tokens, not words
+
+Context windows are measured in **tokens**, not words or characters. A token is a chunk of text, often a word or part of a word. As a rough guide, one token is about four characters of English, so 1,000 tokens is roughly 750 words. The window size (for example, 8K, 32K or 128K tokens) is a property of the model, and it is shared between the input and the output: a very long prompt leaves less room for a long answer.
+
+## Why the limit matters
+
+Working within the context window is a constant trade‑off:
+
+* **Relevance over volume:** sending more text is not always better. Filling the window with loosely related material can bury the parts that actually matter and degrade the answer.
+* **Long conversations drift:** once a chat grows past the window, the earliest messages fall out of view, so the model may lose track of something said much earlier.
+* **Cost and latency:** more tokens in the window means more computation, so larger contexts are slower and more expensive to run.
+
+## The context window in Rational AI
+
+The platform is designed to make the most of whatever window a model has:
+
+* In a [RAG](./RAG.mdx) system, retrieval selects only the most relevant resources from your [Knowledge](../cr/Knowledge.mdx) and fits them into the window as context, rather than handing the model everything. Splitting documents into [embeddings and chunks](./RAG.mdx) is what makes this selection possible.
+* In [Conversations settings](../cr/settings/conversations.mdx), analyses such as title generation and topic detection let you set how many recent **messages to analyse**, keeping each request within a sensible context.
+* Choosing a [model](./Model-architecture.mdx) with a larger window lets a touchpoint reason over more knowledge or a longer conversation at once, at the cost of more tokens per request.
+
+<Admonition type="note" icon="📝" title="Bigger is not always better">
+A large context window is useful, but a focused, well‑retrieved context usually produces better answers than simply stuffing the window full. Quality of context beats quantity.
+</Admonition>
+
+---
+
+## Additional resources
+
+* [Retrieval-Augmented Generation](./RAG.mdx): how relevant knowledge is selected and fitted into the context window.
+* [Large Language Models](./LLMs.mdx): the models whose architecture sets the size of the window.
+* [Prompts](./Prompts.mdx): how the instructions you write share that same window with the model's answer.

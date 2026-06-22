@@ -1,0 +1,52 @@
+---
+sidebar_position: 4
+sidebar_label: Model architecture
+title: Model architecture
+description: What a model's architecture is, the main building blocks of modern neural networks, the families of architectures you'll meet, and why it matters when you choose a model in Rational AI.
+---
+
+import Admonition from "@theme/Admonition";
+
+# Model architecture
+
+A model's **architecture** is the underlying design of a neural network: how its components are arranged and how information flows through them. It is the blueprint that decides what kind of patterns a model can learn and which tasks it is good at.
+
+Think of it like the floor plan of a building. The same bricks (the data and the maths) can be assembled in very different ways, and the plan you choose determines whether you end up with a warehouse, an office or a home. Two models trained on similar data can behave very differently because their architectures are different.
+
+## Key building blocks
+
+Most modern architectures are built from a small set of recurring parts:
+
+* **Layers:** the stacked stages a model passes information through. Deeper networks (more layers) can capture more abstract patterns.
+* **Parameters (weights):** the values the model adjusts during training. Their number, from millions to trillions, is a rough proxy for capacity.
+* **Attention:** a mechanism that lets the model weigh which parts of the input matter most for each piece of output. It is what allows a model to keep track of context across a long passage.
+* **Embeddings:** the numerical representations of words, tokens or other inputs that the network actually operates on.
+
+## The transformer
+
+Almost every modern language model is based on the **transformer** architecture. Its key innovation is **self‑attention**, which lets the model relate every token in a sequence to every other token, rather than reading strictly left to right. This makes transformers good at modelling long‑range dependencies and highly efficient to train at scale.
+
+Transformers come in three broad shapes, each suited to different work:
+
+| Architecture       | How it works                                              | Typical use                                      |
+| :----------------- | :-------------------------------------------------------- | :----------------------------------------------- |
+| **Encoder‑only**   | Reads and represents an input in both directions          | Understanding tasks: embeddings, search, classification |
+| **Decoder‑only**   | Generates output one token at a time, left to right       | Text generation and chat                         |
+| **Encoder‑decoder**| Encodes an input, then decodes a transformed output       | Translation, summarisation                       |
+
+## Why architecture matters in Rational AI
+
+When you register and deploy a model in the platform, its architecture is what makes it fit (or unfit) for a given job. The two families you'll meet most often are:
+
+* **Generative (decoder‑only) models**, such as `qwen/qwen3-30b-a3b-instruct-2507`, which produce the replies users see in [Chat](../cr/Chats.mdx) and conversations.
+* **Embedding (encoder‑only) models**, such as `BAAI/bge-m3`, which turn your [Knowledge](../cr/Knowledge.mdx) into vectors so it can be retrieved and used as context.
+
+Choosing the right architecture for each role, a capable generative model for answering and a strong embedding model for retrieval, is what makes a [RAG](./RAG.mdx) system both accurate and efficient. You manage these choices in the [AI Model Registry](../cr/settings/ai-model-registry.mdx).
+
+---
+
+## Additional resources
+
+* [Large Language Models](./LLMs.mdx): the general‑purpose language systems built on the transformer architecture.
+* [Retrieval-Augmented Generation](./RAG.mdx): how generative and embedding models work together to ground answers in your data.
+* [AI Model Registry](../cr/settings/ai-model-registry.mdx): register, configure and deploy the models you use across the platform.

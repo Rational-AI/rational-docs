@@ -1,0 +1,42 @@
+---
+sidebar_position: 11
+sidebar_label: AI model registry
+title: AI model registry
+description: What a model registry is, why centralising models matters, and how the AI Model Registry works in Rational AI.
+---
+
+# AI model registry
+
+An **AI model registry** is a central catalogue of the models an organisation can use. Rather than wiring each model into each application separately, you register a model once and then reference it everywhere it is needed.
+
+Think of it as a library with a card catalogue. The models are the books; the registry is the system that records what you have, where each one lives and who can borrow it. Without it, every team ends up with its own shelf and no one is sure which copy is current.
+
+## Why a registry matters
+
+As soon as more than one model is in play, a few problems appear: which models are approved, which version is live, what each one costs, and who is allowed to use it. A registry answers these in one place and gives you:
+
+* **Consistency:** the same model, referenced the same way, across chat, agents, tools and workflows.
+* **Control:** a single point to decide which models are available and to whom.
+* **Visibility:** key information such as type, size and last update, kept together.
+* **Maintainability:** the ability to add, swap or retire models without rewiring everything that uses them.
+
+## Models come in types
+
+A registry typically holds more than one kind of model, because different jobs need different [architectures](./Model-architecture.mdx):
+
+* **Generative models** that produce replies.
+* **Embedding models** that turn text into vectors for retrieval.
+
+Keeping both in one catalogue is what lets a [RAG](./RAG.mdx) system combine retrieval and generation cleanly.
+
+## The AI Model Registry in Rational AI
+
+In the platform, the [AI Model Registry](../cr/settings/ai-model-registry.mdx) is where you add models once and reuse them consistently across the product. You control which models are available, see their key details, and manage changes over time. Models you create through [finetuning](./Finetuning.mdx) appear here too, alongside the base models you registered.
+
+---
+
+## Additional resources
+
+* [AI Model Registry settings](../cr/settings/ai-model-registry.mdx): add and manage the models available in the platform.
+* [Model architecture](./Model-architecture.mdx): the differences between the model types a registry holds.
+* [Model serving](./Model-serving.mdx): how a registered model is made available to answer requests.

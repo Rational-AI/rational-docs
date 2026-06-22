@@ -1,0 +1,36 @@
+---
+sidebar_position: 20
+sidebar_label: Workflows and processing rules
+title: Workflows and processing rules
+description: What workflows and processing rules are, how automation and conditional logic work together, and how they are used in Rational AI.
+---
+
+# Workflows and processing rules
+
+**Workflows** and **processing rules** are how you automate work in the platform. A **workflow** is a sequence of steps that runs to accomplish a task, while a **processing rule** is the conditional logic that decides what should happen in a given situation. Loosely: the workflow is the recipe, and the processing rules are the "if this, then that" decisions inside it.
+
+Together they let the platform do more than answer single questions. They turn AI into something that can carry out multi‑step jobs and react to your data automatically.
+
+## Workflows
+
+A workflow chains several steps into one automated process, for example retrieving information, calling a model, transforming the result and passing it on. Each step feeds the next, so a workflow can accomplish something no single step could on its own. Workflows are well suited to repeatable, multi‑stage tasks you would otherwise do by hand.
+
+## Processing rules
+
+A processing rule expresses a decision: a condition and the action to take when it is met. Rules add judgement to automation, so that content is handled differently depending on what it is, for example routing, transforming or filtering items based on their properties. They are what let a workflow respond to context rather than treating every input the same way.
+
+## How they work together
+
+Most real automation combines the two. A workflow provides the overall sequence; processing rules steer it at each decision point. The workflow gives structure, the rules give flexibility, and between them they encode a process that runs consistently without manual effort.
+
+## In Rational AI
+
+The platform provides guided ways to set these up. See the operational guides on how to [create a workflow](../operational-guides/create-workflow.mdx) and how to [create a processing rule](../operational-guides/create-processing-rule.mdx) to put these concepts into practice, often in support of a [touchpoint](./Touchpoint.mdx).
+
+---
+
+## Additional resources
+
+* [Create a workflow](../operational-guides/create-workflow.mdx): build an automated, multi‑step process.
+* [Create a processing rule](../operational-guides/create-processing-rule.mdx): add conditional logic to your automation.
+* [Touchpoint](./Touchpoint.mdx): where workflows and rules are often applied.

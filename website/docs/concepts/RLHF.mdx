@@ -1,0 +1,38 @@
+---
+sidebar_position: 10
+sidebar_label: RLHF
+title: Reinforcement Learning from Human Feedback (RLHF)
+description: What RLHF is, why it is used to align models with human preferences, how the process works, and how it relates to finetuning.
+---
+
+# Reinforcement Learning from Human Feedback (RLHF)
+
+**Reinforcement Learning from Human Feedback (RLHF)** is a technique for aligning a model's behaviour with human preferences. Instead of teaching the model only what is correct, RLHF teaches it what people find **helpful, safe and well‑expressed**.
+
+A model trained purely to predict the next word is fluent, but it has no sense of which of several plausible answers is actually the most useful or appropriate. RLHF adds that sense by learning directly from human judgement.
+
+## Why it is needed
+
+Two answers can both be grammatically perfect and factually plausible while differing hugely in quality: one is clear, honest and on‑topic; the other is evasive, verbose or subtly unsafe. The training data alone doesn't reliably capture this difference. Human feedback does.
+
+## How it works
+
+RLHF usually proceeds in three steps:
+
+1. **Collect human preferences:** people compare model responses to the same prompt and indicate which they prefer.
+2. **Train a reward model:** those comparisons are used to train a separate model that predicts how much a human would like a given response.
+3. **Optimise the main model:** the language model is then refined to produce responses that score highly with the reward model, while staying close to its original abilities.
+
+The outcome is a model that is not just capable but **aligned**: more helpful, more honest and less likely to produce harmful or off‑topic output.
+
+## Where RLHF fits
+
+RLHF is a specialised stage of [model training](./Model-training.mdx), applied after pre‑training and ordinary [finetuning](./Finetuning.mdx). It is what turns a raw language model into the kind of assistant you can put in front of users. The instruction‑tuned models you select in Rational AI have typically already been through this alignment, which is why they follow [prompts](./Prompts.mdx) and stay on task.
+
+---
+
+## Additional resources
+
+* [Model training](./Model-training.mdx): the stages that lead up to alignment.
+* [Finetuning](./Finetuning.mdx): adapting a model to a task or domain.
+* [Prompts](./Prompts.mdx): how you steer an already aligned model at runtime.

@@ -1,0 +1,37 @@
+---
+sidebar_position: 15
+sidebar_label: Source and resources
+title: Source and resources
+description: What sources and resources are, how they differ, and how they keep your knowledge current in Rational AI.
+---
+
+# Source and resources
+
+**Sources** and **resources** are the two halves of how your data enters an AI system. A **source** is *where* data comes from, a connection to an external system such as a cloud bucket or a shared drive. A **resource** is *what* that source provides, an individual item such as a document, spreadsheet or image.
+
+The relationship is simple: a source is a pipe, and resources are what flow through it. One source can supply many resources, and it keeps doing so over time as the underlying system changes.
+
+## Sources
+
+A source is a live connection to a system that holds your content, for example an Amazon S3 bucket or a Google Drive folder. Its job is to **keep your data in sync**: on a schedule, it checks the external system and brings new or changed items into the platform so your knowledge never goes stale. Sources are what make the difference between a one‑off import and continuously up‑to‑date knowledge.
+
+## Resources
+
+A resource is a single piece of content once it is inside the platform. Each resource carries more than its raw text:
+
+* **Metadata** such as a name, category and tags.
+* A link back to its **original source** and the time it was last synced.
+* The **[chunks and embeddings](./Embeddings-chunks-and-annotations.mdx)** created from it during ingestion.
+* **Relationships** to other resources, which richer retrieval can follow.
+
+## Sources and resources in Rational AI
+
+You manage connections in the [Sources](../cr/settings/sources.mdx) section, where you add a source, set how often it synchronises and monitor each sync. The resources it brings in then live in the [Knowledge](../cr/Knowledge.mdx) module, where you can explore them, edit their metadata and see how they relate. Together they keep your agents working from current, well‑organised material.
+
+---
+
+## Additional resources
+
+* [Sources settings](../cr/settings/sources.mdx): connect external systems and schedule synchronisation.
+* [Knowledge](../cr/Knowledge.mdx): explore and organise the resources your sources provide.
+* [Embeddings, chunks and annotations](./Embeddings-chunks-and-annotations.mdx): how each resource is prepared for retrieval.

@@ -1,0 +1,58 @@
+---
+sidebar_position: 7
+sidebar_label: Dataset and training data
+title: Dataset and training data
+description: What datasets and training data are, the qualities that make them good, the main types, and how they relate to datasets and knowledge in Rational AI.
+---
+
+import Admonition from "@theme/Admonition";
+
+# Dataset and training data
+
+**Training data** is the collection of examples a model learns from. A **dataset** is that data organised into a usable form: a structured set of examples gathered, cleaned and labelled for a specific purpose. If a model's [architecture](./Model-architecture.mdx) is the blueprint, the dataset is the raw material it is built from.
+
+A model never learns facts the way a person memorises them. It learns **patterns** from the examples it sees. This is why the data matters so much: a model can only be as good, as broad and as fair as the data it was trained on. The common phrase captures it well: garbage in, garbage out.
+
+## What makes a dataset good
+
+Not all data is equally useful for training. A strong dataset tends to be:
+
+* **Relevant:** representative of the task and the domain the model will actually work in.
+* **High quality:** accurate, consistent and free of errors, duplicates and noise.
+* **Diverse:** covering the range of cases the model will meet, so it generalises rather than memorising.
+* **Well labelled:** where labels are needed, they are correct and applied consistently.
+* **Balanced:** not skewed towards one group or outcome, which helps reduce bias.
+
+<Admonition type="note" icon="📝" title="Bias in, bias out">
+A model inherits the patterns in its data, including the unfair ones. If a dataset over‑represents or under‑represents certain groups or viewpoints, the model's outputs will tend to reflect that imbalance.
+</Admonition>
+
+## Types of data
+
+Training data generally falls into a few categories, often combined:
+
+| Type           | What it means                                                | Example                                  |
+| :------------- | :----------------------------------------------------------- | :--------------------------------------- |
+| **Labelled**   | Each example is paired with the correct answer or category    | Emails tagged as *spam* or *not spam*    |
+| **Unlabelled** | Raw examples with no annotations                              | A large collection of web pages          |
+| **Structured** | Organised in a fixed schema, such as rows and columns         | A products table in a database           |
+| **Unstructured** | Free‑form content without a fixed schema                    | Documents, PDFs, images, transcripts     |
+
+Large language models are first trained on huge amounts of mostly unlabelled text, then refined on smaller, carefully curated datasets through [model training](./Model-architecture.mdx) and finetuning.
+
+## Datasets and your data in Rational AI
+
+In the platform, you don't retrain a base model, but the same principles apply to the data you bring:
+
+* The information you add to [Knowledge](../cr/Knowledge.mdx) becomes the data your agents reason over through retrieval. Its quality, coverage and freshness shape the quality of the answers, just as training data shapes a model.
+* Curating that data, with clear sources, sensible structure and good metadata, is the equivalent of building a good dataset for retrieval rather than for training.
+
+The lesson carries across: the better and cleaner the data you provide, the more reliable and relevant the results.
+
+---
+
+## Additional resources
+
+* [Knowledge](../cr/Knowledge.mdx): organise the data your agents draw on at answer time.
+* [Model architecture](./Model-architecture.mdx): the design that turns training data into a working model.
+* [Hallucinations](./hallucinations.mdx): what happens when a model fills gaps its data didn't cover.
