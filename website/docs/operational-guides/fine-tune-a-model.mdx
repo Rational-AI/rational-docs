@@ -1,0 +1,84 @@
+---
+sidebar_position: 25
+sidebar_label: Fine-tune a model
+---
+import Admonition from '@theme/Admonition';
+
+# Fine-tune a model with your own data
+
+Fine-tuning takes a general-purpose AI model and trains it further on your own examples, so it gets noticeably better at the specific tasks you care about. This guide walks you through the whole process end to end: assembling your training data as a dataset, then launching a fine-tuning run and using the result.
+
+<Admonition type="info" icon="📖" title="WHAT IS FINE-TUNING?">
+A *base model* is a general, pretrained AI model (see [LLMs](/concepts/LLMs)) that already knows a lot but nothing about your particular use case. *Fine-tuning* nudges that base model toward your data by showing it more examples. Those examples live in a *dataset* — a collection of inputs and the outputs you'd like the model to produce. In Rational AI this is a two-part job: you build a dataset under **Datasets**, then train on it under **Fine-Tuning**.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with permission to reach the **Settings** area.
+- **A base model available:** at least one model you can train from, visible in the [AI Model Registry](/operational-guides/ai-model-registry-features).
+- **Training examples ready:** either a dataset file to upload, or captured events and conversations you can build a dataset from.
+
+## Create a dataset
+
+A dataset is the training data your fine-tuning run will learn from. You manage datasets under **Settings → Datasets**, where the table lists each one by **Name**, **Format**, **Entries**, **Created at**, **Updated at**, and **Current version**.
+
+Datasets are versioned: you can edit the data and create new versions later, so you're never locked into your first attempt.
+
+To start, select **New**. A small menu offers two ways to build a dataset.
+
+<img
+  src={require('@site/static/img/screens/dataset-new-menu.png').default}
+  alt="The New menu on the Datasets page showing From file and From events options"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Creating a dataset: **From file** (upload) or **From events** (build it from captured activity).*
+
+### From a file
+
+Choose **From file** when you already have your examples prepared as a dataset file. Upload the file, and Rational AI reads its entries into a new dataset. This is the most direct path if your data was exported from another tool or assembled by hand.
+
+### From events
+
+Choose **From events** to build a dataset out of activity Rational AI has already captured — events and conversations from real usage. This turns your actual interactions into training examples, which is often the fastest way to teach a model the patterns it sees in production.
+
+## Start a fine-tuning run
+
+With a dataset in place, go to **Settings → Fine-Tuning**. The table here lists your runs by **Name**, **Base model**, **Training dataset**, and **Created at**.
+
+Select **New** to open the **New fine-tuning** dialog, then fill it in:
+
+1. Enter a clear **Name** and a short **Description** so your team can tell runs apart later.
+2. Pick a **Base model** — the existing model you want to train further.
+3. Select a **Dataset** — the training data the model will learn from.
+4. Review the three training parameters (explained below), then select **Launch**.
+
+<img
+  src={require('@site/static/img/screens/finetuning-new.png').default}
+  alt="The New fine-tuning dialog with base model, dataset, and training parameter fields"
+  style={{ width: '100%', maxWidth: '620px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Starting a fine-tuning run: pick a **Base model** and a **Dataset**, set the training parameters, then **Launch**.*
+
+### Training parameters
+
+These three settings control how the training runs:
+
+- **Learning Rate:** how big an adjustment the model makes at each step. Too big and it overshoots; too small and it barely learns.
+- **Batch Size:** how many examples the model looks at before each adjustment.
+- **Epochs:** how many full passes the run makes over the whole dataset.
+
+<Admonition type="note" icon="📝" title="LEAVE THE DEFAULTS ALONE TO START">
+Rational AI ships sensible defaults for all three parameters. Unless you have a specific reason to change one, leave them as they are and launch — you can always run again with different values once you've seen the first result.
+</Admonition>
+
+## Use your fine-tuned model
+
+When the run finishes, your fine-tuned model becomes available in the [AI Model Registry](/operational-guides/ai-model-registry-features) alongside your other models — this is the same thing the registry's **Install your own fine-tuned model** option points to. From there you can activate it and use it like any other model in Rational AI.
+
+## Result
+
+You've assembled a dataset, launched a fine-tuning run against a base model, and ended up with a fine-tuned model in the AI Model Registry — one that's been trained on your own examples and is ready to put to work. To keep improving it, edit your dataset and create a new version, then launch another run.
