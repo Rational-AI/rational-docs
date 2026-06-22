@@ -27,20 +27,12 @@ Open any model to see its full profile: what it costs, who published it, how it'
 
 Check what a model costs before you make it a default or point a new workload at it.
 
-When a model has pricing configured, the registry shows it as read-only chips in the model overview. The platform stores raw per-second and per-token costs internally and scales them back into human-readable units, so you may see any of:
+The **Pricing** section appears on a model's overview only for models that have pricing configured (for example a self-hosted model with a cost set). The platform stores raw per-second and per-token costs internally and scales them back into human-readable units, so you may see any of:
 
 - **Per request**
 - **Per hour** — the stored per-second cost × 3600
 - **Per 1M input tokens** — the stored per-token cost × 1,000,000
 - **Per 1M output tokens** — the stored per-token cost × 1,000,000
-
-<img
-  src={require('@site/static/img/screens/model-pricing.png').default}
-  alt="The model overview with the Pricing section"
-  style={{ width: '100%', maxWidth: '480px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
-/>
-
-*The Pricing section in a model's overview.*
 
 <Admonition type="note" icon="📝" title="ONLY PRICED ROWS ARE SHOWN">
 Pricing chips appear only when pricing is enabled for the model, and any row with no cost is hidden. A model priced only per token, for instance, won't show a per-request chip.
@@ -58,7 +50,7 @@ Both facts show up in two places. In the model picker, each entry carries a **pu
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The picker shows each model's publisher and architecture at a glance.*
+*Adding a model: install your own fine-tuned model, proxy a third-party model (OpenAI, Gemini, Claude…), or pull an open-source model from Hugging Face.*
 
 ### See where a model is used
 
@@ -76,10 +68,10 @@ If nothing references the model, the section shows an empty state.
 <img
   src={require('@site/static/img/screens/model-used-in.png').default}
   alt="Model details: the Used in section lists every touchpoint that references the model"
-  style={{ width: '100%', maxWidth: '520px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+  style={{ width: '100%', maxWidth: '560px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The Used in section lists every consumer that references the model.*
+*A model’s details: the **Used in** section lists every touchpoint and conversation that references it.*
 
 ## Set default platform models per task type
 
