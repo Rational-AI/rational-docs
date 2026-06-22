@@ -1,0 +1,92 @@
+---
+sidebar_position: 11
+sidebar_label: Manage knowledge resources
+---
+import Admonition from '@theme/Admonition';
+
+# Manage knowledge resources
+
+Once a Knowledge holds resources, you need ways to review, organise, and clean them up. This guide covers the redesigned files table with multi-select and bulk delete, deleting a resource from the attribute view, the upload-as-resource flow, the empty state for the graph view, and drag-reordering table columns.
+
+<Admonition type="info" icon="📖" title="WHAT IS A RESOURCE?">
+A resource is a curated item inside a Knowledge — typically a file that has been processed into something the AI can search. You manage resources from a Knowledge's views: the files table, the attribute view, and the graph view. The actions below help you keep that set of resources tidy and up to date.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with Knowledge management privileges.
+- **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
+
+## Use the knowledge files table
+
+The files table lists the resources in a Knowledge and lets you sort, select, and delete them in bulk.
+
+1. Open the Knowledge and go to its **files table**.
+2. Sort the list by selecting a column header. The **Name**, **Updated at**, and **Size** columns are sortable.
+3. Select rows using the **row checkboxes**. Use the **header checkbox** to select every row at once; it shows an indeterminate state when only some rows are selected.
+4. Watch the **selected-count indicator** to confirm how many rows you have chosen.
+
+<Admonition type="note" icon="📝" title="ONE CONSISTENT SURFACE">
+The table is part of a redesign: the box and rows are transparent so the surface colour shows through, status chips follow the design palette, and the **Size** column sits in its own column next to the **⋮** context menu.
+</Admonition>
+
+## Bulk delete resources
+
+1. In the files table, select one or more rows using the checkboxes.
+2. Select the **Delete selected** action.
+3. Confirm the deletion in the dialog that appears.
+
+## Delete a resource from the attribute view
+
+You can also remove a single resource directly from its card in the attribute view.
+
+1. Open the Knowledge's **attribute view**.
+2. On the resource card, open the **⋮** (kebab) menu, alongside **See details** and **Show/Hide**.
+3. Select **Delete**.
+4. In the **Confirm deletion** dialog, confirm with the critical-styled button.
+
+<Admonition type="note" icon="📝" title="WHAT HAPPENS ON CONFIRM">
+The resource is removed, the list reloads, and you see the **Resource deleted successfully** toast. If the deletion fails, an error toast is shown instead.
+</Admonition>
+
+## Upload files as resources
+
+The upload dialog can add uploaded files to a Knowledge as curated resources, instead of always routing them through a processing workflow.
+
+1. Open the **upload dialog** for the Knowledge.
+2. **Upload** — select and upload your files.
+3. **Review** — for each uploaded file, either:
+   - assign a processing **workflow** from the dropdown (it includes a **Skip workflow** option), or
+   - when no workflow is selected, tick **Add as resource**.
+4. Confirm. Files with a workflow run their workflow; files marked **Add as resource** are created as resources.
+
+<Admonition type="note" icon="📝" title="CANCELLING THE REVIEW STEP">
+If you cancel the review step, the files you already uploaded are deleted so nothing is left orphaned.
+</Admonition>
+
+## Start from an empty knowledge graph
+
+When a Knowledge has no resources, the graph view shows an empty state instead of a blank canvas, with the zoom toolbar hidden.
+
+1. Open the Knowledge's **graph view** on a Knowledge with no resources.
+2. From the centred empty state, choose an action:
+   - **Add manually** — opens the upload dialog so you can add resources; the graph reloads afterwards.
+   - **Go to settings** — navigates to the Knowledge settings, where you can sync a source.
+
+## Reorder table columns
+
+On the Knowledge resources (attributes) table, you can drag columns into the order that suits you.
+
+1. Open the Knowledge's **attribute view** table.
+2. Drag a **column header** left or right. A vertical marker shows where the column will land.
+3. Release to drop the column into its new position.
+
+<Admonition type="note" icon="📝" title="WHAT STAYS PINNED">
+The sticky first cell and the trailing actions menu stay fixed and can't be dragged or displaced. Sorting still works on the **Name** column even though it is also draggable, and your column order is saved in the browser so it survives a page reload.
+</Admonition>
+
+## Result
+
+You can now keep a Knowledge's resources organised: sort and bulk-delete from the files table, remove a single resource from the attribute view, add uploaded files straight in as resources, act on an empty Knowledge from the graph view, and arrange the attributes table columns to match how you work.
