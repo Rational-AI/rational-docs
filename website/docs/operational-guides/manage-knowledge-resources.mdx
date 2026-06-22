@@ -1,0 +1,120 @@
+---
+sidebar_position: 11
+sidebar_label: Manage knowledge resources
+---
+import Admonition from '@theme/Admonition';
+
+# Manage knowledge resources
+
+A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
+
+<Admonition type="info" icon="📖" title="WHAT IS A RESOURCE?">
+A resource is a single curated item inside a Knowledge — usually a file that has been processed into a form the AI can search and quote from. You work with resources through three views of a Knowledge: the **files table** (a sortable list), the **attribute view** (one card per resource), and the **graph view** (a visual map). The tasks below all live in one of these three.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with Knowledge management privileges.
+- **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
+
+## Work with the files table
+
+The files table is the fastest way to see everything in a Knowledge at a glance, and the right place to clean house when you have many resources to act on at once.
+
+### Sort the list
+
+Sorting helps you spot the largest files, the stale ones, or a specific resource by name.
+
+1. Open the Knowledge and go to its **files table**.
+2. Select a column header to sort by it. The **Name**, **Updated at**, and **Size** columns are sortable.
+
+### Select resources
+
+Selection is how you tell the table which resources a bulk action should apply to.
+
+1. Tick the **row checkboxes** for the resources you want.
+2. To grab everything at once, use the **header checkbox**. When only some rows are selected, it shows an indeterminate state so you can tell at a glance that the selection is partial.
+3. Check the **selected-count indicator** to confirm how many rows you have chosen before you act on them.
+
+<img
+  src={require('@site/static/img/screens/knowledge-table.png').default}
+  alt="A Knowledge in table view with selectable resource rows"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*A Knowledge in **table view**: each row is a resource, with Name, Description, Category, Tags and Relations.*
+
+<Admonition type="note" icon="📝" title="ONE CONSISTENT SURFACE">
+The table box and rows are transparent, so the surface colour shows through; status chips follow the design palette; and the **Size** column sits on its own, next to the **⋮** context menu.
+</Admonition>
+
+### Bulk delete resources
+
+When you have several resources to remove, delete them together instead of one at a time.
+
+1. Select one or more rows using the checkboxes.
+2. Select the **Delete selected** action.
+3. Confirm the deletion in the dialog that appears.
+
+## Delete a single resource from the attribute view
+
+When you only need to remove one resource, you can do it straight from its card in the attribute view — no need to switch to the table.
+
+1. Open the Knowledge's **attribute view**.
+2. On the resource card, open the **⋮** (kebab) menu — the same menu that holds **See details**, **Mark as hidden**, and — for resources you can remove — **Delete**.
+3. Select **Delete**.
+4. In the **Confirm deletion** dialog, confirm with the critical-styled button.
+
+<img
+  src={require('@site/static/img/screens/resource-row-menu.png').default}
+  alt="The options menu on a resource showing See details and Mark as hidden"
+  style={{ width: '100%', maxWidth: '380px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The options menu on a resource row: **See details** and **Mark as hidden**.*
+
+<Admonition type="note" icon="📝" title="WHAT HAPPENS ON CONFIRM">
+The resource is removed, the list reloads, and you see the **Resource deleted successfully** toast. If the deletion fails, an error toast appears instead.
+</Admonition>
+
+## Upload files as resources
+
+Normally an uploaded file runs through a workflow — an automated set of steps that transforms it before it enters the Knowledge. But sometimes a file is already exactly what you want stored, and routing it through a workflow would only get in the way. The upload dialog lets you add such files directly as curated resources.
+
+1. Open the **upload dialog** for the Knowledge.
+2. **Upload** — select and upload your files.
+3. **Review** — for each uploaded file, choose one of:
+   - assign a processing **workflow** from the dropdown (it also includes a **Skip workflow** option), or
+   - leave the workflow unset and tick **Add as resource**.
+4. Confirm. Files with a workflow run that workflow; files marked **Add as resource** are created as resources directly.
+
+<Admonition type="note" icon="📝" title="CANCELLING THE REVIEW STEP">
+If you cancel at the review step, the files you already uploaded are deleted, so nothing is left orphaned in the Knowledge.
+</Admonition>
+
+## Start from an empty Knowledge
+
+A brand-new Knowledge has nothing to show in the graph view, so instead of a blank canvas it offers a guided empty state — with the zoom toolbar hidden — that points you toward your first resources.
+
+1. Open the **graph view** on a Knowledge that has no resources.
+2. From the centred empty state, choose an action:
+   - **Add manually** — opens the upload dialog so you can add resources; the graph reloads once they are in.
+   - **Go to settings** — takes you to the Knowledge settings, where you can [connect and sync a source](/operational-guides/integrate-data).
+
+## Reorder the attributes table columns
+
+Put the columns you check most often where you can see them first. The attribute view's table lets you drag columns into any order you like, and remembers your choice.
+
+1. Open the Knowledge's **attribute view** table.
+2. Drag a **column header** left or right. A vertical marker shows where the column will land.
+3. Release to drop the column into its new position.
+
+<Admonition type="note" icon="📝" title="WHAT STAYS PUT">
+The sticky first cell and the trailing actions menu stay fixed — they can't be dragged or displaced. Sorting still works on the **Name** column even though it's draggable too, and your column order is saved in the browser, so it survives a page reload.
+</Admonition>
+
+## Result
+
+You can now keep a Knowledge tidy from whichever view you happen to be in: sort and bulk-delete from the files table, remove a single resource from its card, add uploaded files straight in as resources, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.
