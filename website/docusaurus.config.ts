@@ -9,9 +9,18 @@ const config: Config = {
 	tagline: "Your Data, Your AI",
 	favicon: "img/favicon.ico",
 
-	// TODO: ALGOLIA SEARCH
-	// Theme for algolia search
-	// themes: ["@docusaurus/theme-search-algolia"],
+	// Offline full-text search. Builds a client-side index at build time —
+	// no external service or API key required.
+	themes: [
+		[
+			"@easyops-cn/docusaurus-search-local",
+			{
+				hashed: true,
+				indexBlog: false,
+				docsRouteBasePath: "/",
+			},
+		],
+	],
 
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
 	future: {
