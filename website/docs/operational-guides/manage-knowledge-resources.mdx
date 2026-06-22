@@ -38,6 +38,14 @@ Selection is how you tell the table which resources a bulk action should apply t
 2. To grab everything at once, use the **header checkbox**. When only some rows are selected, it shows an indeterminate state so you can tell at a glance that the selection is partial.
 3. Check the **selected-count indicator** to confirm how many rows you have chosen before you act on them.
 
+<img
+  src={require('@site/static/img/screens/knowledge-table.png').default}
+  alt="A Knowledge in table view with selectable resource rows"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*A Knowledge in **table view**: each row is a resource, with Name, Description, Category, Tags and Relations.*
+
 <Admonition type="note" icon="📝" title="ONE CONSISTENT SURFACE">
 The table box and rows are transparent, so the surface colour shows through; status chips follow the design palette; and the **Size** column sits on its own, next to the **⋮** context menu.
 </Admonition>
@@ -55,17 +63,17 @@ When you have several resources to remove, delete them together instead of one a
 When you only need to remove one resource, you can do it straight from its card in the attribute view — no need to switch to the table.
 
 1. Open the Knowledge's **attribute view**.
-2. On the resource card, open the **⋮** (kebab) menu — the same menu that holds **See details** and **Show/Hide**.
+2. On the resource card, open the **⋮** (kebab) menu — the same menu that holds **See details**, **Mark as hidden**, and — for resources you can remove — **Delete**.
 3. Select **Delete**.
 4. In the **Confirm deletion** dialog, confirm with the critical-styled button.
 
 <img
   src={require('@site/static/img/screens/resource-row-menu.png').default}
-  alt="The options menu on a resource showing See details, Mark as hidden, and Delete"
-  style={{ width: '100%', maxWidth: '300px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+  alt="The options menu on a resource showing See details and Mark as hidden"
+  style={{ width: '100%', maxWidth: '380px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The resource menu, where each card's actions live.*
+*The options menu on a resource row: **See details** and **Mark as hidden**.*
 
 <Admonition type="note" icon="📝" title="WHAT HAPPENS ON CONFIRM">
 The resource is removed, the list reloads, and you see the **Resource deleted successfully** toast. If the deletion fails, an error toast appears instead.
