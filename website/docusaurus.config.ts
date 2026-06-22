@@ -51,7 +51,7 @@ const config: Config = {
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
 					editUrl:
-						"https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+						"https://github.com/Rational-AI/rational-docs/edit/main/website/",
 				},
 				blog: false,
 				// blog: {
@@ -63,7 +63,7 @@ const config: Config = {
 				// 	// Please change this to your repo.
 				// 	// Remove this to remove the "edit this page" links.
 				// 	editUrl:
-				// 		"https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+				// 		"https://github.com/Rational-AI/rational-docs/edit/main/website/",
 				// 	// Useful options to enforce blogging best practices
 				// 	onInlineTags: "warn",
 				// 	onInlineAuthors: "warn",
@@ -114,7 +114,7 @@ const config: Config = {
 		//   // // Optional: whether you want to use the new Ask AI feature (undefined by default)
 		//   // askAi: "YOUR_ALGOLIA_ASK_AI_ASSISTANT_ID",
 		// },
-		image: "img/rational-social-card.jpg",
+		image: "img/rational-social-card.png",
 		colorMode: {
 			respectPrefersColorScheme: true,
 		},
