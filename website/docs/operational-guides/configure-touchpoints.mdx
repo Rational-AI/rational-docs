@@ -1,0 +1,103 @@
+---
+sidebar_position: 18
+sidebar_label: Configure touchpoints
+---
+import Admonition from '@theme/Admonition';
+
+# Configure touchpoints
+
+A touchpoint is where you control how an AI agent behaves for a given Knowledge: who can reach it, which MCP tools it can call, and how those tools are parameterised. This guide covers the touchpoint configuration panel and the **Tools** tab.
+
+<Admonition type="info" icon="📖" title="WHAT IS A TOUCHPOINT?">
+A touchpoint connects a Knowledge to the outside world. It carries the access settings for the agent and the set of tools (drawn from installed MCP server configurations) that the agent is allowed to use when answering. Creating a Knowledge also creates a default touchpoint, which you can then refine here.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with touchpoint management privileges.
+- **A touchpoint to configure:** for example the default touchpoint created with your Knowledge.
+- **At least one MCP extension installed:** the touchpoint can only add tools that an installed MCP server exposes (for example the `rational-knowledge-rag` extension).
+
+## Open a touchpoint
+
+1. Go to **Settings** → **Touchpoints** and select the touchpoint you want to configure.
+
+## Allow anonymous access
+
+The configuration panel includes an access toggle that controls whether users can reach the touchpoint without authenticating.
+
+1. In the configuration panel, find the **Allow anonymous access** toggle.
+2. Turn it **on** to let anonymous users reach the touchpoint, or leave it **off** to require authentication.
+3. Save the touchpoint to apply the change.
+
+<Admonition type="note" icon="📝" title="OFF BY DEFAULT">
+Only enable **Allow anonymous access** when the touchpoint is meant to be reached without sign-in. The setting is included in the touchpoint's update payload, so it persists once saved.
+</Admonition>
+
+## Work with tools
+
+Open the **Tools** tab on the touchpoint. Tools are organised in a nested view rather than as flat tables:
+
+- One **card per MCP server**.
+- Under each server, a **`CONFIGURATION`** list.
+- Each configuration expands to show the tools added under it, listed as **alias · tool name · description**.
+
+A configuration with no tools yet is marked with an **`Unused`** chip.
+
+### The Tools tab dropdowns
+
+The two pickers that drive this view render as grouped, styled lists:
+
+- The **Add tool…** dropdown shows a **group header per MCP server** (with the extension icon) and the tool rows indented beneath it. For example, the `rational-knowledge-rag` extension appears under a **RAG MCP server** group with its tools (`rag_query_simple`, `get_resource`, `get_user_context`, `get_schema`, `execute_query`, `list_databases`, `rag_query_graph`) listed below.
+- The configuration picker (**Add MCP server configuration…**) offers **+ Add new configuration** and lists the available configurations, each shown with the server icon and an expand chevron.
+
+## Add a single tool
+
+1. In the **Tools** tab, open the **Add tool…** dropdown and select a tool from its MCP server group.
+2. In the **Add tool** dialog, set each parameter's mode using its **Default / Auto / Manual** dropdown.
+3. To restore a parameter you have changed, use the **revert-to-default** button next to its mode dropdown. The button disables itself once the parameter is back in default mode.
+4. Select **Confirm**.
+
+<Admonition type="note" icon="📝" title="SINGLE-CONFIGURATION SHORTCUT">
+When the server has only one configuration, the configuration dropdown is hidden in the **Add tool** dialog — there is nothing to choose between.
+</Admonition>
+
+## Bulk-add a configuration's tools
+
+You can install all of a configuration's tools in one action, with the configuration/tool defaults inherited. There are two entry points:
+
+- **Pick a configuration** in the **Add MCP server configuration…** picker to add all of its tools at once.
+- Use the **Add all tools** action on a configuration row (its `⋮` menu).
+
+Each tool is created with no parameter overrides, so it inherits the configuration and tool defaults. Required fields that have no default fall back to LLM **Auto**, exactly as if you had added the tool individually and left its defaults untouched.
+
+When the bulk-add completes, a toast confirms the result (for example **Added 2 tools**).
+
+<Admonition type="note" icon="📝" title="WHAT GETS SKIPPED">
+Tools already present are skipped (deduplicated by tool id). If a configuration is empty or already fully added, nothing is created and you get an info toast instead. Partial failures report counts without losing the tools that succeeded.
+</Admonition>
+
+## Add a new MCP server configuration
+
+1. In the configuration picker, select **+ Add new configuration**.
+2. In the **New MCP server configuration** dialog, choose the **server** from the dropdown.
+3. Enter the **configuration name** in the top-level name field.
+4. Fill in the collapsible **Params** and **Sources** sections. Sources resolve from the selected server, so they are available while creating a configuration, not only when editing one.
+
+## Configure a knowledge-id parameter
+
+When a tool exposes a knowledge-reference parameter (`knowledgeId` / `knowledge_id`), it renders as a **searchable knowledge dropdown** rather than a raw text-ID field.
+
+1. In the **Add tool** dialog, find the knowledge-id parameter.
+2. Set the mode to **Manual** to override it (or leave it on **Auto** / **Default** to let the agent resolve it).
+3. Open the dropdown and **filter by name** to find the knowledge you want. The touchpoint's knowledges are shown by **name** and resolved to their **id** under the hood.
+
+<Admonition type="note" icon="📝" title="NO MORE RAW IDS">
+Because knowledge IDs are never surfaced in the UI, this dropdown is the supported way to pick a knowledge for a manual override — there is no need to type an ID by hand. The same auto/manual/default mode and validation as the other tool-parameter controls apply.
+</Admonition>
+
+## Result
+
+Your touchpoint now has its access controlled by the **Allow anonymous access** toggle, a nested **Tools** view grouped by MCP server and configuration, and tools added either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs, so the agent has exactly the tools and references it needs to answer against your Knowledge.
