@@ -1,0 +1,76 @@
+---
+sidebar_position: 27
+sidebar_label: Conversation processing
+---
+import Admonition from '@theme/Admonition';
+
+# Configure conversation processing
+
+Rational AI can quietly enrich every end-user conversation while it happens: giving it a title, sorting it into a topic, and gauging how the user feels. This guide shows you where to turn each of these on and how to tune them.
+
+<Admonition type="info" icon="📖" title="WHAT IS CONVERSATION PROCESSING?">
+Conversation processing is the work Rational AI does automatically behind the scenes on each conversation. It is the configuration behind the titles, topic chips, and sentiment badges you see in the [Conversations list](/operational-guides/conversations) and in [chat](/operational-guides/chat-experience). These settings apply platform-wide, unless a [touchpoint](/operational-guides/configure-touchpoints) (a specific channel or entry point) overrides them.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with permission to change platform settings (see [Roles and users](/operational-guides/roles-and-users)).
+- **AI models configured:** at least one active model in the [AI Model Registry](/operational-guides/ai-model-registry-features), so you have something to assign to each task below.
+
+Open **Settings → Conversations** to begin. The page has four independent parts, each described below.
+
+<img
+  src={require('@site/static/img/screens/conversation-processing.png').default}
+  alt="Conversation processing settings"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Settings → Conversations: the default conversational model, plus title generation, topic detection and sentiment analysis — each toggled independently with its own model.*
+
+<Admonition type="note" icon="📝" title="EACH PART IS OPTIONAL AND INDEPENDENT">
+Title generation, topic detection, and sentiment analysis are separate background tasks. You can enable any combination of them, and each runs on its own without slowing down the reply the user sees. Because each task is small and simple, it is usually sensible to give it a small, cheap [model](/concepts/LLMs) rather than your most powerful one.
+</Admonition>
+
+## Conversational model settings
+
+This is the one setting that affects the replies users actually read.
+
+1. Under **Conversational model settings**, choose a **Default conversational model**. This is the model that generates the answers in every conversation.
+2. This default is used everywhere, unless a [touchpoint](/operational-guides/configure-touchpoints) picks its own model for its own channel.
+
+## Title generation
+
+Title generation auto-names each conversation so you and your team can find it later in the [Conversations list](/operational-guides/conversations).
+
+1. Turn on **Enable title generation**.
+2. Set the **Title generation frequency**: how often a title is produced, expressed as "every N messages". A larger number means the title is refreshed less often.
+3. Set **Messages to analyze**: how many of the most recent messages the model reads when it writes the title.
+4. Choose a **Title generation model**: the model that writes the title.
+5. Leave the **Title generation prompt** as provided, or adjust it. This is the instruction the model follows; it returns the title as a small JSON object (a tiny block of structured text the platform can read back reliably).
+
+## Topic detection
+
+Topic detection sorts each conversation into exactly one topic from a list you define. This is useful for reporting (seeing what people ask about most) and routing (sending conversations to the right place).
+
+1. Turn on **Enable topic detection**.
+2. Choose a **Topics detection model**.
+3. Set the **Detection frequency** (again, "every N messages") and **Messages to analyze** (how many recent messages the model reads), exactly as in title generation.
+4. Build your **Topic list**. These are the labels the model can choose from, for example *Order Status*, *Billing Request*, and *Tech Support*. Remove a topic with its **×**, and add a new one with **+ New**.
+5. Leave the **Topic detection template prompt** as provided, or adjust it. It instructs the model to return exactly one label from your list, and nothing else.
+
+## Sentiment analysis
+
+Sentiment analysis estimates how the user feels during the conversation, surfaced as a sentiment badge alongside it.
+
+1. Turn on **Enable sentiment analysis**.
+2. Choose a **Sentiment analysis model**.
+
+<Admonition type="note" icon="📝" title="THE PROMPT FIELDS ARE ADVANCED">
+The title and topic [prompt](/concepts/Prompts) fields (the written instructions each model follows) ship with sensible defaults. You only need to touch them if the automatic titles or topics aren't coming out the way you want.
+</Admonition>
+
+## Result
+
+When you are happy with your choices, select **Save** to apply them, or **Undo** to discard them. From now on, the tasks you enabled run automatically on every new conversation across the platform, and their titles, topic chips, and sentiment badges appear in the [Conversations list](/operational-guides/conversations) and in [chat](/operational-guides/chat-experience).
