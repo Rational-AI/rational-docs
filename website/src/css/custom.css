@@ -2,6 +2,7 @@
 @import "./navbar";
 @import "./toc";
 @import "./table";
+@import "./home";
 
 /**
  * Any CSS included here will be global. The classic template

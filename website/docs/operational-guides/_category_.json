@@ -4,7 +4,6 @@
 	"collapsible": false,
 	"collapsed": false,
 	"link": {
-		"slug": "/",
 		"type": "generated-index",
 		"description": "This guide shows you, step by step, you’ll learn how to set up, configure, and operate the platform, turning features into practical workflows."
 	}
