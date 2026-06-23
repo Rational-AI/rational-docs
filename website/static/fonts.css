@@ -1,0 +1,14 @@
+/* Apfel Grotezk — homepage hero display font.
+   This file is served statically (not processed by the bundler), so a
+   missing font file degrades gracefully to the fallback stack instead of
+   breaking the build. Drop the files in static/fonts/ matching the names
+   below (see static/fonts/README.md). */
+@font-face {
+	font-family: "Apfel Grotezk";
+	src:
+		url("/fonts/ApfelGrotezk-Mittel.woff2") format("woff2"),
+		url("/fonts/ApfelGrotezk-Mittel.woff") format("woff");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}

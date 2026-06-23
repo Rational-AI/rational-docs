@@ -4,3 +4,9 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top {
 	background-color: transparent;
 	backdrop-filter: blur(1rem);
 }
+
+/* Hide the navbar search box (auto-injected by the local-search theme).
+   Search lives in the homepage hero instead. */
+.navbar [class*="navbarSearchContainer"] {
+	display: none;
+}
