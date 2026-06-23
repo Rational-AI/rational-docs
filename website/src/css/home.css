@@ -9,8 +9,9 @@
 	--home-hero-radius: 28px;
 	--home-card-radius: 16px;
 	--home-max-width: 1600px;
-	--home-font-display: "Apfel Grotezk", "Inter", system-ui, -apple-system,
-		"Segoe UI", Roboto, sans-serif;
+	--home-font-display:
+		"Apfel Grotezk", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+		sans-serif;
 }
 
 /* MARK: Layout shell */
@@ -59,18 +60,8 @@
 			rgba(22, 165, 145, 0.55) 0%,
 			rgba(22, 165, 145, 0) 55%
 		),
-		radial-gradient(
-			120% 120% at 50% 130%,
-			#050a26 0%,
-			rgba(5, 10, 38, 0) 60%
-		),
-		linear-gradient(
-			115deg,
-			#1a2a86 0%,
-			#101a55 40%,
-			#0b1238 72%,
-			#0c4a48 100%
-		);
+		radial-gradient(120% 120% at 50% 130%, #050a26 0%, rgba(5, 10, 38, 0) 60%),
+		linear-gradient(115deg, #1a2a86 0%, #101a55 40%, #0b1238 72%, #0c4a48 100%);
 }
 
 /* Hero background image (set inline in index.tsx). Sits above the gradient

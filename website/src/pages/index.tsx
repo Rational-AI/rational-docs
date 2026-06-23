@@ -1,11 +1,11 @@
-import { useCallback, useState } from "react";
 import Head from "@docusaurus/Head";
-import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import { useHistory } from "@docusaurus/router";
+import Translate, { translate } from "@docusaurus/Translate";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Translate, { translate } from "@docusaurus/Translate";
+import Layout from "@theme/Layout";
+import { useCallback, useState } from "react";
 
 type CardItem = {
 	label: string;
@@ -165,31 +165,35 @@ function Hero() {
 				/>
 				<div className="homeHero__content">
 					<h1 className="homeHero__title">
-					<Translate id="home.hero.title">Support &amp; documentation</Translate>
-				</h1>
-				<p className="homeHero__subtitle">
-					<Translate id="home.hero.subtitle">
-						Stuck on something or getting started? Browse our documentation or
-						chat with our AI to find help.
-					</Translate>
-				</p>
-				<form className="homeSearch" onSubmit={onSubmit} role="search">
-					<SearchIcon />
-					<input
-						className="homeSearch__input"
-						type="search"
-						value={query}
-						onChange={(e) => setQuery(e.target.value)}
-						placeholder={translate({
-							id: "home.search.placeholder",
-							message: "Search...",
-						})}
-						aria-label={translate({
-							id: "home.search.placeholder",
-							message: "Search...",
-						})}
-					/>
-				</form>
+						<Translate id="home.hero.title">
+							Support &amp; documentation
+						</Translate>
+					</h1>
+					<p className="homeHero__subtitle">
+						<Translate id="home.hero.subtitle">
+							Stuck on something or getting started? Browse our documentation or
+							chat with our AI to find help.
+						</Translate>
+					</p>
+					<search>
+						<form className="homeSearch" onSubmit={onSubmit}>
+							<SearchIcon />
+							<input
+								className="homeSearch__input"
+								type="search"
+								value={query}
+								onChange={(e) => setQuery(e.target.value)}
+								placeholder={translate({
+									id: "home.search.placeholder",
+									message: "Search...",
+								})}
+								aria-label={translate({
+									id: "home.search.placeholder",
+									message: "Search...",
+								})}
+							/>
+						</form>
+					</search>
 				</div>
 			</div>
 		</section>
@@ -233,10 +237,7 @@ function CategoryCard({ category }: { category: Category }) {
 
 	if (category.comingSoon || !category.to) {
 		return (
-			<div
-				className="homeCard homeCard--disabled"
-				aria-disabled="true"
-			>
+			<div className="homeCard homeCard--disabled" aria-disabled="true">
 				{inner}
 			</div>
 		);
@@ -272,7 +273,9 @@ export default function Home(): React.ReactElement {
 				<Hero />
 				<section className="homeCategories">
 					<h2 className="homeCategories__title">
-						<Translate id="home.categories.title">Document categories</Translate>
+						<Translate id="home.categories.title">
+							Document categories
+						</Translate>
 					</h2>
 					<div className="homeGrid">
 						{CATEGORIES.map((category) => (
