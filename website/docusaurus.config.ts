@@ -40,12 +40,19 @@ const config: Config = {
 
 	onBrokenLinks: "throw",
 
+	// Static stylesheets (served as-is, not bundled). Holds the Apfel Grotezk
+	// @font-face used by the homepage hero.
+	stylesheets: ["/fonts.css"],
+
 	// Even if you don't use internationalization, you can use this field to set
 	// useful metadata like html lang. For example, if your site is Chinese, you
 	// may want to replace "en" with "zh-Hans".
 	i18n: {
 		defaultLocale: "en",
-		locales: ["en", "it"],
+		// Italian locale removed for now (was declared but untranslated). Re-add
+		// "it" here and restore the localeDropdown navbar item when ready to
+		// translate the site.
+		locales: ["en"],
 	},
 
 	presets: [
@@ -156,10 +163,12 @@ const config: Config = {
 				// 	position: "left",
 				// 	label: "Docs",
 				// },
-				{
-					type: "search",
-					position: "left",
-				},
+				// Navbar search hidden — search lives in the homepage hero.
+				// (Full-text search is still reachable via /search and Cmd/Ctrl+K.)
+				// {
+				// 	type: "search",
+				// 	position: "left",
+				// },
 				// {
 				//   href: "https://github.com/Rational-AI/",
 				//   label: "GitHub",
@@ -168,10 +177,6 @@ const config: Config = {
 				// { to: "/blog", label: "Blog", position: "left" },
 				{
 					type: "docsVersionDropdown",
-					position: "right",
-				},
-				{
-					type: "localeDropdown",
 					position: "right",
 				},
 			],
