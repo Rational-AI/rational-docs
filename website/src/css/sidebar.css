@@ -5,6 +5,8 @@ aside {
 	--sidebar-active-color: #11615c;
 	/* Rest colour for page and folder labels */
 	--sidebar-text-rest: #71717a;
+	/* Thin right-pointing chevron used as a mask for folder toggles */
+	--sidebar-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 3.5 10.5 8 6 12.5'/%3E%3C/svg%3E");
 	/* Mint tint used for the active item background, derived from the brand teal */
 	--sidebar-active-bg: color-mix(
 		in srgb,
@@ -139,21 +141,68 @@ aside {
 			align-items: center;
 		}
 
-		/* MARK: Expand/collapse chevron - square (1:1) container with the 20px
-		   chevron centred inside it (Infima defaults to a rectangular button
-		   and a 32px glyph) */
-		.menu__caret {
-			width: 2rem;
-			height: 2rem;
-			padding: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-shrink: 0;
+		/* MARK: Folder toggles (Mintlify-style).
+		   Folders have no `link`, so the whole label is the expand/collapse
+		   toggle. A small, grey chevron sits right after the label, is always
+		   visible, and rotates to point down when the folder is open. */
 
-			&::before {
-				background-size: 1.25rem 1.25rem;
-			}
+		/* Lay the label out as a flex row so the chevron sits right after the
+		   text, and keep the text from growing (so it doesn't push the chevron
+		   to the far edge). */
+		.theme-doc-sidebar-menu .menu__list-item-collapsible
+			> .menu__link--sublist-caret {
+			display: flex !important;
+			align-items: center !important;
+			justify-content: flex-start !important;
+		}
+		.theme-doc-sidebar-menu
+			.menu__list-item-collapsible
+			> .menu__link--sublist-caret
+			> span {
+			flex: 0 1 auto;
+		}
+
+		/* The chevron: a small ">" icon, drawn with an SVG mask so its size and
+		   colour are fully controlled (no dependence on the theme caret). */
+		.menu__link--sublist-caret::after {
+			content: "";
+			width: 0.8rem;
+			height: 0.8rem;
+			margin-left: 0.3rem;
+			flex: 0 0 auto;
+			background: var(--sidebar-text-rest);
+			-webkit-mask: var(--sidebar-chevron) center / 0.8rem 0.8rem no-repeat;
+			mask: var(--sidebar-chevron) center / 0.8rem 0.8rem no-repeat;
+			transform: rotate(0deg); /* points right when closed */
+			transition: transform 0.18s ease;
+		}
+
+		/* Point the chevron down when the folder is open */
+		.menu__link--sublist-caret[aria-expanded="true"]::after {
+			transform: rotate(90deg);
+		}
+
+		/* No hover highlight on category rows. Flat labels (level-1) aren't even
+		   clickable, and folders toggle in place, so neither should look like a
+		   link on hover. Note: flat-label LIs do NOT carry .menu__list-item--category
+		   (only collapsible categories do), so target .theme-doc-sidebar-item-category
+		   which both levels share. */
+		.theme-doc-sidebar-item-category > .menu__list-item-collapsible {
+			--ifm-menu-color-background-hover: transparent;
+			--ifm-hover-overlay: transparent;
+		}
+		.theme-doc-sidebar-item-category > .menu__list-item-collapsible:hover,
+		.theme-doc-sidebar-item-category
+			> .menu__list-item-collapsible
+			> .menu__link:hover {
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+
+		/* Flat-label headers are not clickable: keep the default cursor */
+		.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible
+			> .menu__link {
+			cursor: default;
 		}
 
 		/* Vertical guide line down the left of nested folder groups
