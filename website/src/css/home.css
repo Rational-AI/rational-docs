@@ -28,6 +28,10 @@
 
 .homeHero {
 	margin-top: 32px;
+	/* Lift above .homeCategories so the search result-preview dropdown,
+	   which overflows the hero, paints over the cards below. */
+	position: relative;
+	z-index: 1;
 }
 
 .homeCategories {
@@ -38,7 +42,9 @@
 /* MARK: Hero */
 .homeHero__inner {
 	position: relative;
-	overflow: hidden;
+	/* visible (was hidden) so the hero search's result-preview dropdown can
+	   overflow the hero; the bg image is kept rounded via .homeHero__bg. */
+	overflow: visible;
 	border-radius: var(--home-hero-radius);
 	padding: clamp(48px, 9vw, 120px) 24px clamp(56px, 9vw, 110px);
 	text-align: center;
@@ -70,6 +76,8 @@
 	position: absolute;
 	inset: 0;
 	z-index: 0;
+	/* Round the image ourselves now that .homeHero__inner no longer clips it */
+	border-radius: var(--home-hero-radius);
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -166,6 +174,68 @@
 /* Hide the native search-input clear button for a cleaner look */
 .homeSearch__input::-webkit-search-cancel-button {
 	-webkit-appearance: none;
+}
+
+/* MARK: Hero search — reused @theme/SearchBar (live result preview) */
+
+/* .homeSearch is the positioning context for the autocomplete dropdown */
+.homeSearch {
+	position: relative;
+}
+
+/* The reused SearchBar fills the pill where the plain input used to be.
+   position:static so the dropdown anchors to .homeSearch (full pill width). */
+.homeSearch .navbar__search {
+	position: static;
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+	display: block;
+}
+
+.homeSearch .navbar__search > span {
+	display: block;
+	width: 100%;
+}
+
+.homeSearch .navbar__search-input {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	background-image: none; /* SearchIcon already supplies the magnifier */
+	color: #ffffff;
+	font-size: 1.05rem;
+	font-weight: 500;
+}
+
+.homeSearch .navbar__search-input::placeholder {
+	color: rgba(255, 255, 255, 0.65);
+	font-weight: 400;
+}
+
+.homeSearch .navbar__search-input:focus {
+	outline: none;
+}
+
+/* Drop the plugin's ⌘K shortcut hint inside the hero search */
+.homeSearch [class*="searchHintContainer"] {
+	display: none;
+}
+
+/* Result preview: full pill width, dropped just below the pill. The 3-class
+   selector outranks the plugin's `.searchBar .dropdownMenu`; the plugin keeps
+   its own !important left/right anchor, so width:100% fills the pill either way. */
+.homeSearch .navbar__search [class*="dropdownMenu"] {
+	position: absolute;
+	top: calc(100% + 12px);
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	text-align: left;
+	z-index: 5;
 }
 
 /* MARK: Categories section */

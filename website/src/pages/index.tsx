@@ -1,11 +1,9 @@
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
-import { useHistory } from "@docusaurus/router";
 import Translate, { translate } from "@docusaurus/Translate";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import { useCallback, useState } from "react";
+import SearchBar from "@theme/SearchBar";
 
 type CardItem = {
 	label: string;
@@ -138,23 +136,6 @@ function DocIcon() {
 }
 
 function Hero() {
-	const [query, setQuery] = useState("");
-	const history = useHistory();
-	const searchPath = useBaseUrl("/search");
-
-	const onSubmit = useCallback(
-		(e: React.FormEvent) => {
-			e.preventDefault();
-			const trimmed = query.trim();
-			// Offline full-text search page provided by
-			// @easyops-cn/docusaurus-search-local at /search?q=...
-			history.push(
-				trimmed ? `${searchPath}?q=${encodeURIComponent(trimmed)}` : searchPath,
-			);
-		},
-		[history, query, searchPath],
-	);
-
 	return (
 		<section className="homeHero">
 			<div className="homeHero__inner">
@@ -175,24 +156,13 @@ function Hero() {
 							chat with our AI to find help.
 						</Translate>
 					</p>
-					<search>
-						<form className="homeSearch" onSubmit={onSubmit}>
-							<SearchIcon />
-							<input
-								className="homeSearch__input"
-								type="search"
-								value={query}
-								onChange={(e) => setQuery(e.target.value)}
-								placeholder={translate({
-									id: "home.search.placeholder",
-									message: "Search...",
-								})}
-								aria-label={translate({
-									id: "home.search.placeholder",
-									message: "Search...",
-								})}
-							/>
-						</form>
+					{/* Reuse the offline-search SearchBar so typing previews matching
+					    docs inline (autocomplete dropdown), instead of only redirecting
+					    to /search on submit. Styled to fit the hero pill via the
+					    .homeSearch overrides in home.css. */}
+					<search className="homeSearch">
+						<SearchIcon />
+						<SearchBar />
 					</search>
 				</div>
 			</div>
