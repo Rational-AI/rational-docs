@@ -149,8 +149,7 @@ aside {
 		/* Lay the label out as a flex row so the chevron sits right after the
 		   text, and keep the text from growing (so it doesn't push the chevron
 		   to the far edge). */
-		.theme-doc-sidebar-menu
-			.menu__list-item-collapsible
+		.theme-doc-sidebar-menu .menu__list-item-collapsible
 			> .menu__link--sublist-caret {
 			display: flex !important;
 			align-items: center !important;
@@ -201,8 +200,7 @@ aside {
 		}
 
 		/* Flat-label headers are not clickable: keep the default cursor */
-		.theme-doc-sidebar-item-category-level-1
-			> .menu__list-item-collapsible
+		.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible
 			> .menu__link {
 			cursor: default;
 		}
