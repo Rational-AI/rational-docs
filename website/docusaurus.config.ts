@@ -175,10 +175,6 @@ const config: Config = {
 				//   position: "right",
 				// },
 				// { to: "/blog", label: "Blog", position: "left" },
-				{
-					type: "docsVersionDropdown",
-					position: "right",
-				},
 			],
 		},
 		footer: {
