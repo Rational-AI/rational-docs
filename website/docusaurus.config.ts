@@ -224,7 +224,7 @@ const config: Config = {
 					],
 				},
 			],
-			copyright: `Copyright © ${new Date().getFullYear()} Rational AI, Built with Docusaurus.`,
+			copyright: `Copyright © ${new Date().getFullYear()} Rational AI.`,
 		},
 		prism: {
 			theme: prismThemes.github,
