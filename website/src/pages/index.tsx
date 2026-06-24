@@ -45,13 +45,13 @@ const CATEGORIES: Category[] = [
 		pages: "8 pages",
 		description:
 			"Understand every module of the platform and what every control in the settings section does.",
-		to: "/category/ai-control-room",
+		to: "/cr/Chats",
 		items: [
 			{ label: "Chat", to: "/cr/Chats" },
 			{ label: "Knowledge", to: "/cr/Knowledge" },
 			{ label: "Conversations", to: "/cr/Conversations" },
 			{ label: "Governance", to: "/cr/Governance" },
-			{ label: "Settings", to: "/category/settings" },
+			{ label: "Settings", to: "/cr/settings/ai-model-registry" },
 		],
 	},
 	{
@@ -60,7 +60,7 @@ const CATEGORIES: Category[] = [
 		pages: "30+ pages",
 		description:
 			"Follow step-by-step procedures to complete common tasks from start to finish.",
-		to: "/category/operational-guides",
+		to: "/operational-guides/get-started",
 		items: [
 			{ label: "Get started", to: "/operational-guides/get-started" },
 			{
@@ -84,7 +84,7 @@ const CATEGORIES: Category[] = [
 		pages: "22 pages",
 		description:
 			"Learn the ideas behind the platform, so the rest of the docs make sense.",
-		to: "/category/concepts",
+		to: "/concepts/Generative-AI",
 		items: [
 			{ label: "GenAI", to: "/concepts/Generative-AI" },
 			{ label: "Natural Language Processing", to: "/concepts/NLP" },
