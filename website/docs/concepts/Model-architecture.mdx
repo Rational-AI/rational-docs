@@ -5,6 +5,8 @@ title: Model architecture
 description: What a model's architecture is, the main building blocks of modern neural networks, the families of architectures you'll meet, and why it matters when you choose a model in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 import Admonition from "@theme/Admonition";
 
 # Model architecture
@@ -43,10 +45,20 @@ When you register and deploy a model in the platform, its architecture is what m
 
 Choosing the right architecture for each role, a capable generative model for answering and a strong embedding model for retrieval, is what makes a [RAG](./RAG.mdx) system both accurate and efficient. You manage these choices in the [AI Model Registry](../cr/settings/ai-model-registry.mdx).
 
----
-
 ## Additional resources
 
-* [Large Language Models](./LLMs.mdx): the general‑purpose language systems built on the transformer architecture.
-* [Retrieval-Augmented Generation](./RAG.mdx): how generative and embedding models work together to ground answers in your data.
 * [AI Model Registry](../cr/settings/ai-model-registry.mdx): register, configure and deploy the models you use across the platform.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Large Language Models", to: "/concepts/LLMs" },
+		{ label: "AI model registry", to: "/concepts/AI-model-registry" },
+		{ label: "Model serving", to: "/concepts/Model-serving" },
+		{ label: "RAG", to: "/concepts/RAG" },
+	]}
+/>

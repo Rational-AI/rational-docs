@@ -5,6 +5,8 @@ title: Model training
 description: How models are trained, the main stages from pre-training to alignment, and where training fits alongside finetuning in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Model training
 
 **Model training** is the process of teaching a neural network by showing it many examples and letting it adjust its internal [parameters](./Model-architecture.mdx) until its predictions improve. Nothing is programmed by hand: the model gradually learns the patterns in the [data](./Dataset-and-training-data.mdx) it is given.
@@ -38,8 +40,13 @@ You don't train a base model from scratch in the platform, but the later stages 
 
 ---
 
-## Additional resources
+## Connects to
 
-* [Finetuning](./Finetuning.mdx): adapt a pre‑trained model to your data and tasks.
-* [RLHF](./RLHF.mdx): align a model's behaviour using human feedback.
-* [Dataset and training data](./Dataset-and-training-data.mdx): the raw material every training stage depends on.
+<ConnectsTo
+	items={[
+		{ label: "Finetuning", to: "/concepts/Finetuning" },
+		{ label: "RLHF", to: "/concepts/RLHF" },
+		{ label: "Dataset and training data", to: "/concepts/Dataset-and-training-data" },
+		{ label: "Inference", to: "/concepts/Inference" },
+	]}
+/>

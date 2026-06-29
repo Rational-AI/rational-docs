@@ -5,6 +5,8 @@ title: Context window
 description: What a context window is, why it is limited, how tokens are counted, and how it shapes retrieval, conversations and prompts in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 import Admonition from "@theme/Admonition";
 
 # Context window
@@ -39,8 +41,14 @@ A large context window is useful, but a focused, well‑retrieved context usuall
 
 ---
 
-## Additional resources
+## Connects to
 
-* [Retrieval-Augmented Generation](./RAG.mdx): how relevant knowledge is selected and fitted into the context window.
-* [Large Language Models](./LLMs.mdx): the models whose architecture sets the size of the window.
-* [Prompts](./Prompts.mdx): how the instructions you write share that same window with the model's answer.
+<ConnectsTo
+	items={[
+		{ label: "Tokens", to: "/concepts/Tokens" },
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Large Language Models", to: "/concepts/LLMs" },
+		{ label: "Prompts", to: "/concepts/Prompts" },
+		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
+	]}
+/>

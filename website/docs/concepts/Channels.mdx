@@ -5,6 +5,8 @@ title: Channels
 description: What a channel is, why the same agent can be delivered across different channels, and how channels fit into touchpoints in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Channels
 
 A **channel** is the medium through which users reach an AI agent: the surface where a conversation actually happens. A web chat widget, an API integration or a messaging app are all channels. The channel doesn't change *what* the agent knows; it changes *where* and *how* people talk to it.
@@ -27,10 +29,19 @@ A channel rarely stands alone. It is one of the ingredients bound together by a 
 
 When you set up a [touchpoint](../cr/settings/touchpoints.mdx), you choose the channel through which it is exposed, so the same carefully configured agent can be served on the surface that suits each use case.
 
----
-
 ## Additional resources
 
-* [Touchpoint](./Touchpoint.mdx): the configuration a channel is part of.
 * [Touchpoints settings](../cr/settings/touchpoints.mdx): choose how an agent is delivered.
 * [Channels (Chat)](../cr/Chats.mdx): one surface where users interact with an agent.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+		{ label: "Connectors", to: "/concepts/Connectors" },
+	]}
+/>

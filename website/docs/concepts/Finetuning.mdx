@@ -5,6 +5,8 @@ title: Finetuning
 description: What finetuning is, when to use it versus retrieval or prompting, the main approaches, and how finetuning works in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Finetuning
 
 **Finetuning** takes a model that has already been trained on broad, general data and continues its [training](./Model-training.mdx) on a smaller, focused dataset. The result is a model that keeps its general abilities but performs noticeably better on your specific task, domain or style.
@@ -35,10 +37,21 @@ The quality and consistency of the dataset matters far more than its size. A sma
 
 The platform provides a dedicated [Fine‑Tuning](../cr/settings/finetuning.mdx) section where you pick a base model and a [dataset](../cr/settings/datasets.mdx), set the parameters and launch a job. When it finishes, the tailored model becomes available in the [AI Model Registry](../cr/settings/ai-model-registry.mdx), ready to use like any other model.
 
----
-
 ## Additional resources
 
 * [Fine‑Tuning settings](../cr/settings/finetuning.mdx): start and track finetuning jobs.
 * [Datasets](../cr/settings/datasets.mdx): build the training data a job needs.
-* [RLHF](./RLHF.mdx): a specialised form of finetuning that uses human preferences.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Model training", to: "/concepts/Model-training" },
+		{ label: "RLHF", to: "/concepts/RLHF" },
+		{ label: "Dataset and training data", to: "/concepts/Dataset-and-training-data" },
+		{ label: "Inference", to: "/concepts/Inference" },
+	]}
+/>

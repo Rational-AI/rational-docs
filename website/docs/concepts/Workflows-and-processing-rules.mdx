@@ -5,6 +5,8 @@ title: Workflows and processing rules
 description: What workflows and processing rules are, how automation and conditional logic work together, and how they are used in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Workflows and processing rules
 
 **Workflows** and **processing rules** are how you automate work in the platform. A **workflow** is a sequence of steps that runs to accomplish a task, while a **processing rule** is the conditional logic that decides what should happen in a given situation. Loosely: the workflow is the recipe, and the processing rules are the "if this, then that" decisions inside it.
@@ -27,10 +29,18 @@ Most real automation combines the two. A workflow provides the overall sequence;
 
 The platform provides guided ways to set these up. See the operational guides on how to [create a workflow](../operational-guides/create-workflow.mdx) and how to [create a processing rule](../operational-guides/create-processing-rule.mdx) to put these concepts into practice, often in support of a [touchpoint](./Touchpoint.mdx).
 
----
-
 ## Additional resources
 
 * [Create a workflow](../operational-guides/create-workflow.mdx): build an automated, multi‑step process.
 * [Create a processing rule](../operational-guides/create-processing-rule.mdx): add conditional logic to your automation.
-* [Touchpoint](./Touchpoint.mdx): where workflows and rules are often applied.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+	]}
+/>

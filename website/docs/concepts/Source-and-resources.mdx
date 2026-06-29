@@ -5,6 +5,8 @@ title: Source and resources
 description: What sources and resources are, how they differ, and how they keep your knowledge current in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Source and resources
 
 **Sources** and **resources** are the two halves of how your data enters an AI system. A **source** is *where* data comes from, a connection to an external system such as a cloud bucket or a shared drive. A **resource** is *what* that source provides, an individual item such as a document, spreadsheet or image.
@@ -28,10 +30,20 @@ A resource is a single piece of content once it is inside the platform. Each res
 
 You manage connections in the [Sources](../cr/settings/sources.mdx) section, where you add a source, set how often it synchronises and monitor each sync. The resources it brings in then live in the [Knowledge](../cr/Knowledge.mdx) module, where you can explore them, edit their metadata and see how they relate. Together they keep your agents working from current, well‑organised material.
 
----
-
 ## Additional resources
 
 * [Sources settings](../cr/settings/sources.mdx): connect external systems and schedule synchronisation.
 * [Knowledge](../cr/Knowledge.mdx): explore and organise the resources your sources provide.
-* [Embeddings, chunks and annotations](./Embeddings-chunks-and-annotations.mdx): how each resource is prepared for retrieval.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Connectors", to: "/concepts/Connectors" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
+	]}
+/>

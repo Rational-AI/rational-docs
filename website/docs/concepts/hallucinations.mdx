@@ -5,6 +5,8 @@ title: Hallucinations
 description: What hallucinations are in generative AI, why they happen, the main types, and how to reduce them.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 import Admonition from '@theme/Admonition';
 
 # Hallucinations
@@ -58,10 +60,18 @@ To reduce the occurrence of hallucinations, several approaches can be employed:
 6. **Multi-model verification**: cross-checks outputs across different models to identify inconsistencies.
 7. **Temperature and sampling parameters**: lower temperature settings reduce randomness and creative divergence.
 
-## Related concepts
+---
 
-- [Retrieval-Augmented Generation](/concepts/RAG) 
-- [Generative AI](/concepts/Generative-AI)
-- [Large Language Models](/concepts/LLMs)
-- [Prompts](/concepts/Prompts)
-{/* TODO: link to the Fine-tuning concept page */}
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Generative AI", to: "/concepts/Generative-AI" },
+		{ label: "Large Language Models", to: "/concepts/LLMs" },
+		{ label: "Prompts", to: "/concepts/Prompts" },
+		{ label: "Sycophancy", to: "/concepts/Sycophancy" },
+		{ label: "Knowledge cutoff", to: "/concepts/Knowledge-cutoff" },
+		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
+	]}
+/>

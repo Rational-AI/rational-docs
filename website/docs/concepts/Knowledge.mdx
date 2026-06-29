@@ -5,6 +5,8 @@ title: Knowledge
 description: What a knowledge base is in the context of AI, how it differs from a model's built-in knowledge, and how Knowledge works in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Knowledge
 
 In the context of AI, **knowledge** is the organised, domain‑specific information a model can draw on to answer questions, separate from whatever it absorbed during [training](./Model-training.mdx). It is the difference between what a model knows in general and what your organisation knows in particular.
@@ -30,10 +32,21 @@ Raw documents are not directly searchable by a model. To make them useful, conte
 
 The [Knowledge](../cr/Knowledge.mdx) module is where you build and maintain this information: you ingest resources, organise them with tags and categories, view how they relate in a graph, and prepare them for retrieval. Kept up to date through [sources](./Source-and-resources.mdx), it becomes the foundation your agents reason over.
 
----
-
 ## Additional resources
 
 * [Knowledge module](../cr/Knowledge.mdx): build and maintain your organisation's knowledge.
-* [Embeddings, chunks and annotations](./Embeddings-chunks-and-annotations.mdx): how documents are prepared for retrieval.
-* [Retrieval-Augmented Generation](./RAG.mdx): how knowledge is brought into an answer.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
+		{ label: "Vector database", to: "/concepts/Vector-database" },
+		{ label: "Source and resources", to: "/concepts/Source-and-resources" },
+		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
+	]}
+/>

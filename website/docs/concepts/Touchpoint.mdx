@@ -5,6 +5,8 @@ title: Touchpoint
 description: What a touchpoint is, what it binds together, and how touchpoints turn a model into a purpose-built agent in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Touchpoint
 
 A **touchpoint** is a configured entry point through which users interact with an AI agent, for example a chat assistant for a specific product or a customer‑care flow. It is the unit that turns a general‑purpose model into a purpose‑built agent for one job.
@@ -30,10 +32,20 @@ Touchpoints are how you put AI in front of real users safely and deliberately. T
 
 You build and tailor them in the [Touchpoints](../cr/settings/touchpoints.mdx) settings. Once configured, a touchpoint is what you select in [Chat](../cr/Chats.mdx), and the conversations it produces appear in the [Conversations](../cr/Conversations.mdx) module and are metered in [Governance](../cr/Governance.mdx).
 
----
-
 ## Additional resources
 
 * [Touchpoints settings](../cr/settings/touchpoints.mdx): create and configure your agents.
-* [Channels](./Channels.mdx): the ways users reach a touchpoint.
-* [Connectors](./Connectors.mdx): the credentials a touchpoint uses to reach models and data.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Channels", to: "/concepts/Channels" },
+		{ label: "Connectors", to: "/concepts/Connectors" },
+		{ label: "System prompt", to: "/concepts/System-prompt" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+	]}
+/>

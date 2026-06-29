@@ -5,6 +5,8 @@ title: Sovereign AI
 description: What sovereign AI means, why data control and independence matter, and how the principle shapes the way Rational AI is built.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Sovereign AI
 
 **Sovereign AI** is the principle that an organisation, or a country, should retain control over the AI it relies on: its data, its models and the infrastructure they run on. Rather than depending entirely on a single external provider, sovereign AI keeps the important decisions, and the sensitive data, in your own hands.
@@ -28,10 +30,19 @@ Sovereign AI is usually pursued through a combination of choices: the ability to
 
 These principles are built into the platform. You decide which models to use through the [AI Model Registry](./AI-model-registry.mdx), including open models, and reach external providers only through explicit [connectors](./Connectors.mdx). Your [Knowledge](../cr/Knowledge.mdx) stays your own, and [Governance](../cr/Governance.mdx) gives you a transparent record of how models are used. The result is generative AI you can adopt without giving up control of your data or your choices.
 
----
-
 ## Additional resources
 
-* [Connectors](./Connectors.mdx): control exactly which external providers the platform talks to.
 * [Knowledge](../cr/Knowledge.mdx): keep your organisation's data under your own management.
 * [Governance](../cr/Governance.mdx): maintain a transparent, auditable record of AI usage.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Connectors", to: "/concepts/Connectors" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+	]}
+/>
