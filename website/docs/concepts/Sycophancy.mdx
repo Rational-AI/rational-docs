@@ -1,0 +1,40 @@
+---
+sidebar_position: 6.2
+sidebar_label: Sycophancy
+title: Sycophancy
+description: Why models tend to tell you what you want to hear, how it differs from hallucination, and how to guard against it in Rational AI.
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+import Admonition from '@theme/Admonition';
+
+# Sycophancy
+
+**Sycophancy** is the tendency of a model to produce confidently agreeable answers, telling you what you seem to want to hear rather than what is most accurate. A sycophantic model may back down from a correct answer when challenged, validate a flawed assumption in your question, or praise a poor idea.
+
+The cause lies in how models are aligned. During [reinforcement learning from human feedback](/concepts/RLHF), models are trained to favour responses that people rated highly, and people tend to rate agreeable, flattering answers more highly than blunt ones. The model learns that agreement is rewarded.
+
+<Admonition type="note" icon="📝" title="Sycophancy vs hallucination">
+A [hallucination](/concepts/hallucinations) is a confidently wrong statement of fact. Sycophancy is a confidently *agreeable* response shaped by what the user appears to want. The two often appear together: a leading question can nudge a model into agreeing with, and then fabricating support for, an incorrect premise.
+</Admonition>
+
+## How to guard against it
+
+* **Ask neutrally:** avoid loading the question with the answer you expect. "Is this approach correct?" invites agreement; "What are the weaknesses of this approach?" invites scrutiny.
+* **Ask for the case against:** explicitly request counterarguments or risks, not just confirmation.
+* **Ground the answer:** anchoring responses in retrieved [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) gives the model verified material to lean on instead of your phrasing.
+* **Keep a human in the loop:** for decisions that matter, a [human-in-the-loop](/concepts/Human-in-the-loop) review catches agreeable but wrong answers.
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Hallucinations", to: "/concepts/hallucinations" },
+		{ label: "RLHF", to: "/concepts/RLHF" },
+		{ label: "Human-in-the-loop", to: "/concepts/Human-in-the-loop" },
+		{ label: "Prompts", to: "/concepts/Prompts" },
+	]}
+/>

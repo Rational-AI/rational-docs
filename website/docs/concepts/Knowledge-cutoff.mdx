@@ -1,0 +1,42 @@
+---
+sidebar_position: 6.3
+sidebar_label: Knowledge cutoff
+title: Knowledge cutoff
+description: What a model's knowledge cutoff is, why it causes confident mistakes, and how Rational AI works around it.
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+import Admonition from '@theme/Admonition';
+
+# Knowledge cutoff
+
+A model's **knowledge cutoff** is the date past which it has no built-in knowledge. A model only "knows" what was present in its training data, and training stops at a fixed point in time. Anything that happened, changed or was published after that point is invisible to the model unless you provide it.
+
+This is a frequent source of confident mistakes. Asked about a recent event, a new product or a policy that changed last month, a model will often answer anyway, drawing on outdated information or filling the gap with a plausible guess rather than admitting it does not know.
+
+<Admonition type="note" icon="📝" title="The model will not always tell you">
+A model rarely says "that is after my cutoff." It tends to answer with the same confidence either way, so an out-of-date answer can look exactly like a current one. Treat questions about recent or fast-changing facts with extra caution.
+</Admonition>
+
+## Why it matters in Rational AI
+
+The knowledge cutoff is one of the main reasons the platform does not rely on a model's built-in knowledge alone. Instead, it supplies current, organisation-specific information at the moment of the request:
+
+* Your [Knowledge](/concepts/Knowledge) holds your own, up-to-date sources, independent of any model's training date.
+* [RAG](/concepts/RAG) retrieves the relevant pieces and places them in the [context window](/concepts/Context-window), so the model answers from your material rather than from stale memory.
+
+This is the distinction between what a model carries in its weights and what it reads at request time, covered in [parametric and contextual knowledge](/concepts/Parametric-and-contextual-knowledge).
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Hallucinations", to: "/concepts/hallucinations" },
+	]}
+/>

@@ -1,0 +1,39 @@
+---
+sidebar_position: 12.1
+sidebar_label: Inference
+title: Inference
+description: What inference is, how it differs from training, and why it is the dominant running cost of using a model in Rational AI.
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+import Admonition from '@theme/Admonition';
+
+# Inference
+
+**Inference** is the act of running a trained model to produce output: you send it text, and it generates a response. It is what happens every time you ask a question, summarise a document or trigger an analysis. Where [training](/concepts/Model-training) is the one-off process that creates a model, inference is the everyday process of *using* it.
+
+The two are very different in nature and cost. Training happens once, is enormously expensive, and produces a fixed set of parameters. Inference happens constantly, once per request, and each run leaves the model unchanged.
+
+<Admonition type="note" icon="📝" title="Inference does not teach the model">
+A model does not learn from the questions you ask it during inference. It reads your input, generates an answer and forgets it. To change what a model knows you must retrain or [fine-tune](/concepts/Finetuning) it, or supply information at request time through [RAG](/concepts/RAG).
+</Admonition>
+
+## Why inference matters
+
+* **Cost:** because inference runs on every request, it is the dominant ongoing cost of operating an AI system, and it scales with usage and with the number of [tokens](/concepts/Tokens) involved.
+* **Speed:** inference generates output token by token, so longer answers and larger contexts take longer to produce.
+* **Where it runs:** inference is carried out by whatever serves the model (see [model serving](/concepts/Model-serving)), whether a remote provider or a local deployment.
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Model training", to: "/concepts/Model-training" },
+		{ label: "Model serving", to: "/concepts/Model-serving" },
+		{ label: "Tokens", to: "/concepts/Tokens" },
+		{ label: "Finetuning", to: "/concepts/Finetuning" },
+	]}
+/>
