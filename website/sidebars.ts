@@ -56,6 +56,8 @@ const sidebars: SidebarsConfig = {
 						"operational-guides/annotate-resources",
 						"operational-guides/sqlite-resource-database",
 						"operational-guides/configure-rag",
+						"operational-guides/knowledge-custom-views",
+						"operational-guides/embed-knowledge",
 					],
 				},
 				{
