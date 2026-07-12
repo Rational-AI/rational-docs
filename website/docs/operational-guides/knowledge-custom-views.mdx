@@ -1,0 +1,151 @@
+---
+sidebar_position: 14
+sidebar_label: Custom views
+---
+import Admonition from '@theme/Admonition';
+
+# Custom views
+
+A [Knowledge](/operational-guides/create-knowledge) ships with two built-in ways to look at its resources — the **graph view** and the **attribute view** — but those are not the only shapes your data can take. Custom views let you build your own visualizations of the same resources — a map, a card wall, a timeline, a chart — and switch to them from the knowledge page just like the built-ins. This guide covers turning built-in views on and off, creating custom views, writing or generating their code, and using them.
+
+<Admonition type="info" icon="📖" title="WHAT IS A VIEW?">
+A view is one way of presenting a Knowledge's resources. **Built-in views** (Graph and Attributes) come with every Knowledge. **Custom views** are ones you create: each is a small, self-contained visualization that receives the Knowledge's resources and relations as data and renders them however you like. All the enabled views for a Knowledge appear together in the **view switcher** at the top of the knowledge page.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with Knowledge management privileges.
+- **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
+- **A few resources in the Knowledge:** a custom view is only as useful as the data it draws, so add some resources first — see [Manage knowledge resources](/operational-guides/manage-knowledge-resources).
+
+## Switch between views
+
+On the knowledge page, the **view switcher** sits in the header. It replaces the old pair of graph/attribute buttons with a single dropdown that lists every enabled view — the built-ins first, then your custom views — while the **Files** button stays on its own beside it.
+
+1. Open a Knowledge and look at the header.
+2. Open the **view dropdown** (it shows the name of the current view).
+3. Choose any enabled view to switch to it. The **Files** button is separate and always shows the Knowledge's input files.
+
+<img
+  src={require('@site/static/img/screens/knowledge-views-dropdown.png').default}
+  alt="The view switcher dropdown open, listing Graph view, Attributes and a custom view, with the Files button beside it"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The view switcher: enabled built-in and custom views in one dropdown, with **Files** kept separate.*
+
+## Manage views in settings
+
+Everything about views is configured on the **Views** tab of the Knowledge settings.
+
+Open the Knowledge, go to its settings, and select the **Views** tab. You'll see two sections:
+
+- **Built-in views** — Graph view and Attributes list, each with an on/off toggle.
+- **Custom views** — the views you have created, each expandable into a code editor.
+
+<img
+  src={require('@site/static/img/screens/knowledge-views-settings.png').default}
+  alt="The Views settings tab showing the Built-in views and Custom views sections"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The **Views** settings tab: built-in toggles above, custom views below.*
+
+### Turn a built-in view on or off
+
+Hiding a built-in you never use keeps the switcher short.
+
+1. On the **Views** tab, find **Graph view** or **Attributes list** under **Built-in views**.
+2. Use its **toggle** to enable or disable it. Disabled views disappear from the switcher on the knowledge page immediately.
+
+<Admonition type="note" icon="📝" title="THE FILES VIEW STAYS">
+Toggling the built-ins only affects the **view dropdown**. The **Files** button is fixed and is never part of the views list, so your input files are always one click away.
+</Admonition>
+
+## Create a custom view
+
+A custom view starts from a name and an engine, then a bit of code.
+
+1. On the **Views** tab, select **+** in the **Custom views** header.
+2. Give the view a **name**.
+3. Choose an **engine** — this is the technology your view's code is written in:
+   - **HTML + JavaScript** — one self-contained HTML document. The simplest option.
+   - **React (JSX)** — a React component, compiled for you in the browser.
+   - **Web component** — a custom element you host yourself, pointed at by a URL.
+4. Confirm. The new view is created from a small starter template and opens in the editor, ready to edit.
+
+<img
+  src={require('@site/static/img/screens/knowledge-view-create.png').default}
+  alt="The New custom view dialog with a name field and the three engine options"
+  style={{ width: '100%', maxWidth: '460px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Creating a custom view: pick a name and one of the three engines.*
+
+<Admonition type="info" icon="📖" title="HOW A VIEW RECEIVES ITS DATA">
+Whatever the engine, your view is handed the Knowledge's data at runtime: an object with the **knowledge** (name and description), its **resources** (name, category, tags and attributes), and the **graph** (nodes and edges). An HTML or React view receives it in a message; a web component receives it as a property. Your code decides how to draw it.
+</Admonition>
+
+## Edit and save a view's code
+
+Expanding a custom view reveals its code editor and a save bar.
+
+1. On the **Views** tab, select a custom view's **chevron** to expand it.
+2. Edit the code in the **editor** (it has syntax highlighting and line numbers).
+3. Select **Save** to persist your changes, or **Cancel** to discard them and collapse the view.
+
+<img
+  src={require('@site/static/img/screens/knowledge-view-editor.png').default}
+  alt="An expanded custom view showing the code editor and the save bar with Generate with AI, Cancel and Save"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*The custom-view editor with the save bar: **Generate with AI**, **Cancel** and **Save**.*
+
+### Generate a view with AI
+
+If you'd rather describe a view than write it, let the model draft the code for you.
+
+1. With a view expanded, select **Generate with AI**.
+2. The model writes code for the view's engine, using the Knowledge's real attributes, categories and sample resources as context, and drops it into the editor.
+3. **Review** the generated code, then select **Save** to keep it. Generation never saves on its own — you always confirm.
+
+<Admonition type="note" icon="📝" title="GENERATION USES YOUR DEFAULT MODEL">
+**Generate with AI** calls the workspace's default conversational model. If no such model is configured, the action reports a clear error instead of failing silently — configure a model and try again.
+</Admonition>
+
+## Rename, preview, copy or delete a view
+
+Each custom view's **⋮** (kebab) menu holds the rest of its actions:
+
+- **Rename** — change the view's name.
+- **Preview** — jump to the view rendered on the knowledge page.
+- **Copy code** — copy the view's source to the clipboard.
+- **Delete** — remove the view (after a confirmation).
+
+## Use a custom view
+
+Once a view is enabled it behaves exactly like a built-in.
+
+1. Go to the knowledge page and open the **view dropdown**.
+2. Select your custom view. It renders in the main area, fed with the Knowledge's live resources and graph.
+
+<img
+  src={require('@site/static/img/screens/knowledge-custom-view-runtime.png').default}
+  alt="A custom view rendered on the knowledge page, showing resources drawn from the Knowledge"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*A custom view running on the knowledge page, drawing the Knowledge's own resources.*
+
+<Admonition type="note" icon="📝" title="WHERE CUSTOM VIEWS RUN">
+HTML and React views run in a sandboxed frame, isolated from the rest of the app, so a view can load libraries it needs without affecting your session. Web components are loaded directly and are meant for elements you host and trust.
+</Admonition>
+
+## Result
+
+You can now shape a Knowledge into whatever view fits the job: keep or hide the built-in Graph and Attributes views, create custom views in HTML, React or as a web component, write their code by hand or generate it with AI, and switch between all of them from the header — while the Files view stays right where it is.
+
+To share one of these views, or a chat over the same Knowledge, on a website of your own, see [Embed a Knowledge](/operational-guides/embed-knowledge).
