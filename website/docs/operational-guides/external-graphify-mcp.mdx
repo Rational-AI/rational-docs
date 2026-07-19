@@ -1,0 +1,161 @@
+---
+sidebar_position: 6
+sidebar_label: External Graphify MCP
+---
+
+import Admonition from '@theme/Admonition';
+
+# Use Graphify from an external MCP client
+
+Rational AI can expose the generated Graphify graph for one Graphify Knowledge to an external MCP client. Access uses the Knowledge's existing embed key, so the client can read that one Knowledge's graph without an administrator API key.
+
+This is a scoped access path. One key grants read-only Graphify graph access to one Knowledge; it is not a generic platform API key and it does not grant access to other Knowledge bases.
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A Graphify Knowledge** with exactly one Git source attached using the **Graphify repository** processing rule.
+- **A completed Knowledge Source sync.** Wait until the Graphify processing has produced `graphify-graph.json.gz`.
+- **A Rational AI tenant URL** using the canonical tenant API URL, ending in `/api/`, for example `https://example.rational.is/api/`.
+- **A local checkout of `rational-ai`** so your client can launch the Graphify query MCP server.
+- **uv** available on the machine running the MCP client.
+
+<Admonition type="warning" title="Use the tenant API URL">
+Set `RATIONAL_AI_URL` to the canonical tenant URL ending in `/api/`. Do not use Vite dev ports, direct backend localhost ports, or Aspire dashboard resource URLs; those can miss tenant routing and proxy behavior used by the embed endpoint.
+</Admonition>
+
+## Prepare the Graphify Knowledge
+
+Graphify Knowledge starts from a Git source.
+
+1. Go to **Settings** → **Sources** and create a **Git repository** source.
+2. Enter an HTTPS **Repository URL**, for example `https://github.com/id-Software/DOOM.git`.
+3. Leave **Credentials (optional)** empty for a public repository.
+4. For a private repository, first create a **Git credentials** connector for the repository host, then select it in **Credentials (optional)**.
+5. Optionally set **Branch, tag, or commit**. Leave it blank to use the repository default branch.
+6. Attach the source to a Knowledge and select **Graphify repository** as the **Processing rule**.
+7. Run the Knowledge Source sync and wait for processing to complete.
+
+The first supported model is one Git source per Graphify Knowledge. The raw graph file and the external `query_graph` binding represent one repository, so a Graphify Knowledge must not combine multiple Git repositories.
+
+If the built-in Source has never synced before, the first Knowledge Source sync bootstraps the Source sync automatically. It then continues through repository snapshot creation, Graphify graph generation, and custom view creation.
+
+## Get the scoped key
+
+Open the Knowledge settings and use the **Embed** tab.
+
+1. Open **Settings** → **Knowledge**.
+2. Select the Graphify Knowledge.
+3. Open the **Embed** tab.
+4. Save the embed settings if the **HTML** snippet says **Save to generate the embed code**.
+5. Copy the key from the generated embed URL in the **HTML** snippet.
+
+The embed URL has this shape:
+
+```html
+https://<tenant-host>/embed/<knowledge-scoped-key>
+```
+
+Use only the `<knowledge-scoped-key>` value as `RATIONAL_AI_EMBED_KEY`. Never paste a real key into documentation, source control, screenshots, or shared chat.
+
+To rotate the key, use the **Rotate key** action in the **Embed** tab. Rotation generates a new key and immediately stops clients still using the old one. To revoke external Graphify access, rotate the key and remove the new key from clients that should no longer connect.
+
+## Configure the MCP server
+
+The Graphify MCP server runs over stdio. Its main tool is `query_graph`, equivalent to the Graphify CLI command:
+
+```text
+graphify query
+```
+
+In external scoped mode, `query_graph` is bound to the Knowledge identified by `RATIONAL_AI_EMBED_KEY`. The tool does not expose or accept `knowledgeId`; clients should pass only the question.
+
+Set these environment variables:
+
+```bash
+RATIONAL_AI_URL=https://<tenant-host>/api/
+RATIONAL_AI_EMBED_KEY=<knowledge-scoped-key>
+```
+
+Launch the standalone server from a `rational-ai` checkout with:
+
+```bash
+uv run --python 3.12 --no-project <repo>/workspaces/extensions/graphify-query-0.0.3/mcp_server.py
+```
+
+Keep `--no-project` in the command when launching from inside another repository. Without it, `uv` can try to use the surrounding project's environment instead of the standalone server's dependencies.
+
+## Codex example
+
+Add a server entry to your Codex `config.toml`:
+
+```toml
+[mcp_servers.graphify_doom]
+command = "uv"
+args = [
+  "run",
+  "--python",
+  "3.12",
+  "--no-project",
+  "/path/to/rational-ai/workspaces/extensions/graphify-query-0.0.3/mcp_server.py",
+]
+
+[mcp_servers.graphify_doom.env]
+RATIONAL_AI_URL = "https://<tenant-host>/api/"
+RATIONAL_AI_EMBED_KEY = "<knowledge-scoped-key>"
+```
+
+Replace `/path/to/rational-ai` with your checkout path and use your own scoped key.
+
+## Claude Code example
+
+Add the server to `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "graphify-doom": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--python",
+        "3.12",
+        "--no-project",
+        "/path/to/rational-ai/workspaces/extensions/graphify-query-0.0.3/mcp_server.py"
+      ],
+      "env": {
+        "RATIONAL_AI_URL": "https://<tenant-host>/api/",
+        "RATIONAL_AI_EMBED_KEY": "<knowledge-scoped-key>"
+      }
+    }
+  }
+}
+```
+
+## Validate access
+
+After the MCP client starts, ask a repository question that should require graph traversal. For the public DOOM repository, this query is a useful smoke test:
+
+```text
+Where is the main game loop in DOOM, and what important functions does it call?
+```
+
+A working Graphify Knowledge for `https://github.com/id-Software/DOOM.git` should locate `D_DoomLoop()` in `linuxdoom-1.10/d_main.c` and return related calls such as `TryRunTics`, `D_Display`, `S_UpdateSounds`, `I_InitGraphics`, and `G_Ticker`.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| :--- | :--- |
+| The server cannot download the graph | Confirm `RATIONAL_AI_URL` ends with `/api/`. |
+| Requests work in the browser but fail from MCP | Use the canonical tenant host, not a frontend dev server, backend localhost port, or Aspire dashboard URL. |
+| `Graphify graph not found` or an empty result | The Knowledge has no processed `graphify-graph.json.gz`, or the file is not ready yet. Run the Knowledge Source sync and wait for processing to complete. |
+| Authentication fails or access disappears | The scoped embed key may be wrong, rotated, or revoked. Copy the current key from the Knowledge **Embed** tab and update the client. |
+| The client asks for `knowledgeId` | Make sure `RATIONAL_AI_EMBED_KEY` is set. In scoped mode, `query_graph` hides `knowledgeId` and binds to one Knowledge. |
+| `uv` uses the wrong Python project | Include `--no-project` in the server command. |
+
+## Security
+
+Treat the Knowledge embed key as a secret. It grants read-only access to the Graphify graph for one Knowledge, but that graph can reveal repository structure, symbols, paths, and relationships.
+
+Do not use an administrator API key for external Graphify MCP access. Use the Knowledge-scoped embed key, rotate it from the **Embed** tab when needed, and remove it from clients that should no longer have access.
