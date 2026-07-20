@@ -58,6 +58,8 @@ const sidebars: SidebarsConfig = {
 						"operational-guides/configure-rag",
 						"operational-guides/knowledge-custom-views",
 						"operational-guides/embed-knowledge",
+						"operational-guides/graphify-code-graph",
+						"operational-guides/external-graphify-mcp",
 					],
 				},
 				{
