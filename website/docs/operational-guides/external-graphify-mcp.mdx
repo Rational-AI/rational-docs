@@ -1,0 +1,126 @@
+---
+sidebar_position: 17
+sidebar_label: External Graphify MCP
+---
+import Admonition from '@theme/Admonition';
+
+# Use Graphify from an external MCP client
+
+The [code graph](/operational-guides/graphify-code-graph) a Graphify Knowledge builds from a Git repository doesn't have to stay inside the Control Room. With the **Graphify query MCP server**, coding agents such as Claude Code or Codex can ask questions about that repository — "where is the main loop, and what does it call?" — and get answers backed by the Knowledge's graph. Access is granted by the Knowledge's **embed key**, so the client never needs an administrator API key. This guide takes you from a Git repository to a working `query_graph` tool inside your coding agent.
+
+<Admonition type="info" icon="📖" title="WHAT IS THE GRAPHIFY MCP SERVER?">
+MCP (Model Context Protocol) is the standard coding agents use to plug in external tools. The Graphify query MCP server is a small server, launched by the agent itself over stdio, that exposes one main tool: `query_graph`. When the server is configured with an embed key, the tool is **scoped**: it is bound to that one Knowledge, its graph is downloaded read-only, and the tool doesn't ask for (or accept) a Knowledge ID — the key alone decides what the client can see.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A Graphify Knowledge with completed processing.** A Knowledge whose Git repository Source has been processed with the **Graphify repository** rule, so the graph exists. [Build a code graph with Graphify](/operational-guides/graphify-code-graph) covers this from scratch.
+- **Administrative access to the Control Room**, to configure the Knowledge and copy its embed key.
+- **The Graphify query MCP server script.** A local copy of `mcp_server.py` from the **Graphify query** extension.
+- **`uv` installed** on the machine running the MCP client. The server script runs with Python 3.12 via `uv`.
+
+## Get the embed key
+
+The embed key is the same key that powers the [embedded Knowledge widget](/operational-guides/embed-knowledge) — a scoped credential for exactly one Knowledge.
+
+1. Open the Knowledge, go to its settings, and select the **Embed** tab.
+2. Save the tab at least once — this generates the embed key.
+3. Copy the key value for use as `RATIONAL_AI_EMBED_KEY` below.
+
+<Admonition type="note" icon="📝" title="TREAT THE KEY AS A SECRET">
+The key grants read-only access to the Knowledge's graph — which reveals your repository's structure, symbols, and relationships. Keep it out of source control, screenshots, and shared documents. To cut off access, use **Rotate key** on the **Embed** tab: rotation generates a new key and immediately stops every client still using the old one.
+</Admonition>
+
+## Connect an MCP client
+
+The client launches the server and passes it two environment variables:
+
+```bash
+RATIONAL_AI_URL=https://<tenant-host>/api/
+RATIONAL_AI_EMBED_KEY=<knowledge-embed-key>
+```
+
+With these set, the server runs in scoped mode: `query_graph` answers only for the Knowledge the key belongs to, and its advertised schema has no `knowledgeId` parameter — clients pass only the question.
+
+<Admonition type="warning" icon="⚠️" title="USE THE TENANT API URL">
+`RATIONAL_AI_URL` must be your tenant's canonical API URL, ending in `/api/` — for example `https://example.rational.is/api/`. Don't point it at a development server or an internal backend port: those bypass the tenant-aware routing the embed endpoint relies on, and requests will fail or land on the wrong route.
+</Admonition>
+
+### Claude Code
+
+Add the server to the project's `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "graphify": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--python",
+        "3.12",
+        "--no-project",
+        "/path/to/graphify-query/mcp_server.py"
+      ],
+      "env": {
+        "RATIONAL_AI_URL": "https://<tenant-host>/api/",
+        "RATIONAL_AI_EMBED_KEY": "<knowledge-embed-key>"
+      }
+    }
+  }
+}
+```
+
+### Codex
+
+Add the server to `config.toml`:
+
+```toml
+[mcp_servers.graphify]
+command = "uv"
+args = [
+  "run",
+  "--python",
+  "3.12",
+  "--no-project",
+  "/path/to/graphify-query/mcp_server.py",
+]
+
+[mcp_servers.graphify.env]
+RATIONAL_AI_URL = "https://<tenant-host>/api/"
+RATIONAL_AI_EMBED_KEY = "<knowledge-embed-key>"
+```
+
+In both configurations, replace `/path/to/graphify-query/mcp_server.py` with the actual path to the server script, and fill in your tenant host and embed key.
+
+<Admonition type="note" icon="📝" title="KEEP --no-project IN THE COMMAND">
+The `--no-project` flag makes `uv` run the server as a standalone script. Without it, launching the server from inside another repository can pick up that project's Python environment instead of the server's own dependencies.
+</Admonition>
+
+## Ask the graph a question
+
+Restart your coding agent so it picks up the new server, then ask a question about the repository that needs the graph to answer. For a Knowledge built from the public DOOM repository:
+
+```text
+Where is the main game loop in DOOM, and what important functions does it call?
+```
+
+The agent calls `query_graph`, and the graph locates `D_DoomLoop()` in `linuxdoom-1.10/d_main.c` along with the functions it reaches — `TryRunTics`, `D_Display`, `S_UpdateSounds`, and more.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| :--- | :--- |
+| The server can't reach Rational AI | Confirm `RATIONAL_AI_URL` is the canonical tenant host and ends in `/api/`. |
+| Authentication fails, or access stops working | The embed key may be missing, mistyped, or rotated. Copy the current key from the Knowledge's **Embed** tab and update the client configuration. |
+| `query_graph` returns nothing, or the graph isn't found | Knowledge processing hasn't completed yet, or the Source isn't using the **Graphify repository** rule. Wait for the Knowledge Source sync to finish. |
+| The tool still asks for a `knowledgeId` | Scoped mode isn't active — `RATIONAL_AI_EMBED_KEY` isn't reaching the server. Check the `env` block of your client configuration. |
+| `uv` fails to start the server or resolves the wrong environment | Make sure the launch command includes `--no-project`. |
+
+## Result
+
+Your coding agent now has a `query_graph` tool bound to one Knowledge: it asks questions in natural language, and the Graphify graph answers with the functions, files, and relationships of your repository — authenticated by a single scoped embed key that you can rotate at any time from the **Embed** tab.
+
+To learn what the graph contains and how it's built, see [Build a code graph with Graphify](/operational-guides/graphify-code-graph). To manage the key and the rest of the embed surface, see [Embed a Knowledge](/operational-guides/embed-knowledge).
