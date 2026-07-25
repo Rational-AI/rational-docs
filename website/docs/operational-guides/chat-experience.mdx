@@ -27,7 +27,7 @@ Every conversation begins by choosing who you want to talk to.
 
 1. Select **New chat**.
 2. The first time, a **touchpoint picker** opens. Choose the touchpoint you want to chat with.
-3. The chat opens with a personalized greeting instead of a blank prompt. The greeting is generated dynamically from the time of day (morning, afternoon, or evening) and your name, so the exact wording varies from visit to visit — for example *"Hi Admin, what do you need this evening?"*, *"Good evening, Admin."*, or *"Evening, Admin. How can I assist?"*.
+3. The chat opens with a personalized greeting instead of a blank prompt, sitting above the centre of the panel. The greeting is generated dynamically from the time of day (morning, afternoon, or evening) and your name, so the exact wording varies from visit to visit — for example *"Hi Admin, what do you need this evening?"*, *"Good evening, Admin."*, or *"Evening, Admin. How can I assist?"*.
 
 <img
   src={require('@site/static/img/screens/chat-greeting.png').default}
@@ -36,6 +36,10 @@ Every conversation begins by choosing who you want to talk to.
 />
 
 *A new chat opens with a personalized, time-aware greeting.*
+
+<Admonition type="note" icon="📝" title="EVERY CHAT SURFACE GREETS YOU">
+The greeting is not limited to the chat page. It also appears in the chat panels embedded elsewhere in the product — inside a [Knowledge](/operational-guides/create-knowledge), in a [BI](/operational-guides/rational-bi) dashboard — including chats that don't exist yet, where nothing is created until you send your first message. Suggested questions are a separate thing and only appear where the touchpoint supplies them.
+</Admonition>
 
 <Admonition type="note" icon="📝" title="THE PICKER IS SKIPPED NEXT TIME">
 Rational AI remembers the last touchpoint you chatted with. The next time you select **New chat**, the chat is created directly with that touchpoint and the picker is skipped. If that touchpoint has since been disabled or deleted, the picker reopens so you can pick a valid one.
@@ -72,7 +76,7 @@ Document extraction is bounded by size, page, and character caps. For large or n
 
 Beyond reading a reply, you can regenerate it, rewrite your own question, and compare different versions side by side.
 
-Each AI message has a hover-revealed **action row** with **regenerate**, **edit**, and **copy**, plus inline branch arrows **‹ ›** and a variant counter (for example **1/2**) when alternatives exist.
+Each AI message has a hover-revealed **action row** with **regenerate**, **edit**, **copy**, **Verify response**, and a thumbs-up / thumbs-down pair for feedback, plus inline branch arrows **‹ ›** and a variant counter (for example **1/2**) when alternatives exist.
 
 ### Generate an alternative answer
 
@@ -90,6 +94,19 @@ Use this when you want to rephrase a question and explore a different line of co
 2. An inline edit card opens with a hint that **saving creates a new branch**.
 3. Adjust the text and select **Save** (or press Enter).
 4. A new branch is created and the agent answers it. Attachments on the original message are carried onto the edited branch, so they survive the edit.
+
+### Rate an answer
+
+Tell the agent's owners whether an answer worked. The two thumbs buttons on the action row open a short dialog rather than recording a silent vote, so a rating always comes with the reason behind it.
+
+1. On an AI message, select **thumbs up** (*Give positive feedback*) or **thumbs down** (*Give negative feedback*).
+2. For negative feedback, tick as many reasons as apply under **Add details**: **Confusing**, **False**, **Offensive**, **Useless**, or **Other**.
+3. Add an optional note — *"What was satisfying about this response?"* for positive feedback, *"What was unsatisfying about this response?"* for negative.
+4. Select **Send**. A **Thanks for your feedback** toast confirms it, and the thumb you chose switches to its filled icon so you can see at a glance which messages you have rated.
+
+<Admonition type="note" icon="📝" title="CANCELLING SENDS NOTHING">
+Closing the dialog with **Cancel**, the **✕**, or the Escape key sends nothing at all — no rating is recorded from opening the dialog alone. Only **Send** submits, and if it fails you are told so (*"Could not submit your feedback. Please try again"*) rather than being left thinking it went through.
+</Admonition>
 
 ## Rename a chat
 
@@ -136,4 +153,4 @@ Summary behavior is governed by the **Summary generation settings** section on t
 
 ## Result
 
-You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting, line up follow-up messages while answers generate, attach files, explore and branch alternative answers, rename chats with AI-generated titles, and — as a support agent — take over a conversation and review its AI-generated summary before stepping in.
+You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting — on every chat surface, including one that hasn't been created yet — line up follow-up messages while answers generate, attach files, explore and branch alternative answers, rate an answer with a reason attached, rename chats with AI-generated titles, and — as a support agent — take over a conversation and review its AI-generated summary before stepping in.
