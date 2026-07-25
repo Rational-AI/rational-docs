@@ -1,0 +1,74 @@
+---
+sidebar_position: 26
+sidebar_label: Approve tool calls
+---
+import Admonition from '@theme/Admonition';
+
+# Approve tool calls before they run
+
+An agent that can only read is easy to trust. As soon as it can write — send a message, update a record, delete a file — you want a human in the loop for the calls that matter. Rational AI lets you decide, per [touchpoint](/operational-guides/configure-touchpoints), which tool calls need a person to say yes: the assistant pauses, the user approves or rejects, and only then does the tool run.
+
+<Admonition type="info" icon="📖" title="WHAT IS AN APPROVAL GATE?">
+When the assistant decides to use a tool, it normally calls it and carries on. An **approval gate** parks that call instead: the turn stops, an approval card appears in the chat, and the tool runs only if the user selects **Approve**. Which calls get gated is decided by the touchpoint's approval policy, combined with whether the individual tool is considered **sensitive** — a tool that changes something rather than just reading it.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with touchpoint management privileges.
+- **A touchpoint with tools:** the policy has nothing to gate until the touchpoint has tools added — see [Configure touchpoints](/operational-guides/configure-touchpoints).
+
+## Choose when the assistant asks
+
+The policy lives with the tools it governs, at the top of the touchpoint's **Tools** tab.
+
+1. Go to **Settings** → **Touchpoints** and open the touchpoint.
+2. Open the **Tools** tab and find **When to ask for confirmation**, described as *"Before running a tool, the assistant can ask the user to confirm."*
+3. Choose one of the three options:
+   - **Never — tools run without asking.** No gate at all; every call executes immediately.
+   - **Smart — only for sensitive tools (recommended).** The default. Read-only tools run straight through; tools marked sensitive wait for a decision.
+   - **Always — ask before every tool.** Every single call is gated, including harmless lookups.
+4. Save the touchpoint.
+
+<Admonition type="note" icon="📝" title="ALWAYS IS HEAVIER THAN IT SOUNDS">
+A single answer can involve several tool calls, and **Always** stops on each one. It is the right choice while you are auditing what an agent actually does, but for everyday use **Smart** gets you the safety of a gate without a conversation that needs a click per sentence.
+</Admonition>
+
+## Mark a tool as sensitive
+
+Under **Smart**, "sensitive" is the whole decision — so you need to be able to set it yourself.
+
+Each tool row in the **Tools** tab carries a **Sensitive** badge. Select it to toggle the tool between sensitive and not sensitive; the badge can be added or removed whatever the touchpoint policy is, so you can prepare your list before switching the policy on.
+
+Hover the badge and the tooltip tells you where the current answer comes from:
+
+- **You marked this tool as sensitive.** — your explicit override.
+- **You marked this tool as not sensitive.** — your explicit override, the other way.
+- **Declared as sensitive by the MCP server.** — the server's own annotation, which you have not overridden.
+- **Declared as not sensitive by the MCP server.** — likewise.
+- **Not declared as sensitive by the MCP server.** — the server said nothing, so the tool is treated as not sensitive.
+
+<Admonition type="note" icon="📝" title="THE MCP SERVER'S ANNOTATION IS A HINT, NOT A VERDICT">
+An MCP server can declare its own tools read-only or destructive, but that declaration is written by whoever built the server — Rational AI treats it as a hint. Your override is the trust boundary: once you have toggled a tool, your choice sticks. Tools you never touch keep following the server's declaration, including when the extension is re-synced and its annotations change.
+</Admonition>
+
+## What the user sees in the chat
+
+When the assistant reaches a gated call, generation pauses and an approval card is pinned above the composer:
+
+- *"The assistant wants to use"*, followed by the **tool name**.
+- **This is a sensitive tool.** on the calls that were gated for being sensitive.
+- **Reject** and **Approve** buttons.
+
+Selecting **Approve** runs the tool — the button shows **Running…** while it does. Selecting **Reject** records a refusal that the assistant sees as the tool's answer, so it continues without the result rather than silently retrying. Either way, once every pending call in the turn has been answered, generation resumes on its own and the card disappears; the outcome is then visible in the conversation as the tool's response.
+
+A few details worth knowing:
+
+- **Only the gated calls wait.** If a turn makes three tool calls and one of them is sensitive, the other two run normally while that one waits for you.
+- **Nothing runs twice.** A call leaves the waiting state at the same moment its response is recorded, so a reload, a double-click, or a crash mid-decision cannot execute it a second time.
+- **Stopping the generation clears the queue.** If you select **Stop generation** while calls are waiting, they are abandoned rather than left pending forever.
+
+## Result
+
+Each touchpoint now decides for itself when a human has to say yes: **Never**, **Smart** for sensitive tools only, or **Always**. You control which tools count as sensitive, with the MCP server's own annotation as a default you can override per tool. In the chat, gated calls surface as an approval card above the composer, the rest of the turn keeps running, and generation resumes automatically once every call has an answer.
