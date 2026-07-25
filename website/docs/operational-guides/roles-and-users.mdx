@@ -37,6 +37,21 @@ Adjust a role's permissions when a group of people needs more or less access tha
 Toggling a chip changes only that one permission, nothing else. Scan the whole matrix for a role so its access lines up with what that group actually needs, rather than checking a single chip in isolation.
 </Admonition>
 
+### Grant access to Rational BI
+
+[Rational BI](/operational-guides/rational-bi) is governed by four rows of the same matrix, sitting together just after **Touchpoints**:
+
+- **BI projects** — the projects themselves: seeing the project list, opening one, creating and deleting them.
+- **BI defaults** — the tenant-wide BI configuration under **Settings** → **Rational BI** → **BI defaults**.
+- **Dashboards** — the dashboards inside a project.
+- **Reports** — the reports generated from those dashboards.
+
+Each row carries the same **List**, **Read**, **Create**, **Update**, **Delete**, and **Use** columns as every other feature.
+
+<Admonition type="note" icon="📝" title="BI TAKES MORE THAN ONE ROW">
+Granting **BI projects** alone gets someone as far as opening a project and finding it empty — the dashboards inside it are governed by their own row. For a role that should build BI, grant the create and update actions on **BI projects**, **Dashboards**, and **Reports** together; leave **BI defaults** to administrators, since it changes the configuration every project inherits.
+</Admonition>
+
 ## Create a user
 
 Add a user to give someone their own account to sign in with. When you create the account, you set its first password yourself instead of handing over an auto-generated value you never see.
