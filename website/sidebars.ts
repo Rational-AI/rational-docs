@@ -118,6 +118,7 @@ const sidebars: SidebarsConfig = {
 						"operational-guides/roles-and-users",
 						"operational-guides/personalize-user-details",
 						"operational-guides/governance",
+						"operational-guides/govern-ai-applications",
 					],
 				},
 				{
