@@ -24,6 +24,10 @@ Before you start, make sure you have:
 
 Go to **Settings** → **Touchpoints** and select the touchpoint you want to configure. This opens the configuration panel, where access settings live, alongside the **Tools** tab.
 
+<Admonition type="note" icon="📝" title="A NEW TOUCHPOINT INHERITS THE PLATFORM'S MODEL">
+Create a touchpoint without naming a model and it takes your platform's default **Conversational model** — the one set under **Settings** → **AI Model Registry** as *"Default model for conversations"* — and adds it to its own list of allowed models. The rule lives in the backend, so it applies equally to touchpoints created through the API. A model you choose explicitly is always kept, and existing touchpoints are left exactly as they are; change the platform default and only touchpoints created afterwards pick it up.
+</Admonition>
+
 ## Control who can reach the touchpoint
 
 Use this to decide whether someone must sign in before they can talk to the agent. By default they must.
@@ -59,6 +63,25 @@ Two pickers drive everything in this tab. Both render as grouped, styled lists s
 
 - **Add tool…** shows a **group header per MCP server** (with the extension's icon) and the tool rows indented beneath it. For example, the `rational-knowledge-rag` extension appears under a **RAG MCP server** group with its tools listed below: `rag_query_simple`, `get_resource`, `get_user_context`, `get_schema`, `execute_query`, `list_databases`, and `rag_query_graph`.
 - **Add MCP server configuration…** offers **+ Add new configuration** at the top and then lists the available configurations, each shown with the server icon and an expand chevron.
+
+## Decide when a tool needs confirmation
+
+Choosing which tools an agent *may* call is one decision; choosing which of those calls a human has to approve first is another. The second one sits at the top of the same **Tools** tab, under **When to ask for confirmation** — *"Before running a tool, the assistant can ask the user to confirm."*
+
+1. In the **Tools** tab, open the **When to ask for confirmation** dropdown.
+2. Choose the policy for this touchpoint:
+   - **Never — tools run without asking.**
+   - **Smart — only for sensitive tools (recommended).** The default: read-only tools run straight through, sensitive ones wait.
+   - **Always — ask before every tool.**
+3. Save the touchpoint.
+
+Under **Smart**, what counts as sensitive is set per tool. Each tool row carries a **Sensitive** badge you can select to add or remove, whatever the current policy is. Hovering it tells you where the current answer comes from — your own override (*"You marked this tool as sensitive."*) or the MCP server's declaration (*"Declared as sensitive by the MCP server."*, *"Not declared as sensitive by the MCP server."*).
+
+When a gated call comes up, the chat pauses and shows an approval card above the composer; the tool runs only once the user approves it.
+
+<Admonition type="note" icon="📝" title="THE SERVER'S ANNOTATION IS ONLY A DEFAULT">
+An MCP server declares its own tools read-only or destructive, and Rational AI follows that declaration until you say otherwise. Once you have toggled a tool's **Sensitive** badge, your choice is what counts — including across extension re-syncs, which would otherwise reset the tool to whatever the server currently claims.
+</Admonition>
 
 ## Add a single tool
 
@@ -111,4 +134,4 @@ Because knowledge IDs are never surfaced in the UI, this dropdown is the support
 
 ## Result
 
-Your touchpoint now controls its own access through the **Allow anonymous access** toggle, presents a nested **Tools** view grouped by MCP server and configuration, and lets you add tools either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs — so the agent has exactly the tools and references it needs to answer against your Knowledge.
+Your touchpoint now controls its own access through the **Allow anonymous access** toggle, starts from the platform's default conversational model unless you pick one yourself, presents a nested **Tools** view grouped by MCP server and configuration, decides through **When to ask for confirmation** which calls need a human to approve them, and lets you add tools either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs — so the agent has exactly the tools and references it needs to answer against your Knowledge.
