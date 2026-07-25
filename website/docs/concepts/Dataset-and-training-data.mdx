@@ -5,6 +5,8 @@ title: Dataset and training data
 description: What datasets and training data are, the qualities that make them good, the main types, and how they relate to datasets and knowledge in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 import Admonition from "@theme/Admonition";
 
 # Dataset and training data
@@ -49,10 +51,21 @@ In the platform, you don't retrain a base model, but the same principles apply t
 
 The lesson carries across: the better and cleaner the data you provide, the more reliable and relevant the results.
 
----
-
 ## Additional resources
 
 * [Knowledge](../cr/Knowledge.mdx): organise the data your agents draw on at answer time.
-* [Model architecture](./Model-architecture.mdx): the design that turns training data into a working model.
-* [Hallucinations](./hallucinations.mdx): what happens when a model fills gaps its data didn't cover.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Model training", to: "/concepts/Model-training" },
+		{ label: "Model architecture", to: "/concepts/Model-architecture" },
+		{ label: "Finetuning", to: "/concepts/Finetuning" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Hallucinations", to: "/concepts/hallucinations" },
+	]}
+/>

@@ -5,6 +5,8 @@ title: Reinforcement Learning from Human Feedback (RLHF)
 description: What RLHF is, why it is used to align models with human preferences, how the process works, and how it relates to finetuning.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Reinforcement Learning from Human Feedback (RLHF)
 
 **Reinforcement Learning from Human Feedback (RLHF)** is a technique for aligning a model's behaviour with human preferences. Instead of teaching the model only what is correct, RLHF teaches it what people find **helpful, safe and well‑expressed**.
@@ -31,8 +33,13 @@ RLHF is a specialised stage of [model training](./Model-training.mdx), applied a
 
 ---
 
-## Additional resources
+## Connects to
 
-* [Model training](./Model-training.mdx): the stages that lead up to alignment.
-* [Finetuning](./Finetuning.mdx): adapting a model to a task or domain.
-* [Prompts](./Prompts.mdx): how you steer an already aligned model at runtime.
+<ConnectsTo
+	items={[
+		{ label: "Model training", to: "/concepts/Model-training" },
+		{ label: "Finetuning", to: "/concepts/Finetuning" },
+		{ label: "Prompts", to: "/concepts/Prompts" },
+		{ label: "Sycophancy", to: "/concepts/Sycophancy" },
+	]}
+/>

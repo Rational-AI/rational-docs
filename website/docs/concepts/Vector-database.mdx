@@ -5,6 +5,8 @@ title: Vector database
 description: What a vector database is, how similarity search works, how it differs from a traditional database, and its role in retrieval in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Vector database
 
 A **vector database** is a database built to store and search [embeddings](./Embeddings-chunks-and-annotations.mdx), the numerical vectors that represent the meaning of text. Its special skill is finding, very quickly, the items whose meaning is closest to a query, even across millions of entries.
@@ -32,10 +34,19 @@ The two are complementary, not rivals: structured questions still belong in a tr
 
 The vector database is the engine behind [retrieval](./RAG.mdx). The embeddings generated from your [Knowledge](../cr/Knowledge.mdx) are stored there, and at answer time it supplies the most relevant chunks as context for the model. You don't manage it directly; it works quietly underneath the Knowledge and RAG features.
 
----
-
 ## Additional resources
 
-* [Embeddings, chunks and annotations](./Embeddings-chunks-and-annotations.mdx): what a vector database stores.
-* [Retrieval-Augmented Generation](./RAG.mdx): how similarity search feeds an answer.
 * [Knowledge](../cr/Knowledge.mdx): the source of the vectors that get searched.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+	]}
+/>

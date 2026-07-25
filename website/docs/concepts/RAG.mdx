@@ -3,6 +3,8 @@ sidebar_position: 19
 sidebar_label: RAG 
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Retrieval-Augmented Generation (RAG)
 **Retrieval-Augmented Generation (RAG)** is a technique that enhances Large Language Models (LLMs) by retrieving relevant information from a knowledge base before generating a response.
 
@@ -159,3 +161,18 @@ A typical pattern is:
 3. **Use SQL** for precise filtering or aggregation.
 
 RAG provides semantic alignment; SQL provides structured precision. Used *together*, they enable accurate and context-aware retrieval across both unstructured and structured knowledge.
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
+		{ label: "Vector database", to: "/concepts/Vector-database" },
+		{ label: "Context window", to: "/concepts/Context-window" },
+		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
+		{ label: "Hallucinations", to: "/concepts/hallucinations" },
+	]}
+/>

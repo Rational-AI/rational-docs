@@ -1,0 +1,49 @@
+---
+sidebar_position: 6.1
+sidebar_label: Non-determinism
+title: Non-determinism
+description: Why a model can return different answers to the same prompt, what controls it, and what that means for using Rational AI.
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+import Admonition from '@theme/Admonition';
+
+# Non-determinism
+
+**Non-determinism** is the property that the same input can produce different outputs. Ask a model the same question twice and you may get two different answers, even when nothing else has changed.
+
+This is by design. A model generates text by predicting likely next [tokens](/concepts/Tokens) and then *sampling* from those possibilities rather than always picking the single most likely one. That element of chance is what makes outputs feel varied and natural, but it also means results are not guaranteed to repeat.
+
+## What controls it
+
+The amount of variation is largely governed by a setting called **temperature**:
+
+* **Lower temperature** makes the model favour its most likely choices, producing more focused and repeatable answers.
+* **Higher temperature** widens the choices, producing more varied and creative answers.
+
+Even at very low temperatures, perfect repeatability is not guaranteed, so non-determinism is best treated as a built-in characteristic rather than a bug.
+
+<Admonition type="note" icon="📝" title="Different is not wrong">
+Two different answers can both be correct. Non-determinism means you cannot assume an output is reproducible word for word, so quality is judged by whether each answer is right, not by whether it matches a previous run.
+</Admonition>
+
+## Why it matters in Rational AI
+
+Because outputs vary, the platform leans on grounding and review rather than expecting identical results every time:
+
+* Grounding answers in retrieved [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) keeps responses anchored to verified sources, narrowing how far they can drift.
+* For sensitive outputs, a [human-in-the-loop](/concepts/Human-in-the-loop) review step catches the occasional off answer that automated checks miss.
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Tokens", to: "/concepts/Tokens" },
+		{ label: "Hallucinations", to: "/concepts/hallucinations" },
+		{ label: "Human-in-the-loop", to: "/concepts/Human-in-the-loop" },
+		{ label: "Large Language Models", to: "/concepts/LLMs" },
+	]}
+/>

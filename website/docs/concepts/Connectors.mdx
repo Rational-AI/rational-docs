@@ -5,6 +5,8 @@ title: Connectors
 description: What a connector is, why credentials are centralised, and how connectors link the platform to external providers in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # Connectors
 
 A **connector** stores the credentials and configuration needed to talk to an external provider, such as a cloud platform, a model provider or a search service. Set up once, a connector can then be reused safely across the platform wherever that provider is needed.
@@ -34,10 +36,19 @@ This is also central to [sovereign AI](./Sovereign-AI.mdx): because every extern
 
 The [Connectors](../cr/settings/connectors.mdx) section is where you add connectors and review where each one is used, so the rest of the platform can reach the outside world without ever handling raw credentials directly.
 
----
-
 ## Additional resources
 
 * [Connectors settings](../cr/settings/connectors.mdx): add and manage connections to external providers.
-* [Source and resources](./Source-and-resources.mdx): connections that bring your data in.
-* [Sovereign AI](./Sovereign-AI.mdx): why explicit, controlled connections matter.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Source and resources", to: "/concepts/Source-and-resources" },
+		{ label: "Sovereign AI", to: "/concepts/Sovereign-AI" },
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+	]}
+/>

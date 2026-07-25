@@ -5,6 +5,8 @@ title: AI model registry
 description: What a model registry is, why centralising models matters, and how the AI Model Registry works in Rational AI.
 ---
 
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
 # AI model registry
 
 An **AI model registry** is a central catalogue of the models an organisation can use. Rather than wiring each model into each application separately, you register a model once and then reference it everywhere it is needed.
@@ -33,10 +35,19 @@ Keeping both in one catalogue is what lets a [RAG](./RAG.mdx) system combine ret
 
 In the platform, the [AI Model Registry](../cr/settings/ai-model-registry.mdx) is where you add models once and reuse them consistently across the product. You control which models are available, see their key details, and manage changes over time. Models you create through [finetuning](./Finetuning.mdx) appear here too, alongside the base models you registered.
 
----
-
 ## Additional resources
 
 * [AI Model Registry settings](../cr/settings/ai-model-registry.mdx): add and manage the models available in the platform.
-* [Model architecture](./Model-architecture.mdx): the differences between the model types a registry holds.
-* [Model serving](./Model-serving.mdx): how a registered model is made available to answer requests.
+
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Model architecture", to: "/concepts/Model-architecture" },
+		{ label: "Model serving", to: "/concepts/Model-serving" },
+		{ label: "Connectors", to: "/concepts/Connectors" },
+	]}
+/>

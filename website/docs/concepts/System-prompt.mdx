@@ -1,0 +1,44 @@
+---
+sidebar_position: 19.1
+sidebar_label: System prompt
+title: System prompt
+description: What a system prompt is, how it differs from a user prompt, and how it shapes the behaviour of a touchpoint in Rational AI.
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+import Admonition from '@theme/Admonition';
+
+# System prompt
+
+A **system prompt** is the standing instruction given to a model ahead of every request. It sets the agent's role, tone, boundaries and rules before any user has said a word, and it stays in force for the whole interaction. Where a user's [prompt](/concepts/Prompts) is the question of the moment, the system prompt is the brief the agent always works to.
+
+A useful way to see it: the user prompt is what you ask, the system prompt is who you are asking. The same model can behave like a formal support agent, a concise analyst or a friendly assistant purely by changing its system prompt.
+
+<Admonition type="note" icon="📝" title="Always present, rarely seen">
+The system prompt is sent on every request and shares the [context window](/concepts/Context-window) with everything else, but the end user does not see it. It is set once, in configuration, rather than written anew for each message.
+</Admonition>
+
+## What a system prompt typically covers
+
+* **Role and purpose:** what the agent is for and who it serves.
+* **Tone and style:** how it should speak.
+* **Boundaries:** what it should refuse, avoid, or escalate.
+* **How to use its knowledge and tools:** when to retrieve, cite, or take an action.
+
+## The system prompt in Rational AI
+
+The system prompt is one of the ingredients a [touchpoint](/concepts/Touchpoint) binds together, alongside its model, knowledge and tools. It is what turns a general‑purpose [model](/concepts/Model-architecture) into a purpose‑built agent for one job, and changing it changes how that touchpoint behaves without affecting any other.
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Prompts", to: "/concepts/Prompts" },
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+		{ label: "Context window", to: "/concepts/Context-window" },
+		{ label: "Large Language Models", to: "/concepts/LLMs" },
+	]}
+/>

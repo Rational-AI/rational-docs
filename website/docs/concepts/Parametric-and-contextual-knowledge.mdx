@@ -1,0 +1,49 @@
+---
+sidebar_position: 14.1
+sidebar_label: Parametric and contextual knowledge
+title: Parametric and contextual knowledge
+description: The two kinds of knowledge a model draws on — what is baked into its weights versus what it reads at request time — and why the distinction is central to Rational AI.
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+import Admonition from '@theme/Admonition';
+
+# Parametric and contextual knowledge
+
+A model answers from two very different sources of knowledge, and telling them apart explains much of how the platform is designed.
+
+* **Parametric knowledge** is what the model absorbed during [training](/concepts/Model-training) and stored in its parameters. It is broad and always available, but it is frozen at the model's [knowledge cutoff](/concepts/Knowledge-cutoff), cannot be inspected, and is reconstructed from compressed patterns rather than looked up, which is why it can be subtly wrong.
+* **Contextual knowledge** is what the model reads directly from its [context window](/concepts/Context-window) at the moment of the request: the documents, data and conversation you put in front of it. It is current, specific and traceable to a source, but limited to what fits in the window.
+
+<Admonition type="note" icon="📝" title="Why the distinction matters">
+Parametric knowledge is what the model *remembers*; contextual knowledge is what it can *see right now*. When the two disagree, grounding the model in trustworthy contextual knowledge is what keeps answers accurate and verifiable.
+</Admonition>
+
+## Comparative view
+
+| Aspect | Parametric knowledge | Contextual knowledge |
+| :--- | :--- | :--- |
+| Source | Baked into the model's weights during training | Supplied in the context window at request time |
+| Freshness | Frozen at the knowledge cutoff | As current as the information you provide |
+| Scope | Broad, general | Narrow, specific to the task |
+| Traceable to a source | No | Yes |
+| How to change it | Retrain or fine-tune | Change what you put in the context |
+
+## Why it matters in Rational AI
+
+The whole point of grounding a model in your [Knowledge](/concepts/Knowledge) is to shift answers from parametric to contextual. [RAG](/concepts/RAG) retrieves the most relevant resources and places them in the context window, so the model answers from your current, citable material instead of relying on what it happened to memorise during training.
+
+---
+
+## Connects to
+
+<ConnectsTo
+	items={[
+		{ label: "Knowledge cutoff", to: "/concepts/Knowledge-cutoff" },
+		{ label: "Context window", to: "/concepts/Context-window" },
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Hallucinations", to: "/concepts/hallucinations" },
+	]}
+/>
