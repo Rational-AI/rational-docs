@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Manage knowledge resources
 
-A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
+A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
 
 <Admonition type="info" icon="📖" title="WHAT IS A RESOURCE?">
 A resource is a single curated item inside a Knowledge — usually a file that has been processed into a form the AI can search and quote from. You work with resources through three views of a Knowledge: the **files table** (a sortable list), the **attribute view** (one card per resource), and the **graph view** (a visual map). The tasks below all live in one of these three.
@@ -18,6 +18,18 @@ Before you start, make sure you have:
 
 - **Administrative access:** an account with Knowledge management privileges.
 - **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
+
+## Choose which view a Knowledge opens in
+
+Opening a Knowledge lands you on its **Attributes list** — one card per resource — because that is the default. A graph is the better first impression for a small, richly connected Knowledge; a list is the better one for a few thousand documents. The choice is per Knowledge, so make it once and everyone opening that Knowledge gets it.
+
+1. Open the Knowledge's settings and select the **Views** tab (see [Custom views](/operational-guides/knowledge-custom-views) for everything else on that tab).
+2. Under **Built-in views**, select the **Default** radio on **Graph view** or **Attributes list**.
+3. Select **Save**.
+
+<Admonition type="note" icon="📝" title="A DISABLED DEFAULT FALLS BACK">
+The **Default** radio and the on/off toggle are independent controls, so it is possible to make a view the default and then disable it. Rather than opening on nothing, the Knowledge falls back to an enabled built-in view. The setting also travels with the Knowledge: duplicate, export, or import it and the default view comes along.
+</Admonition>
 
 ## Work with the files table
 
@@ -94,6 +106,26 @@ Normally an uploaded file runs through a workflow — an automated set of steps 
 If you cancel at the review step, the files you already uploaded are deleted, so nothing is left orphaned in the Knowledge.
 </Admonition>
 
+## Edit a resource without losing your curation
+
+Editing a file's content in the Knowledge raises an obvious worry: the answers your AI gives come from chunks and embeddings derived from that file, so a stale index means the AI keeps quoting text you just corrected. Saving an edit therefore reindexes the resources built from that file — the latest bytes are converted, the generated content chunks are replaced, and everything is chunked and embedded again, so [AI Search](/operational-guides/configure-rag) reflects your edit.
+
+What it deliberately does *not* do is re-run the file's processing rules and workflows. Saving an edit is not a reprocess, so:
+
+- **Content you wrote by hand stays as you wrote it** — a workflow doesn't get a second chance to overwrite it.
+- **Your annotations survive.** Only the generated content chunks are cleared; annotations you authored, and attribute metadata, are kept.
+- **Attributes and the knowledge database are untouched.**
+
+Reprocessing the Knowledge — or letting a scheduled sync do it — is still the way to re-run the full pipeline when that is what you actually want.
+
+<Admonition type="note" icon="📝" title="A FINISHED SYNC REFRESHES ITS KNOWLEDGE">
+You don't have to reprocess by hand after new content arrives either: when a [source](/operational-guides/configure-sources) finishes syncing, the Knowledges it feeds are refreshed, so freshly synced files become searchable on their own.
+</Admonition>
+
+<Admonition type="note" icon="📝" title="REPROCESSING KEEPS A KNOWLEDGE DATABASE">
+A `.db` file uploaded to a Knowledge is loaded into a [Knowledge Database](/operational-guides/sqlite-resource-database). That file can legitimately be processed again — by a manual reprocess or a scheduled sync — and doing so no longer drops the database it produced. The processing runs against a database that is still there.
+</Admonition>
+
 ## Start from an empty Knowledge
 
 A brand-new Knowledge has nothing to show in the graph view, so instead of a blank canvas it offers a guided empty state — with the zoom toolbar hidden — that points you toward your first resources.
@@ -117,4 +149,4 @@ The sticky first cell and the trailing actions menu stay fixed — they can't be
 
 ## Result
 
-You can now keep a Knowledge tidy from whichever view you happen to be in: sort and bulk-delete from the files table, remove a single resource from its card, add uploaded files straight in as resources, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.
+You can now keep a Knowledge tidy from whichever view you happen to be in: choose the view it opens in, sort and bulk-delete from the files table, remove a single resource from its card, add uploaded files straight in as resources, edit a resource and have it reindexed without losing your curation, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.
