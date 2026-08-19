@@ -1,0 +1,120 @@
+---
+sidebar_position: 19
+sidebar_label: Test a touchpoint change
+---
+import Admonition from '@theme/Admonition';
+
+# Test a touchpoint change before it goes live
+
+Changing a system prompt or swapping a model is easy to do and hard to be confident about. **Replay testing** re-runs the touchpoint's own past conversations against your pending change and reports what came out different — so you find out before your users do.
+
+<Admonition type="info" icon="📖" title="THIS IS A REGRESSION CHECK, NOT AN EVALUATION SUITE">
+There's no curated dataset and no quality score. The baseline is simply **what the system actually did**, on real input from real users.
+
+That means a replay run can't tell you whether an answer is *good*. It tells you whether your change altered behaviour that was previously working — which is the question you actually have when you're about to edit a live prompt.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A touchpoint with history.** The offer to test appears once a touchpoint has at least **five** replayable past conversations. A brand-new touchpoint has nothing to replay.
+- **A change to one of the things that matters.** Testing is offered when your edit touches the **system prompt**, the **default model**, or the **model pool**. Editing a description doesn't trigger it.
+
+## Run a test
+
+Make your change to the touchpoint and save. Instead of applying immediately, you're offered a choice:
+
+| Option | What happens |
+|--------|--------------|
+| **Test first** | Your change is applied to a temporary copy and replayed against past conversations. Nothing touches the live touchpoint. |
+| **Save without testing** | Applied straight away, as before. |
+| **Cancel** | Nothing is saved. |
+
+Choosing **Test first** asks which conversations to replay:
+
+- **The most recent conversations** — 20 by default.
+- **Only conversations with negative feedback** — the ones users already told you went badly, which is often where a prompt change is aimed.
+- **A hand-picked set** you choose yourself.
+
+The dialog shows **how many you selected out of the total** and a cost estimate that re-prices as you change the selection, so a large archive is never quietly swept into an expensive run. Runs are capped at **100 conversations**.
+
+<Admonition type="note" icon="📝" title="THE TEST OFFER CAN NEVER BLOCK A SAVE">
+The estimate prices your selected conversations' historical token volumes at the candidate model's rates. If pricing can't be worked out — an unpriced model, say — the dialog steps aside and your save proceeds normally.
+
+Testing is an offer, never a gate. You can always decline it, and it can never fail in a way that stops you saving.
+</Admonition>
+
+## What happens during a run
+
+Your pending edits are applied to a **candidate** — a temporary duplicate of the touchpoint. The candidate is disabled, hidden from every listing and picker, and deleted as soon as you apply or discard the change. Your live touchpoint is untouched for the entire run: **only an explicit Apply ever writes your edits to it.**
+
+Each selected conversation is replayed in its own shadow conversation, with the user's turns replayed against the candidate configuration.
+
+<Admonition type="caution" icon="⚠️" title="TOOLS ARE NEVER ACTUALLY CALLED DURING A REPLAY">
+This is the property that makes replaying production conversations safe. When the candidate calls a tool, the answer comes from **what that tool returned in the original conversation** — nothing is executed. No email is sent twice, no record is written again, no external system is touched.
+
+It also explains a verdict you'll see: if the candidate tries a call the original conversation never made, there's no recorded answer to replay. That case is marked **Diverged**, the intended call is recorded so you can see what it wanted to do, and the case stops there rather than running it.
+
+A diverged case isn't a failure — it's often the most interesting result in the run, because it means your change altered *what the agent decided to do*, not just how it phrased things.
+</Admonition>
+
+## Read the results
+
+Every case gets one of four verdicts:
+
+| Verdict | Meaning |
+|---------|---------|
+| **Same** | No meaningful difference detected. |
+| **Changed** | Behaviour differed on at least one signal. |
+| **Diverged** | The candidate attempted a tool call the original never made, so the case stopped. |
+| **Failed** | The case couldn't be completed. |
+
+Results open with **diverged and changed cases first**, with unchanged cases collapsed into a single line — the ones that need your attention are the ones you see. Expanding a row shows the original and the replayed conversation side by side.
+
+### What "changed" is actually measured on
+
+Comparison is deterministic and is **not** a text diff — two differently-worded answers that do the same thing count as the same. The signals are:
+
+- **Which tools were called** — the difference between the two sets.
+- **Citations** — what the answer referenced.
+- **Errored or empty answers.**
+- **Output shape** — whether it's still JSON, and whether the length stayed within a ±50% band.
+
+Cost and latency are reported too, and flagged when they more than double — but they never change the verdict. A slower answer is information, not a regression.
+
+<Admonition type="note" icon="📝" title="IN A MULTI-TURN CASE, ONLY THE FIRST DIFFERENCE IS A COMPARISON">
+Once a replayed conversation diverges from the original, everything after that point is a response to a *different* conversation than the one the original agent was having.
+
+The side-by-side view says so. Read anything past the first difference as context for what happened, not as evidence about the change.
+</Admonition>
+
+## Apply or discard
+
+- **Apply** writes your edits to the real touchpoint and deletes the candidate.
+- **Discard** throws the change away, along with the candidate.
+
+Past runs stay available read-only under the touchpoint's **Test runs** tab, so a decision you made in June is still auditable in September.
+
+## What a replay does not touch
+
+Replays are deliberately invisible to the rest of the platform. Shadow conversations don't appear in your conversation lists, chat statistics, or datasets built from events. They never raise oversight flags, never generate titles, topics or sentiment, and are **never delivered to a channel** — a replayed Telegram conversation sends nobody a message.
+
+The one place they *are* visible is [governance](/operational-guides/governance), by design: replay model calls are attributed to the candidate rather than the live touchpoint. Test runs cost real money, so they appear as their own line rather than silently inflating your live touchpoint's spend.
+
+## Current limits
+
+- **Anonymous and embedded traffic is excluded** from replay sources while the data-processing question is settled.
+- **Conversations with attachments replay as text only**, so a case that hinged on a document won't be a faithful reproduction.
+- **Comparison is behavioural, not semantic.** There is no judge assessing whether the new answer is *better* — only whether it behaved differently.
+- **Shadow conversations are currently kept indefinitely.**
+
+## Related
+
+- [Configure touchpoints](/operational-guides/configure-touchpoints) — the settings a replay run tests.
+- [Monitor usage and cost](/operational-guides/governance) — where a run's cost shows up.
+- [Rate an answer](/operational-guides/chat-experience#rate-an-answer) — the negative feedback you can replay against.
+
+## Result
+
+You can change a live touchpoint's prompt or model and see the effect on real past conversations before anyone else does, choosing which conversations to replay and at what cost. You know that tools are replayed rather than executed so production systems are never touched, what the four verdicts mean, that comparison is behavioural rather than a text diff, and that nothing reaches your live touchpoint until you explicitly apply it.

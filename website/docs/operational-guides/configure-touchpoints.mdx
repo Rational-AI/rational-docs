@@ -28,6 +28,17 @@ Go to **Settings** → **Touchpoints** and select the touchpoint you want to con
 Create a touchpoint without naming a model and it takes your platform's default **Conversational model** — the one set under **Settings** → **AI Model Registry** as *"Default model for conversations"* — and adds it to its own list of allowed models. The rule lives in the backend, so it applies equally to touchpoints created through the API. A model you choose explicitly is always kept, and existing touchpoints are left exactly as they are; change the platform default and only touchpoints created afterwards pick it up.
 </Admonition>
 
+## Edit the system prompt
+
+The **System prompt** is the standing instruction the agent follows on this touchpoint. Two controls sit beside the field, and both matter once a prompt grows past a few lines:
+
+- **Show unsaved changes** switches the field into a diff view, comparing what's saved against what you've typed. On a long prompt this is the difference between knowing what you changed and hoping you remember.
+- **Expand editor** gives the prompt a much taller editing area, hiding the surrounding fields while you work.
+
+<Admonition type="note" icon="📝" title="TEST A PROMPT CHANGE BEFORE IT GOES LIVE">
+A touchpoint with enough history offers to **replay your change against its real past conversations** when you save, so you can see what came out different before your users do. See [Test a touchpoint change](/operational-guides/test-touchpoint-changes).
+</Admonition>
+
 ## Control who can reach the touchpoint
 
 Use this to decide whether someone must sign in before they can talk to the agent. By default they must.
