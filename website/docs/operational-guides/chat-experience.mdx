@@ -68,6 +68,15 @@ Attach images and documents to a message so the agent can use them directly in i
 
 Images are passed to the model as vision input. For documents, the text is extracted in the background and fed to the model as reference content, so generation never waits on extraction.
 
+### Open an attachment
+
+The chip on a message is a button: select it to get the file itself, not just its name.
+
+- **Formats the browser can display** — PDFs, images, text, audio and video — open in a new tab as a preview.
+- **Anything else** downloads under its original file name.
+
+This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) — a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram) — the chip is the only route to what the sender actually attached.
+
 <Admonition type="note" icon="📝" title="LARGE CORPORA BELONG IN A KNOWLEDGE">
 Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the agent to search over, store them in a [Knowledge](/operational-guides/create-knowledge) instead — Rational AI indexes that content for retrieval-augmented answers ([RAG](/concepts/RAG)), where the agent looks up relevant passages at answer time rather than reading whole files inline.
 </Admonition>

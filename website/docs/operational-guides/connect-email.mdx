@@ -1,0 +1,91 @@
+---
+sidebar_position: 22
+sidebar_label: Connect a mailbox
+---
+import Admonition from '@theme/Admonition';
+
+# Connect a mailbox
+
+An Email channel plugs a mailbox into the platform: incoming mail becomes conversations, and replies go back out as properly threaded email that lands in the right place in the recipient's client. This guide covers connecting the mailbox, the two ways to authenticate, how mail maps to conversations, and the loop protection that stops your agent arguing with an out-of-office responder.
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A mailbox with IMAP and SMTP access**, and its server addresses.
+- **Credentials**: either an app password, or a Gmail or Microsoft 365 account you can authorise interactively.
+- **Administrative access** to **Settings** → **Channels**.
+
+## Connect the mailbox
+
+1. Go to **Settings** → **Channels** and select **New channel**.
+2. Choose **Email** as the type.
+3. Name the channel and fill in the mailbox configuration — servers, address, and credentials.
+4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode). **Manual** is a reasonable starting point for a mailbox: mail is captured and put in front of a person, and nothing is sent until someone sends it.
+5. Save.
+
+Connecting **validates both the IMAP and SMTP logins**. A mailbox that can receive but not send fails here rather than silently accumulating conversations nobody can reply to.
+
+## Authenticate: app password or OAuth
+
+| Method | Use it for |
+|--------|-----------|
+| **App password** | Any IMAP/SMTP mailbox. Simplest where your provider supports it. |
+| **OAuth (XOAUTH2)** | Gmail and Microsoft 365, where app passwords are often disabled by policy. |
+
+For OAuth you authorise the mailbox interactively: the channel gives you an **Authorize mailbox access** action that takes you through your provider's consent screen and returns with the grant.
+
+<Admonition type="note" icon="📝" title="AN EXPIRED AUTHORISATION IS A VISIBLE STATE, NOT A SILENT STALL">
+OAuth grants expire or get revoked. When that happens the channel reports that it **needs authorisation** and surfaces the **Authorize mailbox access** button again.
+
+Check the channel status if mail stops arriving — this is the most common reason a mailbox that worked yesterday is quiet today, and it's fixed by re-authorising rather than by re-entering anything.
+</Admonition>
+
+## How mail becomes conversations
+
+**One email thread is one conversation.** Conversations are keyed by the mail thread itself, not by who sent it — so two separate threads from the same person are two separate conversations, exactly as they appear in their mail client.
+
+That's the behaviour email users expect, and it matters: collapsing everything from one address into a single conversation would blend an invoice query into a support request because they came from the same colleague.
+
+Only unread mail is picked up, and **a message is marked read only once it has been successfully ingested**. If the platform restarts mid-fetch, the mail is picked up again on the next pass rather than disappearing — the failure mode is a duplicate, never a dropped message.
+
+The plain-text body is used where a message has one. For HTML-only mail the markup is stripped down to readable text.
+
+## Replies are properly threaded
+
+Outgoing replies are sent as both plain text and HTML, so they render well in any client, and carry the headers that make threading work: a correct `Re:` subject and the references tying the reply to the message it answers. In the recipient's mail client, the answer lands **inside the existing thread** rather than starting a new one.
+
+<Admonition type="note" icon="📝" title="A FAILED SEND IS RETRIED, NOT LOST">
+Replies are queued before they're sent. If your SMTP server is unreachable, the send is retried with a widening gap — starting after about a minute and backing off to a maximum of six hours — before it's finally marked failed.
+
+A brief mail-server outage therefore delays a reply rather than silently dropping it, which is the difference between a late answer and a customer who never hears back.
+</Admonition>
+
+## Loop protection
+
+An agent that answers automated mail will eventually find something that answers back. The channel refuses to ingest:
+
+- Mail marked as **automatically submitted**, or carrying **bulk**, **list** or **junk** precedence.
+- Mail asking for **auto-responses to be suppressed** — the header out-of-office replies set.
+- Mail from **bounce, no-reply and postmaster** addresses.
+- Mail from **the channel's own address**, so it can never answer itself.
+
+Your [allowed senders](/operational-guides/manage-channels#control-who-can-write-in) list applies on top of all of that. Because mailboxes attract far more unsolicited mail than a chat surface does, filling it in is worth doing for anything Automatic.
+
+## Attachments
+
+Attachments arrive under your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in) — allowed or not, restricted by type, and capped in size.
+
+An accepted document has its text extracted **before the message is posted to the conversation**, so the agent sees the contents when it composes its answer rather than reacting to a filename. Extraction is given a bounded window; a document that takes longer doesn't hold the message up indefinitely.
+
+Operators can open or download what arrived from the conversation — see [Use the chat](/operational-guides/chat-experience).
+
+## Related
+
+- [Manage channels](/operational-guides/manage-channels) — modes, allowed senders, and attachment policy.
+- [Connect a Telegram bot](/operational-guides/connect-telegram) — the other native channel.
+- [Conversations](/cr/Conversations) — reading and replying to what arrives.
+
+## Result
+
+Your mailbox is connected with both its receiving and sending logins verified, authenticated by app password or by an OAuth grant you can renew when it lapses. Mail arrives as one conversation per thread, replies land inside the original thread in the recipient's client, a failed send is retried rather than lost, and automated mail is screened out before it can start a loop.
