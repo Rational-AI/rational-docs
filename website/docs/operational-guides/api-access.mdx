@@ -96,6 +96,43 @@ Authorization: Bearer $RATIONAL_AI_API_KEY
 
 Set the `RATIONAL_AI_API_KEY` environment variable (or your own secret store) to the key value from the one-time secret dialog. The copied snippet reads from that variable, so once it's set the snippet authenticates on its own.
 
+## Choose between chat completions and responses
+
+The gateway serves **both** of OpenAI's APIs side by side, so you don't have to rewrite an application around whichever one Rational AI happens to prefer.
+
+| API | Endpoint | Reach for it when |
+|-----|----------|-------------------|
+| **Chat completions** | `/compat/v0/openai/chat/completions` | You have existing code built on it, or you want the simplest possible request |
+| **Responses** | `/compat/v0/openai/responses` | You're starting fresh, or using an OpenAI SDK's default path — Responses is the API OpenAI documents first and its SDKs reach for by default |
+
+Both are available on your workspace endpoint group and on a per-touchpoint group. The ready-made snippets in the registry use chat completions; switching to Responses is a matter of changing the endpoint and the request shape, with the same key and the same base URL.
+
+### The Responses endpoints
+
+| Endpoint | What it does |
+|----------|--------------|
+| `POST /compat/v0/openai/responses` | Create a response, streamed or not |
+| `GET /compat/v0/openai/responses/{id}` | Retrieve a stored response |
+| `DELETE /compat/v0/openai/responses/{id}` | Delete one |
+| `POST /compat/v0/openai/responses/{id}/cancel` | Cancel a background response |
+| `GET /compat/v0/openai/responses/{id}/input_items` | List a response's input items |
+
+Model resolution, request overrides, touchpoint attribution and governance capture work exactly as they do for a chat completion — a response is recorded with its usage, cost and time to first token like any other call, so nothing disappears from your [governance reporting](/operational-guides/governance) by choosing one API over the other.
+
+<Admonition type="note" icon="📝" title="THE RESPONSE ID YOU GET BACK IS RATIONAL AI'S, NOT THE PROVIDER'S">
+Responses are addressed by id, and the id you receive is minted by the gateway — a `resp_` value identifying the call as Rational AI recorded it, not the id the upstream provider used internally.
+
+This is what makes the follow-up operations work at all: a gateway id resolves to exactly one model and one provider, while a provider's id promises nothing of the sort — two accounts on the same provider number their responses independently.
+
+Practically, it means two things. **Chaining works normally**: pass a `previous_response_id` you were given and it's translated back on the way through. And **an id the gateway didn't mint is not found** — you can't hand it an id you got from somewhere else, and you can't reach another touchpoint's responses with a touchpoint key.
+</Admonition>
+
+<Admonition type="caution" icon="⚠️" title="NOT EVERY PROVIDER IMPLEMENTS EVERY OPERATION">
+Past creating a response, these operations reach whatever the upstream provider actually supports, and the gateway forwards its answer as-is.
+
+OpenAI stores responses, so retrieve, delete and cancel behave as documented. Ollama implements only response *creation* and returns 404 for the rest — which you'll see verbatim. If your application depends on retrieving or cancelling a stored response, check that the provider behind your model supports it before building on it.
+</Admonition>
+
 ## Result
 
-You now have an API key for authenticating programmatic requests and a copied, model-specific snippet pointing at the OpenAI-compatible gateway. Your application can call Rational AI's models directly, reusing standard OpenAI SDKs and tooling.
+You now have an API key for authenticating programmatic requests and a copied, model-specific snippet pointing at the OpenAI-compatible gateway. Your application can call Rational AI's models directly, reusing standard OpenAI SDKs and tooling — through chat completions or the Responses API, whichever your client already speaks.
