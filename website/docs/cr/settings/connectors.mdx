@@ -46,6 +46,8 @@ The Connectors page lists every connector as a card on the left, each showing it
 
 The details panel shows the connector's description, its **Provider**, and how many times it is used. A usage breakdown reports how many **AI Models**, **Sources** and **Tools** rely on the connector, so you can see what would be affected before changing or removing it.
 
+These are the same numbers the platform itself checks when you try to delete a connector, so a refusal can't cite a dependency the page didn't show you. A connector reported as used by nothing is one you can safely remove.
+
 ## Add a connector
 
 Click **Add** in the top-right corner to open the connector catalogue. Browse the available providers (Google, AWS, OpenAI, Anthropic, OpenRouter, Brave Search, Google Service Account Key, Azure and more), select one and click **Add** to configure it. Provide the required credentials—such as an API key or service account details—to complete setup.
