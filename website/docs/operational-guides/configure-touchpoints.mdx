@@ -92,6 +92,23 @@ Reach for this when you want one specific capability with parameters tuned exact
 3. To undo a change to any parameter, use the **revert-to-default** button next to its mode dropdown. The button disables itself once the parameter is back in default mode.
 4. Select **Confirm**.
 
+### Fill a Manual parameter from the conversation
+
+A **Manual** parameter doesn't have to be a fixed literal. It can reference a value carried on the conversation, resolved at the moment the tool is called:
+
+- `${userStore.<key>}` — a value from the conversation's **user store**.
+- `${system.<key>}` — a value from its **system store**, which is set when the conversation is created.
+
+The practical difference between the two is *when* you can write them. The system store is fixed at creation, so an integration that embeds a chat surface it doesn't control the bootstrap of can't use it; the user store can be written afterwards, so it works in that case too.
+
+<Admonition type="caution" icon="⚠️" title="THIS IS HOW YOU PASS A VALUE THE MODEL MUST NOT CHOOSE">
+A parameter set to **Manual** is stripped from the tool schema the model is shown. The model never sees it, so it cannot set it, alter it, or be talked into changing it — the value is substituted after the model has decided to make the call.
+
+That makes it the right mechanism for the caller's identity, a tenant reference, or a capability issued by the host: anything where letting the model supply the value would be the vulnerability.
+
+The alternative — having the agent read a value with a tool like `get_user_context` and pass it back as an argument — routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorisation, it belongs in a Manual parameter, not in the conversation.
+</Admonition>
+
 <Admonition type="note" icon="📝" title="SINGLE-CONFIGURATION SHORTCUT">
 When the server has only one configuration, the configuration dropdown is hidden in the **Add tool** dialog — there is nothing to choose between.
 </Admonition>
