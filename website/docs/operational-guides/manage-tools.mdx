@@ -54,6 +54,17 @@ Three pieces work together, and it helps to keep them straight:
 A tool appearing in this catalog means it exists in your environment, not that any agent is using it. An agent can only call a tool once you grant it in that agent's [touchpoint](/operational-guides/configure-touchpoints).
 </Admonition>
 
+## Declared tools and discovered tools
+
+There are two moments at which you can see what an extension offers, and they don't mean quite the same thing.
+
+- **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started — useful for deciding whether an extension is worth setting up.
+- **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog, and the list refreshes whenever a configuration starts or restarts.
+
+<Admonition type="note" icon="📝" title="AFTER AN UPDATE, THIS LIST CAN LAG">
+Updating an extension doesn't restart its servers, so this catalog keeps showing the tools the server last reported until the next restart. That's deliberate: your touchpoint wiring survives the update untouched, and tools that no longer exist are pruned at the next rediscovery instead of vanishing mid-flight. See [Update and roll back extensions](/operational-guides/extension-updates) for the full timing.
+</Admonition>
+
 ## Result
 
-You know where to find every tool your agents can use, how to tell which extension provides each one, and where to go next to actually grant a tool to an agent.
+You know where to find every tool your agents can use, how to tell which extension provides each one, the difference between what an extension declares and what its running server actually serves, and where to go next to actually grant a tool to an agent.
