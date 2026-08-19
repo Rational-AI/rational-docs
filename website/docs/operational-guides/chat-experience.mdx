@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Use the chat
 
-The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, lining up follow-up questions, exploring alternative answers, attaching files, renaming chats, and — for support agents — stepping into a conversation the AI is handling.
+The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, lining up follow-up questions, exploring alternative answers, attaching files, listening and dictating, renaming chats, and — for support agents — stepping into a conversation the AI is handling.
 
 <Admonition type="info" icon="📖" title="WHAT IS THE CHAT?">
 The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints) — a configured entry point that decides which AI model and which knowledge the chat draws on. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
@@ -76,7 +76,7 @@ Document extraction is bounded by size, page, and character caps. For large or n
 
 Beyond reading a reply, you can regenerate it, rewrite your own question, and compare different versions side by side.
 
-Each AI message has a hover-revealed **action row** with **regenerate**, **edit**, **copy**, **Verify response**, and a thumbs-up / thumbs-down pair for feedback, plus inline branch arrows **‹ ›** and a variant counter (for example **1/2**) when alternatives exist.
+Each AI message has a hover-revealed **action row** with **regenerate**, **edit**, **copy**, **read aloud**, **Verify response**, and a thumbs-up / thumbs-down pair for feedback, plus inline branch arrows **‹ ›** and a variant counter (for example **1/2**) when alternatives exist.
 
 ### Generate an alternative answer
 
@@ -106,6 +106,47 @@ Tell the agent's owners whether an answer worked. The two thumbs buttons on the 
 
 <Admonition type="note" icon="📝" title="CANCELLING SENDS NOTHING">
 Closing the dialog with **Cancel**, the **✕**, or the Escape key sends nothing at all — no rating is recorded from opening the dialog alone. Only **Send** submits, and if it fails you are told so (*"Could not submit your feedback. Please try again"*) rather than being left thinking it went through.
+</Admonition>
+
+## Listen and dictate
+
+The chat can read answers out loud and take messages by voice instead of typing.
+
+### Read an answer aloud
+
+Every assistant message carries a **read aloud** action in its hover row, next to copy. Select it and the answer is spoken, with an equalizer showing while it plays.
+
+Markdown is stripped before anything is read, so fenced code blocks and link targets aren't spelled out character by character.
+
+<Admonition type="note" icon="📝" title="THE VOICE FOLLOWS THE ANSWER, NOT THE INTERFACE">
+An Italian answer is read in Italian even if you're using Rational AI in English. What's spoken is the language of the text, not the language of the UI.
+
+Playback also starts before the whole answer has been synthesised — the reply is spoken in sentence groups, with the next fetched while the current one plays, so you hear the first words after about a second rather than waiting for a long answer to render in full.
+</Admonition>
+
+### Dictate a message
+
+Press the **mic** button in the composer, or hold **Ctrl+Shift+D**. The composer becomes a recording bar with a live waveform and three actions: discard, stop, and send.
+
+- **Stop** drops the transcript into the message box, so you can correct it before sending.
+- **Send** posts it straight away.
+
+Dictation works in both composers — inside an existing conversation, and on the new-chat screen, where the transcript starts the chat exactly as typed text would.
+
+### Set the audio language
+
+The composer's tools menu has an **Audio language** entry with three options: **detect automatically** (the default), **Italian**, or **English**. Your choice is remembered and applies to both dictation and reading aloud.
+
+Automatic really is automatic in both directions: each recording is detected as it's transcribed, and the language of an answer is detected from the answer itself — falling back to your own locale only when a message is too short to identify.
+
+<Admonition type="note" icon="📝" title="PINNING THE LANGUAGE MAKES DICTATION NOTICEABLY FASTER">
+Choosing **Italian** or **English** explicitly skips the detection pass, which is worth roughly 40% of the transcription time. If you always dictate in the same language, pin it.
+</Admonition>
+
+<Admonition type="note" icon="📝" title="DICTATION ON THE NEW-CHAT SCREEN NEEDS A SIGNED-IN ACCOUNT">
+Inside a conversation, anyone who can use that conversation can dictate into it — including a visitor on an anonymous touchpoint.
+
+On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation just to hold a recording would leave an empty one behind every time someone discarded the text.
 </Admonition>
 
 ## Rename a chat
