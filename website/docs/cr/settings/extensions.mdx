@@ -9,7 +9,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Extensions
 
-Extensions add new capabilities to Rational AI. Depending on the one you install, an extension can give your agents new **tools** to use in a conversation (such as fetching a web page, querying a database or searching the web), **skills** they can draw on, a **channel** for users to message the assistant (like Telegram), a **source** your Knowledge bases sync files from, or a **workflow** that processes incoming files. Use this section to install extensions from the registry, enable or disable them, configure their settings and review what each one provides. To build your own, see [Build an extension](/operational-guides/build-an-extension).
+Extensions add new capabilities to Rational AI. Depending on the one you install, an extension can give your agents new **tools** to use in a conversation (such as fetching a web page, querying a database or searching the web), **skills** they can draw on, a **channel** for users to message the assistant (like Telegram), a **source** your Knowledge bases sync files from, or a **workflow** that processes incoming files. Use this section to install extensions from the catalogue or from your own package files, enable or disable them, configure their settings and review what each one provides. To build your own, see [Build an extension](/operational-guides/build-an-extension); to keep the ones you have current, see [Update and roll back extensions](/operational-guides/extension-updates).
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -42,13 +42,18 @@ Selecting an extension shows its description and the capabilities it provides. W
 
 ## Add an extension
 
-Click **Add** in the top-right corner to open the extension registry. From here you can:
+Click **Add** in the top-right corner to browse the extensions you can install. From here you can:
 
-* **Search** the registry for an extension by name.
+* **Search** for an extension by name.
 * **Select** an extension to install (for example, Telegram, Fetch, GitHub, Postgres, Brave Search or Time).
-* Click **Configure extension** to set it up and complete the installation.
 
-Some extensions require configuration values—such as API keys, connection strings or endpoints—before they can be used. Provide these during the configuration step.
+The extensions on offer come from more than one place: the **platform catalogue** that Rational AI publishes, your own **local packages** (anything you installed from a file by dropping it onto this page), and any remote source attached for your organisation. You can also install your own package at any time by dragging it onto the Extensions page.
+
+## Configure an extension
+
+Installing never asks for configuration up front. An extension that still needs values from you lands **installed and disabled**, with nothing running — install it now, set it up when you have the credentials.
+
+Saving its first configuration is what starts the extension: the MCP server starts, its tools are discovered, and the extension is enabled. If a required value is missing, the save is refused with a validation error and the extension stays disabled, so nothing ever half-starts. An extension whose values all have defaults comes up enabled immediately, with no extra step.
 
 ## Enable or disable an extension
 
@@ -61,5 +66,8 @@ With an extension selected, open the options menu (the three vertical dots) in t
 | Action | Description |
 |--------|-------------|
 | **Settings** | View and edit the extension's configuration (for example, credentials or connection details). |
-| **Update** | Install a newer version of the extension when one is available. The option is disabled when the extension is already up to date. |
-| **Uninstall** | Remove the extension and its configuration from the platform. |
+| **Update policy** | Choose how updates reach this extension: **Compatible auto** applies compatible updates for you, **Notify only** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. |
+| **Update** | Move the extension to a newer release when one is available. Disabled when the extension is already up to date, and replaced by *"Pinned — change the update policy to install updates"* while the extension is pinned. |
+| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools survive and simply lose those bindings, and re-installing the same package later comes up clean. |
+
+For what "compatible" actually means, what happens to your touchpoints when an update lands, and how to roll back, see [Update and roll back extensions](/operational-guides/extension-updates).

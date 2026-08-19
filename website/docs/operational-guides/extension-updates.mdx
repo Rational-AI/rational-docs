@@ -1,0 +1,144 @@
+---
+sidebar_position: 17
+sidebar_label: Update extensions
+---
+import Admonition from '@theme/Admonition';
+
+# Update and roll back extensions
+
+Extensions change over time: publishers ship fixes, add tools, and occasionally change what they ask you to configure. This guide covers the decisions you make around that — how much autonomy you give an extension to update itself, how the platform decides whether a new release is safe, what happens to your tools and touchpoints when an update lands, and how to get back to a known-good version when one doesn't work out.
+
+<Admonition type="info" icon="📖" title="WHAT IS A RELEASE?">
+A **release** is one immutable combination of publisher, name, and version, together with its package. Publishing never overwrites: a fix is always a new version, never a new package behind an old version number.
+
+Your **installation** of an extension points at exactly one release at a time. Updating means moving that pointer to a different release; rolling back means moving it to an earlier one. Because releases are immutable, the version you were running yesterday is still exactly the version you can go back to.
+</Admonition>
+
+## Choose an update policy
+
+Every installed extension carries an **update policy** that decides how much happens without you. Open the extension on **Settings** → **Extensions** and use the policy selector to change it.
+
+| Policy | What it does |
+|--------|--------------|
+| **Compatible auto** | Updates classified as compatible are applied for you, without asking. Anything classified breaking is listed but never applied automatically. |
+| **Notify only** *(default)* | Available updates are listed so you can see them, and nothing is ever applied by itself. You apply each one deliberately. |
+| **Pinned** | Stay on exactly this version. Nothing updates it — including you, until you unpin. |
+
+Under every policy, an available update still shows up in the list. The policy governs what gets *applied*, not what you get to *see*.
+
+<Admonition type="caution" icon="📌" title="PINNED IS A PROMISE, NOT A PREFERENCE">
+Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused — the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned — change the update policy to install updates"*.
+
+The policy selector is the only way out: set the extension back to **Notify only** or **Compatible auto**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
+
+Pin an extension when you have a reason to distrust change on it — a validated configuration you can't revalidate right now, a compliance freeze, an investigation in progress.
+</Admonition>
+
+## How compatibility is decided
+
+When a publisher records a new release, the platform doesn't take their word for whether it's safe. It **computes** a verdict by comparing the new release against its predecessor — the highest lower version of the same extension, from the same place it came from.
+
+A release is classified **compatible** only when every one of these holds:
+
+- Every configuration parameter each MCP server declares comes back with the **same name and the same type**.
+- No parameter that used to be optional has become **required**.
+- Any **new** parameter is either optional or carries a default value — so the configuration you already saved stays valid without you touching it.
+- No **MCP server** has disappeared or been renamed.
+- No **tool** has been removed.
+
+Anything else is **breaking**. The table below shows how the common changes land:
+
+| Change between versions | Verdict |
+|--------------------------|---------|
+| Configuration and tools identical | Compatible |
+| A new optional parameter | Compatible |
+| A new required parameter **with** a default | Compatible |
+| A new required parameter **without** a default | Breaking |
+| A parameter's type changed | Breaking |
+| A parameter removed | Breaking |
+| An MCP server renamed or removed | Breaking |
+| A tool removed | Breaking |
+
+<Admonition type="note" icon="📝" title="WHY A REMOVED TOOL IS ALWAYS BREAKING">
+Touchpoints wire to tools **by name**. When a release drops a tool, any touchpoint that granted that tool is pointing at something that no longer exists, so the platform treats the removal as breaking no matter how harmless the rest of the diff looks.
+</Admonition>
+
+Two things are worth knowing about how the verdict interacts with what the publisher claims:
+
+- **A publisher's declaration is a floor, never a ceiling.** If a publisher marks a release breaking (or as a security release), a clean diff cannot promote it back to compatible. If a publisher marks a release compatible but the diff says otherwise, the computed verdict wins.
+- **A first release has nothing to compare against**, so it keeps whatever it declared and is otherwise left unclassified.
+
+Only releases classified **compatible** are eligible to be applied automatically under the **Compatible auto** policy. Everything else waits for you.
+
+## Preview an update with a dry run
+
+An update can be run as a **dry run**: the platform performs the same preflight checks it would for a real update — including whether your current configuration still satisfies the new release — and reports what it finds without committing anything. Your extension stays on its current version and your touchpoints are untouched.
+
+Dry runs are allowed regardless of update policy, so a pinned extension can still be checked before you decide whether to unpin it.
+
+## What happens to your tools and touchpoints
+
+This is the part that surprises people, so it's worth being precise about the timing.
+
+An extension's tool list is **discovered from the running MCP server**, not read out of the manifest. The list refreshes when a configuration starts or restarts.
+
+An update, on its own, **does not restart your servers**. That has a specific and useful consequence:
+
+- **Your existing tool wiring survives the update.** Touchpoints that granted tools from this extension keep their bindings, with their identities intact, straight through the version change.
+- **Stale tools are pruned later**, at the next rediscovery — when a configuration next restarts and the server reports what it actually serves now.
+- **That later pruning is where removal is enforced.** If a tool is about to be pruned while a touchpoint still depends on it, the operation is refused unless you force it. Forcing it removes the tool and the touchpoint binding that depended on it.
+
+Some changes are refused up front rather than deferred. An update that removes a **skill** or an **MCP server** that is still in use is rejected outright, again unless forced.
+
+<Admonition type="note" icon="📝" title="TOOLS ARE VISIBLE BEFORE YOU CONFIGURE ANYTHING">
+An extension lists the tools its manifest declares even before any configuration exists and any server has started, so you can see what an extension will give your agents before committing to setting it up. Those declared tools are what the publisher promises; the discovered list, once a server is running, is what you actually get.
+</Admonition>
+
+## When an update fails
+
+A failed update never strands your extension. If an update can't complete — say the new release requires a configuration value you haven't supplied — then:
+
+- The extension **keeps running the release it was already on**. The version doesn't move.
+- The failure is recorded in the extension's operation history, so you can see what was attempted and why it stopped.
+- The **last known-good release** is tracked separately, as the target a rollback returns to.
+- **The failed attempt does not poison the retry.** Once you supply what was missing, running the same update again succeeds.
+
+## Roll back
+
+Rolling back moves your installation to an earlier release it previously ran. Because releases are immutable and the last known-good release is tracked for you, a rollback restores a version you have actually verified, not an approximation of it.
+
+Rollback stays available regardless of update policy — including while an extension is pinned.
+
+## Withdrawn releases
+
+A release can be **withdrawn** from circulation, usually because it shipped a serious bug. A stronger form, **revocation**, applies when a release has to be treated as unsafe — a leaked credential in the package, for instance — and carries a stated reason.
+
+Tenant-side, both behave the same way, and the effects are deliberately conservative:
+
+- The release **disappears from the catalogue listing** and from the updates offered to you. You won't be shown it and can't accidentally move to it.
+- Targeting it explicitly as an update **fails**, and installing it fresh is **refused**.
+- The release **remains observable by id**, flagged as withdrawn or revoked, so a reference to it never turns into a dead end.
+- **If your installation is already on it, nothing is taken away from you.** The release stays listed in that extension's version history: you keep running it, and it remains available as a rollback target.
+
+<Admonition type="caution" icon="⚠️" title="A WITHDRAWN RELEASE STILL RUNS — IT JUST STOPS SPREADING">
+Withdrawal removes a release from circulation; it does not reach into your tenant and stop it. If you're running a release that gets withdrawn, treat the disappearance from the catalogue as the signal to move: check the extension for a newer release and update once one is available.
+</Admonition>
+
+## Uninstall
+
+Uninstalling removes the extension's runtime — the installation itself, its MCP servers, its configurations, and its tools. It is deliberately not a purge of everything the extension ever touched:
+
+- **Touchpoints survive.** A touchpoint that granted one of the extension's tools stays exactly where it is; it simply loses that one binding.
+- **The release stays on record** as provenance. Uninstalling doesn't erase the fact that the package existed in your tenant.
+- **Re-installing is clean.** Because the release record is kept rather than destroyed, uploading or installing the very same package again reuses it and comes up as a fresh, working install — no duplicate-release conflict to work around.
+
+## Result
+
+You can decide how much autonomy each extension gets, from fully automatic compatible updates to a hard pin that refuses even your own manual update until you lift it. You know that the compatible/breaking verdict is computed from the actual configuration and tool diff rather than declared, that a publisher can only ever make that verdict stricter, and which concrete changes fall on each side. You know your touchpoint wiring survives an update and when stale tools actually get pruned, that a failed update leaves you on your previous version with a retry that works, and that a withdrawn release stops spreading without being pulled out from under you.
+
+## Related
+
+- [Manage extensions](/operational-guides/manage-extensions) — installing extensions and where they come from.
+- [Browse agent tools](/operational-guides/manage-tools) — the catalog of tools extensions provide.
+- [Configure touchpoints](/operational-guides/configure-touchpoints) — granting tools to a specific agent.
+- [Build an extension](/operational-guides/build-an-extension) — authoring a package and its manifest.

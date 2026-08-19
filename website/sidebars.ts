@@ -101,6 +101,7 @@ const sidebars: SidebarsConfig = {
 					items: [
 						"operational-guides/build-an-extension",
 						"operational-guides/manage-extensions",
+						"operational-guides/extension-updates",
 						"operational-guides/manage-tools",
 						"operational-guides/agent-skills",
 					],

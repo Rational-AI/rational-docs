@@ -6,16 +6,35 @@ import Admonition from '@theme/Admonition';
 
 # Manage extensions
 
-Extensions are how you give Rational AI new capabilities, most often by connecting it to outside tools your agents can call. This guide walks through everything you do with extensions in the UI: publishing them to the registry, installing them into your tenant, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
+Extensions are how you give Rational AI new capabilities, most often by connecting it to outside tools your agents can call. This guide walks through everything you do with extensions in the UI: where the packages you can install come from, installing one from the catalogue or straight from a file, configuring it so it starts running, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
 
 <Admonition type="info" icon="📖" title="WHAT IS AN EXTENSION?">
 An extension is a bundle that adds a capability to Rational AI, most commonly one or more **MCP** servers. MCP (Model Context Protocol) is an open standard for connecting AI agents to external tools and data sources, so an MCP server is essentially a set of tools your agents can call.
 
-Two distinct steps put an extension to work. Making one **available** uploads its bundle to a shared registry so anyone can install it. **Installing** it then adds it into your tenant, where it actually runs. These steps are separate and explicit, so publishing a bundle never silently turns it on for everyone.
+Two distinct steps put an extension to work. **Installing** a package adds it into your tenant. **Configuring** it is what actually starts it running. These steps are separate and explicit, so a package landing in your tenant never silently starts talking to anything.
 </Admonition>
 
 <Admonition type="note" icon="📝" title="LOOKING TO BUILD YOUR OWN?">
-This page covers managing and installing existing extensions. To create one from scratch, including its manifest, see [Build an extension](/operational-guides/build-an-extension).
+This page covers managing and installing existing extensions. To create one from scratch, including its manifest, see [Build an extension](/operational-guides/build-an-extension). Once an extension is installed, [Update and roll back extensions](/operational-guides/extension-updates) covers keeping it current.
+</Admonition>
+
+## Where extensions come from
+
+Your tenant doesn't resolve extensions from a single registry. It resolves them from several **sources**, much the way a Linux system resolves packages from several apt sources:
+
+- **The platform catalogue** — the releases Rational AI publishes. Every tenant sees the same catalogue.
+- **Your local packages** — anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
+- **Remote sources** — third-party registries that can be attached for your organisation. Whether any are attached, and which, is set up for you; from your side they simply contribute more packages to browse.
+
+Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
+
+<Admonition type="note" icon="📝" title="WHEN THE CATALOGUE AND YOUR OWN PACKAGES OVERLAP">
+You can upload your own package of an extension the platform catalogue also publishes — a patched build of something standard, for instance. There's no conflict to resolve up front, because overlap is settled **per version**:
+
+- For a version both offer, the **catalogue's copy wins** the listing. Your copy stays resolvable and resurfaces if the shared release is ever withdrawn.
+- A version **only you** have is always listed, right alongside the catalogue's versions.
+
+Packages you upload are attributed to your own tenant publisher automatically, so an overlap only happens when a manifest deliberately names a shared publisher.
 </Admonition>
 
 ## Prerequisites
@@ -23,38 +42,54 @@ This page covers managing and installing existing extensions. To create one from
 Before you start, make sure you have:
 
 - **Administrative access:** an account with extension management privileges.
-- **The extension bundle (only if you're uploading your own):** a `.tar.bz2`, `.zip`, `.mcpb` file, or a bare `manifest.json`. The format is detected automatically.
+- **The extension package (only if you're installing your own):** a `.tar.bz2`, `.zip`, `.mcpb` file, or a bare `manifest.json`. The format is detected automatically.
 - **Any required configuration values:** for remote MCP servers reached over the network, the endpoint URL plus whatever authentication token or header the server expects.
 
 ## Read an extension card
 
 Every extension appears as a card on the **Extensions** page, and the card is your at-a-glance status check before you open anything. When an extension declares a version in its manifest, that **version** appears right next to the extension name, so you can confirm which release is installed without digging into details. Each card also carries an enable toggle for turning the extension on or off.
 
-## Make an extension available
-
-Do this when you have a bundle you want others to be able to install. Uploading it adds it to the shared registry only; nothing runs in your tenant yet, and your list of installed extensions stays exactly as it was.
-
-1. Go to **Settings** → **Extensions**.
-2. Drag an extension bundle from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag, confirming the page will accept the file.
-3. Release the file. A toast confirms the extension is now available in the registry.
-
-<Admonition type="note" icon="📝" title="ACCEPTED FILES AND CONFLICTS">
-The registry accepts `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`. Dropping anything else shows a warning toast and uploads nothing. Re-uploading a bundle whose name identifier and version already exist surfaces a conflict as an error toast, so you'll know to bump the version first.
-</Admonition>
-
-You can also publish a bundle without leaving the install flow: drag it directly onto the registry list inside the **Add extension** dialog. The bundle is added to the registry and the new entry is selected for you automatically, ready to install.
-
-## Install an extension into your tenant
-
-This is the step that actually makes an extension usable. Installing pulls an available extension out of the registry and adds it into your tenant.
+## Install an extension from the catalogue
 
 1. Go to **Settings** → **Extensions** and select **+ Add**.
-2. In the registry picker, browse the available extensions. The detail pane opens on the first not-yet-installed extension, so it's never blank when the dialog appears.
+2. Browse the available extensions. The detail pane opens on the first not-yet-installed extension, so it's never blank when the dialog appears.
 3. Select the extension you want, then confirm to install it into your tenant.
 
 <Admonition type="note" icon="📝" title="ALREADY-INSTALLED EXTENSIONS STAY VISIBLE">
-Extensions you've already installed remain in the registry list, shown **disabled** with an **Already installed** tag. You can see what's in place at a glance, but you can't re-select or double-install it.
+Extensions you've already installed remain in the list, shown **disabled** with an **Already installed** tag. You can see what's in place at a glance, but you can't re-select or double-install it.
 </Admonition>
+
+## Install a package from a file
+
+Do this when you have a package of your own — something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
+
+1. Go to **Settings** → **Extensions**.
+2. Drag the package from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag, confirming the page will accept the file.
+3. Release the file.
+
+You can also drop a package without leaving the install flow: drag it directly onto the list inside the **Add extension** dialog. The package is added and the new entry is selected for you automatically, ready to install.
+
+<Admonition type="note" icon="📝" title="ACCEPTED FILES AND CONFLICTS">
+Accepted formats are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`; the format is detected automatically. Dropping anything else shows a warning toast and uploads nothing. Re-uploading a package whose name identifier **and version** already exist surfaces a conflict as an error toast, so you'll know to bump the version first — releases are immutable, so a change always means a new version.
+</Admonition>
+
+## Configure an extension so it starts running
+
+Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully — it simply lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
+
+Creating the extension's first MCP-server configuration is what does the rest, in one step: it **starts the server, discovers the tools it actually serves, and enables the extension**.
+
+1. Open the extension on **Settings** → **Extensions**.
+2. Open its settings and fill in what the extension asks for — API keys, connection strings, endpoints.
+3. Save. The extension comes up enabled, and its tools appear.
+
+An extension whose parameters all carry defaults has nothing left to resolve, so it comes up configured and enabled the moment you install it, with no extra step.
+
+<Admonition type="note" icon="📝" title="INVALID CONFIGURATION IS REJECTED, NOT SWALLOWED">
+If you save a configuration that's missing a required value, the save is refused with a clear validation error and the extension stays disabled and unconfigured. Nothing half-starts, and you can correct the value and save again.
+</Admonition>
+
+An extension can hold **more than one** configuration of the same server — a second set of credentials, a second endpoint — and each discovers its own tools. The first configuration is the default one and can't be deleted while the extension is installed; deleting any of the extras leaves the extension enabled on the default.
 
 ## Configure remote (HTTP) MCP servers
 
@@ -81,4 +116,10 @@ Rational AI ships ready-to-use remote MCP manifests for many popular connectors,
 
 ## Result
 
-You can read an extension's version straight from its card, upload bundles to make extensions available in the registry, and install them into your tenant from the **Add** dialog, where already-installed extensions stay visible but disabled. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
+You know that extensions resolve from several sources — the platform catalogue, your own local packages, and any attached remote source — and how an overlap between them is settled per version. You can read an extension's version straight from its card, install one from the catalogue or by dropping a package onto the page, and you know that installing leaves it disabled until the first configuration starts it, discovers its tools, and enables it. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
+
+## Related
+
+- [Update and roll back extensions](/operational-guides/extension-updates) — update policies, compatibility, and recovering from a bad update.
+- [Browse agent tools](/operational-guides/manage-tools) — the catalog of tools your installed extensions provide.
+- [Build an extension](/operational-guides/build-an-extension) — authoring a package and its manifest.
