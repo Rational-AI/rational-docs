@@ -128,6 +128,18 @@ const sidebars: SidebarsConfig = {
 				},
 				{
 					type: "category",
+					label: "Compliance & records",
+					collapsed: true,
+					items: [
+						"operational-guides/data-retention",
+						"operational-guides/audit-trail",
+						"operational-guides/erase-personal-data",
+						"operational-guides/human-oversight",
+						"operational-guides/generated-image-provenance",
+					],
+				},
+				{
+					type: "category",
 					label: "API",
 					collapsed: true,
 					items: [

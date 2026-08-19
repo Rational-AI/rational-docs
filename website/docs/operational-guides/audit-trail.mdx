@@ -1,0 +1,79 @@
+---
+sidebar_position: 30
+sidebar_label: Review the audit trail
+---
+import Admonition from '@theme/Admonition';
+
+# Review the audit trail
+
+**Settings → Audit trail** answers the question an access review actually asks: *who opened this?* It records reads as well as changes, it cannot be edited once written, and it's the surface you bring to anyone auditing who reached what.
+
+<Admonition type="caution" icon="⚠️" title="AUDIT TRAIL IS NOT THE GOVERNANCE AUDIT LOG">
+Two different things carry similar names. Keep them apart:
+
+- **Settings → Audit trail** (this page) — one row per **access or change to a record**: who opened a conversation, who deleted a user. It's about *people reaching data*.
+- **Governance → Audit log** ([Monitor usage and cost](/operational-guides/governance)) — one row per **inference**: which model, how many tokens, what it cost, how fast. It's about *the AI doing work*.
+
+If the question is "who looked at this?", you want this page. If it's "what did the model do and what did it cost?", you want Governance.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** the trail is admin-only, and deliberately so — it records who reached what, which is itself sensitive.
+
+## Read the trail
+
+Go to **Settings → Audit trail**. Each entry carries five things:
+
+- **When** the action happened.
+- **Who** did it. An entry with no actor reads **System** — background work, not missing data.
+- **Action** — what was done. **Read** is a first-class action here, which is the whole point: it's the one nothing else in the platform records.
+- **Resource** — what was acted on.
+- **Detail** — a one-line summary of the entry.
+
+The table is paged and sortable, **newest first** by default, because the question that brings anyone here is almost always what just happened. Filter by action to narrow it; changing the filter resets you to the first page rather than stranding you on page four of two.
+
+<Admonition type="note" icon="📝" title="ONLY DELETIONS ARE COLOURED">
+Reads are the bulk of the trail, so colouring them would turn the column into decoration. The colour is reserved for the destructive action, which keeps it meaning something when you scan the page.
+</Admonition>
+
+## Why entries can be trusted
+
+Entries are **append-only, enforced by the database itself**: an attempt to update a row is rejected outright, not merely disallowed by the application. That distinction is the point — a trail the application can rewrite is a log, not evidence, and *"we only ever insert"* is a claim a reviewer would otherwise have to take on faith.
+
+<Admonition type="caution" icon="⚠️" title="THE HONEST LIMIT: ENTRIES CAN'T BE ALTERED, BUT THEY CAN BE REMOVED">
+Deletion is still permitted, because entries have to age out eventually and a retention sweep is the legitimate way to do that.
+
+So the guarantee is precise, and worth stating precisely when someone asks: **falsifying an entry is impossible; destroying one is not.** If your obligations require entries to survive for a fixed term, that's a matter of the [retention policy](/operational-guides/data-retention) you set, not of this protection.
+</Admonition>
+
+Two further details matter when you're reading old entries:
+
+- **The actor is recorded verbatim**, not looked up when you view the page. An entry still names the person correctly after that user has been deleted — which is exactly the moment someone goes looking.
+- **A refused access is not recorded as a read.** Entries are written *after* the access check passes, so the trail holds reads that actually happened rather than reads that were attempted.
+
+## What is recorded today
+
+Instrumentation is deliberately partial rather than a blanket sweep of every endpoint. Recorded now:
+
+- **Reading a conversation** — the access review case, and the one no other part of the platform captured.
+- **Deleting a user** — written in the same transaction as the deletion, so there's no window in which one happened without the other.
+- **Erasing a person's data** — written *before* anything is destroyed, since afterwards there's nothing left to tie an identifier back to a person. See [Erase a person's data](/operational-guides/erase-personal-data).
+
+Expect this list to grow. An action you don't see here isn't being hidden — it isn't instrumented yet.
+
+## What the list deliberately doesn't show
+
+Entries can carry a **before** and **after** payload, and the list view doesn't display them. Those payloads can hold the very content the entry exists to protect, and a table anyone can scroll is the wrong place to spread it.
+
+## Related
+
+- [Set data retention](/operational-guides/data-retention) — the policy that governs how long entries live.
+- [Erase a person's data](/operational-guides/erase-personal-data) — an erasure records itself here before it runs.
+- [Monitor usage and cost](/operational-guides/governance) — the other, differently-named log: one row per model call.
+
+## Result
+
+You can answer *who opened this record, and when* from a page built for the question, and you can say precisely what the trail guarantees: entries cannot be altered once written, though they can age out under your retention policy. You know that reads are captured as first-class events, that a refused access isn't recorded as one, and that entries keep naming the right person even after that account is gone.

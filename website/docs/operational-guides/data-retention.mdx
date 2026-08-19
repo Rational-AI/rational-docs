@@ -1,0 +1,92 @@
+---
+sidebar_position: 29
+sidebar_label: Set data retention
+---
+import Admonition from '@theme/Admonition';
+
+# Set how long data is kept
+
+Rational AI keeps what it records until you tell it not to. **Settings → Data retention** is where you set that limit: how long captured prompt and response bodies live, how long the record of each model call lives, and how long closed conversations live. This guide covers what each period actually controls, why they're separate, and how to check the deletion is really happening.
+
+<Admonition type="info" icon="📖" title="NOTHING IS DELETED UNTIL YOU SAY SO">
+Every period starts **empty**, and empty means *keep forever*. That's the default for every tenant, new and existing — retention never switches itself on as a side effect of an upgrade.
+
+Setting a period is therefore a deliberate act, and a consequential one: deletion is permanent and there is no undo. A tenant that kept too much can always delete later; a tenant that deleted something it needed cannot get it back.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** the retention policy is admin-gated.
+- **A decision about what you actually need to keep**, ideally from whoever owns data protection where you work. The page enforces the technical rules; it can't tell you what your obligations are.
+
+## The three periods
+
+Go to **Settings → Data retention**. There are three independent limits, each in days.
+
+| Period | What it removes | What survives |
+|--------|-----------------|---------------|
+| **Captured request bodies** | The prompt and response text recorded against a model call | The call record itself — who, when, which model, how many tokens, what it cost |
+| **Captured requests** | The whole call record, bodies included | Nothing of that call |
+| **Closed conversations** | Conversations that have ended, and their messages and Canvas artifacts | Nothing of that conversation |
+
+Each field states what disappears when it fires, because "30 days" is not a decision anyone can weigh without knowing what's lost.
+
+### Why bodies and call records are separate
+
+One number can't serve both obligations at once. Minimising personal data wants the prompt and response text gone quickly. Being able to show what the system did wants the call record — who, when, which model, how many tokens, what outcome — kept much longer.
+
+With one lifetime you have to fail one of those. With two, a realistic policy becomes expressible: **bodies for 7 days, call records for 12 months**.
+
+<Admonition type="note" icon="📝" title="CLEARING BODIES DOESN'T DENT YOUR REPORTING">
+When the body period fires, the prompt and response text is cleared and **the call record stays**. Governance dashboards and cost reporting read the call record, not the bodies, so they are unaffected — your usage and spend history stays intact.
+
+Bodies only exist in the first place when a model has **tracing** switched on, which is off by default. If you never enabled tracing, there are no bodies for this period to clear.
+</Admonition>
+
+<Admonition type="caution" icon="⚠️" title="BODIES CANNOT OUTLIVE THEIR CALL RECORD">
+Setting the body period longer than the captured-request period is refused when you save, rather than accepted and quietly ignored. The call record is deleted first, so a longer body period would never get the chance to run — the setting would look applied and do nothing.
+</Admonition>
+
+## The suggested values are hints, not defaults
+
+You'll see 30 days suggested beside the body period and 365 beside the call records. They sit next to the fields as a starting point and are **never applied for you**. Leaving a field empty leaves it empty.
+
+That's deliberate. Choosing a deletion schedule on behalf of a tenant whose use case isn't known is a decision that can only be discovered to be wrong after the data is gone.
+
+## Open conversations are never swept
+
+The closed-conversation period only ever touches conversations that have ended. A live conversation is never deleted, at any age.
+
+A long-running conversation that's still in use is a support question, not a retention one — and deleting one out from under someone mid-sentence is a worse outcome than keeping it.
+
+## Check that the sweep is running
+
+The sweep runs **hourly**. Beside the save button you'll find the two facts that tell you it happened:
+
+- **Last sweep** — when the sweep last ran.
+- **Rows deleted** — how much it removed on that run.
+
+These matter more than they look. A retention policy nobody can see running is a retention policy nobody has reason to believe. When someone asks you to evidence that deletion actually occurs, this is the answer.
+
+<Admonition type="note" icon="📝" title="A ZERO COUNT IS NORMAL">
+Once your policy has caught up with your backlog, most sweeps find nothing to delete and report zero. That's the steady state, not a failure — what matters is that **Last sweep** keeps moving.
+</Admonition>
+
+## What retention does not cover
+
+Two things are deliberately outside this policy, so plan for them separately:
+
+- **Knowledge files.** Deleting a knowledge resource cascades into embeddings, the vector database and processing rules. That's a destructive path with its own consequences, handled from [Manage knowledge resources](/operational-guides/manage-knowledge-resources) rather than swept on a timer.
+- **Legal hold.** There is no way to exempt an individual conversation from retention. If you need material preserved beyond your policy for a dispute or an investigation, export it before the period fires.
+
+## Related
+
+- [Review the audit trail](/operational-guides/audit-trail) — who read or changed what, and why its entries age out under a separate rule.
+- [Erase a person's data](/operational-guides/erase-personal-data) — the immediate, targeted erasure that answers a data subject request.
+- [Monitor usage and cost](/operational-guides/governance) — the dashboards and call-by-call log that read the call records this policy bounds.
+
+## Result
+
+You can set three independent retention periods, and you know exactly what each one removes and what it leaves behind — including that clearing prompt bodies leaves your usage and cost history untouched. You know empty means keep forever, that the suggested values are never applied for you, that live conversations are never swept, and where to look for the evidence that the hourly sweep is doing its job.

@@ -76,6 +76,15 @@ These filters are how you turn a broad overview into a real answer. Want to know
 
 When you need to look past the averages at a single call, switch to the **Audit log** tab. It's a sortable, paginated table with one row per inference — a complete record of every call your AI has made within the current filters.
 
+<Admonition type="caution" icon="⚠️" title="AUDIT LOG IS NOT THE AUDIT TRAIL">
+Two similarly-named surfaces answer different questions:
+
+- **Audit log** (this tab) — one row per **model call**: which model, how many tokens, what it cost, how fast. It's about *the AI doing work*.
+- **[Audit trail](/operational-guides/audit-trail)** (**Settings → Audit trail**) — one row per **access or change to a record**: who opened a conversation, who deleted a user. It's about *people reaching data*.
+
+If someone asks you to evidence who looked at a record, this tab is not the answer — the audit trail is.
+</Admonition>
+
 <img
   src={require('@site/static/img/screens/governance-audit.png').default}
   alt="Governance Audit log table, one row per inference"
@@ -99,6 +108,12 @@ Each column tells you one thing about the call:
 - **Finish** — why the call ended, for example `stop` (the model finished its answer normally).
 
 Click a column header to sort. Sorting by **Costs** surfaces your most expensive calls; sorting by **TTFT** or **E2E latency** brings the slowest ones to the top.
+
+<Admonition type="note" icon="📝" title="CREDENTIALS ARE NOT STORED WITH THE CALL">
+A captured call records the request's headers, and the **values of credential headers are redacted** before anything is written. The header *name* is kept — knowing a request carried an `Authorization` header is useful when reading a trace back — but the token itself never reaches the database. This isn't configurable, and it applies regardless of whether a model has tracing switched on.
+
+The prompt and response **bodies** are a separate matter: they're only recorded when a model has tracing enabled, and how long they live is governed by [your retention policy](/operational-guides/data-retention).
+</Admonition>
 
 <Admonition type="note" icon="📝" title="TTFT VS E2E LATENCY">
 These two measure different kinds of "slow." A high **TTFT** means the model took a while to *start* answering — the user stares at a blank screen. A high **E2E latency** with a low TTFT usually just means a long answer that streamed steadily. When a touchpoint feels sluggish, check TTFT first.
