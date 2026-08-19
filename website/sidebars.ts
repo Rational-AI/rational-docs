@@ -81,6 +81,8 @@ const sidebars: SidebarsConfig = {
 						"operational-guides/test-touchpoint-changes",
 						"operational-guides/approve-tool-calls",
 						"operational-guides/manage-channels",
+						"operational-guides/connect-telegram",
+						"operational-guides/connect-email",
 						"operational-guides/conversations",
 						"operational-guides/conversation-processing",
 					],

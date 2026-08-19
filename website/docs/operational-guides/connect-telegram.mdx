@@ -1,0 +1,106 @@
+---
+sidebar_position: 21
+sidebar_label: Connect a Telegram bot
+---
+import Admonition from '@theme/Admonition';
+
+# Connect a Telegram bot
+
+A Telegram channel puts your agent behind a bot: people message the bot, the agent answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behaviour you'll want to get right before letting it loose in a busy chat.
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **A bot token from BotFather.** Message [@BotFather](https://t.me/BotFather) on Telegram, create a bot, and copy the token it gives you. That's the only credential you need.
+- **Administrative access** to **Settings** → **Channels**.
+
+## Connect the bot
+
+1. Go to **Settings** → **Channels** and select **New channel**.
+2. Choose **Telegram** as the type.
+3. Name the channel and paste the **bot token**.
+4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode) — **Automatic** if the agent should answer on its own.
+5. Save.
+
+The token is validated against Telegram as you connect, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code — the quickest way to get people to the right bot.
+
+<Admonition type="note" icon="📝" title="THE DEFAULT WORKS ON LOCALHOST">
+You don't need a public URL, a domain, or a tunnel. The default transport polls Telegram for new messages, which works behind a firewall and on a laptop, so the happy path is genuinely just a BotFather token.
+</Admonition>
+
+## Choose how messages arrive
+
+Telegram can deliver messages two ways, and the channel supports both.
+
+| Transport | When to use it |
+|-----------|----------------|
+| **Long polling** *(default)* | Anywhere. The platform asks Telegram for new messages, so it needs no public URL and works behind firewalls and on localhost. Its read position is stored on the channel, so a restart resumes where it left off instead of replaying or skipping. |
+| **Webhook** | When you'd rather Telegram push to you. Requires a publicly reachable URL. Each channel gets its own secret, and Telegram must present it on every call or the request is refused. |
+
+Both transports feed the same pipeline, so everything below behaves identically whichever you pick.
+
+## What the agent can receive
+
+Telegram messages arrive as more than plain text:
+
+- **Text and captions.**
+- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes** — subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than just acknowledge.
+- **Locations, contacts and polls**, rendered into text the agent can work with.
+
+<Admonition type="note" icon="📝" title="AN ALBUM IS ONE MESSAGE, NOT THREE">
+When someone sends three photos as an album, Telegram delivers them as three separate updates. The channel collapses them back into a single message, so the agent takes one turn over the whole set instead of answering three times.
+</Admonition>
+
+## How conversations are grouped
+
+Each Telegram chat becomes its own conversation. In supergroups with topics enabled, **each forum topic gets its own conversation** too, so separate discussions stay separate.
+
+Users have one command that affects this directly: **`/reset`** closes the current conversation, so their next message starts a fresh one with no history behind it. **`/start`** and **`/help`** reply with the greeting you configure. All three appear in Telegram's own command menu, registered automatically when the bot connects.
+
+## Behaviour in group chats
+
+Dropping a bot into a busy group goes badly if it answers everything. It doesn't:
+
+- **It never replies to other bots**, so two bots can't talk each other into an infinite loop.
+- **In groups it answers only when addressed** — @mentioned, replied to, or sent a command aimed at this specific bot. Ordinary chatter between people is skipped silently, with no "I didn't understand that" noise.
+- **Commands aimed at a different bot are ignored**, which matters in groups running several.
+
+If you genuinely want the bot to answer everything in a group, there's a setting to opt out of the addressed-only rule. Think carefully before using it in a group with real traffic.
+
+Beyond that, a **rate limit applies per chat**, so one chat flooding the bot can't consume the whole channel's capacity.
+
+## Give specific chats their own instructions
+
+You can pin extra instructions to individual chats: supply lines pairing a chat id with a prompt, and that prompt is appended to the touchpoint's system prompt for that chat only.
+
+This is how one bot serves two audiences without two bots — the same agent, with a different framing in the internal support group than in the public one.
+
+## What replies look like
+
+Replies are rendered into the formatting Telegram supports: headings become bold, lists become bullets. If Telegram rejects the formatting, the message is sent as plain text rather than failing.
+
+Long answers are **split at Telegram's 4096-character limit on paragraph boundaries**, so a long reply arrives as several readable messages rather than one truncated one.
+
+Some smaller touches worth knowing about, because people ask:
+
+- **In groups, replies quote the message they answer**, so it's clear what the bot is responding to.
+- **A 👀 reaction appears when the message is received** and becomes ✅ once the answer is delivered.
+- **The typing indicator runs for the whole generation**, so a slow answer looks like work in progress rather than a dead bot.
+
+## Current limits
+
+Two things are not supported yet, and are worth knowing before you promise them:
+
+- **The agent cannot send files out.** Inbound attachments work; outbound ones aren't wired up.
+- **Answers arrive complete, not word by word.** There's no progressive editing of a message as the answer generates — the typing indicator covers the wait instead.
+
+## Related
+
+- [Manage channels](/operational-guides/manage-channels) — modes, allowed senders, and attachment policy.
+- [Connect a mailbox](/operational-guides/connect-email) — the other native channel.
+- [Conversations](/cr/Conversations) — reading and taking over what arrives.
+
+## Result
+
+Your bot is connected with nothing but a BotFather token, polling by default so it needs no public URL. You know which message types reach the agent, that albums arrive as one turn, how conversations map to chats and forum topics, and that the bot stays quiet in groups unless it's actually being addressed.

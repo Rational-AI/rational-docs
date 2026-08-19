@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Manage channels
 
-A channel is the recipe Rational AI follows when it drafts a response: which provider generates the text, and how many drafts you get to choose from. This guide walks through creating a channel, the fields in the create and edit dialog, and what changes once a channel exists.
+A channel is a surface your users reach an agent through — a Telegram bot, a mailbox, the web chat. This guide covers what every channel has in common: the types available, how a channel decides whether the agent answers on its own, the connection lifecycle, and the controls over who may write in and what they may send. The per-type setup lives in its own guide.
 
 <img
   src={require('@site/static/img/screens/channels-settings.png').default}
@@ -14,10 +14,12 @@ A channel is the recipe Rational AI follows when it drafts a response: which pro
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The **Channels** list: each channel, who provides it, a description, and its mode.*
+*The **Channels** list: each channel, its type, who provides it, and its mode.*
 
 <Admonition type="info" icon="📖" title="WHAT IS A CHANNEL?">
-A channel bundles the settings used to generate draft responses, mainly its provider and the number of drafts to produce. Other parts of the product refer to channels by name (for example, when [configuring touchpoints](/operational-guides/configure-touchpoints)), so a clear, unique name keeps them easy to tell apart at a glance.
+A **channel** is the medium through which people reach an agent: the doorway into the conversation. It doesn't change *what* the agent knows — that's the [touchpoint](/operational-guides/configure-touchpoints) — it changes *where* and *how* people talk to it.
+
+Inbound messages become conversations you can read in [Conversations](/cr/Conversations), and replies go back out over the same channel in whatever form that surface expects.
 </Admonition>
 
 ## Prerequisites
@@ -25,38 +27,91 @@ A channel bundles the settings used to generate draft responses, mainly its prov
 Before you start, make sure you have:
 
 - **Administrative access:** an account with channel management privileges.
-- **A provider in mind:** the provider is an [extension](/operational-guides/manage-extensions) that does the actual drafting. You pick it when you create the channel, and it is locked from that point on, so decide which one you want before you begin.
+- **The credentials for the surface you're connecting.** A Telegram bot token, or a mailbox login — see the per-type guides below.
+
+## Channel types
+
+Two kinds of channel exist, and they behave differently once connected.
+
+**Native channels** are built into the platform, with their own connection handling, status reporting and message support:
+
+| Type | Setup |
+|------|-------|
+| **Telegram** | [Connect a Telegram bot](/operational-guides/connect-telegram) |
+| **Email** | [Connect a mailbox](/operational-guides/connect-email) |
+
+**Extension-provided channels** come from an [extension](/operational-guides/manage-extensions) that declares a channel provider. They're driven by the extension rather than by the platform, so what they support depends on the extension.
+
+Whichever kind you pick, the configuration form is generated from the provider's own schema — so the fields you're asked for are the ones that surface actually needs, and a value of the wrong type is rejected when you save rather than failing later at connection time.
 
 ## Create a channel
 
-Create a channel whenever you need a new way to draft responses, for instance a dedicated channel for support replies or one tied to a specific provider.
-
 1. Go to **Settings** → **Channels** and select **New channel**.
-2. Enter a **name**. It must be unique across all channels (see the note below).
-3. Select the channel **Extension**. This is the provider that generates the drafts, and it can only be set here, while creating the channel.
-4. Set the **Number of drafts**. The field defaults to `2` and shows the placeholder `Number of drafts...`. Increase it if you want more options to choose from per response, or lower it for fewer.
-5. Save the channel.
+2. Enter a **name**. It must be unique across all channels — matching is exact and case-sensitive, so `Support` and `support` are two different names. A duplicate is rejected with an error under the field.
+3. Choose the **type**, or the extension and channel provider for an extension-backed channel.
+4. Set the **mode** (see below).
+5. Fill in the configuration the form asks for.
+6. Save.
 
-<Admonition type="note" icon="📝" title="CHANNEL NAMES MUST BE UNIQUE">
-If you enter a name another channel already uses, the channel is not saved and an error appears under the **name** field. Matching is case-sensitive and exact, so `Support` and `support` count as two different names.
+<Admonition type="note" icon="📝" title="THE PROVIDER IS FIXED AT CREATION">
+A channel's type and provider are chosen when you create it and can't be changed afterwards. Everything else — the name, the mode, the credentials, the policies — stays editable. If you need a different provider, create a new channel.
 </Admonition>
 
-## Edit a channel
+## Choose the mode
 
-Edit a channel to rename it or change how many drafts it produces. The provider is the one thing you cannot touch.
+The mode decides whether the agent answers by itself or a person does.
 
-1. Go to **Settings** → **Channels** and open the channel you want to change.
-2. Update the **name** or **Number of drafts** as needed.
-3. Save your changes.
+| Mode | What happens to an incoming message |
+|------|-------------------------------------|
+| **Automatic** | The conversation is assigned to the agent, which replies on its own. |
+| **Manual** | The conversation is ingested and assigned to an **operator**. Nothing is sent until a person replies. |
+| **Draft** | Same routing as manual — assigned to an operator, nothing sent automatically. |
 
-### What you can change
+The practical split is **Automatic versus everything else**: only Automatic lets the agent reply without a human. Manual and Draft both ingest the message and put it in front of a person, so a channel in either mode never sends anything you didn't send yourself.
 
-Both the **name** and the **Number of drafts** are editable at any time. The same uniqueness rule applies as when creating: renaming a channel to a name already in use is rejected with a field-level error under the **name** field.
+Use Manual or Draft when you want the conversation captured and visible but not answered — a mailbox you're still evaluating, or a surface where every outgoing message needs a human behind it.
 
-### What you cannot change
+## Connect, check, and disconnect
 
-The **provider** field does not appear when editing. A channel's provider is fixed at creation, so if you need a different provider, create a new channel instead.
+Native channels report a real connection state, which you'll find in the channel's details drawer along with the controls to change it.
+
+- **Connect** validates your credentials against the live service before the channel is considered usable — a wrong bot token or a rejected mailbox login fails here rather than silently swallowing messages later.
+- **Status** reports what the connection is actually doing: connected, in error, or disconnected. Email adds a state for a mailbox whose authorisation has expired and needs re-granting.
+- **Disconnect** stops the channel and drops its stored tokens and connection state.
+
+Editing credentials re-validates them, and for Telegram also re-registers the bot so the change takes effect rather than leaving the old configuration live.
+
+<Admonition type="note" icon="📝" title="CREDENTIALS ARE MASKED, AND SAVING THE MASK IS SAFE">
+Bot tokens, mailbox passwords and OAuth secrets are masked wherever the channel is read back — they never leave the platform in the clear once stored.
+
+That means you can edit any other field and save without retyping the secret: a masked value returned unchanged keeps what's already stored. You only need to enter a credential again when you actually want to replace it.
+</Admonition>
+
+## Control who can write in
+
+Every channel supports an **allowed senders** list. Leave it empty and anyone who can reach the surface can start a conversation; fill it in and everyone else is ignored.
+
+Messages from senders that aren't allowed are dropped silently rather than answered with a refusal — a bot that argues with strangers is a bot that confirms it exists. The channel keeps a count of what it ignored, shown in the details drawer, so a filter that's too strict is visible rather than mysterious.
+
+Both native channels also refuse to answer automated mail and other bots, so two systems can't get into a reply loop with each other. The per-type guides describe exactly what each one screens out.
+
+## Control what can be sent in
+
+Attachments are configured per channel, and off is a legitimate setting:
+
+- **Allow attachments** — whether files sent to this channel are accepted at all.
+- **Allowed types** — a list of file extensions or MIME prefixes. Anything else is rejected.
+- **Maximum size** — a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that.
+
+Accepted files go through the same path as files attached in the chat: images are passed to the model as vision input, and documents have their text extracted so the agent can actually read them. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
+
+## Related
+
+- [Connect a Telegram bot](/operational-guides/connect-telegram) — bot setup, groups, and commands.
+- [Connect a mailbox](/operational-guides/connect-email) — IMAP, OAuth, and email threading.
+- [Configure touchpoints](/operational-guides/configure-touchpoints) — what the agent on the other side of the channel actually is.
+- [Channels](/concepts/Channels) — the concept, and how channels relate to touchpoints.
 
 ## Result
 
-Your channel is saved with a unique name, a provider locked in at creation, and a set number of drafts (defaulting to `2`). Because every name is guaranteed unique, your channels stay easy to identify wherever they're referenced across the product.
+Your channel is saved with a unique name, a type fixed at creation, and a mode that determines whether the agent replies on its own or a person does. You know where to check whether it's really connected, that stored credentials are masked and safe to save unchanged, and how to bound who may write in and what they may send.
