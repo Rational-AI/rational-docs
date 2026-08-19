@@ -1,0 +1,70 @@
+---
+sidebar_position: 32
+sidebar_label: Record oversight decisions
+---
+import Admonition from '@theme/Admonition';
+
+# Review flagged conversations and record the decision
+
+Oversight rules flag conversations that a person should look at. Flagging is only half of it: what an auditor asks isn't *was this raised for review?* but **did somebody look, what did they conclude, and did they step in?** This guide covers recording that decision on the conversation, and why the record — not the flag — is the thing that survives.
+
+<Admonition type="info" icon="📖" title="THE FLAG ASKS THE QUESTION, THE DECISION ANSWERS IT">
+A conversation carries a flag when your oversight rules decide it warrants human attention. The flag is a queue: it says *someone should look at this*.
+
+The **decision** is what a reviewer records once they have. It names the conclusion, who reached it, when, and optionally why. "The system flags cases for a human" is a claim; the decision is what makes it demonstrable.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** recording an oversight decision is admin-gated.
+- **Oversight rules already configured.** The rules that raise the flag live in **Settings → Conversations**; without them nothing is ever flagged, and this page has nothing to act on.
+
+## Where the decision goes
+
+Open a flagged conversation. A bar sits at the **top of the conversation itself** — on the case, where the reviewer already is, rather than in a separate queue screen they'd have to go back to.
+
+That split is intentional: the **rules** are configuration and live in **Settings → Conversations**; the **decision** belongs on the thing being decided.
+
+## Record a decision
+
+Read the conversation, then choose one of two outcomes and optionally add a note:
+
+| Outcome | What it means |
+|---------|---------------|
+| **Leave as it is** | You reviewed it and concluded no action was needed. |
+| **I stepped in** | You reviewed it and intervened. |
+
+Both are decisions a reviewer took. Leaving a conversation to stand is a conclusion, not a non-event — which is why neither option reads as dismissing a notification.
+
+The note is optional but is the only place the *reasoning* is captured. If the conclusion would puzzle someone reading it in six months, write the note.
+
+## Once decided, the record stays visible
+
+Recording a decision **resolves the flag** — the conversation leaves the queue of things waiting for a human, which is what you want, since it has now had one.
+
+The bar doesn't disappear, though. It collapses to a single line: what was concluded, when, and the note.
+
+<Admonition type="note" icon="📝" title="THAT ONE LINE IS THE WHOLE POINT">
+Resolving the flag used to be all that happened, and it destroyed the information: the conversation simply dropped out of the queue and nothing anywhere said a review had occurred.
+
+Now the decision is what remains after the flag clears. Lowering the flag no longer loses the fact that somebody looked.
+</Admonition>
+
+## You cannot un-review a conversation
+
+There's no option that returns a reviewed conversation to *awaiting review*. Pending is the **absence** of a review, not a conclusion someone can reach.
+
+Accepting it as a decision would hand a reviewer a way to un-review a case while leaving a timestamp behind saying they had looked — which is worse than never having recorded anything.
+
+## Related
+
+- [Conversations](/cr/Conversations) — browsing and opening conversations.
+- [Review the audit trail](/operational-guides/audit-trail) — who opened which conversation, as distinct from what they concluded about it.
+- [Human in the loop](/concepts/Human-in-the-loop) — the concept behind oversight.
+- [Approve tool calls](/operational-guides/approve-tool-calls) — the other human checkpoint: approving an action *before* the AI takes it, rather than reviewing a conversation after the fact.
+
+## Result
+
+You can close the loop on a flagged conversation by recording what you concluded, right on the case. You know the decision resolves the flag while leaving a durable line saying who decided what and when, that the note is the only place your reasoning is captured, and that a review can't be undone — because the absence of a review is not something anyone can decide.

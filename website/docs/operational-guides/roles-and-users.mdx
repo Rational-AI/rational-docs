@@ -90,6 +90,24 @@ Because a password is generated automatically, you can leave the **Password** fi
 
 *Settings → Groups: organize users into groups so you can assign permissions in bulk.*
 
+## Remove a user
+
+The row menu on the users page offers two operations that sound similar and are not. Which one you want depends on *why* the account is going.
+
+| | **Delete user** | **Erase all data** |
+|---|---|---|
+| **Use it when** | Someone leaves the organisation | Someone exercises a right to erasure |
+| **Their conversations** | Kept, detached from the account | Deleted |
+| **Their identifiers on recorded model calls** | Kept | Cleared |
+
+**Delete user** is the routine one: it closes the account and leaves the conversations the person handled standing, because a leaver is not a reason to destroy the business record of their work.
+
+**Erase all data** is the rare, deliberate one that reaches the content. It's irreversible, it reports what it removed, and it records itself in the [audit trail](/operational-guides/audit-trail). Before running it, read [Erase a person's data](/operational-guides/erase-personal-data), which covers exactly what it destroys and what it leaves behind.
+
+<Admonition type="note" icon="📝" title="BOTH REACH YOUR IDENTITY PROVIDER">
+Each operation removes the account from your identity provider as well. If the provider can't be reached, the whole request fails and nothing changes on either side — so you can simply retry once it's back, rather than being left with an account that still authenticates but no longer exists here.
+</Admonition>
+
 ## Result
 
-You have a set of roles whose permissions match what each group can do, and a new user account secured with a password you either accepted or chose. If you left **Require password change at first login** checked, the user is prompted to change the password on their first sign-in.
+You have a set of roles whose permissions match what each group can do, and a new user account secured with a password you either accepted or chose. If you left **Require password change at first login** checked, the user is prompted to change the password on their first sign-in. You also know which of the two removal operations to reach for when an account has to go, and that only one of them touches the person's conversations.

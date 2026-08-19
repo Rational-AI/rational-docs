@@ -73,6 +73,50 @@ If nothing references the model, the section shows an empty state.
 
 *A model’s details: the **Used in** section lists every touchpoint and conversation that references it.*
 
+## Document and approve a model
+
+The registry answers *which model, served by whom, on what hardware, at what price*. A risk function or a public tender asks a different set of questions: which exact weights are running, under what licence, approved for what use and forbidden for what, with which known limitations — and who signed that off.
+
+The **Governance** section of a model's drawer is where those answers live. It applies to third-party models too, which are usually the ones drawing the hardest questions.
+
+### The record
+
+| Field | What it captures |
+|-------|------------------|
+| **Version** | The specific release in use |
+| **Weights digest** | The fingerprint of the exact weights running |
+| **Licence** | The terms the model is used under |
+| **Provenance URL** | Where the model came from |
+| **Intended purpose** | What the model may be used for, in prose |
+| **Prohibited uses** | What it must not be used for |
+| **Known limitations** | Where it is known to perform badly or unreliably |
+| **Evaluation summary** | What testing was done and what it showed |
+
+<Admonition type="caution" icon="⚠️" title="INTENDED PURPOSE IS NOT THE MODEL'S PURPOSE">
+Two near-identical names answering completely different questions:
+
+- **Purpose**, shown higher up the drawer, is the technical **modality** — text generation, embedding, and so on.
+- **Intended purpose**, in this section, is prose about **permitted use** — "drafting replies to customer email".
+
+Removing exactly this ambiguity is what the governance record is for, so it's worth being deliberate about which one you're reading.
+</Admonition>
+
+### Documenting and approving are separate acts
+
+**Save** writes documentation. **Approve** records a decision and stamps who took it and when. They're separate controls because they're separate acts, usually taken by different people — and folding them together would make *"I changed the intended purpose"* indistinguishable from *"I approve the new intended purpose"*.
+
+The approval state shows as a chip. It reads as satisfied only when the model is approved; **not reviewed** and **withdrawn** both read as a caution rather than a failure, since neither is an error — they're just not a sign-off.
+
+<Admonition type="caution" icon="⚠️" title="SAVING AN APPROVED RECORD REVOKES ITS APPROVAL">
+Edit a substantive field on an approved model and the approval decays to **not reviewed**, clearing the sign-off stamp. The section warns you before you save and again afterwards.
+
+This is the behaviour you want. An approval that outlives a rewrite of the thing approved is worse than no approval, because it reads as a decision somebody actually took. The case it guards against is repurposing: an approved model quietly edited from "drafting replies to customer email" to "screening job applicants", still wearing its sign-off.
+
+Withdrawing an approval asks you to confirm first, and editing afterwards does not restore it.
+</Admonition>
+
+**Approve** stays disabled until the model has an **intended purpose**. Approving a model for an unstated use isn't a decision anyone can act on later.
+
 ## Set default platform models per task type
 
 Pick the model the platform reaches for when a specific consumer hasn't pinned one of its own. These defaults are pure fallbacks: a [touchpoint](/operational-guides/configure-touchpoints) or Knowledge with its own model always wins.

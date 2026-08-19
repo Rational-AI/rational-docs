@@ -1,0 +1,74 @@
+---
+sidebar_position: 31
+sidebar_label: Erase a person's data
+---
+import Admonition from '@theme/Admonition';
+
+# Erase a person's data
+
+When someone exercises a right to erasure, closing their account isn't enough — the conversations they held and the traces of them on recorded model calls are the data they're asking you to remove. **Erase all data** is the operation that reaches that content. This guide covers what it destroys, how it differs from deleting a user, and what you're left with afterwards to prove it happened.
+
+<Admonition type="caution" icon="⚠️" title="THIS IS IRREVERSIBLE">
+Erasure destroys content. There is no undo, no recycle bin, and no backup restore path exposed in the product. Be certain the request is genuine and that you have identified the right person before you run it.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access** to the users page.
+- **A verified request.** Erasure answers a data subject request; confirming the requester is who they say they are is your side of that process, not the platform's.
+- **Anything you're required to keep, already exported.** Erasure does not check your obligations against your legal hold, because the platform doesn't know them.
+
+## Delete and Erase are different acts
+
+Both live in the menu on the users page, **next to each other rather than instead of each other**, because choosing the wrong one has very different consequences.
+
+| | **Delete user** | **Erase all data** |
+|---|---|---|
+| **Use it when** | Someone leaves the organisation | Someone exercises a right to erasure |
+| **The account** | Removed | Removed |
+| **Their conversations** | **Kept** — detached from the account | **Deleted**, along with their Canvas artifacts |
+| **Their identifiers on recorded model calls** | Kept | **Cleared** |
+| **How often you'll use it** | Routinely | Rarely, and deliberately |
+
+The distinction that matters: **an employee leaving is not a reason to destroy the business record of the conversations they handled.** That's why deletion leaves them standing, and why erasure is a separate menu entry rather than a stronger version of the same button.
+
+## Erase a person's data
+
+1. Go to the users page and find the person.
+2. Open the row's menu and choose **Erase all data**.
+3. Read the confirmation. It names exactly what will go: their conversations and the contents of those conversations, their identifier on recorded model calls, and the account itself. It also tells you the erasure will itself be recorded.
+4. Confirm.
+
+When it finishes, a message reports the **counts** — how many conversations were deleted and how many recorded calls were cleared. After an irreversible action those numbers are the only check you have that what happened matches what you expected, so read them rather than dismissing them.
+
+## What survives, and why
+
+Erasure clears the person from recorded model calls; it does not delete the calls. What stays is **model, tokens, cost and timing** — the record of *what the system did*, stripped of *who they were*.
+
+That's the line the operation draws deliberately. Your usage and cost history stays coherent, and your governance reporting doesn't develop a hole, while the personal identifier is gone.
+
+<Admonition type="info" icon="📖" title="THE ERASURE IS RECORDED — AND THAT RECORD IS NOT ITSELF ERASED">
+The erasure is written to the [audit trail](/operational-guides/audit-trail) **before** anything is destroyed, because afterwards there's nothing left to tie an identifier back to a person.
+
+So you should expect to find a trace of the erasure afterwards. That isn't the erasure having failed — it's the opposite. A trail that erased its own entries could not evidence the erasure it was asked to record, which is precisely what you need when someone asks you to demonstrate you complied.
+</Admonition>
+
+## If the identity provider is unreachable
+
+Both operations remove the account from your identity provider as well as from Rational AI. If the provider can't be reached, **the request fails and nothing is changed on either side**.
+
+That's the safe outcome: you can simply run it again once the provider is back. A partial success would leave an identity that still authenticates against a tenant with no record of it — an account nobody can see and nobody can remove.
+
+An account that has *already* been removed from the provider is treated as success, since that is the state the operation exists to produce.
+
+## Related
+
+- [Manage roles and users](/operational-guides/roles-and-users) — creating accounts, roles and groups.
+- [Review the audit trail](/operational-guides/audit-trail) — where the erasure record lands.
+- [Set data retention](/operational-guides/data-retention) — the scheduled counterpart: bounding everyone's data by age, rather than removing one person's on request.
+
+## Result
+
+You can answer a right-to-erasure request from the users page, and you know why **Erase all data** sits beside **Delete user** rather than replacing it. You know exactly what erasure destroys and what it deliberately leaves — the shape of your model-call history, minus the person — that it reports counts you should check, and that it records itself in the audit trail so you can evidence it afterwards.
