@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Back up and restore an on-premise installation
 
-An on-premise Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings → Backup** copies all of them, in one run, to a destination you own — a network share, an S3 bucket, an FTP or SFTP server, or a mounted folder — on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and the offline procedure that brings an installation back from one.
+An on-premise Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage (the files), the installed extensions and the knowledge DBs. **Settings → Backup** copies all of them, in one run, to a destination you own — a network share, an S3 bucket, an FTP or SFTP server, or a mounted folder — on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and the offline procedure that brings an installation back from one.
 
 <Admonition type="info" icon="📖" title="ON-PREMISE ONLY">
 The Backup page exists only where the installation is configured for it (`Backup__Enabled=true` on the backend, see [Prerequisites](#prerequisites)). On the managed cloud the platform backs the data up for you and the page is not shown.
@@ -20,13 +20,13 @@ The Backup page exists only where the installation is configured for it (`Backup
 
 ## What a backup contains
 
-| Component | What is captured | How |
+| Part | What is captured | How |
 |-----------|------------------|-----|
-| **postgres** | Every database on the server: the application data of every tenant, the workflow engine, the identity provider. This is also where the key ring that protects stored credentials lives, so a backup is sensitive material — keep the destination as private as the installation itself. | One `pg_dump` per database plus the roles, streamed to the destination |
-| **qdrant** | The vector collections (embeddings behind knowledge retrieval) | One snapshot per collection, streamed to the destination and removed from the vector store afterwards |
-| **storage** | The object storage: attachments, synced source files, extension packages | An incremental mirror in the `storage/` folder of the destination, shared by every backup |
-| **extensions** | The installed extensions directory | A `tar.gz` per backup |
-| **sqld** | The knowledge databases (Rational BI, SQLite resources) | A `tar.gz` per backup |
+| **Database** | Every PostgreSQL database on the server: the application data of every tenant, the workflow engine, the identity provider. This is also where the key ring that protects stored credentials lives, so a backup is sensitive material — keep the destination as private as the installation itself. | One `pg_dump` per database plus the roles, streamed to the destination |
+| **Vector store** | The Qdrant collections (embeddings behind knowledge retrieval) | One snapshot per collection, streamed to the destination and removed from the vector store afterwards |
+| **Files** | The object storage: attachments, synced source files, extension packages | An incremental mirror in the `storage/` folder of the destination, shared by every backup |
+| **Extensions** | The installed extensions directory | A `tar.gz` per backup |
+| **Knowledge DBs** | The knowledge databases (Rational BI, SQLite resources), served by libsql | A `tar.gz` per backup |
 
 Each run produces a folder named after its UTC start time (`2026-09-09T02-30-00Z`) with a `manifest.json` describing what it holds. The object-storage mirror is **never pruned**: files deleted from the application stay in the mirror, so every dump — old or new — finds the attachments it references. Retention only removes whole backup folders.
 
@@ -48,7 +48,7 @@ Before you start, make sure you have:
   | `BACKUP_EXTENSIONS_PATH` | The extensions directory, mounted into the worker (for example `./data/extensions:/rationalai/backend/extensions`) |
   | `BACKUP_SQLD_PATH` | The libsql data directory, mounted into the worker (for example `./data/sqld:/backup/sqld`) |
 
-  The object storage needs nothing extra: the worker already reaches it as its `dest:` rclone remote. A component whose variable is missing is reported as *skipped*, not as a failure.
+  The object storage needs nothing extra: the worker already reaches it as its `dest:` rclone remote. A part whose variable is missing is reported as *skipped*, not as a failure.
 - **A destination with enough space** for the database dumps, the vector snapshots and a full copy of the object storage. The worker itself needs no free disk: everything is streamed.
 
 ## Set the destination
@@ -77,22 +77,23 @@ Passwords and access keys are stored encrypted. When you come back to the page t
 
 ## Retention
 
-After each successful run the destination is pruned. A backup **stays when any rule keeps it**; everything else is removed. Zero switches a rule off, and at least one rule must be set.
+**Keep** is one choice; it decides what stays at the destination after each successful run, everything else is removed:
 
-| Rule | Keeps |
-|------|-------|
-| **Most recent backups** | The newest *N* backups, whatever their age |
-| **One per day, for days** | The newest backup of each day, for the last *N* days |
-| **One per week, for weeks** | The newest backup of each week, for the last *N* weeks |
-| **One per month, for months** | The newest backup of each month, for the last *N* months |
+| Keep | What stays |
+|------|------------|
+| **Last 7 backups** | The seven newest, whatever their age |
+| **One month, a backup per day** | The newest backup of each day for a month |
+| **Three months: daily for a week, then weekly** | A week of daily backups, then the newest of each week for three months |
+| **One year: daily for a week, weekly for two months, then monthly** | A week of daily, two months of weekly, a year of monthly — about 27 backups instead of 365 |
+| **Everything, never delete** | Nothing is removed; watch the free space yourself |
 
-A typical policy is *7 most recent, one per week for 8 weeks, one per month for 12 months*: a week of daily restore points, two months of weekly ones, a year of monthly ones — roughly 27 backups at the destination instead of 365. Only the dumps and snapshots are pruned; the object-storage mirror is shared by every backup and is never removed.
+A policy set through the API with other values shows as *Custom* and is kept as it is. Only the dumps and snapshots are pruned; the files mirror is shared by every backup and is never removed.
 
 Click **Save**. The **Next scheduled backup** line under *Last backup* confirms the schedule is registered.
 
 ## Back up now, and check it happened
 
-**Back up now** starts a backup immediately. While it runs the page shows each component as it is captured; when it finishes, *Last backup* shows the time, the outcome, the size and the folder name, and the backup appears under **Backups at the destination**.
+**Back up now** starts a backup immediately. While it runs the page shows each part as it is captured; when it finishes, *Last backup* shows the time, the outcome, the size and the folder name, and the backup appears under **Backups at the destination**.
 
 A failed run reports the error in place of the size. A backup that fails half-way is removed from the destination, so whatever is listed there is complete and restorable.
 
@@ -157,6 +158,6 @@ The worker also offers `rational-backup list`, `show <name>` and `probe` with th
 |---------|--------------|
 | **Test destination** fails with *permission denied* | The share or folder is read-only for the given user. |
 | The status shows *failed* with *pg_dump: server version mismatch* | The worker image is older than the database server; update the worker. |
-| A component is *skipped* | Its `BACKUP_*` variable is not set on the worker, or the path it points at does not exist there. |
+| A part is *skipped* | Its `BACKUP_*` variable is not set on the worker, or the path it points at does not exist there. |
 | The backups list is empty though runs completed | The destination path was changed after those runs: the list reads the current path. |
 | The restore stops at *database … restored* with *is being accessed by other users* | An application service is still connected. Stop it and run the command again. |
