@@ -71,10 +71,22 @@ Plain FTP sends the password and the data in clear and cannot verify what it wro
 
 Passwords and access keys are stored encrypted. When you come back to the page they show as `********`; leave them as they are to keep the stored value, or type a new one to replace it.
 
-## Schedule and retention
+## Schedule
 
-- **Daily backup** runs a backup every day at the **Time of day** shown, in the time zone of your browser at the moment you save. A run that is still going when the next one is due is not interrupted; the next one is skipped.
-- **Backups to keep** is how many backup folders stay at the destination. Older ones are removed after each successful run. The object-storage mirror is shared and is never removed.
+**Daily backup** runs a backup every day at the **Time of day** shown, in the time zone of your browser at the moment you save. A run that is still going when the next one is due is not interrupted; the next one is skipped.
+
+## Retention
+
+After each successful run the destination is pruned. A backup **stays when any rule keeps it**; everything else is removed. Zero switches a rule off, and at least one rule must be set.
+
+| Rule | Keeps |
+|------|-------|
+| **Most recent backups** | The newest *N* backups, whatever their age |
+| **One per day, for days** | The newest backup of each day, for the last *N* days |
+| **One per week, for weeks** | The newest backup of each week, for the last *N* weeks |
+| **One per month, for months** | The newest backup of each month, for the last *N* months |
+
+A typical policy is *7 most recent, one per week for 8 weeks, one per month for 12 months*: a week of daily restore points, two months of weekly ones, a year of monthly ones — roughly 27 backups at the destination instead of 365. Only the dumps and snapshots are pruned; the object-storage mirror is shared by every backup and is never removed.
 
 Click **Save**. The **Next scheduled backup** line under *Last backup* confirms the schedule is registered.
 
