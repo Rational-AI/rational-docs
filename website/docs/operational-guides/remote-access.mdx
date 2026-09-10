@@ -13,7 +13,7 @@ The Remote access page exists only on installations that were provisioned with a
 </Admonition>
 
 <img
-  alt="The Remote access page in Settings, with the installation's address, the relay switch on and the licence status"
+  alt="The Remote access page in Settings, with the installation's address and the relay switch on"
   src={require('@site/static/img/screens/remote-access-settings.png').default}
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
@@ -26,7 +26,7 @@ The Remote access page exists only on installations that were provisioned with a
 | **Certificate** | Issued by Rational AI for the name and its subdomains (Let's Encrypt, renewed automatically). Browsers trust it out of the box: nothing to install on any client. |
 | **Relay** | With the relay on, your address points at `vpn.rational.is`. The relay forwards each connection, still encrypted, through a private tunnel to your machine. The relay only reads the name the browser asked for; it never sees the content. |
 | **Direct** | With the relay off, your address points at your public IP and your router forwards the ports below to the machine. |
-| **Licence** | The licence of the installation is delivered and renewed through the same channel. Its status is shown on the page. |
+| **Licence** | The licence of the installation is delivered and renewed through the same channel; its status is on **Settings → Licence**. |
 
 The machine checks in with Rational AI once a minute. That is when a switch you flip takes effect, a renewed certificate is installed, and a changed public IP is followed.
 
@@ -95,4 +95,4 @@ Run from a laptop with SSH access to the machine (the scripts live in `deploy/on
 | Reachable on the local network, not from outside, relay on | The tunnel needs UDP 51820 out to `vpn.rational.is`. A firewall that blocks it keeps the relay from reaching the machine. |
 | Reachable on the local network, not from outside, relay off | The router rules (443 and 80, TCP, to the LAN address shown) and the public IP: see the caution above about shared addresses. |
 | Certificate warning in the browser | The certificate has not been issued yet, or the machine has not checked in since it was renewed. Wait a couple of minutes; `sudo rational sync` forces it. |
-| Licence *Missing or invalid* | The licence delivered to the installation is bound to it; a machine provisioned with another installation's command rejects it. Provision again with the command generated for this installation. |
+| **Settings → Licence** reads *Missing or invalid* | The licence delivered to the installation is bound to it; a machine provisioned with another installation's command rejects it. Provision again with the command generated for this installation. |
