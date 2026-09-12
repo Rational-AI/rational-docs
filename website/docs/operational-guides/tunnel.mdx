@@ -71,14 +71,14 @@ Port 80 only redirects browsers to HTTPS; forwarding it is convenient, not requi
 
 ## Provision the machine
 
-The installation is connected to the hub when it is provisioned. On the platform console ([admin.rational.is](https://admin.rational.is)) an operator registers the on-prem instance for your company, attaches its licence, sets its subdomain and generates a **provisioning command**, one line such as:
+The installation is connected to the hub when it is provisioned. On the platform console ([admin.rational.is](https://admin.rational.is)) an operator creates the customer's licence and presses **Activation code** on it; the code is redeemed by the installation (at provisioning, or later on **Settings → Licence**), which registers it on the platform. The operator then sets the installation's **subdomain** on its page. From a laptop with SSH access to the machine (the scripts live in `deploy/onprem` of the Rational AI repository):
 
 ```bash
 ./provision.sh --host rational@192.168.1.20 --tag v1.15.0 \
-  --hub https://control-room.rational.is --instance <id> --key <key>
+  --hub https://control-room.rational.is --code RAI-XXXXX-XXXXX-XXXXX-XXXXX
 ```
 
-Run from a laptop with SSH access to the machine (the scripts live in `deploy/onprem` of the Rational AI repository), it installs or reconfigures the whole stack: it fetches the endpoint, the certificate and the licence from the hub, sets up the tunnel to `vpn.rational.is`, starts the services and installs the minute check-in. Re-running it later is safe; it converges the machine on the requested release and keeps everything else.
+It installs or reconfigures the whole stack: it fetches the platform's public key, starts the services, activates the licence, and installs the minute check-in that brings the endpoint, the certificate and the tunnel once the subdomain is set. Re-running it later is safe; it converges the machine on the requested release and keeps everything else. See [Licence and activation](./license) for what the code does and for machines without internet access.
 
 ## Check that it works
 
@@ -95,4 +95,4 @@ Run from a laptop with SSH access to the machine (the scripts live in `deploy/on
 | Reachable on the local network, not from outside, tunnel on | The tunnel needs UDP 51820 out to `vpn.rational.is`. A firewall that blocks it keeps the traffic from reaching the machine. |
 | Reachable on the local network, not from outside, tunnel off | The router rules (443 and 80, TCP, to the LAN address shown) and the public IP: see the caution above about shared addresses. |
 | Certificate warning in the browser | The certificate has not been issued yet, or the machine has not checked in since it was renewed. Wait a couple of minutes; `sudo rational sync` forces it. |
-| **Settings → Licence** reads *Missing or invalid* | The licence delivered to the installation is bound to it; a machine provisioned with another installation's command rejects it. Provision again with the command generated for this installation. |
+| The endpoint never appears, **Last sync** stays *never* | The installation has no identity on the platform yet: activate the licence (**Settings → Licence**), then wait a minute; and check that the operator set the subdomain on the platform console. |
