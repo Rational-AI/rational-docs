@@ -125,7 +125,6 @@ const sidebars: SidebarsConfig = {
 						"operational-guides/governance",
 						"operational-guides/govern-ai-applications",
 						"operational-guides/backup-and-restore",
-						"operational-guides/remote-access",
 						"operational-guides/tunnel",
 						"operational-guides/license",
 					],
