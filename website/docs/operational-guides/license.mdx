@@ -6,14 +6,14 @@ import Admonition from '@theme/Admonition';
 
 # Activate the licence of an on-premise installation
 
-A freshly installed Rational AI runs as **Core**: chat, conversations, governance, the settings that go with them, and any model you connect with your own provider credentials. The paid modules (Knowledge, Rational BI, Gen) and self-hosted models unlock when a licence is in force. The licence is installed from **Settings → Licence**, with an activation code or, on a machine without internet access, with a licence file; both are issued by Rational AI for your contract.
+A freshly installed Rational AI is **not activated**: chat, conversations, governance, the settings that go with them, and any model you connect with your own provider credentials. Activating a licence brings the essential models Rational AI hosts and the modules your plan includes (Knowledge, Rational BI, Agents, Gen); self-hosted models on your own GPU come with the enterprise plan. The licence is installed from **Settings → Licence**, with an activation code or, on a machine without internet access, with a licence file; both are issued by Rational AI for your contract.
 
 <Admonition type="info" icon="📖" title="ON-PREMISE ONLY">
 The Licence page is shown where the installation expects a licence, that is on on-premise installations. On the managed cloud your plan is applied by the platform and the page is not shown.
 </Admonition>
 
 <img
-  alt="The Licence page in Settings on a Core installation, asking for the activation code"
+  alt="The Licence page in Settings on an installation that is not activated yet, asking for the activation code"
   src={require('@site/static/img/screens/license-activation.png').default}
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
@@ -25,11 +25,11 @@ The Licence page is shown where the installation expects a licence, that is on o
 | **Activation code** | A product key (`RAI-XXXXX-XXXXX-XXXXX-XXXXX`) issued by Rational AI for your licence. It is redeemed once: the first installation that uses it is bound to it, and no other installation can use it afterwards. |
 | **Licence** | A signed document that says what your contract includes: the modules, the number of seats, self-hosted models, the validity. Signed by Rational AI, verified by the installation; it cannot be altered. |
 | **Refresh** | When Rational AI changes your licence (a module added, an extension), press **Refresh licence** on the page: the installation fetches the current one. Nothing else to do. |
-| **Grace** | When a licence expires, everything keeps working for seven days; past them the installation returns to Core, without losing anything. A trial ends the day it ends. |
+| **Grace** | When a licence expires, everything keeps working for seven days; past them the installation is not activated again, without losing anything. A trial ends the day it ends. |
 
 ## Activate with a code
 
-1. Sign in as an administrator and open **Settings → Licence**. On a Core installation the page asks for the code.
+1. Sign in as an administrator and open **Settings → Licence**. On an installation that is not activated the page asks for the code.
 2. Enter the code you received and press **Activate**. Spaces, dashes and case do not matter.
 3. The page shows the licence in force: who it is licensed to, the plan, the seats, the validity and the modules it includes. The navigation gains the unlocked modules at once.
 
@@ -43,14 +43,19 @@ On a machine that cannot reach the internet, Rational AI issues the licence as a
 A licence file issued after an activation is bound to that installation and is refused on any other one. Install it where it was activated.
 </Admonition>
 
-## What Core includes
+## Plans
 
-| Area | Core | With a licence |
-|------|------|----------------|
-| Chat, Conversations, Governance, Settings | yes | yes |
-| Models | through your own provider credentials (OpenAI, Anthropic, ...) | plus self-hosted models on the machine's GPU, when the licence includes them |
-| Knowledge, Rational BI, Gen | no | as the licence includes them |
-| Users | unlimited | up to the licence's seats |
+| | Not activated | Free | Standard | Enterprise |
+|---|---|---|---|---|
+| Chat, Conversations, Governance, Settings | yes | yes | yes | yes |
+| Models through your own provider credentials | yes | yes | yes | yes |
+| Essential models hosted by Rational AI | no | yes | yes | yes |
+| Modules (Knowledge, Rational BI, Agents, Gen) | none | none | the ones in your contract, one included | all |
+| Self-hosted models on your own GPU | no | no | no | yes |
+| Seats | 3 | 3 | 25 | 250 |
+| Workflow minutes per month | 30 | 30 | 1800 | unlimited |
+
+A trial is a standard licence with every module for 30 days (at least 15); Rational AI can extend it at any time, and **Refresh licence** picks the extension up.
 
 ## Troubleshooting
 
