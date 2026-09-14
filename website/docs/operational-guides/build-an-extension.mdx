@@ -46,11 +46,11 @@ A manifest always lists all four arrays; leave the ones you don't use empty
 
 ## Anatomy of an extension
 
-A code-bearing extension is a directory named `<name>-<version>` with a standard
-layout:
+Keep one stable source directory per extension, such as `my-extension/` (or
+`extension/` in a single-extension repository), with a standard layout:
 
 ```
-my-extension-1.0.0/
+my-extension/
 ├── manifest.json        # metadata + provider declarations (required)
 ├── icon.png             # extension icon shown in the registry
 ├── <name>-server/       # MCP server source (TypeScript or Python)
@@ -69,8 +69,8 @@ providers it declares:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `id` | yes | A stable UUID for the extension. Generate it once (`uuidgen`) and keep it for the life of the extension. |
-| `nameIdentifier` | yes | A short machine slug, e.g. `time`, `github-remote`. Matches the folder name prefix. |
-| `version` | yes | Semantic version, matching the folder suffix (`1.0.0`). |
+| `nameIdentifier` | yes | A short machine slug, e.g. `time`, `github-remote`. Determines the archive filename and inner root prefix. |
+| `version` | yes | Semantic release version (`1.0.0`); determines the archive filename and inner root suffix. |
 | `name` | yes | Display name shown in the registry. |
 | `description` | no | A sentence or two describing what the extension does. Shown to the user before they install. |
 | `icon` | no | Icon for the extension. May be empty (the bundled `icon.png` is used), a remote URL, or an embedded `data:` URI. |
@@ -365,13 +365,56 @@ A code-bearing extension is built into a distributable archive by the
 `make-tar.sh` script in its directory:
 
 ```bash
-cd my-extension-1.0.0
-./make-tar.sh
+cd my-extension
+sh make-tar.sh
 ```
 
-This installs dependencies, builds the server, and produces a `.tar.bz2`
-containing the built files, `icon.png` and `manifest.json`. A **remote**
-extension skips this entirely — its `manifest.json` *is* the distributable.
+Build any server dependencies and code first. The packaging step must read
+`nameIdentifier` and `version` from `manifest.json`, producing
+`my-extension-1.0.0.tar.bz2` with a single inner root named
+`my-extension-1.0.0/`. Runtime paths such as `dist` remain relative to that
+root. The source directory stays `my-extension/` across releases: update the
+manifest version and keep source history in Git, without copying old version
+folders alongside the current source.
+
+For an extension whose runtime files are already built in `dist/`, this
+`make-tar.sh` example uses Python 3 to package the required files. Add other
+assets referenced by your manifest to `payload` as needed. Run it with
+`sh make-tar.sh`; it works regardless of the caller's working directory.
+
+```sh
+#!/bin/sh
+set -eu
+cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+python3 - <<'PYTHON'
+import json
+from pathlib import Path
+import re
+import tarfile
+
+manifest = json.loads(Path("manifest.json").read_text())
+identity = [manifest["nameIdentifier"], manifest["version"]]
+if not all(isinstance(value, str) and
+           re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value)
+           for value in identity):
+    raise ValueError("Invalid package identity")
+package_name = "-".join(identity)
+payload = [Path("manifest.json"), Path("icon.png"), Path("dist")]
+for path in payload:
+    if not path.exists():
+        raise FileNotFoundError(path)
+# Keep archives outside dist/, which contains the runtime payload.
+output = Path("artifacts")
+output.mkdir(exist_ok=True)
+with tarfile.open(output / f"{package_name}.tar.bz2", "w:bz2") as archive:
+    for path in payload:
+        archive.add(path, arcname=f"{package_name}/{path}")
+print(output / f"{package_name}.tar.bz2")
+PYTHON
+```
+
+Exclude generated `artifacts/` from Git. A **remote** extension skips packaging
+entirely — its `manifest.json` *is* the distributable.
 
 Install the result from the Control Room: open **Settings → Extensions**, click
 **Add**, and upload the archive (or, for a remote extension, the manifest). Once
@@ -382,7 +425,8 @@ configure and management flow.
 <Admonition type="tip" icon="✅" title="START FROM AN EXISTING EXTENSION">
 The fastest way to build a new extension is to copy one that already does
 something similar and adjust its manifest. Keep `id` unique (generate a fresh
-UUID), and keep `nameIdentifier` and `version` consistent with the folder name.
+UUID). Derive the archive filename and inner root from `nameIdentifier` and
+`version`; keep the source directory name stable.
 </Admonition>
 
 ## Related guides
