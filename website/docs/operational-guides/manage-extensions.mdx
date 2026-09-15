@@ -70,8 +70,12 @@ Do this when you have a package of your own — something you built, or a build 
 You can also drop a package without leaving the install flow: drag it directly onto the list inside the **Add extension** dialog. The package is added and the new entry is selected for you automatically, ready to install.
 
 <Admonition type="note" icon="📝" title="ACCEPTED FILES AND CONFLICTS">
-Accepted formats are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`; the format is detected automatically. Dropping anything else shows a warning toast and uploads nothing. Re-uploading a package whose name identifier **and version** already exist surfaces a conflict as an error toast, so you'll know to bump the version first — releases are immutable, so a change always means a new version.
+Accepted formats are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`; the format is detected automatically. Dropping anything else shows a warning toast and uploads nothing. Releases are immutable: use a new version for changed package contents. Installing a package again can reuse the existing release for the same publisher, name identifier and version; it does not replace its bytes. Uploading a duplicate through the version-creation API is refused.
 </Admonition>
+
+For development without publishing a release on every save, see
+[Develop an extension](/operational-guides/develop-an-extension). Only an
+installation explicitly placed in development mode accepts file edits.
 
 ## Configure an extension so it starts running
 

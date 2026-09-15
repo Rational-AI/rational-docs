@@ -29,10 +29,10 @@ need to install, configure, enable or disable extensions from the registry, see
 [Settings → Extensions](/cr/settings/extensions) instead.
 </Admonition>
 
-## The four kinds of provider
+## Provider types
 
 What an extension can do is determined entirely by which provider arrays its
-manifest fills in. There are four:
+manifest fills in. The main types are:
 
 | Provider | Manifest key | What it adds | Ships code? |
 |----------|--------------|--------------|-------------|
@@ -41,8 +41,10 @@ manifest fills in. There are four:
 | **Source** | `sourceProviders` | A data source your Knowledge bases sync files from, with an optional retention window. | Usually yes |
 | **Workflow** | `workflowProviders` | A processing workflow that transforms files as they enter a Knowledge base. | Yes |
 
-A manifest always lists all four arrays; leave the ones you don't use empty
-(`[]`).
+The manifest also supports `ruleProviders`, `knowledgeProviders` and
+`widgetProviders`. Include the required `channelProviders` and
+`mcpServerProviders` arrays even when empty; unused optional provider arrays
+can be omitted.
 
 ## Anatomy of an extension
 
@@ -361,8 +363,9 @@ that's how the GitHub example above pulls `accessToken` into its
 
 ## Package and install
 
-A code-bearing extension is built into a distributable archive by the
-`make-tar.sh` script in its directory:
+Build the extension on your own computer or in CI. Many example projects
+provide a `make-tar.sh` script in their directory. This is a project convention,
+not a platform requirement:
 
 ```bash
 cd my-extension
@@ -428,6 +431,13 @@ something similar and adjust its manifest. Keep `id` unique (generate a fresh
 UUID). Derive the archive filename and inner root from `nameIdentifier` and
 `version`; keep the source directory name stable.
 </Admonition>
+
+## Develop an installed extension
+
+You do not need access to the Rational AI server filesystem or Kubernetes.
+Build locally and upload through the UI or tenant management API. For individual
+file edits, remote previews and bringing changes back into Git, see
+[Develop an extension](/operational-guides/develop-an-extension).
 
 ## Related guides
 
