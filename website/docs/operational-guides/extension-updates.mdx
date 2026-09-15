@@ -37,10 +37,10 @@ Pin an extension when you have a reason to distrust change on it — a validated
 ## Development mode temporarily suspends updates
 
 While an installation is in development mode, package updates are suspended.
-Its saved update policy is unchanged. Leaving development restores the packaged
-release and resumes that policy; `Compatible auto` checks for eligible updates
-again. The development draft remains recoverable until you save it to your
-repository or deliberately remove it. See
+Its saved update policy is unchanged. Leaving development blocks file edits and
+resumes that policy. The current files remain until a normal update or reinstall
+replaces them; there is no separate draft history. Download important changes
+before leaving development if an automatic update could overwrite them. See
 [Develop an extension](/operational-guides/develop-an-extension).
 
 ## How compatibility is decided

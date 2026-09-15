@@ -4,179 +4,148 @@ sidebar_label: Develop an extension
 
 # Develop an extension
 
-Start from an extension already installed in your tenant, change it locally or
-through the remote file editor, and recover your work into Git when you are
-satisfied. You do not need access to the server filesystem or Kubernetes.
+Start from an extension installed in your tenant and edit its files through the
+API, the remote editor or the Extensions CLI. Customers do not need access to the
+server filesystem or Kubernetes. You can download the result and save it in Git
+when you are satisfied; a repository, commit, package or publication is not
+required to try a change.
 
-Development mode belongs to **one installation in one tenant**. The published
-package and installations in other tenants remain unchanged. File writes are
-refused by the API unless that installation is in development mode and you have
-permission to manage it.
-
-## Choose where to test
-
-- **Local installation:** download the installed package, install it on your own
-  Rational AI instance, and enable development there. The online installation
-  is unchanged.
-- **Remote installation:** enable development on the target installation and
-  use the file editor or connect your local working directory through the CLI.
-  Successful revisions affect users of that installation. Use a test tenant if
-  you need to try changes without affecting live users.
+Development mode applies to **one installation in one tenant**. Only an
+installation explicitly marked as development accepts file writes, and the
+caller must have permission to manage it. Published packages and other
+installations are unchanged.
 
 ## Edit remotely
 
-Open **Settings → Extensions**, select the installed extension, and open its
-**Development** section. Enable development, select a file, edit it and save.
-You can also create or delete a file. The backend accepts the change, validates
-and prepares a new revision asynchronously, and sends progress to the page over
-an event stream. There is no periodic status polling.
+Open **Settings → Extensions**, select the installed extension and open
+**Development**. Enable development, select a text file, edit it and save. You
+can also create or delete files.
 
-A failed build, invalid manifest or failed tool discovery leaves the last
-working revision active. The failed draft remains editable so you can correct
-it. Saving several related files through the batch API applies them together.
-If another developer changed the draft since you opened it, your stale save is
-refused: reload and reconcile the changes instead of overwriting their work.
+Each successful upload replaces the file directly in the installed extension's
+backend-local directory. The server validates the change and refreshes the
+extension's contributions using its normal runtime mechanisms. There is no
+packaging or reinstall step on each save. Clients receive change notifications
+through SignalR WebSockets, with no periodic status polling.
+
+The editor protects unsaved text. File hashes detect concurrent changes: a stale
+save is rejected so you can reload and reconcile it. Uploads use a temporary
+file and replace the destination only after the upload completes and development
+mode is checked again. A disconnected upload does not expose a partial file.
+Changes to several files are separate operations, so upload mutually dependent
+files in a safe order.
+
+Changes affect users of that installation. To experiment separately, download
+the extension, install it on your own Rational AI instance and enable development
+there. Development files use the deployment's existing local extension runtime
+storage; this feature does not add repository synchronization or replicate local
+folders between backend nodes.
 
 ## Work from your computer
 
-Use the **RationalAI CLI Extensions** client to authenticate to the target tenant,
-export its installed package or retained draft, and push changed files. Its watch
-mode observes local filesystem events and uploads changes through the same API
-as the editor. The client never mounts your directory on the server.
-
-Create a profile for your tenant's API URL and supply `RATIONAL_API_TOKEN` through
-your normal environment or secret manager. Profiles store the variable name, not
-the credential. Use `login --auth bearer` if you use an access token.
+Use **RationalAI CLI Extensions** with a profile for the tenant's API URL. Supply
+`RATIONAL_API_TOKEN` through your normal environment or secret manager. Profiles
+store the environment variable name, not the credential. Use `login --auth bearer`
+when authenticating with an access token.
 
 ```sh
 rationalai-cli-extensions extensions dev login --profile remote --url https://your-tenant.example/api
 rationalai-cli-extensions extensions dev download --profile remote --id EXTENSION_ID --directory ./extension
 rationalai-cli-extensions extensions dev enable --profile remote --directory ./extension
 rationalai-cli-extensions extensions dev push --profile remote --directory ./extension --file src/index.ts
+rationalai-cli-extensions extensions dev watch --profile remote --directory ./extension
 ```
 
-For a project that compiles locally:
+The watcher responds to local filesystem events and streams each changed file
+through the same API as the editor. Ending the watcher does not disable remote
+development. For compiled projects, run your project's compiler locally, or its
+watch command in another terminal, and upload the generated runtime files.
+The platform does not execute a build or commit your source when a file is saved.
 
-```sh
-rationalai-cli-extensions extensions dev watch --profile remote --directory ./extension --build 'npm run build' --output-directory dist
-```
+To test in a local Rational AI installation, create a second CLI profile and use
+`extensions dev install --profile local --file downloaded.zip`. You can also
+package a local directory with `extensions package --directory ./extension` and
+install the resulting package. Downloading files does not enable development or
+change the remote installation.
 
-The watch command batches sources and generated outputs in one revision. Ending
-the watcher does not disable remote development. To test on your own installation,
-create a second profile, package the downloaded directory with
-`extensions package --directory ./extension`, and use
-`extensions dev install --profile local --file PACKAGE.tar.bz2`. The install command
-also accepts the ZIP downloaded from the remote editor.
+### Large assets
 
-Keep the export's development metadata: it records the remote installation and
-baseline used to detect conflicts. Downloading a package does not itself enable
-remote development or change the online installation.
+Uploads send the raw file body, without JSON/base64 or multipart wrapping.
+The server accepts streams without `Content-Length` and checks the bytes actually
+received. Files and the total installed directory are limited to **2 GiB**;
+`manifest.json` is limited to **2 MiB** of metadata. Package installation retains its existing
+limits of **1 GiB compressed and 2 GiB expanded**.
 
-### Large extensions and downloads
-
-Release and draft exports write the ZIP progressively to the download stream.
-The browser downloads directly to disk; the CLI stages the archive and recovered
-files on disk before checking conflicts. Memory use does not grow with the
-archive or file contents. Development snapshots keep references to stored files,
-so a small source edit does not put the extension's large data files in the database.
-
-The existing package limits still apply: **1 GiB compressed and 2 GiB expanded**.
-Development no longer has a separate 64 MiB total limit. Individual JSON file
-patches remain limited to **8 MiB per changed file and batch**; larger unchanged files can
-stay in the extension and be downloaded. The browser editor previews text files
-up to **2 MiB** and offers a direct download for larger or binary files.
-
-The CLI needs enough temporary disk space for the downloaded ZIP and staged
-expanded files, in addition to the working directory. A network interruption
-removes temporary data before any checkout file is changed. Applying the staged
-files uses atomic replacement per file; the whole checkout is not a filesystem transaction.
-
-### Sources and builds
-
-A downloaded package contains what the publisher shipped. A JavaScript bundle
-does not reconstruct the original TypeScript source. To keep a useful Git
-workflow, include the source files or bring them from the corresponding Git
-checkout before editing.
-
-Record the repository URL, base commit and source directory with the development
-draft. Keep source files and manifest-relative runtime outputs in the same
-project layout. Interpreted scripts and static files can be applied directly.
-Projects that compile must build before activating a revision, either locally
-through the CLI or through the platform's configured isolated build runner.
-If a remote build runner is unavailable, the build fails with an actionable
-error and the previous working revision continues to run.
+Both file downloads and ZIP exports stream progressively. The browser uses its
+native download manager. The CLI stages ZIPs and recovered files on disk and
+hashes files incrementally, so archive or asset size does not dictate RAM usage.
+Allow temporary disk space for the archive, extracted files and destination
+checkout. The browser's text editor previews files up to **2 MiB**; larger or
+binary assets remain downloadable and can be replaced through the CLI or API.
 
 ## Save the result in Git
 
-The repository is the source of truth for the extension's source code.
-Development revisions are durable drafts, not a replacement for commits.
+Git is independent of live development. When you want to preserve your work:
 
-- If you started from a checkout, review the diff and use your usual branch,
-  commit, push and pull-request workflow.
-- If you edited online, recover the remote draft into the matching local
-  checkout with the CLI. Review the changes before committing. The client
-  checks the baseline and refuses conflicting local edits.
-
-The repository connection records lineage, not Git credentials. Use your local
-Git authentication to push or open a pull request. The platform does not silently
-commit or publish when you save a file.
-
-From a Git checkout, associate the current origin and commit, then recover remote
-edits before reviewing your diff:
+1. If you edited locally, review the changes in your usual checkout.
+2. If you edited remotely, download the files or pull them into the local copy.
+3. Review the diff, then commit and push using your normal Git workflow.
 
 ```sh
-rationalai-cli-extensions extensions dev repository --profile remote --directory ./extension --source-directory .
 rationalai-cli-extensions extensions dev pull --profile remote --directory ./extension
 git -C ./extension diff
 ```
 
-Keep `.rational-development.json` locally and add it to `.git/info/exclude`.
-It records the server, installation and baseline used for conflict detection.
-If local and remote edits conflict, recovery stops before replacing files.
+The CLI keeps `.rational-development.json` locally to identify the tenant,
+installation and file hashes used for conflict detection. Add this file to
+`.git/info/exclude`. Pull checks local changes before replacing files and refuses
+conflicts. It does not commit, push or publish for you.
 
-After merging the source changes, build and publish a new immutable package
-version. Normal extension update controls then apply that release.
+An export contains the files actually installed. A compiled JavaScript bundle
+cannot reconstruct TypeScript sources that the publisher did not ship. Use the
+corresponding source checkout when those files are needed. Once your changes are
+ready for distribution, build and publish a new package version normally.
 
 ## Leave development mode
-
-Leaving development restores the packaged release. It retains the development
-draft so work not yet committed to Git remains recoverable.
 
 ```sh
 rationalai-cli-extensions extensions dev stop --profile remote --directory ./extension
 ```
 
-Development temporarily suspends package updates without replacing your saved
-update policy. On exit, that policy applies again. With **Compatible auto**, the
-platform checks again for eligible updates; **Notify only** and **Pinned** retain
-their normal behavior. A job from the ended development session cannot reactivate
-an old development revision after the release is restored.
+Turning development off blocks further file mutations and resumes the saved
+update policy. It does not roll files back: the current files stay in place until
+an ordinary update or reinstall replaces them. **Compatible auto** can update
+again; **Notify only** and **Pinned** keep their normal behavior.
 
-Exporting the draft is not the same as committing it. Verify that your changes
-are in Git before deliberately deleting your local copy or retiring the extension.
+Download or commit important changes before leaving development if an automatic
+update could replace them. The server does not keep a separate draft or revision
+history for recovering overwritten development files.
 
 ## API operations
 
-The paths below are relative to the tenant's management API base URL. Use a
-credential authorized to manage the selected extension.
+These paths are relative to `/api/management/v0`. Authentication and extension
+permissions apply to every operation.
 
 | Method and path | Purpose |
 |---|---|
-| `GET /extensions/{id}/development` | Current mode, draft and active revisions, operation state and repository lineage |
-| `PUT /extensions/{id}/development` | Enable or leave development mode |
-| `GET /extensions/{id}/development/files` | List files |
-| `GET /extensions/{id}/development/file?path=…` | Read a file |
-| `PATCH /extensions/{id}/development/files` | Atomically create, update or delete files |
-| `GET /extensions/{id}/development/export` | Download the installed package or development files |
-| `GET /extensions/{id}/development/export?draft=true` | Recover the retained draft after leaving development |
-| `PUT /extensions/{id}/development/repository` | Record source lineage and build configuration |
-| `GET /extensions/{id}/development/events` | Receive status events over SSE |
+| `GET /extensions/{id}/development` | Read `{extensionId, enabled}` |
+| `PUT /extensions/{id}/development` | Set `{enabled: true}` or `{enabled: false}` |
+| `GET /extensions/{id}/development/files` | List relative paths, sizes and SHA-256 hashes |
+| `GET /extensions/{id}/development/file?path=…` | Stream a file; add `download=true` for an attachment |
+| `PUT /extensions/{id}/development/file?path=…` | Create or replace a file with its raw binary body |
+| `DELETE /extensions/{id}/development/file?path=…` | Remove a file |
+| `GET /extensions/{id}/development/export` | Stream a ZIP of the current installed files |
 
-File changes include the expected revision and an array of paths with base64
-contents; a null content deletes the file. Paths are always relative to the
-extension. A stale revision or writing while development is disabled is refused.
-Accepted asynchronous operations return `202`; completion arrives on the event
-stream. Reconnecting clients can resume using the event identifier.
+For conditional replacement or deletion, send `If-Match: "SHA256"` using the
+current file hash. To create only if absent, send `If-None-Match: *`. Failed
+preconditions return `412`; writing while development is disabled returns `409`.
+Paths must remain inside the selected installation; traversal and symbolic links
+are rejected. A successful file write returns its metadata after reconciliation.
+
+SignalR connects at `/api/extensions/events`. `Subscribe(extensionId)` and
+`SubscribeAll()` join only authorized installation groups, scoped to the tenant.
+`ExtensionChanged` carries `{extensionId, path}`; `path` is null for a mode change.
+After connecting or reconnecting, subscribe first and then read the current
+status/file list to account for changes while disconnected.
 
 ## Related guides
 
