@@ -72,6 +72,25 @@ Keep the export's development metadata: it records the remote installation and
 baseline used to detect conflicts. Downloading a package does not itself enable
 remote development or change the online installation.
 
+### Large extensions and downloads
+
+Release and draft exports write the ZIP progressively to the download stream.
+The browser downloads directly to disk; the CLI stages the archive and recovered
+files on disk before checking conflicts. Memory use does not grow with the
+archive or file contents. Development snapshots keep references to stored files,
+so a small source edit does not put the extension's large data files in the database.
+
+The existing package limits still apply: **1 GiB compressed and 2 GiB expanded**.
+Development no longer has a separate 64 MiB total limit. Individual JSON file
+patches remain limited to **8 MiB per changed file and batch**; larger unchanged files can
+stay in the extension and be downloaded. The browser editor previews text files
+up to **2 MiB** and offers a direct download for larger or binary files.
+
+The CLI needs enough temporary disk space for the downloaded ZIP and staged
+expanded files, in addition to the working directory. A network interruption
+removes temporary data before any checkout file is changed. Applying the staged
+files uses atomic replacement per file; the whole checkout is not a filesystem transaction.
+
 ### Sources and builds
 
 A downloaded package contains what the publisher shipped. A JavaScript bundle
