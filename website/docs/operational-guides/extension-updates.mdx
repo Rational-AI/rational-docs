@@ -34,6 +34,15 @@ The policy selector is the only way out: set the extension back to **Notify only
 Pin an extension when you have a reason to distrust change on it — a validated configuration you can't revalidate right now, a compliance freeze, an investigation in progress.
 </Admonition>
 
+## Development mode temporarily suspends updates
+
+While an installation is in development mode, package updates are suspended.
+Its saved update policy is unchanged. Leaving development restores the packaged
+release and resumes that policy; `Compatible auto` checks for eligible updates
+again. The development draft remains recoverable until you save it to your
+repository or deliberately remove it. See
+[Develop an extension](/operational-guides/develop-an-extension).
+
 ## How compatibility is decided
 
 When a publisher records a new release, the platform doesn't take their word for whether it's safe. It **computes** a verdict by comparing the new release against its predecessor — the highest lower version of the same extension, from the same place it came from.
@@ -80,13 +89,15 @@ Dry runs are allowed regardless of update policy, so a pinned extension can stil
 
 This is the part that surprises people, so it's worth being precise about the timing.
 
-An extension's tool list is **discovered from the running MCP server**, not read out of the manifest. The list refreshes when a configuration starts or restarts.
+An extension's executable tool list is discovered from its MCP server. During
+an update, the platform validates the configuration and performs discovery as
+part of reconciling the new package. It updates tools and their schemas while
+preserving the identities of matching tools and their touchpoint bindings.
 
-An update, on its own, **does not restart your servers**. That has a specific and useful consequence:
-
-- **Your existing tool wiring survives the update.** Touchpoints that granted tools from this extension keep their bindings, with their identities intact, straight through the version change.
-- **Stale tools are pruned later**, at the next rediscovery — when a configuration next restarts and the server reports what it actually serves now.
-- **That later pruning is where removal is enforced.** If a tool is about to be pruned while a touchpoint still depends on it, the operation is refused unless you force it. Forcing it removes the tool and the touchpoint binding that depended on it.
+If a removed tool is still used by a touchpoint, the update is refused unless
+you explicitly force it. Forcing removal also removes the dependent binding.
+A configuration refresh can also trigger discovery; you do not have to wait
+for an unspecified future server restart for the update's tool reconciliation.
 
 Some changes are refused up front rather than deferred. An update that removes a **skill** or an **MCP server** that is still in use is rejected outright, again unless forced.
 
