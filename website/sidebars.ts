@@ -89,6 +89,20 @@ const sidebars: SidebarsConfig = {
 				},
 				{
 					type: "category",
+					label: "Agents",
+					collapsed: true,
+					items: [
+						"operational-guides/agents",
+						"operational-guides/create-an-agent",
+						"operational-guides/agent-tasks",
+						"operational-guides/agent-runs",
+						"operational-guides/agent-routines",
+						"operational-guides/agent-chats",
+						"operational-guides/agent-computers",
+					],
+				},
+				{
+					type: "category",
 					label: "Workflows",
 					collapsed: true,
 					items: [
