@@ -1,0 +1,53 @@
+---
+sidebar_position: 5
+sidebar_label: Rational BI
+---
+
+# Rational BI
+
+The **Rational BI** module turns the data already in Rational AI into business-intelligence dashboards: visual, shareable views that surface trends and answer questions at a glance. Describe the charts you want and Rational AI builds the dashboard for you, or lay it out by hand. Use this module to track your key numbers, keep them fresh while a dashboard is open, and turn them into written reports you can send to somebody.
+
+<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of Rational BI" poster="/img/videos/rational_bi.jpg" src="/videos/rational_bi_eng.mp4" />
+
+## Overview
+
+Open Rational BI by selecting **BI** in the top navigation bar. The first thing you see is your list of **projects**.
+
+| Item | What it is |
+| :--- | :--- |
+| **Project** | The workspace for one reporting area or audience, for example *Sales Reporting*. It defines which data sources and Knowledges its dashboards can query, and which models generate its charts and reports. |
+| **Dashboard** | A grid of charts, headings, text and dividers built on the project's data. |
+| **Report** | A written summary generated from one or more of the project's dashboards. |
+
+## Dashboards
+
+A dashboard can be built in two ways, and you can mix them:
+
+* **Let the AI draw it:** open **Chat** on a dashboard and describe the charts you want in plain language. Each chart appears on the canvas as it is produced.
+* **Lay it out by hand:** in edit mode, drag and resize widgets, and add **Titles**, **Free text** and **Dividers** so a long dashboard reads as sections.
+
+Each chart can be tuned on its own: its type (bar, line, area, scatter, pie, donut, radar or geographic map), the data it queries, its colours and its legend.
+
+## Keep the numbers current
+
+A saved dashboard shows the data captured when its charts were generated. Give it an **Auto-refresh** interval, from every 30 seconds to every 15 minutes, and Rational AI re-runs each chart's saved query while the dashboard is open. No model is involved: the same chart, newer numbers.
+
+## Reports
+
+A dashboard answers "what do the numbers look like"; a report answers "what should we take from them". Select one or more dashboards, describe what the report should cover and Rational AI writes it. You can then refine it in a chat, edit, duplicate or download it.
+
+## Best practices
+
+* **One project per reporting area:** keep related dashboards together so they are easy to find as your reporting grows.
+* **Connect sources first:** a dashboard can only chart data its project can reach.
+* **Use titles and text** to give a long dashboard structure and explain the numbers next to them.
+* **Show dashboards where people work:** a dashboard can be rendered inside a Knowledge as a custom view, next to the documents it describes.
+
+---
+
+## Related resources
+
+* [Build BI dashboards](/operational-guides/rational-bi): the step-by-step guide to projects, dashboards, auto-refresh and reports.
+* [Custom views](/operational-guides/knowledge-custom-views): show a dashboard inside a Knowledge.
+* [Configure data sources](/operational-guides/configure-sources): connect the data your dashboards query.
+* [Manage roles and users](/operational-guides/roles-and-users#grant-access-to-rational-bi): control who can use Rational BI projects, dashboards and reports.

@@ -92,7 +92,6 @@ const sidebars: SidebarsConfig = {
 					label: "Agents",
 					collapsed: true,
 					items: [
-						"operational-guides/agents",
 						"operational-guides/create-an-agent",
 						"operational-guides/agent-tasks",
 						"operational-guides/agent-runs",
