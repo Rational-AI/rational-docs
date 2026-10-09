@@ -8,8 +8,6 @@ import Admonition from '@theme/Admonition';
 
 Rational BI is where you turn your data into business-intelligence dashboards: visual, shareable views that surface trends and answer questions at a glance. This guide takes you from an empty project to a dashboard that builds itself from a conversation, keeps its own data fresh, and can be laid out exactly how you want it.
 
-<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of Rational BI" src="/videos/rational_bi_eng.mp4" />
-
 <Admonition type="info" icon="📖" title="WHAT IS RATIONAL BI?">
 Rational BI is a dedicated area for building business-intelligence (BI) dashboards on top of the data already in Rational AI. Your work is organized into **projects** — a project is the central workspace that holds a related set of dashboards, so you can keep, say, your sales reporting separate from your operations reporting. A project also holds **reports**: written summaries generated from one or more of its dashboards.
 </Admonition>
@@ -57,44 +55,50 @@ The neighbouring tabs cover the rest of the project: **Settings** for its name a
 
 ## Build a dashboard
 
-Inside a project, **Dashboards** holds your dashboards and **Reports** holds the written summaries. Select **New dashboard** to start one.
+Inside a project, **Dashboards** holds your dashboards and **Reports** holds the written summaries. Select **New dashboard** (or the **+** next to **Recents** in the sidebar) to start one. The dialog asks *"How would you like to get started?"*:
 
-### Let the AI draw it
+- **Generate with AI**: describe the dashboard and Rational AI builds the charts, metrics and layout for you. This is the usual way to start.
+- **Build manually**: start from an empty canvas, ask the AI chat for one chart at a time and arrange them yourself.
 
-The fastest route is to describe what you want and let Rational AI build it.
+### Generate it with AI
 
-1. On a new dashboard, select **Chat** to open the AI panel — the empty canvas prompts you with *"Open AI Chat to add charts to this dashboard."*
-2. Describe the charts you want in plain language.
-3. While it works, the canvas shows *"Rational AI is building your dashboard…"*, and each chart appears as it is produced.
-4. Give the dashboard a title and select **Save**.
+1. Select **Generate with AI**, then **Next**.
+2. Describe the dashboard you want in plain language: what it should track, which trends and comparisons to show, and how to lay it out. The box starts from your project's own instructions when it has some.
+3. Select **Generate**. The new dashboard opens, named after your description, and the canvas shows *"Rational AI is building your dashboard…"* while the charts appear.
+4. If Rational AI needs more information, it says so on the canvas. Reply in **Chat** to let it continue. If generation fails, select **Retry**.
+
+Once the dashboard exists, open **Chat** on it whenever you want to add or change charts.
 
 <Admonition type="note" icon="📝" title="CHARTS SURVIVE LEAVING THE PAGE">
-Generated charts are saved to the dashboard as they are produced, so navigating away or reloading mid-generation no longer loses them. If any chart does end up in the chat without reaching the canvas, a banner on the dashboard says how many are outstanding — *"N generated widgets from this dashboard's chat are not on the dashboard yet"* — with **Add all** to place them and **Dismiss** to ignore them.
+Generated charts are saved to the dashboard as they are produced, so navigating away or reloading mid-generation does not lose them. If any chart does end up in the chat without reaching the canvas, a banner on the dashboard says how many are outstanding, with **Add all** to place them and **Dismiss** to ignore them.
 </Admonition>
 
 ### Lay it out by hand
 
 Select **Actions** → **Edit** to rearrange a dashboard. In edit mode you can drag widgets around the grid, resize them from the corner grip, and add structure from the settings sidebar's **Sections** tab:
 
-- **Graphs** — the charts themselves.
 - **Title** — a heading, at level **Heading 1** to **Heading 4**, so a long dashboard reads as sections rather than a wall of charts.
 - **Free text** — a paragraph of explanation next to the numbers.
+- **KPI card** — one headline number with its label. It is backed by a query, so it refreshes like a chart.
+- **Graphs** — a chart.
+- **Tables** — the data behind one of the dashboard's charts, shown as a table. Pick the chart from the list.
 - **Divider** — a horizontal rule.
+- **Spacer** — empty space between blocks. In edit mode, set its minimum height in pixels.
 
-The sidebar's **Settings** tab holds what applies to the whole dashboard, including **Global Colors** and **Delete Dashboard**. Select **Save** to keep your changes, or **Cancel** to drop them.
+The sidebar's **Settings** tab holds what applies to the whole dashboard, including **Global colors** and **Delete dashboard**. Select **Save** to keep your changes, or **Cancel** to drop them.
 
 ### Tune a single chart
 
 Select a chart to open **Chart settings** in the sidebar:
 
 - **Chart type** — bar, line, area, scatter, pie, donut, radar, or **Geographic map**.
-- **Data source** and **Available tables** — what the chart queries.
+- **Data source**, **SQL Query** and **Available tables** — what the chart queries.
 - **Colors** and **Legend position**.
 - **Advanced (Spec)** — the underlying chart specification, when you want to hand-tune something the controls don't expose.
 - **Remove chart** — take this widget off the dashboard.
 
-<Admonition type="note" icon="📝" title="GEOGRAPHIC MAPS COME WITH THEIR OWN BASEMAPS">
-**Geographic map** renders a choropleth — a map coloured by value — on a basemap that ships with Rational AI: **Italian regions** or **US states**. The right basemap is chosen by matching your chart's category axis against each known geography, so a dataset keyed by Italian region names maps itself without you supplying any boundaries. The AI can draw these maps too: ask for a map of Italy in the chat and it uses the same bundled basemaps.
+<Admonition type="note" icon="📝" title="GEOGRAPHIC MAPS">
+A **Geographic map** colours each region by its value. Two maps are available today: **US states** and **Italian regions**. You don't upload any map files: Rational AI looks at the chart's categories and picks the map whose names they match, so a column of US state names or Italian region names is all it needs. Capitalisation and extra spaces don't matter. You can also ask for a map in the chat, for example *"sales by region on a map of Italy"*.
 </Admonition>
 
 ## Keep a dashboard up to date
@@ -115,7 +119,9 @@ While the dashboard is open, Rational AI re-runs each widget's saved query on th
 Auto-refresh re-runs the query the chart already has. No model is involved, so it is deterministic and cheap: the same chart, newer numbers. Asking the AI for a *different* chart is a separate, deliberate action in the chat. Background refreshes are also silent — if one fails, the dashboard keeps showing the last good data rather than interrupting whoever is looking at it.
 </Admonition>
 
-The rest of the **Actions** menu holds **Edit** and **Delete** for the dashboard itself.
+The rest of the **Actions** menu holds **Edit**, **Auto layout**, **Download** (as **PDF**, **CSV** or a static **Tableau** snapshot) and **Delete**.
+
+**Auto layout** tidies the grid: it moves every widget up as far as it fits, closing the empty gaps left after moving or removing widgets, and saves the result. Widget sizes stay the same.
 
 ## Write a report from your dashboards
 

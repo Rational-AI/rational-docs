@@ -22,6 +22,17 @@ const config: Config = {
 		],
 	],
 
+	// Keep old URLs working after a page moves. GitHub Pages has no server
+	// redirects, so this emits a small redirect page at each old path.
+	plugins: [
+		[
+			"@docusaurus/plugin-client-redirects",
+			{
+				redirects: [{ from: "/operational-guides/agents", to: "/cr/Agents" }],
+			},
+		],
+	],
+
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
 	future: {
 		v4: true, // Improve compatibility with the upcoming Docusaurus v4

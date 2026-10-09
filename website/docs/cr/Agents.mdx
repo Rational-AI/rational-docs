@@ -1,16 +1,16 @@
 ---
-sidebar_position: 34
-sidebar_label: Agents overview
+sidebar_position: 6
+sidebar_label: Rational Agents
 ---
 import Admonition from '@theme/Admonition';
 
-# Put a team of agents to work
+# Rational Agents
 
 The Chat answers a question and waits for the next one. An **agent** takes a job and carries it through: it reads, runs commands on its own computer, calls the tools you gave it, writes the result down and checks it before saying it is done. The **Agents** section of Control Room is where you build these agents, hand them work, watch them do it and step in when they need a decision.
 
-This guide is the map of the section. Each part has its own guide, linked below.
+This page is the map of the section. Each part has its own guide, linked below.
 
-<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Agents section" src="/videos/agents_eng.mp4" />
+<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Agents section" poster="/img/videos/agents.jpg" src="/videos/agents_eng.mp4" />
 
 <Admonition type="info" icon="📖" title="WHAT IS AN AGENT?">
 An agent is a saved **profile**: a name, a set of instructions, a model from the [AI Model Registry](/operational-guides/ai-model-registry-features), the tools it may use, the Knowledge bases it may touch and what starts it. Every time it works, the agent opens a **run**: one piece of work, with its own log, its own result and, when needed, its own requests for your approval. Runs happen on the agent's **computer**, a persistent Linux workspace that keeps its files between runs.
@@ -47,14 +47,14 @@ Open **Agents** in the top bar. The **Workplace** sidebar is the same on every p
 
 | Sidebar entry | What you find there | Guide |
 |---------------|---------------------|-------|
-| **Project picker** | Narrows the whole section to one project; the gear next to it opens **Projects**. | [Delegate work with tasks](./agent-tasks) |
-| **Tasks** | The board of work you handed to agents: *Queued*, *Working*, *Needs you*, *Done*. The orange badge counts runs waiting for your approval. | [Delegate work with tasks](./agent-tasks) |
-| **Chats** | Direct and group conversations with your agents. | [Chat with agents](./agent-chats) |
-| **Routines** | Every agent with its trigger, tools and last run; pause and resume them here. | [Schedule and trigger agents](./agent-routines) |
-| **History** | Every run, newest first, filterable by outcome. | [Follow runs and approve actions](./agent-runs) |
-| **Team** | The roster: each agent with what it is doing right now. **Manage** opens the **Agents team** page. | [Build an agent](./create-an-agent) |
-| **Computers** | Each agent's workspace machine and its open run. | [Agent computers and the tools library](./agent-computers) |
-| **Library** | Every tool and skill that can be granted to an agent. | [Agent computers and the tools library](./agent-computers) |
+| **Project picker** | Narrows the whole section to one project; the gear next to it opens **Projects**. | [Delegate work with tasks](/operational-guides/agent-tasks) |
+| **Tasks** | The board of work you handed to agents: *Queued*, *Working*, *Needs you*, *Done*. The orange badge counts runs waiting for your approval. | [Delegate work with tasks](/operational-guides/agent-tasks) |
+| **Chats** | Direct and group conversations with your agents. | [Chat with agents](/operational-guides/agent-chats) |
+| **Routines** | Every agent with its trigger, tools and last run; pause and resume them here. | [Schedule and trigger agents](/operational-guides/agent-routines) |
+| **History** | Every run, newest first, filterable by outcome. | [Follow runs and approve actions](/operational-guides/agent-runs) |
+| **Team** | The roster: each agent with what it is doing right now. **Manage** opens the **Agents team** page. | [Build an agent](/operational-guides/create-an-agent) |
+| **Computers** | Each agent's workspace machine and its open run. | [Agent computers and the tools library](/operational-guides/agent-computers) |
+| **Library** | Every tool and skill that can be granted to an agent. | [Agent computers and the tools library](/operational-guides/agent-computers) |
 
 In the roster, the dot and the second line tell you what each agent is doing: *Idle*, *Working*, *Starting*, *Needs you*, *Retrying* or *Failed*, followed by the task it is working on.
 
