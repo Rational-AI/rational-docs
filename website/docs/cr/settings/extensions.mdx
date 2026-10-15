@@ -55,6 +55,13 @@ Installing never asks for configuration up front. An extension that still needs 
 
 Saving its first configuration is what starts the extension: the MCP server starts, its tools are discovered, and the extension is enabled. If a required value is missing, the save is refused with a validation error and the extension stays disabled, so nothing ever half-starts. An extension whose values all have defaults comes up enabled immediately, with no extra step.
 
+## Develop an installed extension
+
+Open the development section to enable file editing for this installation,
+download its current files for local work, or return to normal package updates. The
+[development guide](/operational-guides/develop-an-extension) explains remote
+edits, Git recovery and resuming package updates when you leave development.
+
 ## Enable or disable an extension
 
 Use the toggle on each extension card to turn it on or off. A disabled extension stays installed and keeps its configuration, but its tools are not available to agents until you re-enable it. This is useful for temporarily taking an extension out of service without uninstalling it.
