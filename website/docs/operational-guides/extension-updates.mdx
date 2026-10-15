@@ -92,12 +92,14 @@ This is the part that surprises people, so it's worth being precise about the ti
 An extension's executable tool list is discovered from its MCP server. During
 an update, the platform validates the configuration and performs discovery as
 part of reconciling the new package. It updates tools and their schemas while
-preserving the identities of matching tools and their touchpoint bindings.
+preserving the identities of matching tools and their touchpoint bindings. If a
+binding's parameters no longer fit a changed schema, the update is refused unless
+you force it; forcing disables that binding.
 
 If a removed tool is still used by a touchpoint, the update is refused unless
 you explicitly force it. Forcing removal also removes the dependent binding.
-A configuration refresh can also trigger discovery; you do not have to wait
-for an unspecified future server restart for the update's tool reconciliation.
+Creating or editing an MCP server configuration also lists the server's tools at
+that moment.
 
 Some changes are refused up front rather than deferred. An update that removes a **skill** or an **MCP server** that is still in use is rejected outright, again unless forced.
 
