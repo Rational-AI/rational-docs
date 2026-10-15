@@ -32,7 +32,11 @@ save is rejected so you can reload and reconcile it. Uploads use a temporary
 file and replace the destination only after the upload completes and development
 mode is checked again. A disconnected upload does not expose a partial file.
 Changes to several files are separate operations, so upload mutually dependent
-files in a safe order.
+files in a safe order. An edit to `manifest.json` cannot change the extension's
+identity or version; publish a new release for that. `manifest.json` cannot be
+deleted. An edit that removes an MCP server or tool a touchpoint still uses, or
+that breaks a touchpoint's parameters, is refused and the previous file is
+restored.
 
 Changes affect users of that installation. To experiment separately, download
 the extension, install it on your own Rational AI instance and enable development
