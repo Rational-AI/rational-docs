@@ -120,6 +120,7 @@ const sidebars: SidebarsConfig = {
 					label: "Administration",
 					collapsed: true,
 					items: [
+						"operational-guides/install-and-update",
 						"operational-guides/roles-and-users",
 						"operational-guides/personalize-user-details",
 						"operational-guides/governance",
