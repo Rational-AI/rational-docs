@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Access Rational AI via API
 
-Rational AI's models are available not just in the chat interface but also to your own code. This guide walks you through creating the key your application needs to authenticate, and finding a working code snippet for any model.
+Rational AI's models are available not just in the chat interface but also to your own code. This guide walks you through creating the key your application needs to authenticate, finding a working code snippet for any model, giving one application a key that reaches a single [touchpoint](/operational-guides/configure-touchpoints) and nothing else, using that touchpoint's tools from any MCP client, and calling a Decision model through the System One compatible API.
 
 <Admonition type="info" icon="📖" title="WHAT IS API ACCESS?">
 An API (Application Programming Interface) is the channel your own applications and scripts use to talk to Rational AI's models directly, instead of a person typing into the chat UI. You prove who you are with an **API key** — a long secret string you generate in **Settings** — and send requests to your workspace's gateway.
@@ -21,10 +21,11 @@ Before you start, make sure you have:
 - **Access to the API keys settings page.** The **API keys** entry must be visible in your **Settings** navigation.
 - **At least one active model.** A model configured in the **AI Model Registry** that you intend to call. See [AI Model Registry features](/operational-guides/ai-model-registry-features) if you need to set one up.
 - **An HTTP client or OpenAI SDK.** For example cURL, the Python OpenAI SDK, or the TypeScript OpenAI SDK.
+- **For a touchpoint key:** a touchpoint on the **API** channel, and permission to edit it.
 
 ## Manage your API keys
 
-Your API keys live on a dedicated settings page that lists every key with its name, a masked value, and the date it was created. From here you create new keys and revoke ones you no longer trust.
+Your API keys live on a dedicated settings page that lists every key with its name, a masked value, the date it was created, and whether it is **Enabled** or **Disabled**. From here you create new keys, switch them off, and delete the ones you no longer trust.
 
 <img
   src={require('@site/static/img/screens/apikeys-settings.png').default}
@@ -39,25 +40,32 @@ Your API keys live on a dedicated settings page that lists every key with its na
 Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key makes it easy to track usage and revoke access later without disrupting anything else.
 
 1. Go to **Settings** → **API keys**.
-2. Select **+ New** (shown as **+ Add new** when the list is empty).
-3. In the **Generate new key** dialog, enter a **name** for the key, for example `My personal api key`.
-4. Confirm to generate the key.
-5. A **one-time secret** dialog appears showing the full key. Use the **copy-to-clipboard** button to copy it, then store it somewhere safe.
+2. Select **New** (shown as **Add new** when the list is empty).
+3. In the **Generate new key** dialog, enter a **Name** for the key, for example `My personal API key`.
+4. Select **Create**.
+5. The **Generate new secret key** dialog shows the full key. Use the copy button to copy it, store it somewhere safe, then select **Done**.
 
 <Admonition type="note" icon="📝" title="THE KEY IS SHOWN ONLY ONCE">
-The full key is returned a single time, on creation. Once you close the one-time secret dialog, the list only ever shows a masked value — there is no way to reveal the secret again. If you lose it, revoke the key and generate a new one.
+The full key is returned a single time, on creation. The dialog can't be dismissed by pressing Escape or clicking outside it, so you don't lose the key by accident; once you select **Done**, the list only ever shows a masked value and there is no way to reveal the secret again. If you lose it, delete the key and generate a new one.
 </Admonition>
 
-### Revoke an API key
+<Admonition type="caution" icon="⚠️" title="A KEY FROM THIS PAGE ACTS WITH ADMINISTRATOR RIGHTS">
+Keys created under **Settings** → **API keys** belong to the workspace, not to one application: they can call every model through the gateway and every touchpoint's API. When an application only needs to talk to one assistant, give it a [touchpoint key](#give-an-application-its-own-touchpoint-key) instead.
+</Admonition>
 
-Revoke a key the moment it is no longer needed or might be compromised — for example a key that was committed to a shared repository or belonged to someone who has left.
+### Disable or delete an API key
+
+Switch a key off the moment it is no longer needed or might be compromised — for example a key that was committed to a shared repository or belonged to someone who has left.
 
 1. Go to **Settings** → **API keys**.
-2. Find the key in the list and start the revoke action.
-3. Confirm in the **Revoke API key** dialog.
+2. Open the menu on the key's row.
+3. Choose what to do:
+   - **Disable** stops the key from authenticating but keeps it in the list, so you can **Enable** it again later.
+   - **Edit** renames the key.
+   - **Delete** removes it for good. Confirm in the **Delete API key** dialog.
 
-<Admonition type="note" icon="📝" title="REVOKING IS PERMANENT">
-Revoking an API key is a hard delete, not a pause. Any application still using that key stops working immediately, so make sure nothing you depend on is still relying on it.
+<Admonition type="note" icon="📝" title="DELETING IS PERMANENT">
+A deleted key can't be viewed or recovered, and every request that still uses it is rejected. If you only want to stop a key while you investigate, disable it instead.
 </Admonition>
 
 ## Call a model
@@ -105,7 +113,7 @@ The gateway serves **both** of OpenAI's APIs side by side, so you don't have to 
 | **Chat completions** | `/compat/v0/openai/chat/completions` | You have existing code built on it, or you want the simplest possible request |
 | **Responses** | `/compat/v0/openai/responses` | You're starting fresh, or using an OpenAI SDK's default path — Responses is the API OpenAI documents first and its SDKs reach for by default |
 
-Both are available on your workspace endpoint group and on a per-touchpoint group. The ready-made snippets in the registry use chat completions; switching to Responses is a matter of changing the endpoint and the request shape, with the same key and the same base URL.
+Both are available on your workspace endpoint group (`/api/compat/v0/openai`) and on each API touchpoint's group (`/api/compat/v0/touchpoints/{id}/openai`). The ready-made snippets in the registry use chat completions; switching to Responses is a matter of changing the endpoint and the request shape, with the same key and the same base URL.
 
 ### The Responses endpoints
 
@@ -133,6 +141,68 @@ Past creating a response, these operations reach whatever the upstream provider 
 OpenAI stores responses, so retrieve, delete and cancel behave as documented. Ollama implements only response *creation* and returns 404 for the rest — which you'll see verbatim. If your application depends on retrieving or cancelling a stored response, check that the provider behind your model supports it before building on it.
 </Admonition>
 
+## Give an application its own touchpoint key
+
+A workspace key opens everything. Most integrations need much less: one assistant, with its prompt, models and tools already decided by you. A touchpoint on the **API** channel gives an application exactly that, behind a key of its own.
+
+<Admonition type="info" icon="📖" title="WHAT IS A TOUCHPOINT KEY?">
+A touchpoint key is a secret that authenticates against **one** touchpoint and nothing else. It opens that touchpoint's OpenAI-compatible API at `/api/compat/v0/touchpoints/{id}/openai` and its [MCP server](#use-a-touchpoints-tools-from-an-mcp-client). It can't call the workspace gateway, another touchpoint, or any management API. Each touchpoint has at most one key at a time.
+</Admonition>
+
+1. Go to **Settings** → **Touchpoints** and open a touchpoint whose **Channel** is **API**.
+2. On the **Settings** tab, find the **API access** section. It shows the **Base URL** of the touchpoint, with a copy button, and the **API key** field.
+3. Select **Generate key**.
+4. Copy the key from the **Generate new secret key** dialog and select **Done**. As with workspace keys, it is shown only once; afterwards the field shows a masked value such as `sk-a...9f3c`.
+5. Under **Use via API**, pick **Chat Completions** or **Responses**, then the **cURL**, **Python** or **TypeScript** tab, and copy the snippet. It already points at the touchpoint's base URL and its default model, and reads the key from `RATIONAL_AI_API_KEY`.
+
+The key can be sent as `Authorization: Bearer <key>` or in an `X-API-KEY` header.
+
+<Admonition type="note" icon="📝" title="THE APPLICATION TALKS TO YOUR ASSISTANT, NOT TO A BARE MODEL">
+Requests through a touchpoint run with that touchpoint's system prompt first and its enabled tools executed on the server, so the application gets the same assistant your users get in chat. Tools that would need a human's approval are left out of these requests, since there is no one in the loop to approve them; skills are not offered either. Values that [Manual tool parameters](/operational-guides/configure-touchpoints#fill-a-manual-parameter-from-the-conversation) read from `${system.…}` or `${userStore.…}` are taken from the request's `metadata`.
+</Admonition>
+
+### Rotate or revoke a touchpoint key
+
+| Action | When to use it | What happens |
+|--------|----------------|--------------|
+| **Rotate** | The key may have leaked, or you rotate secrets on a schedule | A new key is generated and shown once. The old key stops working immediately, with no overlap. |
+| **Revoke** | No application should use this touchpoint any more | The key is deleted. Until you generate a new one, only operators can call the touchpoint's API. |
+
+Both ask for confirmation (**Rotate API key**, **Revoke API key**) and can't be undone. Rotating or revoking needs permission to edit the touchpoint.
+
+<Admonition type="note" icon="📝" title="WITHOUT A KEY THE API IS OPERATOR-ONLY">
+A touchpoint with no key shows *"No key yet. Only operators can call this API."* Operators are administrators and holders of a workspace key from **Settings** → **API keys**; they can call every touchpoint's API, with or without a touchpoint key.
+</Admonition>
+
+## Use a touchpoint's tools from an MCP client
+
+The same touchpoint is also served as an MCP server, so any client that speaks the Model Context Protocol — an IDE assistant, a desktop AI app, another agent — can use the tools you configured on it.
+
+- **URL:** `https://<your-host>/api/compat/v0/touchpoints/{id}/mcp`, where `{id}` is the **Touchpoint ID** from the **Settings** tab. The URL isn't shown in the interface; build it from the touchpoint's base URL by replacing `/openai` with `/mcp`.
+- **Transport:** Streamable HTTP, stateless.
+- **Authentication:** the touchpoint key (or operator credentials), exactly as for the touchpoint's OpenAI API.
+- **What it offers:** the touchpoint's enabled tools, and nothing else — no skills, prompts or resources.
+
+<Admonition type="note" icon="📝" title="APPROVAL MOVES TO THE MCP CLIENT">
+Unlike the OpenAI API, the MCP server does list tools that need approval under the touchpoint's [confirmation policy](/operational-guides/configure-touchpoints#decide-when-a-tool-needs-confirmation). It marks them as destructive and as requiring approval, so a well-behaved MCP client asks its own user before calling them. Rational AI doesn't block the call itself, so connect only clients you trust to honour that flag.
+</Admonition>
+
+A touchpoint that [AI application governance](/operational-guides/govern-ai-applications) blocks, or rates as an unacceptable risk, refuses MCP calls.
+
+## Ask a Decision model through the System One compatible API
+
+Some questions don't need prose back: pick one of these options, give this a score, answer yes or no. Rational AI serves **Decision** models through an API compatible with System One, so clients built on the TypeSafe SDK can ask typed questions and get typed answers.
+
+- **Base URL:** `https://<your-host>/api/compat/v0/typesafe`. The SDK adds `/v1/systemone` (ask) and `/v1/models` (list the Decision models) itself.
+- **Authentication:** a workspace key from **Settings** → **API keys**. Touchpoint keys don't work here.
+- **Model:** only models whose purpose is **Decision** are served. If the request names no model, the **Decision model** default applies.
+
+The **Use via API** snippets on a Decision model in the [AI Model Registry](/operational-guides/ai-model-registry-features) already point at this base URL.
+
+<Admonition type="note" icon="📝" title="A DECISION MODEL NEEDS A PROVIDER THAT SPEAKS SYSTEM ONE">
+Decision models come from a **System One Compatible** connector, or from OpenRouter. See [Configure connectors](/operational-guides/configure-connectors).
+</Admonition>
+
 ## Result
 
-You now have an API key for authenticating programmatic requests and a copied, model-specific snippet pointing at the OpenAI-compatible gateway. Your application can call Rational AI's models directly, reusing standard OpenAI SDKs and tooling — through chat completions or the Responses API, whichever your client already speaks.
+You now have an API key for authenticating programmatic requests and a copied, model-specific snippet pointing at the OpenAI-compatible gateway. Your application can call Rational AI's models directly, reusing standard OpenAI SDKs and tooling — through chat completions or the Responses API, whichever your client already speaks. When an application should reach one assistant only, it gets a touchpoint key that you can rotate or revoke on its own, the same touchpoint's tools are available to MCP clients, and Decision models answer typed questions through the System One compatible API.

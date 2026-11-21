@@ -28,15 +28,41 @@ Go to **Settings** → **Touchpoints** and select the touchpoint you want to con
 Create a touchpoint without naming a model and it takes your platform's default **Conversational model** — the one set under **Settings** → **AI Model Registry** as *"Default model for conversations"* — and adds it to its own list of allowed models. The rule lives in the backend, so it applies equally to touchpoints created through the API. A model you choose explicitly is always kept, and existing touchpoints are left exactly as they are; change the platform default and only touchpoints created afterwards pick it up.
 </Admonition>
 
+A touchpoint's settings are spread over seven tabs:
+
+| Tab | What you set there |
+|-----|--------------------|
+| **Settings** | Channel, access, Canvas mode and, on API touchpoints, the [API key](/operational-guides/api-access#give-an-application-its-own-touchpoint-key) |
+| **Models** | System prompt, models, and [reasoning, generation limits and response verification](/operational-guides/touchpoint-generation) |
+| **Sources** | The knowledge the assistant reads, and whether it [may change it](#let-the-assistant-change-a-knowledge) |
+| **Tools** | The MCP tools the assistant may call, when they need confirmation, and how long they may take |
+| **Skills** | The [skills](/operational-guides/agent-skills) the assistant can use |
+| **Memory** | [Memory and long conversations](/operational-guides/touchpoint-memory) |
+| **Test runs** | [Replays of past conversations](/operational-guides/test-touchpoint-changes) against a change |
+
+Changes are saved with **Save** at the bottom of the panel, and **Undo** discards them. Without permission to edit the touchpoint, the form is read-only.
+
 ## Edit the system prompt
 
-The **System prompt** is the standing instruction the agent follows on this touchpoint. Two controls sit beside the field, and both matter once a prompt grows past a few lines:
+The **System prompt**, at the top of the **Models** tab, is the standing instruction the agent follows on this touchpoint. Two controls sit beside the field, and both matter once a prompt grows past a few lines:
 
-- **Show unsaved changes** switches the field into a diff view, comparing what's saved against what you've typed. On a long prompt this is the difference between knowing what you changed and hoping you remember.
+- **Show unsaved changes** switches the field into a read-only diff view, comparing what's saved against what you've typed. On a long prompt this is the difference between knowing what you changed and hoping you remember. It's disabled while nothing has changed.
 - **Expand editor** gives the prompt a much taller editing area, hiding the surrounding fields while you work.
 
 <Admonition type="note" icon="📝" title="TEST A PROMPT CHANGE BEFORE IT GOES LIVE">
 A touchpoint with enough history offers to **replay your change against its real past conversations** when you save, so you can see what came out different before your users do. See [Test a touchpoint change](/operational-guides/test-touchpoint-changes).
+</Admonition>
+
+### Change the workspace assistant's prompt
+
+The assistant people talk to in the main [Chat](/cr/Chats) is a touchpoint too — the **default touchpoint**, named *Rational AI*. You can rewrite its instructions like any other, for example to give it your company's tone or rules.
+
+1. Go to **Settings** → **Touchpoints** and select **Default touchpoint** at the top of the list. It opens on the **Models** tab.
+2. Edit the **System prompt** and save. Changes apply from the next message, in existing chats as well as new ones.
+3. To go back to Rational AI's own instructions, select **Restore default**, then **Save**.
+
+<Admonition type="note" icon="📝" title="THE PROMPT IS YOURS; PERMISSIONS AND TOOLS ARE NOT">
+Rewriting the prompt changes how the assistant talks and what it focuses on. Which knowledge each person can reach and which tools are available stay managed by Rational AI: on the default touchpoint every user automatically gets all enabled knowledge they are allowed to read. An empty prompt falls back to the built-in default. The default touchpoint can't be deleted.
 </Admonition>
 
 ## Control who can reach the touchpoint
@@ -57,6 +83,22 @@ Use this to decide whether someone must sign in before they can talk to the agen
 <Admonition type="note" icon="📝" title="OFF BY DEFAULT">
 Only enable **Allow anonymous access** when the touchpoint is genuinely meant to be reached without sign-in, such as a public help assistant. Once saved, the setting persists with the touchpoint.
 </Admonition>
+
+## Let the assistant change a knowledge
+
+By default an assistant only reads the knowledge attached to it. For an assistant whose job is to keep records up to date — logging a request, updating a customer, filing a document — you can let it write as well, one knowledge at a time.
+
+1. Open the touchpoint's **Sources** tab.
+2. On the knowledge you want the assistant to maintain, switch on **Can change records**.
+3. Read the confirmation and select **Allow changes**.
+
+The change applies at once, without the touchpoint's **Save**. The assistant can then create and update records, move them between collections and create collections in that knowledge — never delete anything. Each change it makes shows the assistant's name, and people working in the knowledge are told when records have been changed so they can reload. Switch **Can change records** off to take the right back; no confirmation is needed.
+
+<Admonition type="caution" icon="⚠️" title="ANYONE WHO CAN USE THE ASSISTANT CAN ASK FOR CHANGES">
+The permission belongs to the assistant, not to the person chatting. Everyone who can reach the touchpoint can ask it to change records: people in the chat, applications calling its [API or MCP endpoint](/operational-guides/api-access) and, on a public touchpoint, anonymous visitors. Only someone who can edit the knowledge can switch this on, and it is off by default.
+</Admonition>
+
+The default touchpoint has no such switch: there, the assistant changes records only within the permissions of the person chatting.
 
 ## Work with tools
 
@@ -92,6 +134,20 @@ When a gated call comes up, the chat pauses and shows an approval card above the
 
 <Admonition type="note" icon="📝" title="THE SERVER'S ANNOTATION IS ONLY A DEFAULT">
 An MCP server declares its own tools read-only or destructive, and Rational AI follows that declaration until you say otherwise. Once you have toggled a tool's **Sensitive** badge, your choice is what counts — including across extension re-syncs, which would otherwise reset the tool to whatever the server currently claims.
+</Admonition>
+
+## Set how long a tool may take
+
+An MCP tool that never answers would otherwise leave the conversation waiting. Every tool call has a time limit: when it runs out, the call is reported to the assistant as failed and the conversation carries on.
+
+1. In the **Tools** tab, find **How long a tool may take**, above the MCP servers.
+2. Enter a limit in **seconds**, or leave it empty for the default of 120 seconds. The maximum is 600.
+3. Save the touchpoint.
+
+The limit applies to every MCP server on the touchpoint. To give one slow server more time (or less), set **Tool call time limit** in that server's configuration dialog; leave it empty to follow the touchpoint's limit.
+
+<Admonition type="note" icon="📝" title="A TOOL THAT KEEPS TIMING OUT STOPS THE ANSWER">
+One slow call is just a failed step. If the tool runs out of time on every attempt, the answer stops with *"Generation stopped: the tool "…" ran out of time on every attempt."* and a **Regenerate response** button. That's the moment to raise the limit for that server, or to look at why it is slow.
 </Admonition>
 
 ## Add a single tool
@@ -162,4 +218,4 @@ Because knowledge IDs are never surfaced in the UI, this dropdown is the support
 
 ## Result
 
-Your touchpoint now controls its own access through the **Allow anonymous access** toggle, starts from the platform's default conversational model unless you pick one yourself, presents a nested **Tools** view grouped by MCP server and configuration, decides through **When to ask for confirmation** which calls need a human to approve them, and lets you add tools either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs — so the agent has exactly the tools and references it needs to answer against your Knowledge.
+Your touchpoint now controls its own access through the **Allow anonymous access** toggle, starts from the platform's default conversational model unless you pick one yourself, may keep the knowledge you choose up to date, bounds how long each tool call may take, presents a nested **Tools** view grouped by MCP server and configuration, decides through **When to ask for confirmation** which calls need a human to approve them, and lets you add tools either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs — so the agent has exactly the tools and references it needs to answer against your Knowledge.

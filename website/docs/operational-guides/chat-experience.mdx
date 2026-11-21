@@ -6,10 +6,10 @@ import Admonition from '@theme/Admonition';
 
 # Use the chat
 
-The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, lining up follow-up questions, exploring alternative answers, attaching files, listening and dictating, renaming chats, and — for support agents — stepping into a conversation the AI is handling.
+The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, shaping a request with the composer (model, reasoning level, knowledge, skills), following how an answer was built and which sources it used, checking an answer against your knowledge, branching and regenerating, working with the files the agent creates, listening and dictating, managing and exporting your chats, and — for support agents — stepping into a conversation the AI is handling.
 
 <Admonition type="info" icon="📖" title="WHAT IS THE CHAT?">
-The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints) — a configured entry point that decides which AI model and which knowledge the chat draws on. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
+The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints) — a configured entry point that decides which AI model and which knowledge the chat draws on, and which of the options below users get. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
 </Admonition>
 
 ## Prerequisites
@@ -17,8 +17,8 @@ The chat is the conversation view your end users see. Each chat lives in its own
 Before you start, make sure you have:
 
 - **Access to the chat:** an account that can open the chat view.
-- **At least one enabled touchpoint:** the touchpoint determines which model and knowledge the chat uses.
-- **For document attachments:** files in a supported format — images, PDF, DOCX, or text / markdown / CSV / JSON.
+- **At least one enabled touchpoint:** the touchpoint determines which model and knowledge the chat uses. **Rational Chat**, the workspace assistant, is always available.
+- **For document attachments:** files in a supported format — images, PDF, Word, Excel, PowerPoint, or text / markdown / CSV / JSON.
 - **For takeover:** an operator account with access to the backoffice conversation view.
 
 ## Start a new chat
@@ -26,8 +26,9 @@ Before you start, make sure you have:
 Every conversation begins by choosing who you want to talk to.
 
 1. Select **New chat**.
-2. The first time, a **touchpoint picker** opens. Choose the touchpoint you want to chat with.
+2. Use the touchpoint selector at the top of the page to choose who to talk to. **Rational Chat**, the workspace assistant, comes first, followed by the enabled touchpoints.
 3. The chat opens with a personalized greeting instead of a blank prompt, sitting above the centre of the panel. The greeting is generated dynamically from the time of day (morning, afternoon, or evening) and your name, so the exact wording varies from visit to visit — for example *"Hi Admin, what do you need this evening?"*, *"Good evening, Admin."*, or *"Evening, Admin. How can I assist?"*.
+4. Type your question, or select one of up to three suggested questions when the touchpoint offers them.
 
 <img
   src={require('@site/static/img/screens/chat-greeting.png').default}
@@ -41,18 +42,62 @@ Every conversation begins by choosing who you want to talk to.
 The greeting is not limited to the chat page. It also appears in the chat panels embedded elsewhere in the product — inside a [Knowledge](/operational-guides/create-knowledge), in a [BI](/operational-guides/rational-bi) dashboard — including chats that don't exist yet, where nothing is created until you send your first message. Suggested questions are a separate thing and only appear where the touchpoint supplies them.
 </Admonition>
 
-<Admonition type="note" icon="📝" title="THE PICKER IS SKIPPED NEXT TIME">
-Rational AI remembers the last touchpoint you chatted with. The next time you select **New chat**, the chat is created directly with that touchpoint and the picker is skipped. If that touchpoint has since been disabled or deleted, the picker reopens so you can pick a valid one.
+<Admonition type="note" icon="📝" title="NEW CHAT REMEMBERS YOUR LAST TOUCHPOINT">
+Rational AI remembers the last touchpoint you chatted with, and the next **New chat** starts with it already selected; you can still switch. If that touchpoint has since been disabled or deleted, nothing is preselected and you pick a valid one.
 </Admonition>
+
+## Shape your request in the composer
+
+Everything that changes how a request is handled lives in the composer, one message box shared by the new-chat screen and every conversation. The **+** button (*"Open tools menu"*) opens the options; each one you switch on shows as a chip in the composer, and its **✕** turns it off again.
+
+| Option | What it does |
+|--------|--------------|
+| **Add files and photos** | Attach files to the message. See [Attach files to a message](#attach-files-to-a-message). |
+| **Knowledge bases** | Choose which knowledge the assistant searches, or see which it can use. See [Choose the knowledge to search](#choose-the-knowledge-to-search). |
+| **Web search** | Have the assistant look things up on the web for this request. |
+| **Deep Research** | Have the assistant investigate a question in depth, across many sources. |
+| **Canvas** | Generate a web page or design in the [Canvas](/operational-guides/agent-skills#preview-web-pages-in-canvas) panel beside the chat. Offered when the touchpoint's **Canvas mode** is on. |
+| **Voice conversation** | Talk with the assistant out loud: it listens, answers and reads the answer back. |
+| **Advanced mode** | Show the technical detail behind each answer. See [Follow how an answer was built](#follow-how-an-answer-was-built). |
+| **Memory** | On a new chat, start it with the touchpoint's [memory](/operational-guides/touchpoint-memory) switched off (the chip reads **Memory off**). |
+| **Skills** | Pick a skill for this request — the same list you get by typing `/`. |
+| **Tools** | On a new chat, see which tools the assistant can use. |
+
+Options the touchpoint doesn't offer don't appear. While an answer is generating, the send button becomes **Stop generating**; the text written so far is kept, with *"Generation stopped before the answer was finished."* and **Regenerate response** beneath it.
+
+### Choose the model and reasoning level
+
+The button next to the send button (*"Model and reasoning"*) shows the model and reasoning level in use, for example *gpt-5, Medium*. Select it to change them.
+
+1. Under **Model**, pick another model — use **Search models** to find one. Selecting the current model again returns to the default. The new model answers from your next message.
+2. Under **Reasoning**, pick how hard the model thinks before answering, from **Off** to **Max**. Only the levels the model supports are shown. Selecting the highlighted level again returns to the touchpoint's default.
+
+<Admonition type="note" icon="📝" title="THE TOUCHPOINT DECIDES WHAT YOU CAN CHANGE">
+Choosing the model is a feature of **Rational Chat**, in your own chats. The reasoning level can be changed on any touchpoint whose owner allows it; otherwise the popover shows the level as *"… set by the assistant"*. Either choice applies to this conversation only. See [Tune answer generation](/operational-guides/touchpoint-generation).
+</Admonition>
+
+### Choose the knowledge to search
+
+With **Rational Chat**, you decide which of your knowledge bases a request searches.
+
+1. Open **+** → **Knowledge bases**.
+2. Tick the knowledge bases to use; **Search knowledge bases** filters a long list, and the counter shows how many are selected.
+3. To go back to searching everything you can read, select **Use all**.
+
+The chip shows the knowledge base's name, or how many are selected. On other touchpoints the list is read-only: **Available knowledge** shows what the assistant was configured with, and access is checked whenever a tool runs.
+
+### Pick a skill with `/`
+
+Type `/` in an empty composer to list the skills enabled on the touchpoint, keep typing to filter, and press **Enter** to pick one. The skill becomes a chip at the start of your message, and the assistant is told to follow that skill for this request. See [Pick a skill with `/`](/operational-guides/agent-skills#pick-a-skill-with-).
 
 ## Send and queue messages
 
 You don't have to wait for one answer to finish before lining up your next thought.
 
 1. Type your message in the composer and send it.
-2. While the agent is still generating its response, a second message can't be sent in parallel. Instead it's **queued** and shown as a removable chip above the input.
+2. While the agent is still generating its response, a second message can't be sent in parallel. Instead it's **queued** and shown as a chip under **Queued**, above the input.
 3. Queued messages are sent **automatically and in order** as soon as the previous turn completes.
-4. To cancel a pending send, hover the chip and select the **x**. Hovering also shows the tooltip **"Message waiting to be sent"**.
+4. To cancel a pending send, hover the chip and select the **✕** (*"Remove from queue"*). Hovering also shows the tooltip **"Message waiting to be sent"**.
 
 <Admonition type="note" icon="📝" title="THE QUEUE SURVIVES RELOADS">
 The queue is saved per chat in your browser, so queued messages survive a page reload or switching between chats, and resume sending once the agent is idle. Queued chips are text only — attachments apply to messages you send directly, not to queued ones.
@@ -62,47 +107,99 @@ The queue is saved per chat in your browser, so queued messages survive a page r
 
 Attach images and documents to a message so the agent can use them directly in its answer.
 
-1. In the composer, add one or more attachments — images, or PDF / DOCX / text / markdown / CSV / JSON documents.
-2. A preview of each attachment appears in the composer before you send.
-3. Send the message. Attachments are uploaded first, then linked to the message, and the chips also appear on the sent message in your history.
+1. Open **+** → **Add files and photos**, or drag files onto the composer. Images, PDF, Word, Excel, PowerPoint, text, markdown, CSV and JSON files are accepted.
+2. A card for each attachment appears in the composer while it uploads; the send button waits until every upload has finished.
+3. Send the message. The attachments appear above your message in the history.
 
 Images are passed to the model as vision input. For documents, the text is extracted in the background and fed to the model as reference content, so generation never waits on extraction.
 
+<Admonition type="note" icon="📝" title="THE TOUCHPOINT DECIDES WHETHER FILES ARE ALLOWED">
+**Add files and photos** appears only when the touchpoint allows attachments. A file of another type is refused with *"Unsupported file type. Attach an image, PDF or text document."*
+</Admonition>
+
 ### Open an attachment
 
-The chip on a message is a button: select it to get the file itself, not just its name.
+The attachment on a message is a button: select it to get the file itself, not just its name. It opens in a new browser tab, where the browser previews what it can — PDFs, images, text — and downloads the rest.
 
-- **Formats the browser can display** — PDFs, images, text, audio and video — open in a new tab as a preview.
-- **Anything else** downloads under its original file name.
-
-This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) — a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram) — the chip is the only route to what the sender actually attached.
+This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) — a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram) — the attachment is the only route to what the sender actually sent.
 
 <Admonition type="note" icon="📝" title="LARGE CORPORA BELONG IN A KNOWLEDGE">
 Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the agent to search over, store them in a [Knowledge](/operational-guides/create-knowledge) instead — Rational AI indexes that content for retrieval-augmented answers ([RAG](/concepts/RAG)), where the agent looks up relevant passages at answer time rather than reading whole files inline.
 </Admonition>
 
+## Follow how an answer was built
+
+While the agent works, a line above the answer reads *"Rational AI is thinking..."* with a live summary of what it's doing. When it's done, everything it did before answering — reasoning, knowledge searches, web searches, tools and skill runs — is folded into that single line, for example *"Thought for 8s"* or *"Thought for 12s, used skill xlsx, 4 steps"*. Select it to read the steps in order.
+
+- A **knowledge search** reads *"Searched 2 knowledge bases and read 5 documents"*.
+- A **tool** reads *"Used …"* with the tool's name.
+- A **skill run** lists its steps in plain words; see [Follow what happened](/operational-guides/agent-skills#follow-what-happened).
+- A run that failed part-way is titled *"…, stopped at step …"*.
+
+### See the technical detail with Advanced mode
+
+Switch on **+** → **Advanced mode** when you need to understand or debug an answer. The steps then show their technical detail, including the three phases of each knowledge search:
+
+| Phase | What happens |
+|-------|--------------|
+| **Initial Retrieval** | Finds the documents most similar to the question using semantic search. |
+| **Graph Expansion** | Adds related documents by following the knowledge graph from those results. |
+| **Final selection** | Ranks everything by relevance and keeps what fits in the model's context. |
+
+When an answer fails, Advanced mode also shows the raw error instead of *"The response could not be completed."*
+
+<Admonition type="note" icon="📝" title="ONLY ADMINISTRATORS SEE WHAT A TOOL WAS SENT AND RETURNED">
+For everyone else, tool calls keep their names but lose their arguments and raw output — in the chat, in Advanced mode and in an exported chat alike. Tool arguments can carry internal identifiers or data the person chatting shouldn't see. Widgets the chat renders, and tools that run in the browser, are not affected.
+</Admonition>
+
+## See the sources behind an answer
+
+When an answer used your knowledge or the web, a sources pill appears under it, showing how many knowledge resources and how many web pages the model was given.
+
+1. Select the pill. The **Sources** panel opens beside the chat (over it, on a narrow window).
+2. Under **Internal resources**, each entry shows the knowledge base, the resource and an excerpt; select it to open the resource in its Knowledge.
+3. Under **Web**, each entry shows the site, title and snippet; select it to open the page.
+
+Select the pill again, or **Close**, to hide the panel.
+
 ## Work with answers: actions and branches
 
-Beyond reading a reply, you can regenerate it, rewrite your own question, and compare different versions side by side.
+Beyond reading a reply, you can regenerate it, rewrite your own question, branch it into a new chat, and compare different versions.
 
-Each AI message has a hover-revealed **action row** with **regenerate**, **edit**, **copy**, **read aloud**, **Verify response**, and a thumbs-up / thumbs-down pair for feedback, plus inline branch arrows **‹ ›** and a variant counter (for example **1/2**) when alternatives exist.
+Under each AI message are **copy**, the thumbs-up / thumbs-down pair for feedback, **Regenerate response**, the sources pill, and **‹ ›** arrows with a version counter (for example **1/2**) when alternatives exist. The **⋯** menu shows which model generated the answer and adds **Read aloud**, **Verify response** and **Branch into a new chat**.
+
+<Admonition type="note" icon="📝" title="SOME ACTIONS DEPEND ON THE TOUCHPOINT">
+Regenerating, editing and verifying are each switched on per touchpoint, and rating, regenerating, editing and branching need permission to update conversations. An action that isn't available simply doesn't appear.
+</Admonition>
 
 ### Generate an alternative answer
 
 Use this when an answer is close but you'd like to see how the agent would phrase it differently.
 
-1. On an AI message, select **regenerate**.
-2. A new variant is added and the counter updates (for example **2/2**). The chat auto-advances to the newest variant.
-3. Use the **‹ ›** arrows to move between variants. If you navigate back to an older variant and regenerate again, you stay on the variant you were viewing.
+1. On an AI message, select **Regenerate response**.
+2. A new version is added and the counter updates (for example **2/2**). The chat auto-advances to the newest version.
+3. Use the **‹ ›** arrows (**Previous version**, **Next version**) to move between versions. If you navigate back to an older version and regenerate again, you stay on the version you were viewing.
 
 ### Edit your message to branch
 
 Use this when you want to rephrase a question and explore a different line of conversation without losing the original.
 
-1. On one of your own messages, select **edit**.
-2. An inline edit card opens with a hint that **saving creates a new branch**.
+1. On one of your own messages, select **Edit**.
+2. An inline edit box opens with the hint *"Saving creates a new version of this conversation."*
 3. Adjust the text and select **Save** (or press Enter).
-4. A new branch is created and the agent answers it. Attachments on the original message are carried onto the edited branch, so they survive the edit.
+4. A new version is created and the agent answers it. Attachments on the original message are carried onto the new version, so they survive the edit.
+
+### Branch into a new chat
+
+Versions keep alternatives inside one chat. When you want to take a conversation somewhere else entirely — try another approach, hand a copy to yourself for a different task — branch it into a chat of its own.
+
+1. On a finished AI message, open **⋯** → **Branch into a new chat**.
+2. A new chat opens with the same title and touchpoint, containing the conversation up to and including that answer — only the versions you were viewing, not the alternatives.
+3. Carry on from there. The original chat is untouched.
+
+<Admonition type="note" icon="📝" title="FILES STAY IN THE ORIGINAL CHAT">
+The new chat keeps your choice of model and knowledge bases, but attachments and generated files stay in the original chat, and so do settings such as the reasoning level or memory being off.
+</Admonition>
 
 ### Rate an answer
 
@@ -117,13 +214,84 @@ Tell the agent's owners whether an answer worked. The two thumbs buttons on the 
 Closing the dialog with **Cancel**, the **✕**, or the Escape key sends nothing at all — no rating is recorded from opening the dialog alone. Only **Send** submits, and if it fails you are told so (*"Could not submit your feedback. Please try again"*) rather than being left thinking it went through.
 </Admonition>
 
+## When an answer stops early
+
+An answer that ends before it should says why, in a strip under the text, and most strips carry a **Regenerate response** button.
+
+| Message | What happened |
+|---------|---------------|
+| *"Generation stopped before the answer was finished."* | You selected **Stop generating**. The partial answer is kept. |
+| *"Answer cut short: the model reached its output limit."* | The answer hit the maximum length. |
+| *"Answer cut short: the generation ran past its time limit."* | The answer took too long and was cut. |
+| *"Generation stopped: the model used up its output allowance before writing an answer."* | The model spent its whole budget thinking. |
+| *"Generation stopped after … tokens because the model kept repeating itself."* | The model started looping and was stopped. |
+| *"Generation stopped: the tool "…" ran out of time on every attempt."* | A tool never answered in time. |
+| *"Generation stopped because the tool "…" failed … consecutive times."* | A tool kept failing; check the failed step in the timeline before trying again. |
+| *"This assistant cannot answer: …"* | An administrator blocked the assistant or its model. There is nothing to regenerate. |
+| *"The response could not be completed."* | Any other error. Select **Retry**. |
+
+If the same message keeps coming back, the touchpoint's owner can adjust its limits — see [Tune answer generation](/operational-guides/touchpoint-generation#what-users-see-when-generation-stops-early).
+
+## Check an answer against your knowledge
+
+On touchpoints with response verification switched on, you can check an answer, claim by claim, against the knowledge documents retrieved for the conversation.
+
+1. On an AI message, open **⋯** → **Verify response**. *"Verifying response…"* shows while it runs.
+2. A status line summarises the check, for example *"6 sentences, 9 claims checked against 3 documents."*, and the answer is underlined: **green** for supported, **yellow** for uncertain, **red** for unsupported.
+3. Hover an underlined part to see the verdict and its best match score.
+4. Select an underlined part, or **View details**, to open the **Claim list**. It lists every sentence with its state; for the selected one, **Generative context** shows the excerpts it was compared with and how closely each matched, from 0 to 1.
+
+Select **Verify response** again to hide the underlines. If nothing in the answer can be checked, the status line says *"No verifiable claims were found in this response."*
+
+<Admonition type="note" icon="📝" title="UNSUPPORTED ISN'T THE SAME AS WRONG">
+Verification measures whether the retrieved documents back a claim, not whether the claim is true. A red underline means *"No knowledge document supports this claim, or the documents contradict it"* — a cue to look closer, especially for anything the answer took from general knowledge rather than from your documents.
+</Admonition>
+
+## Work with the files the agent creates
+
+Documents the agent writes for you — a Word report from a skill, a page built in Canvas — open in the **Canvas** panel beside the chat. Select the file's name at the top of the panel to open its menu:
+
+| Action | What it does |
+|--------|--------------|
+| **Download as Word / Excel / PowerPoint** (or **Download**) | Saves the file. |
+| **Download as PDF** | Converts an Office file to PDF. Available when the Office editor is installed. |
+| **Rename** | Renames a document created in the conversation. |
+| **Open in a new tab** | Opens an Office file in its own browser tab. |
+| **Save to knowledge** | Adds a copy of the file to a knowledge. |
+| **Switch file** | Moves to another file of the conversation, created or attached. |
+| **Delete** | Deletes a document created in the conversation, with its earlier versions. This can't be undone. |
+
+The **‹ ›** arrows in the panel header move between the file's versions.
+
+### Save a file to a knowledge
+
+A file that matters shouldn't stay buried in a chat.
+
+1. Select **Save to knowledge** in the file menu, or on the file's card under the answer.
+2. Pick the knowledge (use **Search knowledge** if you have many). The file is saved as soon as you select it.
+3. A *"Saved to …"* toast confirms it, with **Open in the knowledge**.
+
+A copy is added to the knowledge and processed like any upload; the file stays in the conversation too. **Save to knowledge** appears only if you can edit at least one knowledge.
+
+### Edit Office documents
+
+When the Office editor is available on your installation, Word, Excel and PowerPoint files open for editing directly in the Canvas panel.
+
+- The toolbar offers **Alignment**, **Lists**, **Insert** (**Table**, **Link**, **Page break**, **Header and footer**), **Comment**, and **More tools** for text colours and heading styles. On a narrow panel, more of the controls move into **More tools**.
+- The mode menu at the top right switches between **Editing**, **Suggesting** (changes are tracked for review) and **Viewing**.
+- *"Last saved at …"* in the file menu tells you when your edits were saved.
+
+<Admonition type="note" icon="📝" title="WITHOUT THE EDITOR YOU STILL GET A PREVIEW">
+If the Office editor isn't installed, Word and Excel files show a read-only preview and other formats offer a download. Without permission to update conversations, the document opens read-only, with a **Download** button.
+</Admonition>
+
 ## Listen and dictate
 
 The chat can read answers out loud and take messages by voice instead of typing.
 
 ### Read an answer aloud
 
-Every assistant message carries a **read aloud** action in its hover row, next to copy. Select it and the answer is spoken, with an equalizer showing while it plays.
+Every assistant message carries **Read aloud** in its **⋯** menu. Select it and the answer is spoken, with an equalizer showing while it plays.
 
 Markdown is stripped before anything is read, so fenced code blocks and link targets aren't spelled out character by character.
 
@@ -144,7 +312,7 @@ Dictation works in both composers — inside an existing conversation, and on th
 
 ### Set the audio language
 
-The composer's tools menu has an **Audio language** entry with three options: **detect automatically** (the default), **Italian**, or **English**. Your choice is remembered and applies to both dictation and reading aloud.
+The arrow next to the mic button opens **Audio language**, with three options: **Detect automatically** (the default), **Italian**, or **English**. Your choice is remembered and applies to both dictation and reading aloud.
 
 Automatic really is automatic in both directions: each recording is detected as it's transcribed, and the language of an answer is detected from the answer itself — falling back to your own locale only when a message is too short to identify.
 
@@ -158,7 +326,19 @@ Inside a conversation, anyone who can use that conversation can dictate into it 
 On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation just to hold a recording would leave an empty one behind every time someone discarded the text.
 </Admonition>
 
-## Rename a chat
+## Keep going in a long conversation
+
+A model can read only so much of a conversation at once. When a chat gets that long, the assistant usually carries on from a summary of the earlier messages, and a divider marks the spot: *"The assistant now works from a summary of the messages above"*. Everything above it is still in your history; the assistant just reads it in condensed form.
+
+Some touchpoints stop instead: the chat says *"This conversation is as long as the assistant can follow."* and offers **New conversation**. The touchpoint's owner chooses which — see [Memory and long chats](/operational-guides/touchpoint-memory#choose-what-happens-when-a-conversation-gets-too-long).
+
+## Find, rename and export your chats
+
+The chat list groups your chats by the day you started them: **Today**, **Yesterday**, **Previous 7 days** and **Older**. Use the search box to find one by its content. A dot next to a chat tells you when it **Needs your approval**, is **Working**, **Stopped with an error**, or is **Finished, not read yet**.
+
+Each chat's **⋯** menu in the list has **Rename chat** and **Delete**. Select the chat's title at the top of the page for more: **Rename**, **Copy link to chat**, **Export chat**, **Memory**, and **Delete**.
+
+### Rename a chat
 
 Give a chat a clear title so you can find it later — type one yourself or let the agent name it for you.
 
@@ -174,6 +354,14 @@ Give a chat a clear title so you can find it later — type one yourself or let 
 />
 
 *The **Rename chat** dialog. The spark button to the right of the field regenerates the title with AI.*
+
+### Export a chat
+
+Select the chat's title, then **Export chat**. A JSON file named after the chat downloads, with the chat's details and every event in it — messages, versions and steps — ready to archive or to process with your own tools.
+
+<Admonition type="note" icon="📝" title="AN EXPORT SHOWS WHAT YOU ARE ALLOWED TO SEE">
+The export applies the same rules as the chat: unless you are an administrator, tool calls appear without their arguments or raw output.
+</Admonition>
 
 ## Take over an AI-managed conversation
 
@@ -216,4 +404,4 @@ Summary behavior is governed by the **Summary generation settings** section on t
 
 ## Result
 
-You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting — on every chat surface, including one that hasn't been created yet — line up follow-up messages while answers generate, attach files, explore and branch alternative answers, rate an answer with a reason attached, rename chats with AI-generated titles, and — as a support agent — take over a conversation and review its AI-generated summary before stepping in.
+You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting — on every chat surface, including one that hasn't been created yet — and shape each request from one composer, choosing the model, reasoning level, knowledge and skill. You can line up follow-up messages while answers generate, attach files, follow every step behind an answer in one timeline, open its sources, verify it claim by claim, regenerate or branch it into a new chat, and see why an answer stopped early. Files the agent creates can be edited, downloaded as PDF or saved to a knowledge; chats are grouped by date, renamed with AI-generated titles and exported as JSON; and — as a support agent — you can take over a conversation, stop a runaway answer without taking over, and review its AI-generated summary before stepping in.

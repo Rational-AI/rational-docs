@@ -1,0 +1,106 @@
+---
+sidebar_position: 18
+sidebar_label: Tune answer generation
+---
+import Admonition from '@theme/Admonition';
+
+# Tune how a touchpoint generates answers
+
+The same model can answer in two seconds or think for a minute, write three lines or ten pages, and occasionally get stuck repeating itself until it hits its limit. Each [touchpoint](/operational-guides/configure-touchpoints) decides how much its model thinks, how long an answer may get, what happens when the model loops, and whether users can check an answer against your knowledge. This guide covers those settings, all on the touchpoint's **Models** tab, and what your users see as a result.
+
+<Admonition type="info" icon="📖" title="WHAT IS THE REASONING LEVEL?">
+Reasoning models think before they answer, and most let you choose how hard: from **Off** (answer straight away, where the model allows it) through **Minimal**, **Low**, **Medium** and **High** to **XHigh** and **Max**. A higher level helps on hard questions, at the cost of time and tokens. Each model offers only some of these levels, and Rational AI shows only the ones the touchpoint's model actually supports.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Permission to edit the touchpoint:** the touchpoint's form is read-only without it.
+- **A default model on the touchpoint:** the reasoning levels and the output-token hint are read from it. A model that doesn't declare the reasoning capability offers no levels.
+
+## Open the advanced settings
+
+1. Go to **Settings** → **Touchpoints** and open the touchpoint.
+2. Open the **Models** tab.
+3. Below the models table, select **Open advanced settings**. The **Generation limits** section appears.
+
+Every setting on this page is saved with the touchpoint's **Save** button, and **Undo** discards it.
+
+## Set the default reasoning level
+
+1. Under **Generation limits**, open the **Reasoning** dropdown.
+2. Pick one of the levels the default model offers, or clear the field to leave it empty (*"Model default"*), so the model's own default applies.
+3. Save the touchpoint.
+
+The field warns you when the setting won't do what you expect:
+
+| Notice | What it means |
+|--------|---------------|
+| *"The default model does not declare the reasoning capability: the setting would not be sent."* | The model has no reasoning levels. Pick a reasoning model or leave the field empty. |
+| *"The default model does not offer "…"; "…" will be used instead."* | The saved level isn't one this model has (for example after you changed the default model). The nearest higher level is used, or the nearest lower one. Pick one of its levels to make the choice explicit. |
+| *"With a high level under such a low output limit the model can spend every token thinking and answer nothing."* | **High**, **XHigh** or **Max** with **Maximum output tokens** below 4,096. Raise the limit or lower the level. |
+
+## Let users choose the level per conversation
+
+Below **Reasoning**, the switch **Let users choose the level per conversation** decides whether people chatting can change the level for their own conversation.
+
+- **On** (the default): the composer's model button (*"Model and reasoning"*) shows a **Reasoning** row with one button per level the model offers. The choice is kept for that conversation only; selecting the highlighted level again returns to the touchpoint's default.
+- **Off**: the level you set always applies, and users see it as *"… set by the assistant"*.
+
+<Admonition type="note" icon="📝" title="ANONYMOUS TOUCHPOINTS START WITH THE CHOICE SWITCHED OFF">
+A touchpoint created with **Allow anonymous access** on gets this switch off, so anonymous visitors can't push a public assistant to its most expensive level. You can still switch it on yourself.
+</Admonition>
+
+## Cap the length of an answer
+
+**Maximum output tokens** is the most a single answer may generate on this touchpoint, reasoning included. It overrides the model's own limit, which is shown as a hint (*"Model default: … tokens"*).
+
+1. Under **Generation limits**, enter a number in **Maximum output tokens**, or leave it empty to keep the model's limit.
+2. Save the touchpoint.
+
+<Admonition type="note" icon="📝" title="THE CAP REACHES EVERY PROVIDER">
+The limit is sent in the form each provider expects, so it holds the same way whether the model runs on OpenAI or on another provider.
+</Admonition>
+
+## Stop answers that repeat themselves
+
+Now and then a model degenerates into repeating the same words, and would keep going until it hits its token limit — slowly, and at your expense. **Stop generation on repetitive output** cuts such an answer short. It is on by default; switch it off only if your answers legitimately contain long runs of repeated text.
+
+When it triggers, the answer ends with *"Generation stopped after … tokens because the model kept repeating itself."* and a **Regenerate response** button.
+
+## Let users verify answers against your knowledge
+
+Response verification checks an answer, claim by claim, against the knowledge retrieved for the conversation, and marks what is and isn't supported.
+
+1. On the **Models** tab, find **Response verification** (it sits below the advanced settings and is always visible).
+2. Switch on **Enable response verification**. It is off by default.
+3. Optionally adjust how answers are judged:
+
+   | Option | When to use it |
+   |--------|----------------|
+   | **Verification method** → **Semantic (cosine similarity)** | The default: fast, compares each claim with the retrieved passages. |
+   | **Verification method** → **Hybrid (semantic + LLM for edge cases)** | Ask a model only when the semantic score is borderline. |
+   | **Verification method** → **LLM (model as a judge)** | Have a model judge every claim; set the **Verification model**. |
+   | **Extract factual claims before verifying** | Have the factual claims pulled out of the answer before they are checked. Off by default. |
+   | **Supported threshold** / **Uncertain threshold** | Raise them to be stricter about what counts as supported (defaults 0.6 and 0.4). |
+
+4. Save the touchpoint.
+
+Verification doesn't run on its own. Users trigger it with **Verify response** on an answer, and see the supported, uncertain and unsupported parts underlined — see [Check an answer against your knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+
+## What users see when generation stops early
+
+When an answer ends before it should, the chat says why instead of leaving a half-written reply. Most of these messages come with **Regenerate response**.
+
+| Message | Cause | What to change |
+|---------|-------|----------------|
+| *"Generation stopped after … tokens because the model kept repeating itself."* | The repetition guard stopped a looping answer. | Usually nothing: regenerate. |
+| *"Generation stopped: the model used up its output allowance before writing an answer."* | **Maximum output tokens** ran out, often while reasoning. | Raise the limit or lower **Reasoning**. |
+| *"Generation stopped: the model ran out of time before writing an answer."* | The model didn't finish in time. | Lower **Reasoning**, or choose a faster model. |
+| *"Generation stopped: the model returned an empty answer."* | The provider returned nothing. | Regenerate; if it repeats, check the model in the [AI Model Registry](/operational-guides/ai-model-registry-features). |
+| *"Generation stopped: the tool "…" ran out of time on every attempt."* | A tool kept exceeding its time limit. | Raise the [tool time limit](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take), or fix the tool's server. |
+
+## Result
+
+Your touchpoint now thinks as hard as its questions need, by default or by the user's choice per conversation; keeps answers within a token budget you set; cuts off a model that starts repeating itself; and, if you enable it, lets users verify an answer claim by claim against your knowledge. When an answer stops early, users are told why and can regenerate it.
