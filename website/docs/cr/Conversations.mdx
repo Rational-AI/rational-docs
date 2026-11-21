@@ -5,69 +5,92 @@ sidebar_label: Conversations
 
 # Conversations
 
-The **Conversations** module is where every exchange between your users and Rational AI's agents comes together. Whenever someone interacts with a [touchpoint](./settings/touchpoints.mdx), the messages are captured here as a single conversation and automatically enriched with a title, topic and sentiment. Use this module to monitor activity, review what your agents are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
+The **Conversations** module is where every exchange between your users and Rational AI's agents comes together. Whenever someone interacts with a [touchpoint](./settings/touchpoints.mdx), the messages are captured here as a single conversation and automatically enriched with a title, topics and sentiment. Use this module to monitor activity, review what your agents are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
 
 ## Navigate your conversations
 
 Open the **Conversations** section from the top navigation bar of the Control Room. The page presents a paginated table in which each row is one conversation. From here you can:
 
 * **Search** across conversations using the search box in the top‑right corner.
-* **Sort and filter** the table by column to focus on what matters.
+* **Filter** the table from the **Filters** panel, and **sort** it by clicking a column header.
 * **Open a conversation** to read the full thread and take action.
-* **Select rows** with their checkboxes to run bulk **Actions**.
+* **Select rows** with their checkboxes to run bulk **Actions**. Hold **Shift** and click a second checkbox to select every row in between.
+
+The selection survives sorting and filter changes, so the bulk **Delete** confirmation always states exactly how many conversations it removes.
 
 ## The conversations table
 
 Each row summarises a single conversation across the following columns:
 
-| Column           | Description                                                                                                              |
-| :---------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| **User**         | The end user who took part in the conversation.                                                                           |
-| **Conversation** | A preview of the most recent message in the thread.                                                                       |
-| **Topic**        | The topic detected for the conversation (for example, *Market Research/SEO*, *Grant Application* or *Data/Security Concern*). Conversations with no clear match show *No Topic*. |
-| **Sentiment**    | The estimated emotional tone of the conversation, shown as a coloured dot with a label (for example, *Neutral*).          |
-| **Last message** | The date and time of the most recent message. The table is sorted by this column, newest first, by default.              |
-| **Status**       | Whether the conversation is **Open** or **Closed**.                                                                       |
-| **Favourite**    | A star you can click to flag a conversation so it's easy to return to later.                                              |
+| Column                     | Description |
+| :------------------------- | :---------- |
+| **Conversation**           | The conversation title and a preview of the most recent message. Icons beside the title flag a conversation that **Needs review** or is **With an operator**. |
+| **User and touchpoint**    | The end user who took part in the conversation, and the [touchpoint](./settings/touchpoints.mdx) it belongs to. |
+| **Topics**                 | The topics detected for the conversation (for example, *Billing Request* or *Tech Support*). A conversation can carry several topics; the first two are shown as chips and the rest behind a **+N** chip. |
+| **Sentiment**              | The estimated emotional tone of the conversation, shown as a coloured dot with a label (for example, *Neutral*). |
+| **Status**                 | The conversation's status, such as **Open** or **Closed**. |
+| **Last message**           | The date and time of the most recent message. The table is sorted by this column, newest first, by default. |
 
-The title, topic and sentiment shown here are produced by the automatic analyses you configure in [Conversations settings](./settings/conversations.mdx). All labels can be re‑run. Useful after you change your topic list or models in settings.
+Rows that need human oversight are tinted in the warning colour, so they stand out without a column of their own.
+
+The title, topics and sentiment shown here are produced by the automatic analyses you configure in [Conversations settings](./settings/conversations.mdx). All labels can be re‑run with **Refresh labels**, which is useful after you change your topic list or models in settings.
+
+## Filter the table
+
+Select **Filters** next to the search box to open the filters panel beside the table. It offers:
+
+* **User**, **Touchpoint** and **Topics**: tick one or more values. The **User** list has its own search box, so you can find a person among everyone who has ever chatted.
+* **Sentiment** and **Status**: pick one value.
+* **Show only**: limit the table to **Favourites** or to conversations that **Needs review**.
+
+Choose **Apply** to filter the table, or **Clear** to empty the panel. The **Filters** button shows how many filters are active, and the applied filters are kept in the page address, so you can bookmark or share a filtered view.
 
 ## Open a conversation
 
-Click any row (or choose **Open** from the row's options menu) to open the conversation in a panel on the right. The panel shows the full thread, with the user's messages and the agent's replies in order. Hover over a message to reveal quick actions such as regenerate, edit and copy.
+Click any row (or choose **Open** from the row's **Actions** menu) to open the conversation. The table collapses into a narrow list on the left and the thread fills the rest of the page, with the user's messages on the right, the agent's replies labelled with who answered, and operator replies in their own style with a sent or failed state.
 
-The panel header gives you several tools:
+The conversation header gives you several tools:
 
 * **Search** within the conversation.
 * **Star** to add the conversation to your favourites.
-* **Debug mode (`{}`)** toggles a developer view that exposes the underlying message objects: tool calls, JSON payloads, `tool_call_id`s and any errors the agent encountered. Use it to understand exactly what happened behind a reply.
-* **Info** opens a profile panel for the participant, with their **Basic info** (given and family name), the date of their last message and the total number of conversations they've had.
+* **Details** opens the details drawer on the right (see below).
+* **More conversation actions** holds **Advanced mode**, **Copy conversation ID** and **Delete conversation**. **Advanced mode** exposes the underlying message objects: tool calls, JSON payloads, `tool_call_id`s and any errors the agent encountered. Use it to understand exactly what happened behind a reply.
 
-At the bottom of the panel you can:
+### The details drawer
 
-* **Ask a question:** type into the message box to send a reply into the conversation yourself, optionally attaching a file, code or a Canvas.
-* **Take over conversation:** hand the conversation from the agent to a human, so you can respond directly when a user needs personal attention.
-* **Summary:** generate an AI summary of the conversation in a pop‑up for a quick recap of a long thread.
+The **Details** drawer shows the facts about the conversation in one place: **User** (with a link to all of that user's conversations), **Touchpoint**, **Status**, **Sentiment**, **Started**, **Last message**, number of **Messages**, the conversation **ID**, its **Topics** (with a **Refresh labels** button) and a **Summary**. Summaries aren't stored, so the drawer shows the ones generated during your session and offers **Generate summary** for a new one.
+
+When a conversation is flagged for human oversight, the review decision also sits at the top of this drawer.
+
+### The take-over bar
+
+While the agent is in charge of a conversation, a bar replaces the message box at the bottom. It states who holds the conversation (for example, *"The AI handles this conversation"* or *"The AI is answering the user"*) and offers:
+
+* **Take over:** hand the conversation from the agent to you, so you can reply directly when a user needs personal attention.
+* **Stop generating:** end an answer the agent is generating right now, without taking the conversation over.
+* **Generate summary:** open an AI summary of the conversation for a quick recap of a long thread.
+
+For the full procedure, see [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
 
 ## Conversations flagged for human oversight
 
-When your oversight rules decide a conversation warrants human attention, it's flagged for review and a bar appears at the top of the conversation. The bar is where the reviewer records what they concluded — **Leave as it is** or **I stepped in** — with an optional note.
+When your oversight rules decide a conversation warrants human attention, it's marked **Needs review** in the table and a review panel appears at the top of the **Details** drawer. If the drawer is closed, a **Needs review** button in the conversation header opens it. The panel is where the reviewer records what they concluded — **Leave as it is** or **I stepped in** — with an optional note.
 
-Recording a decision resolves the flag, so the conversation leaves the review queue. The bar stays, collapsed to a single line naming the conclusion, who reached it and when, so the review is still visible afterwards rather than vanishing along with the flag.
+Recording a decision resolves the flag, so the conversation leaves the review queue. The panel stays, collapsed to a single line naming the conclusion, so the review is still visible afterwards rather than vanishing along with the flag.
 
 The rules that raise the flag are configured in [Conversations settings](./settings/conversations.mdx); the decision belongs on the conversation itself. For the full workflow, see [Record oversight decisions](/operational-guides/human-oversight).
 
 ## Best practices
 
-* **Triage with filters:** combine the **Sentiment** and **Status** filters to surface conversations that may need attention, such as open threads with a *Frustrated* or *Angry* sentiment.
-* **Take over when it counts:** when an agent is struggling or a user asks for a person, use **Take over conversation** rather than letting the thread stall.
+* **Triage with filters:** combine the **Sentiment** and **Status** filters, or **Show only** conversations that need review, to surface conversations that may need attention.
+* **Take over when it counts:** when an agent is struggling or a user asks for a person, use **Take over** rather than letting the thread stall. If the agent is only stuck on a runaway answer, **Stop generating** is enough.
 * **Keep labels current:** after editing your topic list or switching models, select the affected conversations and **Refresh labels** so reporting stays accurate.
-* **Debug with the raw view:** when a reply looks wrong, open the `{}` view to inspect the tool calls and errors behind it before changing a prompt or model.
+* **Debug with Advanced mode:** when a reply looks wrong, turn on **Advanced mode** to inspect the tool calls and errors behind it before changing a prompt or model.
 
 ---
 
 ## Related resources
 
-* [Conversations settings](./settings/conversations.mdx): choose the default conversational model and configure title generation, topic detection and sentiment analysis.
+* [Conversations settings](./settings/conversations.mdx): configure title generation, topic detection, sentiment analysis, summaries and oversight rules.
 * [Governance](./Governance.mdx): review aggregated metrics and audit logs for conversational activity.
 * [Knowledge](./Knowledge.mdx): manage the information your agents draw on during conversations.

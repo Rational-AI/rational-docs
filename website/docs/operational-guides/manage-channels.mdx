@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Manage channels
 
-A channel is a surface your users reach an agent through — a Telegram bot, a mailbox, the web chat. This guide covers what every channel has in common: the types available, how a channel decides whether the agent answers on its own, the connection lifecycle, and the controls over who may write in and what they may send. The per-type setup lives in its own guide.
+A channel is a surface your users reach an agent through — a Telegram bot, a mailbox, the web chat. This guide covers what every channel has in common: the types available, how a channel decides whether the agent answers on its own, the connection lifecycle, the controls over who may write in and what they may send, and how replies are shaped for messaging apps. The per-type setup lives in its own guide.
 
 <img
   src={require('@site/static/img/screens/channels-settings.png').default}
@@ -99,11 +99,43 @@ Both native channels also refuse to answer automated mail and other bots, so two
 
 Attachments are configured per channel, and off is a legitimate setting:
 
-- **Allow attachments** — whether files sent to this channel are accepted at all.
-- **Allowed types** — a list of file extensions or MIME prefixes. Anything else is rejected.
-- **Maximum size** — a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that.
+- **Accept attachments** — whether files, photos and voice notes sent to this channel are accepted at all.
+- **Attachment types** — a comma-separated list of file extensions or MIME prefixes (for example `pdf, docx, image/`). Leave it empty to accept every type; anything not listed is rejected.
+- **Attachment size limit (MB)** — a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that. Telegram bots can't download files over 20 MB, which is also that channel's default.
 
-Accepted files go through the same path as files attached in the chat: images are passed to the model as vision input, and documents have their text extracted so the agent can actually read them. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
+Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input, documents have their text extracted, and voice notes are transcribed, so the agent can actually read all three. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
+
+<Admonition type="note" icon="📝" title="A VOICE NOTE REACHES THE AGENT AS THE USER'S OWN WORDS">
+A voice note — a Telegram voice message, or an audio file in any channel — is transcribed before the agent answers, and the agent reads the transcript as what the user said. The reply waits for the transcription to finish. If transcription fails, times out or finds only silence, the agent is told so, and the message still reaches it rather than being dropped. A voice note still has to pass the channel's attachment settings: with **Accept attachments** off, or audio missing from **Attachment types**, it's refused like any other file.
+</Admonition>
+
+## Shape how the agent replies
+
+People on messaging apps write several short messages in a row and expect short messages back. Two settings adapt the agent to that, on channels whose form offers them.
+
+### Split replies into several short messages
+
+Turn on **Split replies** (off by default; offered by Telegram and by extension-provided channels that declare it) to deliver each reply as a few short messages instead of one long block.
+
+- The reply is cut at blank lines into at most four messages; anything left over goes in the last one.
+- A code block or a list is never cut, an introductory line ending with a colon stays with its list, and very short fragments are joined to the next message.
+- The messages are sent with a short pause between them, about a second, longer for a longer message.
+- The agent is told it's chatting on a messaging app, so it writes replies that split well.
+
+<Admonition type="note" icon="📝" title="ONLY THE DELIVERY IS SPLIT">
+The conversation still records the reply as one message, so it reads as a single answer in [Conversations](/cr/Conversations). Email is never split. If one of the messages can't be delivered after retries, the remaining ones aren't sent and the failure is logged; the ones already delivered aren't sent twice.
+</Admonition>
+
+### Wait until the sender pauses
+
+Without a delay, every incoming message starts its own answer, so a user who sends *"hi"*, then a question, then a voice note gets three replies talking over each other. A channel that offers **Reply delay (seconds)** can hold the reply instead. The setting is read by the platform for any channel, but it appears only in the form of [extension-provided channels](#channel-types) whose provider declares it; the native Telegram and Email channels don't offer it.
+
+| Setting | What it does |
+|---|---|
+| **Reply delay (seconds)** | How long the agent waits after a message before replying. Each new message restarts the wait. `0` replies to each message at once. |
+| **Longest reply wait (seconds)** | The longest the agent holds its reply, counted from the first unanswered message, so a user who keeps writing still gets an answer. Defaults to 90. |
+
+When the wait ends, the agent answers once, with the whole burst of messages in context. The delay applies only in **Automatic** mode, and only to conversations that come in through a channel; the web chat always answers at once.
 
 ## Related
 
@@ -114,4 +146,4 @@ Accepted files go through the same path as files attached in the chat: images ar
 
 ## Result
 
-Your channel is saved with a unique name, a type fixed at creation, and a mode that determines whether the agent replies on its own or a person does. You know where to check whether it's really connected, that stored credentials are masked and safe to save unchanged, and how to bound who may write in and what they may send.
+Your channel is saved with a unique name, a type fixed at creation, and a mode that determines whether the agent replies on its own or a person does. You know where to check whether it's really connected, that stored credentials are masked and safe to save unchanged, how to bound who may write in and what they may send, and how to make replies feel natural on a messaging app by splitting them and waiting for the sender to pause.

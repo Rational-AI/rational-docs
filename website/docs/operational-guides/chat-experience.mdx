@@ -175,31 +175,44 @@ Give a chat a clear title so you can find it later — type one yourself or let 
 
 *The **Rename chat** dialog. The spark button to the right of the field regenerates the title with AI.*
 
-## Take over an AI-managed conversation (agents)
+## Take over an AI-managed conversation
 
-In the backoffice [conversation view](/operational-guides/conversations), the AI answers automatically while the room is assigned to it. The composer is disabled with the hint **"Take over the conversation to reply"**. The sections below cover stepping in and reviewing what the AI has handled so far.
+In the backoffice [conversation view](/operational-guides/conversations), the AI answers automatically while the conversation is assigned to it. Instead of a message box, a take-over bar sits at the bottom of the conversation and says who holds it: *"The AI handles this conversation"*, *"The AI is answering the user"* (with a green dot while it generates), *"Another operator is handling this conversation"* or *"This conversation is closed"*. The sections below cover stepping in, stopping a runaway answer, and reviewing what the AI has handled so far.
 
 ### Step in and reply
 
 Take over when a customer needs a human — a sensitive case, an edge case, or anything you'd rather handle yourself.
 
-1. Select **Take over conversation**. The room is assigned to you, the AI pauses, and the composer is enabled.
-2. The button toggles to **Release conversation** (with a sparkles icon). Reply as needed.
-3. When you're done, select **Release conversation** to hand control back to the AI.
+1. Select **Take over** in the take-over bar. The conversation is assigned to you, the AI pauses, and the message box appears with the cursor already in it.
+2. A divider marks the moment you took over, and the bar above the message box reads *"You are replying as an operator. The AI is paused."* Reply as needed: **Ctrl+Enter** (**Cmd+Enter** on macOS) sends.
+3. When you're done, select **Hand back to the AI**. If you've left an unsent draft, you're asked to confirm with **Discard draft and hand back**, since the draft is deleted.
 
 <Admonition type="note" icon="📝" title="FIRST COME, FIRST SERVED">
-Takeover is exclusive. If another operator has already taken the conversation, your takeover is blocked with a toast. Control never returns to the AI on its own — it returns only when you explicitly release the conversation.
+Takeover is exclusive. If another operator has already taken the conversation, the bar says so, there's no **Take over** button, and an attempt that races another operator is blocked with a toast. Control never returns to the AI on its own — it returns only when you explicitly hand the conversation back.
+</Admonition>
+
+### Stop an answer without taking over
+
+Sometimes the AI is only stuck on one answer — looping, or running a tool that has gone wrong — and you don't want to take the conversation away from it.
+
+1. While the AI is answering, select **Stop generating** in the take-over bar.
+2. The answer ends and the conversation stays with the AI, which replies normally to the user's next message.
+
+<Admonition type="note" icon="📝" title="STOPPING IS SUPERVISION, NOT A TAKEOVER">
+An answer that is still generating holds the conversation's queue until it ends, so the user's next messages wait behind it. **Stop generating** frees the queue without changing who is in charge. It's also available after you take over, in the operator bar, if the AI was still answering when you stepped in.
 </Admonition>
 
 ### Read the AI conversation summary
 
 Before stepping in, get up to speed in seconds with an AI-written recap of the conversation so far.
 
-1. Select **Summary** to open the conversation summary modal.
-2. The modal shows a read-only, AI-generated summary covering the main problem, key points, and resolution status. A resolution status badge (**Open / In progress / Resolved**) and the room sentiment badge are shown.
-3. Select **Copy summary** to copy it, or take over the conversation directly from the modal.
+1. Select **Generate summary** in the take-over bar to open the conversation summary.
+2. The summary is read-only and AI-generated, covering the main problem, key points, and resolution status. A resolution status badge (**Open / In progress / Resolved**) and the conversation's sentiment badge are shown.
+3. Select **Copy summary** to copy it, or **Take over** to take the conversation directly from the summary.
 
-Summary behavior is governed by the **Summary generation settings** section on the Conversation Settings page, where you can toggle generation and set the model, the number of messages to consider (`0` means all), and the prompt template (with a restore-default option).
+The summaries you generate are also listed under **Summary** in the conversation's **Details** drawer, which offers **Generate summary** too. Summaries aren't stored on the server, so the drawer lists only the ones generated in your current session.
+
+Summary behavior is governed by the **Summary generation settings** section on the [Conversations settings](/cr/settings/conversations) page, where you can toggle generation and set the model, the number of messages to consider (`0` means all), and the prompt template (with **Restore default**).
 
 ## Result
 
