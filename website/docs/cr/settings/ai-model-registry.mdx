@@ -9,7 +9,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # AI Model Registry
 
-It’s a central “catalog” of the AI models your can use in Rational AI. You add models once, and use them consistently (chat, agents, tools, workflows, etc.). It also lets you control which models are available, see key info (size, type, updates), and manage changes over time.
+It’s the central catalogue of the AI models you can use in Rational AI. You add a model once and use it everywhere: chats, touchpoints, Knowledges and workflows. The registry also controls which models are available, runs the models you host yourself, and records what each one costs and who approved it. Open it from **Settings** → **AI Model Registry**.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -24,24 +24,22 @@ It’s a central “catalog” of the AI models your can use in Rational AI. You
   <div className="featureBox__row">
     <LockIcon className="featureBox__icon" aria-hidden />
     <div>
-      Anyone with <span className="featureBox__pill">can edit</span>
-      access to a file can flatten objects
+      Users with AI model management access can add, edit, deploy and delete models
     </div>
   </div>
 
   <div className="featureBox__row">
     <CrossIcon className="featureBox__icon" aria-hidden />
     <div>
-      Deploying Open Source and Fine Tuned models are only available with Pro Plans
+      Deploying open-source and fine-tuned models in the cloud requires a plan that includes self-hosted models
     </div>
   </div>
-  
+
 </div>
 
 ## Add models
-In Rational AI you can add three types of models: Fine-tuned, Open source and Third party.
 
-
+Select **Add new** to add one of three kinds of model.
 
 <img
   src={require('/img/screens/cr>settings>ai-model-registry>add.png').default}
@@ -52,56 +50,59 @@ In Rational AI you can add three types of models: Fine-tuned, Open source and Th
   alt="Add a new AI Model"
 />
 
+### Choose an open source model
 
+* Choose **Choose an open source model**. The list is searched live on Hugging Face.
+* Sort by **Best match**, **Most downloads**, **Most likes** or **Recently updated**, and filter by **Formats**, **Curated picks** or **Only models that fit**. Only the formats your hosting platform can run are offered.
+* Select a model to read its card: publisher, architecture, parameters, weights and its Hugging Face model card.
+* Click **Confirm**. The model is added; deploy it from its **Deployment** section.
 
-### Add a fine-tuned model
+See [Deploy and run self-hosted models](/operational-guides/model-deployments) for the whole flow.
 
-* Choose **Fine-tuned model**
-* Pick one from your fine-tuned list
-* Review the metadata shown (architecture, parameters, quant/type/size if applicable)
-* Click **Add**
+### Install your own fine tuned model
 
-### Add an open source model
-To add an Open source model 
-* Choose **Open source model** from the add model modal
-* Search/select the model you want
-* Double-check **size** and **quantization** (these directly affect RAM/disk + speed/quality)
-* Click **Add** to install
+Shown only where your hosting platform accepts uploaded weights (not on on-premise installations).
 
-### Add a third-party proxy model
+* Choose **Install your own fine tuned model**.
+* Pick the model file (`.gguf`) and check the **Name**.
+* Click **Confirm**. The file is uploaded and the model deployed.
 
-* Choose **Proxy to a commercial model**
-* Fill in:
+### Add a proxy to a third-party model
 
-  * **Model name** (how it appears in your platform)
-  * **Description** (optional but useful)
-  * **Provider**
-  * **API key**
-  * **Provider model** (the exact model you want to call)
-* Click **Confirm**
-* Save the generated **secret key** somewhere safe (it’s shown once) and note the **endpoint**
+* Choose **Add a proxy to a third-party model** (*"Connect to OpenAI, Gemini, Claude and others with your API Key"*).
+* Pick the connector and the provider's model, and give it a name.
+* Click **Confirm**.
 
 ---
 
 ## Manage models
 
-### Edit
+Each row's menu offers:
 
-Use this when you want to rename, update description, or adjust config (especially common for proxy models if you switch provider models or rotate keys).
+| Action | What it does |
+|---|---|
+| **See details** | Opens the model's drawer: overview, deployment, payload tracing, governance, usage |
+| **Edit details** | Name, model identifier, description, capabilities, reasoning levels, deploy settings, inference defaults and cost metering |
+| **Test model** | Sends a test request to a ready model; it never deploys one |
+| **Deploy model**, **Stop model**, **Resume model** | Control a self-hosted model's deployment |
+| **Disable** / **Enable** | Take a model out of service at once, or bring it back |
+| **Delete** | Removes the model, offering to move its uses to another model first |
 
-### Delete
+The **Status** column shows a self-hosted model's deployment phase (for example **Ready**, **Idle**, **Stopped**, **Failed**) and **Disabled** for a disabled model. A model with billing history cannot be deleted: disable it instead.
 
-Removes the model from availability in the platform. Use this when a model is retired, replaced, or no longer approved.
+For capabilities, image capabilities, default models and approval, see [Manage AI models in the registry](/operational-guides/ai-model-registry-features).
 
-##  Cost metering
+## Cost metering
+
 ### Enable cost metering (toggle)
 
-Turns cost tracking on/off for the selected model.
+In **Edit details**, **Cost metering** turns cost tracking on or off for the model.
 
-On: the model can participate in spend reporting of Goverance module.
+* On: the model's spending is reported in the Governance module.
+* Off: the model still works, but Rational AI does not track its costs.
 
-Off: the model still works, but Rational is not tracking costs for it.
+### Pricing components
 
-### Cost type
+With cost metering on, add every **Pricing component** that applies, in the chosen **Currency**: cost per request, per image, per web search, per million input, output and reasoning tokens. Empty fields are treated as unknown, not free. Third-party models may show **Provider catalog pricing**, synchronized from the provider.
 
-There are two types of cost Fixed monthly ... FIXME
+For self-hosted models, **Infrastructure billing** adds the cost of the hardware: **No infrastructure charge**, **Only while a deployment is active**, or **Reserved capacity (continuous)**, at an **Infrastructure rate** per hour, minute or second.

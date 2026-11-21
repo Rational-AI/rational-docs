@@ -72,6 +72,8 @@ const sidebars: SidebarsConfig = {
 					collapsed: true,
 					items: [
 						"operational-guides/ai-model-registry-features",
+						"operational-guides/model-deployments",
+						"operational-guides/run-models-on-premise",
 						"operational-guides/fine-tune-a-model",
 					],
 				},
