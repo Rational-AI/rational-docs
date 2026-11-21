@@ -38,7 +38,9 @@ Navigate to **Settings** → **Workflows** from the left sidebar. This is the ce
 /> 
 
 ### Workflow list
-The left panel displays all workflows that have been created in your environment.
+The left panel displays all workflows that have been created in your environment, in two groups:
+* **Workflows** — the pipelines a Knowledge can run, built in the visual editor.
+* **Steps** — the code scripts, like the one on this page, that a pipeline or a [processing rule](/operational-guides/create-processing-rule) calls.
 For each workflow, you can see:
 * The workflow name.
 * An enable/disable toggle.
@@ -163,3 +165,18 @@ Once configured, we can pass the `workflow_input.json` file as input to our work
 ./lorem-ipsum-wf.py workflow_input.json
 ```
 to test our workflow locally.
+
+## Make a workflow the default for a Knowledge
+
+A workflow only runs when something asks for it. To have every file of a Knowledge go through it, make it that Knowledge's default.
+
+1. Go to **Settings** → **Knowledge** and open the Knowledge.
+2. Select the **Sources** tab.
+3. In **Default workflow**, pick your workflow. The list shows the active workflows that belong to this Knowledge and the ones shared at tenant level. **Classic pipeline** routes each file with the **Default processing rule** instead.
+4. Select **Save**.
+
+From now on, the workflow runs on every file added to the Knowledge: uploads in the Control Room, files brought in by a source sync, and reprocess requests made through the API without a workflow.
+
+<Admonition type="note" icon="📝" title="FORCE THE CLASSIC PIPELINE FOR ONE RUN">
+Setting a default doesn't lock you in. When you reprocess a Knowledge from the Control Room you can still choose a different pipeline for that run, and an API client can force the classic pipeline by sending `workflowId` as `null`. Leaving `workflowId` out uses the Knowledge's default.
+</Admonition>

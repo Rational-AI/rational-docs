@@ -25,7 +25,7 @@ Before you start, make sure you have:
  
 1. Go to **Settings** → **Knowledge** and select **+ New**.
 2. Enter a clear **name** (for example `Data Marketing 2026 KB`).
-3. Add a **description** of the content and purpose. This helps your team maintain it later.
+3. Add a **description** of the content and purpose. This helps your team maintain it later: the description is shown on the Knowledge's card in the **Knowledge** tab, on one line under the name.
 
 {/* Immagine knowledge list with new button */}
 
@@ -40,6 +40,21 @@ The **AI Search** tab controls how resources are prepared for retrieval. Configu
 <Admonition type="note" icon="📝" title="EMBEDDING WORKS ON CHUNKS">
 Embedding runs on the small chunks of a resource, not the whole text. The resulting vectors are what RAG compares against a user's question.
 </Admonition>
+## Choose how files are processed
+
+Every file added to a Knowledge runs through a pipeline before the AI can search it. The **Sources** tab sets which one, so uploads, source syncs, and API requests all treat the files the same way.
+
+1. In the Knowledge's settings, select the **Sources** tab.
+2. In **Default workflow**, pick the pipeline:
+   - **Classic pipeline** (the default) — each file is routed by the **Default processing rule** below.
+   - A [workflow](/operational-guides/create-workflow#make-a-workflow-the-default-for-a-knowledge) — every file added to this Knowledge runs through it.
+3. In **Default processing rule**, pick the rule that maps each file type to its processing step.
+4. Select **Save**.
+
+<Admonition type="note" icon="📝" title="THE DEFAULT APPLIES TO EVERY TRIGGER">
+The default workflow is used whenever a run doesn't ask for a specific one: a file uploaded in the Control Room, a source that finishes syncing, or an API client that reprocesses the Knowledge without naming a workflow. The reprocess dialog can still force a different pipeline for a single run.
+</Admonition>
+
 ## Default Touchpoint
  
 Creating a Knowledge also creates a Touchpoint with default settings, including a working Graph RAG tool. Customize it in **Settings** → **Touchpoints**, where you can set the conversation model and the system prompt for this Knowledge.
@@ -68,6 +83,6 @@ A new Knowledge is empty. To fill it, connect a data source and sync its content
 
 ## Result
  
-You have a configured Knowledge with AI Search enabled, a default Touchpoint, and an open chat. Once you add files, the AI can answer using your own data.
+You have a configured Knowledge with AI Search enabled, a default pipeline for its files, a default Touchpoint, and an open chat. Its card in the **Knowledge** tab shows its description, its resource count, and when its content was last updated, so your team can tell what it is for and whether it is still in use. Once you add files, the AI can answer using your own data.
 
 {/* Related with link to Configure graph rag guide, sources in control room, rag concept page */}

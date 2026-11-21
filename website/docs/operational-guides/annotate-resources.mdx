@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Annotate resources
 
-Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document — flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer.
+Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document — flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer, how to leave comments on a PDF, and how to check that a resource's chunks are ready for search.
 
 <Admonition type="info" icon="📖" title="WHAT IS AN ANNOTATION?">
 An annotation marks a specific range of a resource and pairs it with a label and a colour. For text resources, the range is stored as character offsets — the exact start and end positions in the raw file — which are the same positions used when Rational AI splits the file into chunks (the smaller pieces it searches over). Because the highlight is anchored to those positions, it always points to the exact text you selected. Annotations show up inline in the viewer and are listed in the **Annotations** sidebar.
@@ -18,6 +18,7 @@ Before you start, make sure you have:
 
 - **A Knowledge** containing at least one resource. A [Knowledge](/operational-guides/create-knowledge) is the container that holds your data in Rational AI.
 - **A text resource** in a supported format: `.txt` or `.md`. Other formats such as `json`, `xml`, and `html` open in the syntax-highlighted editor and can't be annotated here.
+- **A PDF resource**, if you want to leave comments on a document.
 
 <Admonition type="note" icon="📝" title="MARKDOWN IS SHOWN AS RAW SOURCE">
 Markdown resources appear as raw source, not as rendered HTML. This keeps each highlight's character offsets aligned 1:1 with the stored file, so your annotations always point to the right text. The same viewer is shared by `.txt` and `.md`.
@@ -57,6 +58,55 @@ When a resource has many highlights, use the sidebar to jump straight to one. Se
 
 To remove a highlight you no longer need, delete its entry in the sidebar. The inline highlight is cleared from the text.
 
+## Comment on a PDF
+
+A review often comes down to a remark on one sentence or one figure. A comment attaches your note to a passage or to an area of a PDF page, and stays on the page where your colleagues will see it.
+
+1. Open a PDF resource in the Knowledge.
+2. In the tool rail beside the document, open the small arrow on the **comment** button (*"Comment options"*) and pick a gesture. The button remembers your choice, so next time a single click is enough:
+   - **Comment on the text** — select the passage you want to comment on. The selected text is kept as the quotation.
+   - **Comment on an area** — draw a rectangle around a region, such as a chart or a signature, that has no selectable text.
+3. In the popover, type your note in the *"Write a comment"* field.
+4. Select **Save**. The comment appears on the page as a note that carries its text, and it scrolls and zooms with the document.
+
+<Admonition type="note" icon="📝" title="AN ABANDONED COMMENT LEAVES NOTHING BEHIND">
+The comment is created only when you save it. If you close the popover without saving, nothing is stored.
+</Admonition>
+
+### Review and edit comments
+
+The **Annotations** panel lists comments grouped by page, each with its note and, for a text comment, the passage it refers to underneath.
+
+- **Edit a comment:** change the note directly in the panel.
+- **Jump to a comment:** select its **inspect** icon to scroll the document to it.
+- **Remove a comment:** select its **delete** icon and confirm in the **Delete annotation** dialog.
+
+### Show or hide annotations on the page
+
+When a page is crowded with highlights, hide the kinds you don't need right now.
+
+1. Select the **eye** button (*"Show or hide annotations"*).
+2. Turn **Text**, **Images**, **Tables**, or **Comments** on or off, or use **Hide all** and **Show all**.
+
+This changes only what is drawn on the document: the **Annotations** panel keeps listing everything.
+
+## Check that chunks are ready for search
+
+A chunk is only useful to [AI Search](/operational-guides/configure-rag) when it is enabled and its embedding (the vector used for retrieval) is actually stored. The dot on each chunk card tells you which is which.
+
+1. Open a resource and select the **Chunks** tab.
+2. Look at the dot in the top-right corner of each chunk card:
+
+| Dot | What it means |
+|-----|---------------|
+| Grey | The chunk is disabled, so search ignores it. |
+| Warning colour | The chunk is enabled, but its embedding is not usable for retrieval, so search can't find it yet. |
+| Green | The chunk is enabled and embedded, so search can find it. |
+
+<Admonition type="note" icon="📝" title="A WARNING DOT USUALLY MEANS REPROCESS">
+A chunk shows the warning colour when its embedding is missing either from the chunk itself or from the vector store. Reprocessing the resource (see [Manage knowledge resources](/operational-guides/manage-knowledge-resources#recover-a-file-that-failed)) embeds it again.
+</Admonition>
+
 ## Result
 
-Your text resource now carries one or more labelled annotations. Each highlight appears inline in the viewer, anchored to the exact text you selected, and every annotation is listed in the **Annotations** sidebar where you can focus or delete it.
+Your text resource now carries one or more labelled annotations. Each highlight appears inline in the viewer, anchored to the exact text you selected, and every annotation is listed in the **Annotations** sidebar where you can focus or delete it. Your PDFs can carry comments on passages and areas that your team can read on the page, and the dot on each chunk card tells you whether that chunk can be found by search.

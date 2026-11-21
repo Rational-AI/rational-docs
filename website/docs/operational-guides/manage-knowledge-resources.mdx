@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Manage knowledge resources
 
-A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
+A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, following a processing run and recovering the files it failed on, finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
 
 <Admonition type="info" icon="📖" title="WHAT IS A RESOURCE?">
 A resource is a single curated item inside a Knowledge — usually a file that has been processed into a form the AI can search and quote from. You work with resources through three views of a Knowledge: the **files table** (a sortable list), the **attribute view** (one card per resource), and the **graph view** (a visual map). The tasks below all live in one of these three.
@@ -31,6 +31,48 @@ Opening a Knowledge lands you on its **Attributes list** — one card per resour
 The **Default** radio and the on/off toggle are independent controls, so it is possible to make a view the default and then disable it. Rather than opening on nothing, the Knowledge falls back to an enabled built-in view. The setting also travels with the Knowledge: duplicate, export, or import it and the default view comes along.
 </Admonition>
 
+## Follow a processing run
+
+Processing a Knowledge can take hours, and a status word that never changes doesn't tell you whether the run is advancing or stuck. The files view reports the run while it happens, says how it ended, and points you to the files that need attention.
+
+<Admonition type="info" icon="📖" title="WHAT IS A PROCESSING RUN?">
+A processing run is one pass of a Knowledge's pipeline over its files: each file is converted, run through its workflow, chunked, and embedded. A run starts when you select **Process knowledge**, when a source finishes a sync, or when an API client asks for it.
+</Admonition>
+
+1. Open the Knowledge and go to its **files** view. Each folder header — the uploaded files and every connected source — carries a **status chip** for the Knowledge's latest run.
+2. While the run is pending or in progress, read the chip and the bar beside it:
+   - the chip shows the **step** the run is currently on;
+   - the bar and the counter show **files done out of files total** (for example *120 / 480*).
+3. When the run ends, a toast appears and stays until you close it: *"Processing complete"*, or *"Processing failed"* followed by the Knowledge name and the reason. You see it even if you moved to another tab while the run was going.
+4. If the run failed, was cancelled, or timed out, the chip turns into an **Error** chip. Hover over it to read the root cause: the innermost error of the chain, the one you can act on.
+
+<Admonition type="note" icon="📝" title="THE PAGE CHECKS THE RUN EVERY 30 SECONDS">
+The chip, the step, and the counter refresh every 30 seconds, so the latest change can take up to half a minute to appear. A Knowledge that has never been processed shows no chip.
+</Admonition>
+
+### Recover a file that failed
+
+A failed file is the one row you have to do something about, so its reason and its fix sit in the row itself.
+
+1. In the files table, look at the **Status** column. A failed file shows the **Error** chip with the error text under it, cut to two lines; hover over the text to read it in full.
+2. Select **Reprocess** under the error. It opens the same dialog as **Reprocess** in the row's **⋮** menu.
+3. Choose how to process the file and confirm.
+
+### Read a file's processing log
+
+When the error text isn't enough, the file's log shows what happened on each attempt.
+
+1. Open the row's **⋮** menu and select **See logs details**.
+2. The **Processing log** dialog shows the file's current **Status** and error, and its **Processing history**: one row per event with its **Time**, **Status**, and **Details**.
+
+### Check how long processing took
+
+The **Last processing** column, right after **Name**, shows how long the file's last processing attempt took, with its date underneath. While a file is processing, its status chip shows the current step and the elapsed time, updated every second. Use it to find the files that take longest to process.
+
+<Admonition type="note" icon="📝" title="THE COLUMN HIDES IN NARROW LAYOUTS">
+**Last processing** is hidden on small screens and when a resource drawer is open beside the table, to leave room for the name and the status.
+</Admonition>
+
 ## Work with the files table
 
 The files table is the fastest way to see everything in a Knowledge at a glance, and the right place to clean house when you have many resources to act on at once.
@@ -47,8 +89,13 @@ Sorting helps you spot the largest files, the stale ones, or a specific resource
 Selection is how you tell the table which resources a bulk action should apply to.
 
 1. Tick the **row checkboxes** for the resources you want.
-2. To grab everything at once, use the **header checkbox**. When only some rows are selected, it shows an indeterminate state so you can tell at a glance that the selection is partial.
-3. Check the **selected-count indicator** to confirm how many rows you have chosen before you act on them.
+2. To grab the whole page at once, use the **header checkbox**. When only some rows are selected, it shows an indeterminate state so you can tell at a glance that the selection is partial.
+3. To go beyond the page, select **Select all N** next to the count. It appears once the whole page is checked and more files match your filters, and it selects every matching file across all pages.
+4. Check the ***N* selected** indicator to confirm how many rows you have chosen before you act on them.
+
+<Admonition type="note" icon="📝" title="A SELECT-ALL SELECTION CAN'T BE TRIMMED">
+After **Select all N**, ticking or unticking any single checkbox clears the whole selection. Rational AI selects every matching file without listing them one by one, so there is no list to remove a single file from. Narrow the filters first, then select all.
+</Admonition>
 
 <img
   src={require('@site/static/img/screens/knowledge-table.png').default}
@@ -66,9 +113,13 @@ The table box and rows are transparent, so the surface colour shows through; sta
 
 When you have several resources to remove, delete them together instead of one at a time.
 
-1. Select one or more rows using the checkboxes.
-2. Select the **Delete selected** action.
-3. Confirm the deletion in the dialog that appears.
+1. Select one or more rows using the checkboxes, or every matching file with **Select all N**.
+2. Open the **⋮** menu next to the selected count and select **Delete selected**. The same menu holds **Assign workflow**, which applies to the same selection.
+3. Confirm in the **Delete resources** dialog. When you selected all files, the dialog states the exact number that will be deleted, for example *"All 1240 resources and everything extracted from them are deleted."*
+
+<Admonition type="caution" icon="⚠️" title="DELETION CANNOT BE UNDONE">
+Deleting a resource also deletes everything extracted from it: chunks, embeddings, and annotations. Read the count in the dialog before you confirm.
+</Admonition>
 
 ## Delete a single resource from the attribute view
 
@@ -149,4 +200,4 @@ The sticky first cell and the trailing actions menu stay fixed — they can't be
 
 ## Result
 
-You can now keep a Knowledge tidy from whichever view you happen to be in: choose the view it opens in, sort and bulk-delete from the files table, remove a single resource from its card, add uploaded files straight in as resources, edit a resource and have it reindexed without losing your curation, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.
+You can now keep a Knowledge tidy from whichever view you happen to be in: choose the view it opens in, follow a processing run and fix the files it failed on, sort and bulk-delete from the files table — across all pages if you need to — remove a single resource from its card, add uploaded files straight in as resources, edit a resource and have it reindexed without losing your curation, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.

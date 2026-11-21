@@ -36,7 +36,7 @@ The **Connectors** page lists everything you have configured on the left, such a
 ## Add a connector
 
 1. Go to **Settings → Connectors** and select **Add**. This opens **Add a new connector**.
-2. Choose a **provider** from the gallery. Each option has a one-line description to help you pick. Available providers are **Google, AWS, OpenAI, Anthropic, OpenRouter, Xference, OpenAI Compatible, Brave Search, Google Service Account Key,** and **Azure**.
+2. Choose a **provider** from the gallery. Each option has a one-line description to help you pick (see [Available providers](#available-providers)).
 3. Supply the provider's **credentials**. This is usually an API key you get from the provider's own dashboard. Paste your own key into the connector's field; never reuse someone else's. Keys are stored by the platform and are not shared.
 4. Select **Save**.
 
@@ -51,6 +51,99 @@ The **Connectors** page lists everything you have configured on the left, such a
 <Admonition type="note" icon="📝" title="PICK THE PROVIDER YOU HAVE A KEY FOR">
 The gallery offers many providers, but you only need the ones whose models or services you actually plan to use. If your provider isn't listed by name but offers an OpenAI-style API, **OpenAI Compatible** lets you connect it with a base URL and key.
 </Admonition>
+
+## Available providers
+
+| Provider | What it connects | What you supply |
+|----------|------------------|-----------------|
+| **Google** | A Google account, for Drive, Gmail and Calendar. | OAuth client ID and secret, then sign in. |
+| **AWS** | An AWS account, for Amazon S3 sources. | Access key ID and secret access key. |
+| **OpenAI** | OpenAI models. | API key. |
+| **Anthropic** | Anthropic's Claude models. | API key. |
+| **OpenRouter** | Models from many providers through one key. | API key. |
+| **Xference** | Hosted OpenAI-compatible models from Xference. | API key. |
+| **MiniMax** | Hosted OpenAI-compatible models from MiniMax. | API key. |
+| **OpenAI Compatible** | Any API that follows the OpenAI format: self-hosted models, proxies, other providers. | Base URL and API key. |
+| **System One Compatible** | A Jev or System One compatible decision API. | Base URL ending in `/v1`, and an API key if the provider requires one. |
+| **Google Vertex AI** | Gemini models on Vertex AI, pinned to one Google Cloud region. | Project ID and location. No key. |
+| **Brave Search** | Web, news, image, video and local search. | API key. |
+| **Google Service Account Key** | Google Cloud services such as Storage and BigQuery. | Service account key. |
+| **Azure** | An Azure account, for Azure Blob Storage sources. | Client credentials. |
+| **Microsoft OneDrive** | OneDrive and SharePoint files, for OneDrive sources. | Client ID and secret, with user sign-in or application permissions. |
+| **LinkedIn**, **Instagram**, **Facebook** | A company page or business account to publish Social studio posts to. | Your own app's ID and secret, then sign in. |
+| **Git credentials** | Private Git repositories, for Git sources. | Host and an HTTPS token. Public repositories need no connector. |
+| **RabbitMQ** | A message broker whose queues announce files to process. | Host, user and password. |
+| **Microsoft SQL Server** | A SQL Server database that extensions read. | Host, database, and a read-only login. |
+
+The providers below need more than a key. Their steps follow.
+
+### Connect Gemini models on Vertex AI
+
+Use **Google Vertex AI** when your Gemini traffic must stay in one Google Cloud region, for example for data residency. The connector stores no credential: Rational AI calls Vertex AI as its own Google Cloud identity.
+
+1. In Google Cloud, grant the platform's Google Cloud identity the **Vertex AI User** role on your project.
+2. In **Add a new connector**, choose **Google Vertex AI**.
+3. Enter the **Project ID** (for example `my-project-123`) and the **Location**: a single region such as `europe-west8`.
+4. Select **Add**, then add the models you need in the [AI Model Registry](/operational-guides/ai-model-registry-features). The list offers the Gemini chat models served in that region.
+
+<Admonition type="note" icon="📝" title="ONE REGION, NEVER GLOBAL">
+**Location** refuses `global` and multi-regions such as `eu` or `us`: pinning a single region is what the connector is for. Only chat completions are sent to Vertex AI.
+</Admonition>
+
+### Connect a System One compatible decision API
+
+Use **System One Compatible** to reach a decision API that follows the System One protocol, such as Jev.
+
+1. In **Add a new connector**, choose **System One Compatible**.
+2. Enter the provider's **Base URL**, ending in `/v1`.
+3. Enter an **API Key** if the provider requires one; otherwise leave it empty.
+4. Select **Add**.
+
+The provider must support System One evaluation and model listing.
+
+### Connect a Microsoft SQL Server database
+
+Use **Microsoft SQL Server** to let extensions give models read-only access to a database's tables, for example with the **SQL Server** extension, which lists tables, describes them, and runs a single `SELECT`.
+
+1. In **Add a new connector**, choose **Microsoft SQL Server**.
+2. Enter the **Host** (a name or IP address, such as `sql01.example.local`), and the **Database**.
+3. Leave **Port** empty for the default `1433`, and **Instance** empty for the default instance; otherwise enter them (for example `SQLEXPRESS`).
+4. Enter the **Username** and **Password** of a SQL Server login with read-only permissions on the database.
+5. Turn on **Encrypt the connection** to require encryption for the whole session.
+6. Select **Add**.
+
+<Admonition type="caution" icon="⚠️" title="USE A LOGIN THAT CAN ONLY READ">
+The extension refuses anything but a single `SELECT`, but that is a text check, not a guarantee. The login's permissions are the real protection: give it the `db_datareader` role, or `SELECT` on the schemas it needs, and no access to linked servers.
+</Admonition>
+
+<Admonition type="note" icon="📝" title="ENCRYPTION DOESN'T VERIFY THE SERVER">
+With **Encrypt the connection** on, traffic is encrypted, but the server certificate is not verified: encryption protects against eavesdropping, not against a server pretending to be yours. With it off, encryption is still requested for the login.
+</Admonition>
+
+If you build your own extension, request this connector in its manifest with the connector type `sqlServer`.
+
+### Connect a RabbitMQ broker
+
+Use **RabbitMQ** when another system announces documents to process on a queue. The connector holds the broker; a [RabbitMQ queue source](/operational-guides/configure-sources#process-files-announced-on-a-rabbitmq-queue) picks the queue.
+
+1. In **Add a new connector**, choose **RabbitMQ**.
+2. Enter the **Host** (for example `rabbitmq.example.com`) and, if not the default, the **Port** (`5672`, or `5671` with TLS). Turn on **Use TLS** if the broker requires it.
+3. Enter the **Virtual host** (default `/`), and the **Username** and **Password** that the broker's owner created for Rational AI.
+4. *(Optional)* Enter a **File download token**: it is sent as a Bearer token when downloading the files the messages point to.
+5. Select **Add**.
+
+<Admonition type="note" icon="📝" title="PORT AND TLS ARE SET ONCE">
+After creation you can edit the host, virtual host, username, password, and token, but not the port or TLS. To change those, create a new connector.
+</Admonition>
+
+### Connect a social account for publishing
+
+The **LinkedIn**, **Instagram**, and **Facebook** connectors let Social studio publish posts through your own developer app.
+
+1. Create the app on the provider's developer portal, as the dialog describes: a LinkedIn app with the Community Management API for a company page, or a Meta Business app with Instagram login or Facebook Login for Business.
+2. In **Add a new connector**, choose the network and copy the **Redirect URL to add to the app** into your app's settings.
+3. Enter a **Name**, and your app's ID and secret. For Facebook, also enter the configuration ID if you created one.
+4. Select **Add and authorize** and sign in with an account that administers the page or account you want to publish to.
 
 ## See what a connector powers
 
