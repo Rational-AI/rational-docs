@@ -78,6 +78,8 @@ const sidebars: SidebarsConfig = {
 					items: [
 						"operational-guides/chat-experience",
 						"operational-guides/configure-touchpoints",
+						"operational-guides/touchpoint-generation",
+						"operational-guides/touchpoint-memory",
 						"operational-guides/test-touchpoint-changes",
 						"operational-guides/approve-tool-calls",
 						"operational-guides/manage-channels",

@@ -17,7 +17,7 @@ An agent skill is a [Hermes-compatible](https://hermes-agent.nousresearch.com/do
 Before you start, make sure you have:
 
 - **Administrative access** — an account with extension and touchpoint management privileges.
-- **The sandbox extension installed** — the **agent-skills** extension, which provides the sandboxed `skill_exec` runtime (the safe, isolated environment where skill commands actually run). It bundles the `pptx`, `docx`, `xlsx`, `humanizer` and `plan` skills.
+- **The sandbox extension installed** — the **Agent Skills** extension (`agent-skills`), which provides the sandboxed `skill_exec` runtime (the safe, isolated environment where skill commands actually run). It bundles seven skills: `docx`, `pptx`, `xlsx` and `pdf` for documents, `web-design` for [Canvas](#preview-web-pages-in-canvas) pages, and `humanizer` and `plan`.
 - **A skills-providing extension** — any extension that ships skills under `skills/<name>/SKILL.md`. The skill list is shown on the registry entry **before** you install.
 - **A touchpoint** — an existing touchpoint to bind skills to (see **Settings** → **Touchpoints**).
 
@@ -50,7 +50,7 @@ If a skill and a touchpoint tool share a name, the touchpoint tool wins. Binding
 
 ## Run a skill from chat
 
-Once a touchpoint has bound skills, you don't invoke them by name. You ask for what you want in plain language, and the model decides whether a skill fits and how to run it.
+Once a touchpoint has bound skills, you don't have to invoke them by name. You ask for what you want in plain language, and the model decides whether a skill fits and how to run it. When you already know which skill you want, you can [pick it yourself](#pick-a-skill-with-) with `/`.
 
 ### How the model reaches a skill
 
@@ -65,11 +65,43 @@ The model is given a short list of each bound skill's **name and description**, 
 2. Ask for something a bound skill covers — for example, "build a household budget spreadsheet."
 3. The model reads the manual via **`skill_view`**, then does the work via **`skill_exec`**. You don't name the skill or the tools; the model selects them.
 
+### Pick a skill with `/`
+
+Leaving the choice to the model works most of the time. When it doesn't — or when you simply know which skill the job needs — name the skill yourself.
+
+1. In an empty composer, type `/`. A **Skills** menu lists the skills enabled on the chat's touchpoint, each with its `/name`; when the composer is wide enough, the highlighted skill's description appears beside the list.
+2. Keep typing to filter by name, then pick a skill with a click, **Enter** or **Tab**. **Esc** closes the menu.
+3. The skill becomes a chip at the start of the message. Type your request after it and send.
+
+The same list is under **Skills** in the composer's **+** menu, which keeps any text you have already typed. To drop the skill before sending, select the chip's **✕**, or press **Backspace** in an empty composer.
+
+<Admonition type="note" icon="📝" title="PICKING A SKILL STEERS THE MODEL, IT DOESN'T BYPASS IT">
+The message goes out as `/<skill> <your request>`, and Rational AI tells the model that you chose that skill: read its instructions first and follow them. The model still does the work, so your request after the chip is what it acts on. If the menu says *"No skills are enabled for this chat"*, the touchpoint has no skills bound; users who can manage extensions find **Manage skills** in the **+** menu's **Skills** submenu.
+</Admonition>
+
 ### Follow what happened
 
-The chat shows the run as **process steps** instead of hiding the tool responses behind the scenes: what was read, the command executed, and its exit code, with stdout/stderr available when you expand a step.
+The run appears in the same collapsed line as the model's reasoning, above the answer — for example *"Thought for 12s, used skill xlsx, 4 steps"*. Open it to read the steps in plain words, in order: reading the skill instructions, writing and running the script, saving a file, and any attempt that failed and was retried. Identical steps are merged (*"twice"*, *"3 times"*), and a log toggle shows the raw output when you need it.
 
-Each step that creates files shows them as **chips with download**. Previewable types (images, PDF, CSV, text and code) open in an **inline preview dialog**; Office files such as `.xlsx`, `.docx` and `.pptx` are download-only.
+Intermediate files the skill produced while working are listed in that timeline under **Working files**, each with a **Download** button; empty files are hidden unless you choose **Show all, including empty**.
+
+The file you asked for gets a card under the answer, with its type, name and size, and these actions:
+
+- **Open** shows it in the [Canvas](#preview-web-pages-in-canvas) panel, for types that can be previewed.
+- **Download** saves it.
+- **Save to knowledge** files it into a [Knowledge](/operational-guides/create-knowledge), so it doesn't stay buried in the chat.
+
+<Admonition type="note" icon="📝" title="A FAILED RUN SAYS SO, AND OFFERS A WAY OUT">
+If the skill stops before producing its file, the answer shows *"No file was created."* instead of an empty card. From there you can open **Technical details**, **Retry**, or **Change model** — useful when a smaller model struggles to follow a long skill manual.
+</Admonition>
+
+### Create a PDF
+
+The `pdf` skill in **Agent Skills** builds PDF documents — letters, notices, reports, one-page summaries — with headings, paragraphs, tables and images, on A4 by default. Ask for *"a PDF"* or pick `/pdf`, and the skill checks the finished file (page count and opening text of each page) before handing it over.
+
+<Admonition type="note" icon="📝" title="IT CREATES PDFS; IT DOESN'T EDIT THEM">
+The skill writes new documents. It has no steps for merging, splitting or filling in existing PDFs. If you'll want to edit the text afterwards, ask for a Word document (`docx`) instead.
+</Admonition>
 
 <Admonition type="note" icon="📝" title="SKILLS CAN BE WRITTEN IN ANY LANGUAGE">
 The sandbox runs commands with `bash`, so it's language-agnostic. The backend container ships `python3` (with `uv`), `node`, `npm`/`npx` and `bash`. Python is first-class — the sandbox lazily provisions a shared virtualenv (python-pptx, python-docx, openpyxl, pypdf, pillow, and more). JavaScript skills can `npm install` their own dependencies, and TypeScript skills bring their own transpiler (for example via `npx tsx`).

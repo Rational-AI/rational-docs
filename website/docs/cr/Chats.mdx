@@ -5,7 +5,7 @@ sidebar_label: Chat
 
 # Chat
 
-The **Chat** module is an interactive workspace where you can talk to your agents directly. Choose a [touchpoint](./settings/touchpoints.mdx), ask a question in natural language, and the agent answers using the data, knowledge and tools configured for it. Use this module to explore your data, test how a touchpoint behaves before you share it, and pick up where past conversations left off.
+The **Chat** module is an interactive workspace where you can talk to your agents directly. Choose a [touchpoint](./settings/touchpoints.mdx), ask a question in natural language, and the agent answers using the data, knowledge and tools configured for it. Use this module to explore your data, test how a touchpoint behaves before you share it, have the agent draft documents for you, and pick up where past conversations left off. For step-by-step instructions, see [Use the chat](/operational-guides/chat-experience).
 
 <video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Chat module" poster="/img/videos/chat.jpg" src="/videos/chat_eng.mp4" />
 
@@ -13,39 +13,49 @@ The **Chat** module is an interactive workspace where you can talk to your agent
 
 Open the **Chat** section from the top navigation bar of the Control Room. To begin:
 
-* **Choose a touchpoint** from the selector in the top‑left corner. This sets which agent you're talking to, along with the knowledge and data sources it can reach.
-* **Ask a question**, or click one of the **suggested prompts** beneath the greeting to start with a ready‑made question. The suggestions are defined per touchpoint.
+* **Choose a touchpoint** from the selector at the top of the page. **Rational Chat**, the workspace assistant, comes first, followed by the enabled touchpoints. This sets which agent you're talking to, along with the knowledge and data sources it can reach.
+* **Ask a question**, or click one of the **suggested questions** beneath the greeting to start with a ready‑made question. The suggestions are defined per touchpoint.
 
-The agent replies in the thread, drawing on its connected sources. While it works, it shows the tools it's using (for example, an `execute sql` step that queries a data source) so you can see how the answer is built.
+The agent replies in the thread, drawing on its connected sources. While it works, a single line above the answer summarises what it's doing — reasoning, searching your knowledge, using tools or running a [skill](/operational-guides/agent-skills) — and you can open it afterwards to see every step.
 
 ## The composer
 
-The message box gives you a few tools for shaping a request:
+One message box serves both the new-chat screen and every conversation:
 
-| Control            | What it does                                                                                          |
-| :----------------- | :--------------------------------------------------------------------------------------------------- |
-| **Attach**         | Add one or more files to your message for the agent to use.                                           |
-| **Advanced mode (`{}`)** | Expand each reply to reveal the underlying tool calls and raw JSON, such as the SQL queries and widgets behind an answer. Useful for understanding or debugging a response. |
-| **Canvas**         | Generate the response in a Canvas, an editable side panel, instead of inline. Best for longer documents and visualisations. |
-| **Send**           | Send your message to the agent.                                                                       |
+| Control | What it does |
+| :------ | :----------- |
+| **+** (*Open tools menu*) | Attach files and photos, choose **Knowledge bases**, switch on **Web search**, **Deep Research**, **Canvas**, **Voice conversation** or **Advanced mode**, pick a **Skill**, and turn memory off for a new chat. Each active option shows as a removable chip. |
+| **`/`** | Typed in an empty message, lists the touchpoint's skills; the one you pick becomes a chip at the start of your message. |
+| **Model and reasoning** | Shows the model and reasoning level in use and lets you change them for this conversation, where the touchpoint allows it. |
+| **Mic** | Dictate a message (or hold **Ctrl+Shift+D**); the arrow beside it sets the **Audio language**. |
+| **Send** / **Stop generating** | Send your message, or stop an answer that is still being written. |
+
+**Advanced mode** expands each reply's steps with their technical detail, such as the phases of a knowledge search. Administrators also see the arguments and raw output of each tool call; other users see only the tool names.
 
 ## The sidebar
 
 The panel on the left keeps your chats within reach. You can collapse or expand it with the toggle at the top.
 
-* **New chat** starts a fresh conversation with the selected touchpoint.
+* **New chat** starts a fresh conversation, with the touchpoint you used last already selected.
 * **Search** finds an earlier chat by its content.
-* **Chat history** lists your past threads, each given an automatic title. Open the options menu (three vertical dots) on a thread to **Rename chat** or **Delete** it.
+* **Chat history** lists your past threads, each given an automatic title and grouped into **Today**, **Yesterday**, **Previous 7 days** and **Older**. Open the options menu (three dots) on a thread to **Rename chat** or **Delete** it.
+
+Select a chat's title at the top of the page to **Rename** it, **Copy link to chat**, **Export chat** as a JSON file, manage its **Memory**, or **Delete** it.
 
 ## Working in a conversation
 
-Each thread shows your messages alongside the agent's replies in order. Hover over a message to reveal quick actions such as regenerate, edit and copy. Every chat you start is saved to your history and recorded in the [Conversations](./Conversations.mdx) module, where it can be reviewed, labelled and audited.
+Each thread shows your messages alongside the agent's replies in order. Under each answer you can copy it, rate it, regenerate it, move between its versions, and open the **Sources** panel listing the knowledge resources and web pages it used. Its **⋯** menu adds **Read aloud**, **Verify response** — which underlines supported, uncertain and unsupported claims and opens a **Claim list** — and **Branch into a new chat**. When an answer stops early, a short message says why, usually with **Regenerate response**.
+
+Documents the agent creates open in the **Canvas** panel beside the chat, where you can edit Office files, download them (including as PDF), rename them, or **Save to knowledge**.
+
+Every chat you start is saved to your history and recorded in the [Conversations](./Conversations.mdx) module, where it can be reviewed, labelled and audited.
 
 
 ---
 
 ## Related resources
 
+* [Use the chat](/operational-guides/chat-experience): step-by-step guide to every chat feature.
 * [Touchpoints](./settings/touchpoints.mdx): configure the agents, knowledge and suggested prompts available in Chat.
 * [Conversations](./Conversations.mdx): review, label and audit the chats your agents have had.
 * [Knowledge](./Knowledge.mdx): manage the information your agents draw on when they answer.

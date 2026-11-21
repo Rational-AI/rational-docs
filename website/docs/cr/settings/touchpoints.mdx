@@ -37,29 +37,46 @@ The Touchpoints page lists every touchpoint as a card on the left. Each card sho
 
 ## Create a touchpoint
 
-Click **New** in the top-right corner. A new touchpoint is created and opened for editing so you can configure it through the tabs described below. Remember to **Save** your changes.
+Click **New** in the top-right corner. A new touchpoint is created and opened for editing so you can configure it through the tabs described below. Remember to **Save** your changes; **Undo** discards them.
+
+The **Default touchpoint** button at the top of the list opens the workspace assistant used by the main [Chat](../Chats.mdx), so you can [change its prompt](/operational-guides/configure-touchpoints#change-the-workspace-assistants-prompt).
 
 ## Configure a touchpoint
 
-The details panel is organised into four tabs:
+The details panel is organised into seven tabs:
 
 ### Settings
 
 * **Touchpoint ID** – The unique identifier of the touchpoint (use the copy icon to copy it, for example when integrating an external client).
 * **Channel** – The channel the touchpoint is exposed through.
+* **API access** – On touchpoints using the **API** channel, the base URL and the touchpoint's own [API key](/operational-guides/api-access#give-an-application-its-own-touchpoint-key), with **Generate key**, **Rotate** and **Revoke**.
 
 ### Models
 
-* **System prompt** – The instructions that define the agent's role and behaviour for this touchpoint.
+* **System prompt** – The instructions that define the agent's role and behaviour for this touchpoint, with **Show unsaved changes** and **Expand editor**.
 * **Default model** – The model that powers the touchpoint's responses, overriding the platform default from [Conversations settings](conversations.mdx).
+* **Open advanced settings** – **Generation limits**: the default **Reasoning** level, whether users may change it per conversation, **Maximum output tokens** and **Stop generation on repetitive output**. See [Tune answer generation](/operational-guides/touchpoint-generation).
+* **Response verification** – Lets users check an answer against the retrieved knowledge.
 
 ### Sources
 
-Choose which [knowledge sources](sources.mdx) the touchpoint can draw on when answering, so the agent only uses the relevant data for its use case.
+Choose which [knowledge sources](sources.mdx) the touchpoint can draw on when answering, so the agent only uses the relevant data for its use case. **Can change records** lets the assistant also [create and update records](/operational-guides/configure-touchpoints#let-the-assistant-change-a-knowledge) in a knowledge.
 
 ### Tools
 
-Enable the [tools](extensions.mdx) the agent is allowed to call during a conversation.
+Enable the [tools](extensions.mdx) the agent is allowed to call during a conversation, choose **When to ask for confirmation**, and set **How long a tool may take**.
+
+### Skills
+
+Add the [skills](/operational-guides/agent-skills) the agent can use, which users can also pick with `/` in the chat.
+
+### Memory
+
+Switch on **Personal memory** and **Shared memory**, curate shared memories, and choose what happens with **Long conversations**. See [Memory and long chats](/operational-guides/touchpoint-memory).
+
+### Test runs
+
+Replay past conversations against a change before it goes live. See [Test a touchpoint change](/operational-guides/test-touchpoint-changes).
 
 ## Manage a touchpoint
 
@@ -67,5 +84,6 @@ Use the toggle on each card to enable or disable a touchpoint, or open the optio
 
 | Action | Description |
 |--------|-------------|
-| **Disable** | Take the touchpoint out of service without deleting it. |
-| **Delete** | Permanently remove the touchpoint. |
+| **Disable** / **Enable** | Take the touchpoint out of service without deleting it, or put it back. |
+| **Duplicate** | Create a copy of the touchpoint to start from. |
+| **Delete** | Permanently remove the touchpoint with its tool and skill settings and its memory. Its conversations are kept. The default touchpoint can't be deleted. |
