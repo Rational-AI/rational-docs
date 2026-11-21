@@ -6,10 +6,10 @@ import Admonition from '@theme/Admonition';
 
 # Embed a Knowledge
 
-A [Knowledge](/operational-guides/create-knowledge) doesn't have to live only inside the Control Room. With the **Embed** feature you can drop a Knowledge onto any web page as a self-contained widget — visitors browse its resources and chat with it, right there on your site, without signing in. This guide covers configuring the widget on the **Embed** settings tab and pasting it into a page.
+A [Knowledge](/operational-guides/create-knowledge) doesn't have to live only inside the Control Room. With the **Embed** feature you can put a Knowledge on any web page as a self-contained widget: visitors browse its records, open the one they need and ask its assistant questions, right there on your site, without signing in. This guide covers configuring the widget on the **Embed** settings tab, choosing what it publishes and how it looks, capping what the public chat can cost, collecting visitor contacts and statistics, and adding the widget to a page or a WordPress site.
 
 <Admonition type="info" icon="📖" title="WHAT IS THE EMBED WIDGET?">
-The embed widget is a public, read-only window onto one Knowledge. You decide what it shows — which views, whether visitors can search or filter, whether a chat is available — and Rational gives you an HTML snippet to paste into your site. The widget loads in an isolated frame and talks to your Knowledge through a single embed key, so no Control Room login is ever required of your visitors.
+The embed widget is a public, read-only window onto one Knowledge. You decide what it shows (which views, in what order, whether visitors can search, filter or open a record, whether a chat is available) and Rational AI gives you a single `<script>` tag to paste into your site. The widget loads in an isolated frame and talks to your Knowledge through one **embed key**, so no Control Room login is ever required of your visitors, and nothing they do can change your records.
 </Admonition>
 
 ## Prerequisites
@@ -17,27 +17,69 @@ The embed widget is a public, read-only window onto one Knowledge. You decide wh
 Before you start, make sure you have:
 
 - **Administrative access:** an account with Knowledge management privileges.
-- **A Knowledge to publish:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to embed.
-- **A place to paste the snippet:** access to the HTML of the page where the widget should appear.
+- **A Knowledge to publish:** with the records or resources you want visitors to see, and the [views](/operational-guides/knowledge-custom-views) you want to show them.
+- **A place for the tag:** access to the HTML of the page where the widget should appear, or a WordPress site with the **Rational AI Observatory** plugin.
 
 ## Open the Embed settings
 
-Open the Knowledge, go to its settings, and select the **Embed** tab. The tab is organized into three parts: a **General** section for the system prompt and the generated snippet, an **Actions** section of toggles for what visitors can do, and a **Chat** section of toggles for the conversation experience.
+Open the Knowledge, go to its settings, and select the **Embed** tab. The tab is a single page of sections, top to bottom:
+
+| Section | What you set there |
+| --- | --- |
+| **General** | Whether the widget shows all its views or one view alone, the assistant's system prompt, and the embed code. |
+| **Published views** | Which views visitors can switch between, and in what order. |
+| **Appearance** | Light or dark colours and the accent colour. |
+| **Actions** | Filters, view switcher, search and record details. |
+| **Chat** | Whether there is a chat, its options, and the limits on what visitors can spend. |
+| **Statistics** | A collection that receives one record of activity per day. |
+| **Visitor contacts** | A collection that receives the details visitors leave, and the form they fill in. |
+
+Changes are applied with **Save** in the settings footer.
 
 <img
   src={require('@site/static/img/screens/knowledge-embed-settings.png').default}
-  alt="The Embed settings tab with the system prompt, generated HTML snippet, and the Actions and Chat toggles"
+  alt="The Embed settings tab with the system prompt, the embed code and the toggles"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The **Embed** settings tab: system prompt and snippet under **General**, with the **Actions** and **Chat** toggles below.*
+*The **Embed** settings tab, starting from the **General** section.*
+
+## Choose between the widget and a single view
+
+The **Embedded view** dropdown in **General** decides the shape of the widget.
+
+- **Widget with its views** (the default): a header with the Knowledge's name, a toolbar, and every view you publish under **Published views**.
+- **One of your views**: that view alone, full page, *"without the header and the view picker"*. Use it when the page should show one custom view, such as a map or a calculator, and nothing else. When a single view is published, the widget fits its height to the view's content.
+
+Grid, dashboard and graph views can't be published alone; they are offered only inside the widget.
 
 ## Set the system prompt
 
 The system prompt shapes how the widget's chat answers. Use it to give the assistant its role and its rules.
 
-1. In the **General** section, write a **custom system prompt** — for example, telling the assistant to answer only from this Knowledge's content.
-2. Save the tab (with the settings footer) to apply it.
+1. In the **General** section, write a **Custom system prompt**, for example telling the assistant to answer only from this Knowledge's content.
+2. Select **Save** in the settings footer.
+
+## Publish and order the views
+
+The **Published views** section lists the Knowledge's views that can go on a public page, each with a drag handle and a switch.
+
+1. Switch on the views visitors should be able to see.
+2. Drag the rows into the order you want. The first view switched on is marked **Opens first**: it is the one the widget shows when it loads.
+3. Select **Save**.
+
+<Admonition type="note" icon="📝" title="GRIDS ARE PUBLISHED ONLY WHEN YOU SWITCH THEM ON">
+Until you change the list, every custom view and dashboard is published, but no [grid view](/operational-guides/knowledge-collections-and-grid) is: a grid shows your records, so it goes public only when you switch it on by name. A published grid is read-only, with the columns, groups and filters saved in the view; visitors can search, filter and sort it, never edit it. Calendar and graph views are never offered.
+</Admonition>
+
+Switching off every view also switches off **Views** under **Actions**, and switching one on turns it back on. The built-in **Attributes** and **Graph** views appear in the widget's picker after your published views when they are enabled for the Knowledge itself, on its **Views** tab.
+
+## Set the appearance
+
+Under **Appearance**:
+
+- **Colours**: **Match the visitor's device** (the default), **Light** or **Dark**.
+- **Accent colour**: the colour of *"buttons, links, the open record and the chat button"*. Choose **Rational** (the default), **Blue**, **Indigo**, **Red**, **Orange** or **Graphite** to sit well with your site.
 
 ## Choose what visitors can do
 
@@ -46,40 +88,87 @@ The **Actions** toggles decide which controls appear in the widget's toolbar and
 | Toggle | What it enables |
 | --- | --- |
 | **Filters** | Filter resources by category, tags and relations. |
-| **Views** | A view switcher, so visitors can change how resources are shown. |
+| **Views** | A view switcher, so visitors can move between the published views. |
 | **Search** | A search bar over the resources. |
-| **Resource details** | A side panel with a resource's details, annotations and chunks. |
+| **Resource details** | A side panel with a record's details, annotations and chunks. It is also what makes record links work. |
 
-<Admonition type="note" icon="📝" title="VIEWS IN THE WIDGET">
-When **Views** is on, the widget shows the same enabled views as the knowledge page — including your [custom views](/operational-guides/knowledge-custom-views). Turn it off to pin the widget to a single view.
-</Admonition>
+### Share a link to a record
 
-## Tune the chat experience
+When **Resource details** is on, opening a record in the widget writes `#r=` followed by the record's ID into the address of your page, and closing it removes it. A visitor who wants to send someone straight to that record copies the page address from the browser: whoever opens it lands on your page with the same record already open.
 
-The **Chat** toggles control the conversation, when a chat is available on the widget.
+## Set up the chat
 
-| Toggle | What it enables |
+The **Chat** section controls the conversation and what it may cost you.
+
+| Option | What it does |
 | --- | --- |
+| **Chat** | *"Show the assistant on the page."* On by default. Switch it off for a widget that only shows content, such as a public register or a whistleblowing page. The other chat options keep their values while it is off. |
 | **Suggested questions** | Starter prompts shown when the chat opens. |
 | **Source visibility** | Shows which sources were used to generate each response. |
 | **Copy** | A copy button on each message. |
 | **Feedback** | Lets visitors rate and report the AI's responses. |
+| **Messages per visitor per day** | How many questions one visitor can ask in 24 hours. The default is **20**; leave it empty for no limit. |
+| **Monthly budget** | Once the chat has cost this much in a calendar month (UTC), it pauses until the next one. Empty, the default, means no cap. |
 
-## Get the embed snippet
-
-Once the Knowledge is configured, Rational generates the HTML you paste into your site.
-
-1. Save the **Embed** tab at least once — this generates the widget's **embed key**.
-2. In the **General** section, copy the generated **HTML snippet** with its copy button.
-3. Paste the snippet into the page where you want the widget to appear.
-
-<Admonition type="note" icon="📝" title="BEFORE THE FIRST SAVE">
-The snippet only appears once the embed key exists, so if you don't see it yet, save the tab first. The snippet is a small `<div>` plus a loader script that mounts the widget in an isolated frame.
+<Admonition type="note" icon="📝" title="THE BUDGET IS COUNTED IN THE CURRENCY YOUR COSTS ARE REPORTED IN">
+The field has no currency symbol: the amount is compared with the model costs Rational AI records for this widget's conversations, in the same currency [Governance](/operational-guides/governance) reports them in. Because the check uses recorded costs, answers that were already being generated when the budget ran out still complete, so the month can end slightly above the figure you set.
 </Admonition>
+
+When a visitor reaches their daily limit the chat input is locked with *"You have reached today's message limit. Come back tomorrow to ask more."*; when the budget runs out it reads *"The chat is paused for this month. You can keep browsing the content."* Everything else in the widget keeps working, and if you collect visitor contacts the form opens beneath the notice.
+
+## Collect visitor contacts
+
+The widget can invite visitors to leave their details, and save each one as a record in a collection you choose (for example the contacts collection of a CRM Knowledge).
+
+1. Under **Visitor contacts**, choose a collection in **Save contacts to**. Any collection of any Knowledge in your workspace can receive them.
+2. Enter the **Privacy notice** URL. It is linked from the consent box and is required.
+3. Optionally set a **Form title** and **Form text**.
+4. Arrange the **Form fields**. The form starts with **Name**, **Email** and **Organization**; drag them to reorder, rename the label visitors read, switch **Required** on or off, remove a field, or add another from **Add field from the collection** (text, date, number and choice attributes). An attribute the collection doesn't have yet is marked *"will be created"* and is added when you save.
+5. Select **Save**.
+
+In the widget, a bell button in the chat header opens the form. The visitor ticks the consent box and selects **Subscribe**.
+
+<Admonition type="note" icon="📝" title="KEEP THE EMAIL FIELD TO RECOGNISE RETURNING VISITORS">
+A visitor who submits again with the same email updates their existing record instead of creating a new one; your own values on that record are kept, and the new answers are added as a note. Without an email field, every submission is a new record. Each visitor can submit at most five times an hour. The form lives in the chat panel, so it is unavailable while **Chat** is off.
+</Admonition>
+
+## Keep daily statistics
+
+To see how the widget is used, choose a collection in **Save statistics to** under **Statistics**. Every night Rational AI writes one record there for the previous day, named after the Knowledge and the date, with:
+
+- **Opens**: times the widget was opened.
+- **Records opened**, and the five opened most.
+- **Searches**, and the five most frequent.
+- **Conversations** started and **Messages** sent in the chat.
+- **Contacts**: visitors who left their details.
+
+Days with no activity get no record. The statistics are totals only: nothing in them identifies a visitor. Because they are ordinary records, you can chart them in a grid or a [Rational BI](/operational-guides/rational-bi) dashboard.
+
+## Add the widget to your site
+
+1. In **General**, if there is no code yet, select **Generate embed code**. This saves the settings and creates the widget's embed key.
+2. Choose where the widget goes with the **HTML** or **WordPress** pill.
+3. Select **Copy embed code** and paste it into your page.
+
+For **HTML**, the code is a single tag:
+
+```html
+<script src="https://control-room.example.com/embed.js" data-embed="ek-…" data-lang="en" async></script>
+```
+
+The widget appears exactly where the tag stands. `data-lang` sets the widget's language and starts as your own Control Room language; change it to match the page. Because `embed.js` is served by your Control Room, improvements to the loader reach pages that already carry the tag.
+
+For **WordPress**, the code is a shortcode for the **Rational AI Observatory** plugin:
+
+```text
+[rational_observatory embed="ek-…" origin="https://control-room.example.com"]
+```
+
+The page then also holds the records of the first published grid view as plain text, so search engines can read them; the widget replaces that text once it loads. The language follows the page.
 
 ## See the widget
 
-Pasted into a page, the widget renders as a compact panel: the Knowledge's name, the toolbar you configured (view switcher, search, filters), the resources themselves, and — if a chat is available — a chat launcher in the corner.
+On the page, the widget shows the Knowledge's name, the toolbar you configured (view picker, search, filters), the published views, a chat button in the corner if the chat is on, and an **Open full view** link that opens the widget in a tab of its own.
 
 <img
   src={require('@site/static/img/screens/knowledge-embed-widget.png').default}
@@ -87,21 +176,22 @@ Pasted into a page, the widget renders as a compact panel: the Knowledge's name,
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The embedded widget: the Knowledge's resources, the configured toolbar, and a chat launcher.*
+*The embedded widget: the Knowledge's records, the configured toolbar, and the chat button.*
 
 ## Rotate the embed key
 
-The embed key is what ties a published snippet to your Knowledge. If a snippet is ever shared where it shouldn't be, rotate the key to cut it off.
+The embed key is what ties a published tag to your Knowledge. If a tag is ever shared where it shouldn't be, rotate the key to cut it off.
 
-1. On the **Embed** tab, select **Rotate key** and confirm.
-2. A new key is generated. Copy the fresh snippet and update it everywhere the widget is embedded.
+1. In **General**, select the **Rotate key** button beside the embed code.
+2. Confirm in the **Rotate embed key** dialog.
+3. Copy the new code and replace it everywhere the widget is embedded.
 
-<Admonition type="note" icon="📝" title="ROTATING BREAKS OLD SNIPPETS">
-Rotating the key immediately stops every snippet that used the previous key. Only rotate when you're ready to replace the snippet wherever it's published.
+<Admonition type="caution" icon="⚠️" title="ROTATING BREAKS EVERY PUBLISHED TAG AT ONCE">
+Every page that still uses the previous key immediately shows *"This widget isn't available"*. Only rotate when you're ready to replace the code wherever it's published.
 </Admonition>
 
 ## Result
 
-You can now publish a Knowledge as a widget on any site: set the assistant's system prompt, choose which actions and chat features visitors get, copy the generated snippet, and rotate the embed key whenever you need to. Visitors browse and ask questions against your Knowledge without ever leaving your page — or signing in.
+Your Knowledge is published as a widget, either with its views or as a single view, with the views, colours and controls you chose. Visitors can browse and filter records, share a link to one with `#r=`, and ask the assistant within the daily and monthly limits you set. Their contacts arrive as records in your collection, a record of activity lands in your statistics collection every night, and rotating the key cuts off every published copy at once.
 
-To change which views the widget can show, see [Custom views](/operational-guides/knowledge-custom-views).
+To build the views you publish, see [Custom views](/operational-guides/knowledge-custom-views) and [Collections and grid views](/operational-guides/knowledge-collections-and-grid).
