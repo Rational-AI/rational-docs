@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Import a Knowledge base
 
-Importing rebuilds a Knowledge from a `.zip` archive that was previously exported from Rational AI, so you can move it into a new environment in one step instead of reassembling it by hand.
+Importing rebuilds a Knowledge from a `.zip` archive that was previously exported from Rational AI, so you can move it into a new environment in one step instead of reassembling it by hand. To bring rows of a spreadsheet into an existing Knowledge as records instead, see [Import records from Excel or CSV](#import-records-from-excel-or-csv).
 
 <Admonition type="info" icon="📖" title="WHAT YOU'RE IMPORTING">
 A [Knowledge](/operational-guides/create-knowledge) is the searchable collection of content your AI answers from, bundled together with the settings that control how it retrieves and responds. An export archive packages that whole bundle, the content and the configuration, into a single `.zip` file. Importing unpacks it and recreates the Knowledge on the spot. To produce an archive in the first place, see [Export a Knowledge](/operational-guides/export-knowledge).
@@ -52,8 +52,41 @@ A brand-new tenant has no Knowledge yet, and its empty-state page shows the same
 On a fresh tenant, importing is the fastest way to get started: a single archive populates the environment with both content and configuration, with nothing to set up beforehand.
 </Admonition>
 
+## Import records from Excel or CSV
+
+A whole Knowledge comes from an archive; records often come from a spreadsheet you already have, such as a customer list, a contract register or an asset inventory. The grid can turn each row of an Excel or CSV file into a record, creating the attributes and the collection it needs on the way.
+
+You need the Knowledge **update** permission, and a file in `.xlsx`, `.xls`, `.csv`, `.tsv` or `.txt` format, up to 10 MB and 5,000 rows, whose first row names the columns.
+
+1. Open the Knowledge's **Grid** (see [Collections and grid views](/operational-guides/knowledge-collections-and-grid)) and select **Import from Excel or CSV** in the toolbar. An empty Knowledge offers the same button in the middle of the page.
+2. Drop the file in the dialog, or click to choose it. The file is read in your browser; CSV separators (comma, semicolon or tab) and encodings are detected for you.
+3. If the workbook has several sheets, choose the **Sheet**.
+4. Under **Import into**, choose a collection, **No collection**, or **New collection** with its name. The collection open in the grid is preselected.
+5. For each **Column in the file**, check **Import as**: **Name** (the column that names the records), an existing attribute, **New attribute** with the **Type** to create it with, or **Do not import**. Rational AI guesses all of this from the headers and sample values: a column named like an attribute goes to it, others become new attributes with the type their values suggest.
+6. When numbers or dates are ambiguous, choose the **Decimal separator** (*1.234,5* or *1,234.5*) or the **Date order** (day first or month first).
+7. Select **Preview**. The preview shows the first 100 rows, with values that don't fit their attribute marked in red. If some rows have invalid values, choose **Skip the rows with invalid values** or **Import them, leaving the invalid values empty**.
+8. Select **Import N resources**.
+
+### Fill people and links by name
+
+Columns that go to [person and link attributes](/operational-guides/knowledge-attributes) are matched by name, so you don't need IDs in the spreadsheet:
+
+- **People** are matched to the users who can read the Knowledge, by the name shown in the grid (not case sensitive). A name that matches nobody is flagged in the preview as an invalid value.
+- **Links** are matched to the records of the linked collection by name. A name with no match becomes a new record in that collection: the preview lists them under *"Not in … yet, so the import creates them there"*.
+- To put several people or records in one cell, separate them with a **semicolon** (commas are allowed inside names).
+
+Each person the import names receives a single notification, *"You were assigned to N records in …"*, rather than one per record.
+
+<Admonition type="note" icon="📝" title="AN IMPORT ALWAYS ADDS NEW RECORDS">
+Every row creates a new record: the import doesn't look for an existing record with the same name to update. To refresh data you imported earlier, edit it in the grid, or delete the old records first. If an import stops part way, the dialog says how many records were created and offers **Import the remaining N**, which carries on without duplicating them.
+</Admonition>
+
+When the import finishes, a toast confirms how many resources were imported and the grid switches to the collection that received them. Each record's **History** marks the values as written *via import*.
+
 ## Result
 
 When the import finishes, the Knowledge list reloads and Rational AI takes you straight to the newly imported Knowledge. A success toast (a brief on-screen confirmation message) tells you the import worked. If the archive is invalid or the upload fails, an error toast explains what went wrong.
 
 The imported Knowledge keeps the resources and configuration captured in the archive. Before you put it into use, review its settings — **AI Search**, **Touchpoint**, and processing rules — because environment-specific values such as AI models can differ from one tenant to another.
+
+A spreadsheet import adds its rows as records to the collection you chose, with any new attributes, collection and linked records it needed, and people and links filled in by name.
