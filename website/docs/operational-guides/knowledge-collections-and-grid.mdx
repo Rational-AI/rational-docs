@@ -1,0 +1,179 @@
+---
+sidebar_position: 6
+sidebar_label: Collections and grid views
+---
+import Admonition from '@theme/Admonition';
+
+# Work with records in collections and grid views
+
+Plenty of what a team knows isn't a document: it's a list of customers, contracts, suppliers or incidents, each with a few fields that change every week. Keeping that list in a spreadsheet next to the AI means it is always out of date and the assistant can't see it. In Rational AI a [Knowledge](/operational-guides/create-knowledge) can hold those records directly: you group them into **collections**, edit them in a **grid** like a spreadsheet, save the filtered and grouped layouts your team needs as **views**, and see who changed what in each record's **History**.
+
+<Admonition type="info" icon="📖" title="WHAT ARE RECORDS, COLLECTIONS AND GRID VIEWS?">
+A **record** is a resource of the Knowledge described by its attributes (fields such as *Status*, *Amount* or *Renewal date*) rather than, or as well as, by a file. A **collection** is a named type of record inside one Knowledge, such as *Companies*, *Contacts* and *Opportunities*: each record belongs to at most one collection, and each collection shows its own attributes in its own order. A **grid view** is a saved way of looking at the records (which collection, which columns, which filters, groups, sorting and summaries) that everyone with access to the Knowledge can open.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Access to the Knowledge:** read access is enough to browse records, reshape a view for yourself and pin views.
+- **Update rights to change it:** creating collections, editing records and saving views need the Knowledge **update** permission; deleting records needs the **delete** permission. Without them the grid is read-only. See [Manage roles and users](/operational-guides/roles-and-users).
+- **Attributes:** the grid shows one column per attribute. You can add them from the grid itself; for the kinds available, see [Attribute kinds](/operational-guides/knowledge-attributes).
+
+## Open the grid
+
+1. Open the **Knowledge** tab and select the card of your Knowledge.
+2. In the header, open the views panel (the button with the current view's icon and name) and choose **Grid**.
+
+The grid has the fixed columns **Name**, **Description**, **Category** and **Tags**, then one column per attribute, then **Relations** with the number of linked resources. A new page shows 25 records; use the pagination controls at the bottom for more.
+
+An empty Knowledge shows *"This Knowledge is empty"* with **Add manually**, **Import from Excel or CSV** and **Go to settings**. To bring in an existing spreadsheet, see [Import records from Excel or CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
+
+## Organise records into collections
+
+Collections are created and managed from the grid; there is no separate settings page for them.
+
+1. Select **+ New collection** on the right of the toolbar (or, once collections exist, the **+** at the end of the tab bar, *"New collection"*).
+2. Enter a **Collection name** (unique in the Knowledge) and select **Create**.
+
+As soon as there is one collection, a tab bar appears above the grid: **All resources** with the total count, then one tab per collection with its own count. Both counts follow the current search and filter. Drag the tabs to reorder them. On **All resources** an extra **Collection** column shows where each record belongs; you can filter and group by it.
+
+To move records into a collection, use **Move to collection** in a row's **⋯** menu, or select several rows and use the bulk action (see [Select records across pages](#select-records-across-pages)).
+
+The active tab has a **⋮** menu with:
+
+| Option | What it does |
+| --- | --- |
+| **Rename** | Changes the collection's name. |
+| **Attributes** | Chooses which of the Knowledge's attributes the collection shows, and in what order (drag to reorder). |
+| **Show in History** | Shows this collection's records in the **History** of the records they link to, placed by one of their date attributes. Useful for meetings, calls or invoices that belong on a customer's timeline. |
+| **Open records with** | Opens this collection's records in one of your custom views instead of the standard drawer. See [Open a collection's records in a custom view](#open-a-collections-records-in-a-custom-view). |
+| **Delete** | Deletes the collection. |
+
+<Admonition type="note" icon="📝" title="DELETING A COLLECTION KEEPS ITS RECORDS">
+Deleting a collection does not delete what is in it: its records stay in the Knowledge, without a collection, under **All resources**. What goes with it are the reminders set on it and any grid view that showed only that collection.
+</Admonition>
+
+## Edit records in the grid
+
+With update rights, the grid works like a spreadsheet.
+
+1. Start editing a cell by double-clicking it, pressing **Enter** or **F2**, or simply typing. Press **Space** to tick a checkbox cell.
+2. Move with the arrow keys, **Tab**, **Home** and **End**; **Delete** or **Backspace** clears a cell, **Escape** cancels the edit.
+3. Add a record with **+ New row** at the bottom, or press **Shift+Enter** to insert a row below the current one. A new row is marked **New** until it is saved.
+4. Edits are not written as you type: changed cells stay highlighted and a bar at the bottom counts them (*"3 unsaved changes"*). Select **Save changes**, or press **Ctrl+S** (**Cmd+S** on macOS), to write them all at once.
+
+Each kind of attribute has its own editor: a date picker, a person picker with a **Me** shortcut, a link picker over the linked collection, and so on.
+
+<Admonition type="note" icon="📝" title="A SAVE WRITES EVERYTHING OR NOTHING">
+All pending edits are saved together, so a batch never lands halfway. If a value doesn't fit its attribute, the bar shows how many are invalid and **Save changes** stays disabled until you fix them. If someone else changed one of your rows after you started editing, nothing is saved and the **Rows changed since you started editing** dialog lets you **Reload rows** to see their current values; your edits to the other rows stay pending. **Discard changes** asks for confirmation before throwing your edits away, and leaving the page with pending edits asks first too.
+</Admonition>
+
+Actions that write immediately, such as renaming an attribute, moving or deleting records, importing or deleting a collection, first ask you to save or discard the edits you have pending.
+
+### Create categories, tags and options from a cell
+
+You don't have to prepare every option in settings first. In a **Category**, **Tags** or select cell, type in *"Search or create…"*: when the name doesn't exist yet, it is created on the spot with the next unused colour, and appears as a coloured chip in every record. The new option is saved to the Knowledge immediately; the cell's value still waits for **Save changes**.
+
+### Edit relations
+
+The **Relations** cell shows how many resources are linked to the record. Select it to open a list of those relations, where you can add or remove them without leaving the grid. For typed links between collections, use a **Link** attribute instead; see [Attribute kinds](/operational-guides/knowledge-attributes#link).
+
+### Follow a rollup to its records
+
+Select a cell of a **Rollup** column (*"Show these records"*) to see what it counts. When the rollup adds up the records that link *to* this one (all the opportunities of a company, say), the grid switches to their collection, filtered to those records. When it follows the record's own link, the linked record opens.
+
+## Find records: filter, sort, group and summarise
+
+The toolbar has **Filter**, **Group by**, **Sort** and **Visible attributes**. Each runs on the server, so it covers every record in the Knowledge, not just the page on screen.
+
+- **Filter:** select **Add condition** and build conditions such as *Status* **is any of** *Open*, or *Renewal date* **is within** *the next 30 days*. Combine them with **and** or **or**, and use **Add condition group** for one level of nested conditions. Operators follow the attribute kind (text, number, date, select, checkbox, link, person). On a person attribute, choose **Me**: everyone who opens the view then sees their own records.
+- **Sort:** add one or more levels, each **Ascending** or **Descending**. Besides the attributes you can sort, and filter, by **Last modified**, to see what moved recently.
+- **Group by:** up to three levels. Group headers show the value and a count; use **Collapse all** or **Expand all**.
+- **Visible attributes:** show or hide columns (**Name** always stays).
+- **Summaries:** the footer of each column has a **Summary** button: counts of empty, filled and unique values or their percentages for every column; **Sum**, **Average**, **Median**, **Min**, **Max**, **Range** and **Standard deviation** for numbers; **Earliest** and **Latest** for dates. Summaries also appear in group headers.
+
+A filter, group or summary on an attribute that was later deleted or changed type is ignored and marked as such, and dropped the next time the view is saved.
+
+## Save and share a grid view
+
+The layout you build lives in the page address, so you can already send it as a link. To give it a name everyone finds again, save it as a view.
+
+1. In the **Grid**, select **Save as view**.
+2. Enter a **Name**.
+3. Under **Collection**, keep *"All resources, with the collection tabs"* or pick one collection; the view then shows that collection only, without tabs.
+4. Under **Show as**, keep **Grid view** (or choose **Calendar** for a calendar of a date attribute; see [Custom views](/operational-guides/knowledge-custom-views#show-records-on-a-calendar)).
+5. Select **Create**.
+
+<Admonition type="note" icon="📝" title="SAVED VIEWS BELONG TO THE KNOWLEDGE, NOT TO YOU">
+A grid view is shared: everyone who can open the Knowledge sees it in the views panel, and only people with update rights can save one. To keep a layout to yourself, don't save it; use **Copy link** instead, or [pin](#pin-the-views-you-use-most) the shared views you need.
+</Admonition>
+
+When you change the filters, columns or grouping of a saved view, the header shows **View changed** with:
+
+- **Copy link**: copies a link to exactly what you see, without saving it. Anyone can use it.
+- **Discard**: goes back to the saved layout.
+- **Save as new view** and **Save**: for people with update rights. If someone else saved the view in the meantime, it is reloaded instead of being overwritten.
+
+Saved grid views are also listed on the Knowledge's **Views** settings tab, where you can rename, disable, delete them or choose **Set as default view**.
+
+## Pin the views you use most
+
+The views panel lists every view under **Pinned**, **Default** and **Views**, with a search box. Select the star beside a view, or press **Shift+Enter** on it, to pin it.
+
+- You can pin up to **5** views per Knowledge. Once you have five, unpin one to pin another.
+- Pinned views appear as tabs between the header and the view. Drag them, or press **Alt+Left** / **Alt+Right**, to reorder them.
+- Pins are personal and follow you across devices; pinning needs only read access. The built-in **Graph** and **Grid** can be pinned too.
+
+Each view shows an icon in the panel and on its tab. Views generated with AI get an icon chosen to match their content; the others use their type's icon (a table for grids, a calendar for calendars, a page for custom views).
+
+## Select records across pages
+
+When the Knowledge has at least one collection, each row has a checkbox for users with update rights.
+
+1. Tick rows one by one, or the header checkbox to select the whole page.
+2. To go beyond the page, select **Select all N resources**: the selection now covers every record matching the current collection, search and filter.
+3. Choose a bulk action:
+   - **Move to collection**: moves the selection to a collection, or to **No collection**.
+   - **Delete**: deletes the selection after confirmation. Records are deleted with their links and history.
+
+<Admonition type="caution" icon="⚠️" title="DELETING RECORDS ALSO DELETES THEIR LINKS AND HISTORY">
+Deleted records cannot be restored from the grid. Before a large bulk delete, check the filter that defines your selection, or [export the Knowledge](/operational-guides/export-knowledge) first.
+</Admonition>
+
+## Open a record
+
+Select the open icon at the start of a row, or **See details** in its **⋯** menu. A record opens in a drawer on the right; a file or a database resource opens in the viewer.
+
+The drawer has the tabs **Details**, **Attributes** and **History**, plus **Annotations** and **Chunks** when the resource has them. On the **Attributes** tab, the collection's attributes come first, and attributes outside the collection that hold a value appear under **Other**. **Linked from** lists the records that point to this one.
+
+<Admonition type="note" icon="📝" title="THE DRAWER SAVES AS YOU GO">
+Unlike the grid, the **Attributes** tab saves each field as soon as you change it, and shows **Saved**. If the record also has pending edits in the grid, the drawer tells you, with **Discard** and **Save changes**.
+</Admonition>
+
+### Read a record's history
+
+The **History** tab is a timeline of the record, newest first and grouped by day. Each entry says who made the change (a person, an assistant, an agent or the system), how (*via import*, *via package*, *via agent tool*), and what changed, with the value before and after. Several saves by the same person within five minutes are shown as one entry. Records of collections set to **Show in History** appear as linked cards at their date.
+
+History is kept for 24 months, up to the latest 500 entries per record.
+
+### Open a collection's records in a custom view
+
+A record type sometimes deserves its own page: a contract summary, a customer profile. To use one of your [custom views](/operational-guides/knowledge-custom-views) as the record page of a collection:
+
+1. On the collection's tab, open the **⋮** menu and choose **Open records with**.
+2. Pick an HTML, JSX or Web Component view (or **Standard view** to go back to the drawer).
+
+From then on, every record of that collection opens in that view, from the grid, from link chips or from the changed-records list. If the view is later deleted or disabled, records open in the drawer again.
+
+## See what changed while you were working
+
+Assistants, agents and colleagues may update records while you have the grid open. The grid checks every 30 seconds and, when something changed, shows *"N records were changed by an assistant, an agent or another person."* with **Reload**. Select the message itself to see the list of the most recent changed records, with who changed them, and open any of them. Reloading keeps your unsaved edits; a row that changed in the meantime asks before your edit overwrites it.
+
+Rows last changed by an assistant also carry a small sparkle icon beside their name.
+
+## Result
+
+Your Knowledge now works as a small database: records grouped into collection tabs, edited in place and saved in one batch, found with server-side filters, groups, sorting and summaries, and kept as shared grid views that each person can pin. Every record has a drawer with its attributes and a history of who changed what, and the grid tells you when someone else has changed records under you.
+
+Next, add the right [attribute kinds](/operational-guides/knowledge-attributes) (links, formulas, rollups, people), set [reminders](/operational-guides/knowledge-reminders) on dates, or [publish a grid view](/operational-guides/embed-knowledge) on your website.

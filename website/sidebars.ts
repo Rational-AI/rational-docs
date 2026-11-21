@@ -50,6 +50,10 @@ const sidebars: SidebarsConfig = {
 					collapsed: true,
 					items: [
 						"operational-guides/create-knowledge",
+						"operational-guides/knowledge-collections-and-grid",
+						"operational-guides/knowledge-attributes",
+						"operational-guides/knowledge-reminders",
+						"operational-guides/knowledge-graph",
 						"operational-guides/import-knowledge",
 						"operational-guides/export-knowledge",
 						"operational-guides/manage-knowledge-resources",
