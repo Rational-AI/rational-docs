@@ -1,0 +1,105 @@
+---
+sidebar_position: 20
+sidebar_label: Manage your account
+---
+import Admonition from '@theme/Admonition';
+
+# Manage your own account
+
+You shouldn't need an administrator to fix a typo in your name, change your password, or sign out a laptop you left at the office. The **Account settings** dialog lets every user manage their own profile, password, and sign-in sessions, and the notifications bell keeps track of what needs your attention.
+
+<Admonition type="info" icon="📖" title="WHAT IS A SESSION?">
+Each time you sign in from a browser, Rational AI records a **session** for that device: which browser and operating system it is, the IP address it came from, when it started and when it was last used. Signing out a session ends access from that device, so you can see exactly where your account is signed in and cut off any device you no longer trust.
+</Admonition>
+
+## Prerequisites
+
+- **A Rational AI account:** any user can do everything on this page; no administrative access is needed.
+
+## Open Account settings
+
+1. Go to **Settings**.
+2. Select your user chip — your picture, name and email — at the bottom of the left sidebar.
+3. Choose **Profile settings**.
+
+The **Account settings** dialog opens. Its navigation has two sections: **General**, for your profile and password, and **Account**, for your sessions and the account itself.
+
+The same menu also holds **Switch language**, which toggles the interface between English and Italian, and **Logout**, which signs out this browser only.
+
+<Admonition type="note" icon="📝" title="ON A PHONE THE CHIP IS IN THE SETTINGS DRAWER">
+On a narrow screen the Settings sidebar collapses into a drawer. Select **Settings** to open it, and you'll find your user chip at its bottom.
+</Admonition>
+
+## Edit your profile
+
+1. In **General**, update the fields you want to change:
+   - **Name** and **Surname** — both required.
+   - **What should we call you** — an optional nickname. When you set one, it is the name shown across the platform.
+2. To change your picture, select **Choose image** and pick an image file of at most 5 MB. The picture is saved straight away: you'll see *"Picture updated"*.
+3. Select **Save**. The button is enabled only once you have changed something and the form is valid.
+
+Your email address is shown but can't be edited here.
+
+## Change your password
+
+1. In **General**, select **Edit** next to **Password**.
+2. Enter your **Current password**.
+3. Enter the **New password** twice, in **New password** and **Repeat new password**. It must be at least 8 characters long and different from the current one.
+4. Select **Save**. You'll see *"Password updated"* and return to **General**.
+
+If the current password is wrong, or the new one matches it, the dialog says so under the field and nothing changes.
+
+<Admonition type="note" icon="📝" title="SOME PASSWORDS ARE MANAGED BY YOUR ORGANISATION">
+If your account signs in through your organisation's identity provider rather than with a password stored in Rational AI, **Edit** is disabled and the dialog explains: *"Your password is managed by your organisation's identity provider."* Change it wherever your organisation manages sign-in.
+</Admonition>
+
+## Review and end your sessions
+
+Open the **Account** section. The **Active sessions** table lists every device signed in with your account, most recently used first:
+
+| Column | What it shows |
+|---|---|
+| **Device** | The browser and operating system, for example *"Chrome · macOS"*. The device you are using now carries a **Current** badge. Hover to see the full browser signature. |
+| **IP address** | Where the session connected from. |
+| **Created at** | When you signed in on that device. |
+| **Last access** | When the device last used the session. |
+
+To sign out one device, open its **⋯** menu, select **Log out of this device**, and confirm with **Sign out**. Another device is signed out on its next request; if you pick the device you are using, you are returned to the sign-in page.
+
+To sign out everywhere, select **Log out** on the **Log out of all devices** row and confirm.
+
+<Admonition type="caution" icon="⚠️" title="LOG OUT OF ALL DEVICES INCLUDES THIS ONE">
+Every session is ended, the one you are using included, so you will have to sign in again straight away. It is the right move when you think your password has leaked: change the password first, then log out everywhere.
+</Admonition>
+
+## Disable or delete your account
+
+The **Account** section also has a **Delete account** row with two options:
+
+| Option | What happens |
+|---|---|
+| **Disable account** | You are signed out and can't sign in again until an administrator re-enables the account. Your data is kept. |
+| **Delete account** | Your account and your access to this workspace are removed. Conversations are kept. This cannot be undone. |
+
+Neither is possible for the last administrator of the workspace, so a workspace can never lock itself out. Administrators removing *someone else's* account should read [Remove a user](/operational-guides/roles-and-users#remove-a-user) instead.
+
+## Keep up with notifications
+
+The bell in the top header shows a badge with your unread notifications — failed or completed jobs, extension installs, budget warnings, reminders, assignments, and requests that need your action.
+
+1. Select the bell to open **Notifications**. Items are grouped by day.
+2. Use **All** and **Unread** to filter the list.
+3. Select an item to mark it read and jump to what it is about.
+4. Select **Mark all as read** to clear the badge in one go. The button appears only while something is unread.
+
+## Work faster in dialogs
+
+In any dialog, **Cmd+Enter** on macOS or **Ctrl+Enter** on Windows and Linux runs the dialog's primary action — **Save**, **Create**, **Launch** and so on — even while your cursor is still in a text field. **Esc** closes the dialog on top.
+
+<Admonition type="note" icon="📝" title="THE SHORTCUT ONLY FIRES WHEN THE CHOICE IS UNAMBIGUOUS">
+Cmd/Ctrl+Enter does nothing while the primary button is disabled, for instance before a required field is filled, or when a dialog offers more than one main action. If a confirmation's main button is a destructive one, the shortcut presses it like any other, so read the dialog before you press it.
+</Admonition>
+
+## Result
+
+You can keep your own name, nickname and picture up to date, change your password without asking anyone, see every device signed in with your account and sign any of them out — or all of them at once. You also know where your notifications live, how to clear them in one click, and how to confirm a dialog without reaching for the mouse.

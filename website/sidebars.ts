@@ -135,6 +135,7 @@ const sidebars: SidebarsConfig = {
 					collapsed: true,
 					items: [
 						"operational-guides/roles-and-users",
+						"operational-guides/manage-your-account",
 						"operational-guides/personalize-user-details",
 						"operational-guides/governance",
 						"operational-guides/govern-ai-applications",

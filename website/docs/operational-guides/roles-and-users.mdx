@@ -52,6 +52,20 @@ Each row carries the same **List**, **Read**, **Create**, **Update**, **Delete**
 Granting **BI projects** alone gets someone as far as opening a project and finding it empty — the dashboards inside it are governed by their own row. For a role that should build BI, grant the create and update actions on **BI projects**, **Dashboards**, and **Reports** together; leave **BI defaults** to administrators, since it changes the configuration every project inherits.
 </Admonition>
 
+### What people see without a permission
+
+The interface follows the role, so people aren't offered things they can't do:
+
+- **Settings links stay visible but disabled.** A section the role has no access to is greyed out in the **Settings** sidebar, doesn't open, and shows *"You don't have access to this section"* on hover. People can see the section exists and know whom to ask.
+- **Actions inside a page are hidden.** Without create, update or delete permission, the matching **New** button, enable toggle, **⋮** menu items and **Save** footer don't appear, and detail forms open read-only.
+- **A page reached without access says so.** Following a link to a page the role can't read shows *"Access denied"* in place of the content, rather than a broken or empty page.
+
+Sections that depend on your licence, such as **Rational BI**, **Knowledge** or **Gen**, are a different case: when the licence doesn't include the module, they are hidden for everyone, whatever the role.
+
+<Admonition type="note" icon="📝" title="CHECK A ROLE BY SIGNING IN AS IT">
+Because the interface hides what a role can't do, the quickest way to confirm a role is right is to create a test user with it and look at **Settings**: every disabled link is a permission the role doesn't have.
+</Admonition>
+
 ## Create a user
 
 Add a user to give someone their own account to sign in with. When you create the account, you set its first password yourself instead of handing over an auto-generated value you never see.
@@ -99,6 +113,8 @@ The row menu on the users page offers two operations that sound similar and are 
 | **Use it when** | Someone leaves the organisation | Someone exercises a right to erasure |
 | **Their conversations** | Kept, detached from the account | Deleted |
 | **Their identifiers on recorded model calls** | Kept | Cleared |
+
+Users can also disable or delete their own account from **Account settings** — see [Manage your own account](/operational-guides/manage-your-account). Neither path can remove the last administrator.
 
 **Delete user** is the routine one: it closes the account and leaves the conversations the person handled standing, because a leaver is not a reason to destroy the business record of their work.
 
