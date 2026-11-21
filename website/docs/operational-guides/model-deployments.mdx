@@ -1,0 +1,159 @@
+---
+sidebar_position: 15
+sidebar_label: Deploy self-hosted models
+---
+import Admonition from '@theme/Admonition';
+
+# Deploy and run self-hosted models
+
+A model you host yourself only answers while it runs, and while it runs it holds a GPU or a good share of a server's memory. You want it ready when people use it, out of the way when they don't, and you want to know at a glance whether it is downloading, starting, serving or broken. In Rational AI you add an open-source model from Hugging Face, decide how many copies of it run and when it gives its hardware back, and follow every step from the AI Model Registry.
+
+<Admonition type="info" icon="📖" title="WHAT IS A DEPLOYMENT?">
+A self-hosted model in the registry describes *what* to run: the weights (for example a Hugging Face repository) and its **deploy settings**. Its **deployment** is the running copy on your hosting platform: on your own servers for an [on-premise installation](/operational-guides/run-models-on-premise), or on Rational AI's infrastructure in the cloud. A deployment has a **phase**, which says where it is in its lifecycle, and **replicas**, the running instances of the model that answer requests. Each model has at most one deployment.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Administrative access:** an account with AI model management privileges.
+- **Hardware for the model:** on your own servers, GPUs or enough memory for the model (see [Run models on your own servers](/operational-guides/run-models-on-premise)); in the cloud, a plan that includes self-hosted models.
+- **A Hugging Face token, for gated models only:** models such as Llama or Gemma need your own token on the installation. Public models need none.
+
+## Add an open-source model
+
+The model picker searches Hugging Face live, so you see the current catalogue rather than a fixed list.
+
+1. Go to **Settings** → **AI Model Registry** and select **Add new**.
+2. Choose **Choose an open source model** (*"Install a model available open source via Hugging Face"*) and select **Next**.
+3. Search by name, or browse. Narrow the list with:
+
+   | Control | What it does |
+   |---|---|
+   | Sort | **Best match**, **Most downloads** (the default), **Most likes** or **Recently updated** |
+   | **Formats** | The weight formats to list: **Safetensors**, **GGUF**, **AWQ**. Only the formats your hosting platform can run are offered |
+   | **Curated picks** | Only the models Rational AI has selected and tested |
+   | **Only models that fit** | Leaves out the models estimated to be too large for the hardware |
+
+4. Select a model to read its card on the right: publisher, architecture, parameters, weights, popularity, last update, and its Hugging Face model card. Icons on each entry mark a model that accepts images, a curated pick, and a model **Already registered**.
+5. Select **Confirm**. The model is added to the registry, but not deployed yet.
+
+<Admonition type="note" icon="📝" title="THE FIT ESTIMATE IS A RULE OF THUMB, NOT A RESERVATION">
+Where the installation can estimate it, a chip says whether a model **Fits**, **Fits with FP8** (it fits once quantized to 8 bits), or is **Too large**, by comparing its size with the memory it would be given. It does not check whether a GPU is free right now, so a model that fits can still wait for room when you deploy it.
+</Admonition>
+
+### Upload a model file
+
+Where your hosting platform accepts uploaded weights, the **Add new** dialog also offers **Install your own fine tuned model**:
+
+1. Choose **Install your own fine tuned model** and select **Next**.
+2. Pick the model file (a `.gguf` file) and check the **Name**, which is taken from the file name.
+3. Select **Confirm**. The file is uploaded and the model deployed; a large file can take several minutes.
+
+The option is hidden when the hosting platform accepts no uploads. That is the case for on-premise installations, which run models from Hugging Face.
+
+## Review the deploy settings
+
+Each self-hosted model has **Deploy settings**, read when it is deployed: what hardware it gets and how its runner starts. Open them from the model's row menu with **Edit details**.
+
+- **Context Length** — the most tokens the model processes in one request. A longer context needs more memory.
+- **The number of GPUs** — listed first where the platform has GPUs. `0` runs the model on the CPU, much more slowly.
+- **The runner's settings** — such as the GPU memory budget, the tool-call and reasoning parsers, extra runner arguments and environment variables. The form lists the ones your hosting platform supports, with the rarely needed ones under **Advanced settings**.
+
+Each field shows **Default:** and the value this model gets when you leave it alone. Choose **Custom** to set your own value, or, for a flag, **Don't pass** to leave it out entirely. Defaults follow the model: on-premise, a model deploys the way its published vLLM recipe launches it on your hardware. Environment variables whose name looks like a secret (a token, key or password) show as *"Set (hidden)"* once saved.
+
+<Admonition type="note" icon="📝" title="SAVED SETTINGS DO NOT REACH A RUNNING MODEL ON THEIR OWN">
+Saving the deploy settings changes what *should* run, not what runs. The deployment shows **Settings not deployed** and lists the fields that changed until you deploy them, and when the model is running you are asked right after saving whether to deploy them now. This way nobody changes a model in production by editing a form.
+</Admonition>
+
+## Deploy a model
+
+1. Open the model from the registry. The **Deployment** section says *"The model is not deployed: requests to it fail until it is."*
+2. Select **Deploy** and confirm. You can also use **Deploy model** in the row menu.
+3. Follow the phase in the chip next to **Deployment**. A spinning line shows what the platform is doing, for example downloading the image or the weights.
+
+A first deployment can take several minutes: the weights download once, and stay cached for later starts.
+
+### Read the phase
+
+| Phase | What it means |
+|---|---|
+| **Provisioning** | First start of these settings: downloading, creating, starting |
+| **Starting** | Starting again after it was ready before |
+| **Ready** | At least one replica answers requests |
+| **Idle** | No replica runs to save hardware; the next request starts one |
+| **Stopping** | Going down to zero replicas |
+| **Stopped** | No replica runs, and requests don't start one |
+| **Failed** | The settings cannot run; the notice says why |
+| **Deleting** | The deployment is being removed |
+| **Not deployed** | The model has no deployment yet |
+
+The section also shows **Replicas** (*"1 of 1 ready"*), **In this phase since** and **Last request**. The models list shows the same phase in its **Status** column and updates as it changes.
+
+<Admonition type="note" icon="📝" title="A WAIT IS NOT A FAILURE">
+A notice under the phase explains a delay without changing it: *"Waiting for the platform to find room for it"*, *"Starting much more slowly than it usually does"*, *"The hosting platform cannot be reached; retrying"*. Only problems that retrying cannot fix move the deployment to **Failed**: it ran out of memory, it crashed repeatedly, it took too long to start, or the platform found no room in time. A failed deployment is not retried and releases its hardware; fix its settings and select **Deploy again**.
+</Admonition>
+
+## Decide how many replicas run
+
+The scale says how much hardware the model holds, and when.
+
+1. Open the model and go to **Deployment**.
+2. Set **Minimum replicas**: the replicas kept running without requests.
+   - **0** — on demand. The model gives back its hardware when idle, and the next request waits while it starts.
+   - **1 or more** — always on. The model answers at once, and keeps its hardware.
+3. With a minimum of 0, set **Release after**: the minutes without requests before it releases its hardware. Leave it empty to use the installation's default, shown in the field (ten minutes unless your installation changed it).
+4. Where shown, set **Running now**: how many replicas run at this moment. `0` releases the hardware until the next request.
+5. Select **Set scale**. The change applies at once, without restarting running replicas.
+
+**Maximum replicas** appears only where the hosting platform scales a model by load. Elsewhere the maximum is the most the platform allows, and **Running now** chooses how many run.
+
+| Option | When to use it |
+|---|---|
+| Minimum 0, short **Release after** | Models used now and then, on hardware shared with other models |
+| Minimum 0, long **Release after** | Models used in bursts, where a cold start in the middle of a session would annoy people |
+| Minimum 1 or more | Models people rely on all day, or that take long to start |
+
+<Admonition type="note" icon="📝" title="THE FIRST REQUEST TO AN IDLE MODEL WAITS">
+An idle model starts when a request arrives, and that request waits up to a couple of minutes for it. If the model takes longer, the request fails with a message that the model is warming up, and the next one gets through once it is ready. Raise the minimum, or warm the model up before people need it, when that wait matters.
+</Admonition>
+
+## Stop, resume or warm up a model
+
+- **Stop** — releases the hardware and keeps it released: requests to the model fail until you resume it. Use it from **Deployment** or **Stop model** in the row menu.
+- **Resume** — *"it answers requests again, and the first one starts it."* Also **Resume model** in the row menu.
+- **Warm up** — *"it starts now, so the first request does not wait."* Offered where the platform does not start models on its own.
+- **Restart** — deploys the same settings again on a running model.
+- **Delete deployment** — removes the deployment. The model stays in the registry and can be deployed again.
+
+## Enable or disable a model
+
+Disabling a model is the quickest way to take it out of service without deleting it, for example while you check a problem.
+
+1. In the registry, open the model's row menu and select **Disable**.
+2. Read the dialog. It lists what still uses the model (touchpoints, default models, Knowledges and generation settings) and whose requests will fail, and offers to move those uses to another enabled model with the same purpose.
+3. Choose whether to stop its deployment too. It is not stopped by default, so the model can keep running and serve as soon as you enable it again.
+4. Confirm.
+
+A disabled model refuses every request at once, disappears from model pickers, shows **Disabled** in the **Status** column, and its details say *"Requests to it are refused, and model pickers do not offer it."* A chat that uses it says it was refused because its model is disabled. To bring it back, select **Enable** in the row menu or in the details; enabling leaves the deployment as it is, so resume it if it was stopped.
+
+<Admonition type="note" icon="📝" title="DISABLE A MODEL YOU CANNOT DELETE">
+A model with billing history cannot be deleted, because that history stays attached to it. Disabling it keeps the records and stops its use.
+</Admonition>
+
+## Decide what each model call stores
+
+Every request through a model is logged in the [audit trail](/operational-guides/audit-trail). **Payload tracing** decides whether the content of those requests is stored too.
+
+1. Open the model and scroll to **Payload tracing**.
+2. For **Request payloads** (what was sent) and **Response payloads** (what the model answered), choose **Never**, **Only when the request fails**, **Only when the request succeeds** or **Always**.
+
+The choice is saved at once. Stored content is kept for the period set in [Data retention](/operational-guides/data-retention). When an audit entry says a payload was not recorded, it links to this section of the model.
+
+<Admonition type="caution" icon="⚠️" title="PAYLOADS CAN CONTAIN PERSONAL DATA">
+Prompts and answers carry whatever people typed and whatever documents were sent. Store them only as long as you need them to investigate problems, and prefer **Only when the request fails** over **Always**.
+</Admonition>
+
+## Result
+
+Your self-hosted model is in the registry, deployed with settings you confirmed, and holding hardware only as much as you decided: always on, or released when idle and started again on demand. You can follow its phase and replicas, stop, resume or warm it up, take it out of service by disabling it, and choose what its calls leave in the audit trail. To script the same steps, see [Deploy open-source models via API](/operational-guides/api/deploy-open-source-models).

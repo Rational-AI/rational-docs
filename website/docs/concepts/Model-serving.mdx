@@ -2,7 +2,7 @@
 sidebar_position: 13
 sidebar_label: Model serving
 title: Model serving
-description: What model serving and inference are, the metrics that describe serving performance, and how serving connects to models and governance in Rational AI.
+description: What model serving and inference are, where models run, how deployments trade hardware against cold starts, and how serving connects to models and governance in Rational AI.
 ---
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
@@ -26,6 +26,26 @@ Serving a model well is largely about doing inference quickly, reliably and affo
 
 These trade off against each other, and against quality: a larger model may give better answers but serve them more slowly and at higher cost.
 
+## Where the model runs
+
+A model reaches Rational AI in one of two ways:
+
+- **Served by a provider.** A third-party model, such as one from OpenAI or Anthropic, runs on the provider's infrastructure. Rational AI forwards each request through a [connector](/operational-guides/configure-connectors) and never holds the model itself.
+- **Self-hosted.** An open-source or fine-tuned model runs on hardware the installation controls: Rational AI's infrastructure for a cloud workspace, or your own servers for an [on-premise installation](/operational-guides/run-models-on-premise), where each model is a container on the server's Docker engine. The running copy is the model's **deployment**.
+
+## Deployments, replicas and cold starts
+
+A self-hosted model costs hardware only while it runs, so serving it well is also about deciding *when* it runs. A deployment runs some number of **replicas**, identical copies of the model that share the requests. Rational AI lets you choose between:
+
+- **Always on.** At least one replica keeps running. Every request is answered at once, and the GPU stays taken.
+- **On demand.** With no requests for a while, the deployment releases its hardware and becomes **Idle**. The next request starts it again, and waits while it does: a **cold start**, which can take from seconds to minutes depending on the model's size.
+
+The deployment's **phase** (Provisioning, Starting, Ready, Idle, Stopped, Failed…) says where it is at any moment. Changing a model's settings never touches a running deployment on its own: someone confirms the new settings, and only then are they rolled out. See [Deploy and run self-hosted models](/operational-guides/model-deployments) for how to set this up.
+
+## Serving many users at once
+
+A served model has a limited number of requests it can process at the same time. Rational AI puts the requests people are waiting on (a chat, an answer in a touchpoint) ahead of background work (indexing documents, processing conversations), so a large import does not slow down a person typing a question. Background work waits its turn, and is retried if it waits too long.
+
 ## Serving in Rational AI
 
 When you register a model and use it in a [touchpoint](../cr/settings/touchpoints.mdx), the platform serves it for you: each message becomes an inference request handled by the model behind the scenes. The [Governance](../cr/Governance.mdx) module then reports exactly these serving metrics, time to first token, tokens per second, latency and cost, so you can see how your models perform in practice and tune your choices accordingly.
@@ -33,6 +53,8 @@ When you register a model and use it in a [touchpoint](../cr/settings/touchpoint
 ## Additional resources
 
 * [Governance](../cr/Governance.mdx): monitor serving performance, throughput and cost.
+* [Deploy and run self-hosted models](/operational-guides/model-deployments): phases, replicas and idle release in practice.
+* [Run models on your own servers](/operational-guides/run-models-on-premise): GPUs, weights and multi-machine setups on-premise.
 
 
 ---
