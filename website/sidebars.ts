@@ -131,6 +131,17 @@ const sidebars: SidebarsConfig = {
 				},
 				{
 					type: "category",
+					label: "Gen",
+					collapsed: true,
+					items: [
+						"operational-guides/gen-images",
+						"operational-guides/gen-documents",
+						"operational-guides/social-studio",
+						"operational-guides/configure-gen",
+					],
+				},
+				{
+					type: "category",
 					label: "Administration",
 					collapsed: true,
 					items: [

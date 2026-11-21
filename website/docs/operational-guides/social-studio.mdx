@@ -1,0 +1,74 @@
+---
+sidebar_position: 44
+sidebar_label: Social studio
+---
+import Admonition from '@theme/Admonition';
+
+# Create and publish social posts
+
+A good social post is several pieces that have to agree with each other: a hook, a caption, a set of hashtags, one or more images with words on them — each sized and limited differently by every network. The **Social studio** in Gen builds a post step by step from a template, shows it the way the network will, checks it against the network's limits, and publishes it to your LinkedIn, Instagram or Facebook page.
+
+<Admonition type="info" icon="📖" title="WHAT IS A SOCIAL TEMPLATE?">
+A **social template** is a recipe for one kind of post in one format — an Instagram carousel, a LinkedIn post, a Story. It is a **pipeline** of steps: text steps (a storyline, a caption, hashtags) that the assistant writes, and image steps (a cover, the slides) that Gen draws. Each step knows what earlier steps it takes from, so the slides follow the storyline and the caption follows the slides.
+</Admonition>
+
+## Prerequisites
+
+- **The Gen module in your licence.**
+- **Administrative access:** the **Social** area is available to administrators only.
+- **A social template:** see [Create social templates](#create-social-templates).
+- **To publish:** a **LinkedIn**, **Instagram** or **Facebook** connector for the page you post to — see [Configure a connector](/operational-guides/configure-connectors). Without one you can still build posts and download them.
+
+## Choose a format
+
+| Format | Can be published from Rational AI |
+|---|---|
+| **Instagram post**, **Instagram carousel** and **Story** | Yes, through an Instagram connector. |
+| **LinkedIn** | Yes, to a company page, through a LinkedIn connector. |
+| **Facebook** | Yes, to a page, through a Facebook connector. |
+| **X** | Download only. |
+
+## Build a post
+
+1. Select the **Gen** tab, then **Social**.
+2. Select the **Generate** tile, choose a format, and pick one of its templates.
+3. The composer opens with the template's steps listed as a checklist. Start with the **Brief**: what the post is about, who it's for, anything it must say. It's optional, but every step starts from it.
+4. Work through the steps. Each one shows its state — **Pending**, **Generating**, **Ready**, **Out of date**, **Failed** or **Written by hand**:
+   - **Text steps** run in the post's chat and come back as candidates; pick the one you like, or write your own.
+   - **Image steps** draw with Gen's image pipeline. Select **Generate**, or **Regenerate** for another attempt. On a carousel, **Generate all** draws the slides one after another.
+5. Check the preview, which shows the post the way the network does. Edit the text directly in the preview, and drag the overlay text on an image, or change its colour and font.
+
+<Admonition type="note" icon="📝" title="CHANGING AN EARLY STEP MARKS THE LATER ONES OUT OF DATE">
+Because steps build on each other, editing the storyline after the slides were drawn doesn't silently leave slides that tell a different story: the steps that depend on it are marked **Out of date**, so you can see what to regenerate.
+</Admonition>
+
+Once every step is done, the post is **Ready**. Select **Download** at any time to get a zip with each slide rendered with its words on it, plus the caption — for formats you post by hand, or to share for review.
+
+## Publish a post
+
+Publishing is two steps on purpose: you check first, then you go live.
+
+1. In the composer, pick the page from **Choose a page…**. If the template names a page under **Publish to**, it is already selected.
+2. Select **Verify**. Rational AI uploads the post to the page *without publishing it*, so the network refuses now whatever it would refuse at publication: too many or too few carousel pictures (between 2 and 10), a picture over 8 MB, a caption that's too long, or more than 30 hashtags or 20 mentions on Instagram. The post becomes **Verified**.
+3. Select **Publish** and confirm. The post goes live on the page as verified, and **View the post** takes you to it.
+
+<Admonition type="caution" icon="⚠️" title="A PUBLISHED POST CAN'T BE TAKEN BACK FROM HERE">
+Once published, the post can only be edited or removed on the network itself. If you change anything after verifying, you have to select **Verify again** before you can publish, and an Instagram verification expires after 23 hours. If the connector's login has expired, Rational AI asks you to reconnect it in **Settings** → **Connectors**.
+</Admonition>
+
+## Create social templates
+
+1. Go to **Settings** → **Gen** and open the **Social** tab.
+2. Select **New** and choose the format the template is for.
+3. On **General**, fill in the **Name**, **Description** and **Prompt**, choose the **Image model**, and optionally a default page under **Publish to**. Decide whether the template is offered when people create a post.
+4. On **Pipeline**, build the steps with **Add a step**. For each one set its **Type** (text or image), **Name** and **Instructions**, which earlier steps it **Takes from**, whether it **Asks the person** for input, and — for image steps — the **Aspect ratio**; set how many **Candidates** a text step proposes and how many **Slides** a carousel has.
+5. On **Style**, set the brand kit the images use.
+6. Save.
+
+<Admonition type="note" icon="📝" title="THE PIPELINE IS CHECKED AGAINST THE FORMAT">
+The **Checks** next to the pipeline enforce what the format needs — a carousel, for example, needs a storyline step and a slides step. Until every check passes, saving is blocked with *"Fix the pipeline's checks to save."*, so nobody can be handed a template that can't produce a valid post.
+</Admonition>
+
+## Result
+
+You have social templates that turn a brief into a complete post, step by step, in your brand's style. People build a post in the Social studio, see it as the network will show it, download it, or verify it against the network's limits and publish it to your LinkedIn, Instagram or Facebook page.
