@@ -2,93 +2,93 @@
 sidebar_position: 4
 sidebar_label: Governance
 ---
+import Admonition from '@theme/Admonition';
+
 # Governance
 
-The governance module in Rational AI’s Control Room provides observability and accountability over AI model usage.  It offers dashboards and detailed logs that help administrators track costs, token consumption, inference performance and conversational activity.  This document describes the key features available in the **Dashboard** and **Audit Log** views and explains how to navigate and filter the data.
+The **Governance** area of the Control Room reports on how your AI is used and what it costs, and it holds the decisions that control which applications may call your models. Select **Governance** in the top navigation bar to open it. The area is restricted to administrators.
 
-<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Governance module" poster="/img/videos/governance.jpg" src="/videos/governance_eng.mp4" />
+This page is a reference for the area's layout. For step-by-step tasks, see [Monitor usage, cost, and audit logs](/operational-guides/governance) and [Govern AI applications](/operational-guides/govern-ai-applications).
+
+## Tabs
+
+The area has five tabs. Each tab opens with a heading that names the period it reports on, for example *Oct 3 – Nov 2*.
+
+| Tab | What it shows |
+|---|---|
+| **Overview** | A **Needs attention** summary, the headline totals (led by **Total costs**), a featured chart, **Cost composition**, **Governance health**, and the **Top applications** by requests. |
+| **Usage** | Charts over time, grouped by topic. A switch selects **APIs** or **Conversational** traffic. |
+| **Applications** | The inventory of applications seen in proxy traffic or registered by hand, with their status, risk tier, owner, environment, tags, and usage. |
+| **Audit log** | One row for each model request that went through the proxy. A switch at the top shows the **Workflow runs** instead. |
+| **Costs** | The cost ledger: rates, booked costs, amortised assets, and node pools, plus the **Reported in** currency. |
+
+<Admonition type="note" icon="📝" title="OLD DASHBOARD AND AUDIT LOG LINKS STILL WORK">
+Before the redesign, Governance had a **Dashboard** tab and an **Audit Log** tab. Bookmarks and shared links to those tabs still open the right place: a link to the Dashboard opens **Overview**, and a link to the Audit Log opens the request list in **Audit log**.
+</Admonition>
 
 ## Overview
 
-The governance interface is available after signing into the Control Room and selecting **Governance** from the top navigation bar.  Two primary views are provided:
+* **Needs attention** appears only when something needs action. It is collapsed to a single line that counts the problems. Select **Show** to list them, each with a button that takes you to the fix:
+  * applications that are not governed yet (**Register apps**),
+  * requests that have no price (**Set prices**),
+  * an error rate high enough to flag (**See requests**),
+  * workflow runs that failed or timed out (**See the runs**).
+* **Total costs**, **Total inferences**, **Total input tokens**, and **Total output tokens** summarize the period. Costs are shown in the reporting currency.
+* **Cost composition** lists the costs recorded for the period by source, with their total. **Open the cost ledger** opens the **Costs** tab.
+* **Governance health** shows **Cost coverage**, **Unpriced requests**, **Error rate**, and **Cache hit rate**.
+* **Top applications** lists the busiest applications by requests. **View all** opens the **Applications** tab.
+* **Provider subscriptions**, at the top right, opens the subscriptions of your connectors in **Settings** → **Connectors**.
 
-* **Dashboard:**  A high‑level overview of usage metrics and performance for the selected data type (APIs or conversational interactions).
-* **Audit Log:**  A detailed table of individual inference or conversation events with sortable columns and flexible filtering options.
+## Usage
 
-Users can switch between these views using the tabs near the top of the page.  The module supports multiple filters—**Type**, **Touchpoints**, **Models** and **Period**—allowing administrators to tailor the data display.
+The **Usage** tab holds every chart. Choose the traffic type at the top:
 
-## Dashboard
+| Type | Chart groups |
+|---|---|
+| **APIs** | **Volume** (tokens and inferences), **Speed** (tokens per second, time to first token), and **Unit economics** (costs, cost per inference, cost per model). |
+| **Conversational** | **Engagement** (active users, active conversations, user messages) and **Quality** (topics and sentiment). |
 
-The dashboard presents aggregated metrics for the selected **Type** (default: *APIs*).  It is organised into two sections: **Overview** and **Details**.
+## Applications
 
-### Type Selector
+The inventory has a status switch (**All**, **Approved**, **Pending review**, **Blocked**, **Unregistered**, each with a count) and a search box that matches name, key, owner, or tag. Each row has an actions menu: **Edit** or **Register**, **See its requests**, **Copy key**, and **Delete**. **Register application** and **Edit** open the application in a panel docked beside the list.
 
-The **Type** drop‑down at the top of the dashboard determines whether API or conversational data is displayed.  Available options include:
+A **Blocked** application and an application with the **Unacceptable** risk tier are refused. See [Govern AI applications](/operational-guides/govern-ai-applications) for what each setting does.
 
-| Type            | Description                                                     |
-|-----------------|-----------------------------------------------------------------|
-| **APIs**        | Shows metrics for API‑based inference calls.                    |
-| **Conversational** | Displays metrics for end‑user conversations with chat agents. |
+## Audit log
 
-### Overview Cards
+The request list has an outcome switch: **All**, **Errors**, or **Unpriced**. Its columns are:
 
-At the top of the dashboard a series of cards summarise key performance indicators:
+| Column | Description |
+|---|---|
+| **Timestamp** | When the request was made. |
+| **Model** | The model that handled it. |
+| **Application** | The application the request was attributed to, or **Direct** when it carried none. |
+| **Tokens** | Input tokens → output tokens. |
+| **Costs** | The cost of the request, in the reporting currency. |
+| **TTFT** | Time to first token. |
+| **E2E latency** | Total time from the request to the full response. |
+| **Speed** | Generation speed in tokens per second. |
+| **Finish** | How the response ended: **Completed**, **Truncated**, **Tool calls**, or **Filtered**. |
 
-* **Total costs** – The cumulative cost of API calls or conversations over the selected period.  For API calls this value is shown in euros; if cost tracking is disabled it may read `0,00 €`.
-* **Total inferences** – The number of API calls or conversation interactions.
-* **Total input tokens** – The total number of tokens sent to models.
-* **Total output tokens** – The total number of tokens returned by models.
+Select a row to open the request in a panel docked beside the list. The panel shows the status and operation, the source (model, application, touchpoint, user, session), usage and cost, performance, and the request and response bodies when the model's tracing recorded them.
 
-Each card updates automatically when filters are changed (e.g., selecting a different touchpoint or model).
+**Workflow runs** lists each run with **Started**, **Status**, **Workflow**, **Duration**, and **Failure**.
 
-### Details Section
+**Export** downloads the rows that match the current filters as a CSV.
 
-Below the overview cards, interactive charts provide deeper insights:
+## Costs
 
-* **Total tokens** – A bar/line chart comparing input tokens and output tokens over time.  A legend distinguishes input (e.g., blue) and output (purple) tokens.
-* **Tokens per second (avg)** – Shows the average throughput in tokens per second across the selected period.
-* **Inferences** – Displays the number of calls or conversation turns over time.
-* **Tokens per inference (avg)** – Illustrates the average number of tokens consumed per inference.
-* **Costs** – A chart showing total cost over time.  If cost tracking is disabled the values remain zero.
-* **Cost per inference (avg)** – Visualises the average cost per call.
-* **Time to first token (avg)** – Measures the latency (in seconds) between the request initiation and receipt of the first token.
+The **Costs** tab is titled **Cost ledger**. It shows where costs come from (**Infrastructure runtime**, **Facility and operations**, **Amortised assets**, **Provider subscriptions**), with **Total costs** and **Cost coverage**, and has four sections: **Rate history**, **Booked costs**, **Amortised assets**, and **Node pools**. **Reported in**, at the top right, sets the currency that every governance cost is shown in.
 
-These charts update dynamically when you adjust filters.  Hovering over a point reveals the underlying data for that date or time bucket.
+## Filters
 
-### Filters
+Select **Filters** in the toolbar to open the filter panel on the right. The panel lists only the filters that apply to the open tab:
 
-Several filters control what data is shown:
+| Filter | Tabs | Options |
+|---|---|---|
+| **Touchpoints** | Overview, Usage, Audit log | Up to four touchpoints. |
+| **Models** | Overview, Usage, Audit log | Up to four models. |
+| **Applications** | Overview, Usage, Audit log | Up to four applications. Not available for conversational usage. |
+| **Period** | Every tab except Costs | *Last 24 hours*, *Last 7 days*, *Last 30 days* (default), *Last 3 months*, *Last 6 months*, *Last year*, *All*. |
 
-| Filter        | Options & Behaviour                                                                                         |
-|---------------|-------------------------------------------------------------------------------------------------------------|
-| **Type**      | Allows switching between **APIs** and **Conversational** data.                                              |
-| **Touchpoints** | Multi‑select list of registered touchpoints (e.g., *Pengo Products*, *Siena Living – Orders*).  Selecting one or more touchpoints restricts the data to those user flows. |
-| **Models**     | Multi‑select list of deployed models (e.g., `qwen/qwen3-30b-a3b-instruct-2507`, `BAAI/bge-m3`).             |
-| **Period**     | Predefined ranges: *Last 24 hours*, *Last 7 days*, *Last 30 days* (default), *Last 3 months*, *Last 6 months*. Selecting a period adjusts the time span of all charts and counts. |
-
-Each filter has a drop‑down interface with check boxes for multi‑select options.  Changes are applied immediately, updating both the overview cards and the detailed charts.
-
-## Audit Log
-
-The **Audit Log** tab provides fine‑grained visibility into individual calls or conversation messages.  It features a paginated and horizontally scrollable table with the following columns:
-
-| Column             | Description                                                                                 |
-|--------------------|---------------------------------------------------------------------------------------------|
-| **Timestamp**      | Date and time when the inference was executed.  Sorting is available by clicking the header. |
-| **Model**          | Name of the model used for the inference (e.g., `qwen/qwen3-30b-a3b-instruct-2507`).          |
-| **Touchpoint**     | The touchpoint or conversational entry point that triggered the call.                         |
-| **Tokens**         | Displays input tokens and output tokens in the form *input → output*.                        |
-| **Costs**          | Monetary cost associated with the call.                                                      |
-| **TTFT (Time to first token)** | Latency until the first token is received (seconds).                              |
-| **E2E latency**    | Total end‑to‑end latency of the call or conversation message (seconds).                      |
-| **Speed**          | Throughput of the response measured in tokens per second (tps).                              |
-| **Finish**         | Indicates how the call concluded (e.g., `stop`).                                             |
-
-### Filtering in Audit Log
-
-Like the dashboard, the audit log includes filter controls above the table:
-
-* **Type** – Choose between **APIs** and **Conversational**.  This determines whether the table lists API calls or chat messages.
-* **Touchpoints** – Multi‑select list of touchpoints.  Selecting one or more limits the events to those sources.
-* **Models** – Multi‑select list of models.  This filter is useful for isolating calls to specific models.
-* **Period** – Preset time ranges identical to the dashboard (Last 24 hours, Last 7 days, etc.).
+Changes take effect only when you select **Apply**. **Clear** resets the filters of the open tab. The **Filters** button shows how many filters are active.
