@@ -77,6 +77,7 @@ providers it declares:
 | `description` | no | A sentence or two describing what the extension does. Shown to the user before they install. |
 | `icon` | no | Icon for the extension. May be empty (the bundled `icon.png` is used), a remote URL, or an embedded `data:` URI. |
 | `link` | no | URL to upstream docs or the project homepage. |
+| `listing` | no | How the extension is presented in the Marketplace. See [List your extension in the Marketplace](#list-your-extension-in-the-marketplace). |
 
 The remaining keys are the four provider arrays described below.
 
@@ -257,6 +258,34 @@ stdin, and reads back a `{ "files": [...] }` list to download.
 | `runtime.protocol` | Contract version the worker expects (`list-json-v1`). |
 | `expiry.mode` | `window` removes any previously-synced file the resolver no longer returns; `none` never deletes. |
 
+Each entry in the returned `files` list names one file. Besides its `filename`,
+it carries either a `url` the platform downloads or the file's `content` inline,
+encoded in base64, plus
+an optional `mimeType` and `submittedDate`. It can also set `loadAsResource`:
+
+| `loadAsResource` | What happens to the file |
+|------------------|--------------------------|
+| omitted or `true` | The file is a **document**: it is loaded into the Knowledge base as a resource and processed. |
+| `false` | The file is a **companion**: it is stored with the source's files, for a workflow to read, but it does not become a resource of its own. |
+
+```json
+{
+  "files": [
+    { "filename": "piece.jpg", "url": "https://example.com/piece.jpg", "mimeType": "image/jpeg" },
+    { "filename": "piece.json", "content": "eyJ0aXRsZSI6ICIuLi4ifQ==", "mimeType": "application/json", "loadAsResource": false }
+  ]
+}
+```
+
+<Admonition type="note" icon="📝" title="MARK COMPANION FILES IN THE RESOLVER, NOT IN A RULE">
+A processing rule only chooses a workflow; it cannot stop a file from being
+loaded as a resource. If your source ships metadata or precomputed data next to
+each document, set `loadAsResource: false` on those entries, or they arrive in
+the Knowledge base as empty resources. Changing the flag on a file that was
+already synced marks it for processing again, so the change applies on the next
+sync.
+</Admonition>
+
 <Admonition type="note" icon="🔌" title="THE RESOLVER ONLY LISTS — THE PLATFORM DOWNLOADS">
 Your program's job is to return *which* files to sync, not to fetch them. The
 worker downloads each returned file and applies the `expiry` policy, so a
@@ -355,11 +384,59 @@ time. The fields are consistent across provider types:
 | `isRequired` | Whether the user must supply a value. |
 | `isHidden` | `true` for values the platform fills in itself (e.g. a webhook URL) — they don't appear in the form. |
 | `defaultValue` | Pre-filled value. |
-| `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly. |
+| `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly; `{ "kind": "connector", "type": "braveApiKey" }` means the user picks a saved [connector](/operational-guides/configure-connectors) of that type. |
+
+A hidden parameter whose provider is `{ "kind": "connector", "type": "rational" }`
+is filled in automatically with the built-in Rational AI connector when the
+extension is first configured. Use it for a server that calls the Rational AI
+API on the tenant's behalf.
 
 Reference a configured value elsewhere in the manifest with `${fieldName}` —
 that's how the GitHub example above pulls `accessToken` into its
 `Authorization` header.
+
+## List your extension in the Marketplace
+
+A manifest with a `listing` block becomes a solution in the
+[Marketplace](/operational-guides/marketplace) once its release is published to
+the shared catalogue. A release without `listing` is installable but is not
+listed there. Texts are maps keyed by language, and the only allowed keys are
+`it` and `en`.
+
+```json
+{
+  "listing": {
+    "tagline": { "en": "Companies, contacts and pipelines in one place.", "it": "Aziende, contatti e pipeline in un solo posto." },
+    "industries": ["services"],
+    "useCases": ["customer-service", "sales"],
+    "description": "listing/description.{lang}.md",
+    "screenshots": [
+      { "path": "listing/pipeline.{lang}.png", "label": { "en": "Pipeline" }, "caption": { "en": "Opportunities by stage" } }
+    ],
+    "setup": [
+      { "key": "owners", "title": { "en": "Assign the owners" }, "text": { "en": "Set Owner on companies and contacts." } }
+    ]
+  }
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `tagline` | The line under the name on the card and the solution page. |
+| `industries` / `useCases` | Keys from a fixed vocabulary, such as `manufacturing` or `public-sector`, and `compliance` or `sales`. An unknown key is refused on upload, and the error lists the allowed ones. |
+| `description` | Path of a Markdown file in the package; `{lang}` is replaced by each language. At least one file must exist. |
+| `summary`, `steps` | The **How it works** section: a short paragraph and steps with `when`, `title` and `text`. |
+| `collections` | The collections the solution creates, each with the `name` used in the package, a `description` and the names of its `views`. |
+| `screenshots` | Images with `path`, `label` and `caption`: PNG, JPEG or WebP, up to 5 MB each. `{lang}` in the path selects a per-language image. |
+| `cover` | Optional editorial cover: a 16:9 PNG from 1600×900 to 7680×4320 pixels. |
+| `setup` | The checklist users see after installing. Each step has a unique `key` of lowercase letters, numbers and hyphens, plus `title` and `text`. |
+| `source` | The external source the solution reads from: `name`, `schedule` and `reads`. |
+| `questions` | Example questions for the assistant. |
+
+You don't declare everything a card shows. The name, version, icon and
+languages come from the manifest and its `locales/` translations. The counts of
+views, dashboards, tools, skills, workflows and example records, and the
+**Includes** features, are computed from the package on upload.
 
 ## Package and install
 
