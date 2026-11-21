@@ -137,11 +137,23 @@ const sidebars: SidebarsConfig = {
 				},
 				{
 					type: "category",
+					label: "Gen",
+					collapsed: true,
+					items: [
+						"operational-guides/gen-images",
+						"operational-guides/gen-documents",
+						"operational-guides/social-studio",
+						"operational-guides/configure-gen",
+					],
+				},
+				{
+					type: "category",
 					label: "Administration",
 					collapsed: true,
 					items: [
 						"operational-guides/install-and-update",
 						"operational-guides/roles-and-users",
+						"operational-guides/manage-your-account",
 						"operational-guides/personalize-user-details",
 						"operational-guides/governance",
 						"operational-guides/govern-ai-applications",

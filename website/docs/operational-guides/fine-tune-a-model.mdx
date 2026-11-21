@@ -97,6 +97,9 @@ Select **New** to open the **New fine-tuning** dialog, then fill it in:
 2. Pick a **Base model** — the existing model you want to train further.
 3. Select a **Dataset** — the training data the model will learn from.
 4. Review the training and adapter parameters (explained below), then select **Launch**.
+5. Confirm with **Start training**. You'll see *"Fine-tuning launched"* and the run appears in the list.
+
+If the training job can't be started, the run is still saved and Rational AI tells you to check its status before retrying, so you don't end up with two copies of the same run.
 
 <img
   src={require('@site/static/img/screens/finetuning-new.png').default}
@@ -110,17 +113,17 @@ Select **New** to open the **New fine-tuning** dialog, then fill it in:
 
 These settings control how the training runs:
 
-- **Learning Rate:** how big an adjustment the model makes at each step. Too big and it overshoots; too small and it barely learns.
-- **Batch Size:** how many examples the model looks at before each adjustment.
-- **Epochs:** how many full passes the run makes over the whole dataset. A run is bounded by epochs rather than by a fixed number of steps, so doubling your dataset gives you the same number of passes over it rather than half.
+- **Learning Rate:** how big an adjustment the model makes at each step, picked from a list of values from `1e-5` to `5e-4`. The default is `2e-4`. Too big and it overshoots; too small and it barely learns.
+- **Batch Size:** how many examples the model looks at before each adjustment. The default is 1.
+- **Epochs:** how many full passes the run makes over the whole dataset. The default is 1. A run is bounded by epochs rather than by a fixed number of steps, so doubling your dataset gives you the same number of passes over it rather than half.
 
 ### Adapter settings
 
-Fine-tuning here trains a small **adapter** on top of the base model rather than rewriting the whole thing. Three settings control the adapter's capacity, and they're the ones to reach for when a run is **underfitting** — learning too little from your data:
+Fine-tuning here trains a small **adapter** (a LoRA adapter) on top of the base model rather than rewriting the whole thing. Three settings, in the collapsible **LoRA parameters** section, control the adapter's capacity, and they're the ones to reach for when a run is **underfitting** — learning too little from your data:
 
-- **Rank:** how much capacity the adapter has. The main dial. Raise it when a run isn't learning enough from your examples.
-- **Alpha:** how strongly the adapter's contribution is scaled. Set only the rank and alpha follows it automatically, which is usually what you want.
-- **Dropout:** how much regularisation is applied during training, to keep the adapter from simply memorising your examples.
+- **Rank:** how much capacity the adapter has, 16 by default. The main dial. Raise it when a run isn't learning enough from your examples or the task is more varied.
+- **Alpha:** how strongly the adapter's contribution is scaled, 16 by default. It is usually equal to the rank, so while the two are equal, changing **Rank** changes **Alpha** with it.
+- **Dropout:** how much regularisation is applied during training, between 0 and 0.99, 0 by default. Raise it if the model starts memorising your examples instead of learning from them.
 
 <Admonition type="note" icon="📝" title="LEAVE THE DEFAULTS ALONE TO START">
 Every parameter ships with a sensible default, and launching without touching any of them gives you a reasonable run. Change one when you have a specific reason and a first result to compare against.
@@ -138,14 +141,39 @@ Two things you don't set, and shouldn't have to:
 
 ## Watch a run
 
-Training takes a while, and a job that reports nothing but "running" is impossible to make decisions about. The run's drawer shows what it's actually doing, polling while the run is live:
+Training takes a while, and a job that reports nothing but "running" is impossible to make decisions about. Select a run in the list to open its drawer, which shows what it's actually doing and refreshes every few seconds while the run is live:
 
-- **Progress** through the run.
-- **Loss** — updated as training proceeds. Because the run is evaluated against the held-out split, you can see **overfitting while it's still happening**: training loss falling while held-out loss flattens or rises is the signal to stop.
-- **Elapsed time.**
-- **The failure reason**, if it fails — rather than a run that simply stops.
+- **Status** — **Pending**, **Training**, **Completed**, **Failed** or **Cancelled** — with who created the run and its **Duration**.
+- **Progress** — a bar with the percentage, the current step and the latest loss.
+- **Learning curves** — a chart of **Training loss** and **Evaluation loss** step by step. Because the run is evaluated against the held-out split, you can see **overfitting while it's still happening**: training loss falling while evaluation loss flattens or rises is the signal to stop.
+- **Error** — the failure reason, if it fails, rather than a run that simply stops.
+- **Parameters** — the batch size, epochs, learning rate and LoRA settings the run actually used.
 
-**Cancel** stops a running fine-tuning. That's also what frees the GPUs, so cancel a run you've already learned from rather than letting it finish out of politeness.
+The chart shows the latest 2,000 measurements; the complete history is in the run's training artifacts (see below). If the measurements can't be loaded, the drawer says so and offers **Reload measurements** to try again.
+
+The drawer's **⋮** menu holds what you can do with the run:
+
+| Action | When it's offered | What it does |
+|---|---|---|
+| **Cancel run** | While training | Stops the training job and releases its GPUs. Saved checkpoints are kept. |
+| **Retry run** | Failed or cancelled | Starts the same run again, from its latest complete checkpoint when there is one. |
+| **Start training** | Pending | Captures the dataset as it is now and starts training. |
+| **Re-run** | Always | Opens the dialog pre-filled with this run's settings, to launch a *new* run with different parameters. |
+| **Edit details** | Always | Changes the name and description only. |
+| **Download training artifacts** | Completed or failed | Downloads everything needed to audit or reproduce the run. |
+| **Delete** | Not while training | Removes the run. |
+
+Cancelling is also what frees the GPUs, so cancel a run you've already learned from rather than letting it finish out of politeness.
+
+### Resume a run instead of starting over
+
+A long run that fails at 80% shouldn't cost you the first 80%. While it trains, a run saves a checkpoint every 100 steps, and the first time it starts it captures its training inputs — the dataset entries, the model and the configuration.
+
+**Retry run** picks up from the latest complete checkpoint, using those same captured inputs. If no checkpoint was saved yet, training starts again from the beginning. The same happens on its own when a training job is restarted after an infrastructure failure.
+
+<Admonition type="note" icon="📝" title="A RETRY TRAINS ON WHAT THE RUN STARTED WITH">
+Because the inputs are captured when a run first starts, editing the dataset afterwards doesn't change what a retry trains on — that's what makes resuming safe. When you *want* different data, a different base model or new parameters, use **Re-run** to create a new run. Checkpoints that were only partly written are skipped rather than resumed from.
+</Admonition>
 
 <Admonition type="note" icon="📝" title="A BACKEND RESTART NO LONGER STRANDS A RUN">
 Run status is reconciled by reading the job back from the cluster, so a restart mid-training doesn't leave a run showing "training" forever with weights that never register. If you have runs stuck in that state from an earlier release, they're the symptom of that old behaviour rather than something still happening.
@@ -153,7 +181,13 @@ Run status is reconciled by reading the job back from the cluster, so a restart 
 
 ## Use your fine-tuned model
 
-When the run finishes, **Deploy** makes the fine-tuned model available in the [AI Model Registry](/operational-guides/ai-model-registry-features) alongside your other models — the same thing the registry's **Install your own fine-tuned model** option points to. From there you can activate it and use it like any other model in Rational AI.
+When the run finishes, **Deploy** in its drawer makes the fine-tuned model available in the [AI Model Registry](/operational-guides/ai-model-registry-features) alongside your other models — the same thing the registry's **Install your own fine-tuned model** option points to. From there you can activate it and use it like any other model in Rational AI. Deploying never silently replaces a deployment that is already serving.
+
+### Take the weights with you
+
+To run the model somewhere else, or keep a copy outside the platform, open the run's **⋮** menu in the list and select **Download weights**. It is enabled once the run is **Completed**, and downloads `<run name>-weights.tar.gz`: the trained LoRA adapter, its configuration and the tokenizer, ready to load on top of the same base model.
+
+**Download training artifacts**, in the drawer, is the bigger package: `<run name>-training.tar.gz` with the captured inputs, the resumable checkpoints, the configuration and the full measurement history. It needs read access to both the run and its dataset, since it contains the training data.
 
 ## Related
 
@@ -162,4 +196,4 @@ When the run finishes, **Deploy** makes the fine-tuned model available in the [A
 
 ## Result
 
-You've assembled a dataset — ideally from recorded traffic, so tool calls and system prompts survive into training — curated out the examples you didn't want, and launched a run whose parameters are actually applied. You can watch its loss against a genuinely held-out split, stop it when it stops improving, and deploy the result into the model registry. To keep improving it, curate the dataset and launch another run.
+You've assembled a dataset — ideally from recorded traffic, so tool calls and system prompts survive into training — curated out the examples you didn't want, and launched a run whose parameters are actually applied. You can watch its learning curves against a genuinely held-out split, stop it when it stops improving, resume it from its last checkpoint if it fails, deploy the result into the model registry, and download its weights to use elsewhere. To keep improving it, curate the dataset and launch another run.
