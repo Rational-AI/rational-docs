@@ -1,0 +1,98 @@
+---
+sidebar_position: 9
+sidebar_label: Knowledge graph
+---
+import Admonition from '@theme/Admonition';
+
+# Explore a Knowledge as a graph
+
+A table tells you what each record says; it can't show you how records hang together, which customers share suppliers, which contracts cluster around one provider, where the biggest values sit. The **Graph** view of a [Knowledge](/operational-guides/create-knowledge) draws every resource as a node and every relation as an edge, and lets you filter it, cluster it, colour it by a number, and save the picture as a view your team can reopen.
+
+<Admonition type="info" icon="📖" title="WHAT IS THE KNOWLEDGE GRAPH?">
+The graph is the built-in view of a Knowledge's relations. **Nodes** are resources and records; **edges** are the relations between them, whether they come from AI extraction, workflows, or [link attributes](/operational-guides/knowledge-attributes#link). Nodes can be gathered around **hubs** (one per category, tag or attribute value) and coloured by categories, by your own colour groups, or by a number.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Read access to the Knowledge:** enough to explore the graph and open saved graph views.
+- **Update rights to save views:** saving or deleting a graph view needs the Knowledge **update** permission.
+- **The graph view enabled:** the built-in **Graph view** must be switched on in the Knowledge's **Views** settings tab. See [Custom views](/operational-guides/knowledge-custom-views#turn-a-built-in-view-on-or-off).
+
+## Open the graph
+
+1. Open the **Knowledge** tab and select the card of your Knowledge.
+2. In the header, open the views panel and choose **Graph**, or a saved graph view.
+
+Move around with the toolbar at the bottom left of the graph: **Zoom in**, **Zoom out**, **Center zoom**, **Fullscreen**, and a mode picker to switch between **Navigate** (drag to pan) and **Select** (drag to select nodes).
+
+<Admonition type="note" icon="📝" title="FULLSCREEN NOW LIVES IN THE GRAPH TOOLBAR">
+The fullscreen toggle used to sit in the Knowledge header. It is now with the other graph controls, at the bottom left of the canvas, and leaving the graph exits fullscreen.
+</Admonition>
+
+Press **?** for the list of keyboard shortcuts:
+
+| Key | Action |
+| --- | --- |
+| **V** / **S** | Navigate mode / Select mode |
+| **+** / **-** | Zoom in / out |
+| **0** | Fit the whole graph to the screen |
+| **G** | Fit to the selection |
+| **Shift + click** | Add a node to the selection |
+| **Shift + drag** | Lasso-select several nodes |
+| **Esc** | Clear the selection |
+
+The graph loads up to 2,000 nodes. On a larger Knowledge it says how many it is showing; use the search box in the header to find the others.
+
+## Find and select resources
+
+Type at least two characters in the header's search box: matching nodes are highlighted, the rest fade, and a results list opens beside the graph. Select a result to see its details.
+
+When you select nodes, a bar shows how many are selected. With more than one, select **View** to list them in the **Selection** panel, where each name opens the record; **Deselect all** clears the selection.
+
+## Filter and cluster the graph
+
+Select **Filters** in the header to open the filters panel. Make your choices, then select **Apply**; **Clear** removes all filter values.
+
+| Filter | What it does |
+| --- | --- |
+| **Collection** | Shows only the records of one [collection](/operational-guides/knowledge-collections-and-grid), such as *Companies*. The grouping and colouring options then offer that collection's attributes. |
+| **Categories**, **Tag** | Show only resources with the chosen categories or tags. |
+| **Relations** | Show only the chosen relation types. |
+| **Sources** | Show only resources from the chosen sources. |
+| **Group by** | Gathers nodes around hubs: **Category** (the default), **Tag**, one of your attributes, or **No grouping**. |
+
+Grouping by an attribute (a select, a link, a text or a checkbox) creates one hub per value, with its nodes in their own colour: group contracts by *Supplier*, or companies by *Sector*, and the clusters show at a glance. Records with no value for the attribute stay outside the clusters.
+
+## Colour the graph
+
+The **Groups** section of the panel decides the colours.
+
+- **Colour by value**: choose a number attribute, such as *Annual value*, to colour nodes from pale yellow (lowest) to dark red (highest), with a legend showing the range. Colours follow each node's rank among the values rather than the raw amount, so a few very large values don't wash out the rest. Nodes without a number keep their usual colour.
+- **Colour groups**: select **New group** and choose a rule (a **Name** that contains some text, a **Tag**, or a **Source**) and a colour. Drag groups to set which wins when a node matches several. Colour groups apply straight away.
+- **Use default coloring**: pauses your colour groups so every node shows its category colour again.
+
+## Adjust how the graph looks and moves
+
+- **Aspect**: switch on **Show filtered resources only**, **Show hidden resources**, **Show relations directions** and **Show orphan nodes** (resources with no relation), and set **Line thickness** and **Nodes dimension**.
+- **Graph forces**: the physics of the layout. **Center force** pulls nodes towards the middle, **Repel nodes** pushes them apart, **Relations distance** sets how long edges are. Raise the repulsion on a crowded graph; raise the centre force when clusters drift off-screen.
+
+Each section has a button to restore its defaults. Aspect and forces are your own display preferences, remembered in your browser; they aren't part of a saved view.
+
+## Save and share a graph view
+
+Once the graph shows what you need, save it so others can open it in one click.
+
+1. In the **Saved views** section of the filters panel, type a **View name**.
+2. Select **Save view**. Saving uses a name that already exists to overwrite that view.
+
+A saved graph view keeps the collection, grouping, colour by value, filters, colour groups and the hidden, orphan and filtered-only switches. It is shared with everyone who can open the Knowledge: it appears in **Saved views** and in the header's views panel with a graph icon, where anyone can [pin it](/operational-guides/knowledge-collections-and-grid#pin-the-views-you-use-most). To remove one, select the **×** beside it and confirm: the view is deleted for everyone.
+
+<Admonition type="note" icon="📝" title="GRAPH VIEWS STAY INSIDE THE CONTROL ROOM">
+Saved graph views can't be published in the [embed widget](/operational-guides/embed-knowledge). Your last graph settings for each Knowledge are also remembered in your browser, so the graph reopens as you left it.
+</Admonition>
+
+## Result
+
+You can now read a Knowledge as a network: narrow it to one collection or a few categories, tags, relations or sources, cluster it by category, tag or any attribute, colour it by value or by your own groups, tune its physics, and go fullscreen from the graph toolbar. The pictures that matter are saved as graph views that everyone with access can open and pin.

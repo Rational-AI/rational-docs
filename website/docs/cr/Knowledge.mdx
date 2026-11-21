@@ -22,39 +22,45 @@ Use the top navigation bar of the Control Room to open the **Knowledge** section
 * **Browse existing knowledge bases:** each card shows the name of the knowledge set and a resource count. Use the search bar to filter by name.
 * **Create a new knowledge base:** select **New** and supply a name and description. Each knowledge set can have its own categories and tags to help organize resources.
 
-Once inside a knowledge base, the header displays the set name and provides two view modes:
- 
-* **Graph view:** an interactive network visualisation of resources and their relationships. Nodes represent resources; edges show links. You can pan, zoom, re-layout the graph or filter by tags. Use this view to understand how pieces of your data connect.
-* **Table view:** a tabular list of resources with columns for `Name`, `Tags`, `Category` and `Related`. Use the search box or tag filters to quickly locate specific items. Pagination controls appear at the bottom when there are many entries.
-Switch between views using the graph and table icons in the header.
+Once inside a knowledge base, the header shows the set name, a views button with the current view's icon and name, and a **Files** button for the input files. Open the views panel to switch between:
+
+* **Graph:** an interactive network of resources and their relationships. Nodes represent resources; edges show links. You can pan and zoom from the graph toolbar (which also holds the fullscreen toggle), and use **Filters** to show one collection, filter by categories, tags, relations or sources, cluster nodes by category, tag or attribute, and colour them by a number. See [Explore a Knowledge as a graph](/operational-guides/knowledge-graph).
+* **Grid:** a spreadsheet-like table of records, with one tab per collection, editable cells, and server-side filters, groups, sorting and summaries. See [Collections and grid views](/operational-guides/knowledge-collections-and-grid).
+* **Saved and custom views:** grid, graph and calendar views saved by your team, dashboards, and views written in code. Pin up to five of them as tabs under the header. See [Custom views](/operational-guides/knowledge-custom-views).
 
 
 ## Work with resources
 
-In table view, each row represents a resource. To see more about an item:
+In the grid, each row represents a resource or record. To see more about an item:
  
-1. **Open the details drawer** by clicking the row, the 'open' icon, or selecting **See details** from the options menu (three vertical dots). The drawer contains:
+1. **Open the details drawer** with the open icon at the start of the row, or by selecting **See details** from the row's options menu. The drawer contains:
 
    * **Details tab:** description, category, tags, original source, last sync time, hash digest and counts of incoming/outgoing relationships. Use the edit icon to update metadata or the external-link icon to view the original source.
 
    * **Annotations tab:** a place to review or add annotations. Annotations help enrich resources with user-defined metadata such as named entities, sentiment or custom notes.
 
+   * **Attributes tab:** the record's attributes, saved as you edit them, and the records that link to it under **Linked from**.
+
+   * **History tab:** a timeline of who changed what in the record, with the values before and after.
+
    * **Chunks tab:** this lists the chunks created during ingestion. A chunk is a segment of the resource's text used by the model. Each card shows the chunk ID, token count and a preview. Expand a card to see its full text, copy it to the clipboard or delete it. Use the plus icon to create additional chunks when needed.
 
 2. **Download or delete:** use the options menu to download the original resource file. Deletion is available from within the drawer or the menu depending on your permissions.
 
-3. **Navigate relationships:** the `Related` column shows how many other resources link to this one. Clicking the number opens a contextual view of related resources, making it easy to traverse the graph.
+3. **Navigate relationships:** the **Relations** column shows how many other resources are linked to this one. Select the number to see, add or remove those relations without leaving the grid.
 
 
 ## Add new resources
 
 To ingest new files into a knowledge set:
  
-1. Click **Add resources** in the header of the table view.
+1. Select **Add file** in the grid's **Actions** menu (or the **Options** menu of other views).
 
 2. Drag-and-drop files into the modal or use **Add a folder** / **Add a file** to select items from your computer. Accepted formats include text documents (PDF, DOCX), spreadsheets (CSV, XLSX) and images. Optionally adjust the analysis pipeline to specify chunk size, languages or other preprocessing steps.
 
-3. Click **Upload** to start processing. When the upload completes, your new resources appear in the table and graph. Tags and categories can be edited via the details drawer.
+3. Click **Upload** to start processing. When the upload completes, your new resources appear in the grid and graph. Tags and categories can be edited via the details drawer or directly in the grid.
+
+To add records rather than files, type them into the grid with **+ New row**, or bring in a spreadsheet with **Import from Excel or CSV** (see [Import records from Excel or CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv)). To be notified ahead of the dates in your records, set [reminders](/operational-guides/knowledge-reminders).
 
 
 ## Best practices

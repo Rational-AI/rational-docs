@@ -1,0 +1,127 @@
+---
+sidebar_position: 7
+sidebar_label: Attribute kinds
+---
+import Admonition from '@theme/Admonition';
+
+# Choose the right kind of attribute
+
+A grid of plain text columns soon hits its limits: you retype a customer's name in every contract, compute renewal dates by hand, and can't tell at a glance how much each customer is worth. In a Rational AI [Knowledge](/operational-guides/create-knowledge), every attribute has a kind, and besides text, numbers and dates there are kinds that connect records and compute values for you: **links** between collections, **linked fields** that read through a link, **formulas**, **rollups** that count or sum linked records, and **people**. This guide explains each kind, how to create it, and how to rename an attribute safely.
+
+<Admonition type="info" icon="📖" title="WHAT IS AN ATTRIBUTE?">
+An attribute is a named field of the Knowledge's records, such as *Status*, *Amount* or *Account manager*, shown as a column in the [grid](/operational-guides/knowledge-collections-and-grid). Attributes belong to the Knowledge; each [collection](/operational-guides/knowledge-collections-and-grid#organise-records-into-collections) chooses which of them it shows. Its **kind** decides what values it accepts, how it is edited, and how it can be filtered, sorted, grouped and summarised. Some kinds are stored values you edit; others (linked field, formula, rollup) are computed and read-only.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Update rights on the Knowledge:** creating, changing and removing attributes needs the Knowledge **update** permission.
+- **Collections, for links:** link, linked field and rollup attributes connect records of collections, so create the collections first. See [Collections and grid views](/operational-guides/knowledge-collections-and-grid).
+
+## Create an attribute
+
+The same editor opens from three places: the **+** at the end of the grid's header (*"New attribute"*), **Change type** in a column's menu, and **New attribute** on the Knowledge's **Attributes** settings tab.
+
+1. Enter a **Name**.
+2. Under **Type**, choose a kind: **Text**, **Number**, **Currency**, **Date**, **Date and time**, **Checkbox**, **Single select**, **Multi select**, **List**, **Link**, **Linked field**, **Formula**, **Rollup** or **Person**.
+3. Fill in the options for that kind, described below.
+4. Select **Create** (or **Save** when you are changing an existing attribute).
+
+For **Single select** and **Multi select**, add the **Options** with **+ Add option** and give each a colour. You can also create new options later, straight from a cell.
+
+<Admonition type="note" icon="📝" title="EDIT AS JSON SCHEMA IS THERE FOR WHAT THE FORM DOESN'T SHOW">
+Every attribute is stored as a JSON Schema. **Edit as JSON Schema** shows it as text, for the rare settings the form doesn't offer, such as a filter on a rollup. Select **Pick a type** to go back to the form.
+</Admonition>
+
+## Link
+
+A **Link** attribute connects a record to records of a collection: a contract to its *Company*, an opportunity to its *Contacts*.
+
+- **Records of**: the collection the link points to.
+- **Several records can be linked**: switch it on for a many-to-many link, such as the contacts of a meeting.
+- **Relation type**: the name of the relation behind the link, by default the attribute's name. Relations of this type created by workflows or in the graph show up in the column too.
+
+In the grid, linked records appear as chips that open the record. The cell editor searches the target collection; if the name you type matches no record, **Create "…"** adds a new record to that collection, saved with your other changes.
+
+<Admonition type="note" icon="📝" title="A LINK IS A RELATION, SO IT SHOWS IN THE GRAPH">
+A link is stored as a relation between two resources, not as a text value. That is why it appears in the [knowledge graph](/operational-guides/knowledge-graph), in the **Linked from** section of the linked record, and why renaming the linked record never breaks it.
+</Admonition>
+
+## Linked field
+
+A **Linked field** shows an attribute of the linked record, such as the *Sector* of a contract's company, without copying it.
+
+- **Through the link**: one of your link attributes.
+- **Shows the linked record's**: the attribute to read.
+
+The column is read-only and always up to date. It can read stored attributes but not other computed ones (links, linked fields or formulas). If you have no link yet, the editor asks you to create one first.
+
+## Formula
+
+A **Formula** computes a value from the record's other attributes every time records are read, so it is never out of date.
+
+- **Formula**: the expression, for example `DATE_ADD({End date}, -{Notice days}, "days")`.
+- **Result type**: **Number**, **Currency**, **Text**, **Date**, **Date and time** or **Checkbox**. Filters, sorting, grouping and summaries treat the column as this kind.
+
+While you type, Rational AI checks the formula and shows a **Preview** of its result on the first five records; an error says at which character it is.
+
+| Element | How to write it |
+| --- | --- |
+| Attributes | In braces: `{Amount}`, `{Renewal date}`. Linked fields, rollups and other formulas work too, as do `{Name}` and `{Created}`. |
+| Values | Numbers, `"text in quotes"`, `TRUE`, `FALSE`. |
+| Operators | `+ - * /`, `&` to join text, `= != < <= > >=`. |
+| Logic | `IF(condition, then, else)`, `AND(…)`, `OR(…)`, `NOT(x)`, `BLANK()`, `IS_BLANK(x)`. |
+| Numbers | `ROUND(n, digits)`, `ABS(n)`, `MIN(…)`, `MAX(…)`. |
+| Dates | `TODAY()`, `DATE_ADD(date, n, "unit")`, `DATE_DIFF(date1, date2, "unit")`, with the units `days`, `months`, `years`, `hours`, `minutes`. |
+| Text | `CONCAT(…)`, `UPPER(text)`, `LOWER(text)`, `LEN(text)`. |
+
+For example, `IF({Amount} > 10000, "Key account", "Standard")` labels large accounts, and `DATE_DIFF({Renewal date}, TODAY(), "days")` counts the days left before a renewal.
+
+<Admonition type="note" icon="📝" title="A FORMULA NEVER FAILS ON A RECORD">
+An empty input, a division by zero or a value out of range gives an empty cell rather than an error, so one incomplete record doesn't break the column. A formula cannot refer to itself, directly or through other formulas.
+</Admonition>
+
+## Rollup
+
+A **Rollup** summarises the records linked to this one: how many opportunities a company has, their total value, the date of the latest meeting.
+
+- **Over the records**: the linked records to summarise. You can follow one of this record's links (*"the Companies it links to"*) or the records whose link points *to* this record (*"Opportunities whose Company is this record"*).
+- **Calculate**: **Count records**, **Count filled**, **Count empty**, **Count unique values**, **Sum**, **Average**, **Minimum**, **Maximum**, **Earliest** or **Latest**.
+- **Of their**: the attribute to calculate on (not needed for **Count records**). Sums and averages take numbers, **Earliest** and **Latest** take dates; the list only offers attributes that fit.
+
+A rollup can summarise stored attributes, linked fields and formulas, but not a link or another rollup. The column is read-only; select a cell to [see the records behind it](/operational-guides/knowledge-collections-and-grid#follow-a-rollup-to-its-records).
+
+## Person
+
+A **Person** attribute names users of the workspace: the account manager of a customer, the owner of a task.
+
+- **Several people can be named**: switch it on to allow more than one person.
+
+The picker lists the users who can read the Knowledge, plus a **Me** shortcut. Each person named on a record gets an in-app notification, unless they named themselves. Person attributes also power two other features:
+
+- **Filter by "Me":** a grid view filtered on *Account manager* **is any of** **Me** shows each user their own records.
+- **Reminders to the record's people:** a [reminder](/operational-guides/knowledge-reminders) can notify whoever the record names.
+
+## Rename an attribute
+
+Renaming changes the attribute everywhere Rational AI can find it, but not in code.
+
+1. In the grid, open the column's menu and choose **Rename**.
+2. Enter the new name.
+3. Read the **Code that uses this name** list: the workflows and custom views that refer to the attribute. Ones that come from an extension are marked *read-only*.
+4. Select **Rename**.
+
+The values of every record, the collections' attribute lists, saved grid views, and the links, linked fields, rollups and formulas that use the attribute are all updated. Old **History** entries keep the name they had at the time.
+
+<Admonition type="caution" icon="⚠️" title="UPDATE THE CODE THAT USES THE OLD NAME">
+Workflows and custom views keep using the old name until you edit them. An AI extraction that is running while you rename still writes the old name and its resources are rejected: run it again once the rename is done.
+</Admonition>
+
+## Remove an attribute
+
+Choose **Remove attribute** in the column's menu. The attribute leaves the grid, the collections and the AI extraction, but records keep their values: creating an attribute with the same name shows them again.
+
+## Result
+
+Your records now connect and compute: links tie collections together and show up in the graph, linked fields and rollups bring the linked records' data into each row, formulas keep derived values up to date, and person attributes give every record an owner who can filter for their own work and receive its reminders. Renames carry through to views, formulas and rollups, with a list of the code you still need to update.

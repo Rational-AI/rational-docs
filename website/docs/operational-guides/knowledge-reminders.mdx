@@ -1,0 +1,72 @@
+---
+sidebar_position: 8
+sidebar_label: Reminders
+---
+import Admonition from '@theme/Admonition';
+
+# Get reminded before a date in your records
+
+Contracts expire, certificates lapse, invoices fall due, and the date is sitting right there in a column nobody looks at until it is too late. Rational AI can watch the date attributes of a [Knowledge](/operational-guides/knowledge-collections-and-grid) for you: you set a reminder once, such as *30 days before Renewal date*, and every matching record notifies the right people, in the Control Room and optionally by email, when its day comes.
+
+<Admonition type="info" icon="📖" title="WHAT IS A REMINDER?">
+A **reminder** is a rule on one date or date-and-time attribute of a Knowledge: *when* to notify (so many days or hours before or after the date, or on the day), *who* to notify (users, roles, or the people each record names), and optionally *which records* (a collection tab and a filter). Rational AI checks every reminder throughout the day and sends one notification per record, per day, to each recipient.
+</Admonition>
+
+## Prerequisites
+
+Before you start, make sure you have:
+
+- **Update rights on the Knowledge:** creating, editing and deleting reminders needs the Knowledge **update** permission.
+- **A date attribute:** a **Date** or **Date and time** attribute with values in your records. Computed attributes (formulas, rollups, linked fields) can't carry a reminder. See [Attribute kinds](/operational-guides/knowledge-attributes).
+- **Email, if you want it:** reminders by email need the platform's outgoing email to be configured by your administrator; without it, reminders are delivered in the Control Room only.
+
+## Create a reminder
+
+1. Open the Knowledge's **Grid**, and, if the reminder is about some records only, select their collection tab and set a filter (for example *Status* **is** *Active*).
+2. Open the menu of the date column and choose **Remind me…**. (You can also select **Reminders** in the toolbar, then **New reminder**.)
+3. Give the reminder a **Name**. It is the first thing recipients read, so make it say what is due, such as *Contract renewal*.
+4. Under **Remind**, set when to notify: a number and **days before**, **on the day of** or **days after** the date attribute. On a date-and-time attribute you can also choose **hours before** or **hours after**. The default is 7 days before; the offset can be up to 366 days.
+5. Keep **Only the resources the grid shows: this tab and its filter** ticked to limit the reminder to the records you selected in step 1, or untick it to cover every record of the Knowledge.
+6. Under **Notify**, choose at least one recipient:
+   - **Users**: specific people. You are selected by default.
+   - **Roles**: everyone who has the role when the reminder fires.
+   - **The people the record names**: for each record, the users named in one of its person attributes, shown as *"The record's Account manager"*. Available when the Knowledge has [person attributes](/operational-guides/knowledge-attributes#person).
+7. Tick **Also send by email** if recipients should get an email as well.
+8. Check the preview at the bottom: it lists how many reminders will go out in the next 30 days, and the first few records with their dates.
+9. Select **Save**.
+
+<Admonition type="note" icon="📝" title="ONLY PEOPLE WHO CAN READ THE KNOWLEDGE ARE NOTIFIED">
+Recipients are worked out when the reminder fires, not when you save it: a role includes whoever holds it that day, and the record's people are whoever the record names that day. Anyone who can't read the Knowledge at that moment is skipped, so a reminder never shows a record to someone who isn't allowed to see it.
+</Admonition>
+
+## Know when reminders fire
+
+| Attribute | When the notification goes out |
+| --- | --- |
+| **Date** | On the due day, from **8:00** in the time zone of the browser the reminder was created in. Days that have already passed are not sent: a new reminder never notifies about dates in the past. |
+| **Date and time** | Within about a quarter of an hour of the due time. If the platform was unavailable at that time, the reminder still goes out up to a day late, but not later. |
+
+Each person is notified once per record and due day, however many times the check runs. If the filter of a reminder uses **Me**, it means the person who created the reminder.
+
+## Read your notifications
+
+Reminders arrive in the **Notifications** bell in the Control Room header, with an unread count. Each one reads like *"Contract renewal: Acme Ltd (Renewal date 2026-12-01)"*; select it to open the record. Use the **All** and **Unread** tabs to filter the list, and **Mark all as read** to clear it.
+
+With **Also send by email**, each recipient also gets one email per run, with the subject *"[Reminder] Contract renewal"*, listing their records with a link to each. People without an email address on their account receive the in-app notification only.
+
+The bell also tells people when they are named in a person attribute (*"You were assigned to …"*), including once per import when an [import](/operational-guides/import-knowledge#import-records-from-excel-or-csv) assigns them several records.
+
+## Manage reminders
+
+Select **Reminders** in the grid toolbar to see every reminder of the Knowledge, with a summary such as *"30 days before Renewal date · Sales, The record's Account manager"*.
+
+- Select **Edit** to change a reminder. To pause it without losing it, untick **Enabled**: it shows as *paused* in the list.
+- Select **Delete** to remove it. Notifications it has already sent stay where they are.
+
+<Admonition type="note" icon="📝" title="RENAMES ARE FOLLOWED, DELETIONS ARE NOT">
+If you rename the date attribute, or a person attribute the reminder notifies, the reminder follows the new name. If you delete the attribute, or change it to a kind that isn't a date, the reminder stays in the list but stops sending, so check it after reorganising your attributes. Deleting a collection deletes the reminders set on it.
+</Admonition>
+
+## Result
+
+Your dates now work for you: each reminder notifies the chosen users, roles or each record's own people at the right time, in the Control Room bell and optionally by email, once per record and day, and only for people who can read the Knowledge. You can review, pause or delete every reminder of a Knowledge from the **Reminders** button in the grid.
