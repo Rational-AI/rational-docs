@@ -59,12 +59,31 @@ A tool appearing in this catalog means it exists in your environment, not that a
 There are two moments at which you can see what an extension offers, and they don't mean quite the same thing.
 
 - **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started — useful for deciding whether an extension is worth setting up.
-- **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog, and the list refreshes whenever a configuration starts or restarts.
+- **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog. The list is refreshed when you create or edit an MCP server configuration and when an extension is updated.
 
-<Admonition type="note" icon="📝" title="AFTER AN UPDATE, THIS LIST CAN LAG">
-Updating an extension doesn't restart its servers, so this catalog keeps showing the tools the server last reported until the next restart. That's deliberate: your touchpoint wiring survives the update untouched, and tools that no longer exist are pruned at the next rediscovery instead of vanishing mid-flight. See [Update and roll back extensions](/operational-guides/extension-updates) for the full timing.
+<Admonition type="note" icon="📝" title="AN UPDATE THAT WOULD BREAK A TOUCHPOINT IS REFUSED">
+During an update the platform lists the new release's tools and keeps the identity of every tool that still exists, so touchpoint bindings carry over. If the update removes a tool a touchpoint still uses, or changes a tool's parameters so a binding no longer fits, the update is refused unless you force it. See [Update and roll back extensions](/operational-guides/extension-updates#what-happens-to-your-tools-and-touchpoints) for the details.
+</Admonition>
+
+## Give a slow MCP server more time
+
+Every tool call has a time limit. A tool that hasn't answered when the limit expires is reported to the assistant as failed, so the conversation carries on instead of waiting. The limit is set on the touchpoint and applies to every MCP server it uses (see [Configure touchpoints](/operational-guides/configure-touchpoints)). When a single server is slow, for example one that runs a long query or calls a slow external service, give only that server more time:
+
+1. Go to **Settings** → **Touchpoints**, select the touchpoint and open the **Tools** tab.
+2. In the configuration's `⋮` menu, select **Configure MCP server**. To create a new configuration instead, use **Add MCP server configuration…** → **+ Add new configuration**.
+3. In **Tool call time limit**, enter the number of seconds, from 1 to 600. The help text shows the limit the server follows when you leave the field empty: *"Only for this server. Leave empty to follow the touchpoint's limit of … seconds."*
+4. Select **Save**.
+
+| Where the limit is set | When it applies |
+|------------------------|-----------------|
+| **Tool call time limit** on the MCP server configuration | Always, for that configuration's tools. |
+| **How long a tool may take** on the touchpoint | For every server configuration that has no limit of its own. |
+| Platform default (120 seconds) | When neither of the above is set. |
+
+<Admonition type="note" icon="📝" title="AN EMPTY FIELD NEVER MEANS NO LIMIT">
+Leaving the field empty makes the server follow the next limit down: the touchpoint's, then the platform default. Every call is bounded, and a value outside 1–600 seconds is refused when you save, so the number you enter is the one that applies.
 </Admonition>
 
 ## Result
 
-You know where to find every tool your agents can use, how to tell which extension provides each one, the difference between what an extension declares and what its running server actually serves, and where to go next to actually grant a tool to an agent.
+You know where to find every tool your agents can use, how to tell which extension provides each one, the difference between what an extension declares and what its running server actually serves, how to give a single slow MCP server more time than the rest of the touchpoint, and where to go next to actually grant a tool to an agent.

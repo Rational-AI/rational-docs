@@ -123,6 +123,7 @@ const sidebars: SidebarsConfig = {
 					label: "Extend",
 					collapsed: true,
 					items: [
+						"operational-guides/marketplace",
 						"operational-guides/build-an-extension",
 						"operational-guides/develop-an-extension",
 						"operational-guides/manage-extensions",

@@ -1,0 +1,253 @@
+---
+sidebar_position: 5
+sidebar_label: Marketplace
+---
+import Admonition from '@theme/Admonition';
+
+# Install solutions from the Marketplace
+
+Starting from an empty Knowledge base means designing collections, views, reminders and assistant instructions before anyone gets value from it. The **Marketplace** offers ready-made solutions for common jobs: a CRM, a due diligence data room, an AI Act register, NIS2 compliance and many more. You pick one, choose where its content goes, and Rational AI sets it up in one step. Later you can update it, go back to an earlier version or remove it, without losing the records you added.
+
+<Admonition type="info" icon="📖" title="WHAT IS A SOLUTION?">
+A **solution** is an [extension](/operational-guides/manage-extensions) published by Rational AI that sets up a complete use case. Depending on the solution, installing it creates a Knowledge base with its collections, attributes and saved views, example records, reminders, processing workflows, tools and skills for the assistant, BI dashboards, a website widget or a data source that syncs on a schedule. Some solutions also install automated agents. Every solution is listed with what it installs before you install it.
+</Admonition>
+
+## Prerequisites
+
+- **A signed-in account:** everyone can browse the Marketplace and read the solution pages.
+- **Permission to install extensions:** installing needs the right to create extensions. Without it, you see **Ask an admin** instead of **Install** (see [Ask the admins to install a solution](#ask-the-admins-to-install-a-solution)).
+- **Edit access to the target Knowledge base:** only if you install a solution into a Knowledge base that already exists.
+
+## Find a solution
+
+1. Select **Marketplace** in the top navigation.
+2. Narrow the list in one of these ways:
+   - Type in the search box. The search covers names, taglines, descriptions, industries, use cases and features.
+   - Select a tile under **Browse by use case**.
+   - Use the side panel: **All solutions**, **New and updated** (published or updated in the last 30 days), **Installed**, or a value under **By industry**, **By use case** or **Includes**.
+3. Sort the results with **Newest**, **Recently updated**, **Name A to Z** or **Installed first**. To start over, select **Clear all**.
+
+The filters list only the values that some solution has, each with its count:
+
+| Filter | Values |
+|--------|--------|
+| **By industry** | Manufacturing, Public sector, Retail and fashion, Culture and archives, Defence and intelligence, Energy and utilities, Healthcare, Finance and insurance, Professional services |
+| **By use case** | Compliance, Document processing, Supply chain, Sales and prospecting, Customer service, Human resources, Business intelligence, Contracts and suppliers, Product development, Production planning, Asset monitoring, Grants and funding, Public tenders, Marketing and social media, and more |
+| **Includes** | Interactive views, BI dashboards, Workflows, Skills, Website widget, Agents and reminders |
+
+When Rational AI features a solution, it appears at the top of the page with a **See the solution** link.
+
+Each card shows the solution's name, tagline and what it brings (for example *"8 views · 3 agents"*), and a state when it is already in your workspace: **Installed**, **Update available**, **Setup 2 of 5** or **Installing**. The catalogue is shown in your interface language when the solution is translated.
+
+## Read the solution page
+
+Select a card to open its page. Before you install, it tells you exactly what you get:
+
+- **Views:** screenshots of the solution's saved views. Select **Preview views** to jump to them.
+- **Overview:** how the solution works step by step, the collections it creates and questions you can ask the assistant.
+- **What it installs:** the Knowledge base, the agents with what triggers them, reminders, workflows, tools, BI dashboards and the website widget.
+- **Permissions:** what the solution's agents or assistant may change, for example *"The assistant can change records in Opportunities."*, and which external source it reads from.
+- **Setup after install:** the steps that become your checklist once the solution is installed.
+- **Versions:** every published version with its date and release notes.
+
+## Install a solution
+
+1. On the solution's card or page, select **Install**. To install an older release, open the chevron next to **Install** and select **Install another version**.
+2. In **Knowledge**, choose where the solution's content goes:
+   - **+ New knowledge** creates a new Knowledge base. Enter its **Knowledge name**; if the name is taken, the dialog suggests a free one.
+   - An existing Knowledge base adds the solution to it.
+3. Set the options:
+
+   | Option | When to use it |
+   |--------|----------------|
+   | **Content language** | Choose **Italiano** or **English** for the collections, views, agents and examples. It is offered only when the solution is translated, and updates keep the language you chose. |
+   | **Include example data** | Leave it on to get records tagged *example*, so every view has something to show while you try the solution. Turn it off to start empty. |
+   | **Start the agents after setup** | Shown only for solutions with agents. Off, the agents are created paused. |
+   | **Send e-mail from** | Shown only when an agent can send e-mail: the mailbox it sends from. The default, *"None, the agents only draft"*, sends nothing. |
+   | **Owner of examples and reminders** | The person who owns the example records and receives their reminders. It defaults to you; you can reassign records in bulk later. |
+
+4. Check **This solution will be able to**, which lists what the solution may change or read.
+5. Select **Install solution**. If one of its tools needs settings, such as an API key, select **Continue** and fill in the **Settings** form first.
+
+The dialog shows each step as it runs. You can close it: the install goes on, and the card shows how far it is. When it finishes, select **Open** to go to the Knowledge base.
+
+<Admonition type="note" icon="📝" title="AN EXISTING KNOWLEDGE BASE KEEPS ITS CONTENT">
+When you install into an existing Knowledge base, its documents, records, attributes and name stay. The solution adds its collections, views, reminders and agents, and its processing rule and assistant instructions replace the ones the Knowledge base had.
+</Admonition>
+
+<Admonition type="note" icon="📝" title="A FAILED INSTALL LEAVES NOTHING BEHIND">
+If the install fails, everything it had created is undone, so you can select **Try again** without cleaning up first. A solution that reads from an external source also offers **Install without source**, for when the source is what fails.
+</Admonition>
+
+## Ask the admins to install a solution
+
+If you can't install extensions, ask the people who can:
+
+1. On the solution's card or page, select **Ask an admin**.
+2. Optionally, write in **Message (optional)** what you would use the solution for.
+3. Select **Send request**.
+
+Every administrator gets an in-app notification with your name, your message and a link to the solution page. You can ask once a day for each solution; a second request on the same day is answered with *"You already asked for this solution today"*.
+
+## Follow the setup and status of a solution
+
+Open an installed solution from the **Installed** filter or from its card. Its page becomes the solution's status page:
+
+- **Setup:** the checklist from **Setup after install**, with the steps done so far. Select **Continue setup** to work through it. Ticks are saved with the installed solution.
+- **Components:** the solution's sources, agents, reminders and views, each with its state, for example **Active**, **Sync failed**, **Last run failed**, **Paused** or **Needs owners** (records nobody is notified for). Each problem comes with its action: **Retry**, **View log**, **Resume** or **Assign**. A view you deleted shows as **Removed**, and an update doesn't bring it back.
+- **Overview** and **Versions:** the same content as before the install.
+
+The **More actions** menu has **Check for updates**, **Version history**, **Restart setup**, which marks every setup step as not done without touching any data, **Pause all agents** and **Uninstall…**. To open the solution's content, select **Open** followed by the Knowledge base name.
+
+## Update a solution
+
+When a new version is published, the page shows *"Version … is available"*. Updates never touch your own records.
+
+1. Select **Review update**. The dialog lists the release notes and every component the update adds, changes or removes: views, collections, reminders, agents, tools and dashboards.
+2. Check **You changed N components**: for each component you edited yourself, the update keeps your version.
+3. If you changed a collection and the update adds columns to it, each such collection has a checkbox, selected by default. Clear it to keep that collection as it is, without the new columns.
+4. Select **Update solution**.
+
+<Admonition type="note" icon="📝" title="AN UPDATE KEEPS THE CONTENT LANGUAGE">
+A solution stays in the language you installed it in. If a new version isn't available in that language, the dialog says so and the update can't be applied.
+</Admonition>
+
+How compatible updates are detected for the extension behind a solution, and what an update does to tools and touchpoints, is described in [Update and roll back extensions](/operational-guides/extension-updates).
+
+## Restore an older version
+
+If a new version doesn't suit you, go back:
+
+1. Open the **Versions** tab and select **Restore this version** on the version you want.
+2. Read the dialog: what the installed version added and the older one doesn't have is removed from the solution. Your records are not touched, and the components you changed keep your version.
+3. Select **Restore version**.
+
+## Uninstall a solution
+
+1. In **More actions**, select **Uninstall…**.
+2. Read which of the solution's agents and reminders the dialog says are removed, then choose what happens to the content:
+
+   | Option | When to use it |
+   |--------|----------------|
+   | **Keep the knowledge and its records** *(default)* | You want to keep working with the data. The Knowledge base stays with its views and records. |
+   | **Delete the knowledge too** | You no longer need the data. The dialog tells you how many records will be deleted, examples and your own. Type the Knowledge base name to confirm. |
+
+3. Select **Uninstall solution**, or **Uninstall and delete**.
+
+<Admonition type="caution" icon="⚠️" title="DELETING THE KNOWLEDGE CANNOT BE UNDONE">
+**Delete the knowledge too** deletes the records and documents of the Knowledge bases the install created. A Knowledge base that existed before you installed the solution into it is never deleted: it is kept and detached from the solution.
+</Admonition>
+
+A kept Knowledge base is detached from the solution. If you install the same solution again later, it adopts that Knowledge base again.
+
+## Catalogue
+
+The Marketplace on your installation may show a different selection: Rational AI publishes new solutions over time and can hide some. Each solution's page is the reference for what it installs. The table lists the general-purpose solutions available at the time of writing. **IT + EN** means you can choose the content language at install time.
+
+| Solution | What it does | Industries | Content | Installs agents |
+|---|---|---|---|---|
+| **Access to records and civic access** | A public body's access requests under three regimes, with deadlines, counter-interested parties, review and register. | Public sector, Energy and utilities | IT + EN | Yes |
+| **Agents and commissions** | Agent commissions from the ERP export, statements approved and sent, Enasarco and FIRR to check. | Manufacturing | IT + EN | Yes |
+| **AI Act register** | The company's AI systems, the AI Act obligations of each and the evidence, with the current deadlines. | Manufacturing, Professional services, Finance and insurance | IT + EN | Yes |
+| **Anti-money-laundering for professional firms** | Due diligence, beneficial owner, retention and restricted assessments for a professional firm. | Professional services, Finance and insurance | IT + EN | Yes |
+| **Azienda agricola: register of treatments** | A farm's treatment register, with annotation and conversion terms and an export for the CAA. | Manufacturing | IT + EN | Yes |
+| **B2B customer prospecting** | Companies to contact with a score, research on their website with sources, custom questions for each company and e-mail sequences approved by a person. | Manufacturing | IT + EN | Yes |
+| **Banco di prova delle decisioni** | Try the decision model on your own cases: an image, a question, the probability of every answer and the action above the threshold. | Manufacturing, Professional services, Retail and fashion | EN | — |
+| **Campaign check: objectives, readings and weekly outcome per client** | Weekly campaign check per client, from CSV exports, with variances, owner and written outcome. | Professional services | IT + EN | Yes |
+| **CBAM: imports and supplier emissions** | Iron, steel and aluminium imports subject to CBAM, the 50-tonne threshold, the emissions data of the suppliers' installations and the deadlines of the first declaration. | Manufacturing | IT + EN | Yes |
+| **Charge check: quotations, reports and invoices** | Compares quotations, service reports and invoices line by line and shows findings with the two documents side by side. | Manufacturing, Professional services | IT + EN | Yes |
+| **Chemical agents and safety data sheets** | The inventory of chemical products with up-to-date safety data sheets and the chemical risk assessment per workstation. | Manufacturing | IT + EN | Yes |
+| **Clinical notes** | Draft clinical notes from a visit recording, for the clinician to correct and sign, on an on-premise installation. | Healthcare | IT + EN | Yes |
+| **Complaints, non-conformities and corrective actions** | Customer complaints, non-conformities and corrective actions in one register, with the 8D and the effectiveness check. | Manufacturing | IT + EN | Yes |
+| **Congresses and events** | Programme, speakers, abstracts, sponsors and attendees of a congress, with the computed ECM calendar and a public page. | Professional services, Healthcare | IT + EN | Yes |
+| **Construction sites: firms, DURC, credit licence and SAL** | Sites and firms with notification, DURC, credit licence, subcontracts and SAL, and a traffic light for each site. | Professional services | IT + EN | Yes |
+| **Contractors and work permits** | Contractors, documents, DUVRIs, work permits and the gatehouse in one place: whoever enters the plant has a qualified contractor, documents in order and an authorised job. | Manufacturing | IT + EN | Yes |
+| **Contracts and suppliers** | Every contract from draft to notice, with qualified suppliers and expiring certificates | Manufacturing, Retail and fashion, Professional services | IT + EN | Yes |
+| **Controlli su foto** | A decision model answers closed questions about each photo, with the probability of every answer; the uncertain ones go to a person. | Manufacturing, Public sector | EN | — |
+| **Controllo dei cedolini** | The consultant's payslips checked before they go out: each net pay compared with the month before, with the reason for every difference. | — | EN | — |
+| **Controllo dei DDT in arrivo** | The transport documents of incoming goods checked as you upload them, against requirements you write: every rejection with its reason. | Manufacturing, Retail and fashion, Professional services | IT | — |
+| **Corporate governance** | Arrangements, quarterly indicators, treasury and reports to the board and the auditors in one place. | Manufacturing, Professional services, Finance and insurance | IT + EN | Yes |
+| **Cosmetic product file: PIF, annexes and undesirable effects** | Each cosmetic's product file with its formula compared to the annexes, label, PIF and undesirable effects. | Manufacturing | IT + EN | Yes |
+| **Credit collection** | Graduated payment reminders and customer replies, from the ERP's open items. | Manufacturing, Professional services | IT + EN | Yes |
+| **CRM** | Companies, contacts, activities and pipelines in one place, with the documents next to the records. | Professional services | EN + IT | Yes |
+| **Customer orders** | Customer orders read from the mailbox, checked against price lists and terms, confirmed and followed until shipped. | Manufacturing | IT + EN | Yes |
+| **Customer samples and part approval (PPAP)** | Part sample submissions to customers, with the PPAP or VDA 2 checklist per level, interim approvals and requalifications. | Manufacturing | IT + EN | Yes |
+| **Customer service** | Customers' requests in one queue by deadline, with the draft answer from the knowledge base to approve and send. | Manufacturing | IT + EN | Yes |
+| **Customer traffic light: colour, credit limit, blocks and exceptions** | A colour for each customer, computed by stored rules, with block and unblock proposals a person decides. | Manufacturing, Professional services | IT + EN | Yes |
+| **Cyber Resilience Act: vulnerabilities and reports** | Products, SBOM, vulnerabilities and Cyber Resilience Act art. 14 reports in one place: the 24 and 72 hour deadlines in sight, the drafts ready to submit. | Manufacturing | IT + EN | Yes |
+| **Document reading: types, fields and queue of doubtful pages** | Reads similar documents with a local vision model and sends only the doubtful pages to a person. | Manufacturing, Professional services | IT + EN | Yes |
+| **Document specification revisions** | What changes between two revisions of a specification, section by section and row by row, reviewed by a person. | Manufacturing | IT + EN | — |
+| **Due diligence data room** | Documents, checklist, requests, approvals and deadlines of a due diligence in one place. | Finance and insurance, Professional services | EN + IT | Yes |
+| **Energy and consumption** | Bills, meters and consumption by line with the energy cost per piece, the anomalies and the energy audit. | Manufacturing, Energy and utilities | IT + EN | Yes |
+| **Energy community** | Members, plants and GSE incentives of a renewable energy community, with the monthly split among the members. | Energy and utilities, Public sector | IT + EN | Yes |
+| **Engineering changes (ECR/ECO)** | Engineering changes from request to closure, with the impact on orders and stock, the departments' actions and the sign-off round. | Manufacturing | IT + EN | Yes |
+| **ESG data for banks and customers** | The ESG data banks and customers ask for, collected once a year with the evidence, and answers to their questionnaires proposed from the data. | Manufacturing | IT + EN | Yes |
+| **EU funding calls and tenders** | The EU calls that fit your company, its applications and the obligations of the funded projects in one place. | Manufacturing, Professional services | EN + IT | Yes |
+| **EUDR deforestation: suppliers and statements** | EUDR due diligence per delivery: role, DDS numbers, checked plots, risk and requests to suppliers. | Manufacturing | IT + EN | Yes |
+| **Expense reports and business trips** | Employee expense reports and business trips, with expenses from the phone, the policy check and payslip refunds. | Professional services, Manufacturing | IT + EN | Yes |
+| **Export control and sanctions** | Export orders checked before they ship for EU sanctions, dual use and the no-Russia clause. | Manufacturing | IT + EN | Yes |
+| **F-gas and environmental permits** | F-gas leak checks, interventions to be reported to the F-gas database, permits, prescriptions and lab reports in one place, with every environmental deadline in one list. | Manufacturing | IT + EN | Yes |
+| **Food safety: HACCP, allergens, labels and recalls** | A food manufacturer's HACCP plan with monitoring records, allergens, labels, food contact declarations and recall cases. | Manufacturing | IT + EN | Yes |
+| **Form filling** | Forms and questionnaires filled from company documents, with sources, expiry dates and a person's approval. | Manufacturing, Professional services | IT + EN | Yes |
+| **Funded training: Fondimpresa accounts, plans and registers** | Fondimpresa accounts, expiring credits, plans, registers and costs, with checks computed from the fund's rules. | Manufacturing, Professional services | IT + EN | Yes |
+| **Gestione del personale** | Hires, job changes and leavers, each employee's courses, medical visits and acknowledgements, with signed documents read and filed on the person. | — | IT + EN | Yes |
+| **Injuries, near misses and hazards** | The plant's injuries, near misses and hazards: report from a phone with the department's QR code, the INAIL report reminded by the hour, the rates computed by themselves. | Manufacturing | IT + EN | Yes |
+| **Installed base and service** | The machines installed at your customers: as-built per serial number, warranties, service requests, interventions and campaigns. | Manufacturing | IT + EN | Yes |
+| **Insurance and claims** | Policies, renewals, premiums, conditions, certificates and claims, with computed deadlines and a drafted claim notice. | Manufacturing | IT + EN | Yes |
+| **Internal helpdesk and IT equipment** | Internal requests to IT, general services and HR in one queue by deadline, with the inventory of devices and licences. | Manufacturing | IT + EN | Yes |
+| **Iperammortamento 2026: goods and GSE communications** | The 2026 hyper-depreciation goods with the GSE communications and their deadlines, each good's appraisal and documents. | Manufacturing | IT + EN | Yes |
+| **ISO 9001 quality management system** | The ISO 9001:2026 quality system in one place: processes, documents with reads, audits, findings, calibrations and review. | Manufacturing | IT + EN | Yes |
+| **Issue tracker** | Issue tracker for product and software teams: board, backlog, sprints with burndown, milestones and linked pull requests. | Professional services, Manufacturing | IT + EN | Yes |
+| **Job tracking** | Make-to-order jobs from signature to acceptance: phases, hours and costs against the quoted budget, variations, delays and the weekly status for the customer. | Manufacturing | IT + EN | Yes |
+| **Lease management** | Properties, leases, monthly rent and service charges, arrears and maintenance, with a portal for tenants and owners. | Professional services, Finance and insurance | IT + EN | Yes |
+| **Machinery Regulation: technical file and CE marking** | Each machine's technical file item by item, the risk assessment and the modifications, towards Regulation (EU) 2023/1230. | Manufacturing | IT + EN | Yes |
+| **Meeting minutes** | From transcript to minutes: resolutions, actions with who and when, open actions at the next meeting. | Manufacturing, Professional services, Finance and insurance | IT + EN | Yes |
+| **Model 231 and Supervisory Body** | The sensitive activities, predicate offences, controls and flows to the Supervisory Body of your Model 231, with deadlines and evidence. | Manufacturing, Professional services, Energy and utilities | IT + EN | Yes |
+| **Moderated community** | A moderated community for customers or members: discussions, replies and events from a portal with a personal code. | Manufacturing, Professional services, Public sector | IT + EN | Yes |
+| **Monitoraggio concorrenti e mercato** | News about competitors and the market, read every day from the sources you choose, classified and summarised every Monday. | Manufacturing | EN | Yes |
+| **NIS2 compliance** | NIS2 measures, risks, suppliers and incidents with the CSIRT Italia deadlines. | Manufacturing, Energy and utilities, Professional services | EN + IT | Yes |
+| **Nutrition practice: patients, visits and draft plans** | Patients, visits, draft meal plans the professional approves and appointments of a practice, on the practice's servers. | Healthcare | IT + EN | Yes |
+| **OEE, downtime and scrap** | OEE, downtime and scrap of every line from MES data, with the loss Pareto and the agents' shift reports. | Manufacturing | IT + EN | Yes |
+| **Outside processing: stock at subcontractors** | What is at each subcontractor, computed from the DDTs, with age, value and deadlines. | Manufacturing | IT + EN | Yes |
+| **Packaging: PPWR and CONAI** | Each packaging file with its PPWR requirements, components, documents and CONAI deadlines. | Manufacturing, Retail and fashion | IT + EN | Yes |
+| **Patent Box and R&D credits: intangible assets, costs and deadlines** | Patents, software and R&D projects with documented costs, the Patent Box uplift, the tax credits and the deadlines. | Manufacturing | IT + EN | Yes |
+| **PIM** | The product catalogue with photos, governed sheets, translations and channels, and each distributor's file filled in from it. | Manufacturing | IT + EN | Yes |
+| **Plant maintenance** | The plant's maintenance plan, breakdowns, machine downtime and critical spares, with the week's work orders ready every morning. | Manufacturing | IT + EN | Yes |
+| **Preferential origin and supplier's declarations** | Supplier's declarations with their expiry and renewals, the origin of each product per agreement and the origin statement for the invoice, in one place. | Manufacturing | IT + EN | Yes |
+| **Privacy and GDPR** | The record of processing activities with its gaps, data subject requests and breaches with their deadlines, and supplier agreements. | Manufacturing, Professional services, Retail and fashion | IT + EN | Yes |
+| **Procedures manual** | Office procedures manual by department, with entries drafted by an agent from interviews and approved by the custodian. | Manufacturing, Professional services | IT + EN | Yes |
+| **Product compliance and declarations** | Supplier declarations on materials and substances, and answers to customer questionnaires proposed from the data, with their sources. | Manufacturing | IT + EN | Yes |
+| **Product development and gate reviews** | The phase reviews of product development projects, with the checklist each function fills and the project manager's signature, and the first-pass yield of every gate. | Manufacturing | IT + EN | Yes |
+| **Production scheduling** | A job shop's production plan computed by an optimiser, reviewed on a Gantt and changed in the chat. | Manufacturing | IT + EN | Yes |
+| **Project materials** | Project phases aligned with the real availability of their materials. | Manufacturing | IT + EN | Yes |
+| **Public tenders** | Public tenders from tender rules to outcome, with requirements, company documents, deadlines and the authority's PEC. | Professional services, Manufacturing | IT + EN | Yes |
+| **Purchasing and stock** | Purchase orders, stock thresholds, supplier reminders and delivery checks, next to the ERP. | Manufacturing | IT + EN | Yes |
+| **Rational Academy** | The company's internal courses, assigned by department and job role, taken by employees with a personal code. | Manufacturing, Professional services | IT + EN | Yes |
+| **Rational Budget** | Budget against actuals month by month, with the monthly closings and the explanation of the variances. | Manufacturing, Finance and insurance | IT + EN | Yes |
+| **Recruiting** | Recruiting from the hiring request to the first day, with CV reading, scored interviews and data retention. | Manufacturing, Energy and utilities | IT + EN | Yes |
+| **Reporting channel** | A public page to report, also anonymously, and the handler's register with 7-day acknowledgement and 3-month feedback. | Manufacturing, Professional services, Public sector | IT + EN | — |
+| **Returns and warranty** | Customer returns and warranty claims from request to closure, with the warranty worked out, the costs and the recovery from suppliers. | Manufacturing | IT + EN | Yes |
+| **Risk assessment, emergencies and PPE** | The risk assessment with a P × D matrix and 30-day rework, the emergency plan and PPE issues signed on a tablet. | Manufacturing | IT + EN | Yes |
+| **SGSI ISO 27001** | Your ISMS's Statement of Applicability, risks, evidence and findings, with everyone's deadlines. | Professional services, Finance and insurance, Healthcare | EN | Yes |
+| **Shipments and transport** | Shipments to customers from pick-up to delivery, with carrier requests, PODs, freight invoices and claims. | Manufacturing | IT + EN | Yes |
+| **Social media editorial plan** | The social media editorial plan and calendar, for a small marketing team. | Professional services, Retail and fashion, Manufacturing | IT + EN | — |
+| **Specification revisions** | What changes between two revisions of a specification, component by component, drawings included. | Manufacturing | IT + EN | Yes |
+| **Supplier quality** | Supplier corrective action requests and 8Ds, audits, a monthly A/B/C scorecard and incoming inspection plans. | Manufacturing | IT + EN | Yes |
+| **Supplier quotation comparison** | Supplier quotations brought to one unit, currency and delivery basis, with what is missing and the decision frozen. | Manufacturing | IT + EN | Yes |
+| **Technical quotes on request** | Quotes for drawing-based parts and machines, costed from rates, price lists and similar quotes, followed to the outcome. | Manufacturing | IT + EN | Yes |
+| **Technical sheets from voice** | Shop-floor technical sheets drafted from a technician's voice note, and an assistant that answers by citing them. | Manufacturing | IT + EN | Yes |
+| **Timesheets** | Hours per person, place and machine from daily work reports an assistant collects on WhatsApp, with a weekly report. | Manufacturing, Professional services | IT + EN | Yes |
+| **Tracciabilità lotti e controllo ricevimenti** | Incoming goods inspection and the traceability of every lot, from the supplier to the customer. | Manufacturing | EN | Yes |
+| **Treasury and cash flow** | A 13-week and 12-month cash forecast, credit lines and loans by bank, net financial position and bank statement reconciliation. | Manufacturing, Finance and insurance | IT + EN | Yes |
+| **Waste files: approval sheets and service orders** | Third-party waste files with approval sheets per plant, blocks before the service order and deadlines. | Professional services | IT + EN | Yes |
+| **Waste register and forms** | Load and unload register, forms and fourth copies, temporary storage and the authorisations of carriers and plants in one place, with the deadlines in sight and the MUD totals ready. | Manufacturing | IT + EN | Yes |
+
+## Result
+
+You can find a solution by industry, use case or feature, read exactly what it installs and may change, and install it into a new or existing Knowledge base in the language you need, with or without example data. If you can't install, your administrators get your request. Once installed, the solution's page tracks its setup and the health of its components, lets you preview and apply updates without losing your records or your own changes, restore an older version, and uninstall it while keeping or deleting its data.
+
+## Related
+
+- [Manage extensions](/operational-guides/manage-extensions): the extensions behind each solution.
+- [Update and roll back extensions](/operational-guides/extension-updates): update policies and compatibility.
+- [Build an extension](/operational-guides/build-an-extension#list-your-extension-in-the-marketplace): publish your own solution with a `listing` block.

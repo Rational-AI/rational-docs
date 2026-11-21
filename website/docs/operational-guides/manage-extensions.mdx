@@ -95,6 +95,20 @@ If you save a configuration that's missing a required value, the save is refused
 
 An extension can hold **more than one** configuration of the same server — a second set of credentials, a second endpoint — and each discovers its own tools. The first configuration is the default one and can't be deleted while the extension is installed; deleting any of the extras leaves the extension enabled on the default.
 
+## Pick a connector instead of typing a credential
+
+Some extensions don't ask you to paste an API key. Their manifest asks for a **connector** of a given type instead: a credential you already saved once in **Settings** → **Connectors** (see [Configure connectors](/operational-guides/configure-connectors)). The same key can then serve several extensions and configurations, and you rotate it in one place.
+
+1. Create the connector in **Settings** → **Connectors**, if you haven't already.
+2. Open the extension's configuration on **Settings** → **Extensions**. Each connector parameter is a drop-down that lists only the connectors of the type the extension needs.
+3. Select the connector and save.
+
+You make the same choice when you add or edit an MCP server configuration from a touchpoint's **Tools** tab: the connector field opens a searchable list. If it shows *"No connectors available"*, no connector of the required type exists yet; create one in **Settings** → **Connectors** and open the dialog again.
+
+<Admonition type="note" icon="📝" title="SOME CONNECTORS ARE FILLED IN FOR YOU">
+An extension that needs to call Rational AI itself, such as the solutions installed from the [Marketplace](/operational-guides/marketplace), asks for the built-in Rational AI connector in a hidden field. The platform fills it in when the extension is first configured, so you never see that field.
+</Admonition>
+
 ## Configure remote (HTTP) MCP servers
 
 Many extensions connect to MCP servers running on your own machine, spawned as a local process. Others reach servers across the network over HTTP, and a single extension can bundle both kinds. Remote servers are the ones that need a little setup, because Rational AI has to know where they live and how to authenticate.
