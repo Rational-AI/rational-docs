@@ -9,7 +9,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Connectors
 
-A connector stores the credentials and configuration needed to talk to an external provider—such as Google, AWS, OpenAI, Anthropic, OpenRouter, Brave Search or Azure. Once a connector is set up, it can be reused across the platform: by [AI models](ai-model-registry.mdx) (to reach a provider's API), by [sources](sources.mdx) (to read your data) and by [tools](extensions.mdx). Use this section to add connectors and review where each one is used.
+A connector stores the credentials and configuration needed to talk to an external provider—such as Google, AWS, OpenAI, Anthropic, Google Vertex AI, Microsoft SQL Server or RabbitMQ. Once a connector is set up, it can be reused across the platform: by [AI models](ai-model-registry.mdx) (to reach a provider's API), by [sources](sources.mdx) (to read your data) and by [tools](extensions.mdx). Use this section to add connectors and review where each one is used.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -50,7 +50,17 @@ These are the same numbers the platform itself checks when you try to delete a c
 
 ## Add a connector
 
-Click **Add** in the top-right corner to open the connector catalogue. Browse the available providers (Google, AWS, OpenAI, Anthropic, OpenRouter, Brave Search, Google Service Account Key, Azure and more), select one and click **Add** to configure it. Provide the required credentials—such as an API key or service account details—to complete setup.
+Click **Add** in the top-right corner to open the connector catalogue. Select a provider and click **Add** to configure it, then provide the required credentials—such as an API key or service account details—to complete setup.
+
+| Group | Providers |
+|-------|-----------|
+| AI models | OpenAI, Anthropic, OpenRouter, Xference, MiniMax, OpenAI Compatible, Google Vertex AI |
+| Decisions | System One Compatible |
+| Data sources | Google, AWS, Azure, Google Service Account Key, Microsoft OneDrive, Git credentials, RabbitMQ |
+| Tools and extensions | Brave Search, Microsoft SQL Server |
+| Publishing | LinkedIn, Instagram, Facebook |
+
+Some providers ask for more than a key: **Google Vertex AI** takes a project ID and a single region and stores no credential, **Microsoft SQL Server** takes a host, database and read-only login with an optional **Encrypt the connection** switch, and **RabbitMQ** takes a broker host, user and optional file download token. See [Configure a connector](/operational-guides/configure-connectors#available-providers) for each one.
 
 :::caution
 Connectors hold sensitive credentials. Removing or editing a connector affects every AI model, source and tool that depends on it. Check the usage breakdown in the details panel before making changes.

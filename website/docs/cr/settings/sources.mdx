@@ -9,7 +9,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Sources
 
-A source is a connection to an external system that supplies data to Rational AI, such as an Amazon S3 bucket or a Google Drive folder. Sources keep your content in sync on a schedule so the [Knowledge](../Knowledge.mdx) module always works from up-to-date material. Use this section to add sources, configure how often they sync and monitor the result of each synchronisation.
+A source is a connection to an external system that supplies data to Rational AI, such as an Amazon S3 bucket or a Google Drive folder. Sources keep your content in sync — on change, on a schedule, or on demand — so the [Knowledge](../Knowledge.mdx) module always works from up-to-date material. Use this section to add sources, configure how often they sync and monitor the result of each synchronisation.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -39,9 +39,9 @@ The details panel shows:
 
 * **Description** – An editable note describing the source.
 * **Provider** – The underlying provider (for example, AWS or Google Drive).
-* **Sync mode** – How synchronisation is triggered (for example, *Periodic*).
+* **Sync mode** – How synchronisation is triggered: *Automatic*, *Periodic* or *Manual*.
 * **Schedule** – When the source syncs (for example, *Every hour at 30 minutes*).
-* **Next scheduled sync** – The date and time of the upcoming sync.
+* **Next scheduled sync** – The date and time of the upcoming sync. Not shown for an *Automatic* source, whose two-minute check for changes is not a sync.
 * **Status** – The current sync state (for example, *Synced*).
 * **Sync history** – A table of past syncs with their timestamp (**Last sync at**) and **Outcome**.
 
@@ -55,14 +55,13 @@ Click **New** in the top-right corner and fill in:
 |-------|-------------|
 | **Name** | A name to identify the source. |
 | **Description** | Optional notes about the source. |
-| **Type** | The kind of source: Amazon S3, Azure Blob Storage, Google Cloud Storage, Google Drive, HTTP and more. |
-| **Connector** | The [connector](connectors.mdx) that holds the credentials used to access the source. |
+| **Type** | The kind of source and, for types that need one, the [connector](connectors.mdx) that holds the credentials used to access it, picked in one field: each type lists its connectors under it. Types include Amazon S3, Azure Blob Storage, Google Cloud Storage, Google Drive, OneDrive, HTTP, Git repository, RabbitMQ queue and sources contributed by extensions. A type whose connector doesn't exist yet isn't listed. |
 
-Choosing a type reveals type-specific options under **Advanced settings** (for example, the **Bucket** for an Amazon S3 source). Click **Save** to create the source.
+Choosing a type reveals type-specific options under **Advanced settings** (for example, the **Bucket** for an Amazon S3 source). For types whose files you pick, a file panel on the right lists the folders and files the connector can reach: filter them, tick what to sync or use **Select all**, and drag the divider to resize the panel. Click **Add** to create the source.
 
 ## Synchronization settings
 
-Each source has its own synchronisation settings that control when it runs and what happens to derived content when items are removed at the origin.
+Each source has its own synchronisation settings, opened with **Sync settings** in the options menu, that control when it runs and what happens to derived content when items are removed at the origin.
 
 <img
   src={require('/img/screens/sync-settings.png').default}
@@ -75,7 +74,7 @@ Each source has its own synchronisation settings that control when it runs and w
 
 | Setting | Description |
 |---------|-------------|
-| **Sync mode** | How synchronisation is triggered, for example *Periodic*. |
+| **Sync mode** | How synchronisation is triggered. **Automatic** checks the source every two minutes and syncs only when something changed (Git, Google Drive, OneDrive and HTTP sources only). **Periodic** syncs on the schedule below. **Manual** syncs only when you select **Sync now**. |
 | **Sync Schedule** | How often the source syncs (for example *Once a week*), with the weekday and time when applicable. |
 | **On delete** | What happens to the knowledge base when an item is removed from the source: **Cascade delete** keeps the knowledge base strictly aligned with the source by deleting the derived files too, while **Keep** retains those files to prevent data loss from accidental deletions. |
 
@@ -85,5 +84,11 @@ Open the options menu (the three vertical dots) in the details panel to:
 
 | Action | Description |
 |--------|-------------|
+| **Sync now** | Run a sync immediately, whatever the schedule or retry wait. For a RabbitMQ queue, start consuming the queue; **Stop sync** stops it. |
+| **Sync settings** | Change the sync mode, schedule and on-delete behaviour. |
 | **Edit** | Update the source's name, description, connector or advanced settings. |
 | **Delete** | Remove the source from the platform. |
+
+:::note
+After a failed sync, scheduled syncs wait before retrying: 2 minutes, doubling with each consecutive failure up to one hour, and reset by the next success. **Sync now** always runs immediately. See [Configure data sources](/operational-guides/configure-sources#what-happens-when-a-sync-keeps-failing).
+:::

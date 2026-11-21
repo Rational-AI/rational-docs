@@ -16,7 +16,7 @@ A data source is where Rational AI goes to fetch content. Once you connect one t
 
 *The **Sources** page. Sources give your AI access to external data such as cloud storage, databases and APIs.*
 
-This guide covers the source types you can configure today: extension-contributed sources such as **ArXiv Catchup**, the built-in **HTTP** source, and the `robots.txt` behaviour of the **Fetch** extension.
+This guide covers how a source decides when to sync, including the **Automatic** mode that syncs only when something changed, and the source types that need their own setup: extension-contributed sources such as **ArXiv Catchup**, the built-in **HTTP** source, a **RabbitMQ** queue, and the `robots.txt` behaviour of the **Fetch** extension.
 
 <Admonition type="info" icon="📖" title="WHAT IS A DATA SOURCE?">
 A data source defines where Rational AI pulls files from when it syncs a Knowledge. Some sources are built in (such as HTTP). Others come from extensions — add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
@@ -29,6 +29,40 @@ Before you start, make sure you have:
 - **Administrative access:** an account with source and extension management privileges.
 - **A Knowledge to attach the source to** (see **Settings** → **Knowledge**).
 - **The relevant extension installed** when configuring an extension-contributed source (see **Settings** → **Extensions**).
+
+## Choose when a source syncs
+
+A source that syncs too rarely leaves your AI answering from stale files; one that syncs too often re-reads data that hasn't changed. The sync mode sets the balance.
+
+1. Go to **Settings** → **Sources** and select the source.
+2. Open the **⋮** menu and select **Sync settings**.
+3. In **Sync mode**, choose one of:
+
+| Option | When to use it |
+|--------|----------------|
+| **Automatic** | The content changes at unpredictable times and you want changes picked up within a couple of minutes. Rational AI checks the source every two minutes and syncs only when something changed, processing again only what changed. Available for **Git**, **Google Drive**, **OneDrive**, and **HTTP** sources. |
+| **Periodic** | You want syncs at fixed times, for example every night or once a week. Set the **Sync schedule** that comes with it. |
+| **Manual** | You want to decide each time. The source syncs only when you select **Sync now**. |
+
+4. Choose the **On delete** behaviour (**Cascade delete** or **Keep**), then save.
+
+<Admonition type="note" icon="📝" title="AUTOMATIC ONLY APPEARS FOR SOURCES THAT CAN REPORT CHANGES">
+**Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, the file system, and extension sources can't do that without setup on your side, so they offer only **Periodic** and **Manual**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
+</Admonition>
+
+### What happens when a sync keeps failing
+
+If a source's credentials are revoked or its server is down, a schedule would hit the same error over and over. Instead, after a failed sync, scheduled syncs wait before trying again: 2 minutes after the first failure, then twice as long after each new failure in a row, up to one hour. The first successful sync resets the wait.
+
+**Sync now** always runs, whatever the wait. Use it once you have fixed the problem, for example after re-authenticating the [connector](/operational-guides/configure-connectors). A **Periodic** schedule slower than the current wait isn't affected.
+
+<Admonition type="note" icon="📝" title="SYNC NOW AND EDITS RUN A FULL SYNC">
+An automatic source remembers how far its last completed sync got, so the next one only looks at what changed. Selecting **Sync now**, or changing the source's type, connector, root, paths, or configuration, clears that memory and runs a full sync.
+</Admonition>
+
+### Process a Knowledge whenever its source changes
+
+A source brings files in; each Knowledge connected to it decides when to process them. In the Knowledge's settings, on the **Sources** tab, open the source's **⋮** menu and select **Data processing settings**. Choose **Automatic** to process the data again every time the source brings in changes. This mode is available for every source type.
 
 ## Configure an extension-contributed source (ArXiv Catchup)
 
@@ -69,6 +103,48 @@ Use the **HTTP** source when your content lives at one or more web addresses you
 
 **Save** stays disabled until you provide at least one non-empty URL, and stays disabled if any URL is not a valid `http://` or `https://` address. When an address is invalid, an inline error appears under that field so you can fix it before saving.
 
+## Process files announced on a RabbitMQ queue
+
+Use a **RabbitMQ** source when another system announces documents to process on a message queue and expects the results back on another queue. Each message points to one file: Rational AI downloads it into the Knowledge, processes it, and publishes the result.
+
+<Admonition type="info" icon="📖" title="WHAT IS A MESSAGE QUEUE?">
+A message queue, such as RabbitMQ, lets two systems exchange messages without calling each other directly: one system puts a message on a queue, and the other takes it off when it is ready. Here, your system puts on the queue a JSON message carrying the URL of a document, and Rational AI answers on a result queue.
+</Admonition>
+
+### Prerequisites
+
+- **A RabbitMQ connector** for the broker (see [Configure connectors](/operational-guides/configure-connectors#connect-a-rabbitmq-broker)).
+- **A Knowledge** to receive the files. The source records each file in the first Knowledge it is attached to.
+
+### Add the source
+
+1. Go to **Settings** → **Sources** and select **New**.
+2. In **Type**, find **RabbitMQ queue** and pick your broker's connector under it.
+3. Fill in the queue settings:
+
+| Field | What to enter |
+|-------|---------------|
+| **Queue** | The queue to consume, for example `pod-uploaded`. Required. |
+| **Result queue** | Where results are published, for example `pod-processed`. Leave it empty to publish nothing. |
+| **Result exchange (optional)** | Leave empty for the default exchange; otherwise the result queue is used as the routing key. |
+| **File URL field** | The field of the message that holds the file's URL, for example `url` or `pod.downloadUrl`. |
+| **Message ID field (optional)** | The field that identifies the message, for example `requestId`. Empty uses the AMQP message ID. |
+| **Files in flight** | How many files may wait for a result at once (default `16`). New messages are taken only while fewer files are waiting, so a backlog stays in RabbitMQ. |
+| **Delete each file once its result is published** | Tick it to remove the file from the Knowledge after its result is sent. |
+
+4. Select **Add**.
+5. Attach the source to the Knowledge and select **Sync now** to start consuming the queue. **Stop sync** stops it.
+
+<Admonition type="note" icon="📝" title="A STARTED QUEUE KEEPS RUNNING">
+A RabbitMQ source has no schedule: once you select **Sync now**, it keeps consuming the queue, also after a restart of the platform, until you select **Stop sync**. Its status shows whether the queue can be consumed.
+</Admonition>
+
+### What the result message contains
+
+For each document, once it is processed or has failed, the source publishes to the result queue the original message, the status and any error, the file, the resource attributes extracted from it, and the timestamps. The message ID is sent as the AMQP correlation ID, so your system can match each result to its request. A message that can't become a document is answered with an error instead.
+
+Delivery is *at least once* in both directions: a message is acknowledged only after its file is safely stored, and a result that the broker refuses is retried. Make your consumer ignore a result it has already seen.
+
 ## Make the Fetch extension ignore robots.txt
 
 By default the **Fetch** extension respects `robots.txt` on every call. `robots.txt` is a file websites publish to tell automated crawlers which pages they may visit. Respecting it is usually the right thing — but it can cause a direct, user-initiated fetch (for example, an API endpoint that `robots.txt` disallows) to be refused as if it were crawler traffic. You can make this behaviour configurable.
@@ -83,4 +159,4 @@ The extension's config schema is stored at install time, so an existing **Fetch*
 
 ## Result
 
-Your Knowledge now has the data sources it needs: an extension-contributed source such as **ArXiv Catchup** that syncs PDFs from a chosen category, validated **HTTP** sources that fetch from one or more web URLs, and a **Fetch** extension whose `robots.txt` handling matches how you intend to use it. Once a source is saved and synced, its content is available for the Knowledge to process.
+Your Knowledge now has the data sources it needs, each syncing when it should — automatically on change, on a schedule, or on demand — and backing off on its own when a sync keeps failing. You can add an extension-contributed source such as **ArXiv Catchup** that syncs PDFs from a chosen category, validated **HTTP** sources that fetch from one or more web URLs, a **RabbitMQ** queue whose documents are processed and answered on a result queue, and set the **Fetch** extension's `robots.txt` handling to match how you intend to use it. Once a source is saved and synced, its content is available for the Knowledge to process.
