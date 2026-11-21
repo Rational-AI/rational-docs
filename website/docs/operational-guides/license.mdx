@@ -25,6 +25,7 @@ The Licence page is shown where the installation expects a licence, that is on o
 | **Activation code** | A product key (`RAI-XXXXX-XXXXX-XXXXX-XXXXX`) issued by Rational AI for your licence. It is redeemed once: the first installation that uses it is bound to it, and no other installation can use it afterwards. |
 | **Licence** | A signed document that says what your contract includes: the modules, the number of seats, self-hosted models, the validity. Signed by Rational AI, verified by the installation; it cannot be altered. |
 | **Refresh** | When Rational AI changes your licence (a module added, an extension), press **Refresh licence** on the page: the installation fetches the current one. Nothing else to do. |
+| **Reporting** | An activated installation reports its licence, release and seat usage to Rational AI once a day. See [What the installation reports to Rational AI](./install-and-update#what-the-installation-reports-to-rational-ai). |
 | **Grace** | When a licence expires, everything keeps working for seven days; past them the installation is not activated again, without losing anything. A trial ends the day it ends. |
 
 ## Activate with a code
@@ -33,7 +34,7 @@ The Licence page is shown where the installation expects a licence, that is on o
 2. Enter the code you received and press **Activate**. Spaces, dashes and case do not matter.
 3. The page shows the licence in force: who it is licensed to, the plan, the seats, the validity and the modules it includes. The navigation gains the unlocked modules at once.
 
-The machine needs outbound HTTPS access to `control-room.rational.is` for this step. From the machine's shell the same activation is `sudo rational activate RAI-XXXXX-XXXXX-XXXXX-XXXXX`, useful in a provisioning script (see [Provision the machine](./tunnel#provision-the-machine)).
+The machine needs outbound HTTPS access to `control-room.rational.is` for this step. From the machine's shell the same activation is `sudo rational activate RAI-XXXXX-XXXXX-XXXXX-XXXXX`, useful in a provisioning script (see [Install and update](./install-and-update)).
 
 ## Install a licence file (no internet access)
 

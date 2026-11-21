@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Reach an on-premise installation through the Rational AI Tunnel
 
-An on-premise Rational AI installation runs on a machine inside your network: a DGX Spark in the server room, a workstation under a desk. Out of the box it is reachable only from that network. **Settings → Tunnel** gives it a public endpoint under `rational.is` — `https://rational-control-room.<yourcompany>.rational.is` — with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
+An on-premise Rational AI installation runs on a machine inside your network: a DGX Spark in the server room, a workstation under a desk. Out of the box it is reachable only from that network. **Settings → Tunnel** gives it a public endpoint under `rational.is` — `https://control-room.<yourcompany>.rational.is` — with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
 
 <Admonition type="info" icon="📖" title="ON-PREMISE ONLY">
 The Tunnel page exists only on installations that were provisioned with a Rational AI hub connection. On the managed cloud the platform handles addresses and certificates for you and the page is not shown.
@@ -22,13 +22,13 @@ The Tunnel page exists only on installations that were provisioned with a Ration
 
 | Piece | What it does |
 |-------|--------------|
-| **Endpoint** | Your installation is named `<yourcompany>.rational.is`; the application answers at `rational-control-room.<yourcompany>.rational.is`. Rational AI manages the DNS records. |
+| **Endpoint** | Your installation is named `<yourcompany>.rational.is`; the application answers at `control-room.<yourcompany>.rational.is`. Rational AI manages the DNS records. |
 | **Certificate** | Issued by Rational AI for the name and its subdomains (Let's Encrypt, renewed automatically). Browsers trust it out of the box: nothing to install on any client. |
 | **Tunnel** | With the tunnel on, your endpoint points at `vpn.rational.is`, which forwards each connection, still encrypted, through a private WireGuard tunnel to your machine. Rational AI only reads the name the browser asked for; it never sees the content. |
 | **Direct** | With the tunnel off, your endpoint points at your public IP and your router forwards the ports below to the machine. |
 | **Licence** | The licence of the installation is delivered and renewed through the same channel; its status is on **Settings → Licence**. |
 
-The machine checks in with Rational AI once a minute. That is when a switch you flip takes effect, a renewed certificate is installed, and a changed public IP is followed.
+The machine checks in with Rational AI once a minute. That is when a switch you flip takes effect, a renewed certificate is installed, and a changed public IP is followed. [What the installation reports to Rational AI](./install-and-update#what-the-installation-reports-to-rational-ai) lists what the check-in carries.
 
 ## Prerequisites
 
@@ -71,14 +71,35 @@ Port 80 only redirects browsers to HTTPS; forwarding it is convenient, not requi
 
 ## Provision the machine
 
-The installation is connected to the hub when it is provisioned. On the platform console ([admin.rational.is](https://admin.rational.is)) an operator creates the customer's licence and presses **Activation code** on it; the code is redeemed by the installation (at provisioning, or later on **Settings → Licence**), which registers it on the platform. The operator then sets the installation's **subdomain** on its page. From a laptop with SSH access to the machine (the scripts live in `deploy/onprem` of the Rational AI repository):
+The installation is connected to the hub when it is installed. Rational AI creates your licence and gives you its activation code; the code is redeemed by the installation (at install time, or later on **Settings → Licence**), which registers it on the platform. Rational AI then sets the installation's **subdomain** (`acme` names it `acme.rational.is`). From a laptop with SSH access to the machine:
 
 ```bash
-./provision.sh --host rational@192.168.1.20 --tag v1.15.0 \
-  --hub https://control-room.rational.is --code RAI-XXXXX-XXXXX-XXXXX-XXXXX
+./install.sh --ip 192.168.1.20 --user rational --password '<password>' \
+  --code RAI-XXXXX-XXXXX-XXXXX-XXXXX
 ```
 
-It installs or reconfigures the whole stack: it fetches the platform's public key, starts the services, activates the licence, and installs the minute check-in that brings the endpoint, the certificate and the tunnel once the subdomain is set. Re-running it later is safe; it converges the machine on the requested release and keeps everything else. See [Licence and activation](./license) for what the code does and for machines without internet access.
+It installs or updates the whole stack, activates the licence, and installs the minute check-in that brings the endpoint, the certificate and the tunnel once the subdomain is set. The hub defaults to `https://control-room.rational.is`. Re-running it later is safe. See [Install and update](./install-and-update) for the options and the nightly update, and [Licence and activation](./license) for what the code does and for machines without internet access.
+
+## Move an existing installation to the control-room address
+
+Installations used to be served at `https://rational-control-room.<domain>`. They are now served at `https://control-room.<domain>`: `https://rational-control-room.acme.rational.is` becomes `https://control-room.acme.rational.is`. Only the address changes; every conversation, knowledge base, file and setting stays as it is. The old address does not keep working: once the installation has moved, it answers *404* (*No tenant is served on host …*).
+
+The nightly update does not move the installation: it changes the release but keeps the scripts already on the machine, so the installation stays at the old address until you run the new scripts.
+
+1. **Make sure the new name reaches the machine.**
+   - With the Rational AI hub there is nothing to do: the DNS record and the certificate already cover every name under your subdomain.
+   - With your own DNS (`--domain`), `*.<domain>` must point at the machine. If you only added `rational-control-room.<domain>`, add `control-room.<domain>`.
+   - With your own certificate (`--tls-cert`), it must cover `control-room.<domain>`. A `*.<domain>` certificate does.
+2. **Run `install.sh`** from a current copy of the scripts, with the options you used before. It updates the installation with the usual backup and rollback, and moves it to the new address. Do not pin `--tag` to a release older than the scripts: an older release cannot move it.
+3. **Check the result.** On the machine, `sudo rational validate`; then open `https://control-room.<domain>` and sign in.
+4. **Update what still names the old address.**
+   - Bookmarks, and links in emails already sent. Pending invitations can be sent again from **Settings → Users**: the new email links to the new address.
+   - An external identity provider configured for the installation: register its redirect URIs on the new address.
+   - OAuth apps used by connectors (their redirect URI is under `https://control-room.<domain>/api/`) and webhooks you registered with third parties.
+
+<Admonition type="caution" icon="⚠️" title="INTEGRATIONS ON THE OLD ADDRESS STOP WORKING AT ONCE">
+A connector whose OAuth app still redirects to `rational-control-room.<domain>`, or a webhook that still posts there, fails from the moment the installation moves. Prepare the list in step 4 before you run step 2.
+</Admonition>
 
 ## Check that it works
 
