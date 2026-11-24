@@ -1,129 +1,120 @@
 ---
 sidebar_position: 19
 sidebar_label: Manage roles and users
+description: Set what each role can do, create user accounts, share access through groups, and remove users.
+type: how-to
+audience: [admin]
 ---
-import Admonition from '@theme/Admonition';
 
 # Manage roles and users
 
-Roles decide what people on your team are allowed to do in Rational AI. Users are the accounts those roles apply to. This guide walks through tuning the permissions on a role and creating a user with a password you control.
+Roles decide what people can do in Rational AI. This guide shows you how to set a role's permissions, create users, organize them into groups, and remove them.
 
-<Admonition type="info" icon="📖" title="WHAT ARE ROLES AND USERS?">
-A **role** is a named bundle of permissions. Every permission is granted or revoked on its own, so you can shape exactly what a role can see and do. A **user** is an individual account that signs in to Rational AI, and each user is governed by the role you assign to it.
-</Admonition>
+A **role** is a named set of permissions. A **user** is an account that signs in to Rational AI. Each user has one or more roles, and their permissions are the combination of those roles.
 
-## Prerequisites
+## Before you begin
 
-- **Administrative access:** an account with privileges to manage settings, roles, and users.
+- You need an **Admin** account. Admins bypass every permission check, so the role matrix doesn't apply to them.
+- Roles, users, and groups are under **Settings** → **Access**.
 
-## Configure roles
-
-Adjust a role's permissions when a group of people needs more or less access than it currently has. You do this from one screen, the permissions matrix, where every permission is an independent toggle.
+## Configure a role
 
 1. Go to **Settings** → **Roles**.
-2. Select the **role** you want to configure from the list.
-3. In the **permissions matrix**, use the **chip controls** to grant or revoke each permission. Each chip toggles a single permission on or off.
-4. Repeat for any other roles you need to adjust.
+2. Select the role you want to change.
+3. In the matrix, find the feature row and select the cell for the action: **List**, **Read**, **Create**, **Update**, **Delete**, **Use**, or **Share**.
+4. Choose how far the permission reaches:
+
+   | Value | The role can act on… |
+   |---|---|
+   | **None** | nothing |
+   | **All** | every item of that feature |
+   | **Own** | items the user created, and items shared with them or one of their groups |
+   | **Selected IDs** | only the items you pick from the list |
+
+   The **Create** column offers only **None** and **All**.
 
 <img
   src={require('@site/static/img/screens/roles-settings.png').default}
-  alt="Roles and permissions matrix"
+  alt="The Roles and permissions page: the list of roles, and the permission matrix for the selected role with one column per action"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-***Roles and permissions**: built-in roles on the left, the permission matrix (per feature: List, Read, Create, Update, Delete, Use) for the selected role on the right.*
-
-<Admonition type="note" icon="📝" title="ONE PERMISSION AT A TIME">
-Toggling a chip changes only that one permission, nothing else. Scan the whole matrix for a role so its access lines up with what that group actually needs, rather than checking a single chip in isolation.
-</Admonition>
+Each cell changes one permission only. Review the whole row for a feature, because **Read** without **List**, for example, lets someone open an item but not find it.
 
 ### Grant access to Rational BI
 
-[Rational BI](/operational-guides/rational-bi) is governed by four rows of the same matrix, sitting together just after **Touchpoints**:
+[Rational BI](/operational-guides/rational-bi) uses four rows of the matrix:
 
-- **BI projects** — the projects themselves: seeing the project list, opening one, creating and deleting them.
-- **BI defaults** — the tenant-wide BI configuration under **Settings** → **Rational BI** → **BI defaults**.
-- **Dashboards** — the dashboards inside a project.
-- **Reports** — the reports generated from those dashboards.
+| Row | Controls |
+|---|---|
+| **BI projects** | The project list, and opening, creating, and deleting projects |
+| **Dashboards** | The dashboards inside a project |
+| **Reports** | The reports generated from dashboards |
+| **BI defaults** | The workspace-wide configuration under **Settings** → **Rational BI** → **BI defaults** |
 
-Each row carries the same **List**, **Read**, **Create**, **Update**, **Delete**, and **Use** columns as every other feature.
-
-<Admonition type="note" icon="📝" title="BI TAKES MORE THAN ONE ROW">
-Granting **BI projects** alone gets someone as far as opening a project and finding it empty — the dashboards inside it are governed by their own row. For a role that should build BI, grant the create and update actions on **BI projects**, **Dashboards**, and **Reports** together; leave **BI defaults** to administrators, since it changes the configuration every project inherits.
-</Admonition>
+To let a role build BI content, grant **Create** and **Update** on **BI projects**, **Dashboards**, and **Reports** together. With **BI projects** alone, people can open a project but find it empty. Leave **BI defaults** to admins, because every project inherits it.
 
 ### What people see without a permission
 
-The interface follows the role, so people aren't offered things they can't do:
+The interface hides what a role can't do:
 
-- **Settings links stay visible but disabled.** A section the role has no access to is greyed out in the **Settings** sidebar, doesn't open, and shows *"You don't have access to this section"* on hover. People can see the section exists and know whom to ask.
-- **Actions inside a page are hidden.** Without create, update or delete permission, the matching **New** button, enable toggle, **⋮** menu items and **Save** footer don't appear, and detail forms open read-only.
-- **A page reached without access says so.** Following a link to a page the role can't read shows *"Access denied"* in place of the content, rather than a broken or empty page.
+- **Settings** sections the role can't access stay in the sidebar but are disabled, with the hint "You don't have access to this section".
+- Without create, update or delete permission, the matching **New** button, row menu items and **Save** button don't appear, and forms open read-only.
+- Opening a link to a page the role can't read shows "Access denied".
 
-Sections that depend on your licence, such as **Rational BI**, **Knowledge** or **Gen**, are a different case: when the licence doesn't include the module, they are hidden for everyone, whatever the role.
+Sections your license doesn't include, such as **Rational BI**, **Knowledge** or **Gen**, are hidden for everyone, whatever their role.
 
-<Admonition type="note" icon="📝" title="CHECK A ROLE BY SIGNING IN AS IT">
-Because the interface hides what a role can't do, the quickest way to confirm a role is right is to create a test user with it and look at **Settings**: every disabled link is a permission the role doesn't have.
-</Admonition>
+:::tip
+To check a role, create a test user with only that role and sign in as them. Every disabled **Settings** section is a permission the role doesn't have.
+:::
 
 ## Create a user
 
-Add a user to give someone their own account to sign in with. When you create the account, you set its first password yourself instead of handing over an auto-generated value you never see.
+1. Go to **Settings** → **Users** and select **Add** → **Create user**.
+2. In **Create new user**, enter **Name**, **Surname**, **Email address**, and **Confirm email address**.
+3. In **Role**, select one or more roles. Select **Admin** to make the user an administrator, or **User** for an account with no role.
+4. Keep the generated **Temporary password**, or enter your own. Select **Copy** to copy it so you can share it with the user.
+5. Leave **Require password change at first login** selected so that the user sets their own password when they first sign in. If you clear it, the password you set stays valid until the user changes it.
+6. Select **Create**.
 
-### Set the password
+## Share access through groups
 
-A random password is generated the moment the **Create new user** dialog opens, so a working password already exists before you touch anything. The subtitle says as much: *"A random password is generated automatically, but you can change it."*
+Groups don't carry permissions. What a user can do always comes from their roles. Groups decide **which items** a user reaches when their role has the **Own** scope. If you share a Knowledge, a touchpoint or another item with a group, every member can use it as if it were their own.
 
-1. Open the **Create new user** dialog and fill in the user's details.
-2. In the **Password** field, keep the generated password or type your own. The field is editable and required.
-3. Use the **copy** button inside the field to grab the current password value when you need to share it with the user.
-
-### Decide how the first sign-in works
-
-Leave **Require password change at first login** checked if you want the user to set their own password the first time they sign in. It is checked by default, so the user lands on a password-reset prompt and the value you shared is only ever temporary.
-
-If you uncheck it, the password you set is the one the user keeps until they change it themselves.
-
-### Create the account
-
-Submit the dialog to create the user. The account is created with the role and password you chose.
-
-<Admonition type="note" icon="📝" title="YOU ONLY EDIT THE PASSWORD IF YOU WANT TO">
-Because a password is generated automatically, you can leave the **Password** field untouched and still create a valid account. Only type in it when you need a specific value.
-</Admonition>
-
-## Organize users into groups
-
-**Settings** → **Groups** lets you organize users into groups so you can manage permissions in bulk: instead of granting access user by user, you assign rights to a whole group at once, which keeps access consistent across everyone in it. The page lists your groups with their **Name**, **Description**, and **Users** count, and a fresh tenant simply shows "No groups yet" until you add one. To create a group, click **New**, give it a **Name** and a **Description**, and then add the users who belong to it. Keep in mind that a user's effective permissions come from their [role](#) combined with any groups they belong to, so it is worth reviewing both when you check what someone can do.
+1. Go to **Settings** → **Groups** and select **New**.
+2. Enter a **Name** and a **Description**.
+3. In the users table, select the members. Turn on **Only members** to show only the users already in the group.
+4. Select **Save**.
 
 <img
   src={require('@site/static/img/screens/groups-list.png').default}
-  alt="Groups list"
+  alt="The Groups page listing each group with its name, description and number of users"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*Settings → Groups: organize users into groups so you can assign permissions in bulk.*
-
 ## Remove a user
 
-The row menu on the users page offers two operations that sound similar and are not. Which one you want depends on *why* the account is going.
+The row menu on the **Users** page has two options. Choose based on why the account is going:
 
 | | **Delete user** | **Erase all data** |
 |---|---|---|
-| **Use it when** | Someone leaves the organisation | Someone exercises a right to erasure |
+| **Use it when** | Someone leaves the organization | Someone exercises their right to erasure |
 | **Their conversations** | Kept, detached from the account | Deleted |
 | **Their identifiers on recorded model calls** | Kept | Cleared |
+| **Can be undone** | No, but you can invite the same email again | No |
 
-Users can also disable or delete their own account from **Account settings** — see [Manage your own account](/operational-guides/manage-your-account). Neither path can remove the last administrator.
+Both options also remove the account from your identity provider, unless another workspace still uses the same sign-in. If the identity provider can't be reached, the request fails and nothing changes, so you can retry later. Neither option can remove the last administrator.
 
-**Delete user** is the routine one: it closes the account and leaves the conversations the person handled standing, because a leaver is not a reason to destroy the business record of their work.
+**Erase all data** is recorded in the [audit trail](/operational-guides/audit-trail). Before you use it, read [Erase a person's data](/operational-guides/erase-personal-data) to see exactly what it removes.
 
-**Erase all data** is the rare, deliberate one that reaches the content. It's irreversible, it reports what it removed, and it records itself in the [audit trail](/operational-guides/audit-trail). Before running it, read [Erase a person's data](/operational-guides/erase-personal-data), which covers exactly what it destroys and what it leaves behind.
+:::danger[Irreversible]
+**Erase all data** permanently deletes the person's conversations. You can't recover them.
+:::
 
-<Admonition type="note" icon="📝" title="BOTH REACH YOUR IDENTITY PROVIDER">
-Each operation removes the account from your identity provider as well. If the provider can't be reached, the whole request fails and nothing changes on either side — so you can simply retry once it's back, rather than being left with an account that still authenticates but no longer exists here.
-</Admonition>
+Users can also disable or delete their own account. See [Manage your own account](/operational-guides/manage-your-account).
 
-## Result
+## Next steps
 
-You have a set of roles whose permissions match what each group can do, and a new user account secured with a password you either accepted or chose. If you left **Require password change at first login** checked, the user is prompted to change the password on their first sign-in. You also know which of the two removal operations to reach for when an account has to go, and that only one of them touches the person's conversations.
+- [Control what AI applications can do](/operational-guides/govern-ai-applications)
+- [Review activity in the audit trail](/operational-guides/audit-trail)
+- [Erase a person's data](/operational-guides/erase-personal-data)

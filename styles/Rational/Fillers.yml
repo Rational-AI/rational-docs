@@ -1,0 +1,10 @@
+extends: existence
+message: "Remove '%s': it adds nothing and can make readers feel slow (STYLE.md §4)."
+level: warning
+ignorecase: true
+tokens:
+  - simply
+  - just
+  - easy
+  - easily
+  - obviously

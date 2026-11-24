@@ -1,0 +1,6 @@
+extends: existence
+message: "Use :::note / :::tip / :::warning / :::danger, without emoji or ALL-CAPS titles (STYLE.md §4)."
+level: warning
+scope: raw
+raw:
+  - '<Admonition'

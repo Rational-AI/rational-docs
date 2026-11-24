@@ -1,0 +1,46 @@
+extends: capitalization
+message: "Use sentence case for '%s' (STYLE.md §4)."
+level: warning
+scope: heading
+match: $sentence
+indicators:
+  - ":"
+exceptions:
+  - Rational
+  - AI
+  - Rational AI
+  - AI Control Room
+  - Control Room
+  - Rational BI
+  - Rational Gen
+  - Rational Care
+  - Rational Core
+  - Rational Knowledge
+  - AI Model Registry
+  - Knowledge
+  - Marketplace
+  - Social Studio
+  - Gen
+  - BI
+  - API
+  - MCP
+  - RAG
+  - LLM
+  - LLMs
+  - NLP
+  - RLHF
+  - SSO
+  - SCIM
+  - SAML
+  - OIDC
+  - Telegram
+  - Hugging Face
+  - Graphify
+  - SQLite
+  - Linux
+  - OpenAI
+  - Anthropic
+  - Gemini
+  - Docker
+  - Kubernetes
+  - Vale

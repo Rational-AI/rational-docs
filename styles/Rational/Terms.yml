@@ -1,0 +1,14 @@
+extends: substitution
+message: "Use '%s' instead of '%s' (STYLE.md §5)."
+level: error
+ignorecase: false
+swap:
+  Finetuning: fine-tuning
+  finetuning: fine-tuning
+  finetune: fine-tune
+  RationalBI: Rational BI
+  on-premise: on-premises
+  click on: select
+  log in: sign in
+  login: sign-in
+  "[Pp]lease note": "(delete it)"

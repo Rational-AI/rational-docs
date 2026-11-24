@@ -1,0 +1,75 @@
+# AI-slop vocabulary and stock phrases (STYLE.md §4, "AI slop").
+extends: existence
+message: "AI slop: '%s'. Say the concrete fact instead."
+level: error
+ignorecase: true
+tokens:
+  # Vocabulary
+  - delve\w*
+  - foster\w*
+  - leverag\w+
+  - utiliz(?:e|es|ed|ing)
+  - facilitat\w+
+  - empower\w*
+  - streamlin\w+
+  - robust
+  - cutting-edge
+  - powerful
+  - seamless(?:ly)?
+  - paradigm shift
+  - game[- ]changer
+  - tapestry
+  - realm
+  - beacon
+  - multifaceted
+  - meticulous(?:ly)?
+  - intricate
+  - paramount
+  - transformative
+  - elevate[sd]?
+  - embark\w*
+  - supercharg\w+
+  - harness(?:es|ed|ing)?
+  - ever-evolving
+  - unlock(?:s|ing)? (?:the|your) (?:power|potential|full)
+  - unleash\w*
+  # Stock phrases
+  - it's worth noting
+  - it is worth noting
+  - it's important to note
+  - it is important to note
+  - at the end of the day
+  - when it comes to
+  - at its core
+  - in today's world
+  - in the age of
+  - the reality is
+  - the truth is
+  - in terms of
+  - with regard to
+  - going forward
+  - let's dive in
+  - in this article
+  - in conclusion
+  # Importance puffery
+  - stands as a testament
+  - a testament to
+  - pivotal
+  - plays? a (?:vital|crucial|key|pivotal) role
+  - underscores? (?:its|the) (?:importance|significance)
+  # Metadiscourse
+  - as you can see
+  - the key point is
+  - this distinction matters
+  - here's the thing
+  - here's what
+  - let me be clear
+  - what most people (?:get wrong|miss|skip)
+  - what if I told you
+  - plot twist
+  # Weasel attribution
+  - experts agree
+  - studies show
+  - many argue
+  - widely regarded as
+  - industry reports

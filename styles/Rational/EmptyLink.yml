@@ -1,0 +1,6 @@
+extends: existence
+message: "Empty link target: point it to a real page or section."
+level: error
+scope: raw
+raw:
+  - '\]\(#\)'
