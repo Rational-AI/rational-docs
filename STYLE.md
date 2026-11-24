@@ -160,6 +160,7 @@ Product nouns appear in the UI, so they follow the UI. Generic concepts stay low
 |---|---|---|
 | **AI Control Room** on first mention, then **Control Room** | the control room, CR | Product name |
 | **Rational AI** (company and platform) | Rational.ai, rational | |
+| **Chat**, **Knowledge**, **Conversations**, **Governance**, **BI**, **Apps**, **Agents**, **Gen**, **Marketplace** | Chat module, the Knowledge module | Modules are named exactly as in the top navigation, with no "module" after the name. Say "module" only for license modules ("the Knowledge module in your license") |
 | **Rational BI**, **Rational Gen** | RationalBI | Two words |
 | **Knowledge** (the object you create: "create a Knowledge") | knowledge base, KB | ⚠️ Team to confirm, see open decisions |
 | **touchpoint** (lowercase in prose, **Touchpoints** when it's the UI label) | Touchpoint mid-sentence | |

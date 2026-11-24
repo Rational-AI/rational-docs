@@ -40,7 +40,7 @@ const sidebars: SidebarsConfig = {
 		"operational-guides/get-started",
 
 		section("Use Rational AI", [
-			folder("Chat module", [
+			folder("Chat", [
 				"chat-experience",
 				"approve-tool-calls",
 				"manage-your-account",
