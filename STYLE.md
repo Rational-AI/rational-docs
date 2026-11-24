@@ -208,6 +208,7 @@ New product terms go into this table *before* they appear in the docs.
 
 ## 7. Page checklist (paste into every PR)
 
+- [ ] The feature was studied in the `rational-ai` code (frontend, `en.json`, backend), not taken from commits, PRs or old docs, and the page says what the module is for and who uses it
 - [ ] The page has one type (tutorial / how-to / reference / concept), declared in front matter
 - [ ] The first sentence says what the reader will be able to do, or what the thing is
 - [ ] Prerequisites list roles or permissions and anything that must exist first
