@@ -1,16 +1,17 @@
 ---
 sidebar_position: 30
 sidebar_label: Install and update
+type: how-to
+audience: [admin]
 ---
-import Admonition from '@theme/Admonition';
 
-# Install and update an on-premise installation
+# Install and update an on-premises installation
 
-An on-premise installation lives on a machine you own, so someone has to install it, keep it current and notice when an update goes wrong. Rational AI reduces that to one command: `install.sh` installs the platform on a fresh machine and updates it later, and once installed the machine updates itself every night. Every update takes a backup first, runs checks before and after, and rolls back on its own when the new release breaks something that worked. This guide covers the install, the nightly update, the checks, the commands you use on the host, and what the installation reports to Rational AI.
+An on-premises installation lives on a machine you own, so someone has to install it, keep it current and notice when an update goes wrong. Rational AI reduces that to one command: `install.sh` installs the platform on a fresh machine and updates it later, and once installed the machine updates itself every night. Every update takes a backup first, runs checks before and after, and rolls back on its own when the new release breaks something that worked. This guide covers the install, the nightly update, the checks, the commands you use on the host, and what the installation reports to Rational AI.
 
-<Admonition type="info" icon="📖" title="WHAT IS AN ON-PREMISE INSTALLATION?">
+:::note[What is an on-premises installation?]
 A single machine in your network, an NVIDIA DGX Spark or any Ubuntu host with Docker, that runs the whole Rational AI stack in containers. Everything it keeps lives under `/opt/rational` on that machine. On the host, the `rational` command (installed as `/usr/local/bin/rational`) runs the day-to-day operations: status, update, rollback, backup, restore.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -19,7 +20,7 @@ Before you start, make sure you have:
 - **The machine.** A DGX Spark that has completed its first-boot wizard, or an Ubuntu host. Either way, a login (usually `rational`) that can use `sudo`, and the machine's LAN address (`ip -4 -br addr` on the machine).
 - **A laptop that reaches the machine over SSH**, with `ssh`, `ssh-copy-id` and `scp`. `sshpass` is optional: without it, `ssh-copy-id` asks for the password once.
 - **The installation scripts.** The `deploy/onprem` directory that Rational AI provides. Run the commands below from it.
-- **An activation code** (`RAI-XXXXX-XXXXX-XXXXX-XXXXX`) from Rational AI. You can also activate later, see [Licence and activation](./license).
+- **An activation code** (`RAI-XXXXX-XXXXX-XXXXX-XXXXX`) from Rational AI. You can also activate later, see [License and activation](./license).
 - **Outbound internet access from the machine** to `ghcr.io` (where the release images are published) and to `control-room.rational.is` over HTTPS.
 
 ## Install
@@ -35,14 +36,14 @@ The command:
 
 1. Puts your SSH key on the machine. The password is used once for this (a key is generated in `~/.ssh` if you have none), and on every later run only for `sudo`. It is passed on standard input, never on a command line. You can leave `--password` out: the command then reads `RATIONAL_SSH_PASSWORD` from the environment, or asks.
 2. Copies the scripts to the machine and prepares the host: Docker, the NVIDIA runtime, WireGuard, SSH hardening and unattended security upgrades.
-3. Installs the newest release published for the machine's architecture, starts the stack and activates the licence with the code.
+3. Installs the newest release published for the machine's architecture, starts the stack and activates the license with the code.
 4. Connects the installation to Rational AI, which gives it a public address `https://control-room.<yourcompany>.rational.is` with a trusted certificate (see [Reach an installation through the Rational AI Tunnel](./tunnel)).
 5. Turns on the nightly update.
 
 | Option | When to use it |
 |--------|----------------|
 | `--tag vX.Y.Z` | Install or update to a specific release instead of the newest one. |
-| `--code CODE` | Activate the licence during the install. Without it, activate later in **Settings** → **Licence**. |
+| `--code CODE` | Activate the license during the install. Without it, activate later in **Settings** → **Licence**. |
 | `--domain DOMAIN` | Serve the installation on your own DNS name instead of `rational.is`. Your DNS must resolve `*.DOMAIN` to the machine; pass `--tls-cert` and `--tls-key` for your own certificate, otherwise every client must trust a private CA the installation generates. |
 | `--no-auto-update` | Do not update every night. Updates then happen only when you run them. |
 | `--hf-token TOKEN` | Your Hugging Face token, needed for gated models such as Llama and Gemma. |
@@ -52,9 +53,9 @@ Any other option is passed to the provisioning script unchanged.
 
 The installation starts **with no models**: no embedding model, no chat model. An administrator adds and deploys them in **Settings** → **Models**, on the machine's own GPU (see [AI model registry](/operational-guides/ai-model-registry-features)). A knowledge base needs an embedding model, and a chat a text model, before they work.
 
-<Admonition type="note" icon="📝" title="TURN ON THE OFF-SITE BACKUP STRAIGHT AWAY">
+:::note[Turn on the off-site backup straight away]
 The backups every update takes are kept on the same disk as the installation: they protect against a bad update, not against a lost machine. Set a destination in **Settings** → **Backup** as soon as the installation holds data you care about. See [Back up and restore](./backup-and-restore).
-</Admonition>
+:::
 
 ## How the installation updates itself
 
@@ -76,9 +77,9 @@ journalctl -u rational-update
 
 To stop the nightly update, re-run `install.sh` with `--no-auto-update`; `--auto-update` turns it back on.
 
-<Admonition type="note" icon="📝" title="THE NIGHTLY UPDATE CHANGES THE RELEASE, NOT THE SCRIPTS ON THE HOST">
+:::note[The nightly update changes the release, not the scripts on the host]
 The nightly update installs new images but keeps the provisioning scripts already on the machine. Changes to the host itself (a new address, a new health report, a new way to run models) arrive only when you run `install.sh` again from a newer copy of the scripts. Re-running it is always safe: with the release already installed it only brings the configuration up to date.
-</Admonition>
+:::
 
 ## Update by hand
 
@@ -125,7 +126,7 @@ When an update fails or is rolled back, the installation sends **one alert** to 
 | `sudo rational status` | Services, installed release, connection to Rational AI, tunnel path, model containers |
 | `sudo rational logs [service]` | Follows the logs of the stack |
 | `sudo rational sync` | Runs the minute check-in with Rational AI now |
-| `sudo rational activate CODE` | Activates the licence |
+| `sudo rational activate CODE` | Activates the license |
 | `sudo rational validate` | Checks the configuration without changing anything |
 | `sudo rational check` | Runs the update checks on the installed release |
 | `sudo rational health` | Runs the checks and keeps their summary for the health report |
@@ -137,7 +138,7 @@ Everything lives under `/opt/rational`: `.env` (the generated secrets, the relea
 
 ## What the installation reports to Rational AI
 
-This section lists everything an on-premise installation sends to Rational AI on its own, for privacy and security reviews.
+This section lists everything an on-premises installation sends to Rational AI on its own, for privacy and security reviews.
 
 ### The minute check-in
 
@@ -145,17 +146,17 @@ An installation connected to Rational AI (the default, with `install.sh`) checks
 
 - the installation's ID and installed release;
 - the tunnel's public key, the tunnel switch set in **Settings** → **Tunnel**, and the machine's LAN address;
-- a **health report**: whether the backend is healthy and which containers are not running; the name and phase of each model the installation runs itself, and whether a GPU is present; disk and memory use as percentages and free disk space; the licence state; the **names** of the data sources whose last sync failed, with the time; the time of the newest local backup, and whether an off-site backup is configured with the outcome and time of its last run;
+- a **health report**: whether the backend is healthy and which containers are not running; the name and phase of each model the installation runs itself, and whether a GPU is present; disk and memory use as percentages and free disk space; the license state; the **names** of the data sources whose last sync failed, with the time; the time of the newest local backup, and whether an off-site backup is configured with the outcome and time of its last run;
 - the summary of the hourly checks: how many passed and failed, and the **titles** of the failed checks;
 - the outcome of the last update: updated, rolled back, failed or nothing newer; the releases involved; and the titles of the checks that broke.
 
-Rational AI's platform console colours each installation green, yellow or red from this report. When the machine is shut down or rebooted, it sends one last check-in that says only that it is switching off, so the console shows it grey, *switched off*, instead of red. A machine that goes silent without that notice (a power cut, a lost network) stays red.
+Rational AI's platform console colors each installation green, yellow or red from this report. When the machine is shut down or rebooted, it sends one last check-in that says only that it is switching off, so the console shows it gray, *switched off*, instead of red. A machine that goes silent without that notice (a power cut, a lost network) stays red.
 
 The answer to the check-in brings back the installation's public name, its certificate and the tunnel configuration.
 
-### The daily licence report
+### The daily license report
 
-Once a day, the application reports its installation ID, licence ID and release; the number of tenants and the number of seats used in each; its uptime; and the operating system and architecture.
+Once a day, the application reports its installation ID, license ID and release; the number of tenants and the number of seats used in each; its uptime; and the operating system and architecture.
 
 ### Error reports
 
@@ -171,9 +172,9 @@ A failed or rolled-back update sends one event to the same error tracker, with t
 
 None of the check-ins carries customer data: no conversations, messages, documents, knowledge content, files or user details. The health report carries counts, versions, states, and names of the installation's own components (models, data sources, checks).
 
-<Admonition type="note" icon="📝" title="AN INSTALLATION ON YOUR OWN DOMAIN DOES NOT CHECK IN">
-An installation set up with `--domain` instead of a connection to Rational AI sends neither the minute check-in nor the daily licence report. It still downloads releases from `ghcr.io` when it updates, and still sends error reports unless you point them elsewhere as described above.
-</Admonition>
+:::note[An installation on your own domain does not check in]
+An installation set up with `--domain` instead of a connection to Rational AI sends neither the minute check-in nor the daily license report. It still downloads releases from `ghcr.io` when it updates, and still sends error reports unless you point them elsewhere as described above.
+:::
 
 ## Troubleshooting
 

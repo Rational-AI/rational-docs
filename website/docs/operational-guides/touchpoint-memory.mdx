@@ -1,16 +1,17 @@
 ---
 sidebar_position: 18
 sidebar_label: Memory and long chats
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Give a touchpoint memory and handle long conversations
 
 Out of the box, every conversation starts from zero: the assistant doesn't know that this person prefers short answers, or that your company calls its customers "members". And a conversation that runs long enough eventually outgrows what the model can read at once. The **Memory** tab of a [touchpoint](/operational-guides/configure-touchpoints) handles both: what the assistant carries from one conversation to the next, and what it does when a single conversation gets too long.
 
-<Admonition type="info" icon="📖" title="WHAT IS TOUCHPOINT MEMORY?">
-Memory is a short list of facts the assistant reads at the start of every conversation on the touchpoint. **Personal memory** is about one person and only they can open it. **Shared memory** is about everything else — the company, its customers, how things are named — and applies to everyone who uses the assistant. Memory holds facts only; how a task is done belongs in a [skill](/operational-guides/agent-skills).
-</Admonition>
+:::note[What is touchpoint memory?]
+Memory is a short list of facts the assistant reads at the start of every conversation on the touchpoint. **Personal memory** is about one person and only they can open it. **Shared memory** is about everything else (the company, its customers, how things are named) and applies to everyone who uses the assistant. Memory holds facts only; how a task is done belongs in a [skill](/operational-guides/agent-skills).
+:::
 
 ## Prerequisites
 
@@ -35,11 +36,11 @@ Both kinds of memory are off by default.
 
 4. Save the touchpoint. The memories list appears once memory is on and saved.
 
-While memory is on, the assistant gets a `memory` tool it uses to add, update and remove entries during a chat. Users see each change in the conversation — *"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Forgot"* — with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
+While memory is on, the assistant gets a `memory` tool it uses to add, update and remove entries during a chat. Users see each change in the conversation (*"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Forgot"*), with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
 
-<Admonition type="note" icon="📝" title="MEMORY IS KEPT SHORT ON PURPOSE">
+:::note[Memory is kept short on purpose]
 Each memory is at most 280 characters, a person's memory holds 1,500 characters in all, and the shared memory 3,000. Links, credentials and long or multi-line text are refused. When a store is nearly full, the assistant merges older memories rather than piling on new ones.
-</Admonition>
+:::
 
 ## Curate shared memories
 
@@ -51,9 +52,9 @@ Shared memory speaks for everyone, so it is worth an editor's eye.
 
 Curation applies immediately; it doesn't wait for the touchpoint's **Save**. Approvals, discards and deletions of shared memories are recorded in the audit trail.
 
-<Admonition type="note" icon="📝" title="EDITORS DON'T SEE ANYONE'S PERSONAL MEMORY">
+:::note[Editors don't see anyone's personal memory]
 A person's personal memories are theirs alone. The filter **Me** shows only your own, marked *"You · private"*. Editing rights on the touchpoint don't open anyone else's list, though whoever monitors conversations can still read the chats the memories came from.
-</Admonition>
+:::
 
 ## Choose what happens when a conversation gets too long
 
@@ -69,9 +70,9 @@ A model can read only so much of a conversation at once. **Long conversations**,
 
 2. Save the touchpoint.
 
-<Admonition type="note" icon="📝" title="WHEN SUMMARIZING KICKS IN">
+:::note[When summarizing kicks in]
 Rational AI summarizes before a turn when the previous request filled more than 85% of the model's context window, or when the provider rejects a request as too long. The most recent messages, roughly a quarter of the window, are kept word for word. Only what the model reads is shortened: the full history stays in the chat and in [Conversations](/operational-guides/conversations).
-</Admonition>
+:::
 
 In the chat, a divider marks where the summary begins: *"The assistant now works from a summary of the messages above"*. With **Stop and ask to start a new conversation**, the composer is disabled and the chat offers **New conversation** instead; the old conversation stays in the user's history.
 

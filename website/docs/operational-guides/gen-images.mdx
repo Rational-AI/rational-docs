@@ -1,20 +1,21 @@
 ---
 sidebar_position: 41
 sidebar_label: Generate images
+type: how-to
+audience: [user]
 ---
-import Admonition from '@theme/Admonition';
 
 # Generate images with Gen
 
-A marketing team that needs a dozen on-brand visuals a week shouldn't have to re-explain the brand to an image model every time. **Gen** is Rational AI's area for generated content: you start from a **template** that already knows the brand's colours, fonts, style and preferred model, describe what you want in a sentence, and refine the result until it's right — with every attempt kept, so you can step back to any of them.
+A marketing team that needs a dozen on-brand visuals a week shouldn't have to re-explain the brand to an image model every time. **Gen** is Rational AI's area for generated content: you start from a **template** that already knows the brand's colors, fonts, style and preferred model, describe what you want in a sentence, and refine the result until it's right — with every attempt kept, so you can step back to any of them.
 
-<Admonition type="info" icon="📖" title="WHAT IS A GEN TEMPLATE?">
-A **template** is a saved starting point for a kind of image: the image model to use, its settings (aspect ratio, size, quality and so on), a generation prompt, and a brand style — colours, typography, reference images and a style prompt. Starting from a template means you only describe the subject; the template supplies everything that should be the same every time. Administrators manage templates under **Settings** → **Gen** (see [Configure Gen](/operational-guides/configure-gen)).
-</Admonition>
+:::note[What is a Gen template?]
+A **template** is a saved starting point for a kind of image: the image model to use, its settings (aspect ratio, size, quality and so on), a generation prompt, and a brand style — colors, typography, reference images and a style prompt. Starting from a template means you only describe the subject; the template supplies everything that should be the same every time. Administrators manage templates under **Settings** → **Gen** (see [Configure Gen](/operational-guides/configure-gen)).
+:::
 
 ## Prerequisites
 
-- **The Gen module in your licence:** the **Gen** tab only appears when your workspace's [licence](/operational-guides/license) includes it.
+- **The Gen module in your license:** the **Gen** tab only appears when your workspace's [license](/operational-guides/license) includes it.
 - **An image model:** at least one image-generation model in the [AI Model Registry](/operational-guides/ai-model-registry-features), and image generation set up under **Settings** → **Gen** → **Prompt defaults**.
 - **A Rational AI account:** anyone can generate images. Users who aren't administrators see only the image sessions they started.
 
@@ -33,9 +34,9 @@ The first time you open Gen, a guided tour walks you through the galleries and c
 
 When a generation produces several images, browse them with **Previous image** and **Next image**.
 
-<Admonition type="note" icon="📝" title="SHORT PROMPTS CAN BE EXPANDED FOR YOU">
+:::note[Short prompts can be expanded for you]
 If an administrator has turned on **Let AI rewrite short prompts**, a prompt of twelve words or fewer is expanded into a fuller description by a text model before the image model sees it. *"A cat on a sofa"* becomes a prompt that also describes lighting, composition and mood. Longer prompts are sent as you wrote them, and if the rewrite fails for any reason your original prompt is used.
-</Admonition>
+:::
 
 ## Adjust the settings
 
@@ -48,11 +49,11 @@ The configuration panel next to the image has two views:
 | The template view (the default while you're on a template) | **Aspect ratio**, **Output quantity** and **Style** — one of the style presets. Everything else the template sets is listed, read-only, under *"What this template draws in"*. | Everyday use: the brand stays consistent. |
 | **Advanced** | Everything: the model, **Aspect ratio**, **Size**, **Quality**, **Output quantity**, **Negative prompt**, **Guidance scale**, **Steps**, **Denoise strength**, **Sampler**, **Output format**, **Compression**, **Background**, and **Use fixed seed** with its **Seed**. | When the template doesn't get you there. Select **Advanced** to switch, and **Back to the template** to return. |
 
-Turn on **Use fixed seed** when you want to change one thing — the prompt, say — and keep everything else about the image the same: the same seed with the same settings produces a very similar picture.
+Turn on **Use fixed seed** when you want to change one thing (the prompt, say) and keep everything else about the image the same: the same seed with the same settings produces a very similar picture.
 
-<Admonition type="note" icon="📝" title="YOU ONLY SEE SETTINGS THE MODEL SUPPORTS">
+:::note[You only see settings the model supports]
 Image models differ in what they can be asked for: one offers five aspect ratios and a seed, another three sizes and a transparent background. Gen draws only the controls the selected model declares, so every option you see is one the model will honour. Switching to another model re-picks any value the new model can't draw. The model's capabilities, including how many reference images it accepts, are described in the [AI Model Registry](/operational-guides/ai-model-registry-features).
-</Admonition>
+:::
 
 Changing the model in **Advanced** leaves the template behind: the editor then says the session no longer belongs to a template, and the brand settings you had stay as they were.
 
@@ -78,17 +79,17 @@ Two other messages are worth knowing:
 - *"An image is already being generated. Wait for it to finish."* — a session generates one image at a time.
 - *"This generation is taking longer than expected."* — select **Refresh status** to check again.
 
-## Organise the gallery
+## Organize the gallery
 
 Back in **Photo & Video**, generations are grouped by date. From a card's menu you can **Favorite** it, **Download** it, **Add to folder**, or **Delete** it — deleting removes the session with its entire generation history and can't be undone. Tick several cards to act on them together from **Actions**.
 
 - **Filters** narrows the gallery to **Favorites only**, a **Folder**, or a **Period** (**Today**, **Last 7 days**, **Last 30 days**).
 - **Folders** lists your folders with how many images each holds; use **New folder** to add one, and a folder's menu to **Download**, **Rename** or **Delete** it.
 
-<Admonition type="note" icon="📝" title="EVERY IMAGE IS LABELLED AS AI-GENERATED">
+:::note[Every image is labeled as ai-generated]
 Each image Gen produces carries an embedded marker saying a model made it, which stays with the file after you download it. See [How generated images declare they were made by AI](/operational-guides/generated-image-provenance).
-</Admonition>
+:::
 
 ## Result
 
-You can open Gen, start an image from a template that keeps the brand consistent, describe the subject in a sentence, and adjust only the settings the chosen model really supports. Every attempt is kept in the session's history, settings changes can be undone and redone, AI tools refine the image you have, failures tell you why, and the gallery keeps the results organised in folders and favourites.
+You can open Gen, start an image from a template that keeps the brand consistent, describe the subject in a sentence, and adjust only the settings the chosen model really supports. Every attempt is kept in the session's history, settings changes can be undone and redone, AI tools refine the image you have, failures tell you why, and the gallery keeps the results organized in folders and favorites.

@@ -1,16 +1,17 @@
 ---
 sidebar_position: 18
 sidebar_label: Tune answer generation
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Tune how a touchpoint generates answers
 
 The same model can answer in two seconds or think for a minute, write three lines or ten pages, and occasionally get stuck repeating itself until it hits its limit. Each [touchpoint](/operational-guides/configure-touchpoints) decides how much its model thinks, how long an answer may get, what happens when the model loops, and whether users can check an answer against your knowledge. This guide covers those settings, all on the touchpoint's **Models** tab, and what your users see as a result.
 
-<Admonition type="info" icon="📖" title="WHAT IS THE REASONING LEVEL?">
+:::note[What is the reasoning level?]
 Reasoning models think before they answer, and most let you choose how hard: from **Off** (answer straight away, where the model allows it) through **Minimal**, **Low**, **Medium** and **High** to **XHigh** and **Max**. A higher level helps on hard questions, at the cost of time and tokens. Each model offers only some of these levels, and Rational AI shows only the ones the touchpoint's model actually supports.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -48,9 +49,9 @@ Below **Reasoning**, the switch **Let users choose the level per conversation** 
 - **On** (the default): the composer's model button (*"Model and reasoning"*) shows a **Reasoning** row with one button per level the model offers. The choice is kept for that conversation only; selecting the highlighted level again returns to the touchpoint's default.
 - **Off**: the level you set always applies, and users see it as *"… set by the assistant"*.
 
-<Admonition type="note" icon="📝" title="ANONYMOUS TOUCHPOINTS START WITH THE CHOICE SWITCHED OFF">
+:::note[Anonymous touchpoints start with the choice switched off]
 A touchpoint created with **Allow anonymous access** on gets this switch off, so anonymous visitors can't push a public assistant to its most expensive level. You can still switch it on yourself.
-</Admonition>
+:::
 
 ## Cap the length of an answer
 
@@ -59,9 +60,9 @@ A touchpoint created with **Allow anonymous access** on gets this switch off, so
 1. Under **Generation limits**, enter a number in **Maximum output tokens**, or leave it empty to keep the model's limit.
 2. Save the touchpoint.
 
-<Admonition type="note" icon="📝" title="THE CAP REACHES EVERY PROVIDER">
+:::note[The cap reaches every provider]
 The limit is sent in the form each provider expects, so it holds the same way whether the model runs on OpenAI or on another provider.
-</Admonition>
+:::
 
 ## Stop answers that repeat themselves
 

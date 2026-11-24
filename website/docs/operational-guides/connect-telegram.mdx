@@ -1,12 +1,13 @@
 ---
 sidebar_position: 21
 sidebar_label: Connect a Telegram bot
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Connect a Telegram bot
 
-A Telegram channel puts your agent behind a bot: people message the bot, the agent answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behaviour you'll want to get right before letting it loose in a busy chat.
+A Telegram channel puts your agent behind a bot: people message the bot, the agent answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behavior you'll want to get right before letting it loose in a busy chat.
 
 ## Prerequisites
 
@@ -25,9 +26,9 @@ Before you start, make sure you have:
 
 The token is validated against Telegram as you connect, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code — the quickest way to get people to the right bot.
 
-<Admonition type="note" icon="📝" title="THE DEFAULT WORKS ON LOCALHOST">
-You don't need a public URL, a domain, or a tunnel. The default transport polls Telegram for new messages, which works behind a firewall and on a laptop, so the happy path is genuinely just a BotFather token.
-</Admonition>
+:::note[The default works on localhost]
+You don't need a public URL, a domain, or a tunnel. The default transport polls Telegram for new messages, which works behind a firewall and on a laptop, so the happy path is only a BotFather token.
+:::
 
 ## Choose how messages arrive
 
@@ -45,12 +46,12 @@ Both transports feed the same pipeline, so everything below behaves identically 
 Telegram messages arrive as more than plain text:
 
 - **Text and captions.**
-- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes** — subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than just acknowledge.
+- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes** — subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than only acknowledge.
 - **Locations, contacts and polls**, rendered into text the agent can work with.
 
-<Admonition type="note" icon="📝" title="AN ALBUM IS ONE MESSAGE, NOT THREE">
+:::note[An album is one message, not three]
 When someone sends three photos as an album, Telegram delivers them as three separate updates. The channel collapses them back into a single message, so the agent takes one turn over the whole set instead of answering three times.
-</Admonition>
+:::
 
 ## How conversations are grouped
 
@@ -58,7 +59,7 @@ Each Telegram chat becomes its own conversation. In supergroups with topics enab
 
 Users have one command that affects this directly: **`/reset`** closes the current conversation, so their next message starts a fresh one with no history behind it. **`/start`** and **`/help`** reply with the greeting you configure. All three appear in Telegram's own command menu, registered automatically when the bot connects.
 
-## Behaviour in group chats
+## Behavior in group chats
 
 Dropping a bot into a busy group goes badly if it answers everything. It doesn't:
 

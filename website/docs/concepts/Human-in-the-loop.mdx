@@ -3,11 +3,12 @@ sidebar_position: 20.1
 sidebar_label: Human-in-the-loop
 title: Human-in-the-loop
 description: What human-in-the-loop means, why model output needs human oversight, and where it fits in Rational AI.
+type: concept
+audience: [user, builder]
 ---
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Human-in-the-loop
 
@@ -15,9 +16,9 @@ import Admonition from '@theme/Admonition';
 
 The reason is the nature of the model itself. Output is [non-deterministic](/concepts/Non-determinism), can be confidently wrong (a [hallucination](/concepts/hallucinations)) and can drift toward telling you what you want to hear ([sycophancy](/concepts/Sycophancy)). A human in the loop is the check that catches the cases automated grounding and review do not.
 
-<Admonition type="note" icon="📝" title="A dial, not a switch">
-Human-in-the-loop is not all-or-nothing. The right amount of oversight depends on the stakes: low-risk, easily reversible tasks may need little or none, while decisions that are costly, public or hard to undo warrant a human signing off every time.
-</Admonition>
+:::note[A dial, not a switch]
+Human-in-the-loop is not all-or-nothing. The right amount of oversight depends on the stakes: low-risk, reversible tasks may need little or none, while decisions that are costly, public or hard to undo warrant a human signing off every time.
+:::
 
 ## When to keep a human in the loop
 

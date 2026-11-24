@@ -1,21 +1,22 @@
 ---
 sidebar_position: 42
 sidebar_label: Generate documents
+type: how-to
+audience: [user]
 ---
-import Admonition from '@theme/Admonition';
 
 # Generate documents, slides and web pages
 
-A first draft of a proposal, a ten-slide deck for Monday's meeting, a one-page landing page: each of these starts as a conversation about what it should say. In Gen you have that conversation in a chat beside the document, and the assistant writes the file — a Word document, a PowerPoint deck or an HTML page — keeping every version so you can go back to an earlier one.
+A first draft of a proposal, a ten-slide deck for Monday's meeting, a one-page landing page: each of these starts as a conversation about what it should say. In Gen you have that conversation in a chat beside the document, and the assistant writes the file (a Word document, a PowerPoint deck or an HTML page), keeping every version so you can go back to an earlier one.
 
-<Admonition type="info" icon="📖" title="WHAT IS A DOCUMENT SESSION?">
-Each document in Gen is a **session**: a chat with the assistant plus the files it has written. Every time the assistant writes the file, the result becomes a new **version** of the document. You keep talking — *"make the intro shorter"*, *"add a slide on pricing"* — and each answer produces the next version, while the earlier ones stay available.
-</Admonition>
+:::note[What is a document session?]
+Each document in Gen is a **session**: a chat with the assistant plus the files it has written. Every time the assistant writes the file, the result becomes a new **version** of the document. You keep talking (*"make the intro shorter"*, *"add a slide on pricing"*) and each answer produces the next version, while the earlier ones stay available.
+:::
 
 ## Prerequisites
 
-- **The Gen module in your licence.**
-- **Administrative access:** the **Text**, **Slides** and **Canvas** areas are available to administrators only; for other users they are greyed out.
+- **The Gen module in your license.**
+- **Administrative access:** the **Text**, **Slides** and **Canvas** areas are available to administrators only; for other users they are grayed out.
 - **The output skills installed:** each area writes its files with an [agent skill](/operational-guides/agent-skills) — **docx** for Text, **pptx** for Slides, **web-design** for Canvas. If the skill is missing, creating a document fails with a message asking an administrator to install it.
 
 ## Choose the area
@@ -43,9 +44,9 @@ When a document has more than one version, a version menu appears above it: pick
 - **Text** and **Slides** versions open in the built-in office editor, so you see the document exactly as Word or PowerPoint would show it.
 - **Canvas** versions show as **Preview**, the page rendered in a safe sandbox, or **Code**, its source.
 
-<Admonition type="note" icon="📝" title="ASKING FOR A CHANGE NEVER OVERWRITES">
+:::note[Asking for a change never overwrites]
 A new version is added next to the old ones rather than replacing them. If the assistant takes a request in the wrong direction, select the previous version and carry on from there — nothing has been lost.
-</Admonition>
+:::
 
 ## Download a document
 
@@ -53,9 +54,9 @@ Select **Download** to save the version you are looking at: a `.docx` from Text,
 
 To remove a document from the gallery, open its card menu and select **Delete document**.
 
-<Admonition type="note" icon="📝" title="THE ASSISTANT'S BEHAVIOUR IS SET PER AREA">
+:::note[The assistant's behavior is set per area]
 Which model writes the documents, the base prompt it follows, and the extra skills and tools it can use are configured separately for Text, Slides and Canvas under **Settings** → **Gen**. See [Configure Gen](/operational-guides/configure-gen#configure-text-slides-and-canvas).
-</Admonition>
+:::
 
 ## Result
 

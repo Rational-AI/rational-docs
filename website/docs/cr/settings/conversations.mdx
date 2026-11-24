@@ -1,5 +1,7 @@
 ---
 sidebar_position: 7
+type: reference
+audience: [admin, builder]
 ---
 
 import UsersIcon from '@site/static/img/users.svg';
@@ -9,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Conversations
 
-The Conversations settings control how Rational AI enriches and processes end-user conversations behind the scenes. From here you configure four automatic analyses—**title generation**, **topic detection**, **sentiment analysis** and **summary generation**—each of which can be enabled independently and assigned its own model and prompt. You also define the **human oversight** rules that flag conversations for review, and the **statuses** a conversation can have.
+The Conversations settings control how Rational AI enriches and processes end-user conversations behind the scenes. From here you configure four automatic analyses (**title generation**, **topic detection**, **sentiment analysis** and **summary generation**), each of which can be enabled independently and assigned its own model and prompt. You also define the **human oversight** rules that flag conversations for review, and the **statuses** a conversation can have.
 
 The model that writes the replies users see isn't set here: it's the **Conversational model** default in the [AI Model Registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), unless a [touchpoint](touchpoints.mdx) picks its own.
 
@@ -44,7 +46,7 @@ A specific model you pick always wins over both defaults. If the default you cho
 
 ## Title generation settings
 
-When enabled, Rational AI automatically generates a short title for each conversation so it's easy to recognise later.
+When enabled, Rational AI automatically generates a short title for each conversation so you can recognize it later.
 
 * **Enable title generation** – Turn the feature on or off.
 * **Title generation model** – The model used to produce the title.
@@ -65,12 +67,12 @@ When enabled, each conversation is tagged with up to three topics from a defined
 
 ## Sentiment analysis settings
 
-When enabled, Rational AI estimates the emotional tone of incoming messages, so urgent or negative conversations can be prioritised.
+When enabled, Rational AI estimates the emotional tone of incoming messages, so urgent or negative conversations can be prioritized.
 
 * **Enable sentiment analysis** – Turn the feature on or off.
 * **Sentiment analysis model** – The model used to calculate the sentiment of users' messages.
 * **Calculation frequency** and **Number of messages to consider** – As for titles and topics.
-* **Sentiment list** – The sentiments the model can choose from, each with its own label and colour. Add one with **New sentiment…**.
+* **Sentiment list** – The sentiments the model can choose from, each with its own label and color. Add one with **New sentiment…**.
 * **Sentiment analysis template prompt** – The instruction sent to the model, with **Restore default**.
 
 ## Summary generation settings

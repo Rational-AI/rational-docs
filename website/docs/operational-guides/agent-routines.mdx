@@ -1,16 +1,17 @@
 ---
 sidebar_position: 38
 sidebar_label: Schedule and trigger agents
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Schedule and trigger agents
 
 Some work should happen without anyone asking: the morning briefing at eight, the sales report every Monday, a review every time a pull request is opened. A **routine** is an agent that is started by something other than you — a schedule, a GitHub event or a call from another system. This guide shows how to set each one up, how to see what is coming and how to hold a routine.
 
-<Admonition type="info" icon="📖" title="A ROUTINE IS AN AGENT WITH A TRIGGER">
-There is nothing to create besides the agent: its **Trigger** decides what starts it. A scheduled or event-driven run is the same as any other run — same instructions, same tools, same approvals — and it shows up in **History**, on the agent's page and on the routine's **Runs** tab.
-</Admonition>
+:::note[A routine is an agent with a trigger]
+There is nothing to create besides the agent: its **Trigger** decides what starts it. A scheduled or event-driven run is the same as any other run (same instructions, same tools, same approvals), and it shows up in **History**, on the agent's page and on the routine's **Runs** tab.
+:::
 
 ## Prerequisites
 
@@ -61,9 +62,9 @@ The cron expression has the usual five fields — minute, hour, day of the month
 
 If a scheduled run is due while the previous one is still going, it is skipped rather than stacked. When the agent has no model of its own, the platform Agents default is picked when the run starts.
 
-<Admonition type="note" icon="📝" title="USE CRON, NOT INTERVAL">
+:::note[Use cron, not interval]
 The **Interval** option (*Every n minutes*) does not create a schedule yet, and saving a profile with it removes the cron schedule the agent had. For a regular interval, write it as a cron expression, such as `*/15 * * * *` for every 15 minutes.
-</Admonition>
+:::
 
 ## See what's coming in the calendar
 
@@ -116,7 +117,7 @@ In the repository, go to **Settings** → **Webhooks** → **Add webhook** and f
 | **Secret** | the secret from the previous step |
 | **Which events** | the events you listed on the agent |
 
-`<tenant>` is your organisation's identifier on the platform, normally the first part of your Control Room address (`<tenant>.…`); your administrator can confirm it.
+`<tenant>` is your organization's identifier on the platform, normally the first part of your Control Room address (`<tenant>.…`); your administrator can confirm it.
 
 GitHub sends a *ping* as soon as the webhook is saved; the answer `{"status":"pong"}` in **Recent Deliveries** confirms that the address and the secret are right. From then on, every matching event answers `{"status":"queued","runId":"…"}` and a run appears in **History** with trigger `githubEvent`.
 
@@ -127,13 +128,13 @@ GitHub sends a *ping* as soon as the webhook is saved; the answer `{"status":"po
 | `{"status":"ignored","eventName":"…"}` | The event is not in the agent's **Events** list. |
 | `{"status":"duplicate"}` | GitHub redelivered an event that already started a run. |
 
-<Admonition type="caution" icon="⚠️" title="THE REPOSITORY FIELD IS NOT A FILTER">
+:::warning[The repository field is not a filter]
 Deliveries are accepted from any repository that has the webhook URL and the secret; the **Repository** on the profile tells the agent where the events come from but does not reject other repositories. Keep the secret on the repositories you mean.
-</Admonition>
+:::
 
 ## Start it from another system
 
-Any system that can make an HTTP request — a CRM, a ticketing tool, a nightly script — can hand work to an agent:
+Any system that can make an HTTP request (a CRM, a ticketing tool, a nightly script) can hand work to an agent:
 
 ```bash
 curl -X POST "https://<your address>/api/agents/v0/agents/<agent id>/execute" \
@@ -156,6 +157,6 @@ The answer is the new run, with its `id` and `status`; follow it at `/agents/run
 
 **Pause** (on the agent's page or its row in **Routines**) marks the agent as *Paused*: its card and routine row say so, GitHub deliveries are ignored, and its upcoming runs leave the calendar. **Resume** clears it.
 
-<Admonition type="caution" icon="⚠️" title="TO STOP A SCHEDULE, CHANGE THE TRIGGER">
+:::warning[To stop a schedule, change the trigger]
 Pausing does not remove the cron schedule itself. To be sure a scheduled agent stops running, set its **Trigger** back to `manual` and save; set it to `schedule` again when you want it back.
-</Admonition>
+:::

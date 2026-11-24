@@ -1,16 +1,17 @@
 ---
 sidebar_position: 36
 sidebar_label: Delegate work with tasks
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Delegate work with tasks
 
 A task is a piece of work you hand to one or more agents and want to see finished: *"Prepare the offer for RFQ-2026-0153"*, *"Weekly sales report — week 39"*. The **Tasks** board shows every task in one of four columns, moves them on its own as the agents work, and brings to the front the ones that need you. This guide covers the board, the task itself and the projects that group tasks together.
 
-<Admonition type="info" icon="📖" title="TASKS AND RUNS">
+:::note[Tasks and runs]
 A task is the **what**; a run is one attempt at doing it. Starting a task opens a run with its first assignee, and the run's progress drives the task: while the run works the task is *Working*, when it needs an approval or fails the task goes to *Needs you*, when it completes the task goes to *Done* and the agent's final answer is posted on it as a comment.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -80,9 +81,9 @@ Select a card to open it.
 - **Project** — move the task to another project, or leave it *Unassigned*.
 - **Actions** — **Open live run** while a run is going (see [Follow runs and approve actions](./agent-runs)), **Start with &lt;agent&gt;** otherwise, the **Move to …** buttons and **Delete task**.
 
-<Admonition type="caution" icon="⚠️" title="DELETE TASK DOES NOT ASK TWICE">
+:::warning[Delete task does not ask twice]
 **Delete task** removes the task immediately, without a confirmation. The runs it started stay in **History**.
-</Admonition>
+:::
 
 ## Group tasks in projects
 
@@ -101,9 +102,9 @@ Each card shows how many tasks are done and open, how many need you, and the lin
 
 Agents projects are separate from [Rational BI](/operational-guides/rational-bi) projects.
 
-<Admonition type="note" icon="📝" title="THE AGENT'S KNOWLEDGE COMES FROM ITS PROFILE">
+:::note[The agent's Knowledge comes from its profile]
 Linking a Knowledge base to a project documents what the project is about and shows it on the card. What an agent can actually search and change is set on its profile, under **Knowledge access**. When a project's agents should work on its Knowledge, grant that base on their profiles too.
-</Admonition>
+:::
 
 ## Who sees a task
 

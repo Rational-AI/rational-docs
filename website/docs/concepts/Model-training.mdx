@@ -2,7 +2,9 @@
 sidebar_position: 9
 sidebar_label: Model training
 title: Model training
-description: How models are trained, the main stages from pre-training to alignment, and where training fits alongside finetuning in Rational AI.
+description: How models are trained, the main stages from pre-training to alignment, and where training fits alongside fine-tuning in Rational AI.
+type: concept
+audience: [user, builder]
 ---
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
@@ -22,7 +24,7 @@ Most training follows the same loop:
 3. **Backpropagation:** that error is used to nudge the parameters in a direction that reduces it.
 4. **Repeat:** the loop runs across the whole dataset many times, in small batches.
 
-The goal is to **generalise**, not to memorise. A model that simply memorised its examples would fail on anything new, a problem known as overfitting.
+The goal is to **generalise**, not to memorise. A model that only memorised its examples would fail on anything new, a problem known as overfitting.
 
 ## The stages of training a language model
 
@@ -31,12 +33,12 @@ Modern language models are usually built in stages, each smaller and more target
 | Stage              | What happens                                                        |
 | :----------------- | :----------------------------------------------------------------- |
 | **Pre‑training**   | The model learns general language from a huge, broad text corpus    |
-| **Finetuning**     | It is refined on a narrower dataset for a specific task or domain    |
-| **Alignment**      | Its behaviour is shaped to be helpful and safe, often with [RLHF](./RLHF.mdx) |
+| **Fine-tuning**     | It is refined on a narrower dataset for a specific task or domain    |
+| **Alignment**      | Its behavior is shaped to be helpful and safe, often with [RLHF](./RLHF.mdx) |
 
 ## Training in Rational AI
 
-You don't train a base model from scratch in the platform, but the later stages are within reach. Through [finetuning](./Finetuning.mdx) you can adapt an existing model to your own [datasets](../cr/settings/datasets.mdx), producing a tailored model that performs better on your tasks while reusing the general knowledge the base model already learned.
+You don't train a base model from scratch in the platform, but the later stages are within reach. Through [fine-tuning](./Finetuning.mdx) you can adapt an existing model to your own [datasets](../cr/settings/datasets.mdx), producing a tailored model that performs better on your tasks while reusing the general knowledge the base model already learned.
 
 ---
 
@@ -44,7 +46,7 @@ You don't train a base model from scratch in the platform, but the later stages 
 
 <ConnectsTo
 	items={[
-		{ label: "Finetuning", to: "/concepts/Finetuning" },
+		{ label: "Fine-tuning", to: "/concepts/Finetuning" },
 		{ label: "RLHF", to: "/concepts/RLHF" },
 		{ label: "Dataset and training data", to: "/concepts/Dataset-and-training-data" },
 		{ label: "Inference", to: "/concepts/Inference" },

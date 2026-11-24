@@ -1,8 +1,9 @@
 ---
 sidebar_position: 33
 sidebar_label: Generated image provenance
+type: how-to
+audience: [admin]
 ---
-import Admonition from '@theme/Admonition';
 
 # How generated images declare they were made by AI
 
@@ -20,22 +21,22 @@ That property is the interoperable way for a file to declare it was produced by 
 
 ## When it is applied
 
-The marker is written **before the image is stored**, not added on the way out. Every copy that subsequently leaves — a download, the gallery, an API response — carries it, because they're all serving an already-marked file.
+The marker is written **before the image is stored**, not added on the way out. Every copy that subsequently leaves (a download, the gallery, an API response) carries it, because they're all serving an already-marked file.
 
 Marking on the way out would leave the stored object unmarked and make correctness depend on every future download path remembering to add it.
 
 Two practical consequences:
 
 - **Re-marking is harmless.** An image that already carries the marker isn't given a second one.
-- **Unrecognised formats pass through untouched.** PNG and JPEG are marked. Anything else is stored exactly as generated rather than risking a corrupted file — an unlabelled image is a smaller failure than a broken one, and you can't tell the difference after the fact.
+- **Unrecognized formats pass through untouched.** PNG and JPEG are marked. Anything else is stored exactly as generated rather than risking a corrupted file — an unlabelled image is a smaller failure than a broken one, and you can't tell the difference after the fact.
 
-<Admonition type="caution" icon="⚠️" title="THIS IS A DECLARATION, NOT A SIGNED PROVENANCE MANIFEST — IT IS NOT C2PA">
+:::warning[This is a declaration, not a signed provenance manifest — it is not C2PA]
 The distinction matters if you're answering a question about provenance, because the two are often spoken of as though they were the same thing.
 
 The marker establishes **what the file is**: something a model generated. It does **not** establish that nobody has altered the file since, and anyone who wants to strip it can — it's metadata, not a seal.
 
 C2PA additionally binds the claim to a signing identity, so the assertion can be shown not to have been tampered with. That requires a certificate and a signing service, and Rational AI does not do it today. If a tender or a policy asks specifically for C2PA, this does not satisfy it.
-</Admonition>
+:::
 
 ## Related
 

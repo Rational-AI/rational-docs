@@ -1,11 +1,13 @@
 ---
 sidebar_position: 19
 sidebar_label: RAG 
+type: concept
+audience: [user, builder]
 ---
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-# Retrieval-Augmented Generation (RAG)
+# Retrieval-augmented generation (RAG)
 **Retrieval-Augmented Generation (RAG)** is a technique that enhances Large Language Models (LLMs) by retrieving relevant information from a knowledge base before generating a response.
 
 Instead of relying only on what the model learned during training, a RAG system actively searches your organization’s knowledge, selects the most relevant resources, and provides them to the model as context.  
@@ -28,7 +30,7 @@ It is ideal for:
 
 ### How Naive RAG works
 Naive RAG follows a straightforward pipeline:
-**User Query → Embedding → Vector Search → Top-K Results → Context Window Filter → LLM**  
+**User Query** → **Embedding** → **Vector Search** → **Top-K Results** → **Context Window Filter** → **LLM**  
 1. The process begins by converting the user query into an embedding (a numerical representation of meaning).
 2. The system compares this embedding with document embeddings stored in the knowledge base.
 
@@ -47,10 +49,10 @@ For example, if the query is:
 What are the symptoms of diabetes
 ```
 
-Naive RAG retrieves documents discussing diabetes symptoms based on semantic similarity, without considering related documents (e.g., treatment guidelines or clinical studies).
+Naive RAG retrieves documents discussing diabetes symptoms based on semantic similarity, without considering related documents (for example, treatment guidelines or clinical studies).
 
 ## Graph RAG
-Graph RAG extends semantic search by incorporating knowledge graph relationships. It **retrieves** not only directly relevant documents, but **also related resources connected through explicit relationships**.
+Graph RAG extends semantic search by incorporating knowledge graph relationships. Along with directly relevant documents, it **retrieves related resources connected through explicit relationships**.
 
 It is designed for:
 * Knowledge bases with structured relationships
@@ -63,7 +65,7 @@ It is designed for:
 
 ### How Graph RAG works
 Graph RAG implements a more sophisticated pipeline:
-**User Query → Embedding → Vector Search → Top-K Results → Graph Expansion → Relevance Filtering → Final Ranking → Context Window Filter → LLM.**
+**User Query** → **Embedding** → **Vector Search** → **Top-K Results** → **Graph Expansion** → **Relevance Filtering** → **Final Ranking** → **Context Window Filter** → **LLM.**
 
 The process occurs in three main phases:
 1. **Semantic search**: operates identically to Naive RAG. It converts the query to an embedding, finds semantically similar documents, and filters them by a semantic threshold.  
@@ -119,7 +121,7 @@ Graph RAG:
 Rational AI agents are not limited to RAG-based retrieval. They may also have access to structured database tools such as **SQLite** and **Postgres**, which allow the execution of SQL queries over relational databases.
 For this reason, proper Touchpoint configuration requires more than choosing between Naive RAG and Graph RAG. It also requires determining when structured database queries are more appropriate than semantic retrieval.
 
-### Tool Enablement
+### Tool enablement
 Tool availability should reflect the actual structure of the Knowledge environment.  
 
 For example:
@@ -131,33 +133,33 @@ For example:
 Proper configuration avoids unnecessary complexity and ensures predictable behavior.
 
 
-### Retrieval Strategy
+### Retrieval strategy
 As a general rule, **RAG** should be the **default retrieval method**. Most user queries are expressed in natural language and do not include precise identifiers. **Semantic search is therefore the most reliable starting point.**
 
 When both RAG tools are available:
 * **Naive RAG** should be **preferred for simple, well-defined questions** where the answer is likely contained in a single document and relational context is not required.
-* **Graph RAG** should be **preferred for broader or more complex queries** where relationships between documents add value (e.g., citations, references, hierarchies, interconnected content).
+* **Graph RAG** should be **preferred for broader or more complex queries** where relationships between documents add value (for example, citations, references, hierarchies, interconnected content).
 
 Graph RAG may return a richer result set but requires more processing time.
 
 Because RAG returns a limited number of results, the model may need to execute multiple retrieval passes for complex queries.
 
 
-### When to Use SQL
+### When to use SQL
 SQL tools are *not* suitable for general semantic search; they are best used for structured operations, such as:
 * Exact matches using unique identifiers (IDs, exact names)  
 When generating SQL without a unique identifier, the query should maximize matching coverage, for example by using LIKE or ILIKE operators and including relevant synonyms.
 * Aggregations such as COUNT, SUM, or AVG
-* Numerical filters (e.g., price thresholds)
+* Numerical filters (for example, price thresholds)
 * Deterministic database queries
 
 
-### Combined Usage
+### Combined usage
 In more advanced scenarios, RAG and SQL should be used together.
 
 A typical pattern is:
 1. **Use RAG** to identify relevant entities or retrieve contextual information.
-2. **Extract** structured **data** (e.g., IDs, categories).
+2. **Extract** structured **data** (for example, IDs, categories).
 3. **Use SQL** for precise filtering or aggregation.
 
 RAG provides semantic alignment; SQL provides structured precision. Used *together*, they enable accurate and context-aware retrieval across both unstructured and structured knowledge.

@@ -1,16 +1,17 @@
 ---
 sidebar_position: 17
 sidebar_label: Build agent skills
+type: how-to
+audience: [builder, developer]
 ---
-import Admonition from '@theme/Admonition';
 
 # Build and run agent skills
 
 A skill is a reusable capability you hand to the AI: a folder of instructions and helper files the model can read and run on demand. Instead of explaining the same multi-step task every time, you package it once, and the model reaches for it whenever a conversation calls for it. This guide takes you from installing a skill to running one in chat, and optionally previewing the web pages a skill produces in Canvas.
 
-<Admonition type="info" icon="📖" title="WHAT IS AN AGENT SKILL?">
+:::note[What is an agent skill?]
 An agent skill is a [Hermes-compatible](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) folder containing a `SKILL.md` manual (the instructions, written in plain Markdown with a short YAML header) plus any helper files it needs. Skills are shipped by [extensions](/operational-guides/manage-extensions) and attached to a [touchpoint](/operational-guides/configure-touchpoints) — the connection point between a conversation and the tools available to it. In chat, the model sees only each skill's name and description. It pulls the full manual, and runs any commands in an isolated sandbox, only when it decides the skill is the right fit.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -31,9 +32,9 @@ Skills arrive inside extensions, so getting a new skill means installing the ext
 
 Uninstalling the extension later removes its skills.
 
-<Admonition type="note" icon="📝" title="THE SANDBOX MUST BE INSTALLED">
+:::note[The sandbox must be installed]
 The `skill_exec` runtime is provided by the **agent-skills** extension, and skills can only run if it's present. Install it first — its default sandbox configuration is created automatically on install.
-</Admonition>
+:::
 
 ## Bind skills to a touchpoint
 
@@ -44,9 +45,9 @@ Installing a skill makes it available; binding it to a touchpoint makes it usabl
 3. In the picker — where skills are grouped by the extension that ships them — **add** the skills you want.
 4. To stop offering a skill later, remove it from the same tab.
 
-<Admonition type="note" icon="📝" title="TOOLS TAKE PRECEDENCE">
-If a skill and a touchpoint tool share a name, the touchpoint tool wins. Binding a skill has no per-binding configuration — you simply add or remove it.
-</Admonition>
+:::note[Tools take precedence]
+If a skill and a touchpoint tool share a name, the touchpoint tool wins. Binding a skill has no per-binding configuration — you add or remove it.
+:::
 
 ## Run a skill from chat
 
@@ -67,7 +68,7 @@ The model is given a short list of each bound skill's **name and description**, 
 
 ### Pick a skill with `/`
 
-Leaving the choice to the model works most of the time. When it doesn't — or when you simply know which skill the job needs — name the skill yourself.
+Leaving the choice to the model works most of the time. When it doesn't, or when you know which skill the job needs, name the skill yourself.
 
 1. In an empty composer, type `/`. A **Skills** menu lists the skills enabled on the chat's touchpoint, each with its `/name`; when the composer is wide enough, the highlighted skill's description appears beside the list.
 2. Keep typing to filter by name, then pick a skill with a click, **Enter** or **Tab**. **Esc** closes the menu.
@@ -75,9 +76,9 @@ Leaving the choice to the model works most of the time. When it doesn't — or w
 
 The same list is under **Skills** in the composer's **+** menu, which keeps any text you have already typed. To drop the skill before sending, select the chip's **✕**, or press **Backspace** in an empty composer.
 
-<Admonition type="note" icon="📝" title="PICKING A SKILL STEERS THE MODEL, IT DOESN'T BYPASS IT">
+:::note[Picking a skill steers the model, it doesn't bypass it]
 The message goes out as `/<skill> <your request>`, and Rational AI tells the model that you chose that skill: read its instructions first and follow them. The model still does the work, so your request after the chip is what it acts on. If the menu says *"No skills are enabled for this chat"*, the touchpoint has no skills bound; users who can manage extensions find **Manage skills** in the **+** menu's **Skills** submenu.
-</Admonition>
+:::
 
 ### Follow what happened
 
@@ -91,25 +92,25 @@ The file you asked for gets a card under the answer, with its type, name and siz
 - **Download** saves it.
 - **Save to knowledge** files it into a [Knowledge](/operational-guides/create-knowledge), so it doesn't stay buried in the chat.
 
-<Admonition type="note" icon="📝" title="A FAILED RUN SAYS SO, AND OFFERS A WAY OUT">
+:::note[A failed run says so, and offers a way out]
 If the skill stops before producing its file, the answer shows *"No file was created."* instead of an empty card. From there you can open **Technical details**, **Retry**, or **Change model** — useful when a smaller model struggles to follow a long skill manual.
-</Admonition>
+:::
 
 ### Create a PDF
 
-The `pdf` skill in **Agent Skills** builds PDF documents — letters, notices, reports, one-page summaries — with headings, paragraphs, tables and images, on A4 by default. Ask for *"a PDF"* or pick `/pdf`, and the skill checks the finished file (page count and opening text of each page) before handing it over.
+The `pdf` skill in **Agent Skills** builds PDF documents (letters, notices, reports, one-page summaries) with headings, paragraphs, tables and images, on A4 by default. Ask for *"a PDF"* or pick `/pdf`, and the skill checks the finished file (page count and opening text of each page) before handing it over.
 
-<Admonition type="note" icon="📝" title="IT CREATES PDFS; IT DOESN'T EDIT THEM">
+:::note[It creates PDFs; it doesn't edit them]
 The skill writes new documents. It has no steps for merging, splitting or filling in existing PDFs. If you'll want to edit the text afterwards, ask for a Word document (`docx`) instead.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="SKILLS CAN BE WRITTEN IN ANY LANGUAGE">
+:::note[Skills can be written in any language]
 The sandbox runs commands with `bash`, so it's language-agnostic. The backend container ships `python3` (with `uv`), `node`, `npm`/`npx` and `bash`. Python is first-class — the sandbox lazily provisions a shared virtualenv (python-pptx, python-docx, openpyxl, pypdf, pillow, and more). JavaScript skills can `npm install` their own dependencies, and TypeScript skills bring their own transpiler (for example via `npx tsx`).
-</Admonition>
+:::
 
 ## Preview web pages in Canvas
 
-When a skill builds a self-contained web page, **Canvas** renders it live in a panel beside the conversation, so you see the result instead of just a downloadable file.
+When a skill builds a self-contained web page, **Canvas** renders it live in a panel beside the conversation, so you see the result instead of only a downloadable file.
 
 ### Open Canvas for a request
 
@@ -117,9 +118,9 @@ When a skill builds a self-contained web page, **Canvas** renders it live in a p
 2. Ask for a web page or UI. The backend's **web-design** skill builds a single self-contained `index.html`.
 3. On completion, the skill step shows an artifact **card** (icon, skill, size, **Open**) and the Canvas panel opens automatically.
 
-<Admonition type="note" icon="📝" title="YOU CAN LEAVE THE TOGGLE OFF">
+:::note[You can leave the toggle off]
 Auto-detect also works with **Canvas** off — web and UI requests are routed to a web-design skill automatically. Enable the toggle when you want to be sure a request is treated as a Canvas page.
-</Admonition>
+:::
 
 ### Work with the result
 
@@ -129,9 +130,9 @@ In the Canvas panel you can:
 - Move between snapshots with the **version arrows ‹ N/M ›**. Versions are saved to `localStorage`, so they survive a page refresh.
 - **Resize**, go **fullscreen**, **refresh**, **download**, or **close** the panel. It also closes automatically when you switch chats.
 
-<Admonition type="note" icon="📝" title="PREVIEW IS PRIVATE TO THE AUTHOR">
+:::note[Preview is private to the author]
 The preview iframe is sandboxed and only rendered on the author's own chat page — it's removed from the staff [Conversations](/operational-guides/conversations) view, so a generated page runs only in its author's session.
-</Admonition>
+:::
 
 ## Result
 

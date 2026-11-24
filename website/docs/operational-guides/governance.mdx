@@ -1,16 +1,17 @@
 ---
 sidebar_position: 23
 sidebar_label: Monitor usage and cost
+type: how-to
+audience: [admin]
 ---
-import Admonition from '@theme/Admonition';
 
 # Monitor usage, cost, and audit logs
 
 Once your AI is in use, you'll want to know how much it's being used, what it's costing you, how fast it responds, and exactly what happened on any given request. The **Governance** area gives you all of that in one place, and it tells you first what needs your attention.
 
-<Admonition type="info" icon="📖" title="WHAT IS GOVERNANCE?">
+:::note[What is governance?]
 Governance is a top-navigation area (alongside Chat, Knowledge, Conversations, and [BI](/operational-guides/rational-bi)) that reports on your AI's usage and holds the decisions about who may use it. It has five tabs: **Overview** for what needs attention and the headline figures, **Usage** for the charts over time, **Applications** for the inventory of what is calling your AI, **Audit log** for the request-by-request record, and **Costs** for the cost ledger.
-</Admonition>
+:::
 
 Before going further, two terms show up everywhere in this area:
 
@@ -39,9 +40,9 @@ Open **Governance**. You land on the **Overview** tab, which reads top to bottom
 3. Beside the featured chart, check **Cost composition**, the costs recorded for the period by source with their total, and **Governance health**: **Cost coverage** (how much of your usage Rational AI can price), **Unpriced requests**, **Error rate**, and **Cache hit rate**.
 4. At the foot, **Top applications** lists the busiest applications by requests, with their status, environment, tokens, and cost. **View all** opens the **Applications** tab.
 
-<Admonition type="note" icon="📝" title="NEEDS ATTENTION ONLY APPEARS WHEN SOMETHING IS WRONG">
+:::note[Needs attention only appears when something is wrong]
 When every application is registered, every request is priced, and nothing is failing, the panel is not shown at all. An Overview that opens on the totals is a healthy one.
-</Admonition>
+:::
 
 ## Follow trends on the Usage tab
 
@@ -70,14 +71,14 @@ These filters are how you turn a broad overview into a real answer. Want to know
 
 When you need to look past the averages at a single request, open the **Audit log** tab. It lists every model request made through the Rational AI proxy, newest first, within the current filters.
 
-<Admonition type="caution" icon="⚠️" title="AUDIT LOG IS NOT THE AUDIT TRAIL">
-Two similarly-named surfaces answer different questions:
+:::warning[Audit log is not the audit trail]
+Two similarly named surfaces answer different questions:
 
 - **Audit log** (this tab): one row per **model request**, with the model, tokens, cost, and speed. It's about *the AI doing work*.
 - **[Audit trail](/operational-guides/audit-trail)** (**Settings** → **Audit trail**): one row per **access or change to a record**, such as who opened a conversation or who changed a dashboard. It's about *people reaching data*.
 
 If someone asks you to evidence who looked at a record, this tab is not the answer. The audit trail is.
-</Admonition>
+:::
 
 1. Choose which requests to list with the switch at the top: **All**, **Errors** (requests that did not end with a success status, as the **Error rate** counts them), or **Unpriced** (requests without a complete cost, as **Unpriced requests** counts them).
 2. Read the columns:
@@ -98,15 +99,15 @@ If someone asks you to evidence who looked at a record, this tab is not the answ
    - **Performance**: TTFT, E2E latency, and speed.
    - **Request body** and **Response body**: the payloads, when the model's tracing recorded them. Otherwise the panel says the payload was not recorded and links to the model's tracing settings.
 
-<Admonition type="note" icon="📝" title="PAYLOADS ARE RECORDED ONLY WHEN TRACING SAYS SO">
+:::note[Payloads are recorded only when tracing says so]
 A model records request and response payloads only when its tracing settings say so, and by default it never does. How long recorded payloads live is governed by [your retention policy](/operational-guides/data-retention).
 
 The values of credential headers are redacted before a request is written. The header *name* is kept, so you can still see that a request carried an `Authorization` header, but the token itself never reaches the database.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="TTFT VS E2E LATENCY">
-These two measure different kinds of "slow." A high **TTFT** means the model took a while to *start* answering, and the user stares at a blank screen. A high **E2E latency** with a low TTFT usually just means a long answer that streamed steadily. When a touchpoint feels sluggish, check TTFT first.
-</Admonition>
+:::note[TTFT vs E2E latency]
+These two measure different kinds of "slow." A high **TTFT** means the model took a while to *start* answering, and the user stares at a blank screen. A high **E2E latency** with a low TTFT usually means a long answer that streamed steadily. When a touchpoint feels sluggish, check TTFT first.
+:::
 
 The list keeps itself current: new requests appear as they are captured, without reloading the page. To take the record elsewhere, select **Export** to download every row that matches your current filters as a CSV. The button is disabled when the filters return nothing to export.
 
@@ -120,9 +121,9 @@ The **Costs** tab, titled **Cost ledger**, holds every rate, invoice, and asset 
 
 All governance costs are shown in a single reporting currency, which you choose with **Reported in** at the top right of this tab. See [Govern AI applications](/operational-guides/govern-ai-applications#choose-the-reporting-currency) for how costs are converted.
 
-<Admonition type="note" icon="📝" title="OLD DASHBOARD AND AUDIT LOG LINKS STILL WORK">
+:::note[Old dashboard and audit log links still work]
 Governance used to open on a **Dashboard** tab next to an **Audit Log** tab. Bookmarks and shared links to those tabs still work: the Dashboard opens **Overview**, and the Audit Log opens the request list in **Audit log**.
-</Admonition>
+:::
 
 ## Result
 

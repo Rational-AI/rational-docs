@@ -1,20 +1,21 @@
 ---
 sidebar_position: 28
 sidebar_label: Browse agent tools
+type: how-to
+audience: [builder, developer]
 ---
-import Admonition from '@theme/Admonition';
 
 # Browse the tools your agents can use
 
-**Settings → Tools** is the catalog of everything an AI agent can do beyond chatting — search a knowledge base, run a read-only query, fetch a document, and more. This page is a reference: it shows you what's available and where each capability comes from.
+**Settings** → **Tools** is the catalog of everything an AI agent can do beyond chatting — search a knowledge base, run a read-only query, fetch a document, and more. This page is a reference: it shows you what's available and where each capability comes from.
 
-<Admonition type="info" icon="📖" title="WHAT IS A TOOL?">
+:::note[What is a tool?]
 A tool is a single capability the AI can invoke during a conversation — one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. Each extension runs an **MCP server** (MCP is the open standard for connecting AI agents to external tools), and that server is what publishes the tools you see here.
-</Admonition>
+:::
 
 ## Browse available tools
 
-Go to **Settings → Tools**. The page is a searchable list of every tool currently available in your environment, grouped by the **MCP server** (the extension) that provides it. For example, the **RAG MCP server** is marked **Default** because it ships with Rational AI.
+Go to **Settings** → **Tools**. The page is a searchable list of every tool currently available in your environment, grouped by the **MCP server** (the extension) that provides it. For example, the **RAG MCP server** is marked **Default** because it ships with Rational AI.
 
 Each row shows:
 
@@ -50,9 +51,9 @@ Three pieces work together, and it helps to keep them straight:
 2. **This Tools page is where you see them.** It's the full inventory of what's available, no matter which agent ends up using it.
 3. **A touchpoint is where you choose them.** A [touchpoint](/operational-guides/configure-touchpoints) is the configuration for a specific agent, and that's where you pick which of these tools the agent is actually allowed to call.
 
-<Admonition type="note" icon="📝" title="SEEING A TOOL ISN'T THE SAME AS USING IT">
+:::note[Seeing a tool isn't the same as using it]
 A tool appearing in this catalog means it exists in your environment, not that any agent is using it. An agent can only call a tool once you grant it in that agent's [touchpoint](/operational-guides/configure-touchpoints).
-</Admonition>
+:::
 
 ## Declared tools and discovered tools
 
@@ -61,9 +62,9 @@ There are two moments at which you can see what an extension offers, and they do
 - **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started — useful for deciding whether an extension is worth setting up.
 - **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog. The list is refreshed when you create or edit an MCP server configuration and when an extension is updated.
 
-<Admonition type="note" icon="📝" title="AN UPDATE THAT WOULD BREAK A TOUCHPOINT IS REFUSED">
+:::note[An update that would break a touchpoint is refused]
 During an update the platform lists the new release's tools and keeps the identity of every tool that still exists, so touchpoint bindings carry over. If the update removes a tool a touchpoint still uses, or changes a tool's parameters so a binding no longer fits, the update is refused unless you force it. See [Update and roll back extensions](/operational-guides/extension-updates#what-happens-to-your-tools-and-touchpoints) for the details.
-</Admonition>
+:::
 
 ## Give a slow MCP server more time
 
@@ -80,9 +81,9 @@ Every tool call has a time limit. A tool that hasn't answered when the limit exp
 | **How long a tool may take** on the touchpoint | For every server configuration that has no limit of its own. |
 | Platform default (120 seconds) | When neither of the above is set. |
 
-<Admonition type="note" icon="📝" title="AN EMPTY FIELD NEVER MEANS NO LIMIT">
+:::note[An empty field never means no limit]
 Leaving the field empty makes the server follow the next limit down: the touchpoint's, then the platform default. Every call is bounded, and a value outside 1–600 seconds is refused when you save, so the number you enter is the one that applies.
-</Admonition>
+:::
 
 ## Result
 

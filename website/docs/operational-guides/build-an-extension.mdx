@@ -1,33 +1,34 @@
 ---
 sidebar_position: 6
 sidebar_label: Build an extension
+type: how-to
+audience: [developer]
 ---
 
 # Build an extension
 
 Extensions are how you add new capabilities to Rational AI without changing the
-platform itself. A single extension is a small package — a manifest plus,
-optionally, some code — that the platform installs and wires into the right
+platform itself. A single extension is a small package (a manifest plus,
+optionally, some code) that the platform installs and wires into the right
 place: a tool an agent can call, a messaging channel users can write to, a
 source your Knowledge bases sync from, or a workflow that processes incoming
 files. This guide explains the kinds of extensions you can build, the manifest
 that describes each one, and how to package and install them.
 
-import Admonition from "@theme/Admonition";
 
-<Admonition type="info" icon="📖" title="WHAT IS AN EXTENSION?">
+:::note[What is an extension?]
 An extension is a package described by a single `manifest.json`. The manifest
 declares one or more **providers** — capabilities the platform installs. The
 same package can ship several providers at once, but most extensions declare
-just one. Installing an extension reads its manifest and registers whatever it
+only one. Installing an extension reads its manifest and registers whatever it
 provides; uninstalling reverses that.
-</Admonition>
+:::
 
-<Admonition type="note" icon="🔌" title="BUILDING VS. INSTALLING">
+:::note[Building vs. installing]
 This page is the **authoring** guide — how to *create* an extension. If you only
 need to install, configure, enable or disable extensions from the registry, see
 [Settings → Extensions](/cr/settings/extensions) instead.
-</Admonition>
+:::
 
 ## Provider types
 
@@ -37,7 +38,7 @@ manifest fills in. The main types are:
 | Provider | Manifest key | What it adds | Ships code? |
 |----------|--------------|--------------|-------------|
 | **MCP server** | `mcpServerProviders` | Tools, prompts and resources an agent can call during a conversation (fetch a page, query a database, search the web). | Local: yes. Remote: no. |
-| **Channel** | `channelProviders` | An inbound/outbound messaging channel users talk to the assistant through (e.g. Telegram). | No |
+| **Channel** | `channelProviders` | An inbound/outbound messaging channel users talk to the assistant through (for example, Telegram). | No |
 | **Source** | `sourceProviders` | A data source your Knowledge bases sync files from, with an optional retention window. | Usually yes |
 | **Workflow** | `workflowProviders` | A processing workflow that transforms files as they enter a Knowledge base. | Yes |
 
@@ -61,7 +62,7 @@ my-extension/
 ```
 
 A **remote** extension (an MCP server hosted elsewhere) ships no code at all —
-it is just the `manifest.json`.
+it is only the `manifest.json`.
 
 ### Common manifest fields
 
@@ -71,7 +72,7 @@ providers it declares:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `id` | yes | A stable UUID for the extension. Generate it once (`uuidgen`) and keep it for the life of the extension. |
-| `nameIdentifier` | yes | A short machine slug, e.g. `time`, `github-remote`. Determines the archive filename and inner root prefix. |
+| `nameIdentifier` | yes | A short machine slug, for example, `time`, `github-remote`. Determines the archive filename and inner root prefix. |
 | `version` | yes | Semantic release version (`1.0.0`); determines the archive filename and inner root suffix. |
 | `name` | yes | Display name shown in the registry. |
 | `description` | no | A sentence or two describing what the extension does. Shown to the user before they install. |
@@ -120,9 +121,9 @@ Useful fields on a local `mcpServerProviders` entry:
 | Field | Description |
 |-------|-------------|
 | `command` / `arguments` | The process to spawn and its arguments. |
-| `path` | Working directory the process is spawned in, relative to the install dir (e.g. `dist`). |
+| `path` | Working directory the process is spawned in, relative to the install dir (for example, `dist`). |
 | `environment` | Environment variables for the process. Values support `${config.*}` interpolation, so secrets come from the user's configuration. |
-| `installScript` / `uninstallScript` | Commands run once when the extension is installed / removed (e.g. to fetch dependencies). |
+| `installScript` / `uninstallScript` | Commands run once when the extension is installed / removed (for example, to fetch dependencies). |
 | `beforeCallScript` / `afterCallScript` | Commands run around each tool call. |
 | `configuration` | The user-facing config schema (see [Configuration fields](#configuration-fields)). |
 
@@ -163,17 +164,17 @@ Both `url` and header values support `${config.*}` interpolation, so per-user
 credentials (an access token, a base URL) are filled in from the configuration
 the user provides at install time.
 
-<Admonition type="note" icon="🔌" title="REMOTE EXTENSIONS SHIP NO CODE">
+:::note[Remote extensions ship no code]
 A remote extension has no server to build, so it is distributed as a **plain
 `manifest.json`** — upload the file directly, no `.tar.bz2`. With no bundled
 `icon.png`, set the manifest's `icon` field to a URL or an embedded `data:` URI.
-</Admonition>
+:::
 
-<Admonition type="tip" icon="✅" title="OAUTH IS NOT YET SUPPORTED">
+:::tip[OAuth is not yet supported]
 Remote providers authenticate with a static value (a token or key) carried in a
 header. Servers that require an interactive OAuth 2.1 / DCR flow can't yet be
 expressed in a manifest — use a token-based server where one is offered.
-</Admonition>
+:::
 
 ### Agent skills
 
@@ -213,8 +214,8 @@ Declare it under `channelProviders` and pick a `type` (`Telegram`, `RationalAI`,
 ```
 
 The channel's `configuration` follows the same field shape as everything else
-(see [Configuration fields](#configuration-fields)). Hidden, pre-filled fields —
-such as a webhook URL the platform owns — are marked `isHidden: true`.
+(see [Configuration fields](#configuration-fields)). Hidden, pre-filled fields
+(such as a webhook URL the platform owns) are marked `isHidden: true`.
 
 ## 3. Source extensions
 
@@ -240,7 +241,7 @@ stdin, and reads back a `{ "files": [...] }` list to download.
       "configuration": {
         "category": {
           "alias": "Category",
-          "description": "arXiv category to fetch, e.g. cs.AI.",
+          "description": "arXiv category to fetch, for example, cs.AI.",
           "type": "{\"type\":\"string\"}",
           "isRequired": true,
           "isHidden": false
@@ -256,7 +257,7 @@ stdin, and reads back a `{ "files": [...] }` list to download.
 | `runtime.command` / `arguments` | The resolver program. It receives the source config on stdin and prints `{ "files": [...] }` on stdout. |
 | `runtime.path` | Working directory for the program, relative to the install dir. |
 | `runtime.protocol` | Contract version the worker expects (`list-json-v1`). |
-| `expiry.mode` | `window` removes any previously-synced file the resolver no longer returns; `none` never deletes. |
+| `expiry.mode` | `window` removes any previously synced file the resolver no longer returns; `none` never deletes. |
 
 Each entry in the returned `files` list names one file. Besides its `filename`,
 it carries either a `url` the platform downloads or the file's `content` inline,
@@ -277,29 +278,29 @@ an optional `mimeType` and `submittedDate`. It can also set `loadAsResource`:
 }
 ```
 
-<Admonition type="note" icon="📝" title="MARK COMPANION FILES IN THE RESOLVER, NOT IN A RULE">
+:::note[Mark companion files in the resolver, not in a rule]
 A processing rule only chooses a workflow; it cannot stop a file from being
 loaded as a resource. If your source ships metadata or precomputed data next to
 each document, set `loadAsResource: false` on those entries, or they arrive in
 the Knowledge base as empty resources. Changing the flag on a file that was
 already synced marks it for processing again, so the change applies on the next
 sync.
-</Admonition>
+:::
 
-<Admonition type="note" icon="🔌" title="THE RESOLVER ONLY LISTS — THE PLATFORM DOWNLOADS">
+:::note[The resolver only lists — the platform downloads]
 Your program's job is to return *which* files to sync, not to fetch them. The
 worker downloads each returned file and applies the `expiry` policy, so a
 resolver that returns only items inside the configured window gets out-of-window
 files cleaned up for free.
-</Admonition>
+:::
 
 ## 4. Workflow extensions
 
-<Admonition type="info" icon="🆕" title="NEW">
+:::note[New]
 Workflow providers are a recent addition to the extension system. They let an
 extension ship a ready-made [processing workflow](/operational-guides/create-workflow)
 that the platform installs and assigns to Knowledge files.
-</Admonition>
+:::
 
 A workflow provider points at a script in the package; on install, the platform
 reads that script and registers it as a global processing workflow. Because the
@@ -333,7 +334,7 @@ worker runs it unchanged — no extra wiring.
 
 | Field | Description |
 |-------|-------------|
-| `path` | Directory inside the package the script lives in (e.g. `dist`). |
+| `path` | Directory inside the package the script lives in (for example, `dist`). |
 | `script` | Filename of the workflow script, relative to `path`. |
 | `timeout` | Per-run timeout in minutes passed to the activity. |
 | `isActive` | Whether the workflow is assignable immediately after install. |
@@ -363,16 +364,16 @@ def process(document: File, options: dict):
 run(process)
 ```
 
-<Admonition type="caution" icon="⚠️" title="EXTENSION WORKFLOWS ARE READ-ONLY">
+:::warning[Extension workflows are read-only]
 A workflow installed from an extension is **read-only**: it appears in
-**Settings → Workflows** and can be assigned to files, but it can't be edited or
+**Settings** → **Workflows** and can be assigned to files, but it can't be edited or
 deleted from the UI — its owning extension manages it. Uninstalling the
 extension is how you remove it.
-</Admonition>
+:::
 
 ## Configuration fields
 
-Every provider that needs user input — credentials, endpoints, options — declares
+Every provider that needs user input (credentials, endpoints, options) declares
 a `configuration` map. Each entry is a field the platform renders at install
 time. The fields are consistent across provider types:
 
@@ -380,9 +381,9 @@ time. The fields are consistent across provider types:
 |-------|-------------|
 | `title` / `alias` | The label shown to the user. (`title` on MCP providers, `alias` on channels and sources.) |
 | `description` | Help text. Plain HTML links are allowed for "how to get this value" instructions. |
-| `type` | A JSON Schema fragment **encoded as a string**, e.g. `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
+| `type` | A JSON Schema fragment **encoded as a string**, for example, `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
 | `isRequired` | Whether the user must supply a value. |
-| `isHidden` | `true` for values the platform fills in itself (e.g. a webhook URL) — they don't appear in the form. |
+| `isHidden` | `true` for values the platform fills in itself (for example, a webhook URL) — they don't appear in the form. |
 | `defaultValue` | Pre-filled value. |
 | `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly; `{ "kind": "connector", "type": "braveApiKey" }` means the user picks a saved [connector](/operational-guides/configure-connectors) of that type. |
 
@@ -399,7 +400,7 @@ that's how the GitHub example above pulls `accessToken` into its
 
 A manifest with a `listing` block becomes a solution in the
 [Marketplace](/operational-guides/marketplace) once its release is published to
-the shared catalogue. A release without `listing` is installable but is not
+the shared catalog. A release without `listing` is installable but is not
 listed there. Texts are maps keyed by language, and the only allowed keys are
 `it` and `en`.
 
@@ -496,18 +497,18 @@ PYTHON
 Exclude generated `artifacts/` from Git. A **remote** extension skips packaging
 entirely — its `manifest.json` *is* the distributable.
 
-Install the result from the Control Room: open **Settings → Extensions**, click
+Install the result from the Control Room: open **Settings** → **Extensions**, click
 **Add**, and upload the archive (or, for a remote extension, the manifest). Once
 installed, configure any required fields, then enable it. See
 [Settings → Extensions](/cr/settings/extensions) for the full install,
 configure and management flow.
 
-<Admonition type="tip" icon="✅" title="START FROM AN EXISTING EXTENSION">
+:::tip[Start from an existing extension]
 The fastest way to build a new extension is to copy one that already does
 something similar and adjust its manifest. Keep `id` unique (generate a fresh
 UUID). Derive the archive filename and inner root from `nameIdentifier` and
 `version`; keep the source directory name stable.
-</Admonition>
+:::
 
 ## Develop an installed extension
 

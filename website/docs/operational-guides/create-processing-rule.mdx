@@ -1,19 +1,20 @@
 ---
 sidebar_position: 3
 sidebar_label: Create a processing rule
+type: how-to
+audience: [builder]
 ---
 
 
 # Create a processing rule
 This guide explains how to create, configure, and manage processing rules in the AI Control Room. 
 
-import Admonition from "@theme/Admonition";
 
-<Admonition type="info" icon="📖" title="GLOSSARY">  
+:::note[Glossary]
 What is a **processing rule**?  
 Processing rules define how incoming data is interpreted, validated, filtered, and transformed before or during workflow execution.
 While workflows describe _how_ a process runs, processing rules define _how data is evaluated and controlled within that process_.
-</Admonition>
+:::
 
 To manage processing rules, open the **Settings** area and navigate to **Workflows** from the left sidebar. 
 Then switch to the **Processing rules** tab from the top-left section of the page.
@@ -109,7 +110,7 @@ run(router)
 ```
 
 As for the workflows, the entrypoint is the `run` function which triggers the processing rule business logic, the `router` function.
-Basically, here we decide the workflow to apply, based on some characteristics of the Knowledge document, e.g. its filename.
+Basically, here we decide the workflow to apply, based on some characteristics of the Knowledge document, for example, its filename.
 
 ## Related concepts
 [Workflows](create-workflow)

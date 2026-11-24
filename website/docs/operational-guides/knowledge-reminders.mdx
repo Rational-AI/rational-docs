@@ -1,16 +1,17 @@
 ---
 sidebar_position: 8
 sidebar_label: Reminders
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Get reminded before a date in your records
 
 Contracts expire, certificates lapse, invoices fall due, and the date is sitting right there in a column nobody looks at until it is too late. Rational AI can watch the date attributes of a [Knowledge](/operational-guides/knowledge-collections-and-grid) for you: you set a reminder once, such as *30 days before Renewal date*, and every matching record notifies the right people, in the Control Room and optionally by email, when its day comes.
 
-<Admonition type="info" icon="📖" title="WHAT IS A REMINDER?">
+:::note[What is a reminder?]
 A **reminder** is a rule on one date or date-and-time attribute of a Knowledge: *when* to notify (so many days or hours before or after the date, or on the day), *who* to notify (users, roles, or the people each record names), and optionally *which records* (a collection tab and a filter). Rational AI checks every reminder throughout the day and sends one notification per record, per day, to each recipient.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -35,9 +36,9 @@ Before you start, make sure you have:
 8. Check the preview at the bottom: it lists how many reminders will go out in the next 30 days, and the first few records with their dates.
 9. Select **Save**.
 
-<Admonition type="note" icon="📝" title="ONLY PEOPLE WHO CAN READ THE KNOWLEDGE ARE NOTIFIED">
+:::note[Only people who can read the Knowledge are notified]
 Recipients are worked out when the reminder fires, not when you save it: a role includes whoever holds it that day, and the record's people are whoever the record names that day. Anyone who can't read the Knowledge at that moment is skipped, so a reminder never shows a record to someone who isn't allowed to see it.
-</Admonition>
+:::
 
 ## Know when reminders fire
 
@@ -63,9 +64,9 @@ Select **Reminders** in the grid toolbar to see every reminder of the Knowledge,
 - Select **Edit** to change a reminder. To pause it without losing it, untick **Enabled**: it shows as *paused* in the list.
 - Select **Delete** to remove it. Notifications it has already sent stay where they are.
 
-<Admonition type="note" icon="📝" title="RENAMES ARE FOLLOWED, DELETIONS ARE NOT">
+:::note[Renames are followed, deletions are not]
 If you rename the date attribute, or a person attribute the reminder notifies, the reminder follows the new name. If you delete the attribute, or change it to a kind that isn't a date, the reminder stays in the list but stops sending, so check it after reorganising your attributes. Deleting a collection deletes the reminders set on it.
-</Admonition>
+:::
 
 ## Result
 

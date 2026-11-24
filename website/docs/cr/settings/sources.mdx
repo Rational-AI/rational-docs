@@ -1,5 +1,7 @@
 ---
 sidebar_position: 5
+type: reference
+audience: [admin, builder]
 ---
 
 import UsersIcon from '@site/static/img/users.svg';
@@ -9,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Sources
 
-A source is a connection to an external system that supplies data to Rational AI, such as an Amazon S3 bucket or a Google Drive folder. Sources keep your content in sync — on change, on a schedule, or on demand — so the [Knowledge](../Knowledge.mdx) module always works from up-to-date material. Use this section to add sources, configure how often they sync and monitor the result of each synchronisation.
+A source is a connection to an external system that supplies data to Rational AI, such as an Amazon S3 bucket or a Google Drive folder. Sources keep your content in sync (on change, on a schedule, or on demand), so the [Knowledge](../Knowledge.mdx) module always works from up-to-date material. Use this section to add sources, configure how often they sync and monitor the result of each synchronisation.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -69,7 +71,7 @@ Each source has its own synchronisation settings, opened with **Sync settings** 
     border: '1px solid #e4e4e7',
     borderRadius: '10px',
   }}
-  alt="The Sources page with the Synchronization settings dialog open, showing sync mode, schedule and on-delete behaviour"
+  alt="The Sources page with the Synchronization settings dialog open, showing sync mode, schedule and on-delete behavior"
 />
 
 | Setting | Description |
@@ -85,7 +87,7 @@ Open the options menu (the three vertical dots) in the details panel to:
 | Action | Description |
 |--------|-------------|
 | **Sync now** | Run a sync immediately, whatever the schedule or retry wait. For a RabbitMQ queue, start consuming the queue; **Stop sync** stops it. |
-| **Sync settings** | Change the sync mode, schedule and on-delete behaviour. |
+| **Sync settings** | Change the sync mode, schedule and on-delete behavior. |
 | **Edit** | Update the source's name, description, connector or advanced settings. |
 | **Delete** | Remove the source from the platform. |
 

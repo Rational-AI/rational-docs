@@ -1,18 +1,19 @@
 ---
 sidebar_position: 26
 sidebar_label: Configure connectors
+type: how-to
+audience: [admin, builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Configure a connector
 
 Connectors are how Rational AI talks to the outside world. This guide shows you what a connector is, how to add one, and how to check what it powers before you change it.
 
-<Admonition type="info" icon="📖" title="WHAT IS A CONNECTOR?">
+:::note[What is a connector?]
 A connector links Rational AI to an external provider so the platform can use that provider's models, data sources, or tools. For example, a connector to OpenAI or Anthropic is what lets you use their [language models](/concepts/LLMs) inside Rational AI.
-</Admonition>
+:::
 
-You will find connectors at **Settings → Connectors**.
+You will find connectors at **Settings** → **Connectors**.
 
 ## What a connector is
 
@@ -35,7 +36,7 @@ The **Connectors** page lists everything you have configured on the left, such a
 
 ## Add a connector
 
-1. Go to **Settings → Connectors** and select **Add**. This opens **Add a new connector**.
+1. Go to **Settings** → **Connectors** and select **Add**. This opens **Add a new connector**.
 2. Choose a **provider** from the gallery. Each option has a one-line description to help you pick (see [Available providers](#available-providers)).
 3. Supply the provider's **credentials**. This is usually an API key you get from the provider's own dashboard. Paste your own key into the connector's field; never reuse someone else's. Keys are stored by the platform and are not shared.
 4. Select **Save**.
@@ -48,9 +49,9 @@ The **Connectors** page lists everything you have configured on the left, such a
 
 *Adding a connector: choose a provider from the gallery.*
 
-<Admonition type="note" icon="📝" title="PICK THE PROVIDER YOU HAVE A KEY FOR">
+:::note[Pick the provider you have a key for]
 The gallery offers many providers, but you only need the ones whose models or services you actually plan to use. If your provider isn't listed by name but offers an OpenAI-style API, **OpenAI Compatible** lets you connect it with a base URL and key.
-</Admonition>
+:::
 
 ## Available providers
 
@@ -86,9 +87,9 @@ Use **Google Vertex AI** when your Gemini traffic must stay in one Google Cloud 
 3. Enter the **Project ID** (for example `my-project-123`) and the **Location**: a single region such as `europe-west8`.
 4. Select **Add**, then add the models you need in the [AI Model Registry](/operational-guides/ai-model-registry-features). The list offers the Gemini chat models served in that region.
 
-<Admonition type="note" icon="📝" title="ONE REGION, NEVER GLOBAL">
+:::note[One region, never global]
 **Location** refuses `global` and multi-regions such as `eu` or `us`: pinning a single region is what the connector is for. Only chat completions are sent to Vertex AI.
-</Admonition>
+:::
 
 ### Connect a System One compatible decision API
 
@@ -112,13 +113,13 @@ Use **Microsoft SQL Server** to let extensions give models read-only access to a
 5. Turn on **Encrypt the connection** to require encryption for the whole session.
 6. Select **Add**.
 
-<Admonition type="caution" icon="⚠️" title="USE A LOGIN THAT CAN ONLY READ">
+:::warning[Use a login that can only read]
 The extension refuses anything but a single `SELECT`, but that is a text check, not a guarantee. The login's permissions are the real protection: give it the `db_datareader` role, or `SELECT` on the schemas it needs, and no access to linked servers.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="ENCRYPTION DOESN'T VERIFY THE SERVER">
+:::note[Encryption doesn't verify the server]
 With **Encrypt the connection** on, traffic is encrypted, but the server certificate is not verified: encryption protects against eavesdropping, not against a server pretending to be yours. With it off, encryption is still requested for the login.
-</Admonition>
+:::
 
 If you build your own extension, request this connector in its manifest with the connector type `sqlServer`.
 
@@ -132,9 +133,9 @@ Use **RabbitMQ** when another system announces documents to process on a queue. 
 4. *(Optional)* Enter a **File download token**: it is sent as a Bearer token when downloading the files the messages point to.
 5. Select **Add**.
 
-<Admonition type="note" icon="📝" title="PORT AND TLS ARE SET ONCE">
+:::note[Port and TLS are set once]
 After creation you can edit the host, virtual host, username, password, and token, but not the port or TLS. To change those, create a new connector.
-</Admonition>
+:::
 
 ### Connect a social account for publishing
 

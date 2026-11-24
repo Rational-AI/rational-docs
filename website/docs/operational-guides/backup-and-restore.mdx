@@ -1,18 +1,19 @@
 ---
 sidebar_position: 31
 sidebar_label: Back up and restore
+type: how-to
+audience: [admin]
 ---
-import Admonition from '@theme/Admonition';
 
-# Back up and restore an on-premise installation
+# Back up and restore an on-premises installation
 
-An on-premise Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings → Backup** copies all of them, in one run, to a destination you own — a network share, an S3 bucket, an FTP or SFTP server, or a mounted folder — on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and how to bring an installation back from one with the `rational` command on the host.
+An on-premises Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings** → **Backup** copies all of them, in one run, to a destination you own (a network share, an S3 bucket, an FTP or SFTP server, or a mounted folder) on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and how to bring an installation back from one with the `rational` command on the host.
 
-<Admonition type="info" icon="📖" title="ON-PREMISE ONLY">
-The Backup page is on by default on every on-premise installation set up with `install.sh` (see [Install and update](./install-and-update)): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
-</Admonition>
+:::note[On-premises only]
+The Backup page is on by default on every on-premises installation set up with `install.sh` (see [Install and update](./install-and-update)): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
+:::
 
-<Admonition type="note" icon="📝" title="THE BACKUPS TAKEN BEFORE EVERY UPDATE ARE NOT ENOUGH">
+:::note[The backups taken before every update are not enough]
 Every update takes a local backup first, so a bad release can be rolled back. Those backups stay on the same disk as the installation: a failed disk or a lost machine takes them along. The backup on this page goes to a destination of yours, away from the machine. Set it up on every installation that holds data you care about.
 
 | | Local backup (`rational backup`) | Off-site backup (**Settings** → **Backup**) |
@@ -21,7 +22,7 @@ Every update takes a local backup first, so a bad release can be rolled back. Th
 | When | Before every update, or by hand | Daily, or **Back up now** |
 | Where | `/opt/rational/backups/` on the same disk | Your NAS, S3 bucket or FTP/SFTP server |
 | Restore with | `rational restore DIR` or `rational rollback` | `rational offsite-restore NAME` |
-</Admonition>
+:::
 
 <img
   alt="The Backup page in Settings, with a network-share destination, a daily schedule and one backup listed"
@@ -39,11 +40,11 @@ Every update takes a local backup first, so a bad release can be rolled back. Th
 | **extensions** | The installed extensions directory | A `tar.gz` per backup |
 | **sqld** | The knowledge databases (Rational BI, SQLite resources) | A `tar.gz` per backup |
 
-Each run produces a folder named after its UTC start time (`2026-09-09T02-30-00Z`) with a `manifest.json` describing what it holds. The object-storage mirror is **never pruned**: files deleted from the application stay in the mirror, so every dump — old or new — finds the attachments it references. Retention only removes whole backup folders.
+Each run produces a folder named after its UTC start time (`2026-09-09T02-30-00Z`) with a `manifest.json` describing what it holds. The object-storage mirror is **never pruned**: files deleted from the application stay in the mirror, so every dump, old or new, finds the attachments it references. Retention only removes whole backup folders.
 
-<Admonition type="note" icon="📝" title="WHAT IS NOT BACKED UP">
+:::note[What is not backed up]
 The weights of the models the installation runs, the audio model cache and the Python package caches are not part of a backup: they are re-downloaded on demand after a restore. The session cache is not backed up either; after a restore everyone signs in again.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -64,12 +65,12 @@ Before you start, make sure you have:
 
 ## Set the destination
 
-Go to **Settings → Backup** and pick the destination **Type**. The fields change with the type:
+Go to **Settings** → **Backup** and pick the destination **Type**. The fields change with the type:
 
 | Type | Fields | Path |
 |------|--------|------|
-| **Network share (SMB / Samba)** | Host, port (445), user, password, domain | Share and folder, e.g. `backups/rational` |
-| **S3 bucket** | Endpoint, provider (`Other` for a NAS or MinIO, `AWS` for Amazon), region, access key ID, secret access key | Bucket and prefix, e.g. `my-bucket/rational` |
+| **Network share (SMB / Samba)** | Host, port (445), user, password, domain | Share and folder, for example, `backups/rational` |
+| **S3 bucket** | Endpoint, provider (`Other` for a NAS or MinIO, `AWS` for Amazon), region, access key ID, secret access key | Bucket and prefix, for example, `my-bucket/rational` |
 | **FTP server** | Host, port (21), user, password | Folder |
 | **SFTP server** | Host, port (22), user, password | Folder |
 | **Local folder (NFS mount)** | — | The absolute path of a folder the worker can see, typically an NFS mount added to the worker container |
@@ -78,9 +79,9 @@ On an installation set up with `install.sh`, do not choose **Local folder**: the
 
 The folder is created on first use. Click **Test destination** before saving: the worker writes and deletes a small marker file there, which proves the credentials, the path and the write permission in one go. A failure comes back with the reason (a wrong password, a read-only share, an unreachable host).
 
-<Admonition type="caution" icon="⚠️" title="PREFER SFTP OR S3 OVER FTP">
+:::warning[Prefer SFTP or S3 over FTP]
 Plain FTP sends the password and the data in clear and cannot verify what it wrote. It is supported for legacy targets; when the same server offers SFTP, use that.
-</Admonition>
+:::
 
 Passwords and access keys are stored encrypted. When you come back to the page they show as `********`; leave them as they are to keep the stored value, or type a new one to replace it.
 
@@ -121,9 +122,9 @@ Two things are worth checking now and then:
 
 Restoring replaces the current data with a backup, which is why it is not a button: the application must be stopped while its databases are dropped and recreated. It runs from a shell on the machine, with the `rational` command.
 
-<Admonition type="danger" icon="🛑" title="A RESTORE OVERWRITES EVERYTHING">
+:::danger[A restore overwrites everything]
 Every database, the vectors, the object storage, the extensions and the knowledge databases are replaced by the backup's contents. Anything created after that backup was taken is lost. Take a fresh backup first if there is any doubt.
-</Admonition>
+:::
 
 ### Give the machine its copy of the destination
 
@@ -176,9 +177,9 @@ The application keeps the destination's password encrypted, so the machine needs
 
 A restore that fails part-way leaves the application stopped: run it again, or go back to a local backup with `sudo rational restore /opt/rational/backups/<folder>`.
 
-<Admonition type="note" icon="📝" title="THE COMMAND ON THE PAGE IS FOR STACKS YOU ASSEMBLED YOURSELF">
+:::note[The command on the page is for stacks you assembled yourself]
 **Copy restore command** gives a `docker compose run … temporal-worker rational-backup restore` command. On an installation set up with `install.sh`, use it only as the source of the destination settings and restore with `rational offsite-restore`, which stops the right services and mounts the right folders.
-</Admonition>
+:::
 
 A few consequences to know about:
 
@@ -191,7 +192,7 @@ A few consequences to know about:
 1. Put the saved `.env` at `/opt/rational/.env` on the new machine **before** installing: the installation keeps the secrets it finds there, and the restored data refers to some of them.
 2. Install with `install.sh` (see [Install and update](./install-and-update)).
 3. Write `/opt/rational/backup-destination.env` from your saved copy and run `sudo rational offsite-restore NAME`.
-4. If **Settings** → **Licence** asks for it, activate the licence again.
+4. If **Settings** → **Licence** asks for it, activate the license again.
 
 ### Rehearse it
 

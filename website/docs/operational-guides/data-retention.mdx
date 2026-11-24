@@ -1,18 +1,19 @@
 ---
 sidebar_position: 29
 sidebar_label: Set data retention
+type: how-to
+audience: [admin]
 ---
-import Admonition from '@theme/Admonition';
 
 # Set how long data is kept
 
-Rational AI keeps what it records until you tell it not to. **Settings → Data retention** is where you set that limit: how long captured prompt and response bodies live, how long the record of each model call lives, and how long closed conversations live. This guide covers what each period actually controls, why they're separate, and how to check the deletion is really happening.
+Rational AI keeps what it records until you tell it not to. **Settings** → **Data retention** is where you set that limit: how long captured prompt and response bodies live, how long the record of each model call lives, and how long closed conversations live. This guide covers what each period actually controls, why they're separate, and how to check the deletion is really happening.
 
-<Admonition type="info" icon="📖" title="NOTHING IS DELETED UNTIL YOU SAY SO">
+:::note[Nothing is deleted until you say so]
 Every period starts **empty**, and empty means *keep forever*. That's the default for every tenant, new and existing — retention never switches itself on as a side effect of an upgrade.
 
 Setting a period is therefore a deliberate act, and a consequential one: deletion is permanent and there is no undo. A tenant that kept too much can always delete later; a tenant that deleted something it needed cannot get it back.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -23,7 +24,7 @@ Before you start, make sure you have:
 
 ## The three periods
 
-Go to **Settings → Data retention**. There are three independent limits, each in days.
+Go to **Settings** → **Data retention**. There are three independent limits, each in days.
 
 | Period | What it removes | What survives |
 |--------|-----------------|---------------|
@@ -35,19 +36,19 @@ Each field states what disappears when it fires, because "30 days" is not a deci
 
 ### Why bodies and call records are separate
 
-One number can't serve both obligations at once. Minimising personal data wants the prompt and response text gone quickly. Being able to show what the system did wants the call record — who, when, which model, how many tokens, what outcome — kept much longer.
+One number can't serve both obligations at once. Minimising personal data wants the prompt and response text gone quickly. Being able to show what the system did wants the call record (who, when, which model, how many tokens, what outcome) kept much longer.
 
 With one lifetime you have to fail one of those. With two, a realistic policy becomes expressible: **bodies for 7 days, call records for 12 months**.
 
-<Admonition type="note" icon="📝" title="CLEARING BODIES DOESN'T DENT YOUR REPORTING">
+:::note[Clearing bodies doesn't dent your reporting]
 When the body period fires, the prompt and response text is cleared and **the call record stays**. Governance dashboards and cost reporting read the call record, not the bodies, so they are unaffected — your usage and spend history stays intact.
 
 Bodies only exist in the first place when a model has **tracing** switched on, which is off by default. If you never enabled tracing, there are no bodies for this period to clear.
-</Admonition>
+:::
 
-<Admonition type="caution" icon="⚠️" title="BODIES CANNOT OUTLIVE THEIR CALL RECORD">
+:::warning[Bodies cannot outlive their call record]
 Setting the body period longer than the captured-request period is refused when you save, rather than accepted and quietly ignored. The call record is deleted first, so a longer body period would never get the chance to run — the setting would look applied and do nothing.
-</Admonition>
+:::
 
 ## The suggested values are hints, not defaults
 
@@ -70,9 +71,9 @@ The sweep runs **hourly**. Beside the save button you'll find the two facts that
 
 These matter more than they look. A retention policy nobody can see running is a retention policy nobody has reason to believe. When someone asks you to evidence that deletion actually occurs, this is the answer.
 
-<Admonition type="note" icon="📝" title="A ZERO COUNT IS NORMAL">
+:::note[A zero count is normal]
 Once your policy has caught up with your backlog, most sweeps find nothing to delete and report zero. That's the steady state, not a failure — what matters is that **Last sweep** keeps moving.
-</Admonition>
+:::
 
 ## What retention does not cover
 

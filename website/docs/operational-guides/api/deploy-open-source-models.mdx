@@ -1,17 +1,18 @@
 ---
 sidebar_position: 1
 sidebar_label: Deploy open-source models via API
+type: how-to
+audience: [developer]
 ---
 
-import Admonition from "@theme/Admonition";
 
 # Deploy open-source models via API
 
 Adding a model by hand in **Settings** → **AI Model Registry** is fine once. When you set up several installations, or rebuild one from a script, you want the same result from the Management API. This guide registers an open-source model from Hugging Face, deploys it, follows it until it is ready, and then changes its scale or stops it, all with `curl`.
 
-<Admonition type="info" icon="📖" title="WHAT IS A MODEL DEPLOYMENT?">
+:::note[What is a model deployment?]
 A self-hosted model is two things. The **model** is the registry record: its name, the weights it runs (its *artifact*, such as a Hugging Face repository) and its *deploy parameters*. The **deployment** is the running copy of those weights on your hosting platform, with its *replicas* (the running instances of the model) and its *phase* (Provisioning, Ready, Idle, Stopped…). A model has at most one deployment, and you manage it as a sub-resource of the model: `/models/{id}/deployment`.
-</Admonition>
+:::
 
 The whole flow is four calls:
 
@@ -24,9 +25,9 @@ PATCH /management/v0/models/{id}/deployment    -> changes the scale, or stops it
 
 The Management API is served under `/api` on the address of your Control Room, for example `https://control-room.[your-domain]/api`. You can browse it in the Swagger UI at `/api/swagger/index.html` on the same address (group `backend-management-v0`).
 
-<Admonition type="note" icon="📝" title="THE DEPLOY, PAUSE AND CANCEL ENDPOINTS ARE GONE">
+:::note[The deploy, pause and cancel endpoints are gone]
 Earlier releases deployed with `POST /models/{id}/deploy` and controlled a deployment with `/pause` and `/cancel` routes that took a deployment name. Those routes, the `register` route and the sampling fields of the deploy body no longer exist. Every deployment action now goes through `/models/{id}/deployment`, always addressed by the model's id. Scripts written for the old routes need to move to the calls below.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -91,9 +92,9 @@ curl -s -X POST "https://control-room.[your-domain]/api/management/v0/models" \
 
 The request is refused when the artifact is one your hosting cannot deploy, and with `409 Conflict` when another model already has the name or identifier.
 
-<Admonition type="note" icon="📝" title="CREATING A MODEL NEVER DEPLOYS IT">
+:::note[Creating a model never deploys it]
 A model can exist without a deployment, and editing it with `PATCH /models/{id}` only changes what *should* run. Nothing reaches the hosting platform until you deploy, which is what lets you prepare settings and confirm them separately.
-</Admonition>
+:::
 
 ### Upload weights instead
 
@@ -121,15 +122,15 @@ curl -s -X POST "https://control-room.[your-domain]/api/management/v0/models/<MO
 
 **Success:** `201 Created`. The same call rolls out new deploy parameters to an existing deployment, or restarts it when nothing changed.
 
-<Admonition type="note" icon="📝" title="A 409 MEANS THE SETTINGS CHANGED UNDER YOU">
+:::note[A 409 means the settings changed under you]
 If someone edited the model after you read it, its `deployRevision` moved on and the deploy is refused with `409 Conflict`. Read the model again, check what changed, and deploy the new revision. This guarantees that a deployment runs exactly the settings someone confirmed.
-</Admonition>
+:::
 
 ### Choose a scale
 
 The `scale` object sets how many replicas the deployment may run:
 
-| Scale | Behaviour |
+| Scale | Behavior |
 |---|---|
 | `min = max = n` | Always `n` replicas. `0`–`0` is a stopped deployment |
 | `min = 0`, `max ≥ 1` | On demand: it releases its hardware after `idleTimeout` without requests and starts again on the next one |
@@ -170,7 +171,7 @@ A first deployment can take several minutes while the weights download. Temporar
 `PATCH /management/v0/models/{id}/deployment` changes the scale immediately, without restarting running replicas. `replicas` optionally says how many to run now, within the new range:
 
 ```bash
-# Stop it: no replicas, and requests do not wake it
+# Stop it: No replicas, and requests do not wake it
 curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
   -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
   -d '{ "scale": { "min": 0, "max": 0 } }'

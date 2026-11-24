@@ -1,6 +1,8 @@
 ---
 sidebar_position: 4
 sidebar_label: Personalize user details
+type: how-to
+audience: [user]
 ---
 
 # Personalize the user details panel
@@ -8,19 +10,18 @@ sidebar_label: Personalize user details
 When an operator opens a conversation in the AI Control Room, the right-hand
 details sidebar shows a **User** panel with information about the person on the
 other side of the chat. This guide explains what the panel renders by default
-and how to enrich it with your own user data — extra fields and fully custom
-widgets — so agents see the business context they need without leaving the
+and how to enrich it with your own user data (extra fields and fully custom
+widgets), so agents see the business context they need without leaving the
 conversation.
 
-import Admonition from "@theme/Admonition";
 
-<Admonition type="info" icon="📖" title="WHAT IS THE USER DETAILS PANEL?">
+:::note[What is the user details panel?]
 The user details panel is the **User** view of a conversation's details
 sidebar. It resolves the user behind the conversation, fetches their record,
 and renders their profile next to the chat. Beyond the built-in **Basic info**,
 the panel can be extended per user with custom widgets that display data you
 attach to that user.
-</Admonition>
+:::
 
 ## What the panel shows by default
 
@@ -52,7 +53,7 @@ Each user record carries two fields that drive personalization:
 A *widget* is a [custom element](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
 (web component) hosted as a JavaScript bundle. Each widget definition declares:
 
-- `tagName` — the custom element tag to render, e.g. `orders-list`.
+- `tagName` — the custom element tag to render, for example, `orders-list`.
 - `url` — the URL of the script that registers that custom element.
 - `inputs` — the list of properties to feed the element. For each input
   `{ name }`, the panel sets the element's `name` property from
@@ -64,11 +65,11 @@ element, copies the matching values from the user's `context` onto it, and
 appends it below the Basic info card. The widget itself decides how to render
 that data.
 
-<Admonition type="note" icon="🔌" title="THE WIDGET OWNS THE RENDERING">
+:::note[The widget owns the rendering]
 Rational AI only loads your widget and hands it the data. The layout, styling,
-and behaviour of what's displayed live entirely inside your web component, so
+and behavior of what's displayed live entirely inside your web component, so
 you are free to render tables, badges, timelines, or anything else.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -113,12 +114,12 @@ customElements.define("orders-list", OrdersList);
 Host the bundle so the browser can load it, for example
 `https://cdn.example.com/widgets/orders-list.js`.
 
-<Admonition type="tip" icon="✅" title="KEEP TAG NAMES UNIQUE">
+:::tip[Keep tag names unique]
 The `tagName` you register must be globally unique and contain a hyphen, as the
 custom-elements spec requires (`orders-list`, not `orders`). The panel skips
 loading a script if an element with that tag is already registered, so reusing
 a tag across widgets can lead to the wrong component rendering.
-</Admonition>
+:::
 
 ## Step 2 — Attach data to the user's `context`
 
@@ -163,11 +164,11 @@ With this configuration the panel will set `ordersListElement.orders =
 context.orders` before rendering — exactly the property the widget in Step 1
 reads.
 
-<Admonition type="caution" icon="⚠️" title="CONFIGURATION IS REPLACED">
+:::warning[Configuration is replaced]
 Unlike `context`, `contextConfiguration` is **replaced** on every update. Always
 send the **complete** list of widgets you want the user to have, otherwise the
 ones you omit are removed.
-</Admonition>
+:::
 
 ## Putting it together
 

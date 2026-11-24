@@ -1,16 +1,17 @@
 ---
 sidebar_position: 10
 sidebar_label: Work with conversations
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Work with Conversations
 
 Every chat your AI handles lands on the Conversations page, where you can review who it spoke with, through which touchpoint, how it went, and what was discussed. This guide shows how to find the conversations you care about, read one in full, and act on many at once.
 
-<Admonition type="info" icon="📖" title="WHAT IS THE CONVERSATIONS PAGE?">
+:::note[What is the conversations page?]
 A conversation (sometimes called a *room*) is one back-and-forth exchange between a user and your AI. The Conversations page lists every conversation your AI has taken part in, along with its user, touchpoint, topics, sentiment, status and date. Because a single exchange can wander across several subjects, each conversation can carry several topics, shown as separate chips.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -21,7 +22,7 @@ Before you start, make sure you have:
 
 ## Open the Conversations page
 
-From the topbar, select the **Conversations** navigation icon. The page opens to its header — page title, a **Filters** button and a **search** field — above the conversations table. The rows scroll inside the table, so the paginator at the bottom always stays in sight.
+From the topbar, select the **Conversations** navigation icon. The page opens to its header (page title, a **Filters** button and a **search** field) above the conversations table. The rows scroll inside the table, so the paginator at the bottom always stays in sight.
 
 ## Read the table
 
@@ -42,7 +43,7 @@ Each row is one conversation. Scan across the columns to size up a conversation 
 - **Status** — for example, **open** or **closed**.
 - **Last message** — when the conversation was last active.
 
-Two icons beside a title tell you a conversation needs a person: a hand for **Needs review** (the row is also tinted in the warning colour) and a headset for **With an operator**.
+Two icons beside a title tell you a conversation needs a person: a hand for **Needs review** (the row is also tinted in the warning color) and a headset for **With an operator**.
 
 The topics and sentiment shown here are produced by your [Configure conversation processing](/operational-guides/conversation-processing) settings.
 
@@ -70,14 +71,14 @@ Use the **search** field in the header to find conversations. It matches titles 
 2. Set the filters you need:
    - **User**, **Touchpoint** and **Topics** — tick one or more values. The **User** list has its own search box and shows the names you ticked first.
    - **Sentiment** and **Status** — pick one value.
-   - **Show only** — tick **Favourites** or **Needs review**.
+   - **Show only** — tick **Favorites** or **Needs review**.
 3. Select **Apply**. The table shows only matching conversations, with a count of how many match.
 
 To start over, select **Clear** in the panel, then **Apply**. When nothing matches, the table offers **Clear** and **Edit filters** directly.
 
-<Admonition type="note" icon="📝" title="FILTERS ARE PART OF THE PAGE ADDRESS">
+:::note[Filters are part of the page address]
 Applied filters are kept in the page URL, so a filtered view can be bookmarked or shared, and the panel always shows what is actually applied. Nothing changes until you select **Apply**, so you can set several filters without the table reloading after each one.
-</Admonition>
+:::
 
 ## Open a conversation
 
@@ -92,18 +93,18 @@ If the conversation is flagged for oversight, the review panel is at the top of 
 
 ## Run bulk actions
 
-When you want to act on many conversations at once — say, clearing out test chats — the **Actions** menu handles them in a single step.
+When you want to act on many conversations at once (say, clearing out test chats), the **Actions** menu handles them in a single step.
 
 1. Select the rows you want using their checkboxes. To select a range, click the first checkbox, then hold **Shift** and click the last one.
 2. Open the **Actions** menu, which appears next to the header once rows are selected and shows how many you picked.
 3. Choose one of:
    - **Refresh labels** — re-run the automatic analysis (such as sentiment and topics) on the selected conversations.
-   - **Add to favourites** or **Remove from favourites**.
+   - **Add to favorites** or **Remove from favorites**.
    - **Delete** — remove the selected conversations, with their messages and attachments. The confirmation states how many conversations will be deleted.
 
-<Admonition type="note" icon="📝" title="THE SELECTION SURVIVES SORTING AND FILTERING">
+:::note[The selection survives sorting and filtering]
 Rows stay selected when you sort or change filters, so you can build a selection across several views. That's also why the delete confirmation names the count: it may include rows you can't currently see.
-</Admonition>
+:::
 
 ## Result
 

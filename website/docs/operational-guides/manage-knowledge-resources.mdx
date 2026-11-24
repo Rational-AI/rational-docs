@@ -1,16 +1,17 @@
 ---
 sidebar_position: 11
 sidebar_label: Manage knowledge resources
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Manage knowledge resources
 
 A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, following a processing run and recovering the files it failed on, finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
 
-<Admonition type="info" icon="📖" title="WHAT IS A RESOURCE?">
+:::note[What is a resource?]
 A resource is a single curated item inside a Knowledge — usually a file that has been processed into a form the AI can search and quote from. You work with resources through three views of a Knowledge: the **files table** (a sortable list), the **attribute view** (one card per resource), and the **graph view** (a visual map). The tasks below all live in one of these three.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -21,34 +22,34 @@ Before you start, make sure you have:
 
 ## Choose which view a Knowledge opens in
 
-Opening a Knowledge lands you on its **Attributes list** — one card per resource — because that is the default. A graph is the better first impression for a small, richly connected Knowledge; a list is the better one for a few thousand documents. The choice is per Knowledge, so make it once and everyone opening that Knowledge gets it.
+Opening a Knowledge lands you on its **Attributes list** (one card per resource), because that is the default. A graph is the better first impression for a small, richly connected Knowledge; a list is the better one for a few thousand documents. The choice is per Knowledge, so make it once and everyone opening that Knowledge gets it.
 
 1. Open the Knowledge's settings and select the **Views** tab (see [Custom views](/operational-guides/knowledge-custom-views) for everything else on that tab).
 2. Under **Built-in views**, select the **Default** radio on **Graph view** or **Attributes list**.
 3. Select **Save**.
 
-<Admonition type="note" icon="📝" title="A DISABLED DEFAULT FALLS BACK">
+:::note[A disabled default falls back]
 The **Default** radio and the on/off toggle are independent controls, so it is possible to make a view the default and then disable it. Rather than opening on nothing, the Knowledge falls back to an enabled built-in view. The setting also travels with the Knowledge: duplicate, export, or import it and the default view comes along.
-</Admonition>
+:::
 
 ## Follow a processing run
 
 Processing a Knowledge can take hours, and a status word that never changes doesn't tell you whether the run is advancing or stuck. The files view reports the run while it happens, says how it ended, and points you to the files that need attention.
 
-<Admonition type="info" icon="📖" title="WHAT IS A PROCESSING RUN?">
+:::note[What is a processing run?]
 A processing run is one pass of a Knowledge's pipeline over its files: each file is converted, run through its workflow, chunked, and embedded. A run starts when you select **Process knowledge**, when a source finishes a sync, or when an API client asks for it.
-</Admonition>
+:::
 
 1. Open the Knowledge and go to its **files** view. Each folder header — the uploaded files and every connected source — carries a **status chip** for the Knowledge's latest run.
 2. While the run is pending or in progress, read the chip and the bar beside it:
    - the chip shows the **step** the run is currently on;
    - the bar and the counter show **files done out of files total** (for example *120 / 480*).
 3. When the run ends, a toast appears and stays until you close it: *"Processing complete"*, or *"Processing failed"* followed by the Knowledge name and the reason. You see it even if you moved to another tab while the run was going.
-4. If the run failed, was cancelled, or timed out, the chip turns into an **Error** chip. Hover over it to read the root cause: the innermost error of the chain, the one you can act on.
+4. If the run failed, was canceled, or timed out, the chip turns into an **Error** chip. Hover over it to read the root cause: the innermost error of the chain, the one you can act on.
 
-<Admonition type="note" icon="📝" title="THE PAGE CHECKS THE RUN EVERY 30 SECONDS">
+:::note[The page checks the run every 30 seconds]
 The chip, the step, and the counter refresh every 30 seconds, so the latest change can take up to half a minute to appear. A Knowledge that has never been processed shows no chip.
-</Admonition>
+:::
 
 ### Recover a file that failed
 
@@ -69,9 +70,9 @@ When the error text isn't enough, the file's log shows what happened on each att
 
 The **Last processing** column, right after **Name**, shows how long the file's last processing attempt took, with its date underneath. While a file is processing, its status chip shows the current step and the elapsed time, updated every second. Use it to find the files that take longest to process.
 
-<Admonition type="note" icon="📝" title="THE COLUMN HIDES IN NARROW LAYOUTS">
+:::note[The column hides in narrow layouts]
 **Last processing** is hidden on small screens and when a resource drawer is open beside the table, to leave room for the name and the status.
-</Admonition>
+:::
 
 ## Work with the files table
 
@@ -90,12 +91,12 @@ Selection is how you tell the table which resources a bulk action should apply t
 
 1. Tick the **row checkboxes** for the resources you want.
 2. To grab the whole page at once, use the **header checkbox**. When only some rows are selected, it shows an indeterminate state so you can tell at a glance that the selection is partial.
-3. To go beyond the page, select **Select all N** next to the count. It appears once the whole page is checked and more files match your filters, and it selects every matching file across all pages.
+3. To go beyond the page, use **Select all N** next to the count. It appears once the whole page is checked and more files match your filters, and it selects every matching file across all pages.
 4. Check the ***N* selected** indicator to confirm how many rows you have chosen before you act on them.
 
-<Admonition type="note" icon="📝" title="A SELECT-ALL SELECTION CAN'T BE TRIMMED">
+:::note[A select-all selection can't be trimmed]
 After **Select all N**, ticking or unticking any single checkbox clears the whole selection. Rational AI selects every matching file without listing them one by one, so there is no list to remove a single file from. Narrow the filters first, then select all.
-</Admonition>
+:::
 
 <img
   src={require('@site/static/img/screens/knowledge-table.png').default}
@@ -105,9 +106,9 @@ After **Select all N**, ticking or unticking any single checkbox clears the whol
 
 *A Knowledge in **table view**: each row is a resource, with Name, Description, Category, Tags and Relations.*
 
-<Admonition type="note" icon="📝" title="ONE CONSISTENT SURFACE">
-The table box and rows are transparent, so the surface colour shows through; status chips follow the design palette; and the **Size** column sits on its own, next to the **⋮** context menu.
-</Admonition>
+:::note[One consistent surface]
+The table box and rows are transparent, so the surface color shows through; status chips follow the design palette; and the **Size** column sits on its own, next to the **⋮** context menu.
+:::
 
 ### Bulk delete resources
 
@@ -117,9 +118,9 @@ When you have several resources to remove, delete them together instead of one a
 2. Open the **⋮** menu next to the selected count and select **Delete selected**. The same menu holds **Assign workflow**, which applies to the same selection.
 3. Confirm in the **Delete resources** dialog. When you selected all files, the dialog states the exact number that will be deleted, for example *"All 1240 resources and everything extracted from them are deleted."*
 
-<Admonition type="caution" icon="⚠️" title="DELETION CANNOT BE UNDONE">
+:::warning[Deletion cannot be undone]
 Deleting a resource also deletes everything extracted from it: chunks, embeddings, and annotations. Read the count in the dialog before you confirm.
-</Admonition>
+:::
 
 ## Delete a single resource from the attribute view
 
@@ -138,9 +139,9 @@ When you only need to remove one resource, you can do it straight from its card 
 
 *The options menu on a resource row: **See details** and **Mark as hidden**.*
 
-<Admonition type="note" icon="📝" title="WHAT HAPPENS ON CONFIRM">
+:::note[What happens on confirm]
 The resource is removed, the list reloads, and you see the **Resource deleted successfully** toast. If the deletion fails, an error toast appears instead.
-</Admonition>
+:::
 
 ## Upload files as resources
 
@@ -153,13 +154,13 @@ Normally an uploaded file runs through a workflow — an automated set of steps 
    - leave the workflow unset and tick **Add as resource**.
 4. Confirm. Files with a workflow run that workflow; files marked **Add as resource** are created as resources directly.
 
-<Admonition type="note" icon="📝" title="CANCELLING THE REVIEW STEP">
+:::note[Canceling the review step]
 If you cancel at the review step, the files you already uploaded are deleted, so nothing is left orphaned in the Knowledge.
-</Admonition>
+:::
 
 ## Edit a resource without losing your curation
 
-Editing a file's content in the Knowledge raises an obvious worry: the answers your AI gives come from chunks and embeddings derived from that file, so a stale index means the AI keeps quoting text you just corrected. Saving an edit therefore reindexes the resources built from that file — the latest bytes are converted, the generated content chunks are replaced, and everything is chunked and embedded again, so [AI Search](/operational-guides/configure-rag) reflects your edit.
+Editing a file's content in the Knowledge raises an obvious worry: the answers your AI gives come from chunks and embeddings derived from that file, so a stale index means the AI keeps quoting text you recently corrected. Saving an edit therefore reindexes the resources built from that file — the latest bytes are converted, the generated content chunks are replaced, and everything is chunked and embedded again, so [AI Search](/operational-guides/configure-rag) reflects your edit.
 
 What it deliberately does *not* do is re-run the file's processing rules and workflows. Saving an edit is not a reprocess, so:
 
@@ -167,19 +168,19 @@ What it deliberately does *not* do is re-run the file's processing rules and wor
 - **Your annotations survive.** Only the generated content chunks are cleared; annotations you authored, and attribute metadata, are kept.
 - **Attributes and the knowledge database are untouched.**
 
-Reprocessing the Knowledge — or letting a scheduled sync do it — is still the way to re-run the full pipeline when that is what you actually want.
+Reprocessing the Knowledge (or letting a scheduled sync do it) is still the way to re-run the full pipeline when that is what you actually want.
 
-<Admonition type="note" icon="📝" title="A FINISHED SYNC REFRESHES ITS KNOWLEDGE">
+:::note[A finished sync refreshes its Knowledge]
 You don't have to reprocess by hand after new content arrives either: when a [source](/operational-guides/configure-sources) finishes syncing, the Knowledges it feeds are refreshed, so freshly synced files become searchable on their own.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="REPROCESSING KEEPS A KNOWLEDGE DATABASE">
-A `.db` file uploaded to a Knowledge is loaded into a [Knowledge Database](/operational-guides/sqlite-resource-database). That file can legitimately be processed again — by a manual reprocess or a scheduled sync — and doing so no longer drops the database it produced. The processing runs against a database that is still there.
-</Admonition>
+:::note[Reprocessing keeps a Knowledge database]
+A `.db` file uploaded to a Knowledge is loaded into a [Knowledge Database](/operational-guides/sqlite-resource-database). That file can legitimately be processed again (by a manual reprocess or a scheduled sync), and doing so no longer drops the database it produced. The processing runs against a database that is still there.
+:::
 
 ## Start from an empty Knowledge
 
-A brand-new Knowledge has nothing to show in the graph view, so instead of a blank canvas it offers a guided empty state — with the zoom toolbar hidden — that points you toward your first resources.
+A brand-new Knowledge has nothing to show in the graph view, so instead of a blank canvas it offers a guided empty state (with the zoom toolbar hidden) that points you toward your first resources.
 
 1. Open the **graph view** on a Knowledge that has no resources.
 2. From the centred empty state, choose an action:
@@ -194,10 +195,10 @@ Put the columns you check most often where you can see them first. The attribute
 2. Drag a **column header** left or right. A vertical marker shows where the column will land.
 3. Release to drop the column into its new position.
 
-<Admonition type="note" icon="📝" title="WHAT STAYS PUT">
+:::note[What stays put]
 The sticky first cell and the trailing actions menu stay fixed — they can't be dragged or displaced. Sorting still works on the **Name** column even though it's draggable too, and your column order is saved in the browser, so it survives a page reload.
-</Admonition>
+:::
 
 ## Result
 
-You can now keep a Knowledge tidy from whichever view you happen to be in: choose the view it opens in, follow a processing run and fix the files it failed on, sort and bulk-delete from the files table — across all pages if you need to — remove a single resource from its card, add uploaded files straight in as resources, edit a resource and have it reindexed without losing your curation, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.
+You can now keep a Knowledge tidy from whichever view you happen to be in: choose the view it opens in, follow a processing run and fix the files it failed on, sort and bulk-delete from the files table (across all pages if you need to), remove a single resource from its card, add uploaded files straight in as resources, edit a resource and have it reindexed without losing your curation, get a new Knowledge moving from the graph view, and arrange the attributes table columns to match how you work.

@@ -1,17 +1,18 @@
 ---
 sidebar_position: 2
 sidebar_label: Create a workflow
+type: how-to
+audience: [builder]
 ---
 
 # Create a workflow
 
 Workflows automate data transformation in Rational AI. This guide covers creating, configuring, and testing workflows that convert raw data into AI-ready knowledge using AI.
 
-import Admonition from "@theme/Admonition";
 
-<Admonition type="info" icon="📖" title="WHAT IS A WORKFLOW?">  
+:::note[What is a workflow?]
 Workflows automate the transformation of raw data into AI-ready knowledge. They extract key information, augment it, identify connections between data points, and structure everything into a queryable knowledge base that your AI applications can use.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -76,13 +77,13 @@ Select capabilities by toggling their chips:
 - **Choose any number.** Click a chip to select it, click it again to clear it. A workflow can carry no capabilities, exactly one, or several.
 - **Saved with the workflow.** Your selection is included in the payload when you click **Add**, or **Save** when editing.
 
-<Admonition type="note" icon="📝" title="THE CAPABILITY LIST IS DYNAMIC">
+:::note[The capability list is dynamic]
 The available capabilities aren't hardcoded in the interface — Rational AI fetches the master list (Images, Tables, Annotations, and any future additions) from the backend, so the set can grow without a front-end change.
-</Admonition>
+:::
 
 **On the workflow detail view**, the capabilities you assigned appear again as read-only, non-clickable chips directly below the description — a quick summary of what the workflow is tagged to extract. To change them, edit the workflow and toggle the chips.
 
-**Capability tags also filter where you pick a workflow.** When the context requires a capability — for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images** — the list is filtered to show only workflows that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every workflow is listed.
+**Capability tags also filter where you pick a workflow.** When the context requires a capability (for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images**), the list is filtered to show only workflows that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every workflow is listed.
 
 ### Workflow logic
 
@@ -134,18 +135,18 @@ run(process)
 ```
 
 Let's break it down:
-- the workflow starts with an incipit which species the script dependencies (in the PEP 723 format): this allows to specify arbitrary script dependencies in your workflow, no whitelisted packages!
+- the workflow starts with a header that declares the script dependencies (in the PEP 723 format), so you can use any package, not only an allowlisted set.
 - at the bottom we can find the workflow entrypoint, the `run(process)` function, which is an utility function to invoke the `process` function defined
 - the workflow business logic is specified in the `process` function: it takes as input the document over which the workflow is applied, and some options that might be used to store values later used in the workflow code
-- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, i.e. `knowledge = Knowledge(document.knowledge_id)`
-- the workflow might return a dictionary specifying the Rational Resources created and their textual content, i.e. text/markdown, to be automatically chunked and embedded according to the Knowledge settings
+- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, that is, `knowledge = Knowledge(document.knowledge_id)`
+- the workflow might return a dictionary specifying the Rational Resources created and their textual content, that is, text/markdown, to be automatically chunked and embedded according to the Knowledge settings
 
 ### Testing your workflow locally
 
 It is convenient to perform workflow development on your local machine, before using them into Rational AI.
-This is not only possible, but also encouraged, as it allows to use your favorite IDE and debugging tools.
+This is possible and encouraged, as it allows to use your favorite IDE and debugging tools.
 
-To run your workflow locally, you just need to make it executable and pass a properly formatted input as argument to it.
+To run your workflow locally, you only need to make it executable and pass a properly formatted input as argument to it.
 
 Let's suppose to call the above-defined workflow as `lorem-ipsum-wf.py`. We can make it executable by running the command:
 ```
@@ -177,6 +178,6 @@ A workflow only runs when something asks for it. To have every file of a Knowled
 
 From now on, the workflow runs on every file added to the Knowledge: uploads in the Control Room, files brought in by a source sync, and reprocess requests made through the API without a workflow.
 
-<Admonition type="note" icon="📝" title="FORCE THE CLASSIC PIPELINE FOR ONE RUN">
+:::note[Force the classic pipeline for one run]
 Setting a default doesn't lock you in. When you reprocess a Knowledge from the Control Room you can still choose a different pipeline for that run, and an API client can force the classic pipeline by sending `workflowId` as `null`. Leaving `workflowId` out uses the Knowledge's default.
-</Admonition>
+:::

@@ -1,16 +1,17 @@
 ---
 sidebar_position: 14
 sidebar_label: Custom views
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Custom views
 
 A [Knowledge](/operational-guides/create-knowledge) ships with two built-in ways to look at its records, the **Graph** and the **Grid**, but those are not the only shapes your data can take. You can save grid layouts and calendars, embed a dashboard, and build your own visualizations of the same records: a map, a card wall, a timeline, a form that asks the assistant. All of them appear in the views panel of the knowledge page, next to the built-ins. This guide covers finding and switching views, turning built-ins on and off, creating views, showing records on a calendar, writing or improving a view's code, and the messages a custom view can exchange with Rational AI.
 
-<Admonition type="info" icon="📖" title="WHAT IS A VIEW?">
+:::note[What is a view?]
 A view is one way of presenting a Knowledge's records. **Built-in views** (Graph and Grid) come with every Knowledge. **Saved views** keep a layout of a built-in: a [grid view](/operational-guides/knowledge-collections-and-grid#save-and-share-a-grid-view), a calendar, or a [graph view](/operational-guides/knowledge-graph#save-and-share-a-graph-view). **Custom views** are code you or the AI write: each is a small, self-contained page that receives the Knowledge's records and can ask Rational AI for more, save changes, open records or put a question to the assistant. Views belong to the Knowledge, so everyone who can open it sees them.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -46,11 +47,11 @@ A large graph is hard to read in a pane sharing the screen. The **Fullscreen** t
 
 A Knowledge that has never been edited since it was created carries a **New** tag in the list, so a fresh import stands out among the ones you've already worked on.
 
-<Admonition type="note" icon="📝" title="THE TAG GOES AWAY WHEN YOU EDIT, NOT WHEN TIME PASSES">
-**New** isn't a countdown. It's shown while a Knowledge's last-updated time still matches its creation time, so it disappears the first time the Knowledge changes, however long that takes, and persists indefinitely on one nobody has touched.
+:::note[The tag goes away when you edit, not when time passes]
+**New** is shown while a Knowledge's last-updated time still matches its creation time, so it disappears the first time the Knowledge changes, however long that takes, and persists indefinitely on one nobody has touched.
 
 Read it as *untouched since import* rather than *created recently*.
-</Admonition>
+:::
 
 ## Manage views in settings
 
@@ -76,9 +77,9 @@ Hiding a built-in you never use keeps the views panel short.
 1. On the **Views** tab, find **Graph view** or **Grid view** under **Built-in views**.
 2. Use its **toggle** to enable or disable it. Disabled views disappear from the knowledge page immediately.
 
-<Admonition type="note" icon="📝" title="THE FILES VIEW STAYS">
+:::note[The files view stays]
 Toggling the built-ins only affects the views panel. The **Files** button is fixed and is never part of the views list, so your input files are always one click away.
-</Admonition>
+:::
 
 ## Create a custom view
 
@@ -102,9 +103,9 @@ A custom view starts from a name and an engine.
 
 *Creating a custom view: pick a name and an engine.*
 
-<Admonition type="info" icon="📖" title="HOW A VIEW RECEIVES ITS DATA">
+:::note[How a view receives its data]
 An HTML or React view receives a `rational:data` message with the **knowledge** (name and description), the first page of its **resources** (up to 50, with category, tags and attributes) and, if the code mentions it, the **graph** (nodes and edges). It is sent again whenever the data reloads. For more records, or for a filtered or grouped set, the view asks for them with the messages described in [Let a view talk to Rational AI](#let-a-view-talk-to-rational-ai). A web component receives the same data as a `data` property.
-</Admonition>
+:::
 
 ## Show records on a calendar
 
@@ -113,16 +114,16 @@ A calendar view places records on days and hours by one of their date attributes
 1. Open the **Grid**, select the collection tab and set the filter you want the calendar to show.
 2. Select **Save as view** (or **Save as new view** in a saved grid view).
 3. Enter a **Name** and, under **Show as**, choose **Calendar**. The option is there when the grid has a date or date-and-time column.
-4. Choose the **Date** that places each record, and optionally an **End**, a **Colour** (a single select attribute whose options colour the records) and **Solid when checked** (a checkbox, such as *Published*, that shows checked records solid and the others outlined).
+4. Choose the **Date** that places each record, and optionally an **End**, a **Colour** (a single select attribute whose options color the records) and **Solid when checked** (a checkbox, such as *Published*, that shows checked records solid and the others outlined).
 5. Select **Create**.
 
-The calendar switches between **Day**, **Week** and **Month**. With update rights you can drag a record to another day or time, stretch it to change its end, double-click it to tick its checkbox, or select an empty slot to add a record there. Select a record to edit or delete it. The colour options appear as chips with their counts, to filter what the calendar shows.
+The calendar switches between **Day**, **Week** and **Month**. With update rights you can drag a record to another day or time, stretch it to change its end, double-click it to tick its checkbox, or select an empty slot to add a record there. Select a record to edit or delete it. The color options appear as chips with their counts, to filter what the calendar shows.
 
 The gear above the calendar opens **Calendar settings**, where you can change the **Start** and **End** attributes, **Colour by** and **Solid when**, what a record is called (*"post"* and *"posts"* rather than *"event"*), which records it shows and whether it **Opens on** a day, week or month. Changes apply to everyone who opens the view.
 
-<Admonition type="note" icon="📝" title="A CALENDAR SHOWS UP TO 1000 RECORDS AT A TIME">
+:::note[A calendar shows up to 1000 records at a time]
 If the span on screen holds more, the calendar says so: narrow the view's filter, or switch to a shorter span. Records with a date and no time show as all-day; records with a time and no end last an hour.
-</Admonition>
+:::
 
 ## Edit and save a view's code
 
@@ -149,9 +150,9 @@ If you'd rather describe a view than write it, let the model draft the code for 
 3. Select **Improve view**. The model rewrites the code for the view's engine, using the Knowledge's real attributes, categories and sample records as context, and keeps everything your request doesn't touch.
 4. **Review** the code in the editor, then select **Save** to keep it. The AI never saves on its own.
 
-<Admonition type="note" icon="📝" title="THE AI USES YOUR DEFAULT MODEL">
+:::note[The AI uses your default model]
 **Improve with AI** calls the workspace's default conversational model. If no such model is configured, the action reports a clear error instead of failing silently: configure a model and try again.
-</Admonition>
+:::
 
 ## Rename, preview, copy or delete a view
 
@@ -176,9 +177,9 @@ Once a view is enabled it behaves exactly like a built-in: open it from the view
 
 If the Knowledge has collections but they are still empty, the view shows *"Fill in the tables to see this view"* with a link to each collection, so whoever opens it knows where to add records or [import a spreadsheet](/operational-guides/import-knowledge#import-records-from-excel-or-csv). A collection can also use a custom view as the page of each of its records: see [Open a collection's records in a custom view](/operational-guides/knowledge-collections-and-grid#open-a-collections-records-in-a-custom-view).
 
-<Admonition type="note" icon="📝" title="WHERE CUSTOM VIEWS RUN">
+:::note[Where custom views run]
 HTML and React views run in a sandboxed frame, isolated from the rest of the app, so a view can load libraries it needs without affecting your session. The view follows the app's light or dark theme through a `data-theme` attribute on its root element. Web components are loaded directly and are meant for elements you host and trust.
-</Admonition>
+:::
 
 ## Let a view talk to Rational AI
 
@@ -200,7 +201,7 @@ Errors come back as `rational:resources:error` (or `rational:schema:error`). A s
 
 | Request | What it does |
 | --- | --- |
-| `rational:assistant:ask` | Sends a question to the Knowledge's assistant and returns its reply to the view (`rational:assistant:result`), for example to summarise the records on screen. |
+| `rational:assistant:ask` | Sends a question to the Knowledge's assistant and returns its reply to the view (`rational:assistant:result`), for example to summarize the records on screen. |
 | `rational:chat:ask` | Puts a question in the chat panel beside the view and opens it, so the user follows the answer there. It continues the open conversation; add `newChat: true` to start a new one. |
 | `rational:decision:ask` | Asks a decision model for a structured decision and returns it (`rational:decision:ask:result`). Without a model named in the request, it uses the **Decision model** chosen among the [default models](/operational-guides/ai-model-registry-features). |
 | `rational:tools:list`, `rational:tool:call` | Lists and calls the tools enabled on the Knowledge's assistant. |
@@ -219,9 +220,9 @@ The app also tells the view when to refresh: `rational:resources:changed` when a
 
 `rational:dialog:confirm` opens the app's own confirmation dialog, with a `message` and optionally a `header`, button labels and `severity: 'danger'` for a red button. The app answers `rational:dialog:confirm:opened` straight away, then `rational:dialog:confirm:result` with `confirmed: true` or `false`.
 
-<Admonition type="note" icon="📝" title="A VIEW CAN'T PASS ITSELF OFF AS THE APP">
+:::note[A view can't pass itself off as the app]
 The dialog's title always starts with the view's name, texts are plain and kept short (title up to 120 characters, message up to 1000, buttons up to 40), and a view can't open a second dialog while one is showing or right after the user answered. Use it before actions the user should consciously approve, such as a bulk save.
-</Admonition>
+:::
 
 ## Result
 

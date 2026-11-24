@@ -1,16 +1,17 @@
 ---
 sidebar_position: 6
 sidebar_label: Collections and grid views
+type: how-to
+audience: [builder]
 ---
-import Admonition from '@theme/Admonition';
 
 # Work with records in collections and grid views
 
 Plenty of what a team knows isn't a document: it's a list of customers, contracts, suppliers or incidents, each with a few fields that change every week. Keeping that list in a spreadsheet next to the AI means it is always out of date and the assistant can't see it. In Rational AI a [Knowledge](/operational-guides/create-knowledge) can hold those records directly: you group them into **collections**, edit them in a **grid** like a spreadsheet, save the filtered and grouped layouts your team needs as **views**, and see who changed what in each record's **History**.
 
-<Admonition type="info" icon="📖" title="WHAT ARE RECORDS, COLLECTIONS AND GRID VIEWS?">
+:::note[What are records, collections and grid views?]
 A **record** is a resource of the Knowledge described by its attributes (fields such as *Status*, *Amount* or *Renewal date*) rather than, or as well as, by a file. A **collection** is a named type of record inside one Knowledge, such as *Companies*, *Contacts* and *Opportunities*: each record belongs to at most one collection, and each collection shows its own attributes in its own order. A **grid view** is a saved way of looking at the records (which collection, which columns, which filters, groups, sorting and summaries) that everyone with access to the Knowledge can open.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -29,7 +30,7 @@ The grid has the fixed columns **Name**, **Description**, **Category** and **Tag
 
 An empty Knowledge shows *"This Knowledge is empty"* with **Add manually**, **Import from Excel or CSV** and **Go to settings**. To bring in an existing spreadsheet, see [Import records from Excel or CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
 
-## Organise records into collections
+## Organize records into collections
 
 Collections are created and managed from the grid; there is no separate settings page for them.
 
@@ -50,30 +51,30 @@ The active tab has a **⋮** menu with:
 | **Open records with** | Opens this collection's records in one of your custom views instead of the standard drawer. See [Open a collection's records in a custom view](#open-a-collections-records-in-a-custom-view). |
 | **Delete** | Deletes the collection. |
 
-<Admonition type="note" icon="📝" title="DELETING A COLLECTION KEEPS ITS RECORDS">
+:::note[Deleting a collection keeps its records]
 Deleting a collection does not delete what is in it: its records stay in the Knowledge, without a collection, under **All resources**. What goes with it are the reminders set on it and any grid view that showed only that collection.
-</Admonition>
+:::
 
 ## Edit records in the grid
 
 With update rights, the grid works like a spreadsheet.
 
-1. Start editing a cell by double-clicking it, pressing **Enter** or **F2**, or simply typing. Press **Space** to tick a checkbox cell.
+1. Start editing a cell by double-clicking it, pressing **Enter** or **F2**, or typing. Press **Space** to tick a checkbox cell.
 2. Move with the arrow keys, **Tab**, **Home** and **End**; **Delete** or **Backspace** clears a cell, **Escape** cancels the edit.
 3. Add a record with **+ New row** at the bottom, or press **Shift+Enter** to insert a row below the current one. A new row is marked **New** until it is saved.
 4. Edits are not written as you type: changed cells stay highlighted and a bar at the bottom counts them (*"3 unsaved changes"*). Select **Save changes**, or press **Ctrl+S** (**Cmd+S** on macOS), to write them all at once.
 
 Each kind of attribute has its own editor: a date picker, a person picker with a **Me** shortcut, a link picker over the linked collection, and so on.
 
-<Admonition type="note" icon="📝" title="A SAVE WRITES EVERYTHING OR NOTHING">
+:::note[A save writes everything or nothing]
 All pending edits are saved together, so a batch never lands halfway. If a value doesn't fit its attribute, the bar shows how many are invalid and **Save changes** stays disabled until you fix them. If someone else changed one of your rows after you started editing, nothing is saved and the **Rows changed since you started editing** dialog lets you **Reload rows** to see their current values; your edits to the other rows stay pending. **Discard changes** asks for confirmation before throwing your edits away, and leaving the page with pending edits asks first too.
-</Admonition>
+:::
 
 Actions that write immediately, such as renaming an attribute, moving or deleting records, importing or deleting a collection, first ask you to save or discard the edits you have pending.
 
 ### Create categories, tags and options from a cell
 
-You don't have to prepare every option in settings first. In a **Category**, **Tags** or select cell, type in *"Search or create…"*: when the name doesn't exist yet, it is created on the spot with the next unused colour, and appears as a coloured chip in every record. The new option is saved to the Knowledge immediately; the cell's value still waits for **Save changes**.
+You don't have to prepare every option in settings first. In a **Category**, **Tags** or select cell, type in *"Search or create…"*: when the name doesn't exist yet, it is created on the spot with the next unused color, and appears as a colored chip in every record. The new option is saved to the Knowledge immediately; the cell's value still waits for **Save changes**.
 
 ### Edit relations
 
@@ -83,9 +84,9 @@ The **Relations** cell shows how many resources are linked to the record. Select
 
 Select a cell of a **Rollup** column (*"Show these records"*) to see what it counts. When the rollup adds up the records that link *to* this one (all the opportunities of a company, say), the grid switches to their collection, filtered to those records. When it follows the record's own link, the linked record opens.
 
-## Find records: filter, sort, group and summarise
+## Find records: Filter, sort, group and summarize
 
-The toolbar has **Filter**, **Group by**, **Sort** and **Visible attributes**. Each runs on the server, so it covers every record in the Knowledge, not just the page on screen.
+The toolbar has **Filter**, **Group by**, **Sort** and **Visible attributes**. Each runs on the server, so it covers every record in the Knowledge, not only the page on screen.
 
 - **Filter:** select **Add condition** and build conditions such as *Status* **is any of** *Open*, or *Renewal date* **is within** *the next 30 days*. Combine them with **and** or **or**, and use **Add condition group** for one level of nested conditions. Operators follow the attribute kind (text, number, date, select, checkbox, link, person). On a person attribute, choose **Me**: everyone who opens the view then sees their own records.
 - **Sort:** add one or more levels, each **Ascending** or **Descending**. Besides the attributes you can sort, and filter, by **Last modified**, to see what moved recently.
@@ -105,9 +106,9 @@ The layout you build lives in the page address, so you can already send it as a 
 4. Under **Show as**, keep **Grid view** (or choose **Calendar** for a calendar of a date attribute; see [Custom views](/operational-guides/knowledge-custom-views#show-records-on-a-calendar)).
 5. Select **Create**.
 
-<Admonition type="note" icon="📝" title="SAVED VIEWS BELONG TO THE KNOWLEDGE, NOT TO YOU">
+:::note[Saved views belong to the Knowledge, not to you]
 A grid view is shared: everyone who can open the Knowledge sees it in the views panel, and only people with update rights can save one. To keep a layout to yourself, don't save it; use **Copy link** instead, or [pin](#pin-the-views-you-use-most) the shared views you need.
-</Admonition>
+:::
 
 When you change the filters, columns or grouping of a saved view, the header shows **View changed** with:
 
@@ -132,14 +133,14 @@ Each view shows an icon in the panel and on its tab. Views generated with AI get
 When the Knowledge has at least one collection, each row has a checkbox for users with update rights.
 
 1. Tick rows one by one, or the header checkbox to select the whole page.
-2. To go beyond the page, select **Select all N resources**: the selection now covers every record matching the current collection, search and filter.
+2. To go beyond the page, use **Select all N resources**: the selection now covers every record matching the current collection, search and filter.
 3. Choose a bulk action:
    - **Move to collection**: moves the selection to a collection, or to **No collection**.
    - **Delete**: deletes the selection after confirmation. Records are deleted with their links and history.
 
-<Admonition type="caution" icon="⚠️" title="DELETING RECORDS ALSO DELETES THEIR LINKS AND HISTORY">
+:::warning[Deleting records also deletes their links and history]
 Deleted records cannot be restored from the grid. Before a large bulk delete, check the filter that defines your selection, or [export the Knowledge](/operational-guides/export-knowledge) first.
-</Admonition>
+:::
 
 ## Open a record
 
@@ -147,9 +148,9 @@ Select the open icon at the start of a row, or **See details** in its **⋯** me
 
 The drawer has the tabs **Details**, **Attributes** and **History**, plus **Annotations** and **Chunks** when the resource has them. On the **Attributes** tab, the collection's attributes come first, and attributes outside the collection that hold a value appear under **Other**. **Linked from** lists the records that point to this one.
 
-<Admonition type="note" icon="📝" title="THE DRAWER SAVES AS YOU GO">
+:::note[The drawer saves as you go]
 Unlike the grid, the **Attributes** tab saves each field as soon as you change it, and shows **Saved**. If the record also has pending edits in the grid, the drawer tells you, with **Discard** and **Save changes**.
-</Admonition>
+:::
 
 ### Read a record's history
 

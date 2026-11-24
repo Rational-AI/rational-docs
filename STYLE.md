@@ -61,7 +61,7 @@ Say what a feature does *not* do, what is irreversible, and what happens to data
 - No em-dash chains. Use one em dash per sentence at most, or prefer a full stop.
 
 ### Headings
-- **Sentence case** everywhere: "Configure the chunking strategy", not "Configure The Chunking Strategy".
+- **Sentence case** everywhere: "Configure the chunking strategy", not "Configure The Chunking Strategy". After a colon, capitalize the first word: "Phase 1: Semantic search".
 - How-to H1 and H2: **start with an imperative verb** ("Connect a model", "Add your data").
 - Concept H1: a noun phrase ("Retrieval-augmented generation").
 - Reference H1: the object ("Knowledge settings").
@@ -169,7 +169,7 @@ Product nouns appear in the UI, so they follow the UI. Generic concepts stay low
 | **extension**, **Marketplace** | plugin, add-on | |
 | **connector** vs **source** | | connector = credentials to a service; source = what gets synced |
 | **on-premises** (adj.), **on-prem** OK in headings | on-premise | |
-| **sign in** (verb), **sign-in** (noun) | log in, login | |
+| **sign in** (verb), **sign-in** (noun) | log in | "login" is fine as a noun for a database or OS account ("a SQL Server login") and in UI labels that use it |
 | **SSO**, **SAML**, **SCIM**, **RAG**, **LLM** | | Spell out on first use per page |
 
 New product terms go into this table *before* they appear in the docs.
