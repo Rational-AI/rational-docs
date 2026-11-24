@@ -1,6 +1,6 @@
 ---
 sidebar_position: 9
-sidebar_label: Use the chat
+sidebar_label: Use the Chat module
 type: how-to
 audience: [user]
 ---
@@ -12,6 +12,22 @@ The chat is where you talk to your Rational AI agent. This guide covers the ever
 :::note[What is the chat?]
 The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints) — a configured entry point that decides which AI model and which knowledge the chat draws on, and which of the options below users get. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
 :::
+
+## The Chat module and the chat inside a Knowledge
+
+Rational AI has two places to chat. This guide covers the **Chat module**, the **Chat** tab in the top navigation. Each Knowledge also has its own **Chat** panel, on the Knowledge's page.
+
+Both use the same conversation view: answers, sources, history, Canvas and export work the same way. They differ in where they start and what they send:
+
+| | Chat module | Chat inside a Knowledge |
+|---|---|---|
+| **Where** | The **Chat** tab | **Chat** on a Knowledge's page |
+| **Touchpoint** | You pick one: **Rational Chat** or any enabled touchpoint | The Knowledge's own touchpoint |
+| **Chat list** | All your chats, across touchpoints | Only the chats with the Knowledge's touchpoint |
+| **Context sent with each message** | What you add in the composer | The Knowledge's current filters (categories, tags, relations) and the nodes you selected in the graph |
+| **Composer options** | **Knowledge bases**, web search, Deep Research, Canvas, **Voice conversation**, the **Model and reasoning** picker, and **Memory** | Attachments and Canvas. The options in the previous cell are only in the Chat module |
+
+To chat with one Knowledge and send your current filters and selection with each question, use its own panel. See [Start a chat with your Knowledge](/operational-guides/create-knowledge#start-a-chat-with-your-knowledge).
 
 ## Prerequisites
 

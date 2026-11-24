@@ -4,7 +4,7 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 /**
  * The sidebar is organized by audience (docs-strategy/03-piano-documentazione.md §2):
- * Get started, Use Rational AI (users and builders), Administration & security,
+ * Get started (a single page), Use Rational AI (users and builders), Administration & security,
  * Developers, Reference, Troubleshooting, Release notes.
  *
  * Top-level sections are non-collapsible "flat labels"; the folders inside them
@@ -36,10 +36,11 @@ const folder = (label: string, ids: string[]) => ({
 
 const sidebars: SidebarsConfig = {
 	docsSidebar: [
-		section("Get started", ["operational-guides/get-started"]),
+		// A single page needs no section header: it sits on its own at the top
+		"operational-guides/get-started",
 
 		section("Use Rational AI", [
-			folder("Chat", [
+			folder("Chat module", [
 				"chat-experience",
 				"approve-tool-calls",
 				"manage-your-account",
