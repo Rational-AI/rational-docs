@@ -1,0 +1,85 @@
+---
+title: Connect a Slack app
+description: Put a touchpoint's assistant behind your own Slack app, in direct messages and in channels where people mention it.
+type: how-to
+audience: [builder, admin]
+---
+
+A Slack channel lets people chat with a [touchpoint](/operational-guides/configure-touchpoints) in Slack: in a direct message to your app, or by mentioning it in a Slack channel. Each exchange appears in [Conversations](/cr/Conversations) like any other.
+
+## Before you begin
+
+- **Role:** a role with the **Create** and **Update** actions on the **Channels** row (see [Roles and users](/operational-guides/roles-and-users)). **Update** is needed to connect the channel and to change it later.
+- **A public HTTPS address for Rational AI.** Slack delivers events to your deployment over the internet, so the address Rational AI shows for the channel must be reachable from outside your network.
+- **A Slack app in your workspace with a bot user**, and permission to install it. Give the bot these scopes on the app's **OAuth & Permissions** page:
+  - `app_mentions:read`
+  - `chat:write`
+  - `im:history`
+  - `im:read`
+- **A touchpoint to answer**, or the plan to create one. The channel only carries messages; the touchpoint holds the prompt, knowledge, and tools.
+
+## Create the channel
+
+1. In Slack, install the app to your workspace and copy two values:
+   - The **Bot User OAuth Token** (it starts with `xoxb-`), from **OAuth & Permissions**.
+   - The **Signing Secret**, from **Basic Information**.
+2. In Rational AI, go to **Settings** → **Channels** and select **Add**.
+3. In **Channel type**, select **Slack**.
+4. Enter a **Name**. It must be unique across your channels.
+5. Under **Configuration**, enter the **Bot token** and the **Signing secret**. Both are required.
+6. Optional: fill in **Allowed senders** and **Blocked senders** (see [Control who can write in](#control-who-can-write-in)), and set **Split replies** to **Yes** to send a reply as a few short messages.
+7. Select a **Reply mode**: **Automatic** lets the assistant answer on its own; **Manual** and **Draft only** keep a person in charge of every reply. See [Choose the mode](/operational-guides/manage-channels#choose-the-mode).
+8. Select **Save**.
+
+## Subscribe the Slack app to events
+
+1. In **Settings** → **Channels**, open the channel you created and copy the **Request URL** from the **Connection** section.
+2. In the Slack app's settings, open **Event Subscriptions**, turn on events, and paste the address as the **Request URL**. Slack checks it straight away; this works before you connect the channel, as long as the **Signing secret** is saved.
+3. Under the bot events, subscribe to `app_mention` and `message.im`, and save.
+4. If people should write to the app in direct messages, allow messages in the app's **App Home** settings in Slack.
+
+## Connect the channel
+
+1. In the channel's details, select **Connect**. Rational AI checks the bot token with Slack and records the workspace it belongs to.
+2. Check that the details show **Connected**.
+3. Open the touchpoint that should answer and, in its **Settings** tab, select this channel as its **Channel**. The touchpoint must be enabled. If several enabled touchpoints use the channel, the one created first answers.
+4. Invite the app to each Slack channel where people should mention it.
+
+Slack messages reach the assistant only while the channel is connected. **Disconnect** stops them; **Reconnect** checks the token again. Events from any workspace other than the one recorded at connection are refused, so select **Reconnect** after you change the **Bot token**.
+
+## How Slack messages are handled
+
+- **Direct messages:** the assistant answers every message. Each direct-message conversation with the app is one conversation in Rational AI.
+- **Slack channels:** the assistant answers only messages that mention the app. A mention starts a thread, the reply goes into that thread, and each thread is its own conversation. The assistant never answers at the top level of a channel.
+- **Ignored messages:** edited messages, messages from bots (the app itself included), and other special message types.
+- **People appear by Slack user ID.** The app doesn't ask for the `users:read` scope, so conversations are named after the Slack user or channel ID, for example `Slack DM U024BE7LH`.
+- **Replies** are converted to Slack formatting: bold, italic, strikethrough, code, links and quotes; headings become bold and list items become bullets.
+- **No duplicates.** If Slack delivers the same event again, the assistant answers it once.
+
+## Control who can write in
+
+Leave **Allowed senders** empty to answer everyone who can reach the app. To restrict it, list Slack user IDs or channel IDs (for example `U024BE7LH, C0LAN2Q65`), one per line or comma-separated. **Blocked senders** takes the same IDs and wins over the allow list.
+
+You can also change both lists later from the channel's details, under **Reply filter**, and select **Save reply filter**.
+
+## What the channel doesn't support
+
+- **Text only.** The assistant reads the text of a message. Files and images aren't passed to it, and a direct message sent with a file attached gets no answer. The channel has no attachment settings.
+- **Text replies only.** The assistant can't send files back.
+- **No reply delay.** Each message gets its own answer; the **Reply delay (seconds)** setting isn't offered for Slack.
+- **No test message.** The **Test** action in the channel's details isn't available for Slack. Send the app a message from Slack instead.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| **Error while connecting the channel** after **Connect** | Slack refused the bot token. Copy the **Bot User OAuth Token** again (reinstalling the app can change it), select **Edit configuration**, enter it as **Bot token**, save, and select **Connect** again. |
+| Slack can't verify the **Request URL** | Check that the address is exactly the **Request URL** shown in the channel's details, that Rational AI is reachable from the internet over HTTPS, and that the **Signing secret** saved in the channel matches the one on the app's **Basic Information** page. |
+| A mention in a Slack channel gets no answer | Check that the app is a member of that channel, that the app is subscribed to `app_mention`, and that the sender isn't filtered out by **Reply filter**. |
+| Messages arrive in Conversations but nobody answers | Check that the channel shows **Connected**, that an enabled touchpoint uses this channel, and that the **Reply mode** is **Automatic**. |
+
+## Next steps
+
+- [Manage channels](/operational-guides/manage-channels): modes, split replies and what every channel has in common.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): set up the assistant that answers in Slack.
+- [Conversations](/cr/Conversations): read and take over what arrives.

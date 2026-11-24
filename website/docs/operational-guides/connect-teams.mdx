@@ -1,0 +1,79 @@
+---
+title: Connect a Microsoft Teams bot
+description: Put a touchpoint's assistant behind a Microsoft Teams bot, using an Azure Bot from your own tenant.
+type: how-to
+audience: [builder, admin]
+---
+
+A Microsoft Teams channel lets people chat with a [touchpoint](/operational-guides/configure-touchpoints) in Teams: in a one-to-one chat with the bot, or by @mentioning it in a group chat or a channel. Each exchange appears in [Conversations](/cr/Conversations) like any other.
+
+## Before you begin
+
+- **Role:** a role with the **Create** and **Update** actions on the **Channels** row (see [Roles and users](/operational-guides/roles-and-users)). **Update** is needed to connect the channel and to change it later.
+- **A public HTTPS address for Rational AI.** Microsoft delivers Teams messages to your deployment over the internet, so the address Rational AI shows for the channel must be reachable from outside your network.
+- **An Azure Bot in your Microsoft Entra tenant**, created as a **single-tenant** bot, with the **Microsoft Teams** channel enabled. From it you need three values:
+  - The **Microsoft App ID** and the **App Tenant ID**, shown on the bot's **Configuration** page in Azure.
+  - A client secret, created from **Manage Password** on the same page.
+- **A touchpoint to answer**, or the plan to create one. The channel only carries messages; the touchpoint holds the prompt, knowledge, and tools.
+
+## Create the channel
+
+1. Go to **Settings** → **Channels** and select **Add**.
+2. In **Channel type**, select **Microsoft Teams**.
+3. Enter a **Name**. It must be unique across your channels.
+4. Under **Configuration**, enter the **Microsoft App ID**, the **Client secret**, and the **Tenant ID**. All three are required.
+5. Optional: fill in **Allowed senders** and **Blocked senders** (see [Control who can write in](#control-who-can-write-in)), and set **Split replies** to **Yes** to send a reply as a few short messages.
+6. Select a **Reply mode**: **Automatic** lets the assistant answer on its own; **Manual** and **Draft only** keep a person in charge of every reply. See [Choose the mode](/operational-guides/manage-channels#choose-the-mode).
+7. Select **Save**.
+
+## Set the messaging endpoint in Azure
+
+1. In **Settings** → **Channels**, open the channel you created.
+2. Copy the **Messaging endpoint** from the **Connection** section.
+3. In Azure, paste it as the messaging endpoint on the Azure Bot's **Configuration** page and save.
+
+## Connect the channel
+
+1. In the channel's details, select **Connect**. Rational AI checks the **Microsoft App ID**, **Client secret** and **Tenant ID** with Microsoft before it lets messages in.
+2. Check that the details show **Connected**.
+3. Open the touchpoint that should answer and, in its **Settings** tab, select this channel as its **Channel**. The touchpoint must be enabled. If several enabled touchpoints use the channel, the one created first answers.
+
+Teams messages reach the assistant only while the channel is connected. **Disconnect** stops them; **Reconnect** checks the credentials again.
+
+People reach the bot once it's available to them in Teams. How your organization distributes a bot to its users (for example as a Teams app) is managed on the Microsoft side.
+
+## How Teams messages are handled
+
+- **One-to-one chats:** the assistant answers every message.
+- **Group chats and channels:** the assistant answers only messages that @mention the bot. Other messages in the conversation are ignored.
+- **One conversation per Teams conversation.** A one-to-one chat, a group chat and a channel thread each become their own conversation in Rational AI. In group chats and channels, each message carries the sender's name, so the assistant knows who is speaking.
+- **Replies** answer the message that reached the assistant and are sent as Markdown, so lists and emphasis render in Teams.
+- **Only your tenant.** Messages from a Microsoft Entra tenant other than the **Tenant ID** you entered are refused.
+- **No duplicates.** If Microsoft delivers the same message twice, the assistant answers it once.
+
+## Control who can write in
+
+Leave **Allowed senders** empty to answer everyone in your tenant who can reach the bot. To restrict it, list Microsoft Entra user object IDs or Teams conversation IDs, one per line or comma-separated. **Blocked senders** takes the same IDs and wins over the allow list.
+
+You can also change both lists later from the channel's details, under **Reply filter**, and select **Save reply filter**.
+
+## What the channel doesn't support
+
+- **Text only.** The assistant reads the text of a message. Files, images and voice messages aren't passed to it, and a message with no text gets no answer. The channel has no attachment settings.
+- **Text replies only.** The assistant can't send files back.
+- **No reply delay.** Each message gets its own answer; the **Reply delay (seconds)** setting isn't offered for Teams.
+- **No test message.** The **Test** action in the channel's details isn't available for Teams. Send the bot a message from Teams instead.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| **Error while connecting the channel** after **Connect** | Microsoft refused the credentials. Check the **Microsoft App ID**, the **Tenant ID** and that the client secret hasn't expired. Select **Edit configuration**, enter a new **Client secret** if needed, save, and select **Connect** again. |
+| The bot gets messages but never answers | Check that the channel shows **Connected**, that an enabled touchpoint uses this channel, and that the **Reply mode** is **Automatic**. In a group chat or channel, check that the message @mentions the bot. |
+| Nothing arrives in Conversations | Check that the Azure Bot's messaging endpoint is exactly the **Messaging endpoint** shown in the channel's details, that Rational AI is reachable from the internet over HTTPS, and that the sender isn't filtered out by **Reply filter**. |
+
+## Next steps
+
+- [Manage channels](/operational-guides/manage-channels): modes, split replies and what every channel has in common.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): set up the assistant that answers in Teams.
+- [Conversations](/cr/Conversations): read and take over what arrives.
