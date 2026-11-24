@@ -2,15 +2,14 @@
 sidebar_position: 27
 sidebar_label: Configure conversation processing
 ---
-import Admonition from '@theme/Admonition';
 
 # Configure conversation processing
 
 Rational AI can quietly enrich every end-user conversation while it happens: giving it a title, tagging its topics, gauging how the user feels, and summarising it for an operator. This guide shows you where to turn each of these on, which model runs each one, and how to tune them.
 
-<Admonition type="info" icon="📖" title="WHAT IS CONVERSATION PROCESSING?">
+:::note[What is conversation processing?]
 Conversation processing is the work Rational AI does automatically behind the scenes on each conversation. It is the configuration behind the titles, topic chips, sentiment badges and summaries you see in the [Conversations list](/operational-guides/conversations) and in [chat](/operational-guides/chat-experience). These settings apply platform-wide.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -29,9 +28,9 @@ Open **Settings** → **Conversations** to begin. Each task has its own panel, d
 
 *Settings → Conversations: title generation, topic detection, sentiment analysis and summary generation — each toggled independently with its own model.*
 
-<Admonition type="note" icon="📝" title="EACH PART IS OPTIONAL AND INDEPENDENT">
+:::note[Each part is optional and independent]
 Title generation, topic detection, sentiment analysis and summary generation are separate background tasks. You can enable any combination of them, and none of them slows down the reply the user sees. Because each task is small and simple, it is usually sensible to give it a small, cheap [model](/concepts/LLMs) rather than your most powerful one.
-</Admonition>
+:::
 
 ## Choose the model for each task
 
@@ -43,9 +42,9 @@ Every task has its own model picker. You can pick a specific model, or one of tw
 | **Touchpoint default model** | Each conversation is processed by the model of its own [touchpoint](/operational-guides/configure-touchpoints). An empty picker means the same thing. |
 | A specific model | You want a small, dedicated model for this task, whatever the touchpoint uses. |
 
-<Admonition type="note" icon="📝" title="A DEFAULT WITH NO MODEL BEHIND IT SKIPS THE TASK">
+:::note[A default with no model behind it skips the task]
 A specific model always wins. With a default, the task runs only if that default actually points to a model: if no platform **Conversational model** is set, or a touchpoint has no model of its own, the task is skipped for those conversations rather than failing.
-</Admonition>
+:::
 
 The model that writes the replies users read isn't chosen on this page: it's the platform **Conversational model** in the [AI Model Registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), unless a touchpoint picks its own.
 
@@ -69,9 +68,9 @@ Topic detection tags each conversation with the topics it covers, up to three, c
 4. Build your **Topic list**. These are the labels the model can choose from, for example *Order Status*, *Billing Request*, and *Tech Support*. Remove a topic with its **×**, and add a new one with **New**.
 5. Leave the **Topic detection template prompt** as provided, or adjust it. It instructs the model to return only labels from your list, written exactly as they appear there.
 
-<Admonition type="note" icon="📝" title="THE PLATFORM ENFORCES THE ANSWER SHAPE, WHATEVER THE PROMPT SAYS">
+:::note[The platform enforces the answer shape, whatever the prompt says]
 Rational AI always tells the topic model the exact format it must answer in: a single-line JSON object with at most three labels copied from your list. An older or customized prompt that asks for a different shape can no longer break classification. If your prompt predates this, select **Restore default** to bring it in line with the current wording.
-</Admonition>
+:::
 
 ## Sentiment analysis
 
@@ -90,9 +89,9 @@ Summary generation lets an operator read a structured recap of a conversation be
 2. Choose a **Summary generation model**. Thinking models are not recommended for this task.
 3. Set **Number of messages to consider** (`0` means the whole conversation).
 
-<Admonition type="note" icon="📝" title="THE PROMPT FIELDS ARE ADVANCED">
+:::note[The prompt fields are advanced]
 Each task's [prompt](/concepts/Prompts) field (the written instruction its model follows) ships with a sensible default, and **Restore default** brings it back. You only need to touch them if the automatic titles, topics, sentiment or summaries aren't coming out the way you want.
-</Admonition>
+:::
 
 ## Result
 

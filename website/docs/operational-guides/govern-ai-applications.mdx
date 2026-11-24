@@ -2,15 +2,14 @@
 sidebar_position: 25
 sidebar_label: Govern AI applications
 ---
-import Admonition from '@theme/Admonition';
 
 # Govern AI applications and provider costs
 
 Once several teams start calling models through Rational AI, three questions get hard to answer: *which applications are actually using our AI*, *which of them should be allowed to*, and *what is each one really costing us*. The **Applications** tab answers the first, the governance settings you register enforce the second, and provider costs answer the third. This guide covers all three: taking inventory of the applications that reach your proxy, registering them with an owner, a status, and a risk tier that Rational AI enforces, requiring approval for models, and entering the pricing that turns raw token counts into costs.
 
-<Admonition type="info" icon="📖" title="WHAT IS A GOVERNED APPLICATION?">
+:::note[What is a governed application?]
 An **application** is whatever calls Rational AI through the proxy: an internal copilot, a batch job, a customer-facing assistant. Each call carries an **application key**, and Rational AI records it. A [touchpoint](/operational-guides/configure-touchpoints) is an application too: its conversations use the touchpoint's id as their key. Keys nobody has registered appear as **Unregistered**: they are counted and costed, but nobody has claimed them yet. **Registering** a key attaches the governance metadata (display name, owner, business unit, status, environment, risk tier, tags), and the status and risk tier decide whether and how the application is served.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -37,9 +36,9 @@ Each row tells you one application's story:
 
 The actions menu on each row offers **Edit** (or **Register** for an unregistered key), **See its requests**, which opens the **Audit log** filtered to that application, **Copy key**, and **Delete** for a registration.
 
-<Admonition type="note" icon="📝" title="THE INVENTORY FOLLOWS THE PERIOD">
+:::note[The inventory follows the period]
 The **Requests**, **Tokens**, and **Cost** columns cover the **Period** set in the Governance filters. Widen the period and the same application shows larger numbers; it is the same application either way.
-</Admonition>
+:::
 
 ## Register an application
 
@@ -70,13 +69,13 @@ The status and the risk tier are not labels: Rational AI checks them every time 
 | Risk tier **High** | On a touchpoint, every tool call waits for a person's approval, whatever the touchpoint's own approval setting, and callers of its API are offered no tools. On any other application, the tier is recorded only. |
 | Risk tier **Unacceptable** | Refused, like a blocked application. |
 
-<Admonition type="caution" icon="⚠️" title="BLOCKING AN APPLICATION STOPS IT AT ONCE">
+:::warning[Blocking an application stops it at once]
 A block applies to the next request. Requests and conversation turns already running finish, but nothing new is served until you change the status back. Before you block a touchpoint, make sure nobody depends on it right now.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="HIGH RISK IS ENFORCED ON TOUCHPOINTS ONLY">
+:::note[High risk is enforced on touchpoints only]
 Rational AI can put a person in front of a tool call only where it runs the tools itself, which is in a touchpoint's conversations. An application that calls models directly runs its own tools, so for it a **High** tier is a record of your assessment, not a control. See [Approve tool calls before they run](/operational-guides/approve-tool-calls) for what the approval looks like.
-</Admonition>
+:::
 
 A refused request gets an HTTP 403 error whose body carries a `code`, so a caller can tell a governance decision from a provider failure. In the chat, the turn says why it was refused instead of showing a generic error.
 
@@ -108,9 +107,9 @@ Applications are one side of the decision; the models they use are the other. Ea
 
 While approval is required, the model list shows an **Approval** column that turns red for a model that refuses requests, and model pickers offer only models that can answer, so nobody configures a model that would then be refused.
 
-<Admonition type="caution" icon="⚠️" title="EDITING AN APPROVED MODEL CAN STOP IT">
+:::warning[Editing an approved model can stop it]
 Editing a substantive field of an approved model's governance record revokes its approval. With **Require approval** on, that model then refuses every request until it is approved again. The model's details warn you before such a save.
-</Admonition>
+:::
 
 Approving a model, an approval revoked by an edit, and every change to the policy are written to the [audit trail](/operational-guides/audit-trail).
 
@@ -164,9 +163,9 @@ Some spend does not vary per call at all: a monthly API plan, a yearly enterpris
 
 *The **Provider subscription** dialog: a recurring plan, what it includes, and what happens once you exceed it.*
 
-<Admonition type="note" icon="📝" title="LEAVE OVERAGE EMPTY WHEN THERE ISN'T ONE">
+:::note[Leave overage empty when there isn't one]
 Each allowance resets at the start of the billing period. If the provider does not publish an overage rate, leave the field empty rather than guessing: an invented rate quietly turns into an invented cost on the Overview.
-</Admonition>
+:::
 
 ## Choose the reporting currency
 
@@ -178,11 +177,11 @@ Providers bill in different currencies, and adding dollars to euros gives a numb
 
 Every governance figure is shown in that currency: the totals, cost composition, the applications' **Cost** column, the audit log, and the cost charts. Rates and invoices you entered keep their original currency.
 
-<Admonition type="note" icon="📝" title="COSTS ARE CONVERTED AT THE RATE OF THE DAY THEY WERE INCURRED">
+:::note[Costs are converted at the rate of the day they were incurred]
 Each cost is converted at the European Central Bank euro reference rate of the day it was incurred, or the latest rate published before that day, which covers weekends and holidays. Hover over a total to see the original amounts and how they were converted; on a single request, the tooltip names the rate and its date.
 
 A cost is never converted at a guessed rate. If there is no rate for its day, for example because the installation cannot reach the internet to download the rates, the amount stays in its own currency and is shown next to the converted total.
-</Admonition>
+:::
 
 ## Check how complete your costs are
 

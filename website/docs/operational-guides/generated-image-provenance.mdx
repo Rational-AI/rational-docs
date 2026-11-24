@@ -2,7 +2,6 @@
 sidebar_position: 33
 sidebar_label: Generated image provenance
 ---
-import Admonition from '@theme/Admonition';
 
 # How generated images declare they were made by AI
 
@@ -29,13 +28,13 @@ Two practical consequences:
 - **Re-marking is harmless.** An image that already carries the marker isn't given a second one.
 - **Unrecognized formats pass through untouched.** PNG and JPEG are marked. Anything else is stored exactly as generated rather than risking a corrupted file — an unlabelled image is a smaller failure than a broken one, and you can't tell the difference after the fact.
 
-<Admonition type="caution" icon="⚠️" title="THIS IS A DECLARATION, NOT A SIGNED PROVENANCE MANIFEST — IT IS NOT C2PA">
+:::warning[This is a declaration, not a signed provenance manifest — it is not C2PA]
 The distinction matters if you're answering a question about provenance, because the two are often spoken of as though they were the same thing.
 
 The marker establishes **what the file is**: something a model generated. It does **not** establish that nobody has altered the file since, and anyone who wants to strip it can — it's metadata, not a seal.
 
 C2PA additionally binds the claim to a signing identity, so the assertion can be shown not to have been tampered with. That requires a certificate and a signing service, and Rational AI does not do it today. If a tender or a policy asks specifically for C2PA, this does not satisfy it.
-</Admonition>
+:::
 
 ## Related
 

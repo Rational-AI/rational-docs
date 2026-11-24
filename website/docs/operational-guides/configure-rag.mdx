@@ -3,15 +3,15 @@ sidebar_position: 5
 sidebar_label: Configure Graph RAG
 ---
 
-import Admonition from '@theme/Admonition';
  
 # Configure Graph RAG
  
 Graph RAG is a retrieval tool you add to a Touchpoint. It searches your Knowledge for relevant resources, then follows the relationships between them to find more. This guide takes you from a new Knowledge to a working, tuned Graph RAG tool.
  
-<Admonition type="info" icon="📖" title="WHAT IS GRAPH RAG?">
+
+:::note[What is Graph RAG?]
 A basic (naive) RAG search finds resources that match the meaning of a query. Graph RAG does that first, then traverses the knowledge graph to pull in related resources the meaning-only search would miss.
-</Admonition>
+:::
 
 ## Prerequisites
  
@@ -46,9 +46,10 @@ The **AI Search** tab controls how resources are prepared for retrieval. Configu
 1. Turn on **Allow AI search**. This enables the RAG process for the Knowledge.
 2. Select an **Embedding model**. This model converts text into vectors so the system can measure how similar a resource is to a query.
 3. Choose a **Chunking type**. Chunking splits each resource into smaller pieces before embedding. See the chunking reference below.
-<Admonition type="note" icon="📝" title="PROCESSING APPLIES TO TEXT">
+
+:::note[Processing applies to text]
 Chunking, embedding, and keyword extraction currently run on textual resources only.
-</Admonition>
+:::
 
 ### Set up keyword extraction (optional)
  

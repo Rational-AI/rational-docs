@@ -4,7 +4,6 @@ sidebar_label: Integrate external data
 slug: /operational-guides/integrate-data
 ---
 
-import Admonition from "@theme/Admonition";
 
 # Integrate external data
 
@@ -78,9 +77,9 @@ To resolve the issue:
 2. Select **Complete authentication**;
 3. Repeat the authorization process.
 
-<Admonition type="warning" icon="⚠️" title="WARNING">  
+:::warning
 Always resolve authentication errors before creating sources.
-</Admonition>
+:::
 
 ## Adding a data source
 Once a connector is active, you can define one or more sources to specify which data should be retrieved and synchronized. 
@@ -98,13 +97,13 @@ The **Add new source** dialog puts the form on the left and, for source types wh
     * check **Files selected** to see how many items you picked. A folder counts as one pick, and everything inside it is synced.
 5. Click **Add** to confirm.
 
-<Admonition type="note" icon="📝" title="RESIZE THE FILE PANEL FOR LONG NAMES">
+:::note[Resize the file panel for long names]
 Drag the divider between the form and the file panel, or focus it and use the arrow keys, to give the panel more room when file and folder names are long.
-</Admonition>
+:::
 
-<Admonition type="warning" icon="⚠️" title="WARNING">  
+:::warning
 If a connector with authentication issues has been selected, it won't be able to access external data and no folder will be available for selection. Return to the **Connectors** page and re-authenticate before continuing.
-</Admonition>
+:::
 
 ### Configuring synchronization settings
 By default, new sources are created with manual synchronization. You can freely change this from the **Sync settings** (available in the <img
@@ -167,9 +166,9 @@ Before configuring the connector, you need an **Identity and Access Management (
    * Select `Application running outside AWS` as the use case.   
 * You will see your **Access Key ID** and **Secret Access Key**. Download the `.csv` file
 
-<Admonition type="warning" icon="⚠️" title="WARNING">  
+:::warning
 The Secret Access Key is **only shown once**. If lost, you must delete the old key and create a new one.
-</Admonition>
+:::
 
 
 ### Configure the connector
@@ -197,9 +196,9 @@ After configuring the connector, you need to define the source to specify which 
 * In the file panel on the right, **browse the bucket** and tick the folders and files you wish to include in the synchronization.
 * Click **Add** to create the source.
 
-<Admonition type="info" icon="ℹ️" title="REMEMBER:">  
+:::note
 This source, like all sources, is created with **manual synchronization** by default. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
-</Admonition>
+:::
 
 ## Integrate Google Drive data
 This procedure is essential to allow your application to securely access Google services (such as Drive, Calendar, or Gmail) on behalf of your users.
@@ -232,17 +231,17 @@ With the project ready, you can generate the keys.
     * Cannot contain fragments, relative paths, wildcards, or public IPs.
     * Use the following URL: `https://[your-domain].rational.is/api/management/v0/oauth/callback`.
 
-<Admonition type="info" icon="ℹ️" title="REMEMBER">  
+:::note
 Replace `[your-domain]` with your own tenant identifier.
-</Admonition>
+:::
 
 ### Download credentials
 * After clicking **Create**, a pop-up displays your **Client ID** and **Client Secret**.
 * Click **Download JSON** to save a local copy containing all the credentials.
 
-<Admonition type="warning" icon="⚠️" title="WARNING">  
+:::warning
 The Client Secret is private. **Never** share it or publish it.
-</Admonition>
+:::
 
 ### Configure the connector
 * Navigate to **Settings > Connectors** and click **+ Add**.
@@ -265,9 +264,9 @@ The Google connector is now ready to define specific data sources, such as Drive
 * In the file panel on the right, browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
 * Click **Add** to create the source.
 
-<Admonition type="info" icon="ℹ️" title="REMEMBER:">  
+:::note
 This source, like all sources, is created with **manual synchronization** by default. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
-</Admonition>
+:::
 
 ## Integrate OpenRouter data
 This procedure allows your application to access OpenRouter endpoints using API keys, enabling Rational AI to interact with OpenRouter models and data.
@@ -280,9 +279,9 @@ This procedure allows your application to access OpenRouter endpoints using API 
     * Optionally define a credit limit to manage spending and/or an expiration date for the key.
     * Immediately **copy the generated key** (starting with `sk-or-v1-`). You will **not be able to see it again** after leaving the page.
 
-<Admonition type="warning" icon="⚠️" title="WARNING">  
+:::warning
 Treat your API key like a password. **Never** share it publicly or commit it to repositories.
-</Admonition>
+:::
 
 ### Configure the connector
 * Navigate to **Settings > Connectors** and click **+ Add**.

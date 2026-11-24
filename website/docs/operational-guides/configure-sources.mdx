@@ -2,7 +2,6 @@
 sidebar_position: 21
 sidebar_label: Configure sources
 ---
-import Admonition from '@theme/Admonition';
 
 # Configure data sources
 
@@ -18,9 +17,9 @@ A data source is where Rational AI goes to fetch content. Once you connect one t
 
 This guide covers how a source decides when to sync, including the **Automatic** mode that syncs only when something changed, and the source types that need their own setup: extension-contributed sources such as **ArXiv Catchup**, the built-in **HTTP** source, a **RabbitMQ** queue, and the `robots.txt` behavior of the **Fetch** extension.
 
-<Admonition type="info" icon="📖" title="WHAT IS A DATA SOURCE?">
+:::note[What is a data source?]
 A data source defines where Rational AI pulls files from when it syncs a Knowledge. Some sources are built in (such as HTTP). Others come from extensions — add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -46,9 +45,9 @@ A source that syncs too rarely leaves your AI answering from stale files; one th
 
 4. Choose the **On delete** behavior (**Cascade delete** or **Keep**), then save.
 
-<Admonition type="note" icon="📝" title="AUTOMATIC ONLY APPEARS FOR SOURCES THAT CAN REPORT CHANGES">
+:::note[Automatic only appears for sources that can report changes]
 **Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, the file system, and extension sources can't do that without setup on your side, so they offer only **Periodic** and **Manual**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
-</Admonition>
+:::
 
 ### What happens when a sync keeps failing
 
@@ -56,9 +55,9 @@ If a source's credentials are revoked or its server is down, a schedule would hi
 
 **Sync now** always runs, whatever the wait. Use it once you have fixed the problem, for example after re-authenticating the [connector](/operational-guides/configure-connectors). A **Periodic** schedule slower than the current wait isn't affected.
 
-<Admonition type="note" icon="📝" title="SYNC NOW AND EDITS RUN A FULL SYNC">
+:::note[Sync now and edits run a full sync]
 An automatic source remembers how far its last completed sync got, so the next one only looks at what changed. Selecting **Sync now**, or changing the source's type, connector, root, paths, or configuration, clears that memory and runs a full sync.
-</Admonition>
+:::
 
 ### Process a Knowledge whenever its source changes
 
@@ -84,9 +83,9 @@ Go to **Settings** → **Extensions** and install the **ArXiv Catchup** extensio
 
 **Save** the source, then run a **Sync** to download the PDFs into the Knowledge. A sync is the run that fetches the latest content from the source.
 
-<Admonition type="note" icon="📝" title="WHY THE PAPER LIMIT MATTERS">
+:::note[Why the paper limit matters]
 arXiv rate-limits bulk access. The max-papers limit (default `500`) caps how many papers each sync downloads, so leave it in place unless you have a specific reason to raise it.
-</Admonition>
+:::
 
 ## Configure an HTTP source
 
@@ -107,9 +106,9 @@ Use the **HTTP** source when your content lives at one or more web addresses you
 
 Use a **RabbitMQ** source when another system announces documents to process on a message queue and expects the results back on another queue. Each message points to one file: Rational AI downloads it into the Knowledge, processes it, and publishes the result.
 
-<Admonition type="info" icon="📖" title="WHAT IS A MESSAGE QUEUE?">
+:::note[What is a message queue?]
 A message queue, such as RabbitMQ, lets two systems exchange messages without calling each other directly: one system puts a message on a queue, and the other takes it off when it is ready. Here, your system puts on the queue a JSON message carrying the URL of a document, and Rational AI answers on a result queue.
-</Admonition>
+:::
 
 ### Prerequisites
 
@@ -135,9 +134,9 @@ A message queue, such as RabbitMQ, lets two systems exchange messages without ca
 4. Select **Add**.
 5. Attach the source to the Knowledge and select **Sync now** to start consuming the queue. **Stop sync** stops it.
 
-<Admonition type="note" icon="📝" title="A STARTED QUEUE KEEPS RUNNING">
+:::note[A started queue keeps running]
 A RabbitMQ source has no schedule: once you select **Sync now**, it keeps consuming the queue, also after a restart of the platform, until you select **Stop sync**. Its status shows whether the queue can be consumed.
-</Admonition>
+:::
 
 ### What the result message contains
 
@@ -153,9 +152,9 @@ By default the **Fetch** extension respects `robots.txt` on every call. `robots.
 2. Toggle the **Ignore robots.txt** checkbox. Boolean parameters render as an inline checkbox in the extension config UI.
 3. Save the configuration.
 
-<Admonition type="note" icon="📝" title="REINSTALL TO PICK UP THE TOGGLE">
+:::note[Reinstall to pick up the toggle]
 The extension's config schema is stored at install time, so an existing **Fetch** install must be reinstalled before the **Ignore robots.txt** toggle appears. With the toggle off (the default), `robots.txt` is respected; with it on, the previously-blocked fetch succeeds.
-</Admonition>
+:::
 
 ## Result
 

@@ -2,15 +2,14 @@
 sidebar_position: 6
 sidebar_label: Collections and grid views
 ---
-import Admonition from '@theme/Admonition';
 
 # Work with records in collections and grid views
 
 Plenty of what a team knows isn't a document: it's a list of customers, contracts, suppliers or incidents, each with a few fields that change every week. Keeping that list in a spreadsheet next to the AI means it is always out of date and the assistant can't see it. In Rational AI a [Knowledge](/operational-guides/create-knowledge) can hold those records directly: you group them into **collections**, edit them in a **grid** like a spreadsheet, save the filtered and grouped layouts your team needs as **views**, and see who changed what in each record's **History**.
 
-<Admonition type="info" icon="📖" title="WHAT ARE RECORDS, COLLECTIONS AND GRID VIEWS?">
+:::note[What are records, collections and grid views?]
 A **record** is a resource of the Knowledge described by its attributes (fields such as *Status*, *Amount* or *Renewal date*) rather than, or as well as, by a file. A **collection** is a named type of record inside one Knowledge, such as *Companies*, *Contacts* and *Opportunities*: each record belongs to at most one collection, and each collection shows its own attributes in its own order. A **grid view** is a saved way of looking at the records (which collection, which columns, which filters, groups, sorting and summaries) that everyone with access to the Knowledge can open.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -50,9 +49,9 @@ The active tab has a **⋮** menu with:
 | **Open records with** | Opens this collection's records in one of your custom views instead of the standard drawer. See [Open a collection's records in a custom view](#open-a-collections-records-in-a-custom-view). |
 | **Delete** | Deletes the collection. |
 
-<Admonition type="note" icon="📝" title="DELETING A COLLECTION KEEPS ITS RECORDS">
+:::note[Deleting a collection keeps its records]
 Deleting a collection does not delete what is in it: its records stay in the Knowledge, without a collection, under **All resources**. What goes with it are the reminders set on it and any grid view that showed only that collection.
-</Admonition>
+:::
 
 ## Edit records in the grid
 
@@ -65,9 +64,9 @@ With update rights, the grid works like a spreadsheet.
 
 Each kind of attribute has its own editor: a date picker, a person picker with a **Me** shortcut, a link picker over the linked collection, and so on.
 
-<Admonition type="note" icon="📝" title="A SAVE WRITES EVERYTHING OR NOTHING">
+:::note[A save writes everything or nothing]
 All pending edits are saved together, so a batch never lands halfway. If a value doesn't fit its attribute, the bar shows how many are invalid and **Save changes** stays disabled until you fix them. If someone else changed one of your rows after you started editing, nothing is saved and the **Rows changed since you started editing** dialog lets you **Reload rows** to see their current values; your edits to the other rows stay pending. **Discard changes** asks for confirmation before throwing your edits away, and leaving the page with pending edits asks first too.
-</Admonition>
+:::
 
 Actions that write immediately, such as renaming an attribute, moving or deleting records, importing or deleting a collection, first ask you to save or discard the edits you have pending.
 
@@ -105,9 +104,9 @@ The layout you build lives in the page address, so you can already send it as a 
 4. Under **Show as**, keep **Grid view** (or choose **Calendar** for a calendar of a date attribute; see [Custom views](/operational-guides/knowledge-custom-views#show-records-on-a-calendar)).
 5. Select **Create**.
 
-<Admonition type="note" icon="📝" title="SAVED VIEWS BELONG TO THE KNOWLEDGE, NOT TO YOU">
+:::note[Saved views belong to the Knowledge, not to you]
 A grid view is shared: everyone who can open the Knowledge sees it in the views panel, and only people with update rights can save one. To keep a layout to yourself, don't save it; use **Copy link** instead, or [pin](#pin-the-views-you-use-most) the shared views you need.
-</Admonition>
+:::
 
 When you change the filters, columns or grouping of a saved view, the header shows **View changed** with:
 
@@ -137,9 +136,9 @@ When the Knowledge has at least one collection, each row has a checkbox for user
    - **Move to collection**: moves the selection to a collection, or to **No collection**.
    - **Delete**: deletes the selection after confirmation. Records are deleted with their links and history.
 
-<Admonition type="caution" icon="⚠️" title="DELETING RECORDS ALSO DELETES THEIR LINKS AND HISTORY">
+:::warning[Deleting records also deletes their links and history]
 Deleted records cannot be restored from the grid. Before a large bulk delete, check the filter that defines your selection, or [export the Knowledge](/operational-guides/export-knowledge) first.
-</Admonition>
+:::
 
 ## Open a record
 
@@ -147,9 +146,9 @@ Select the open icon at the start of a row, or **See details** in its **⋯** me
 
 The drawer has the tabs **Details**, **Attributes** and **History**, plus **Annotations** and **Chunks** when the resource has them. On the **Attributes** tab, the collection's attributes come first, and attributes outside the collection that hold a value appear under **Other**. **Linked from** lists the records that point to this one.
 
-<Admonition type="note" icon="📝" title="THE DRAWER SAVES AS YOU GO">
+:::note[The drawer saves as you go]
 Unlike the grid, the **Attributes** tab saves each field as soon as you change it, and shows **Saved**. If the record also has pending edits in the grid, the drawer tells you, with **Discard** and **Save changes**.
-</Admonition>
+:::
 
 ### Read a record's history
 

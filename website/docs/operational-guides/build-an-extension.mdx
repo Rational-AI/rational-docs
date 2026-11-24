@@ -13,21 +13,20 @@ source your Knowledge bases sync from, or a workflow that processes incoming
 files. This guide explains the kinds of extensions you can build, the manifest
 that describes each one, and how to package and install them.
 
-import Admonition from "@theme/Admonition";
 
-<Admonition type="info" icon="📖" title="WHAT IS AN EXTENSION?">
+:::note[What is an extension?]
 An extension is a package described by a single `manifest.json`. The manifest
 declares one or more **providers** — capabilities the platform installs. The
 same package can ship several providers at once, but most extensions declare
 just one. Installing an extension reads its manifest and registers whatever it
 provides; uninstalling reverses that.
-</Admonition>
+:::
 
-<Admonition type="note" icon="🔌" title="BUILDING VS. INSTALLING">
+:::note[Building vs. installing]
 This page is the **authoring** guide — how to *create* an extension. If you only
 need to install, configure, enable or disable extensions from the registry, see
 [Settings → Extensions](/cr/settings/extensions) instead.
-</Admonition>
+:::
 
 ## Provider types
 
@@ -163,17 +162,17 @@ Both `url` and header values support `${config.*}` interpolation, so per-user
 credentials (an access token, a base URL) are filled in from the configuration
 the user provides at install time.
 
-<Admonition type="note" icon="🔌" title="REMOTE EXTENSIONS SHIP NO CODE">
+:::note[Remote extensions ship no code]
 A remote extension has no server to build, so it is distributed as a **plain
 `manifest.json`** — upload the file directly, no `.tar.bz2`. With no bundled
 `icon.png`, set the manifest's `icon` field to a URL or an embedded `data:` URI.
-</Admonition>
+:::
 
-<Admonition type="tip" icon="✅" title="OAUTH IS NOT YET SUPPORTED">
+:::tip[OAuth is not yet supported]
 Remote providers authenticate with a static value (a token or key) carried in a
 header. Servers that require an interactive OAuth 2.1 / DCR flow can't yet be
 expressed in a manifest — use a token-based server where one is offered.
-</Admonition>
+:::
 
 ### Agent skills
 
@@ -277,29 +276,29 @@ an optional `mimeType` and `submittedDate`. It can also set `loadAsResource`:
 }
 ```
 
-<Admonition type="note" icon="📝" title="MARK COMPANION FILES IN THE RESOLVER, NOT IN A RULE">
+:::note[Mark companion files in the resolver, not in a rule]
 A processing rule only chooses a workflow; it cannot stop a file from being
 loaded as a resource. If your source ships metadata or precomputed data next to
 each document, set `loadAsResource: false` on those entries, or they arrive in
 the Knowledge base as empty resources. Changing the flag on a file that was
 already synced marks it for processing again, so the change applies on the next
 sync.
-</Admonition>
+:::
 
-<Admonition type="note" icon="🔌" title="THE RESOLVER ONLY LISTS — THE PLATFORM DOWNLOADS">
+:::note[The resolver only lists — the platform downloads]
 Your program's job is to return *which* files to sync, not to fetch them. The
 worker downloads each returned file and applies the `expiry` policy, so a
 resolver that returns only items inside the configured window gets out-of-window
 files cleaned up for free.
-</Admonition>
+:::
 
 ## 4. Workflow extensions
 
-<Admonition type="info" icon="🆕" title="NEW">
+:::note[New]
 Workflow providers are a recent addition to the extension system. They let an
 extension ship a ready-made [processing workflow](/operational-guides/create-workflow)
 that the platform installs and assigns to Knowledge files.
-</Admonition>
+:::
 
 A workflow provider points at a script in the package; on install, the platform
 reads that script and registers it as a global processing workflow. Because the
@@ -363,12 +362,12 @@ def process(document: File, options: dict):
 run(process)
 ```
 
-<Admonition type="caution" icon="⚠️" title="EXTENSION WORKFLOWS ARE READ-ONLY">
+:::warning[Extension workflows are read-only]
 A workflow installed from an extension is **read-only**: it appears in
 **Settings** → **Workflows** and can be assigned to files, but it can't be edited or
 deleted from the UI — its owning extension manages it. Uninstalling the
 extension is how you remove it.
-</Admonition>
+:::
 
 ## Configuration fields
 
@@ -502,12 +501,12 @@ installed, configure any required fields, then enable it. See
 [Settings → Extensions](/cr/settings/extensions) for the full install,
 configure and management flow.
 
-<Admonition type="tip" icon="✅" title="START FROM AN EXISTING EXTENSION">
+:::tip[Start from an existing extension]
 The fastest way to build a new extension is to copy one that already does
 something similar and adjust its manifest. Keep `id` unique (generate a fresh
 UUID). Derive the archive filename and inner root from `nameIdentifier` and
 `version`; keep the source directory name stable.
-</Admonition>
+:::
 
 ## Develop an installed extension
 

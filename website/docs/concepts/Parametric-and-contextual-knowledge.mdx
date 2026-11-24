@@ -7,7 +7,6 @@ description: The two kinds of knowledge a model draws on — what is baked into 
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Parametric and contextual knowledge
 
@@ -16,9 +15,9 @@ A model answers from two very different sources of knowledge, and telling them a
 * **Parametric knowledge** is what the model absorbed during [training](/concepts/Model-training) and stored in its parameters. It is broad and always available, but it is frozen at the model's [knowledge cutoff](/concepts/Knowledge-cutoff), cannot be inspected, and is reconstructed from compressed patterns rather than looked up, which is why it can be subtly wrong.
 * **Contextual knowledge** is what the model reads directly from its [context window](/concepts/Context-window) at the moment of the request: the documents, data and conversation you put in front of it. It is current, specific and traceable to a source, but limited to what fits in the window.
 
-<Admonition type="note" icon="📝" title="Why the distinction matters">
+:::note[Why the distinction matters]
 Parametric knowledge is what the model *remembers*; contextual knowledge is what it can *see right now*. When the two disagree, grounding the model in trustworthy contextual knowledge is what keeps answers accurate and verifiable.
-</Admonition>
+:::
 
 ## Comparative view
 

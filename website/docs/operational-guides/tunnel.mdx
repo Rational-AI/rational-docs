@@ -2,15 +2,14 @@
 sidebar_position: 32
 sidebar_label: Tunnel
 ---
-import Admonition from '@theme/Admonition';
 
 # Reach an on-premises installation through the Rational AI Tunnel
 
 An on-premises Rational AI installation runs on a machine inside your network: a DGX Spark in the server room, a workstation under a desk. Out of the box it is reachable only from that network. **Settings** → **Tunnel** gives it a public endpoint under `rational.is` — `https://control-room.<yourcompany>.rational.is` — with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
 
-<Admonition type="info" icon="📖" title="ON-PREMISE ONLY">
+:::note[On-premises only]
 The Tunnel page exists only on installations that were provisioned with a Rational AI hub connection. On the managed cloud the platform handles addresses and certificates for you and the page is not shown.
-</Admonition>
+:::
 
 <img
   alt="The Tunnel page in Settings, with the installation's endpoint and the tunnel switch on"
@@ -63,9 +62,9 @@ Switch **Rational AI Tunnel** off. The page shows a **Configure your router** bo
 
 The LAN address of the machine and your current public IP are listed underneath. Add the two rules on your router (the feature is usually called *port forwarding*, *NAT* or *virtual server*), then press **Save**. Within a minute the endpoint resolves to your public IP; if your provider changes it, the installation notices at the next check-in and the endpoint follows.
 
-<Admonition type="caution" icon="⚠️" title="A DIRECT CONNECTION NEEDS A REACHABLE PUBLIC IP">
+:::warning[A direct connection needs a reachable public IP]
 If your provider puts you behind a shared address (carrier-grade NAT, common on mobile and some fibre connections), forwarded ports never reach you and the installation becomes unreachable from outside as soon as the tunnel is off. If in doubt, keep the tunnel on, or ask your provider for a public IP first. Switching the tunnel back on restores access within a minute.
-</Admonition>
+:::
 
 Port 80 only redirects browsers to HTTPS; forwarding it is convenient, not required.
 
@@ -97,9 +96,9 @@ The nightly update does not move the installation: it changes the release but ke
    - An external identity provider configured for the installation: register its redirect URIs on the new address.
    - OAuth apps used by connectors (their redirect URI is under `https://control-room.<domain>/api/`) and webhooks you registered with third parties.
 
-<Admonition type="caution" icon="⚠️" title="INTEGRATIONS ON THE OLD ADDRESS STOP WORKING AT ONCE">
+:::warning[Integrations on the old address stop working at once]
 A connector whose OAuth app still redirects to `rational-control-room.<domain>`, or a webhook that still posts there, fails from the moment the installation moves. Prepare the list in step 4 before you run step 2.
-</Admonition>
+:::
 
 ## Check that it works
 

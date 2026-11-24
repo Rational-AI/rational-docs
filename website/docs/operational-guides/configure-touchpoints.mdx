@@ -2,15 +2,14 @@
 sidebar_position: 18
 sidebar_label: Configure touchpoints
 ---
-import Admonition from '@theme/Admonition';
 
 # Configure touchpoints
 
 A touchpoint is the bridge between one of your [Knowledges](/operational-guides/create-knowledge) and the people (or systems) asking it questions. It decides two things: who is allowed to reach the agent, and which tools the agent may use when it answers. This guide walks through the touchpoint configuration panel and the **Tools** tab.
 
-<Admonition type="info" icon="📖" title="WHAT IS A TOUCHPOINT?">
+:::note[What is a touchpoint?]
 A touchpoint connects a Knowledge to the outside world. It carries the access settings for the agent and the set of tools the agent is allowed to use when answering. Those tools come from your installed MCP servers — MCP (Model Context Protocol) is the standard Rational uses to let an AI agent call out to external capabilities like search or database queries. When you create a Knowledge, Rational also creates a default touchpoint for it, which you then refine here.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -24,9 +23,9 @@ Before you start, make sure you have:
 
 Go to **Settings** → **Touchpoints** and select the touchpoint you want to configure. This opens the configuration panel, where access settings live, alongside the **Tools** tab.
 
-<Admonition type="note" icon="📝" title="A NEW TOUCHPOINT INHERITS THE PLATFORM'S MODEL">
+:::note[A new touchpoint inherits the platform's model]
 Create a touchpoint without naming a model and it takes your platform's default **Conversational model** — the one set under **Settings** → **AI Model Registry** as *"Default model for conversations"* — and adds it to its own list of allowed models. The rule lives in the backend, so it applies equally to touchpoints created through the API. A model you choose explicitly is always kept, and existing touchpoints are left exactly as they are; change the platform default and only touchpoints created afterwards pick it up.
-</Admonition>
+:::
 
 A touchpoint's settings are spread over seven tabs:
 
@@ -49,9 +48,9 @@ The **System prompt**, at the top of the **Models** tab, is the standing instruc
 - **Show unsaved changes** switches the field into a read-only diff view, comparing what's saved against what you've typed. On a long prompt this is the difference between knowing what you changed and hoping you remember. It's disabled while nothing has changed.
 - **Expand editor** gives the prompt a much taller editing area, hiding the surrounding fields while you work.
 
-<Admonition type="note" icon="📝" title="TEST A PROMPT CHANGE BEFORE IT GOES LIVE">
+:::note[Test a prompt change before it goes live]
 A touchpoint with enough history offers to **replay your change against its real past conversations** when you save, so you can see what came out different before your users do. See [Test a touchpoint change](/operational-guides/test-touchpoint-changes).
-</Admonition>
+:::
 
 ### Change the workspace assistant's prompt
 
@@ -61,9 +60,9 @@ The assistant people talk to in the main [Chat](/cr/Chats) is a touchpoint too �
 2. Edit the **System prompt** and save. Changes apply from the next message, in existing chats as well as new ones.
 3. To go back to Rational AI's own instructions, select **Restore default**, then **Save**.
 
-<Admonition type="note" icon="📝" title="THE PROMPT IS YOURS; PERMISSIONS AND TOOLS ARE NOT">
+:::note[The prompt is yours; permissions and tools are not]
 Rewriting the prompt changes how the assistant talks and what it focuses on. Which knowledge each person can reach and which tools are available stay managed by Rational AI: on the default touchpoint every user automatically gets all enabled knowledge they are allowed to read. An empty prompt falls back to the built-in default. The default touchpoint can't be deleted.
-</Admonition>
+:::
 
 ## Control who can reach the touchpoint
 
@@ -80,9 +79,9 @@ Use this to decide whether someone must sign in before they can talk to the agen
 2. Turn it **on** to let anyone reach the touchpoint without authenticating, or leave it **off** to require sign-in.
 3. Save the touchpoint to apply the change.
 
-<Admonition type="note" icon="📝" title="OFF BY DEFAULT">
+:::note[Off by default]
 Only enable **Allow anonymous access** when the touchpoint is genuinely meant to be reached without sign-in, such as a public help assistant. Once saved, the setting persists with the touchpoint.
-</Admonition>
+:::
 
 ## Let the assistant change a knowledge
 
@@ -94,9 +93,9 @@ By default an assistant only reads the knowledge attached to it. For an assistan
 
 The change applies at once, without the touchpoint's **Save**. The assistant can then create and update records, move them between collections and create collections in that knowledge — never delete anything. Each change it makes shows the assistant's name, and people working in the knowledge are told when records have been changed so they can reload. Switch **Can change records** off to take the right back; no confirmation is needed.
 
-<Admonition type="caution" icon="⚠️" title="ANYONE WHO CAN USE THE ASSISTANT CAN ASK FOR CHANGES">
+:::warning[Anyone who can use the assistant can ask for changes]
 The permission belongs to the assistant, not to the person chatting. Everyone who can reach the touchpoint can ask it to change records: people in the chat, applications calling its [API or MCP endpoint](/operational-guides/api-access) and, on a public touchpoint, anonymous visitors. Only someone who can edit the knowledge can switch this on, and it is off by default.
-</Admonition>
+:::
 
 The default touchpoint has no such switch: there, the assistant changes records only within the permissions of the person chatting.
 
@@ -132,9 +131,9 @@ Under **Smart**, what counts as sensitive is set per tool. Each tool row carries
 
 When a gated call comes up, the chat pauses and shows an approval card above the composer; the tool runs only once the user approves it.
 
-<Admonition type="note" icon="📝" title="THE SERVER'S ANNOTATION IS ONLY A DEFAULT">
+:::note[The server's annotation is only a default]
 An MCP server declares its own tools read-only or destructive, and Rational AI follows that declaration until you say otherwise. Once you have toggled a tool's **Sensitive** badge, your choice is what counts — including across extension re-syncs, which would otherwise reset the tool to whatever the server currently claims.
-</Admonition>
+:::
 
 ## Set how long a tool may take
 
@@ -146,9 +145,9 @@ An MCP tool that never answers would otherwise leave the conversation waiting. E
 
 The limit applies to every MCP server on the touchpoint. To give one slow server more time (or less), set **Tool call time limit** in that server's configuration dialog; leave it empty to follow the touchpoint's limit.
 
-<Admonition type="note" icon="📝" title="A TOOL THAT KEEPS TIMING OUT STOPS THE ANSWER">
+:::note[A tool that keeps timing out stops the answer]
 One slow call is just a failed step. If the tool runs out of time on every attempt, the answer stops with *"Generation stopped: the tool "…" ran out of time on every attempt."* and a **Regenerate response** button. That's the moment to raise the limit for that server, or to look at why it is slow.
-</Admonition>
+:::
 
 ## Add a single tool
 
@@ -168,17 +167,17 @@ A **Manual** parameter doesn't have to be a fixed literal. It can reference a va
 
 The practical difference between the two is *when* you can write them. The system store is fixed at creation, so an integration that embeds a chat surface it doesn't control the bootstrap of can't use it; the user store can be written afterwards, so it works in that case too.
 
-<Admonition type="caution" icon="⚠️" title="THIS IS HOW YOU PASS A VALUE THE MODEL MUST NOT CHOOSE">
+:::warning[This is how you pass a value the model must not choose]
 A parameter set to **Manual** is stripped from the tool schema the model is shown. The model never sees it, so it cannot set it, alter it, or be talked into changing it — the value is substituted after the model has decided to make the call.
 
 That makes it the right mechanism for the caller's identity, a tenant reference, or a capability issued by the host: anything where letting the model supply the value would be the vulnerability.
 
-The alternative — having the agent read a value with a tool like `get_user_context` and pass it back as an argument — routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorisation, it belongs in a Manual parameter, not in the conversation.
-</Admonition>
+The alternative — having the agent read a value with a tool like `get_user_context` and pass it back as an argument — routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorization, it belongs in a Manual parameter, not in the conversation.
+:::
 
-<Admonition type="note" icon="📝" title="SINGLE-CONFIGURATION SHORTCUT">
+:::note[Single-configuration shortcut]
 When the server has only one configuration, the configuration dropdown is hidden in the **Add tool** dialog — there is nothing to choose between.
-</Admonition>
+:::
 
 ## Bulk-add a configuration's tools
 
@@ -191,9 +190,9 @@ Each tool is created with no parameter overrides, so it inherits the configurati
 
 When the bulk-add finishes, a toast confirms the result, for example **Added 2 tools**.
 
-<Admonition type="note" icon="📝" title="WHAT GETS SKIPPED">
+:::note[What gets skipped]
 Tools already present are skipped (deduplicated by tool id). If a configuration is empty or already fully added, nothing is created and you get an info toast instead. Partial failures report counts without losing the tools that succeeded.
-</Admonition>
+:::
 
 ## Add a new MCP server configuration
 
@@ -212,9 +211,9 @@ Some tools take a knowledge-reference parameter (`knowledgeId` / `knowledge_id`)
 2. Set its mode to **Manual** to override it, or leave it on **Auto** / **Default** to let the agent resolve it.
 3. Open the dropdown and **filter by name** to find the Knowledge you want. The touchpoint's knowledges are shown by **name** and resolved to their **id** behind the scenes.
 
-<Admonition type="note" icon="📝" title="NO MORE RAW IDS">
+:::note[No more raw IDs]
 Because knowledge IDs are never surfaced in the UI, this dropdown is the supported way to pick a Knowledge for a manual override — there is no need to type an ID by hand. The same auto/manual/default modes and validation as the other tool-parameter controls apply.
-</Admonition>
+:::
 
 ## Result
 

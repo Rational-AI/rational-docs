@@ -2,15 +2,14 @@
 sidebar_position: 40
 sidebar_label: Agent computers and tools
 ---
-import Admonition from '@theme/Admonition';
 
 # Agent computers and the tools library
 
 An agent does its work on a computer of its own: a Linux machine where it can run commands, write files, open a browser and pick up tomorrow where it left off today. This guide shows how to check and control those computers, and how to browse the **Library** of tools and skills you can give your agents.
 
-<Admonition type="info" icon="📖" title="WHAT IS AN AGENT COMPUTER?">
+:::note[What is an agent computer?]
 Each agent has a persistent workspace machine: Linux with a desktop, a terminal, Chromium, Node, Bun, Python, Git and the usual build tools. Its files live in `/home/agent/workspace` and survive between runs, as do the skills installed on it. The computer starts when a run needs it and stops after a period of inactivity; stopping it never deletes its files. It runs one job at a time: other runs of the same agent wait in a queue.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -48,9 +47,9 @@ The same **Computer** panel is on every agent's page.
 - **Stop** shuts it down. Files stay.
 - **Install gstack** installs a ready-made toolkit of browser automation and skills on the computer (**Reinstall gstack** to update it). It can take several minutes; the installed skills are listed under *N installed skills*.
 
-<Admonition type="caution" icon="⚠️" title="THE DESKTOP IS THE AGENT'S, NOT YOURS">
+:::warning[The desktop is the agent's, not yours]
 Whatever you do on the desktop happens on the agent's machine, in the middle of its work. Use it to watch, or to unblock something the agent asked you about (a sign-in page, a confirmation) — not to work alongside it while a run is going.
-</Admonition>
+:::
 
 ## Browse the library
 

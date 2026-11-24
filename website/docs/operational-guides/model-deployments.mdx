@@ -2,15 +2,14 @@
 sidebar_position: 15
 sidebar_label: Deploy self-hosted models
 ---
-import Admonition from '@theme/Admonition';
 
 # Deploy and run self-hosted models
 
 A model you host yourself only answers while it runs, and while it runs it holds a GPU or a good share of a server's memory. You want it ready when people use it, out of the way when they don't, and you want to know at a glance whether it is downloading, starting, serving or broken. In Rational AI you add an open-source model from Hugging Face, decide how many copies of it run and when it gives its hardware back, and follow every step from the AI Model Registry.
 
-<Admonition type="info" icon="📖" title="WHAT IS A DEPLOYMENT?">
+:::note[What is a deployment?]
 A self-hosted model in the registry describes *what* to run: the weights (for example a Hugging Face repository) and its **deploy settings**. Its **deployment** is the running copy on your hosting platform: on your own servers for an [on-premises installation](/operational-guides/run-models-on-premise), or on Rational AI's infrastructure in the cloud. A deployment has a **phase**, which says where it is in its lifecycle, and **replicas**, the running instances of the model that answer requests. Each model has at most one deployment.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -38,9 +37,9 @@ The model picker searches Hugging Face live, so you see the current catalog rath
 4. Select a model to read its card on the right: publisher, architecture, parameters, weights, popularity, last update, and its Hugging Face model card. Icons on each entry mark a model that accepts images, a curated pick, and a model **Already registered**.
 5. Select **Confirm**. The model is added to the registry, but not deployed yet.
 
-<Admonition type="note" icon="📝" title="THE FIT ESTIMATE IS A RULE OF THUMB, NOT A RESERVATION">
+:::note[The fit estimate is a rule of thumb, not a reservation]
 Where the installation can estimate it, a chip says whether a model **Fits**, **Fits with FP8** (it fits once quantized to 8 bits), or is **Too large**, by comparing its size with the memory it would be given. It does not check whether a GPU is free right now, so a model that fits can still wait for room when you deploy it.
-</Admonition>
+:::
 
 ### Upload a model file
 
@@ -62,9 +61,9 @@ Each self-hosted model has **Deploy settings**, read when it is deployed: what h
 
 Each field shows **Default:** and the value this model gets when you leave it alone. Choose **Custom** to set your own value, or, for a flag, **Don't pass** to leave it out entirely. Defaults follow the model: on-premises, a model deploys the way its published vLLM recipe launches it on your hardware. Environment variables whose name looks like a secret (a token, key or password) show as *"Set (hidden)"* once saved.
 
-<Admonition type="note" icon="📝" title="SAVED SETTINGS DO NOT REACH A RUNNING MODEL ON THEIR OWN">
+:::note[Saved settings do not reach a running model on their own]
 Saving the deploy settings changes what *should* run, not what runs. The deployment shows **Settings not deployed** and lists the fields that changed until you deploy them, and when the model is running you are asked right after saving whether to deploy them now. This way nobody changes a model in production by editing a form.
-</Admonition>
+:::
 
 ## Deploy a model
 
@@ -90,9 +89,9 @@ A first deployment can take several minutes: the weights download once, and stay
 
 The section also shows **Replicas** (*"1 of 1 ready"*), **In this phase since** and **Last request**. The models list shows the same phase in its **Status** column and updates as it changes.
 
-<Admonition type="note" icon="📝" title="A WAIT IS NOT A FAILURE">
+:::note[A wait is not a failure]
 A notice under the phase explains a delay without changing it: *"Waiting for the platform to find room for it"*, *"Starting much more slowly than it usually does"*, *"The hosting platform cannot be reached; retrying"*. Only problems that retrying cannot fix move the deployment to **Failed**: it ran out of memory, it crashed repeatedly, it took too long to start, or the platform found no room in time. A failed deployment is not retried and releases its hardware; fix its settings and select **Deploy again**.
-</Admonition>
+:::
 
 ## Decide how many replicas run
 
@@ -114,9 +113,9 @@ The scale says how much hardware the model holds, and when.
 | Minimum 0, long **Release after** | Models used in bursts, where a cold start in the middle of a session would annoy people |
 | Minimum 1 or more | Models people rely on all day, or that take long to start |
 
-<Admonition type="note" icon="📝" title="THE FIRST REQUEST TO AN IDLE MODEL WAITS">
+:::note[The first request to an idle model waits]
 An idle model starts when a request arrives, and that request waits up to a couple of minutes for it. If the model takes longer, the request fails with a message that the model is warming up, and the next one gets through once it is ready. Raise the minimum, or warm the model up before people need it, when that wait matters.
-</Admonition>
+:::
 
 ## Stop, resume or warm up a model
 
@@ -137,9 +136,9 @@ Disabling a model is the quickest way to take it out of service without deleting
 
 A disabled model refuses every request at once, disappears from model pickers, shows **Disabled** in the **Status** column, and its details say *"Requests to it are refused, and model pickers do not offer it."* A chat that uses it says it was refused because its model is disabled. To bring it back, select **Enable** in the row menu or in the details; enabling leaves the deployment as it is, so resume it if it was stopped.
 
-<Admonition type="note" icon="📝" title="DISABLE A MODEL YOU CANNOT DELETE">
+:::note[Disable a model you cannot delete]
 A model with billing history cannot be deleted, because that history stays attached to it. Disabling it keeps the records and stops its use.
-</Admonition>
+:::
 
 ## Decide what each model call stores
 
@@ -150,9 +149,9 @@ Every request through a model is logged in the [audit trail](/operational-guides
 
 The choice is saved at once. Stored content is kept for the period set in [Data retention](/operational-guides/data-retention). When an audit entry says a payload was not recorded, it links to this section of the model.
 
-<Admonition type="caution" icon="⚠️" title="PAYLOADS CAN CONTAIN PERSONAL DATA">
+:::warning[Payloads can contain personal data]
 Prompts and answers carry whatever people typed and whatever documents were sent. Store them only as long as you need them to investigate problems, and prefer **Only when the request fails** over **Always**.
-</Admonition>
+:::
 
 ## Result
 

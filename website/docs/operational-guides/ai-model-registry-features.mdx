@@ -2,15 +2,14 @@
 sidebar_position: 14
 sidebar_label: Manage AI models
 ---
-import Admonition from '@theme/Admonition';
 
 # Manage AI models in the registry
 
 The AI Model Registry is where every AI model the platform can use lives in one place. From here you connect providers, register their models, describe what each model can do, read what it costs and where it's already in use, and pick the defaults the rest of the platform falls back on. To deploy and run models you host yourself, see [Deploy and run self-hosted models](/operational-guides/model-deployments). This guide covers all of that, end to end.
 
-<Admonition type="info" icon="📖" title="WHAT IS THE AI MODEL REGISTRY?">
+:::note[What is the AI Model Registry?]
 A [large language model](/concepts/LLMs), or LLM, is the AI that actually generates text, embeddings, or images. Those models come from providers (OpenAI, OpenRouter, Xference, and others), and each provider is wired in through a *connector*. The registry is the catalog that ties it together: add a connector, register the models it exposes, inspect each model's pricing, publisher, and usage, and choose the platform default model for each kind of task so the rest of the platform inherits a sensible fallback.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -34,9 +33,9 @@ The **Pricing** section appears on a model's overview only for models that have 
 - **Per 1M input tokens** — the stored per-token cost × 1,000,000
 - **Per 1M output tokens** — the stored per-token cost × 1,000,000
 
-<Admonition type="note" icon="📝" title="ONLY PRICED ROWS ARE SHOWN">
+:::note[Only priced rows are shown]
 Pricing chips appear only when pricing is enabled for the model, and any row with no cost is hidden. A model priced only per token, for instance, won't show a per-request chip.
-</Admonition>
+:::
 
 ### Read publisher and architecture
 
@@ -99,9 +98,9 @@ An image generation model carries an account of what it can be asked for: output
 3. Switch on each setting the model has and fill in its values. For **Output size**, choose how the model is sized: **Shapes** (aspect ratios), **Fixed sizes** (written as `1024x1536`) or **Free dimensions**.
 4. Select **Save**.
 
-<Admonition type="note" icon="📝" title="VALUES SET BY HAND ARE NO LONGER UPDATED BY THE PROVIDER">
+:::note[Values set by hand are no longer updated by the provider]
 Once you save the form, the provider's catalog stops overwriting the model, so a correction you made stays made. To go back, select **Restore the provider's values**: what you entered is discarded and replaced by whatever the provider reports, which may be nothing at all.
-</Admonition>
+:::
 
 ### Use decision models
 
@@ -126,14 +125,14 @@ The **Governance** section of a model's drawer is where those answers live. It a
 | **Known limitations** | Where it is known to perform badly or unreliably |
 | **Evaluation summary** | What testing was done and what it showed |
 
-<Admonition type="caution" icon="⚠️" title="INTENDED PURPOSE IS NOT THE MODEL'S PURPOSE">
+:::warning[Intended purpose is not the model's purpose]
 Two near-identical names answering completely different questions:
 
 - **Purpose**, shown higher up the drawer, is the technical **modality** — text generation, embedding, and so on.
 - **Intended purpose**, in this section, is prose about **permitted use** — "drafting replies to customer email".
 
 Removing exactly this ambiguity is what the governance record is for, so it's worth being deliberate about which one you're reading.
-</Admonition>
+:::
 
 ### Documenting and approving are separate acts
 
@@ -141,13 +140,13 @@ Removing exactly this ambiguity is what the governance record is for, so it's wo
 
 The approval state shows as a chip. It reads as satisfied only when the model is approved; **not reviewed** and **withdrawn** both read as a caution rather than a failure, since neither is an error — they're just not a sign-off.
 
-<Admonition type="caution" icon="⚠️" title="SAVING AN APPROVED RECORD REVOKES ITS APPROVAL">
+:::warning[Saving an approved record revokes its approval]
 Edit a substantive field on an approved model and the approval decays to **not reviewed**, clearing the sign-off stamp. The section warns you before you save and again afterwards.
 
 This is the behavior you want. An approval that outlives a rewrite of the thing approved is worse than no approval, because it reads as a decision somebody actually took. The case it guards against is repurposing: an approved model quietly edited from "drafting replies to customer email" to "screening job applicants", still wearing its sign-off.
 
 Withdrawing an approval asks you to confirm first, and editing afterwards does not restore it.
-</Admonition>
+:::
 
 **Approve** stays disabled until the model has an **intended purpose**. Approving a model for an unstated use isn't a decision anyone can act on later.
 
@@ -165,9 +164,9 @@ Pick the model the platform reaches for when a specific consumer hasn't pinned o
    - **Decision model** — the default for decisions. Lists **Decision** models. Used by decisions that name no model, such as those of knowledge views.
 4. Select **Save**. Your selection is saved to the active platform configuration.
 
-<Admonition type="note" icon="📝" title="THE CODING DEFAULT IS THE ONLY ONE NOTHING READS YET">
+:::note[The coding default is the only one nothing reads yet]
 The **Conversational**, **Embedding**, **Image generation** and **Decision** defaults are all used today. The **Coding** default is stored and shown so that code generation inherits it when it ships.
-</Admonition>
+:::
 
 ## Require approval before a model answers
 
@@ -189,9 +188,9 @@ Xference is a one-click connector that uses a fixed OpenAI-compatible endpoint b
 2. Enter your **API key**.
 3. Save. The platform discovers the available models from the Xference endpoint and proxies chat through the same path as OpenRouter.
 
-<Admonition type="note" icon="📝" title="TRIAL ENDPOINT ONLY">
+:::note[Trial endpoint only]
 Xference currently resolves only its trial host (`api-trial.xference.ai`). There is no production host yet, so this connector targets the trial endpoint until one is available.
-</Admonition>
+:::
 
 ### Add an OpenAI Compatible provider
 

@@ -2,15 +2,14 @@
 sidebar_position: 7
 sidebar_label: Import a Knowledge base
 ---
-import Admonition from '@theme/Admonition';
 
 # Import a Knowledge base
 
 Importing rebuilds a Knowledge from a `.zip` archive that was previously exported from Rational AI, so you can move it into a new environment in one step instead of reassembling it by hand. To bring rows of a spreadsheet into an existing Knowledge as records instead, see [Import records from Excel or CSV](#import-records-from-excel-or-csv).
 
-<Admonition type="info" icon="📖" title="WHAT YOU'RE IMPORTING">
+:::note[What you're importing]
 A [Knowledge](/operational-guides/create-knowledge) is the searchable collection of content your AI answers from, bundled together with the settings that control how it retrieves and responds. An export archive packages that whole bundle, the content and the configuration, into a single `.zip` file. Importing unpacks it and recreates the Knowledge on the spot. To produce an archive in the first place, see [Export a Knowledge](/operational-guides/export-knowledge).
-</Admonition>
+:::
 
 You'd typically import a Knowledge to:
 
@@ -48,9 +47,9 @@ Use this when you have an archive in hand and want a working copy of that Knowle
 
 A brand-new tenant has no Knowledge yet, and its empty-state page shows the same **New** button. You don't need to create a placeholder Knowledge first — select **New** → **Import knowledge** and bring one in directly.
 
-<Admonition type="note" icon="📝" title="STRAIGHT FROM EMPTY">
+:::note[Straight from empty]
 On a fresh tenant, importing is the fastest way to get started: a single archive populates the environment with both content and configuration, with nothing to set up beforehand.
-</Admonition>
+:::
 
 ## Import records from Excel or CSV
 
@@ -77,9 +76,9 @@ Columns that go to [person and link attributes](/operational-guides/knowledge-at
 
 Each person the import names receives a single notification, *"You were assigned to N records in …"*, rather than one per record.
 
-<Admonition type="note" icon="📝" title="AN IMPORT ALWAYS ADDS NEW RECORDS">
+:::note[An import always adds new records]
 Every row creates a new record: the import doesn't look for an existing record with the same name to update. To refresh data you imported earlier, edit it in the grid, or delete the old records first. If an import stops part way, the dialog says how many records were created and offers **Import the remaining N**, which carries on without duplicating them.
-</Admonition>
+:::
 
 When the import finishes, a toast confirms how many resources were imported and the grid switches to the collection that received them. Each record's **History** marks the values as written *via import*.
 

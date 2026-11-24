@@ -2,15 +2,14 @@
 sidebar_position: 26
 sidebar_label: Approve tool calls
 ---
-import Admonition from '@theme/Admonition';
 
 # Approve tool calls before they run
 
 An agent that can only read is easy to trust. As soon as it can write — send a message, update a record, delete a file — you want a human in the loop for the calls that matter. Rational AI lets you decide, per [touchpoint](/operational-guides/configure-touchpoints), which tool calls need a person to say yes: the assistant pauses, the user approves or rejects, and only then does the tool run.
 
-<Admonition type="info" icon="📖" title="WHAT IS AN APPROVAL GATE?">
+:::note[What is an approval gate?]
 When the assistant decides to use a tool, it normally calls it and carries on. An **approval gate** parks that call instead: the turn stops, an approval card appears in the chat, and the tool runs only if the user selects **Approve**. Which calls get gated is decided by the touchpoint's approval policy, combined with whether the individual tool is considered **sensitive** — a tool that changes something rather than just reading it.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -31,9 +30,9 @@ The policy lives with the tools it governs, at the top of the touchpoint's **Too
    - **Always — ask before every tool.** Every single call is gated, including harmless lookups.
 4. Save the touchpoint.
 
-<Admonition type="note" icon="📝" title="ALWAYS IS HEAVIER THAN IT SOUNDS">
+:::note[Always is heavier than it sounds]
 A single answer can involve several tool calls, and **Always** stops on each one. It is the right choice while you are auditing what an agent actually does, but for everyday use **Smart** gets you the safety of a gate without a conversation that needs a click per sentence.
-</Admonition>
+:::
 
 ## Mark a tool as sensitive
 
@@ -49,9 +48,9 @@ Hover the badge and the tooltip tells you where the current answer comes from:
 - **Declared as not sensitive by the MCP server.** — likewise.
 - **Not declared as sensitive by the MCP server.** — the server said nothing, so the tool is treated as not sensitive.
 
-<Admonition type="note" icon="📝" title="THE MCP SERVER'S ANNOTATION IS A HINT, NOT A VERDICT">
+:::note[The MCP server's annotation is a hint, not a verdict]
 An MCP server can declare its own tools read-only or destructive, but that declaration is written by whoever built the server — Rational AI treats it as a hint. Your override is the trust boundary: once you have toggled a tool, your choice sticks. Tools you never touch keep following the server's declaration, including when the extension is re-synced and its annotations change.
-</Admonition>
+:::
 
 ## What the user sees in the chat
 

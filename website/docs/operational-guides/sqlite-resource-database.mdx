@@ -2,15 +2,14 @@
 sidebar_position: 13
 sidebar_label: Work with the SQLite database
 ---
-import Admonition from '@theme/Admonition';
 
 # Work with a SQLite resource database
 
 When a resource is a SQLite file, Rational AI loads it into a knowledge database and renders it directly in the resource detail panel. This guide shows you how to browse, query and edit that database inline, instead of only downloading the file.
 
-<Admonition type="info" icon="📖" title="WHAT IS A SQLITE RESOURCE DATABASE?">
+:::note[What is a SQLite resource database?]
 A SQLite resource is a resource whose underlying file is a SQLite database. When such a resource is ingested, the worker loads it into a knowledge database (a sqld namespace) named after the resource. The **SQLite resource database viewer/editor** then connects to that knowledge database — using its `knowledgeId` and database name — so you can browse tables and views, run SQL, filter, sort and inline-edit the data without leaving the Control Room.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -28,9 +27,9 @@ The viewer appears automatically when a resource's file looks like SQLite.
 2. In **Table view**, open the resource's **details drawer** by clicking the row (or selecting **See details** from the options menu).
 3. Because the file is recognized as SQLite, the resource viewer renders the **SQLite resource database** inline. The database name shown is the resource name created by the worker.
 
-<Admonition type="note" icon="📝" title="NO DOWNLOAD REQUIRED">
+:::note[No download required]
 For non-SQLite resources you can only download the original file. SQLite resources are loaded into a knowledge database and rendered directly, so you can explore the data in place.
-</Admonition>
+:::
 
 ## Browse tables and views
 
@@ -53,9 +52,9 @@ Column headers always keep their icons visible — the column name ellipsizes if
 2. Run it to execute against the knowledge database. Every statement is routed through the backend `executeKnowledgeDatabase` connector (statements can also be sent in bulk through `batchExecuteKnowledgeDatabase`), so it runs against the resource's sqld namespace.
 3. The grid updates with the result.
 
-<Admonition type="note" icon="📝" title="IDENTIFIERS WITH SPACES">
+:::note[Identifiers with spaces]
 Identifier quoting accepts column and table names that contain spaces, for example `"Location HQ"`. Quote such identifiers in your SQL so they resolve correctly.
-</Admonition>
+:::
 
 ## Edit data inline
 

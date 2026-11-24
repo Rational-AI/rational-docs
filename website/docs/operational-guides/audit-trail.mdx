@@ -2,20 +2,19 @@
 sidebar_position: 30
 sidebar_label: Review the audit trail
 ---
-import Admonition from '@theme/Admonition';
 
 # Review the audit trail
 
 **Settings** → **Audit trail** answers the question an access review actually asks: *who opened this?* It records reads as well as changes, it cannot be edited once written, and it's the surface you bring to anyone auditing who reached what.
 
-<Admonition type="caution" icon="⚠️" title="AUDIT TRAIL IS NOT THE GOVERNANCE AUDIT LOG">
+:::warning[Audit trail is not the governance audit log]
 Two different things carry similar names. Keep them apart:
 
 - **Settings** → **Audit trail** (this page) — one row per **access or change to a record**: who opened a conversation, who deleted a user, who changed a dashboard. It's about *people reaching data*.
 - **Governance** → **Audit log** ([Monitor usage and cost](/operational-guides/governance)) — one row per **model request**: which model, how many tokens, what it cost, how fast. It's about *the AI doing work*.
 
 If the question is "who looked at this?", you want this page. If it's "what did the model do and what did it cost?", you want Governance.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -35,19 +34,19 @@ Go to **Settings** → **Audit trail**. Each entry carries five things:
 
 The table is paged and sortable, **newest first** by default, because the question that brings anyone here is almost always what just happened. Filter by action to narrow it: **Read**, **Created**, **Updated**, **Deleted**, **Started**, **Canceled**, **Approved**, or **Rejected**. Changing the filter resets you to the first page rather than stranding you on page four of two.
 
-<Admonition type="note" icon="📝" title="ONLY DELETIONS ARE COLOURED">
+:::note[Only deletions are colored]
 Reads are the bulk of the trail, so colouring them would turn the column into decoration. The color is reserved for the destructive action, which keeps it meaning something when you scan the page.
-</Admonition>
+:::
 
 ## Why entries can be trusted
 
 Entries are **append-only, enforced by the database itself**: an attempt to update a row is rejected outright, not merely disallowed by the application. That distinction is the point — a trail the application can rewrite is a log, not evidence, and *"we only ever insert"* is a claim a reviewer would otherwise have to take on faith.
 
-<Admonition type="caution" icon="⚠️" title="THE HONEST LIMIT: ENTRIES CAN'T BE ALTERED, BUT THEY CAN BE REMOVED">
+:::warning[The honest limit: entries can't be altered, but they can be removed]
 Deletion is still permitted, because entries have to age out eventually and a retention sweep is the legitimate way to do that.
 
 So the guarantee is precise, and worth stating precisely when someone asks: **falsifying an entry is impossible; destroying one is not.** If your obligations require entries to survive for a fixed term, that's a matter of the [retention policy](/operational-guides/data-retention) you set, not of this protection.
-</Admonition>
+:::
 
 Two further details matter when you're reading old entries:
 
@@ -68,9 +67,9 @@ Instrumentation is deliberately targeted rather than a blanket sweep of every en
 
 Expect this list to grow. An action you don't see here isn't being hidden; it isn't instrumented yet.
 
-<Admonition type="note" icon="📝" title="CACHED QUERY RESULTS ARE LEFT OUT OF A DASHBOARD SNAPSHOT">
+:::note[Cached query results are left out of a dashboard snapshot]
 A dashboard widget caches the rows its query returned. The trail leaves those rows out of the before and after values: they come back from the query, and entries cannot be edited to remove them later.
-</Admonition>
+:::
 
 ## Recover the before and after values of a change
 
@@ -78,9 +77,9 @@ The list view never shows the **before** and **after** values. Those values can 
 
 An administrator can read them one entry at a time through the backend API, with `GET governance/v0/audit-entries/{id}` (see [API access](/operational-guides/api-access)). The response carries the entry with its before and after values, for example the previous layout of a dashboard or the previous code of a knowledge view.
 
-<Admonition type="note" icon="📝" title="READING A CHANGE IS ITSELF RECORDED">
+:::note[Reading a change is itself recorded]
 Every read of an entry's values writes a new **Read** entry to the trail. The person who looked at a deleted dashboard's content is as visible as the person who deleted it.
-</Admonition>
+:::
 
 ## Related
 

@@ -2,15 +2,14 @@
 sidebar_position: 17
 sidebar_label: External Graphify MCP
 ---
-import Admonition from '@theme/Admonition';
 
 # Use Graphify from an external MCP client
 
 The [code graph](/operational-guides/graphify-code-graph) a Graphify Knowledge builds from a Git repository doesn't have to stay inside the Control Room. With the **Graphify query MCP server**, coding agents such as Claude Code or Codex can ask questions about that repository — "where is the main loop, and what does it call?" — and get answers backed by the Knowledge's graph. Access is granted by the Knowledge's **embed key**, so the client never needs an administrator API key. This guide takes you from a Git repository to a working `query_graph` tool inside your coding agent.
 
-<Admonition type="info" icon="📖" title="WHAT IS THE GRAPHIFY MCP SERVER?">
+:::note[What is the Graphify MCP server?]
 MCP (Model Context Protocol) is the standard coding agents use to plug in external tools. The Graphify query MCP server is a small server, launched by the agent itself over stdio, that exposes one main tool: `query_graph`. When the server is configured with an embed key, the tool is **scoped**: it is bound to that one Knowledge, its graph is downloaded read-only, and the tool doesn't ask for (or accept) a Knowledge ID — the key alone decides what the client can see.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -29,9 +28,9 @@ The embed key is the same key that powers the [embedded Knowledge widget](/opera
 2. Save the tab at least once — this generates the embed key.
 3. Copy the key value for use as `RATIONAL_AI_EMBED_KEY` below.
 
-<Admonition type="note" icon="📝" title="TREAT THE KEY AS A SECRET">
+:::note[Treat the key as a secret]
 The key grants read-only access to the Knowledge's graph — which reveals your repository's structure, symbols, and relationships. Keep it out of source control, screenshots, and shared documents. To cut off access, use **Rotate key** on the **Embed** tab: rotation generates a new key and immediately stops every client still using the old one.
-</Admonition>
+:::
 
 ## Connect an MCP client
 
@@ -44,9 +43,9 @@ RATIONAL_AI_EMBED_KEY=<knowledge-embed-key>
 
 With these set, the server runs in scoped mode: `query_graph` answers only for the Knowledge the key belongs to, and its advertised schema has no `knowledgeId` parameter — clients pass only the question.
 
-<Admonition type="warning" icon="⚠️" title="USE THE TENANT API URL">
+:::warning[Use the tenant API URL]
 `RATIONAL_AI_URL` must be your tenant's canonical API URL, ending in `/api/` — for example `https://example.rational.is/api/`. Don't point it at a development server or an internal backend port: those bypass the tenant-aware routing the embed endpoint relies on, and requests will fail or land on the wrong route.
-</Admonition>
+:::
 
 ### Claude Code
 
@@ -95,9 +94,9 @@ RATIONAL_AI_EMBED_KEY = "<knowledge-embed-key>"
 
 In both configurations, replace `/path/to/graphify-query/mcp_server.py` with the actual path to the server script, and fill in your tenant host and embed key.
 
-<Admonition type="note" icon="📝" title="KEEP --no-project IN THE COMMAND">
+:::note[Keep `--no-project` in the command]
 The `--no-project` flag makes `uv` run the server as a standalone script. Without it, launching the server from inside another repository can pick up that project's Python environment instead of the server's own dependencies.
-</Admonition>
+:::
 
 ## Ask the graph a question
 

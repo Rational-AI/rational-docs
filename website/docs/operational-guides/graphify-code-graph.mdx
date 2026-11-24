@@ -2,15 +2,14 @@
 sidebar_position: 16
 sidebar_label: Graphify code graph
 ---
-import Admonition from '@theme/Admonition';
 
 # Build a code graph with Graphify
 
 A [Knowledge](/operational-guides/create-knowledge) can ingest an entire Git repository and turn it into a **code graph**: every file, symbol, and relationship in the codebase becomes a navigable part of the Knowledge. Graphify analyzes the repository, fills the Knowledge with structured resources, installs an interactive graph viewer, and gives the Knowledge chat a tool that answers questions about the code. This guide takes you from a clone URL to a Knowledge you can browse and query.
 
-<Admonition type="info" icon="📖" title="WHAT IS GRAPHIFY?">
+:::note[What is Graphify?]
 Graphify is a code-analysis engine. It parses a repository and builds a graph where nodes are files and symbols (functions, classes, and so on), edges are the relationships between them (defines, references, calls), and **communities** are clusters of files that belong together. In Rational AI, Graphify is a **processing rule** you select when attaching a Git Source to a Knowledge — the graph it produces *is* the Knowledge's content.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -53,13 +52,13 @@ Graphify comes into play when the Source is attached to a Knowledge: the **Proce
 
 *The Knowledge's **Sources** tab: the Git Source attached with **Graphify repository** as its processing rule.*
 
-<Admonition type="note" icon="📝" title="THE FIRST SYNC RUNS AUTOMATICALLY">
+:::note[The first sync runs automatically]
 You don't need to synchronize the Source separately before processing. If the Source has never been synchronized, starting the Knowledge Source sync runs the Source sync first, then continues on its own through snapshot creation, graph generation, and view installation.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="ONE REPOSITORY PER GRAPHIFY KNOWLEDGE">
+:::note[One repository per Graphify Knowledge]
 A Graphify Knowledge maps to a single Git repository: the generated graph represents one codebase. To analyze several repositories, create one Graphify Knowledge for each.
-</Admonition>
+:::
 
 ## What processing produces
 
@@ -73,9 +72,9 @@ During the sync, the repository is checked out, snapshotted, and analyzed by Gra
 | **Community** | A cluster of files that Graphify groups together. | **contains** the files in the cluster. |
 | **Symbol** | A significant function, class, or other symbol. | **defined_in** the file that declares it. |
 
-<Admonition type="note" icon="📝" title="NO CHUNKING, NO EMBEDDINGS">
+:::note[No chunking, no embeddings]
 The Graphify rule is a dedicated processing path. It does not chunk, embed, or index the code for [RAG](/operational-guides/configure-rag) — questions are answered by querying the graph directly, so the answers reflect the code's actual structure rather than text similarity.
-</Admonition>
+:::
 
 ## Explore the graph
 

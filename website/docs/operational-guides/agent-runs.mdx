@@ -2,7 +2,6 @@
 sidebar_position: 37
 sidebar_label: Follow runs and approve actions
 ---
-import Admonition from '@theme/Admonition';
 
 # Follow runs and approve actions
 
@@ -41,9 +40,9 @@ When the agent saves documents during the run, **What it produced** lists them, 
 
 The footer carries the run ID, the workflow ID, when it was created and finished, and the model.
 
-<Admonition type="info" icon="📖" title="AGENTS CHECK THEIR OWN WORK">
+:::note[Agents check their own work]
 Before a run can end as *Completed*, the agent verifies that the outcome really exists — the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends *Failed* with *"Completion could not be verified after three continuation attempts. Review the plan and evidence."* and its task goes to *Needs you*: read the activity, adjust the task or the instructions, and retry.
-</Admonition>
+:::
 
 ## Approve what the agent wants to do
 
@@ -67,9 +66,9 @@ The card reads *"The agent wants your approval"*, names the tool (**Approve writ
 
 Either way the run goes back to *Running*. The agent can also stop to ask you something on its own: the card then shows its question instead of a tool name.
 
-<Admonition type="note" icon="📝" title="WHO CAN ANSWER">
+:::note[Who can answer]
 Anyone who can use the agent can approve or reject its calls, not only the person who started the run. An agent that waits keeps waiting: runs of agents with **Ask me first** tools have up to six hours before they time out.
-</Admonition>
+:::
 
 ## Steer, stop or retry
 

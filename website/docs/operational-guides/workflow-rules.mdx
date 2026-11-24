@@ -2,7 +2,6 @@
 sidebar_position: 22
 sidebar_label: Manage workflow rules
 ---
-import Admonition from '@theme/Admonition';
 
 # Import, export, and time out workflow rules
 
@@ -16,9 +15,9 @@ Once you've built a few [workflows](/operational-guides/create-workflow) and [pr
 
 ***Settings** → **Workflows**: the **Workflows** and **Processing rules** tabs, with the selected workflow’s script on the right.*
 
-<Admonition type="info" icon="📖" title="WHAT IS A RULE DEFINITION?">
+:::note[What is a rule definition?]
 A workflow or processing rule is just a recipe for transforming data. Rational AI can save that recipe as a portable JSON file (a plain-text format that travels cleanly between environments) or as the underlying Python code that actually runs it. Exporting a rule writes one of these files; importing reads a JSON file back in as a draft. A workflow can also carry an execution timeout, so a run that takes too long is stopped instead of hanging indefinitely.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -39,9 +38,9 @@ Export a rule when you want to copy it into another environment, hand it to a te
    - **Export (JSON)** downloads the rule's portable JSON definition.
    - **Download Python code** downloads the rule's underlying Python script.
 
-<Admonition type="note" icon="📝" title="JSON FOR MOVING, PYTHON FOR READING">
+:::note[JSON for moving, Python for reading]
 Reach for **JSON** when the goal is to move a rule into another environment via import — it's the only format the importer accepts. The **Python code** download is for inspecting or running the rule's logic locally; you can't import it back in.
-</Admonition>
+:::
 
 ## Import rules from JSON
 
@@ -54,9 +53,9 @@ Import when you're bringing in a rule someone exported elsewhere, instead of bui
 
 Each imported definition lands in the list as an unsaved draft. Review each one, then save the ones you want to keep — nothing is persisted until you do.
 
-<Admonition type="note" icon="📝" title="DRAFTS, NOT LIVE RULES">
+:::note[Drafts, not live rules]
 Importing never overwrites or activates anything on its own. Even when you import a batch of definitions in a single action, they all arrive as drafts and stay inert until you explicitly save each one.
-</Admonition>
+:::
 
 ## Set a workflow execution timeout
 

@@ -7,7 +7,6 @@ description: What inference is, how it differs from training, and why it is the 
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Inference
 
@@ -15,9 +14,9 @@ import Admonition from '@theme/Admonition';
 
 The two are very different in nature and cost. Training happens once, is enormously expensive, and produces a fixed set of parameters. Inference happens constantly, once per request, and each run leaves the model unchanged.
 
-<Admonition type="note" icon="📝" title="Inference does not teach the model">
+:::note[Inference does not teach the model]
 A model does not learn from the questions you ask it during inference. It reads your input, generates an answer and forgets it. To change what a model knows you must retrain or [fine-tune](/concepts/Finetuning) it, or supply information at request time through [RAG](/concepts/RAG).
-</Admonition>
+:::
 
 ## Why inference matters
 

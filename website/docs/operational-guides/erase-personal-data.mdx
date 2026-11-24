@@ -2,15 +2,14 @@
 sidebar_position: 31
 sidebar_label: Erase a person's data
 ---
-import Admonition from '@theme/Admonition';
 
 # Erase a person's data
 
 When someone exercises a right to erasure, closing their account isn't enough — the conversations they held and the traces of them on recorded model calls are the data they're asking you to remove. **Erase all data** is the operation that reaches that content. This guide covers what it destroys, how it differs from deleting a user, and what you're left with afterwards to prove it happened.
 
-<Admonition type="caution" icon="⚠️" title="THIS IS IRREVERSIBLE">
+:::warning[This is irreversible]
 Erasure destroys content. There is no undo, no recycle bin, and no backup restore path exposed in the product. Be certain the request is genuine and that you have identified the right person before you run it.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -49,11 +48,11 @@ Erasure clears the person from recorded model calls; it does not delete the call
 
 That's the line the operation draws deliberately. Your usage and cost history stays coherent, and your governance reporting doesn't develop a hole, while the personal identifier is gone.
 
-<Admonition type="info" icon="📖" title="THE ERASURE IS RECORDED — AND THAT RECORD IS NOT ITSELF ERASED">
+:::note[The erasure is recorded — and that record is not itself erased]
 The erasure is written to the [audit trail](/operational-guides/audit-trail) **before** anything is destroyed, because afterwards there's nothing left to tie an identifier back to a person.
 
 So you should expect to find a trace of the erasure afterwards. That isn't the erasure having failed — it's the opposite. A trail that erased its own entries could not evidence the erasure it was asked to record, which is precisely what you need when someone asks you to demonstrate you complied.
-</Admonition>
+:::
 
 ## If the identity provider is unreachable
 

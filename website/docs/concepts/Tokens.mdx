@@ -7,7 +7,6 @@ description: What tokens are, how text is split into them, and why they govern c
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Tokens
 
@@ -15,9 +14,9 @@ A **token** is the atomic unit of text a model reads and writes. Before a model 
 
 A token is roughly word-sized, but not exactly. Common words are often a single token, while longer or rarer words are split into pieces. As a rough guide, one token is about four characters of English, so 1,000 tokens is roughly 750 words. Punctuation, spaces and line breaks count too.
 
-<Admonition type="note" icon="📝" title="Tokens are not words">
+:::note[Tokens are not words]
 Splitting text into tokens (called *tokenization*) is language- and model-specific. The same sentence can become a different number of tokens depending on the model, and non-English text often uses more tokens per word.
-</Admonition>
+:::
 
 ## Why tokens matter
 

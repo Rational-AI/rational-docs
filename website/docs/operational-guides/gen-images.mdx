@@ -2,15 +2,14 @@
 sidebar_position: 41
 sidebar_label: Generate images
 ---
-import Admonition from '@theme/Admonition';
 
 # Generate images with Gen
 
 A marketing team that needs a dozen on-brand visuals a week shouldn't have to re-explain the brand to an image model every time. **Gen** is Rational AI's area for generated content: you start from a **template** that already knows the brand's colors, fonts, style and preferred model, describe what you want in a sentence, and refine the result until it's right — with every attempt kept, so you can step back to any of them.
 
-<Admonition type="info" icon="📖" title="WHAT IS A GEN TEMPLATE?">
+:::note[What is a Gen template?]
 A **template** is a saved starting point for a kind of image: the image model to use, its settings (aspect ratio, size, quality and so on), a generation prompt, and a brand style — colors, typography, reference images and a style prompt. Starting from a template means you only describe the subject; the template supplies everything that should be the same every time. Administrators manage templates under **Settings** → **Gen** (see [Configure Gen](/operational-guides/configure-gen)).
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -33,9 +32,9 @@ The first time you open Gen, a guided tour walks you through the galleries and c
 
 When a generation produces several images, browse them with **Previous image** and **Next image**.
 
-<Admonition type="note" icon="📝" title="SHORT PROMPTS CAN BE EXPANDED FOR YOU">
+:::note[Short prompts can be expanded for you]
 If an administrator has turned on **Let AI rewrite short prompts**, a prompt of twelve words or fewer is expanded into a fuller description by a text model before the image model sees it. *"A cat on a sofa"* becomes a prompt that also describes lighting, composition and mood. Longer prompts are sent as you wrote them, and if the rewrite fails for any reason your original prompt is used.
-</Admonition>
+:::
 
 ## Adjust the settings
 
@@ -50,9 +49,9 @@ The configuration panel next to the image has two views:
 
 Turn on **Use fixed seed** when you want to change one thing — the prompt, say — and keep everything else about the image the same: the same seed with the same settings produces a very similar picture.
 
-<Admonition type="note" icon="📝" title="YOU ONLY SEE SETTINGS THE MODEL SUPPORTS">
+:::note[You only see settings the model supports]
 Image models differ in what they can be asked for: one offers five aspect ratios and a seed, another three sizes and a transparent background. Gen draws only the controls the selected model declares, so every option you see is one the model will honour. Switching to another model re-picks any value the new model can't draw. The model's capabilities, including how many reference images it accepts, are described in the [AI Model Registry](/operational-guides/ai-model-registry-features).
-</Admonition>
+:::
 
 Changing the model in **Advanced** leaves the template behind: the editor then says the session no longer belongs to a template, and the brand settings you had stay as they were.
 
@@ -85,9 +84,9 @@ Back in **Photo & Video**, generations are grouped by date. From a card's menu y
 - **Filters** narrows the gallery to **Favorites only**, a **Folder**, or a **Period** (**Today**, **Last 7 days**, **Last 30 days**).
 - **Folders** lists your folders with how many images each holds; use **New folder** to add one, and a folder's menu to **Download**, **Rename** or **Delete** it.
 
-<Admonition type="note" icon="📝" title="EVERY IMAGE IS LABELLED AS AI-GENERATED">
+:::note[Every image is labeled as ai-generated]
 Each image Gen produces carries an embedded marker saying a model made it, which stays with the file after you download it. See [How generated images declare they were made by AI](/operational-guides/generated-image-provenance).
-</Admonition>
+:::
 
 ## Result
 

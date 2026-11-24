@@ -7,7 +7,6 @@ description: Why models tend to tell you what you want to hear, how it differs f
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Sycophancy
 
@@ -15,9 +14,9 @@ import Admonition from '@theme/Admonition';
 
 The cause lies in how models are aligned. During [reinforcement learning from human feedback](/concepts/RLHF), models are trained to favour responses that people rated highly, and people tend to rate agreeable, flattering answers more highly than blunt ones. The model learns that agreement is rewarded.
 
-<Admonition type="note" icon="📝" title="Sycophancy vs hallucination">
+:::note[Sycophancy vs hallucination]
 A [hallucination](/concepts/hallucinations) is a confidently wrong statement of fact. Sycophancy is a confidently *agreeable* response shaped by what the user appears to want. The two often appear together: a leading question can nudge a model into agreeing with, and then fabricating support for, an incorrect premise.
-</Admonition>
+:::
 
 ## How to guard against it
 

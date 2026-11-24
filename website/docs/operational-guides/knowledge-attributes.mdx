@@ -2,15 +2,14 @@
 sidebar_position: 7
 sidebar_label: Attribute kinds
 ---
-import Admonition from '@theme/Admonition';
 
 # Choose the right kind of attribute
 
 A grid of plain text columns soon hits its limits: you retype a customer's name in every contract, compute renewal dates by hand, and can't tell at a glance how much each customer is worth. In a Rational AI [Knowledge](/operational-guides/create-knowledge), every attribute has a kind, and besides text, numbers and dates there are kinds that connect records and compute values for you: **links** between collections, **linked fields** that read through a link, **formulas**, **rollups** that count or sum linked records, and **people**. This guide explains each kind, how to create it, and how to rename an attribute safely.
 
-<Admonition type="info" icon="📖" title="WHAT IS AN ATTRIBUTE?">
+:::note[What is an attribute?]
 An attribute is a named field of the Knowledge's records, such as *Status*, *Amount* or *Account manager*, shown as a column in the [grid](/operational-guides/knowledge-collections-and-grid). Attributes belong to the Knowledge; each [collection](/operational-guides/knowledge-collections-and-grid#organize-records-into-collections) chooses which of them it shows. Its **kind** decides what values it accepts, how it is edited, and how it can be filtered, sorted, grouped and summarized. Some kinds are stored values you edit; others (linked field, formula, rollup) are computed and read-only.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -30,9 +29,9 @@ The same editor opens from three places: the **+** at the end of the grid's head
 
 For **Single select** and **Multi select**, add the **Options** with **+ Add option** and give each a color. You can also create new options later, straight from a cell.
 
-<Admonition type="note" icon="📝" title="EDIT AS JSON SCHEMA IS THERE FOR WHAT THE FORM DOESN'T SHOW">
+:::note[Edit as JSON Schema is there for what the form doesn't show]
 Every attribute is stored as a JSON Schema. **Edit as JSON Schema** shows it as text, for the rare settings the form doesn't offer, such as a filter on a rollup. Select **Pick a type** to go back to the form.
-</Admonition>
+:::
 
 ## Link
 
@@ -44,9 +43,9 @@ A **Link** attribute connects a record to records of a collection: a contract to
 
 In the grid, linked records appear as chips that open the record. The cell editor searches the target collection; if the name you type matches no record, **Create "…"** adds a new record to that collection, saved with your other changes.
 
-<Admonition type="note" icon="📝" title="A LINK IS A RELATION, SO IT SHOWS IN THE GRAPH">
+:::note[A link is a relation, so it shows in the graph]
 A link is stored as a relation between two resources, not as a text value. That is why it appears in the [knowledge graph](/operational-guides/knowledge-graph), in the **Linked from** section of the linked record, and why renaming the linked record never breaks it.
-</Admonition>
+:::
 
 ## Linked field
 
@@ -78,9 +77,9 @@ While you type, Rational AI checks the formula and shows a **Preview** of its re
 
 For example, `IF({Amount} > 10000, "Key account", "Standard")` labels large accounts, and `DATE_DIFF({Renewal date}, TODAY(), "days")` counts the days left before a renewal.
 
-<Admonition type="note" icon="📝" title="A FORMULA NEVER FAILS ON A RECORD">
+:::note[A formula never fails on a record]
 An empty input, a division by zero or a value out of range gives an empty cell rather than an error, so one incomplete record doesn't break the column. A formula cannot refer to itself, directly or through other formulas.
-</Admonition>
+:::
 
 ## Rollup
 
@@ -114,9 +113,9 @@ Renaming changes the attribute everywhere Rational AI can find it, but not in co
 
 The values of every record, the collections' attribute lists, saved grid views, and the links, linked fields, rollups and formulas that use the attribute are all updated. Old **History** entries keep the name they had at the time.
 
-<Admonition type="caution" icon="⚠️" title="UPDATE THE CODE THAT USES THE OLD NAME">
+:::warning[Update the code that uses the old name]
 Workflows and custom views keep using the old name until you edit them. An AI extraction that is running while you rename still writes the old name and its resources are rejected: run it again once the rename is done.
-</Admonition>
+:::
 
 ## Remove an attribute
 

@@ -17,3 +17,6 @@ swap:
   analyse: analyze
   recognise: recognize
   prioritise: prioritize
+  authorisation: authorization
+  quantisation: quantization
+  authorised: authorized

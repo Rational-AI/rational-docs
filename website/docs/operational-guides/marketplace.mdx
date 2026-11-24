@@ -2,15 +2,14 @@
 sidebar_position: 5
 sidebar_label: Marketplace
 ---
-import Admonition from '@theme/Admonition';
 
 # Install solutions from the Marketplace
 
 Starting from an empty Knowledge base means designing collections, views, reminders and assistant instructions before anyone gets value from it. The **Marketplace** offers ready-made solutions for common jobs: a CRM, a due diligence data room, an AI Act register, NIS2 compliance and many more. You pick one, choose where its content goes, and Rational AI sets it up in one step. Later you can update it, go back to an earlier version or remove it, without losing the records you added.
 
-<Admonition type="info" icon="📖" title="WHAT IS A SOLUTION?">
+:::note[What is a solution?]
 A **solution** is an [extension](/operational-guides/manage-extensions) published by Rational AI that sets up a complete use case. Depending on the solution, installing it creates a Knowledge base with its collections, attributes and saved views, example records, reminders, processing workflows, tools and skills for the assistant, BI dashboards, a website widget or a data source that syncs on a schedule. Some solutions also install automated agents. Every solution is listed with what it installs before you install it.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -71,13 +70,13 @@ Select a card to open its page. Before you install, it tells you exactly what yo
 
 The dialog shows each step as it runs. You can close it: the install goes on, and the card shows how far it is. When it finishes, select **Open** to go to the Knowledge base.
 
-<Admonition type="note" icon="📝" title="AN EXISTING KNOWLEDGE BASE KEEPS ITS CONTENT">
+:::note[An existing Knowledge base keeps its content]
 When you install into an existing Knowledge base, its documents, records, attributes and name stay. The solution adds its collections, views, reminders and agents, and its processing rule and assistant instructions replace the ones the Knowledge base had.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="A FAILED INSTALL LEAVES NOTHING BEHIND">
+:::note[A failed install leaves nothing behind]
 If the install fails, everything it had created is undone, so you can select **Try again** without cleaning up first. A solution that reads from an external source also offers **Install without source**, for when the source is what fails.
-</Admonition>
+:::
 
 ## Ask the admins to install a solution
 
@@ -108,9 +107,9 @@ When a new version is published, the page shows *"Version … is available"*. Up
 3. If you changed a collection and the update adds columns to it, each such collection has a checkbox, selected by default. Clear it to keep that collection as it is, without the new columns.
 4. Select **Update solution**.
 
-<Admonition type="note" icon="📝" title="AN UPDATE KEEPS THE CONTENT LANGUAGE">
+:::note[An update keeps the content language]
 A solution stays in the language you installed it in. If a new version isn't available in that language, the dialog says so and the update can't be applied.
-</Admonition>
+:::
 
 How compatible updates are detected for the extension behind a solution, and what an update does to tools and touchpoints, is described in [Update and roll back extensions](/operational-guides/extension-updates).
 
@@ -134,9 +133,9 @@ If a new version doesn't suit you, go back:
 
 3. Select **Uninstall solution**, or **Uninstall and delete**.
 
-<Admonition type="caution" icon="⚠️" title="DELETING THE KNOWLEDGE CANNOT BE UNDONE">
+:::warning[Deleting the Knowledge cannot be undone]
 **Delete the knowledge too** deletes the records and documents of the Knowledge bases the install created. A Knowledge base that existed before you installed the solution into it is never deleted: it is kept and detached from the solution.
-</Admonition>
+:::
 
 A kept Knowledge base is detached from the solution. If you install the same solution again later, it adopts that Knowledge base again.
 
@@ -240,7 +239,7 @@ The Marketplace on your installation may show a different selection: Rational AI
 | **Tracciabilità lotti e controllo ricevimenti** | Incoming goods inspection and the traceability of every lot, from the supplier to the customer. | Manufacturing | EN | Yes |
 | **Treasury and cash flow** | A 13-week and 12-month cash forecast, credit lines and loans by bank, net financial position and bank statement reconciliation. | Manufacturing, Finance and insurance | IT + EN | Yes |
 | **Waste files: approval sheets and service orders** | Third-party waste files with approval sheets per plant, blocks before the service order and deadlines. | Professional services | IT + EN | Yes |
-| **Waste register and forms** | Load and unload register, forms and fourth copies, temporary storage and the authorisations of carriers and plants in one place, with the deadlines in sight and the MUD totals ready. | Manufacturing | IT + EN | Yes |
+| **Waste register and forms** | Load and unload register, forms and fourth copies, temporary storage and the authorizations of carriers and plants in one place, with the deadlines in sight and the MUD totals ready. | Manufacturing | IT + EN | Yes |
 
 ## Result
 

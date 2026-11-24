@@ -2,15 +2,14 @@
 sidebar_position: 9
 sidebar_label: Use the chat
 ---
-import Admonition from '@theme/Admonition';
 
 # Use the chat
 
 The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, shaping a request with the composer (model, reasoning level, knowledge, skills), following how an answer was built and which sources it used, checking an answer against your knowledge, branching and regenerating, working with the files the agent creates, listening and dictating, managing and exporting your chats, and — for support agents — stepping into a conversation the AI is handling.
 
-<Admonition type="info" icon="📖" title="WHAT IS THE CHAT?">
+:::note[What is the chat?]
 The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints) — a configured entry point that decides which AI model and which knowledge the chat draws on, and which of the options below users get. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -38,13 +37,13 @@ Every conversation begins by choosing who you want to talk to.
 
 *A new chat opens with a personalized, time-aware greeting.*
 
-<Admonition type="note" icon="📝" title="EVERY CHAT SURFACE GREETS YOU">
+:::note[Every chat surface greets you]
 The greeting is not limited to the chat page. It also appears in the chat panels embedded elsewhere in the product — inside a [Knowledge](/operational-guides/create-knowledge), in a [BI](/operational-guides/rational-bi) dashboard — including chats that don't exist yet, where nothing is created until you send your first message. Suggested questions are a separate thing and only appear where the touchpoint supplies them.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="NEW CHAT REMEMBERS YOUR LAST TOUCHPOINT">
+:::note[New chat remembers your last touchpoint]
 Rational AI remembers the last touchpoint you chatted with, and the next **New chat** starts with it already selected; you can still switch. If that touchpoint has since been disabled or deleted, nothing is preselected and you pick a valid one.
-</Admonition>
+:::
 
 ## Shape your request in the composer
 
@@ -72,9 +71,9 @@ The button next to the send button (*"Model and reasoning"*) shows the model and
 1. Under **Model**, pick another model — use **Search models** to find one. Selecting the current model again returns to the default. The new model answers from your next message.
 2. Under **Reasoning**, pick how hard the model thinks before answering, from **Off** to **Max**. Only the levels the model supports are shown. Selecting the highlighted level again returns to the touchpoint's default.
 
-<Admonition type="note" icon="📝" title="THE TOUCHPOINT DECIDES WHAT YOU CAN CHANGE">
+:::note[The touchpoint decides what you can change]
 Choosing the model is a feature of **Rational Chat**, in your own chats. The reasoning level can be changed on any touchpoint whose owner allows it; otherwise the popover shows the level as *"… set by the assistant"*. Either choice applies to this conversation only. See [Tune answer generation](/operational-guides/touchpoint-generation).
-</Admonition>
+:::
 
 ### Choose the knowledge to search
 
@@ -99,9 +98,9 @@ You don't have to wait for one answer to finish before lining up your next thoug
 3. Queued messages are sent **automatically and in order** as soon as the previous turn completes.
 4. To cancel a pending send, hover the chip and select the **✕** (*"Remove from queue"*). Hovering also shows the tooltip **"Message waiting to be sent"**.
 
-<Admonition type="note" icon="📝" title="THE QUEUE SURVIVES RELOADS">
+:::note[The queue survives reloads]
 The queue is saved per chat in your browser, so queued messages survive a page reload or switching between chats, and resume sending once the agent is idle. Queued chips are text only — attachments apply to messages you send directly, not to queued ones.
-</Admonition>
+:::
 
 ## Attach files to a message
 
@@ -113,9 +112,9 @@ Attach images and documents to a message so the agent can use them directly in i
 
 Images are passed to the model as vision input. For documents, the text is extracted in the background and fed to the model as reference content, so generation never waits on extraction.
 
-<Admonition type="note" icon="📝" title="THE TOUCHPOINT DECIDES WHETHER FILES ARE ALLOWED">
+:::note[The touchpoint decides whether files are allowed]
 **Add files and photos** appears only when the touchpoint allows attachments. A file of another type is refused with *"Unsupported file type. Attach an image, PDF or text document."*
-</Admonition>
+:::
 
 ### Open an attachment
 
@@ -123,9 +122,9 @@ The attachment on a message is a button: select it to get the file itself, not j
 
 This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) — a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram) — the attachment is the only route to what the sender actually sent.
 
-<Admonition type="note" icon="📝" title="LARGE CORPORA BELONG IN A KNOWLEDGE">
+:::note[Large corpora belong in a Knowledge]
 Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the agent to search over, store them in a [Knowledge](/operational-guides/create-knowledge) instead — Rational AI indexes that content for retrieval-augmented answers ([RAG](/concepts/RAG)), where the agent looks up relevant passages at answer time rather than reading whole files inline.
-</Admonition>
+:::
 
 ## Follow how an answer was built
 
@@ -148,9 +147,9 @@ Switch on **+** → **Advanced mode** when you need to understand or debug an an
 
 When an answer fails, Advanced mode also shows the raw error instead of *"The response could not be completed."*
 
-<Admonition type="note" icon="📝" title="ONLY ADMINISTRATORS SEE WHAT A TOOL WAS SENT AND RETURNED">
+:::note[Only administrators see what a tool was sent and returned]
 For everyone else, tool calls keep their names but lose their arguments and raw output — in the chat, in Advanced mode and in an exported chat alike. Tool arguments can carry internal identifiers or data the person chatting shouldn't see. Widgets the chat renders, and tools that run in the browser, are not affected.
-</Admonition>
+:::
 
 ## See the sources behind an answer
 
@@ -168,9 +167,9 @@ Beyond reading a reply, you can regenerate it, rewrite your own question, branch
 
 Under each AI message are **copy**, the thumbs-up / thumbs-down pair for feedback, **Regenerate response**, the sources pill, and **‹ ›** arrows with a version counter (for example **1/2**) when alternatives exist. The **⋯** menu shows which model generated the answer and adds **Read aloud**, **Verify response** and **Branch into a new chat**.
 
-<Admonition type="note" icon="📝" title="SOME ACTIONS DEPEND ON THE TOUCHPOINT">
+:::note[Some actions depend on the touchpoint]
 Regenerating, editing and verifying are each switched on per touchpoint, and rating, regenerating, editing and branching need permission to update conversations. An action that isn't available simply doesn't appear.
-</Admonition>
+:::
 
 ### Generate an alternative answer
 
@@ -197,9 +196,9 @@ Versions keep alternatives inside one chat. When you want to take a conversation
 2. A new chat opens with the same title and touchpoint, containing the conversation up to and including that answer — only the versions you were viewing, not the alternatives.
 3. Carry on from there. The original chat is untouched.
 
-<Admonition type="note" icon="📝" title="FILES STAY IN THE ORIGINAL CHAT">
+:::note[Files stay in the original chat]
 The new chat keeps your choice of model and knowledge bases, but attachments and generated files stay in the original chat, and so do settings such as the reasoning level or memory being off.
-</Admonition>
+:::
 
 ### Rate an answer
 
@@ -210,9 +209,9 @@ Tell the agent's owners whether an answer worked. The two thumbs buttons on the 
 3. Add an optional note — *"What was satisfying about this response?"* for positive feedback, *"What was unsatisfying about this response?"* for negative.
 4. Select **Send**. A **Thanks for your feedback** toast confirms it, and the thumb you chose switches to its filled icon so you can see at a glance which messages you have rated.
 
-<Admonition type="note" icon="📝" title="CANCELLING SENDS NOTHING">
+:::note[Canceling sends nothing]
 Closing the dialog with **Cancel**, the **✕**, or the Escape key sends nothing at all — no rating is recorded from opening the dialog alone. Only **Send** submits, and if it fails you are told so (*"Could not submit your feedback. Please try again"*) rather than being left thinking it went through.
-</Admonition>
+:::
 
 ## When an answer stops early
 
@@ -243,9 +242,9 @@ On touchpoints with response verification switched on, you can check an answer, 
 
 Select **Verify response** again to hide the underlines. If nothing in the answer can be checked, the status line says *"No verifiable claims were found in this response."*
 
-<Admonition type="note" icon="📝" title="UNSUPPORTED ISN'T THE SAME AS WRONG">
+:::note[Unsupported isn't the same as wrong]
 Verification measures whether the retrieved documents back a claim, not whether the claim is true. A red underline means *"No knowledge document supports this claim, or the documents contradict it"* — a cue to look closer, especially for anything the answer took from general knowledge rather than from your documents.
-</Admonition>
+:::
 
 ## Work with the files the agent creates
 
@@ -281,9 +280,9 @@ When the Office editor is available on your installation, Word, Excel and PowerP
 - The mode menu at the top right switches between **Editing**, **Suggesting** (changes are tracked for review) and **Viewing**.
 - *"Last saved at …"* in the file menu tells you when your edits were saved.
 
-<Admonition type="note" icon="📝" title="WITHOUT THE EDITOR YOU STILL GET A PREVIEW">
+:::note[Without the editor you still get a preview]
 If the Office editor isn't installed, Word and Excel files show a read-only preview and other formats offer a download. Without permission to update conversations, the document opens read-only, with a **Download** button.
-</Admonition>
+:::
 
 ## Listen and dictate
 
@@ -295,11 +294,11 @@ Every assistant message carries **Read aloud** in its **⋯** menu. Select it an
 
 Markdown is stripped before anything is read, so fenced code blocks and link targets aren't spelled out character by character.
 
-<Admonition type="note" icon="📝" title="THE VOICE FOLLOWS THE ANSWER, NOT THE INTERFACE">
+:::note[The voice follows the answer, not the interface]
 An Italian answer is read in Italian even if you're using Rational AI in English. What's spoken is the language of the text, not the language of the UI.
 
 Playback also starts before the whole answer has been synthesised — the reply is spoken in sentence groups, with the next fetched while the current one plays, so you hear the first words after about a second rather than waiting for a long answer to render in full.
-</Admonition>
+:::
 
 ### Dictate a message
 
@@ -316,15 +315,15 @@ The arrow next to the mic button opens **Audio language**, with three options: *
 
 Automatic really is automatic in both directions: each recording is detected as it's transcribed, and the language of an answer is detected from the answer itself — falling back to your own locale only when a message is too short to identify.
 
-<Admonition type="note" icon="📝" title="PINNING THE LANGUAGE MAKES DICTATION NOTICEABLY FASTER">
+:::note[Pinning the language makes dictation noticeably faster]
 Choosing **Italian** or **English** explicitly skips the detection pass, which is worth roughly 40% of the transcription time. If you always dictate in the same language, pin it.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="DICTATION ON THE NEW-CHAT SCREEN NEEDS A SIGNED-IN ACCOUNT">
+:::note[Dictation on the new-chat screen needs a signed-in account]
 Inside a conversation, anyone who can use that conversation can dictate into it — including a visitor on an anonymous touchpoint.
 
 On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation just to hold a recording would leave an empty one behind every time someone discarded the text.
-</Admonition>
+:::
 
 ## Keep going in a long conversation
 
@@ -359,9 +358,9 @@ Give a chat a clear title so you can find it later — type one yourself or let 
 
 Select the chat's title, then **Export chat**. A JSON file named after the chat downloads, with the chat's details and every event in it — messages, versions and steps — ready to archive or to process with your own tools.
 
-<Admonition type="note" icon="📝" title="AN EXPORT SHOWS WHAT YOU ARE ALLOWED TO SEE">
+:::note[An export shows what you are allowed to see]
 The export applies the same rules as the chat: unless you are an administrator, tool calls appear without their arguments or raw output.
-</Admonition>
+:::
 
 ## Take over an AI-managed conversation
 
@@ -375,9 +374,9 @@ Take over when a customer needs a human — a sensitive case, an edge case, or a
 2. A divider marks the moment you took over, and the bar above the message box reads *"You are replying as an operator. The AI is paused."* Reply as needed: **Ctrl+Enter** (**Cmd+Enter** on macOS) sends.
 3. When you're done, select **Hand back to the AI**. If you've left an unsent draft, you're asked to confirm with **Discard draft and hand back**, since the draft is deleted.
 
-<Admonition type="note" icon="📝" title="FIRST COME, FIRST SERVED">
+:::note[First come, first served]
 Takeover is exclusive. If another operator has already taken the conversation, the bar says so, there's no **Take over** button, and an attempt that races another operator is blocked with a toast. Control never returns to the AI on its own — it returns only when you explicitly hand the conversation back.
-</Admonition>
+:::
 
 ### Stop an answer without taking over
 
@@ -386,9 +385,9 @@ Sometimes the AI is only stuck on one answer — looping, or running a tool that
 1. While the AI is answering, select **Stop generating** in the take-over bar.
 2. The answer ends and the conversation stays with the AI, which replies normally to the user's next message.
 
-<Admonition type="note" icon="📝" title="STOPPING IS SUPERVISION, NOT A TAKEOVER">
+:::note[Stopping is supervision, not a takeover]
 An answer that is still generating holds the conversation's queue until it ends, so the user's next messages wait behind it. **Stop generating** frees the queue without changing who is in charge. It's also available after you take over, in the operator bar, if the AI was still answering when you stepped in.
-</Admonition>
+:::
 
 ### Read the AI conversation summary
 

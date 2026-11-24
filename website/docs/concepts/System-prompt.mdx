@@ -7,7 +7,6 @@ description: What a system prompt is, how it differs from a user prompt, and how
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # System prompt
 
@@ -15,9 +14,9 @@ A **system prompt** is the standing instruction given to a model ahead of every 
 
 A useful way to see it: the user prompt is what you ask, the system prompt is who you are asking. The same model can behave like a formal support agent, a concise analyst or a friendly assistant purely by changing its system prompt.
 
-<Admonition type="note" icon="📝" title="Always present, rarely seen">
+:::note[Always present, rarely seen]
 The system prompt is sent on every request and shares the [context window](/concepts/Context-window) with everything else, but the end user does not see it. It is set once, in configuration, rather than written anew for each message.
-</Admonition>
+:::
 
 ## What a system prompt typically covers
 

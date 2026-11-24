@@ -2,7 +2,6 @@
 sidebar_position: 20
 sidebar_label: Manage channels
 ---
-import Admonition from '@theme/Admonition';
 
 # Manage channels
 
@@ -16,11 +15,11 @@ A channel is a surface your users reach an agent through — a Telegram bot, a m
 
 *The **Channels** list: each channel, its type, who provides it, and its mode.*
 
-<Admonition type="info" icon="📖" title="WHAT IS A CHANNEL?">
+:::note[What is a channel?]
 A **channel** is the medium through which people reach an agent: the doorway into the conversation. It doesn't change *what* the agent knows — that's the [touchpoint](/operational-guides/configure-touchpoints) — it changes *where* and *how* people talk to it.
 
 Inbound messages become conversations you can read in [Conversations](/cr/Conversations), and replies go back out over the same channel in whatever form that surface expects.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -53,9 +52,9 @@ Whichever kind you pick, the configuration form is generated from the provider's
 5. Fill in the configuration the form asks for.
 6. Save.
 
-<Admonition type="note" icon="📝" title="THE PROVIDER IS FIXED AT CREATION">
+:::note[The provider is fixed at creation]
 A channel's type and provider are chosen when you create it and can't be changed afterwards. Everything else — the name, the mode, the credentials, the policies — stays editable. If you need a different provider, create a new channel.
-</Admonition>
+:::
 
 ## Choose the mode
 
@@ -76,16 +75,16 @@ Use Manual or Draft when you want the conversation captured and visible but not 
 Native channels report a real connection state, which you'll find in the channel's details drawer along with the controls to change it.
 
 - **Connect** validates your credentials against the live service before the channel is considered usable — a wrong bot token or a rejected mailbox login fails here rather than silently swallowing messages later.
-- **Status** reports what the connection is actually doing: connected, in error, or disconnected. Email adds a state for a mailbox whose authorisation has expired and needs re-granting.
+- **Status** reports what the connection is actually doing: connected, in error, or disconnected. Email adds a state for a mailbox whose authorization has expired and needs re-granting.
 - **Disconnect** stops the channel and drops its stored tokens and connection state.
 
 Editing credentials re-validates them, and for Telegram also re-registers the bot so the change takes effect rather than leaving the old configuration live.
 
-<Admonition type="note" icon="📝" title="CREDENTIALS ARE MASKED, AND SAVING THE MASK IS SAFE">
+:::note[Credentials are masked, and saving the mask is safe]
 Bot tokens, mailbox passwords and OAuth secrets are masked wherever the channel is read back — they never leave the platform in the clear once stored.
 
 That means you can edit any other field and save without retyping the secret: a masked value returned unchanged keeps what's already stored. You only need to enter a credential again when you actually want to replace it.
-</Admonition>
+:::
 
 ## Control who can write in
 
@@ -105,9 +104,9 @@ Attachments are configured per channel, and off is a legitimate setting:
 
 Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input, documents have their text extracted, and voice notes are transcribed, so the agent can actually read all three. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
 
-<Admonition type="note" icon="📝" title="A VOICE NOTE REACHES THE AGENT AS THE USER'S OWN WORDS">
+:::note[A voice note reaches the agent as the user's own words]
 A voice note — a Telegram voice message, or an audio file in any channel — is transcribed before the agent answers, and the agent reads the transcript as what the user said. The reply waits for the transcription to finish. If transcription fails, times out or finds only silence, the agent is told so, and the message still reaches it rather than being dropped. A voice note still has to pass the channel's attachment settings: with **Accept attachments** off, or audio missing from **Attachment types**, it's refused like any other file.
-</Admonition>
+:::
 
 ## Shape how the agent replies
 
@@ -122,9 +121,9 @@ Turn on **Split replies** (off by default; offered by Telegram and by extension-
 - The messages are sent with a short pause between them, about a second, longer for a longer message.
 - The agent is told it's chatting on a messaging app, so it writes replies that split well.
 
-<Admonition type="note" icon="📝" title="ONLY THE DELIVERY IS SPLIT">
+:::note[Only the delivery is split]
 The conversation still records the reply as one message, so it reads as a single answer in [Conversations](/cr/Conversations). Email is never split. If one of the messages can't be delivered after retries, the remaining ones aren't sent and the failure is logged; the ones already delivered aren't sent twice.
-</Admonition>
+:::
 
 ### Wait until the sender pauses
 

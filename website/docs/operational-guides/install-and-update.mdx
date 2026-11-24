@@ -2,15 +2,14 @@
 sidebar_position: 30
 sidebar_label: Install and update
 ---
-import Admonition from '@theme/Admonition';
 
 # Install and update an on-premises installation
 
 An on-premises installation lives on a machine you own, so someone has to install it, keep it current and notice when an update goes wrong. Rational AI reduces that to one command: `install.sh` installs the platform on a fresh machine and updates it later, and once installed the machine updates itself every night. Every update takes a backup first, runs checks before and after, and rolls back on its own when the new release breaks something that worked. This guide covers the install, the nightly update, the checks, the commands you use on the host, and what the installation reports to Rational AI.
 
-<Admonition type="info" icon="📖" title="WHAT IS AN ON-PREMISE INSTALLATION?">
+:::note[What is an on-premises installation?]
 A single machine in your network, an NVIDIA DGX Spark or any Ubuntu host with Docker, that runs the whole Rational AI stack in containers. Everything it keeps lives under `/opt/rational` on that machine. On the host, the `rational` command (installed as `/usr/local/bin/rational`) runs the day-to-day operations: status, update, rollback, backup, restore.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -52,9 +51,9 @@ Any other option is passed to the provisioning script unchanged.
 
 The installation starts **with no models**: no embedding model, no chat model. An administrator adds and deploys them in **Settings** → **Models**, on the machine's own GPU (see [AI model registry](/operational-guides/ai-model-registry-features)). A knowledge base needs an embedding model, and a chat a text model, before they work.
 
-<Admonition type="note" icon="📝" title="TURN ON THE OFF-SITE BACKUP STRAIGHT AWAY">
+:::note[Turn on the off-site backup straight away]
 The backups every update takes are kept on the same disk as the installation: they protect against a bad update, not against a lost machine. Set a destination in **Settings** → **Backup** as soon as the installation holds data you care about. See [Back up and restore](./backup-and-restore).
-</Admonition>
+:::
 
 ## How the installation updates itself
 
@@ -76,9 +75,9 @@ journalctl -u rational-update
 
 To stop the nightly update, re-run `install.sh` with `--no-auto-update`; `--auto-update` turns it back on.
 
-<Admonition type="note" icon="📝" title="THE NIGHTLY UPDATE CHANGES THE RELEASE, NOT THE SCRIPTS ON THE HOST">
+:::note[The nightly update changes the release, not the scripts on the host]
 The nightly update installs new images but keeps the provisioning scripts already on the machine. Changes to the host itself (a new address, a new health report, a new way to run models) arrive only when you run `install.sh` again from a newer copy of the scripts. Re-running it is always safe: with the release already installed it only brings the configuration up to date.
-</Admonition>
+:::
 
 ## Update by hand
 
@@ -171,9 +170,9 @@ A failed or rolled-back update sends one event to the same error tracker, with t
 
 None of the check-ins carries customer data: no conversations, messages, documents, knowledge content, files or user details. The health report carries counts, versions, states, and names of the installation's own components (models, data sources, checks).
 
-<Admonition type="note" icon="📝" title="AN INSTALLATION ON YOUR OWN DOMAIN DOES NOT CHECK IN">
+:::note[An installation on your own domain does not check in]
 An installation set up with `--domain` instead of a connection to Rational AI sends neither the minute check-in nor the daily license report. It still downloads releases from `ghcr.io` when it updates, and still sends error reports unless you point them elsewhere as described above.
-</Admonition>
+:::
 
 ## Troubleshooting
 

@@ -2,7 +2,6 @@
 sidebar_position: 21
 sidebar_label: Connect a Telegram bot
 ---
-import Admonition from '@theme/Admonition';
 
 # Connect a Telegram bot
 
@@ -25,9 +24,9 @@ Before you start, make sure you have:
 
 The token is validated against Telegram as you connect, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code — the quickest way to get people to the right bot.
 
-<Admonition type="note" icon="📝" title="THE DEFAULT WORKS ON LOCALHOST">
+:::note[The default works on localhost]
 You don't need a public URL, a domain, or a tunnel. The default transport polls Telegram for new messages, which works behind a firewall and on a laptop, so the happy path is genuinely just a BotFather token.
-</Admonition>
+:::
 
 ## Choose how messages arrive
 
@@ -48,9 +47,9 @@ Telegram messages arrive as more than plain text:
 - **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes** — subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than just acknowledge.
 - **Locations, contacts and polls**, rendered into text the agent can work with.
 
-<Admonition type="note" icon="📝" title="AN ALBUM IS ONE MESSAGE, NOT THREE">
+:::note[An album is one message, not three]
 When someone sends three photos as an album, Telegram delivers them as three separate updates. The channel collapses them back into a single message, so the agent takes one turn over the whole set instead of answering three times.
-</Admonition>
+:::
 
 ## How conversations are grouped
 

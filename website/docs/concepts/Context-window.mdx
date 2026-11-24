@@ -7,7 +7,6 @@ description: What a context window is, why it is limited, how tokens are counted
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from "@theme/Admonition";
 
 # Context window
 
@@ -35,9 +34,9 @@ The platform is designed to make the most of whatever window a model has:
 * In [Conversations settings](../cr/settings/conversations.mdx), analyses such as title generation and topic detection let you set how many recent **messages to analyze**, keeping each request within a sensible context.
 * Choosing a [model](./Model-architecture.mdx) with a larger window lets a touchpoint reason over more knowledge or a longer conversation at once, at the cost of more tokens per request.
 
-<Admonition type="note" icon="📝" title="Bigger is not always better">
+:::note[Bigger is not always better]
 A large context window is useful, but a focused, well‑retrieved context usually produces better answers than simply stuffing the window full. Quality of context beats quantity.
-</Admonition>
+:::
 
 ---
 

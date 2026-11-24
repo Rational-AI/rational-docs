@@ -7,7 +7,6 @@ description: What hallucinations are in generative AI, why they happen, the main
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Hallucinations
 
@@ -15,9 +14,9 @@ In the context of Generative AI and Large Language Models (LLMs), **hallucinatio
 
 These outputs are not random errors. They are coherent responses produced by the model based on learned statistical patterns rather than verified knowledge.
 
-<Admonition type="note" icon="📝" title="HALLUCINATIONS ARE NOT LIES">
+:::note[Hallucinations are not lies]
 The model has no intentionality or awareness that it is producing false information. A hallucination is a pattern-based prediction that happens to be wrong, not a deliberate falsehood.
-</Admonition>
+:::
 
 ## Why "hallucinations"?
 
@@ -44,9 +43,9 @@ Hallucinations arise from structural characteristics of LLMs, such as:
 | Contextual hallucination | Misinterpretation of user intent | A user asks about Python (programming) but receives information about pythons (snakes) |
 | Fabricated content | Creation of non-existent entities or concepts | Inventing a historical figure or scientific discovery |
 
-<Admonition type="info" icon="📖" title="A NON-EXHAUSTIVE SET">
+:::note[A non-exhaustive set]
 The table above shows a small, non-exhaustive set of examples. While there are several methods to identify hallucinations (human review, fact-checking, automated verification systems), fully automated detection remains an open research challenge.
-</Admonition>
+:::
 
 ## Mitigation strategies
 

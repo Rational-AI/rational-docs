@@ -2,15 +2,14 @@
 sidebar_position: 15
 sidebar_label: Embed a Knowledge
 ---
-import Admonition from '@theme/Admonition';
 
 # Embed a Knowledge
 
 A [Knowledge](/operational-guides/create-knowledge) doesn't have to live only inside the Control Room. With the **Embed** feature you can put a Knowledge on any web page as a self-contained widget: visitors browse its records, open the one they need and ask its assistant questions, right there on your site, without signing in. This guide covers configuring the widget on the **Embed** settings tab, choosing what it publishes and how it looks, capping what the public chat can cost, collecting visitor contacts and statistics, and adding the widget to a page or a WordPress site.
 
-<Admonition type="info" icon="📖" title="WHAT IS THE EMBED WIDGET?">
+:::note[What is the embed widget?]
 The embed widget is a public, read-only window onto one Knowledge. You decide what it shows (which views, in what order, whether visitors can search, filter or open a record, whether a chat is available) and Rational AI gives you a single `<script>` tag to paste into your site. The widget loads in an isolated frame and talks to your Knowledge through one **embed key**, so no Control Room login is ever required of your visitors, and nothing they do can change your records.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -68,9 +67,9 @@ The **Published views** section lists the Knowledge's views that can go on a pub
 2. Drag the rows into the order you want. The first view switched on is marked **Opens first**: it is the one the widget shows when it loads.
 3. Select **Save**.
 
-<Admonition type="note" icon="📝" title="GRIDS ARE PUBLISHED ONLY WHEN YOU SWITCH THEM ON">
+:::note[Grids are published only when you switch them on]
 Until you change the list, every custom view and dashboard is published, but no [grid view](/operational-guides/knowledge-collections-and-grid) is: a grid shows your records, so it goes public only when you switch it on by name. A published grid is read-only, with the columns, groups and filters saved in the view; visitors can search, filter and sort it, never edit it. Calendar and graph views are never offered.
-</Admonition>
+:::
 
 Switching off every view also switches off **Views** under **Actions**, and switching one on turns it back on. The built-in **Attributes** and **Graph** views appear in the widget's picker after your published views when they are enabled for the Knowledge itself, on its **Views** tab.
 
@@ -110,9 +109,9 @@ The **Chat** section controls the conversation and what it may cost you.
 | **Messages per visitor per day** | How many questions one visitor can ask in 24 hours. The default is **20**; leave it empty for no limit. |
 | **Monthly budget** | Once the chat has cost this much in a calendar month (UTC), it pauses until the next one. Empty, the default, means no cap. |
 
-<Admonition type="note" icon="📝" title="THE BUDGET IS COUNTED IN THE CURRENCY YOUR COSTS ARE REPORTED IN">
+:::note[The budget is counted in the currency your costs are reported in]
 The field has no currency symbol: the amount is compared with the model costs Rational AI records for this widget's conversations, in the same currency [Governance](/operational-guides/governance) reports them in. Because the check uses recorded costs, answers that were already being generated when the budget ran out still complete, so the month can end slightly above the figure you set.
-</Admonition>
+:::
 
 When a visitor reaches their daily limit the chat input is locked with *"You have reached today's message limit. Come back tomorrow to ask more."*; when the budget runs out it reads *"The chat is paused for this month. You can keep browsing the content."* Everything else in the widget keeps working, and if you collect visitor contacts the form opens beneath the notice.
 
@@ -128,9 +127,9 @@ The widget can invite visitors to leave their details, and save each one as a re
 
 In the widget, a bell button in the chat header opens the form. The visitor ticks the consent box and selects **Subscribe**.
 
-<Admonition type="note" icon="📝" title="KEEP THE EMAIL FIELD TO RECOGNISE RETURNING VISITORS">
+:::note[Keep the email field to recognize returning visitors]
 A visitor who submits again with the same email updates their existing record instead of creating a new one; your own values on that record are kept, and the new answers are added as a note. Without an email field, every submission is a new record. Each visitor can submit at most five times an hour. The form lives in the chat panel, so it is unavailable while **Chat** is off.
-</Admonition>
+:::
 
 ## Keep daily statistics
 
@@ -186,9 +185,9 @@ The embed key is what ties a published tag to your Knowledge. If a tag is ever s
 2. Confirm in the **Rotate embed key** dialog.
 3. Copy the new code and replace it everywhere the widget is embedded.
 
-<Admonition type="caution" icon="⚠️" title="ROTATING BREAKS EVERY PUBLISHED TAG AT ONCE">
+:::warning[Rotating breaks every published tag at once]
 Every page that still uses the previous key immediately shows *"This widget isn't available"*. Only rotate when you're ready to replace the code wherever it's published.
-</Admonition>
+:::
 
 ## Result
 

@@ -2,15 +2,14 @@
 sidebar_position: 25
 sidebar_label: Fine-tune a model
 ---
-import Admonition from '@theme/Admonition';
 
 # Fine-tune a model with your own data
 
 Fine-tuning takes a general-purpose AI model and trains it further on your own examples, so it gets noticeably better at the specific tasks you care about. This guide walks you through the whole process end to end: assembling your training data as a dataset, then launching a fine-tuning run and using the result.
 
-<Admonition type="info" icon="📖" title="WHAT IS FINE-TUNING?">
+:::note[What is fine-tuning?]
 A *base model* is a general, pretrained AI model (see [LLMs](/concepts/LLMs)) that already knows a lot but nothing about your particular use case. *Fine-tuning* nudges that base model toward your data by showing it more examples. Those examples live in a *dataset* — a collection of inputs and the outputs you'd like the model to produce. In Rational AI this is a two-part job: you build a dataset under **Datasets**, then train on it under **Fine-Tuning**.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -55,11 +54,11 @@ Filter down to the examples you want with the fields you can actually answer:
 
 The counts update as you type: how many requests match, how many will become training examples, and how many are held out. You can see the size of what you're about to create before you create it.
 
-<Admonition type="note" icon="📝" title="A DATASET DOESN'T EVAPORATE WHEN YOUR RETENTION POLICY FIRES">
+:::note[A dataset doesn't evaporate when your retention policy fires]
 Entries **copy** the content they were built from rather than pointing at it. Captured request bodies have their own retention clock, and a dataset whose examples vanished on the next sweep would not be a dataset.
 
 So building a dataset from recorded traffic is also a way of preserving those specific examples past your retention window — worth knowing in both directions.
-</Admonition>
+:::
 
 ### From events
 
@@ -75,17 +74,17 @@ A dataset built from real traffic will contain examples you don't want to train 
 - **Correcting** one opens it as JSON. The shape differs by format, and a form modeling only some formats would silently drop whatever it didn't recognize.
 - A format that genuinely can't be edited **says so**, rather than accepting an edit and quietly discarding it.
 
-<Admonition type="info" icon="📖" title="THE HELD-OUT SPLIT, AND WHY IT MATTERS">
+:::note[The held-out split, and why it matters]
 Every dataset is split into **training** examples and **held-out** ones. The held-out set is never trained on — it's what the run is scored against, so the score reflects performance on examples the model has genuinely never seen.
 
 The split is assigned when the dataset is created, so it's reproducible, and it's **interleaved** rather than taken as a block from one end — holding out only your oldest or newest traffic would evaluate against a skewed sample.
-</Admonition>
+:::
 
-<Admonition type="caution" icon="⚠️" title="RUNS FROM BEFORE THIS SHIPPED REPORTED A MEANINGLESS SCORE">
+:::warning[Runs from before this shipped reported a meaningless score]
 Earlier releases recorded which split an entry belonged to and then trained on the whole dataset anyway. A model scored on examples it was trained on reports a number that tells you nothing — which is the exact failure a split exists to prevent.
 
 The two halves are now fetched separately and the held-out set is handed to the trainer as its evaluation set. If you're comparing a new run against one from before this change, **the old evaluation numbers aren't a valid baseline.** Re-run it if the comparison matters.
-</Admonition>
+:::
 
 ## Start a fine-tuning run
 
@@ -125,19 +124,19 @@ Fine-tuning here trains a small **adapter** (a LoRA adapter) on top of the base 
 - **Alpha:** how strongly the adapter's contribution is scaled, 16 by default. It is usually equal to the rank, so while the two are equal, changing **Rank** changes **Alpha** with it.
 - **Dropout:** how much regularisation is applied during training, between 0 and 0.99, 0 by default. Raise it if the model starts memorising your examples instead of learning from them.
 
-<Admonition type="note" icon="📝" title="LEAVE THE DEFAULTS ALONE TO START">
+:::note[Leave the defaults alone to start]
 Every parameter ships with a sensible default, and launching without touching any of them gives you a reasonable run. Change one when you have a specific reason and a first result to compare against.
 
 If you do need to intervene, the rule of thumb is that the training parameters shape *how* the run proceeds, while the **adapter settings** are what change how much it can learn at all. A run that plateaus early is usually a rank problem, not a learning-rate one.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="TEMPLATE AND QUANTISATION ARE HANDLED FOR YOU">
+:::note[Template and quantization are handled for you]
 Two things you don't set, and shouldn't have to:
 
 **The conversation template follows your base model.** Training a Llama or Mistral base uses that family's own markers rather than another family's — a mismatch here trains the model on tokens it never sees at inference and fails silently, producing a run that completes and a model that doesn't work. An unrecognized family keeps its own tokenizer's template rather than borrowing one.
 
-**Quantisation follows the model size.** It stays off where full precision fits, since quantising costs quality, and switches on above that — where the alternative isn't a slower run but no run at all, because the weights don't fit on the cards.
-</Admonition>
+**Quantization follows the model size.** It stays off where full precision fits, since quantising costs quality, and switches on above that — where the alternative isn't a slower run but no run at all, because the weights don't fit on the cards.
+:::
 
 ## Watch a run
 
@@ -171,13 +170,13 @@ A long run that fails at 80% shouldn't cost you the first 80%. While it trains, 
 
 **Retry run** picks up from the latest complete checkpoint, using those same captured inputs. If no checkpoint was saved yet, training starts again from the beginning. The same happens on its own when a training job is restarted after an infrastructure failure.
 
-<Admonition type="note" icon="📝" title="A RETRY TRAINS ON WHAT THE RUN STARTED WITH">
+:::note[A retry trains on what the run started with]
 Because the inputs are captured when a run first starts, editing the dataset afterwards doesn't change what a retry trains on — that's what makes resuming safe. When you *want* different data, a different base model or new parameters, use **Re-run** to create a new run. Checkpoints that were only partly written are skipped rather than resumed from.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="A BACKEND RESTART NO LONGER STRANDS A RUN">
+:::note[A backend restart no longer strands a run]
 Run status is reconciled by reading the job back from the cluster, so a restart mid-training doesn't leave a run showing "training" forever with weights that never register. If you have runs stuck in that state from an earlier release, they're the symptom of that old behavior rather than something still happening.
-</Admonition>
+:::
 
 ## Use your fine-tuned model
 

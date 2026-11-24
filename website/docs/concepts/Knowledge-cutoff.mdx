@@ -7,7 +7,6 @@ description: What a model's knowledge cutoff is, why it causes confident mistake
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-import Admonition from '@theme/Admonition';
 
 # Knowledge cutoff
 
@@ -15,9 +14,9 @@ A model's **knowledge cutoff** is the date past which it has no built-in knowled
 
 This is a frequent source of confident mistakes. Asked about a recent event, a new product or a policy that changed last month, a model will often answer anyway, drawing on outdated information or filling the gap with a plausible guess rather than admitting it does not know.
 
-<Admonition type="note" icon="📝" title="The model will not always tell you">
+:::note[The model will not always tell you]
 A model rarely says "that is after my cutoff." It tends to answer with the same confidence either way, so an out-of-date answer can look exactly like a current one. Treat questions about recent or fast-changing facts with extra caution.
-</Admonition>
+:::
 
 ## Why it matters in Rational AI
 

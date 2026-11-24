@@ -2,15 +2,14 @@
 sidebar_position: 16
 sidebar_label: Run models on your own servers
 ---
-import Admonition from '@theme/Admonition';
 
 # Run models on your own servers
 
 When Rational AI is installed on your premises, the reason is usually that data must not leave them, and that includes the prompts and documents you send to a model. An on-premises installation therefore runs its models itself, on the same machine as the platform or on extra machines you add for them. You choose and deploy every model from **Settings** → **AI Model Registry**, as in the cloud; this guide covers what is specific to your own servers: GPUs, memory, the weights on disk, the DGX Spark, and spreading models over several machines.
 
-<Admonition type="info" icon="📖" title="WHAT RUNS A MODEL ON-PREMISE?">
+:::note[What runs a model on-premises?]
 Each deployed model is a container on the Docker engine of your server, next to the platform's own services. Text generation models run on **vLLM**, an open-source inference engine; embedding models run on vLLM or on **text embeddings inference** (TEI). The platform starts, stops and watches these containers for you: you never run Docker commands to deploy a model. With several machines, the containers are spread over a **Docker Swarm**, a group of Docker engines that work as one.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -32,9 +31,9 @@ A new installation starts with **no models**: no embedding model and no chat mod
 
 Each deployment downloads its weights first, then starts; the **Deployment** section of the model follows it to **Ready**. For the details of deploying, scaling and stopping models, see [Deploy and run self-hosted models](/operational-guides/model-deployments).
 
-<Admonition type="note" icon="📝" title="CHAT MODELS NEED THEIR TOOL-CALL PARSER">
+:::note[Chat models need their tool-call parser]
 Every Knowledge and touchpoint chat gives the model tools, and vLLM refuses tool calls from a model started without a tool-call parser. Rational AI fills in the parser of the model's family by default (and, for a thinking model, its reasoning parser). If every answer of a new chat model fails, check those two fields in its **Deploy settings**.
-</Admonition>
+:::
 
 ## Understand GPU and CPU
 
@@ -55,9 +54,9 @@ Model weights are large, so the platform keeps them out of the way:
 - **Out of the backup.** The [backup](/operational-guides/backup-and-restore) leaves the weights out, since they can always be downloaded again. It also leaves out the captured model calls, which are diagnostics the retention period deletes after a few days.
 - **Kept when a model is removed.** Deleting a deployment leaves its weights in the cache. Once no model container runs, `sudo docker volume rm rai-model-cache` on the host reclaims the disk.
 
-<Admonition type="note" icon="📝" title="MODEL CONTAINERS ARE KEPT AWAY FROM YOUR DATA">
+:::note[Model containers are kept away from your data]
 Model containers sit on a network of their own, shared only with the platform's backend. A model can answer requests, but cannot reach the databases or any other part of the platform.
-</Admonition>
+:::
 
 ## Run models on a DGX Spark
 
@@ -67,13 +66,13 @@ An NVIDIA DGX Spark is an Arm machine whose GPU (a GB10) shares its memory with 
 - **80 GiB for models.** Because the platform needs memory too, the installation leaves 80 GiB of the shared memory to models and keeps the rest. A deployment's GPU memory budget counts against those 80 GiB, so `50%` means 40 GiB.
 - **Tuned defaults.** Models deploy with the settings their vLLM recipes give the DGX Spark. Where no recipe covers a model, a configuration measured on a DGX Spark applies: `BAAI/bge-m3` on one GPU, and `RedHatAI/Qwen3.6-35B-A3B-NVFP4` with a 32,768-token context, 16 concurrent requests and a `60GiB` budget.
 
-<Admonition type="caution" icon="⚠️" title="BUDGETS ARE NOT RESERVED IN ADVANCE">
+:::warning[Budgets are not reserved in advance]
 If several models' budgets add up to more than 80 GiB, they don't all start: vLLM refuses to start without the free memory it was given. Size the budgets so that the models you want running at the same time fit together.
-</Admonition>
+:::
 
-<Admonition type="note" icon="📝" title="--INFERENCE-CONTEXT NO LONGER EXISTS">
+:::note[`--inference-context` no longer exists]
 Earlier releases capped the context of the installation's own inference engine with `--inference-context`. That engine is gone, and the installer now refuses the flag. Set the **Context Length** in each model's deploy settings instead: a smaller context leaves more memory for concurrent requests.
-</Admonition>
+:::
 
 ## Spread models over several machines
 
@@ -110,9 +109,9 @@ One machine may not have enough GPUs for every model you need. You can add **mod
 
 5. **Check the swarm.** `sudo rational status` on the control node lists the nodes and the model services; on a model node, it shows the node's swarm state and its GPUs.
 
-<Admonition type="caution" icon="⚠️" title="EVERY NODE MUST BE THE SAME KIND OF MACHINE">
+:::warning[Every node must be the same kind of machine]
 The control node chooses the runner images and the tuned defaults for the whole swarm, so all nodes need the same processor architecture, and ideally the same hardware. The installer refuses a model node of another architecture: a DGX Spark and an x86 server cannot share a swarm.
-</Admonition>
+:::
 
 Good to know about a swarm:
 

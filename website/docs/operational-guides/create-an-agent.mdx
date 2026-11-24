@@ -2,15 +2,14 @@
 sidebar_position: 35
 sidebar_label: Build an agent
 ---
-import Admonition from '@theme/Admonition';
 
 # Build an agent
 
 An agent is only as good as its profile. The instructions say what the job is and how to do it; the tools say what it can touch; **Ask me first** says where it must stop and wait for you. This guide walks through the profile field by field, using **Quinn**, a quotation analyst who prices requests for quotation and must never write an offer without a person looking at it first.
 
-<Admonition type="info" icon="📖" title="THE PROFILE DRIVES EVERY RUN">
+:::note[The profile drives every run]
 Whatever starts the agent — a task, a chat message, a schedule or a webhook — the run starts from the profile: its instructions become the system prompt, its model answers, and it can use only the tools and Knowledge bases listed there. Changing the profile changes the next run, not the ones already going.
-</Admonition>
+:::
 
 ## Prerequisites
 
@@ -40,9 +39,9 @@ For Quinn, a good one-liner is: *"Price incoming requests for quotation from our
 - **What it does** — one line shown on the agent card: *"Turns incoming requests for quotation into priced, checked offers."*
 - **Instructions** — *"The system prompt for every run."* This is where the job lives. Say what the agent receives, what it must produce and in what shape, what it must never do and how to report back. Quinn's say, among other things, *"Never invent prices or codes. Write the offer as a Markdown file offers/&lt;RFQ code&gt;.md … Always write in English."*
 
-<Admonition type="note" icon="📝" title="WRITE INSTRUCTIONS FOR A RESULT THAT CAN BE CHECKED">
+:::note[Write instructions for a result that can be checked]
 Agents verify their own work before they finish: a run that produced a file, a record or a precise answer can be checked, a vague one cannot. *"Write the offer as offers/RFQ-….md with one row per line"* gives the agent, and you, a way to know it is done. An agent without instructions can be saved but not started: **Run now** and **Create & start session** stay disabled until you add them.
-</Admonition>
+:::
 
 ### Give it access to Knowledge
 
@@ -100,9 +99,9 @@ At the bottom of the panel, a summary puts the three levels side by side:
 - **Asks you first** — the tools you ticked.
 - **Never** — anything outside the tools above.
 
-<Admonition type="caution" icon="⚠️" title="GRANT THE LEAST, GATE WHAT CHANGES THINGS">
+:::warning[Grant the least, gate what changes things]
 An agent can do anything its tools allow, as often as it decides to, on everything in its Knowledge scope. Give it only the tools the job needs, and put every tool that sends, writes or deletes under **Ask me first** until you have seen enough runs to trust it. See [Approve what the agent wants to do](./agent-runs#approve-what-the-agent-wants-to-do).
-</Admonition>
+:::
 
 ## Give it a face
 
