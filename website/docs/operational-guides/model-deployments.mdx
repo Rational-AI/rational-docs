@@ -18,14 +18,14 @@ A self-hosted model in the registry describes *what* to run: the weights (for ex
 Before you start, make sure you have:
 
 - **Permissions:** **Create** on the **AI Model Registry** row of your role to add and deploy a model, **Update** to change its scale, **Delete** to remove its deployment.
-- **Hardware for the model:** on your own servers, GPUs or enough memory for the model (see [Run models on your own servers](/operational-guides/run-models-on-premise)); in the cloud, a plan that includes self-hosted models.
+- **Hardware for the model:** on your own servers, GPUs or enough memory for the model (see [Run models on your own servers](/operational-guides/run-models-on-premise)); on Rational AI's cloud, a [license](/operational-guides/license) that includes self-hosted models (listed on the **Licence** page as *Self-hosted models on this machine (enterprise)*). Without it, the deployment is refused with *"This workspace's plan does not include hosting your own models on our GPUs."*
 - **A Hugging Face token, for gated models only:** models such as Llama or Gemma need your own token on the installation. Public models need none.
 
 ## Add an open-source model
 
 The model picker searches Hugging Face live, so you see the current catalog rather than a fixed list.
 
-1. Go to **Settings** → **AI Model Registry** and select **Add new**.
+1. Go to **Settings** → **AI Model Registry** and select **New** (**Add new** when the registry is empty).
 2. Select **Choose an open source model** (*"Install a model available open source via Hugging Face"*) and select **Next**.
 3. Search by name, or browse. Narrow the list with:
 
@@ -45,13 +45,13 @@ Where the installation can estimate it, a chip says whether a model **Fits**, **
 
 ### Upload a model file
 
-Where your hosting platform accepts uploaded weights, the **Add new** dialog also offers **Install your own fine tuned model**:
+Where your hosting platform accepts uploaded weights, the same dialog also offers **Install your own fine tuned model**:
 
 1. Choose **Install your own fine tuned model** and select **Next**.
 2. Pick the model file (a `.gguf` file) and check the **Name**, which is taken from the file name.
 3. Select **Confirm**. The file is uploaded and the model deployed; a large file can take several minutes.
 
-The option is hidden when the hosting platform accepts no uploads. That is the case for on-premises installations, which run models from Hugging Face.
+The option is hidden when the hosting platform accepts no uploads.
 
 ## Review the deploy settings
 
@@ -155,6 +155,7 @@ The choice is saved at once. Stored content is kept for the period set in [Data 
 Prompts and answers carry whatever people typed and whatever documents were sent. Store them only as long as you need them to investigate problems, and prefer **Only when the request fails** over **Always**.
 :::
 
-## Result
+## Next steps
 
-Your self-hosted model is in the registry, deployed with settings you confirmed, and holding hardware only as much as you decided: always on, or released when idle and started again on demand. You can follow its phase and replicas, stop, resume or warm it up, take it out of service by disabling it, and choose what its calls leave in the audit trail. To script the same steps, see [Deploy open-source models via API](/operational-guides/api/deploy-open-source-models).
+* [Deploy open-source models via API](/operational-guides/api/deploy-open-source-models): script the same steps.
+* [Manage AI models in the registry](/operational-guides/ai-model-registry-features): capabilities, default models and approval.

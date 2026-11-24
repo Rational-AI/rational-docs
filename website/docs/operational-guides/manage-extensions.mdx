@@ -48,13 +48,17 @@ Before you start, make sure you have:
 
 ## Read an extension card
 
-Every extension appears as a card on the **Extensions** page, and the card is your at-a-glance status check before you open anything. When an extension declares a version in its manifest, that **version** appears right next to the extension name, so you can confirm which release is installed without digging into details. Each card also carries an enable toggle for turning the extension on or off.
+Every extension appears as a card in the **Installed** view of the **Extensions** page, and the card is your at-a-glance status check before you open anything. When an extension declares a version in its manifest, the version appears next to the extension name. The card also shows **Configuration needed** when the extension's server still needs parameters, **Update available** or **Review required** when a newer release exists, and a switch to turn the extension on or off.
 
 ## Install an extension from the catalog
 
-1. Go to **Settings** → **Extensions** and select **+ Add**.
-2. Browse the available extensions. The detail pane opens on the first not-yet-installed extension, so it's never blank when the dialog appears.
-3. Select the extension you want, then confirm to install it into your tenant.
+1. Go to **Settings** → **Extensions** and select **Install**.
+2. Browse the available extensions. Each is marked **Rational AI catalogue** or **Local** (a package uploaded to your tenant).
+3. Select the extension you want, then **Configure extension**.
+4. If the extension runs an MCP server, fill in the **Set default configuration** form: API keys, connection strings, endpoints. Required values must be filled before you can continue.
+5. Select **Install extension**. The extension starts with the values you entered.
+
+An extension with no server to configure installs as soon as you select **Configure extension**.
 
 :::note[Already-installed extensions stay visible]
 Extensions you've already installed remain in the list, shown **disabled** with an **Already installed** tag. You can see what's in place at a glance, but you can't re-select or double-install it.
@@ -65,10 +69,9 @@ Extensions you've already installed remain in the list, shown **disabled** with 
 Do this when you have a package of your own: something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
 
 1. Go to **Settings** → **Extensions**.
-2. Drag the package from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag, confirming the page will accept the file.
-3. Release the file.
+2. Select **Add private extension** and choose the file, or drag the package onto the page. While you drag, the page shows *"Drop to install an extension"*.
 
-You can also drop a package without leaving the install flow: drag it directly onto the list inside the **Add extension** dialog. The package is added and the new entry is selected for you automatically, ready to install.
+You can also drop a package onto the list inside the **Install** dialog. The package is added and selected for you, ready to configure and install.
 
 :::note[Accepted files and conflicts]
 Accepted formats are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`; the format is detected automatically. Dropping anything else shows a warning toast and uploads nothing. Releases are immutable: use a new version for changed package contents. Installing a package again can reuse the existing release for the same publisher, name identifier and version; it does not replace its bytes. Uploading a duplicate through the version-creation API is refused.
@@ -80,12 +83,12 @@ installation explicitly placed in development mode accepts file edits.
 
 ## Configure an extension so it starts running
 
-Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully. It lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
+A package you install from a file is installed without any configuration. If it needs values you haven't supplied, it lands installed but not running, and its card shows **Configuration needed**. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
 
-Creating the extension's first MCP-server configuration is what does the rest, in one step: it **starts the server, discovers the tools it actually serves, and enables the extension**.
+Saving the extension's first MCP-server configuration starts the server, discovers the tools it serves, and enables the extension, in one step.
 
 1. Open the extension on **Settings** → **Extensions**.
-2. Open its settings and fill in what the extension asks for: API keys, connection strings, endpoints.
+2. Open **Settings** from its options menu and fill in what the extension asks for: API keys, connection strings, endpoints.
 3. Save. The extension comes up enabled, and its tools appear.
 
 An extension whose parameters all carry defaults has nothing left to resolve, so it comes up configured and enabled the moment you install it, with no extra step.
@@ -132,10 +135,6 @@ For a remote server that requires authentication, enter the token or header valu
 :::note[Ready-made remote extensions]
 Rational AI ships ready-to-use remote MCP manifests for many popular connectors, including GitHub, Linear, Atlassian, monday, Airtable, Supabase, Snowflake, Sentry, PagerDuty, and Shopify. Each one only needs an endpoint URL and an authentication header from your configuration. There's also a generic **remote-mcp** extension for connecting any other remote MCP server: supply its URL and, if needed, an `Authorization` header.
 :::
-
-## Result
-
-You know that extensions resolve from several sources (the platform catalog, your own local packages, and any attached remote source) and how an overlap between them is settled per version. You can read an extension's version straight from its card, install one from the catalog or by dropping a package onto the page, and you know that installing leaves it disabled until the first configuration starts it, discovers its tools, and enables it. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
 
 ## Related
 

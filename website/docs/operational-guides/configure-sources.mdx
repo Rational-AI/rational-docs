@@ -43,13 +43,13 @@ A source that syncs too rarely leaves your AI answering from stale files; one th
 | Option | When to use it |
 |--------|----------------|
 | **Automatic** | The content changes at unpredictable times and you want changes picked up within a couple of minutes. Rational AI checks the source every two minutes and syncs only when something changed, processing again only what changed. Available for **Git**, **Google Drive**, **OneDrive**, and **HTTP** sources. |
-| **Periodic** | You want syncs at fixed times, for example every night or once a week. Set the **Sync schedule** that comes with it. |
+| **Periodic** | You want syncs at fixed times, for example every night or once a week. Set the **Sync schedule** that comes with it: **Every number of minutes** (1 to 59), **Every number of hours** (1 to 23), **Every hour**, **Every day**, **Weekly** or **Monthly**. |
 | **Manual** | You want to decide each time. The source syncs only when you select **Sync now**. |
 
-4. Choose the **On delete** behavior (**Cascade delete** or **Keep**), then save.
+4. Choose the **On delete** behavior (**Cascade delete** or **Keep**), then select **Save**.
 
 :::note[Automatic only appears for sources that can report changes]
-**Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, the file system, and extension sources can't do that without setup on your side, so they offer only **Periodic** and **Manual**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
+**Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, RabbitMQ queues, and extension sources can't do that without setup on your side, so they offer only **Periodic** and **Manual**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
 :::
 
 ### What happens when a sync keeps failing
@@ -76,18 +76,18 @@ Go to **Settings** → **Extensions** and install the **ArXiv Catchup** extensio
 
 ### Add and configure the source
 
-1. Go to **Settings** → **Sources** and add a new source, choosing the **ArXiv Catchup** type. Extension sources appear with their own icon.
+1. Go to **Settings** → **Sources**, select **Add**, and choose the **ArXiv Catchup** type. Extension sources appear with their own icon.
 2. Select a **Group**, then an **Archive**, then a **Category**. These cascade through arXiv's fixed subject taxonomy, so each choice narrows the next.
-3. Choose a **window** for how far back to look for papers.
-4. Set the **max-papers limit** (default `500`) to cap how many papers each sync fetches.
-5. *(Optional)* Add a **cron** schedule (a time-based rule, like "every night at 2 AM") to sync the source automatically.
+3. In **Changes since**, choose how far back to look for papers.
+4. Set **Max papers** (default `500`) to cap how many papers each sync fetches.
+5. Select **Add**. Rational AI creates the source and runs its first sync, which downloads the PDFs.
 
-### Save and sync
+### Keep it in sync
 
-**Save** the source, then run a **Sync** to download the PDFs into the Knowledge. A sync is the run that fetches the latest content from the source.
+To sync the source automatically, open its **⋮** menu, select **Sync settings**, and choose **Periodic** with a **Sync schedule** (for example **Every day**). Otherwise select **Sync now** whenever you want the latest papers.
 
 :::note[Why the paper limit matters]
-arXiv rate-limits bulk access. The max-papers limit (default `500`) caps how many papers each sync downloads, so leave it in place unless you have a specific reason to raise it.
+arXiv rate-limits bulk access. The max-papers limit (default `500`, at most `5000`) caps how many papers each sync downloads, so leave it in place unless you have a specific reason to raise it.
 :::
 
 ## Configure an HTTP source
@@ -96,14 +96,14 @@ Use the **HTTP** source when your content lives at one or more web addresses you
 
 ### Add the URLs
 
-1. Go to **Settings** → **Sources** and add a new source.
+1. Go to **Settings** → **Sources** and select **Add**.
 2. In the **Type** dropdown, select **HTTP**. The HTTP type shows a globe icon alongside the other types.
-3. Enter at least one **URL**. Each must be a valid `http://` or `https://` address.
-4. Select **Save**.
+3. Enter at least one **Url**. Each must be a valid `http://` or `https://` address.
+4. Select **Add**.
 
 ### How validation works
 
-**Save** stays disabled until you provide at least one non-empty URL, and stays disabled if any URL is not a valid `http://` or `https://` address. When an address is invalid, an inline error appears under that field so you can fix it before saving.
+**Add** stays disabled until you provide at least one non-empty URL, and stays disabled if any URL is not a valid `http://` or `https://` address. When an address is invalid, the error *"Enter a valid URL starting with http:// or https://"* appears under that field so you can fix it first.
 
 ## Process files announced on a RabbitMQ queue
 
@@ -120,7 +120,7 @@ A message queue, such as RabbitMQ, lets two systems exchange messages without ca
 
 ### Add the source
 
-1. Go to **Settings** → **Sources** and select **New**.
+1. Go to **Settings** → **Sources** and select **Add**.
 2. In **Type**, find **RabbitMQ queue** and pick your broker's connector under it.
 3. Fill in the queue settings:
 
@@ -152,13 +152,14 @@ Delivery is *at least once* in both directions: a message is acknowledged only a
 By default the **Fetch** extension respects `robots.txt` on every call. `robots.txt` is a file websites publish to tell automated crawlers which pages they may visit. Respecting it is usually the right thing, but it can cause a direct, user-initiated fetch (for example, an API endpoint that `robots.txt` disallows) to be refused as if it were crawler traffic. You can make this behavior configurable.
 
 1. Go to **Settings** → **Extensions** and open the **Fetch** extension configuration.
-2. Toggle the **Ignore robots.txt** checkbox. Boolean parameters render as an inline checkbox in the extension config UI.
+2. Select the **Ignore robots.txt** checkbox.
 3. Save the configuration.
 
-:::note[Reinstall to pick up the toggle]
-The extension's config schema is stored at install time, so an existing **Fetch** install must be reinstalled before the **Ignore robots.txt** toggle appears. With the toggle off (the default), `robots.txt` is respected; with it on, the previously blocked fetch succeeds.
+:::note[Reinstall to pick up the setting]
+The extension's config schema is stored at install time, so an existing **Fetch** install must be reinstalled before the **Ignore robots.txt** checkbox appears. With the checkbox cleared (the default), `robots.txt` is respected; with it on, the previously blocked fetch succeeds.
 :::
 
-## Result
+## Next steps
 
-Your Knowledge now has the data sources it needs, each syncing when it should (automatically on change, on a schedule, or on demand) and backing off on its own when a sync keeps failing. You can add an extension-contributed source such as **ArXiv Catchup** that syncs PDFs from a chosen category, validated **HTTP** sources that fetch from one or more web URLs, a **RabbitMQ** queue whose documents are processed and answered on a result queue, and set the **Fetch** extension's `robots.txt` handling to match how you intend to use it. Once a source is saved and synced, its content is available for the Knowledge to process.
+- [Integrate external data](/operational-guides/integrate-data)
+- [Configure a connector](/operational-guides/configure-connectors)

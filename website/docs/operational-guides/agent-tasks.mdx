@@ -10,7 +10,7 @@ audience: [builder]
 A task is a piece of work you hand to one or more agents and want to see finished: *"Prepare the offer for RFQ-2026-0153"*, *"Weekly sales report — week 39"*. The **Tasks** board shows every task in one of four columns, moves them on its own as the agents work, and brings to the front the ones that need you. This guide covers the board, the task itself and the projects that group tasks together.
 
 :::note[Tasks and runs]
-A task is the **what**; a run is one attempt at doing it. Starting a task opens a run with its first assignee, and the run's progress drives the task: while the run works the task is *Working*, when it needs an approval or fails the task goes into *To review*, when it completes the task goes to *Done* and the agent's final answer is posted on it as a comment.
+A task is the **what**; a run is one attempt at doing it. Starting a task opens a run with its first assignee, and the run's progress drives the task: while the run works the task is *Working*, when it needs an approval or fails the task goes into *To review*, when it completes the task goes to *Done* (or waits in *To review* when its project has a reviewer) and the agent's final answer is posted on it as a comment.
 :::
 
 ## Prerequisites
@@ -36,15 +36,15 @@ Open **Agents** → **Tasks**.
 
 Each card shows the task name, its project, the subtasks done out of the total, the comment count and the avatars of its agents. The line under the title counts the tasks (*N tasks. Track progress and review results.*). The badge next to **Tasks** in the sidebar counts the tasks to review plus the runs waiting for an approval, each counted once.
 
-To narrow the board, use the time range (**Today**, **Last 7 days**, **Last 30 days**, **All time**), **Filter tasks…**, the agent filter (**Everyone** or one agent) and the project filter. **List** shows the same tasks as a table you can group (by status, project, assignee), sort and filter by due date; **Calendar** opens the schedule view described in [Schedule and trigger agents](./agent-routines#see-whats-coming-in-the-calendar).
+To narrow the board, type in **Filter tasks…** or open **Filters**: **Updated** (**Today**, **Last 7 days**, **Last 30 days**, **All time**) and **Assignee** (**Everyone** or one agent). The project picker in the sidebar narrows it to one project. **List** shows the same tasks as a table you can group (by status, project or assignee), sort and filter by due date; **Calendar** opens the schedule view described in [Schedule and trigger agents](./agent-routines#see-whats-coming-in-the-calendar).
 
 ## Create a task
 
 1. Select **New task**.
-2. Under **What needs doing**, write the title on the first line and the details on the following lines. Put everything the agent needs to deliver a checkable result: the input, the expected output, the constraints.
-3. Choose a **Project** (optional).
-4. Under **Assignees**, pick one or more agents. The first one is the one that starts the work.
-5. Tick **Start immediately with the first selected agent** to start right away; otherwise the task waits in *Queued*.
+2. Under **What needs doing**, write the title on the first line and the details on the following lines. Put everything the agent needs to deliver a checkable result: the input, the expected output, the constraints. You can attach files (up to 10 MB each) or paste pictures into the text.
+3. Choose a **Project**, or keep **No project**.
+4. Under **Assign to**, pick the agent responsible for the task. To add more agents, select **Add collaborators**.
+5. Select **Start now with &lt;agent&gt;** to start right away; otherwise the task waits in *Queued*.
 6. Select **Create task**.
 
 <img
@@ -53,14 +53,14 @@ To narrow the board, use the time range (**Today**, **Last 7 days**, **Last 30 d
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-For a quick one, use **Add a task** at the bottom of any column: type *What needs doing?*, pick an agent and select **Add**.
+For a quick one, use **Add a task** in any column: type *What needs doing?*, pick an agent and select **Add**.
 
-Tasks get a short key (`RA-1`, `RA-2`, …) that never changes and is never reused. Agents can also open tasks themselves, for example a librarian agent that files one task for each outdated sheet it finds; those land in *Queued*.
+Tasks get a short key (`RA-1`, `RA-2`, …) that never changes. Agents can also open tasks themselves, for example a librarian agent that files one task for each outdated sheet it finds; those land in *Queued*.
 
 ## Start and move tasks
 
 - **Drag a card** to another column, or reorder it within its column. Dragging a task to *Working* starts a run with its first assignee.
-- In the task, select **Start with &lt;agent&gt;**, or one of the **Move to …** buttons.
+- In the task, select **Start with &lt;agent&gt;**, or choose a column from **Move to…**.
 
 If the agent cannot be started (no model, missing permissions), the task goes into *To review* with *"Could not start the assigned agent. Check permissions, model and workflow availability, then retry."*
 
@@ -75,19 +75,21 @@ Select a card to open it.
 />
 
 - **Description**: what you wrote when you created it.
-- **Subtasks**: a checklist with a progress bar; **Add a subtask…** and tick them off as they are done.
-- **Comments**: the conversation on the task. When a run completes, the agent's final answer is posted here; you can reply to the agent with **Reply to &lt;agent&gt;…**.
-- **Documents**: Word documents the agents produced for this task, with their version and review state (*Agent-reviewed*, *Review outdated*, *Not reviewed*). Select one to edit it in the browser and **Save**, or **Download** it. Editing requires the Office integration to be enabled on your installation.
+- **Subtasks**: a checklist with a progress bar; type in **Add a subtask…** and select the subtasks as they are done.
+- **Comments**: the conversation on the task. When a run completes, the agent's final answer is posted here. Reply to the agent to continue the work, or mention an agent with `@` to put it to work.
+- **Documents**: Word documents the agents produced for this task, with their version, their review state (*Agent-reviewed*, *Agent review outdated*, *Not agent-reviewed*) and their approval (*Approved*, *Not approved*). Select a document's name to edit it in the browser and **Save**, **Download** it, open its **Version history**, or approve the current version with **Approve v&lt;n&gt;**. Editing requires the Office integration to be enabled on your installation.
 - **Project**: move the task to another project, or leave it *Unassigned*.
-- **Actions**: **Open live run** while a run is going (see [Follow runs and approve actions](./agent-runs)), **Start with &lt;agent&gt;** otherwise, the **Move to …** buttons and **Delete task**.
+- **Actions**: **Open live run** while a run is going (see [Follow runs and approve actions](./agent-runs)), **Approve** when a finished task waits for review, **Start with &lt;agent&gt;** otherwise, **Move to…** and **Delete task**.
 
-:::warning[Delete task does not ask twice]
-**Delete task** removes the task immediately, without a confirmation. The runs it started stay in **History**.
+When a run fails, the task shows **What it needs from you**, with **Retry** and **Reply**.
+
+:::danger[Deleting a task cannot be undone]
+**Delete task** asks for confirmation, then removes the task with its subtasks and comments.
 :::
 
 ## Group tasks in projects
 
-A project collects related tasks, and optionally points to the Knowledge base they are about. Open it from the gear next to the project picker, or go to **Agents** → **Projects**.
+A project collects related tasks, chats and documents, and optionally points to the Knowledge base they are about. Open it from **Manage projects** next to the project picker, or go to **Agents** → **Projects**.
 
 <img
   alt="The Projects page with two projects, Market intelligence and Customer quotes, the second linked to its Knowledge base"
@@ -96,14 +98,15 @@ A project collects related tasks, and optionally points to the Knowledge base th
 />
 
 1. Select **New project**. Give it a **Name**, a **Description** and, optionally, a **Knowledge** base.
-2. Select **Create project**.
+2. Choose a **Reviewer**, or keep **No review: finished tasks go to Done**. With a reviewer, a task an agent finishes waits in *To review* until a person approves it.
+3. Select **Create project**.
 
-Each card shows how many tasks are done and open, how many need you, and the linked Knowledge; **Change** links a different one and **Open tasks →** opens the board filtered to that project. Selecting a project in the sidebar picker does the same for the whole section.
+Each card shows how many tasks are done and open, how many are to review, the linked Knowledge and the reviewer. **Project settings** has **Change Knowledge…** and **Change review step…**, and **Open tasks** opens the board filtered to that project. Selecting a project in the sidebar picker does the same for the whole section.
 
 Agents projects are separate from [Rational BI](/operational-guides/rational-bi) projects.
 
-:::note[The agent's Knowledge comes from its profile]
-Linking a Knowledge base to a project documents what the project is about and shows it on the card. What an agent can actually search and change is set on its profile, under **Knowledge access**. When a project's agents should work on its Knowledge, grant that base on their profiles too.
+:::note[A project's Knowledge reaches its agents]
+A run that works on a task or chat of a project is told about the project's Knowledge base and can search and change it, even when the agent's **Knowledge access** does not list it. The person who started the run must be allowed to use that Knowledge. Everything else the agent may touch is set on its profile.
 :::
 
 ## Who sees a task

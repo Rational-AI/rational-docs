@@ -25,9 +25,9 @@ Before you start, make sure you have:
 
 The repository enters the platform as a regular Source. Nothing about the Source itself is Graphify-specific: the same Source could feed other Knowledge bases with other rules.
 
-1. Go to **Settings** → **Sources** and create a **Git repository** Source.
-2. Enter the **Repository URL** (an HTTPS clone URL).
-3. For a private repository, create a **Git credentials** connector for the repository host and select it under **Credentials (optional)**. Leave it empty for a public repository.
+1. Go to **Settings** → **Sources** and select **Add**.
+2. In **Type**, under **Git repository**, pick **Public repository** for a public repository, or the **Git credentials** connector for the repository host for a private one (create the connector first in **Settings** → **Connectors**).
+3. Enter the **Repository URL** (an HTTPS clone URL).
 4. Optionally set **Branch, tag, or commit** (leave it blank to use the repository's default branch), and turn on **Include Git submodules** if the repository uses them.
 
 <img
@@ -42,9 +42,9 @@ The repository enters the platform as a regular Source. Nothing about the Source
 
 Graphify comes into play when the Source is attached to a Knowledge: the **Processing rule** you pick decides how the repository is processed.
 
-1. Create a Knowledge (or open an existing one) and attach the Git repository Source.
-2. Select **Graphify repository** as the **Processing rule**.
-3. Start the Knowledge Source sync and wait for processing to complete.
+1. Create a Knowledge (or open an existing one), open its settings, and attach the Git repository Source on the **Sources** tab.
+2. Select **Graphify repository** as the source's **Processing rule** (in the source's **Data processing settings**), or as the Knowledge's **Default processing rule**.
+3. In the source's row, select **Process now** and wait for processing to complete.
 
 <img
   src={require('@site/static/img/screens/knowledge-graphify-rule.png').default}
@@ -55,7 +55,7 @@ Graphify comes into play when the Source is attached to a Knowledge: the **Proce
 *The Knowledge's **Sources** tab: the Git Source attached with **Graphify repository** as its processing rule.*
 
 :::note[The first sync runs automatically]
-You don't need to synchronize the Source separately before processing. If the Source has never been synchronized, starting the Knowledge Source sync runs the Source sync first, then continues on its own through snapshot creation, graph generation, and view installation.
+You don't need to synchronize the Source separately before processing. If the Source has never been synchronized, **Process now** runs the Source sync first, then continues on its own through snapshot creation, graph generation, and view installation.
 :::
 
 :::note[One repository per Graphify Knowledge]
@@ -84,7 +84,7 @@ Processing also installs Graphify's interactive viewer as a [custom view](/opera
 
 ## Ask questions about the code
 
-The Knowledge's Touchpoint is equipped with the **`query_graph`** tool. When you chat with the Knowledge, each question is answered by running Graphify's query engine against the stored graph on demand, with no server left running between questions.
+The Knowledge's touchpoint is equipped with the **`query_graph`** tool, which replaces the generic RAG tools on it. When you chat with the Knowledge, each question is answered by running Graphify's query engine against the stored graph on demand, with no server left running between questions.
 
 For a Knowledge built from the public DOOM repository, try:
 
@@ -94,8 +94,8 @@ Where is the main game loop implemented?
 
 The graph locates `D_DoomLoop()` in `linuxdoom-1.10/d_main.c`, along with the functions it calls.
 
-## Result
+## Next steps
 
-Your Knowledge now contains a full code graph of the repository: an overview, workspaces, files, symbols, and communities linked by their real relationships, an interactive viewer to explore them, and a chat that answers questions from the graph. When the repository changes, run the Knowledge Source sync again to rebuild the graph.
+When the repository changes, select **Process now** again to rebuild the graph.
 
-To let coding agents such as Claude Code or Codex query this graph from outside the Control Room, see [Use Graphify from an external MCP client](/operational-guides/external-graphify-mcp).
+- To let coding agents such as Claude Code or Codex query this graph from outside the Control Room, see [Use Graphify from an external MCP client](/operational-guides/external-graphify-mcp).

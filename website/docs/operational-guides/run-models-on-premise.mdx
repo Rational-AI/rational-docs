@@ -53,7 +53,7 @@ Each deployment reserves a share of its GPU's memory, set by its **GPU memory bu
 Model weights are large, so the platform keeps them out of the way:
 
 - **One cache for all models.** The weights download into a Docker volume, `rai-model-cache`, shared by every model container. A model is downloaded once and survives restarts and redeployments.
-- **Out of the backup.** The [backup](/operational-guides/backup-and-restore) leaves the weights out, since they can always be downloaded again. It also leaves out the captured model calls, which are diagnostics the retention period deletes after a few days.
+- **Out of the backup.** The [backup](/operational-guides/backup-and-restore) leaves the weights out, since they can always be downloaded again. The local backup taken before every update also leaves out the captured model calls, so a rollback brings them back empty.
 - **Kept when a model is removed.** Deleting a deployment leaves its weights in the cache. Once no model container runs, `sudo docker volume rm rai-model-cache` on the host reclaims the disk.
 
 :::note[Model containers are kept away from your data]
@@ -133,6 +133,7 @@ Installations from earlier releases ran their models outside the registry, on an
 
 A former inference node can join the control node's swarm as a model node once its old engine is stopped. The nightly update does not perform this move: it needs an `install.sh` run.
 
-## Result
+## Next steps
 
-Your installation runs its models itself, on the host's GPUs or CPU and, if you need more, on model nodes in a swarm. Weights download once into a cache that the backup leaves out, a DGX Spark gets its own images, memory share and tuned defaults, and every model is added, deployed and scaled from **Settings** → **AI Model Registry** like any other.
+- [Deploy and run self-hosted models](/operational-guides/model-deployments): deploy settings, replicas and stopping a model.
+- [Back up and restore](./backup-and-restore) the installation.

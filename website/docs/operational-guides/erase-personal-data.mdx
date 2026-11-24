@@ -29,7 +29,7 @@ Both live in the menu on the users page, **next to each other rather than instea
 |---|---|---|
 | **Use it when** | Someone leaves the organization | Someone exercises a right to erasure |
 | **The account** | Removed | Removed |
-| **Their conversations** | **Kept**, detached from the account | **Deleted**, along with their Canvas artifacts |
+| **Their conversations** | **Kept** | **Deleted**, along with their Canvas artifacts |
 | **Their identifiers on recorded model calls** | Kept | **Cleared** |
 | **How often you'll use it** | Routinely | Rarely, and deliberately |
 
@@ -53,7 +53,7 @@ That's the line the operation draws deliberately. Your usage and cost history st
 :::note[The erasure is recorded, and that record is not itself erased]
 The erasure is written to the [audit trail](/operational-guides/audit-trail) **before** anything is destroyed, because afterwards there's nothing left to tie an identifier back to a person.
 
-So you should expect to find a trace of the erasure afterwards. That isn't the erasure having failed; it's the opposite. A trail that erased its own entries could not evidence the erasure it was asked to record, which is precisely what you need when someone asks you to demonstrate you complied.
+So expect to find a trace of the erasure afterwards: the audit entry names the person whose data was erased. A trail that erased its own entries could not evidence the erasure it was asked to record, which is precisely what you need when someone asks you to demonstrate you complied.
 :::
 
 ## If the identity provider is unreachable
@@ -69,7 +69,3 @@ An account that has *already* been removed from the provider is treated as succe
 - [Manage roles and users](/operational-guides/roles-and-users): creating accounts, roles and groups.
 - [Review the audit trail](/operational-guides/audit-trail): where the erasure record lands.
 - [Set data retention](/operational-guides/data-retention): the scheduled counterpart: bounding everyone's data by age, rather than removing one person's on request.
-
-## Result
-
-You can answer a right-to-erasure request from the users page, and you know why **Erase all data** sits beside **Delete user** rather than replacing it. You know exactly what erasure destroys and what it deliberately leaves (the shape of your model-call history, minus the person), that it reports counts you should check, and that it records itself in the audit trail so you can evidence it afterwards.

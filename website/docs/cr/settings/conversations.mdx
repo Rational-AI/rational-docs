@@ -28,8 +28,7 @@ The model that writes the replies users see isn't set here: it's the **Conversat
   <div className="featureBox__row">
     <LockIcon className="featureBox__icon" aria-hidden />
     <div>
-      Anyone whose role has <span className="featureBox__pill">Update</span>
-      on <strong>Conversations</strong> can change these settings. Adding or deleting a status is for administrators
+      The page opens for anyone whose role has access to <strong>Conversations</strong>, and shows <strong>Save</strong> to roles with <span className="featureBox__pill">Update</span> on it. Saving the analyses and rules, and any change to a status, is accepted only from administrators
     </div>
   </div>
 
@@ -50,8 +49,10 @@ When enabled, Rational AI automatically generates a short title for each convers
 
 * **Enable title generation** – Turn the feature on or off.
 * **Title generation model** – The model used to produce the title.
-* **Calculation frequency** – How many messages to receive before a title is generated (for example, *every 1 message*).
+* **Calculation frequency** – How many user messages to receive before a title is generated, set as **Every** *N* **messages**. The first message always gets one.
 * **Number of messages to consider** – The number of most recent messages used to generate the title.
+
+A title someone typed by hand is never replaced.
 * **Title generation template prompt** – The instruction sent to the model, returning the title as a JSON object. **Restore default** brings back the shipped prompt.
 
 ## Topics detection settings
@@ -77,7 +78,7 @@ When enabled, Rational AI estimates the emotional tone of incoming messages, so 
 
 ## Summary generation settings
 
-When enabled, operators can generate a structured summary of a conversation to review before taking it over.
+When enabled, administrators can generate a structured summary of a conversation to review before taking it over. Summaries always use these settings: touchpoints can't override them.
 
 * **Enable summary generation** – Turn the feature on or off.
 * **Summary generation model** – The model used to write summaries. Thinking models are not recommended for this task.
@@ -89,12 +90,12 @@ When enabled, operators can generate a structured summary of a conversation to r
 When enabled, conversations that match your rules are flagged **Needs review** and stay flagged until someone records a decision on them.
 
 * **Enable human oversight rules** – Turn the feature on or off.
-* **Rules** – One or more condition groups. Use **Add condition group** and **Add condition** to describe the conversations that need a human.
+* **Rules** – One or more condition groups. Use **Add condition group** and **Add condition** to describe the conversations that need a human. Each condition checks the **Topic**, the **Sentiment** or the **Message text**.
 
 See [Record oversight decisions](/operational-guides/human-oversight) for what reviewers do with a flagged conversation.
 
 ## Conversations status
 
-Define the stages of a conversation and how they appear in the conversation list. Type a new status in **Type new…**, and mark the ones that end a conversation as **Closed status**. A status that conversations still use can't be deleted.
+Define the stages of a conversation and how they appear in the conversation list. Every tenant starts with **Open** and **Closed**, which can't be deleted. Type a new status in **Type new…**, pick an icon for each, and mark the ones that end a conversation as **Closed status**. A status that conversations still use can't be deleted.
 
-Use **Save** to apply your changes to the analyses and rules, or **Cancel** to discard them.
+Status changes are saved as you make them. Use **Save** to apply your changes to the analyses and rules, or **Cancel** to discard them.

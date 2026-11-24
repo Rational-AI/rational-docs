@@ -23,36 +23,40 @@ Before you start, make sure you have:
 
 ## Open the viewer
 
-The viewer appears automatically when a resource's file looks like SQLite.
+The viewer appears automatically when a resource is a database.
 
 1. Open the **Knowledge** tab and select the **card** for the Knowledge that holds your SQLite resource.
-2. In **Table view**, open the resource's **details drawer** by clicking the row (or selecting **See details** from the options menu).
-3. Because the file is recognized as SQLite, the resource viewer renders the **SQLite resource database** inline. The database name shown is the resource name.
+2. In the **Grid**, select the open icon (**Open**) at the start of the resource's row.
+3. The resource viewer opens the database instead of a file preview.
+
+Only administrators can change the data. For everyone else the viewer shows **Read only**, and SQL statements run as read-only queries.
 
 :::note[No download required]
-For non-SQLite resources you can only download the original file. SQLite resources are loaded into a knowledge database and rendered directly, so you can explore the data in place.
+For other resources the viewer shows the original file. A SQLite resource is loaded into a knowledge database, so you can explore the data in place.
 :::
 
 ## Browse tables and views
 
-The viewer presents the database structure as tabs along the tab bar.
+Each table, view or query you open becomes a tab in the viewer's tab bar.
 
-1. Select a **table** or **view** tab to load its contents into the grid.
-2. Use the **column header sort arrows** to order rows. The arrow reflects the current sort state: **up** for ascending, **down** for descending, and **both** when unsorted.
-3. Select the **filter glyph** in a column header to add a filter row, then type to narrow the rows shown.
+1. Select **+** (**Open table or query**) and pick a table or view from the list. Use **Search tables…** to narrow the list.
+2. Select a column header to sort by it.
+3. Select the filter icon in a column header (**Filter this column**) to add a filter row, enter a value, and select **Apply**. With more than one filter, select the button before them to switch how they combine (**AND** by default).
 
-Column headers always keep their icons visible. The column name ellipsizes if space is tight, so the sort and filter controls stay reachable.
+The column type shows as a tooltip when you hover over the column header.
 
 ## View a table or view schema
 
-1. Open the **Actions** menu next to the search box.
-2. Select **View schema** to see the DDL for the selected object. This works for both **tables** and **views**.
+1. Open a table or view tab, then open the **+ Actions** menu.
+2. Select **View schema** to see the statement that defines the selected table or view.
 
 ## Run SQL
 
-1. Use the viewer's **SQL** input to enter a statement.
-2. Run it. The statement runs against the resource's knowledge database.
-3. The grid updates with the result.
+1. Select **+** and then **New SQL query**, or select **New query** in the **+ Actions** menu.
+2. Enter a statement in the editor.
+3. Select **Run**, or press Cmd+Enter (Ctrl+Enter on Windows and Linux). The grid shows the result.
+
+If a query returns more rows than the server allows, only the first rows are shown and the tab is marked **truncated**. Add a `LIMIT` or `WHERE` clause to narrow the result. Administrators can also select **Save query as view** to store the query as a read-only SQL view.
 
 :::note[Identifiers with spaces]
 Identifier quoting accepts column and table names that contain spaces, for example `"Location HQ"`. Quote such identifiers in your SQL so they resolve correctly.
@@ -60,9 +64,14 @@ Identifier quoting accepts column and table names that contain spaces, for examp
 
 ## Edit data inline
 
-1. In the grid, click a **cell** to edit its value in place.
-2. Confirm the edit to persist the change to the knowledge database.
+Editing needs an administrator account. Views are always read-only.
 
-## Result
+1. In a table tab, double-click a **cell** and change its value.
+2. Select **Save changes** to write your edits to the knowledge database, or **Discard** to drop them.
 
-You can browse the tables and views of a SQLite resource, sort and filter rows, inspect schemas, run SQL and edit values inline, all from the resource detail panel in the Control Room, with every change applied directly to the resource's knowledge database.
+The **+ Actions** menu also holds **Add row**, **Delete selected**, **New table…** and **Drop table**, and the exports **Export CSV**, **Export JSON**, and **Export SQL inserts**.
+
+## Next steps
+
+- [Manage knowledge resources](/operational-guides/manage-knowledge-resources)
+- [Work with records in collections and grid views](/operational-guides/knowledge-collections-and-grid)

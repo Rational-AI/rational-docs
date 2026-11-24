@@ -12,20 +12,20 @@ audience: [builder, developer]
 The agents of the [Agents](/cr/Agents) section are granted tools in their own profile, and **Agents** → **Library** lists what they can be granted (see [Browse the library](/operational-guides/agent-computers#browse-the-library)).
 
 :::note[What is a tool?]
-A tool is a single capability the AI can invoke during a conversation: one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. Each extension runs an **MCP server** (MCP is the open standard for connecting AI models to external tools), and that server is what publishes the tools you see here.
+A tool is a single capability the AI can invoke during a conversation: one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. An extension that brings tools runs an **MCP server** (MCP is the open standard for connecting AI models to external tools), and that server is what publishes the tools you see here.
 :::
 
 ## Browse available tools
 
-Go to **Settings** → **Tools**. The page is a searchable list of every tool currently available in your environment, grouped by the **MCP server** (the extension) that provides it. For example, the **RAG MCP server** is marked **Default** because it ships with Rational AI.
+Go to **Settings** → **Tools**. The page is a searchable list of every tool currently available in your environment, grouped by MCP server configuration. Each group row shows the MCP server's name (for example **RAG MCP server**) and the configuration's name. The configuration created when an extension is installed is called **Default**. Groups start collapsed; expand one to see its tools.
 
-Each row shows:
+Each tool row shows:
 
 - **Name:** the tool's identifier, for example `rag_query_simple`.
 - **Description:** a short explanation of what the tool does and when the AI would call it.
-- **⋮** menu: per-tool actions.
+- **⋮** menu: **See details** opens the tool's page, with its parameters and a **Test tool** form to try it with **Run test**.
 
-Use the search box at the top to filter by name or description when the list grows long.
+Use the search box at the top to find a tool when the list grows long. While you search, every group is expanded.
 
 <img
   src={require('@site/static/img/screens/tools-list.png').default}
@@ -35,7 +35,7 @@ Use the search box at the top to filter by name or description when the list gro
 
 *The Tools registry: every tool available to your touchpoints, grouped by the MCP server (extension) that provides it.*
 
-The **RAG MCP server** alone provides several tools you'll see often:
+The **RAG MCP server**, installed by default, provides several tools you'll see often:
 
 - **rag_query_simple**: simple semantic-search RAG (finds passages similar in meaning to the question).
 - **rag_query_graph**: graph RAG with expansion (follows links between related pieces of knowledge).
@@ -43,7 +43,7 @@ The **RAG MCP server** alone provides several tools you'll see often:
 - **list_databases**: lists the databases available in a knowledge base.
 - **get_schema**: returns the structure (tables and columns) of a database.
 - **get_resource**: fetches the contents of a specific document.
-- **get_user_context**: provides the AI with context about the current user.
+- **get_user_context**: provides the AI with the user context of the conversation.
 
 ## Where tools come from
 
@@ -51,7 +51,7 @@ Three pieces work together, and it helps to keep them straight:
 
 1. **Extensions provide tools.** Installing an extension adds its MCP server's tools to your environment. To install or remove extensions, see [Manage extensions](/operational-guides/manage-extensions).
 2. **This Tools page is where you see them.** It's the full inventory of what's available, no matter which touchpoint ends up using it.
-3. **A touchpoint is where you choose them.** A [touchpoint](/operational-guides/configure-touchpoints) is the configuration for a specific assistant, and that's where you pick which of these tools the assistant is actually allowed to call.
+3. **A touchpoint is where you choose them.** A [touchpoint](/operational-guides/configure-touchpoints) is the configuration for a specific assistant, and that's where you pick which of these tools the assistant is allowed to call.
 
 :::note[Seeing a tool isn't the same as using it]
 A tool appearing in this catalog means it exists in your environment, not that any assistant is using it. An assistant can only call a tool once you enable it on its [touchpoint](/operational-guides/configure-touchpoints).
@@ -62,7 +62,7 @@ A tool appearing in this catalog means it exists in your environment, not that a
 There are two moments at which you can see what an extension offers, and they don't mean quite the same thing.
 
 - **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started. That's useful for deciding whether an extension is worth setting up.
-- **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog. The list is refreshed when you create or edit an MCP server configuration and when an extension is updated.
+- **Discovered tools** are what a running MCP server reports. They're what lands in this catalog. The list is refreshed when you create or edit an MCP server configuration and when an extension is updated.
 
 :::note[An update that would break a touchpoint is refused]
 During an update the platform lists the new release's tools and keeps the identity of every tool that still exists, so touchpoint bindings carry over. If the update removes a tool a touchpoint still uses, or changes a tool's parameters so a binding no longer fits, the update is refused unless you force it. See [Update and roll back extensions](/operational-guides/extension-updates#what-happens-to-your-tools-and-touchpoints) for the details.
@@ -73,7 +73,7 @@ During an update the platform lists the new release's tools and keeps the identi
 Every tool call has a time limit. A tool that hasn't answered when the limit expires is reported to the assistant as failed, so the conversation carries on instead of waiting. The limit is set on the touchpoint and applies to every MCP server it uses (see [Configure touchpoints](/operational-guides/configure-touchpoints)). When a single server is slow, for example one that runs a long query or calls a slow external service, give only that server more time:
 
 1. Go to **Settings** → **Touchpoints**, select the touchpoint and open the **Tools** tab.
-2. In the configuration's `⋮` menu, select **Configure MCP server**. To create a new configuration instead, use **Add MCP server configuration…** → **+ Add new configuration**.
+2. In the configuration's `⋮` menu, select **Configure MCP server**. To create a new configuration instead, use **Add MCP server configuration...** → **Add new configuration**.
 3. In **Tool call time limit**, enter the number of seconds, from 1 to 600. The help text shows the limit the server follows when you leave the field empty: *"Only for this server. Leave empty to follow the touchpoint's limit of … seconds."*
 4. Select **Save**.
 
@@ -87,6 +87,7 @@ Every tool call has a time limit. A tool that hasn't answered when the limit exp
 Leaving the field empty makes the server follow the next limit down: the touchpoint's, then the platform default. Every call is bounded, and a value outside 1–600 seconds is refused when you save, so the number you enter is the one that applies.
 :::
 
-## Result
+## Next steps
 
-You know where to find every tool your touchpoints can use, how to tell which extension provides each one, the difference between what an extension declares and what its running server actually serves, how to give a single slow MCP server more time than the rest of the touchpoint, and where to go next to actually enable a tool on a touchpoint.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): enable tools on an assistant and set when it asks before running them.
+- [Manage extensions](/operational-guides/manage-extensions): install the extensions that bring new tools.

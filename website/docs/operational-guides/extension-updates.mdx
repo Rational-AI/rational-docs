@@ -21,7 +21,7 @@ A solution installed from the [Marketplace](/operational-guides/marketplace) is 
 
 ## Choose an update policy
 
-Every installed extension carries an **update policy** that decides how much happens without you. Open the extension on **Settings** → **Extensions** and use the policy selector to change it.
+Every installed extension carries an **update policy** that decides how much happens without you. Open the extension on **Settings** → **Extensions** and change it in the **Update policy** list.
 
 | Policy | What it does |
 |--------|--------------|
@@ -32,9 +32,9 @@ Every installed extension carries an **update policy** that decides how much hap
 Under every policy, an available update still shows up in the list. The policy governs what gets *applied*, not what you get to *see*.
 
 :::warning[Pinned is a promise, not a preference]
-Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused: the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned — change the update policy to install updates"*.
+Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused: the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned. Change the update policy to install updates."*
 
-The policy selector is the only way out: set the extension back to **Notify me** or **Compatible updates automatically**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
+The **Update policy** list is the only way out: set the extension back to **Notify me** or **Compatible updates automatically**, then apply the update. Rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
 
 Pin an extension when you have a reason to distrust change on it: a validated configuration you can't revalidate right now, a compliance freeze, an investigation in progress.
 :::
@@ -85,11 +85,13 @@ Two things are worth knowing about how the verdict interacts with what the publi
 
 Only releases classified **compatible** are eligible to be applied automatically under the **Compatible updates automatically** policy. Everything else waits for you.
 
-## Preview an update with a dry run
+## Apply an update
 
-An update can be run as a **dry run**: the platform performs the same preflight checks it would for a real update (including whether your current configuration still satisfies the new release) and reports what it finds without committing anything. Your extension stays on its current version and your touchpoints are untouched.
+1. Open the extension and select **Update** next to its version, or **Update to latest version** or **Install a different version** from the options menu.
+2. In the dialog, pick the **Version** and read its **Release notes**. If the new release needs configuration values, fill them in.
+3. Select **Update**.
 
-Dry runs are allowed regardless of update policy, so a pinned extension can still be checked before you decide whether to unpin it.
+Before it changes anything, the platform runs the update as a dry run: the same checks a real update makes, including whether your configuration still satisfies the new release. If a check fails, nothing is changed and the dialog shows why, for example a tool or skill still used by a touchpoint. **Force update** applies the update anyway and removes or disables what no longer fits. Dry runs appear in the extension's **Activity** tab marked **Review**.
 
 ## What happens to your tools and touchpoints
 
@@ -124,7 +126,7 @@ A failed update never strands your extension. If an update can't complete (say t
 
 ## Roll back
 
-Rolling back moves your installation to an earlier release it previously ran. Because releases are immutable and the last known-good release is tracked for you, a rollback restores a version you have actually verified, not an approximation of it.
+Select **Roll back** in the extension's options menu to move your installation to the release marked **Last good** in its **Versions** tab, an earlier release it previously ran. Because releases are immutable and the last known-good release is tracked for you, a rollback restores a version you have actually verified, not an approximation of it.
 
 Rollback stays available regardless of update policy, including while an extension is pinned.
 
@@ -171,10 +173,6 @@ Uninstalling removes the extension's runtime: the installation itself, its MCP s
 - **Touchpoints survive.** A touchpoint that granted one of the extension's tools stays exactly where it is; it loses that one binding.
 - **The release stays on record** as provenance. Uninstalling doesn't erase the fact that the package existed in your tenant.
 - **Re-installing is clean.** Because the release record is kept rather than destroyed, uploading or installing the very same package again reuses it and comes up as a fresh, working install, with no duplicate-release conflict to work around.
-
-## Result
-
-You can decide how much autonomy each extension gets, from fully automatic compatible updates to a hard pin that refuses even your own manual update until you lift it. You know that the compatible/breaking verdict is computed from the actual configuration and tool diff rather than declared, that a publisher can only ever make that verdict stricter, and which concrete changes fall on each side. You know your touchpoint wiring survives an update and when stale tools actually get pruned, that a failed update leaves you on your previous version with a retry that works, and that a withdrawn release stops spreading without being pulled out from under you.
 
 ## Related
 

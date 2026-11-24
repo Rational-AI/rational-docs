@@ -27,9 +27,9 @@ The Tunnel page exists only on installations that were provisioned with a Ration
 | **Certificate** | Issued by Rational AI for the name and its subdomains (Let's Encrypt, renewed automatically). Browsers trust it out of the box: nothing to install on any client. |
 | **Tunnel** | With the tunnel on, your endpoint points at `vpn.rational.is`, which forwards each connection, still encrypted, through a private WireGuard tunnel to your machine. Rational AI only reads the name the browser asked for; it never sees the content. |
 | **Direct** | With the tunnel off, your endpoint points at your public IP and your router forwards the ports below to the machine. |
-| **License** | The license of the installation is delivered and renewed through the same channel; its status is on **Settings** → **Licence**. |
+| **License** | The check-in uses the identity the installation receives when its license is activated, so nothing reaches the endpoint before activation. The license status is on **Settings** → **Licence**. |
 
-The machine checks in with Rational AI once a minute. That is when a switch you flip takes effect, a renewed certificate is installed, and a changed public IP is followed. [What the installation reports to Rational AI](./install-and-update#what-the-installation-reports-to-rational-ai) lists what the check-in carries.
+The machine checks in with Rational AI once a minute. That is when a change to the tunnel setting takes effect, a renewed certificate is installed, and a changed public IP is followed. [What the installation reports to Rational AI](./install-and-update#what-the-installation-reports-to-rational-ai) lists what the check-in carries.
 
 ## Prerequisites
 
@@ -55,14 +55,14 @@ The cost is latency: every byte makes a round trip through the tunnel, so pages 
 
 ### Direct connection
 
-Switch **Rational AI Tunnel** off. The page shows a **Configure your router** box with the rules to add:
+Turn off **Rational AI Tunnel**. The page shows a **Configure your router** box with the rules to add:
 
 | External port | Protocol | Forward to |
 |---------------|----------|------------|
 | 443 | TCP | `<the machine's LAN address>:443` |
 | 80 | TCP | `<the machine's LAN address>:80` |
 
-The LAN address of the machine and your current public IP are listed underneath. Add the two rules on your router (the feature is usually called *port forwarding*, *NAT* or *virtual server*), then press **Save**. Within a minute the endpoint resolves to your public IP; if your provider changes it, the installation notices at the next check-in and the endpoint follows.
+The page also lists the machine's LAN address (**This machine**) and **Your public IP**. Add the two rules on your router (the feature is usually called *port forwarding*, *NAT* or *virtual server*), then press **Save**. Within a minute the endpoint resolves to your public IP; if your provider changes it, the installation notices at the next check-in and the endpoint follows.
 
 :::warning[A direct connection needs a reachable public IP]
 If your provider puts you behind a shared address (carrier-grade NAT, common on mobile and some fibre connections), forwarded ports never reach you and the installation becomes unreachable from outside as soon as the tunnel is off. If in doubt, keep the tunnel on, or ask your provider for a public IP first. Switching the tunnel back on restores access within a minute.
@@ -106,7 +106,7 @@ A connector whose OAuth app still redirects to `rational-control-room.<domain>`,
 
 - **From outside your network** (a phone off Wi-Fi is the quickest test), open the endpoint shown on the page. The login page should load with a valid certificate and no warning.
 - On the page, **Last sync** should be within the last minute or two. An older time means the machine cannot reach `control-room.rational.is`: check its internet access.
-- **Certificate** should read *valid until* a date a few weeks or months ahead. *Not issued yet* right after provisioning is normal; it appears within a couple of minutes.
+- **Certificate** should read *valid until* a date a few weeks or months ahead. Right after provisioning it reads *not issued yet*, which is normal; the certificate appears within a couple of minutes.
 - On the machine, `sudo rational status` prints the current path (tunnel on, or direct on your public IP) and `sudo rational sync` runs the check-in immediately, printing what it applied.
 
 ## Troubleshooting

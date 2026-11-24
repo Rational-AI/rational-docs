@@ -17,31 +17,33 @@ Before you start, make sure you have:
 
 - **A mailbox with IMAP and SMTP access**, and its server addresses.
 - **Credentials**: either an app password, or a Gmail or Microsoft 365 account you can authorize interactively.
-- **Administrative access** to **Settings** → **Channels**.
+- **Permissions:** a role with **Create** and **Update** on **Channels**.
 
 ## Connect the mailbox
 
 1. Go to **Settings** → **Channels** and select **Add**.
-2. Choose **Email** as the type.
-3. Name the channel and fill in the mailbox configuration: servers, address, and credentials.
-4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode). **Manual** is a reasonable starting point for a mailbox: mail is captured and put in front of a person, and nothing is sent until someone sends it.
-5. Save.
+2. Choose **Email** as the **Channel type**.
+3. Enter a **Name** and fill in the mailbox configuration: **IMAP Host**, **SMTP Host**, **Email Address**, and the credentials. The ports default to 993 for IMAP and 587 for SMTP, and **Transport security** to `auto`, which picks the TLS mode from the port.
+4. Choose the [reply mode](/operational-guides/manage-channels#choose-the-mode). **Manual** is a reasonable starting point for a mailbox: mail is captured and put in front of a person, and nothing is sent until someone sends it.
+5. Select **Save**.
 
-Connecting **validates both the IMAP and SMTP logins**. A mailbox that can receive but not send fails here rather than silently accumulating conversations nobody can reply to.
+With an app password, selecting **Connect** in the channel's details **validates both the IMAP and SMTP logins**. A mailbox that can receive but not send fails here rather than silently accumulating conversations nobody can reply to. An OAuth mailbox is checked on its first poll after you authorize it.
 
 ## Authenticate: App password or OAuth
 
+Choose the method in **Authentication**.
+
 | Method | Use it for |
 |--------|-----------|
-| **App password** | Any IMAP/SMTP mailbox. Simplest where your provider supports it. |
-| **OAuth (XOAUTH2)** | Gmail and Microsoft 365, where app passwords are often disabled by policy. |
+| **app password** *(default)* | Any IMAP/SMTP mailbox. Enter it in **Password**. Simplest where your provider supports it. |
+| **OAuth (Google)** or **OAuth (Microsoft 365)** | Gmail and Microsoft 365, where app passwords are often disabled by policy. Enter your OAuth application's **OAuth Client ID** and **OAuth Client Secret**. |
 
-For OAuth you authorize the mailbox interactively: the channel gives you an **Authorize mailbox access** action that takes you through your provider's consent screen and returns with the grant.
+For OAuth you then authorize the mailbox interactively: the channel's details show an **Authorize mailbox access** button that takes you through your provider's consent screen and returns with the grant.
 
-:::note[An expired authorization is a visible state, not a silent stall]
-OAuth grants expire or get revoked. When that happens the channel reports that it **needs authorization** and surfaces the **Authorize mailbox access** button again.
+:::note[When an authorization stops working]
+OAuth grants expire or get revoked. When that happens the channel's **Status** shows an error and mail stops arriving. Check the status first if a mailbox that worked yesterday is quiet today.
 
-Check the channel status if mail stops arriving. This is the most common reason a mailbox that worked yesterday is quiet today, and it's fixed by re-authorising rather than by re-entering anything.
+To grant access again, select **Disconnect**, then **Connect**, and complete **Authorize mailbox access**. You don't need to re-enter the client ID or secret.
 :::
 
 ## How mail becomes conversations
@@ -50,7 +52,7 @@ Check the channel status if mail stops arriving. This is the most common reason 
 
 That's the behavior email users expect, and it matters: collapsing everything from one address into a single conversation would blend an invoice query into a support request because they came from the same colleague.
 
-Only unread mail is picked up, and **a message is marked read only once it has been successfully ingested**. If the platform restarts mid-fetch, the mail is picked up again on the next pass rather than disappearing. The failure mode is a duplicate, never a dropped message.
+Only unread mail is picked up, checked every 60 seconds by default (**Poll interval (seconds)**), and **a message is marked read only once it has been successfully ingested**. If the platform restarts mid-fetch, the mail is picked up again on the next pass rather than disappearing. The failure mode is a duplicate, never a dropped message.
 
 The plain-text body is used where a message has one. For HTML-only mail the markup is stripped down to readable text.
 
@@ -70,14 +72,16 @@ An assistant that answers automated mail will eventually find something that ans
 
 - Mail marked as **automatically submitted**, or carrying **bulk**, **list** or **junk** precedence.
 - Mail asking for **auto-responses to be suppressed** (the header out-of-office replies set).
-- Mail from **bounce, no-reply and postmaster** addresses.
+- Mail from **no-reply**, **mailer-daemon** and **postmaster** addresses.
 - Mail from **the channel's own address**, so it can never answer itself.
 
-Your [allowed senders](/operational-guides/manage-channels#control-who-can-write-in) list applies on top of all of that. Because mailboxes attract far more unsolicited mail than a chat surface does, filling it in is worth doing for anything Automatic.
+Your [allowed and blocked senders](/operational-guides/manage-channels#control-who-can-write-in) apply on top of all of that. Because mailboxes attract far more unsolicited mail than a chat surface does, filling in **Allowed senders** is worth doing for anything Automatic.
+
+**Only verified senders** is on by default. Mail that fails the sender checks (DMARC, DKIM or SPF) is kept for a person to read, but it starts no agent and gets no automatic reply. Mail between colleagues on the same Microsoft 365 or Google Workspace may also count as unverified. The check needs a mail server that records these results, as Gmail and Microsoft 365 do.
 
 ## Attachments
 
-Attachments arrive under your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in): allowed or not, restricted by type, and capped in size.
+Attachments arrive under your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in): **Accept attachments**, **Attachment types**, and **Attachment size limit (MB)**, which defaults to the 25 MB platform limit.
 
 An accepted document has its text extracted **before the message is posted to the conversation**, so the assistant sees the contents when it composes its answer rather than reacting to a filename. Extraction is given a bounded window; a document that takes longer doesn't hold the message up indefinitely.
 
@@ -86,9 +90,6 @@ Operators can open or download what arrived from the conversation. See [Use the 
 ## Related
 
 - [Manage channels](/operational-guides/manage-channels): modes, allowed senders, and attachment policy.
-- [Connect a Telegram bot](/operational-guides/connect-telegram): the other native channel.
+- [Connect a Telegram bot](/operational-guides/connect-telegram): set up a Telegram channel.
 - [Conversations](/cr/Conversations): reading and replying to what arrives.
 
-## Result
-
-Your mailbox is connected with both its receiving and sending logins verified, authenticated by app password or by an OAuth grant you can renew when it lapses. Mail arrives as one conversation per thread, replies land inside the original thread in the recipient's client, a failed send is retried rather than lost, and automated mail is screened out before it can start a loop.

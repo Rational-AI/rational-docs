@@ -35,7 +35,7 @@ Before you begin, make sure you have:
 
 - **A workspace API key or a signed-in session** on the Control Room. A workspace key from **Settings** → **API Keys** acts as an administrator; a session needs **Create** on the **AI Model Registry** row of its role to register and deploy, and **Update** to change the scale. The examples send it as `Authorization: Bearer $TOKEN`; from an authenticated browser session you can drop that header.
 - **The Hugging Face repository** of the model, for example `Qwen/Qwen3-8B`. Check that it exists on [huggingface.co](https://huggingface.co): the API stores the name as you send it.
-- **Hardware for it.** On your own servers, the GPUs or memory the model needs (see [Run models on your own servers](/operational-guides/run-models-on-premise)); on Rational AI's cloud, a plan that includes self-hosted models.
+- **Hardware for it.** On your own servers, the GPUs or memory the model needs (see [Run models on your own servers](/operational-guides/run-models-on-premise)); on Rational AI's cloud, a [license](/operational-guides/license) that includes self-hosted models. Without it, a deploy request is refused with *"This workspace's plan does not include hosting your own models on our GPUs."*
 
 ## Step 1: Check what your hosting can deploy
 
@@ -214,6 +214,7 @@ curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<M
 - **Stuck in `provisioning` with `WaitingForCapacity`**: no GPU or node has room for it. Free one, or give the deployment fewer GPUs.
 - **`failed` with `OutOfMemory` or `Crashed`**: the `message` carries the runner's own error. Lower the context length or the GPU memory budget, or pick a smaller or quantized model, then deploy again.
 
-## Result
+## Next steps
 
-You can now create a self-hosted model from a Hugging Face repository, deploy the exact settings you confirmed, follow its phase and replicas, and stop, resume or rescale it through the Management API. For the same tasks in the Control Room, see [Deploy and run self-hosted models](/operational-guides/model-deployments).
+* [Deploy and run self-hosted models](/operational-guides/model-deployments): the same tasks in the Control Room.
+* [Access Rational AI via API](/operational-guides/api-access): call the deployed model through the OpenAI-compatible API.

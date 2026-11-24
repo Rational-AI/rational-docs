@@ -33,7 +33,7 @@ It’s the central catalog of the AI models you can use in Rational AI. You add 
   <div className="featureBox__row">
     <CrossIcon className="featureBox__icon" aria-hidden />
     <div>
-      Deploying open-source and fine-tuned models in the cloud requires a plan that includes self-hosted models
+      On Rational AI's cloud, deploying any model on Rational AI's GPUs needs a license that includes self-hosted models (the <strong>Licence</strong> page lists it as <em>Self-hosted models on this machine (enterprise)</em>). On your own servers there is no such limit
     </div>
   </div>
 
@@ -41,7 +41,7 @@ It’s the central catalog of the AI models you can use in Rational AI. You add 
 
 ## Add models
 
-Select **Add new** to add one of three kinds of model.
+Select **New** (**Add new** when the registry is empty) to add one of three kinds of model.
 
 <img
   src={require('/img/screens/cr>settings>ai-model-registry>add.png').default}
@@ -57,23 +57,23 @@ Select **Add new** to add one of three kinds of model.
 * Select **Choose an open source model**. The list is searched live on Hugging Face.
 * Sort by **Best match**, **Most downloads**, **Most likes** or **Recently updated**, and filter by **Formats**, **Curated picks** or **Only models that fit**. Only the formats your hosting platform can run are offered.
 * Select a model to read its card: publisher, architecture, parameters, weights and its Hugging Face model card.
-* Click **Confirm**. The model is added; deploy it from its **Deployment** section.
+* Select **Confirm**. The model is added; deploy it from its **Deployment** section.
 
 See [Deploy and run self-hosted models](/operational-guides/model-deployments) for the whole flow.
 
 ### Install your own fine tuned model
 
-Shown only where your hosting platform accepts uploaded weights (not on on-premises installations).
+Shown only where your hosting platform accepts uploaded weights.
 
 * Choose **Install your own fine tuned model**.
 * Pick the model file (`.gguf`) and check the **Name**.
-* Click **Confirm**. The file is uploaded and the model deployed.
+* Select **Confirm**. The file is uploaded and the model deployed.
 
 ### Add a proxy to a third-party model
 
 * Choose **Add a proxy to a third-party model** (*"Connect to OpenAI, Gemini, Claude and others with your API Key"*).
 * Pick the connector and the provider's model, and give it a name.
-* Click **Confirm**.
+* Select **Confirm**.
 
 ---
 
@@ -105,6 +105,6 @@ In **Edit details**, **Cost metering** turns cost tracking on or off for the mod
 
 ### Pricing components
 
-With cost metering on, add every **Pricing component** that applies, in the chosen **Currency**: cost per request, per image, per web search, per million input, output and reasoning tokens. Empty fields are treated as unknown, not free. Third-party models may show **Provider catalog pricing**, synchronized from the provider.
+With cost metering on, add every **Pricing component** that applies, in the chosen **Currency**, for example **Cost per request**, **Per million input tokens** or **Per million output tokens**. Components also cover images, web searches, and cached, cache-write and reasoning tokens. Empty fields are treated as unknown, not free. Third-party models may show **Provider catalog pricing**, synchronized from the provider.
 
 For self-hosted models, **Infrastructure billing** adds the cost of the hardware: **No infrastructure charge**, **Only while a deployment is active**, or **Reserved capacity (continuous)**, at an **Infrastructure rate** per hour, minute or second.

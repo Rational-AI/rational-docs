@@ -14,9 +14,8 @@ required to try a change.
 
 Development mode applies to **one installation in one tenant**. Only an
 installation explicitly marked as development accepts file writes. Enabling
-development and changing files need **Update** on the extension in the
-**Extensions** row of your role; in the Control Room, only administrators see the
-**Development** tab. Anyone who can read the extension can list, view and
+development and changing files need an administrator account, and only
+administrators see the **Development** tab. Anyone who can read the extension can list, view and
 download its files. Published packages and other
 installations are unchanged.
 
@@ -26,7 +25,7 @@ installations are unchanged.
    **Development** tab. The tab is shown to administrators only.
 2. Select **Enable development** and confirm. The dialog reminds you that
    *"Changes will run in this live installation and affect its users. Automatic
-   updates will pause."*
+   updates will pause. Use a test tenant to develop separately."*
 3. Select a file under **Extension files**, edit it and select **Save and apply**.
    Use **New file** to create one and **Delete file** to remove one.
 
@@ -147,7 +146,7 @@ an ordinary update or reinstall replaces them. **Compatible updates automaticall
 again; **Notify me** and **Pinned** keep their normal behavior.
 
 While development is on, the installation can't be updated or uninstalled,
-even manually: you get *"Exit development mode before updating this extension."*
+even manually: an update is refused with *"Exit development mode before updating this extension."*
 Download or commit important changes before leaving development if an automatic
 update could replace them. The server does not keep a separate draft or revision
 history for recovering overwritten development files.

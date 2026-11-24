@@ -10,7 +10,7 @@ audience: [builder]
 The same model can answer in two seconds or think for a minute, write three lines or ten pages, and occasionally get stuck repeating itself until it hits its limit. Each [touchpoint](/operational-guides/configure-touchpoints) decides how much its model thinks, how long an answer may get, what happens when the model loops, and whether users can check an answer against your knowledge. This guide covers those settings, all on the touchpoint's **Models** tab, and what your users see as a result.
 
 :::note[What is the reasoning level?]
-Reasoning models think before they answer, and most let you choose how hard: from **Off** (answer straight away, where the model allows it) through **Minimal**, **Low**, **Medium** and **High** to **XHigh** and **Max**. A higher level helps on hard questions, at the cost of time and tokens. Each model offers only some of these levels, and Rational AI shows only the ones the touchpoint's model actually supports.
+Reasoning models think before they answer, and most let you choose how hard: from **Off** (answer straight away, where the model allows it) through **Minimal**, **Low**, **Medium** and **High** to **XHigh** and **Max**. A higher level helps on hard questions, at the cost of time and tokens. Each model offers only some of these levels, and Rational AI shows only the ones the touchpoint's model supports.
 :::
 
 ## Prerequisites
@@ -24,7 +24,7 @@ Before you start, make sure you have:
 
 1. Go to **Settings** → **Touchpoints** and open the touchpoint.
 2. Open the **Models** tab.
-3. Below the models table, select **Open advanced settings**. The **Generation limits** section appears.
+3. Below the models table, select **Open advanced settings**. The **Generation limits** section appears, followed by the title, sentiment and topic settings.
 
 Every setting on this page is saved with the touchpoint's **Save** button, and **Undo** discards it.
 
@@ -49,20 +49,16 @@ Below **Reasoning**, the switch **Let users choose the level per conversation** 
 - **On** (the default): the composer's model button (*"Model and reasoning"*) shows a **Reasoning** row with one button per level the model offers. The choice is kept for that conversation only; selecting the highlighted level again returns to the touchpoint's default.
 - **Off**: the level you set always applies, and users see it as *"… set by the assistant"*.
 
-:::note[Anonymous touchpoints start with the choice switched off]
-A touchpoint created with **Allow anonymous access** on gets this switch off, so anonymous visitors can't push a public assistant to its most expensive level. You can still switch it on yourself.
+:::note[Anonymous touchpoints can start with the choice switched off]
+A touchpoint created through the API with anonymous access already on gets this switch off, so anonymous visitors can't push a public assistant to its most expensive level. A touchpoint created with **New** starts with it on, and turning on **Allow anonymous access** later doesn't change it, so check this switch before you open a touchpoint to the public.
 :::
 
 ## Cap the length of an answer
 
 **Maximum output tokens** is the most a single answer may generate on this touchpoint, reasoning included. It overrides the model's own limit, which is shown as a hint (*"Model default: … tokens"*).
 
-1. Under **Generation limits**, enter a number in **Maximum output tokens**, or leave it empty to keep the model's limit.
+1. Under **Generation limits**, enter a number (at least 1) in **Maximum output tokens**, or leave it empty to keep the model's limit.
 2. Save the touchpoint.
-
-:::note[The cap reaches every provider]
-The limit is sent in the form each provider expects, so it holds the same way whether the model runs on OpenAI or on another provider.
-:::
 
 ## Stop answers that repeat themselves
 
@@ -74,21 +70,23 @@ When it triggers, the answer ends with *"Generation stopped after … tokens bec
 
 Response verification checks an answer, claim by claim, against the knowledge retrieved for the conversation, and marks what is and isn't supported.
 
-1. On the **Models** tab, find **Response verification** (it sits below the advanced settings and is always visible).
+1. On the **Models** tab, find **Response verification**. It is always visible, whether or not the advanced settings are open.
 2. Switch on **Enable response verification**. It is off by default.
-3. Optionally adjust how answers are judged:
+3. Optionally adjust how answers are judged. These options appear once verification is on:
 
    | Option | When to use it |
    |--------|----------------|
    | **Verification method** → **Semantic (cosine similarity)** | The default: fast, compares each claim with the retrieved passages. |
-   | **Verification method** → **Hybrid (semantic + LLM for edge cases)** | Ask a model only when the semantic score is borderline. |
+   | **Verification method** → **Hybrid (semantic + LLM for edge cases)** | Ask a model only when the semantic score is within **LLM edge threshold** (default 0.1) of a threshold. Set the **Verification model**. |
    | **Verification method** → **LLM (model as a judge)** | Have a model judge every claim; set the **Verification model**. |
    | **Extract factual claims before verifying** | Have the factual claims pulled out of the answer before they are checked. Off by default. |
-   | **Supported threshold** / **Uncertain threshold** | Raise them to be stricter about what counts as supported (defaults 0.6 and 0.4). |
+   | **Supported threshold** | The minimum score, from 0 to 1, for a claim to count as supported. Default 0.75. Raise it to be stricter. |
+   | **Relevance threshold** | The minimum score, from 0 to 1, for a source to count as relevant to a claim. Default 0.6. |
+   | **Max RAG events** / **Top matches per claim** | How many retrieval steps of the conversation to check against, and how many matching documents to return per claim. Both default to 3. |
 
 4. Save the touchpoint.
 
-Verification doesn't run on its own. Users trigger it with **Verify response** on an answer, and see the supported, uncertain and unsupported parts underlined. See [Check an answer against your knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+Verification doesn't run on its own. Users trigger it with **Verify response** on an answer, and see unsupported and disproven sentences marked in the text. **Verify response** appears only when the touchpoint also has an enabled tool from the **Rational Knowledge - RAG Query Server** extension. See [Check an answer against your knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
 
 ## What users see when generation stops early
 
@@ -102,6 +100,7 @@ When an answer ends before it should, the chat says why instead of leaving a hal
 | *"Generation stopped: the model returned an empty answer."* | The provider returned nothing. | Regenerate; if it repeats, check the model in the [AI Model Registry](/operational-guides/ai-model-registry-features). |
 | *"Generation stopped: the tool "…" ran out of time on every attempt."* | A tool kept exceeding its time limit. | Raise the [tool time limit](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take), or fix the tool's server. |
 
-## Result
+## Next steps
 
-Your touchpoint now thinks as hard as its questions need, by default or by the user's choice per conversation; keeps answers within a token budget you set; cuts off a model that starts repeating itself; and, if you enable it, lets users verify an answer claim by claim against your knowledge. When an answer stops early, users are told why and can regenerate it.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): the other settings of a touchpoint.
+- [Test a touchpoint change](/operational-guides/test-touchpoint-changes): replay past conversations before a model change goes live.

@@ -44,35 +44,38 @@ A connector stores the credentials and configuration needed to talk to an extern
   alt="The Connectors page showing the connector list and the details panel with provider, services and usage breakdown"
 />
 
-The Connectors page lists every connector as a card on the left, each showing its name and provider icon. Use the **search** box to filter by name, and click a card to open its details on the right.
+The Connectors page lists every connector as a card, each showing its name and provider icon. Use the **search** box to filter by name, and select a card to open its details.
 
 The details panel shows the connector's description, its **Provider**, and how many times it is used. A usage breakdown reports how many **AI Models**, **Sources** and **Tools** rely on the connector, so you can see what would be affected before changing or removing it.
 
-These are the same numbers the platform itself checks when you try to delete a connector, so a refusal can't cite a dependency the page didn't show you. A connector reported as used by nothing is one you can safely remove.
+A connector that AI models, sources or provider subscriptions still use can't be deleted. Provider subscriptions aren't counted in the usage breakdown, so check the connector's subscriptions too before you delete it.
 
 ## Add a connector
 
-Click **Add** in the top-right corner to open the connector catalog. Select a provider and click **Add** to configure it, then provide the required credentials, such as an API key or service account details, to complete setup.
+Select **Add** to open **Add a new connector**. Under **Browse connectors**, select a provider, then enter a **Name** and the credentials it asks for, such as an API key or service account details. The catalog is one list; the table groups its providers by use.
 
-| Group | Providers |
+| Use | Providers |
 |-------|-----------|
 | AI models | OpenAI, Anthropic, OpenRouter, Xference, MiniMax, OpenAI Compatible, Google Vertex AI |
 | Decisions | System One Compatible |
 | Data sources | Google, AWS, Azure, Google Service Account Key, Microsoft OneDrive, Git credentials, RabbitMQ |
+| Virtual databases | SQL database (PostgreSQL, MySQL, SQLite, SQL Server, Oracle or IBM i) |
 | Tools and extensions | Brave Search, Microsoft SQL Server |
 | Publishing | LinkedIn, Instagram, Facebook |
 
 Some providers ask for more than a key: **Google Vertex AI** takes a project ID and a single region and stores no credential, **Microsoft SQL Server** takes a host, database and read-only login with an optional **Encrypt the connection** switch, and **RabbitMQ** takes a broker host, user and optional file download token. See [Configure a connector](/operational-guides/configure-connectors#available-providers) for each one.
 
-:::caution
+:::warning
 Connectors hold sensitive credentials. Removing or editing a connector affects every AI model, source and tool that depends on it. Check the usage breakdown in the details panel before making changes.
 :::
 
 ## Manage a connector
 
+To change a connector, edit the fields under **Configuration** in the details panel and select **Save**, or **Undo** to discard your changes. Secret fields are never shown: enter a new value only to replace the stored one. For a **SQL database** connector, **Test connection** and **Explore schema** check the stored settings.
+
 Open the options menu (the three vertical dots) in the details panel to:
 
 | Action | Description |
 |--------|-------------|
-| **Edit configuration** | Update the connector's stored credentials and settings. |
+| **Complete authentication** | Finish the sign-in for a connector that still needs it (shown only then). |
 | **Delete** | Remove the connector from the platform. |

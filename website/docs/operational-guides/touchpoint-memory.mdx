@@ -36,10 +36,10 @@ Both kinds of memory are off by default.
 
 4. Save the touchpoint. The memories list appears once memory is on and saved.
 
-While memory is on, the assistant gets a `memory` tool it uses to add, update and remove entries during a chat. Users see each change in the conversation (*"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Forgot"*), with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
+While memory is on, the assistant can add, update, and remove memories during a chat. Users see each change in the conversation (*"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Updated memory"*, *"Forgot"*), with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
 
 :::note[Memory is kept short on purpose]
-Each memory is at most 280 characters, a person's memory holds 1,500 characters in all, and the shared memory 3,000. Links, credentials and long or multi-line text are refused. When a store is nearly full, the assistant merges older memories rather than piling on new ones.
+Each memory is one line of at most 280 characters. A person's memory holds 1,500 characters in all, and the shared memory 3,000. Memories that contain a link or a password, key or token are refused. When a store is full, a new memory is refused until the assistant (or an editor) replaces or removes an existing one.
 :::
 
 ## Curate shared memories
@@ -47,10 +47,10 @@ Each memory is at most 280 characters, a person's memory holds 1,500 characters 
 Shared memory speaks for everyone, so it is worth an editor's eye.
 
 1. On the **Memory** tab, check **Waiting for approval**. Each proposal shows who proposed it and when.
-2. Select **Approve** to add it to the shared memory, or **Discard** to drop it. The touchpoint's creator is notified of new proposals.
-3. In **Memories**, filter by **All**, **Shared** or **Me**. Use a row's menu to **Edit** or **Delete** an entry, and the **Add a shared memory** field to write one yourself.
+2. Select **Approve** to add it to the shared memory, or **Discard** to drop it. The touchpoint's creator is notified of new proposals. Up to 50 proposals can wait; beyond that, the assistant stops proposing new ones.
+3. In **Memories**, filter by **All**, **Shared**, or **Me**. Use a row's menu to **Edit** or **Delete** an entry; deleting a shared memory cannot be undone. To write one yourself, type it in the field at the bottom of the list (*"Add a shared memory"*, or under **Me** *"Add something it should remember about you"*) and select **Add**.
 
-Curation applies immediately; it doesn't wait for the touchpoint's **Save**. Approvals, discards and deletions of shared memories are recorded in the audit trail.
+Curation applies immediately; it doesn't wait for the touchpoint's **Save**. Adding, editing, approving, discarding and deleting shared memories are recorded in the audit trail.
 
 :::note[Editors don't see anyone's personal memory]
 A person's personal memories are theirs alone. The filter **Me** shows only your own, marked *"You · private"*. Editing rights on the touchpoint don't open anyone else's list, though whoever monitors conversations can still read the chats the memories came from.
@@ -76,6 +76,7 @@ Rational AI summarizes before a turn when the previous request filled more than 
 
 In the chat, a divider marks where the summary begins: *"The assistant now works from a summary of the messages above"*. With **Stop and ask to start a new conversation**, the composer is disabled and the chat offers **New conversation** instead; the old conversation stays in the user's history.
 
-## Result
+## Next steps
 
-Your touchpoint now remembers what you allow it to: each person's preferences privately, and shared facts once an editor approves them, or straight away if you chose so. Long conversations no longer fail when they outgrow the model: they continue from a summary, keep the tool results you marked word for word, or stop and point the user to a new conversation.
+- [Build and run touchpoint skills](/operational-guides/agent-skills): where instructions for how to do a task belong.
+- [Work with Conversations](/operational-guides/conversations): read the full history of a summarized conversation.

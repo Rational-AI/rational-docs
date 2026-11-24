@@ -54,6 +54,7 @@ Select **New** and choose how you want to build the dataset:
 
 * **From file** – Upload an existing JSON file of training entries.
 * **From events** – Generate a dataset from conversational events already captured in the platform.
+* **From recorded traffic** – Build a dataset from the model requests Rational AI recorded, including system prompts and tool calls. See [Fine-tune a model](/operational-guides/fine-tune-a-model#from-recorded-traffic).
 
 ### Create from file
 
@@ -61,25 +62,25 @@ Select **New** and choose how you want to build the dataset:
 * Enter a **Name** and an optional **Description**
 * Pick the **Format** (Alpaca or ShareGPT) that matches your file
 * Drag a file into the upload area, or select **Click or drag here your dataset** to select one from your computer
-* Click **Save**
+* Select **Save**
 
 The uploaded file must follow the structure of the selected format, otherwise the import is rejected.
 
 ### Create from events
 
-Choose **From events** to assemble a dataset from conversations and interactions that have already taken place in Rational AI. This is a convenient way to turn real usage into training data without exporting and reformatting it by hand.
+Choose **From events** to assemble a dataset from conversations and interactions that have already taken place in Rational AI. Enter a **Name**, an optional **Description** and an optional **Prompt**, then under **Select event types** choose which kinds of events to extract, and select **Save**.
 
 ## Work with a dataset
 
-Click a dataset row to open its detail view. The page shows the dataset name, its description and a paginated table of entries under the **content** column. Each row is one training entry stored as JSON; click the arrow at the start of a row to expand it and inspect the full entry.
+Select a dataset row to open its detail view. The page shows the dataset name, its description, its current version and the number of **Examples**. Select an example in the list to read it as **Example #** followed by its number. Its menu offers **Edit example**, which opens it as JSON, and **Remove example**.
 
 ### Manage versions
 
-Every dataset keeps a version history. The version selector in the top-right corner (for example, **v1**) lets you switch between versions. A new version is created each time you append entries, so you can always trace how the dataset evolved and roll back to an earlier state if needed.
+The version chip next to the dataset name (for example, **v1**) shows its current version. The number goes up each time you append, edit or remove examples, so you can tell which state of the data a fine-tuning used. The page shows the current version only.
 
 ### Append new entries
 
-Use **Append new entries** (from the row menu or the detail-view menu) to add more examples to an existing dataset. Appending entries produces a new version while preserving the previous one.
+Use **Append new entries** (from the row menu or the detail view) to add more examples to an existing dataset. Appending entries produces a new version.
 
 ## Manage datasets
 
@@ -89,6 +90,7 @@ Open the options menu (the three vertical dots) on any dataset row, or the menu 
 |--------|-------------|
 | **Append new entries** | Add more entries to the dataset, creating a new version. |
 | **Rename** | Change the dataset's name. |
+| **Duplicate** | Copy the dataset. Only in the list's row menu. |
 | **Download** | Export the dataset to a JSON file in its current format. |
 | **Delete** | Permanently remove the dataset. |
 
@@ -97,4 +99,4 @@ Open the options menu (the three vertical dots) on any dataset row, or the menu 
 The Datasets list shows every dataset with columns for **Name**, **Format**, **Entries** (the number of training examples), **Created at**, **Updated at** and **Current version**.
 
 * **Search** – Use the search box above the list to filter datasets by name.
-* **Sort** – Click the arrows next to any column header to sort the list by that column.
+* **Sort** – Select the arrows next to any column header to sort the list by that column.

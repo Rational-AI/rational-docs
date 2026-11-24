@@ -29,11 +29,13 @@ Before you start, make sure you have:
 Rational AI queues an export job that serializes the Knowledge into a `.zip` archive on the server.
 
 :::note[Export runs in the background]
-The export is an asynchronous job. Rational AI prepares the archive, polls the job until it is ready, and then downloads it automatically, you don't need to refresh the page or trigger the download yourself.
+The export is an asynchronous job. Rational AI prepares the archive, checks the job until it is ready, and then downloads it automatically. You don't need to refresh the page or trigger the download yourself.
 :::
 
-## Result
+## Follow the export
 
-A progress toast (*"Preparing export, the download will start automatically when it's ready…"*) appears while the job runs. As soon as the archive is ready it downloads automatically and a confirmation toast (*"Export downloaded"*) is shown. If the job fails, an error toast explains what went wrong.
+A progress toast (*"Preparing export, the download will start automatically when it's ready…"*) appears while the job runs. As soon as the archive is ready it downloads automatically and the **Export downloaded** toast appears. If the job fails, the **Error while exporting knowledge** toast appears instead.
 
-The downloaded `.zip` is a complete export archive. Bring it into another environment with [Import a Knowledge](/operational-guides/import-knowledge).
+## Next steps
+
+- Bring the archive into another environment with [Import a Knowledge](/operational-guides/import-knowledge).

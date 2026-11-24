@@ -39,7 +39,7 @@ The **AI Search** tab controls how resources are prepared for retrieval. Configu
  
 1. Turn on **Allow AI search**. This enables the RAG process for the Knowledge.
 2. Select an **Embedding model**. This model converts text into vectors so the system can measure how similar a resource is to a query.
-3. Choose a **Chunking type**. Chunking splits each resource into smaller pieces before embedding. **Semantic Chunker** is a good default.
+3. Choose a **Chunking type**. Chunking splits each resource into smaller pieces before embedding. **Recursive Chunker** is selected by default. See [Chunking types reference](/operational-guides/configure-rag#chunking-types-reference).
 4. Select **Save**.
 
 :::note[Embedding works on chunks]
@@ -63,14 +63,15 @@ The default workflow is used whenever a run doesn't ask for a specific one: a fi
 
 ## Default Touchpoint
  
-Creating a Knowledge also creates a Touchpoint with default settings, including a working Graph RAG tool. Customize it in **Settings** → **Touchpoints**, where you can set the conversation model and the system prompt for this Knowledge.
- 
-By default, the AI agent answers in a set order:
- 
-1. **Analyze data structure:** the agent examines the schema of the data in the Knowledge.
-2. **SQL query:** if a database can answer the query, the agent runs a SQL query and uses the result.
-3. **Graph RAG:** if no database has the answer, the agent uses the Graph RAG tool to search the whole Knowledge.
-To tune how Graph RAG retrieves, see {/* TODO: link to the Configure Graph RAG guide */}.
+Creating a Knowledge also creates a touchpoint named after it (*Knowledge name* - Touchpoint), with the read-only RAG tools, Graph RAG included, already pointed at this Knowledge. Customize it in **Settings** → **Touchpoints**, where you can set the **Default model** and the **System prompt** for this Knowledge.
+
+By default, the prompt tells the model to:
+
+1. **Analyze the data structure:** call the tool that describes the structure of the data first.
+2. **Retrieve the data:** use the tools that fit the question to fetch the information.
+3. **Say when it doesn't know:** answer from the tools only, and say so when they don't find the answer.
+
+To tune how Graph RAG retrieves, see [Configure Graph RAG](/operational-guides/configure-rag).
  
 ## Start a chat with your Knowledge
  
@@ -78,8 +79,8 @@ Your Knowledge is created but still empty. You can open a chat against it now an
  
 1. Open the **Knowledge** tab from the main navigation.
 2. Select the **card** for the Knowledge you created. This opens its management view.
-3. In the left panel, select the **+** (Add) icon.
-4. A new chat panel opens, ready for queries.
+3. In the chat panel at the side, select **New chat** (the **+** icon when the panel is collapsed).
+4. The chat opens on the Knowledge's touchpoint, ready for queries.
 
 {/* Knowledge open with chat panel */}
 
@@ -87,8 +88,10 @@ Your Knowledge is created but still empty. You can open a chat against it now an
  
 A new Knowledge is empty. To fill it, connect a data source and sync its content. This is covered in its own guide: [Integrate external data](/operational-guides/integrate-data).
 
-## Result
- 
-You have a configured Knowledge with AI Search enabled, a default pipeline for its files, a default Touchpoint, and an open chat. Its card in the **Knowledge** tab shows its description, its resource count, and when its content was last updated, so your team can tell what it is for and whether it is still in use. Once you add files, the AI can answer using your own data.
+## Next steps
+
+- [Integrate external data](/operational-guides/integrate-data)
+- [Configure Graph RAG](/operational-guides/configure-rag)
+- [Manage knowledge resources](/operational-guides/manage-knowledge-resources)
 
 {/* Related with link to Configure graph rag guide, sources in control room, rag concept page */}

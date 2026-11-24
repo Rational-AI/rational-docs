@@ -37,9 +37,9 @@ The **Connectors** page lists everything you have configured on the left, such a
 ## Add a connector
 
 1. Go to **Settings** → **Connectors** and select **Add**. This opens **Add a new connector**.
-2. Choose a **provider** from the gallery. Each option has a one-line description to help you pick (see [Available providers](#available-providers)).
-3. Supply the provider's **credentials**. This is usually an API key you get from the provider's own dashboard. Paste your own key into the connector's field; never reuse someone else's. Keys are stored by the platform and are not shared.
-4. Select **Save**.
+2. Under **Browse connectors**, choose a **provider**. Each option has a one-line description to help you pick (see [Available providers](#available-providers)).
+3. Enter a **Name** and, optionally, a **Description**, then supply the provider's **credentials**. This is usually an API key you get from the provider's own dashboard. Paste your own key into the connector's field; never reuse someone else's. Keys are stored by the platform and are not shared.
+4. Select **Add**. For providers that sign in with OAuth, such as Google, the button reads **Add and authorize** and opens the provider's sign-in.
 
 <img
   src={require('@site/static/img/screens/connectors-add.png').default}
@@ -58,7 +58,7 @@ The gallery offers many providers, but you only need the ones whose models or se
 | Provider | What it connects | What you supply |
 |----------|------------------|-----------------|
 | **Google** | A Google account, for Drive, Gmail and Calendar. | OAuth client ID and secret, then sign in. |
-| **AWS** | An AWS account, for Amazon S3 sources. | Access key ID and secret access key. |
+| **AWS** | An AWS account, for Amazon S3 sources. | **Access Key** and **Secret Key**. |
 | **OpenAI** | OpenAI models. | API key. |
 | **Anthropic** | Anthropic's Claude models. | API key. |
 | **OpenRouter** | Models from many providers through one key. | API key. |
@@ -74,6 +74,7 @@ The gallery offers many providers, but you only need the ones whose models or se
 | **LinkedIn**, **Instagram**, **Facebook** | A company page or business account to publish Social studio posts to. | Your own app's ID and secret, then sign in. |
 | **Git credentials** | Private Git repositories, for Git sources. | Host and an HTTPS token. Public repositories need no connector. |
 | **RabbitMQ** | A message broker whose queues announce files to process. | Host, user and password. |
+| **SQL database** | A PostgreSQL, MySQL, SQLite, SQL Server, Oracle or IBM i database that virtual databases read. | Connection details and an account that can only read. |
 | **Microsoft SQL Server** | A SQL Server database that extensions read. | Host, database, and a read-only login. |
 
 The providers below need more than a key. Their steps follow.
@@ -156,8 +157,9 @@ Select a connector in the list and look at its **AI Models**, **Sources**, and *
 - **Sources**: some [Sources](/operational-guides/configure-sources) use a connector to reach the external system that holds your data.
 - **Tools**: some tools (such as a web search tool backed by Brave Search) rely on a connector for access.
 
-The **Used N times** counter is a quick health check: a connector showing zero uses is safe to remove, while a heavily used one should be changed with care.
+The **Used N times** counter is a quick health check: a heavily used connector should be changed with care. Deleting is refused while AI models, sources or provider subscriptions still use the connector, and subscriptions aren't part of the counts, so check them too.
 
-## Result
+## Next steps
 
-You have a connector configured and linked to an external provider, and you know how to see what it powers. You can now point an AI model, a Source, or a tool at it. A common next step is to add a third-party model in the [AI Model Registry](/operational-guides/ai-model-registry-features) that uses your new connector.
+- Add a third-party model that uses your new connector in the [AI Model Registry](/operational-guides/ai-model-registry-features).
+- [Configure data sources](/operational-guides/configure-sources)

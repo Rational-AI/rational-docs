@@ -15,7 +15,7 @@ A **connector** stores the credentials and configuration needed to talk to an ex
 
 A connector is like a saved login kept in one secure place. Instead of entering the same keys into every feature that needs them, you store them once and let each feature reference the connector. The secret lives in a single, controlled location.
 
-## Why centralise credentials
+## Why centralize credentials
 
 Scattering API keys and passwords across many settings is both unsafe and hard to maintain. A connector solves this by giving you:
 
@@ -31,6 +31,7 @@ Once configured, a connector can be used by different parts of the platform:
 * **[Models](./AI-model-registry.mdx):** to reach a model provider's API.
 * **[Sources](./Source-and-resources.mdx):** to read data from an external system.
 * **Tools:** to let an agent call an external service.
+* **Virtual databases:** to read the views a Knowledge exposes over an external SQL database.
 
 This is also central to [sovereign AI](./Sovereign-AI.mdx): because every external connection is explicit, you stay in control of exactly which providers your data reaches.
 

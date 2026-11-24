@@ -2,7 +2,7 @@
 sidebar_position: 22
 sidebar_label: Channels
 title: Channels
-description: What a channel is, why the same agent can be delivered across different channels, and how channels fit into touchpoints in Rational AI.
+description: What a channel is, which channels Rational AI has, and how channels fit together with touchpoints.
 type: concept
 audience: [user, builder]
 ---
@@ -11,30 +11,30 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 # Channels
 
-A **channel** is the medium through which users reach an AI agent: the surface where a conversation actually happens. A web chat widget, an API integration or a messaging app are all channels. The channel doesn't change *what* the agent knows; it changes *where* and *how* people talk to it.
-
-Think of a channel as the doorway into the same room. Whether someone enters through a website, an app or an API, they arrive at the same agent, but the doorway shapes the experience on the way in.
+A **channel** is the medium through which people reach an assistant: the surface where a conversation happens. A Telegram bot, a mailbox, a Microsoft Teams or Slack bot, the web chat and the OpenAI-compatible API are all channels. The channel carries no prompt, knowledge, or tools. It changes *where* and *how* people talk to the assistant, not *what* the assistant knows.
 
 ## Why channels matter
 
-Separating the agent from the channel brings real flexibility:
+Keeping the channel separate from the assistant means:
 
-* **Reach:** the same agent can meet users wherever they already are, rather than forcing them to one place.
-* **Consistency:** one configuration can be delivered across several surfaces, so the answers stay the same everywhere.
-* **Fit:** each channel can suit a different context, an embedded widget for your site, an API for another system, and so on.
+* **Reach:** you can meet people where they already are: the messaging app or mailbox they use.
+* **Reuse:** the connection to a surface is set up once, with its own credentials, sender filters and reply mode, and any touchpoint can be put on it.
+* **Fit:** each channel adapts the conversation to its surface, for example by splitting replies into short messages on a chat app.
 
 ## Channels and touchpoints
 
-A channel rarely stands alone. It is one of the ingredients bound together by a [touchpoint](./Touchpoint.mdx), alongside the model, knowledge and tools. The touchpoint decides what the agent is; the channel decides how it is delivered. Choosing the channel is therefore part of configuring a touchpoint for its intended audience.
+A [touchpoint](./Touchpoint.mdx) is the assistant: its models, system prompt, sources, tools, and memory. Each touchpoint has exactly one channel, chosen in its settings. To offer the same assistant on two surfaces, create a touchpoint for each channel.
+
+Several touchpoints can share a channel, but inbound messages on that channel go to the oldest enabled touchpoint among them. An Email or messaging channel can also be bound to an agent in [Agents](../cr/Agents.mdx), which then sends messages through it.
 
 ## Channels in Rational AI
 
-When you set up a [touchpoint](../cr/settings/touchpoints.mdx), you choose the channel through which it is exposed, so the same carefully configured agent can be served on the surface that suits each use case.
+Telegram, Email, Microsoft Teams and Slack are native channel types you create in **Settings** → **Channels**. Installed extensions can add more types. The web chat and the OpenAI-compatible API are built in, and you can't create another one. See [Manage channels](../operational-guides/manage-channels.mdx).
 
 ## Additional resources
 
-* [Touchpoints settings](../cr/settings/touchpoints.mdx): choose how an agent is delivered.
-* [Channels (Chat)](../cr/Chats.mdx): one surface where users interact with an agent.
+* [Manage channels](../operational-guides/manage-channels.mdx): create a channel, choose its reply mode and control who can write in.
+* [Touchpoints settings](../cr/settings/touchpoints.mdx): choose the channel a touchpoint answers on.
 
 
 ---

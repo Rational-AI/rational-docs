@@ -55,12 +55,13 @@ Read it as *untouched since import* rather than *created recently*.
 
 ## Manage views in settings
 
-Everything about views is configured on the **Views** tab of the Knowledge settings. Open the Knowledge, go to its settings, and select the **Views** tab. You'll see two sections:
+Everything about views is configured on the **Views** tab of the Knowledge settings. Open the Knowledge, go to its settings, and select the **Views** tab. You'll see these sections:
 
 - **Built-in views**: **Graph view** and **Grid view**, each with an on/off toggle.
-- **Custom views**: the views you have created, including saved grid and calendar views.
+- **Custom views**: the views you have created, including saved grid and calendar views, each with an on/off toggle.
+- **Dashboard to embed**: a [Rational BI](/operational-guides/rational-bi) dashboard to show inside the Knowledge (**Select a dashboard**).
 
-Each row's menu has **Set as default view**, to choose the view the Knowledge opens on (marked **Default**), and **Preview**, to open it on the knowledge page.
+Each row's menu has **Set as default view**, to choose the view the Knowledge opens on (marked **Default**), and **Preview**, to open it on the knowledge page. A view must be turned on to become the default.
 
 <img
   src={require('@site/static/img/screens/knowledge-views-settings.png').default}
@@ -224,8 +225,7 @@ The app also tells the view when to refresh: `rational:resources:changed` when a
 The dialog's title always starts with the view's name, texts are plain and kept short (title up to 120 characters, message up to 1000, buttons up to 40), and a view can't open a second dialog while one is showing or right after the user answered. Use it before actions the user should consciously approve, such as a bulk save.
 :::
 
-## Result
+## Next steps
 
-You can now shape a Knowledge into whatever view fits the job: keep or hide the built-in Graph and Grid, pin the views you use most, show records on a calendar, embed a dashboard, and build custom views in HTML, React or as a web component, by hand or with AI. Those views can query and save records, ask the assistant or a decision model, put questions in the chat, open records beside themselves and ask the user to confirm, all with the viewer's own permissions.
-
-To share one of these views, or a chat over the same Knowledge, on a website of your own, see [Embed a Knowledge](/operational-guides/embed-knowledge).
+- [Embed a Knowledge](/operational-guides/embed-knowledge) to share these views, or a chat over the same Knowledge, on a website of your own.
+- [Work with records in collections and grid views](/operational-guides/knowledge-collections-and-grid)

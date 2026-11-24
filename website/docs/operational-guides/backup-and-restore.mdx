@@ -77,7 +77,7 @@ Go to **Settings** → **Backup** and pick the destination **Type**. The fields 
 
 On an installation set up with `install.sh`, do not choose **Local folder**: the path is inside the worker's container, is lost with it, and cannot be restored with `rational offsite-restore`. Ask the owner of the destination for an account that can write only the backup folder.
 
-The folder is created on first use. Click **Test destination** before saving: the worker writes and deletes a small marker file there, which proves the credentials, the path and the write permission in one go. A failure comes back with the reason (a wrong password, a read-only share, an unreachable host).
+The folder is created on first use. Select **Test destination** before saving: the worker writes and deletes a small marker file there, which proves the credentials, the path and the write permission in one go. A failure comes back with the reason (a wrong password, a read-only share, an unreachable host).
 
 :::warning[Prefer SFTP or S3 over FTP]
 Plain FTP sends the password and the data in clear and cannot verify what it wrote. It is supported for legacy targets; when the same server offers SFTP, use that.
@@ -103,9 +103,9 @@ After each successful run the destination is pruned. Choose in **Keep** how much
 | **One year: daily for a week, weekly for two months, then monthly** | The newest seven, one per week for 9 weeks, and one per month for 12 months |
 | **Everything, never delete** | Every backup |
 
-A policy set through the API (`PUT /management/v0/backup`) that matches none of these is shown as **Custom** and kept as it is. Only the dumps and snapshots are pruned; the object-storage mirror is shared by every backup and is never removed.
+A policy set through the API (`PUT /management/v0/backup`) that matches none of these is shown as **Custom**, with its numbers, and kept as it is. Only the dumps and snapshots are pruned; the object-storage mirror is shared by every backup and is never removed.
 
-Click **Save**. The **Next scheduled backup** line under *Last backup* confirms the schedule is registered.
+Select **Save**. The **Next scheduled backup** line under **Last backup** confirms the schedule is registered.
 
 ## Back up now, and check it happened
 
@@ -130,7 +130,7 @@ Every database, the vectors, the object storage, the extensions and the knowledg
 
 The application keeps the destination's password encrypted, so the machine needs its own copy of the destination settings in `/opt/rational/backup-destination.env`. Do this once, when you set the destination up, not on the day you need it.
 
-1. In **Backups at the destination**, click **Copy restore command** on any backup. It copies the destination settings as variables; the secrets are masked as `********`.
+1. In **Backups at the destination**, select **Copy restore command** on any backup. It copies the destination settings as variables; the secrets are masked as `********`.
 2. On the machine, create the file, readable by root only, and paste the variables into it:
 
    ```bash

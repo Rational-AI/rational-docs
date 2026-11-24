@@ -20,7 +20,7 @@ Think of it as a library with a card catalog. The models are the books; the regi
 As soon as more than one model is in play, a few problems appear: which models are approved, which version is live, what each one costs, and who is allowed to use it. A registry answers these in one place and gives you:
 
 * **Consistency:** the same model, referenced the same way, across chat, agents, tools and workflows.
-* **Control:** a single point to decide which models are available and to whom.
+* **Control:** a single point to decide which models are available and which are approved for use.
 * **Visibility:** key information such as type, size and last update, kept together.
 * **Maintainability:** the ability to add, swap or retire models without rewiring everything that uses them.
 
@@ -30,12 +30,14 @@ A registry typically holds more than one kind of model, because different jobs n
 
 * **Generative models** that produce replies.
 * **Embedding models** that turn text into vectors for retrieval.
+* **Reranking models** that reorder retrieved passages by relevance.
+* **Image generation models** that draw pictures from a prompt.
 
-Keeping both in one catalog is what lets a [RAG](./RAG.mdx) system combine retrieval and generation cleanly.
+Rational AI's registry also holds **Decision** models, which return a structured answer instead of prose. Keeping them all in one catalog is what lets a [RAG](./RAG.mdx) system combine retrieval and generation cleanly.
 
 ## The AI Model Registry in Rational AI
 
-In the platform, the [AI Model Registry](../cr/settings/ai-model-registry.mdx) is where you add models once and reuse them consistently across the product. You control which models are available, see their key details, and manage changes over time. Models you create through [fine-tuning](./Finetuning.mdx) appear here too, alongside the base models you registered.
+In the platform, the [AI Model Registry](../cr/settings/ai-model-registry.mdx) is where you add models once and reuse them consistently across the product. You control which models are available, see their key details, and manage changes over time. Models you create through [fine-tuning](./Finetuning.mdx) appear here too once you deploy them, alongside the base models you registered.
 
 ## Additional resources
 
