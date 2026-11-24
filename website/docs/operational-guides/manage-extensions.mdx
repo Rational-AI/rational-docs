@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Manage extensions
 
-Extensions are how you give Rational AI new capabilities, most often by connecting it to outside tools your agents can call. This guide walks through everything you do with extensions in the UI: where the packages you can install come from, installing one from the catalogue or straight from a file, configuring it so it starts running, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
+Extensions are how you give Rational AI new capabilities, most often by connecting it to outside tools your agents can call. This guide walks through everything you do with extensions in the UI: where the packages you can install come from, installing one from the catalog or straight from a file, configuring it so it starts running, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
 
 <Admonition type="info" icon="📖" title="WHAT IS AN EXTENSION?">
 An extension is a bundle that adds a capability to Rational AI, most commonly one or more **MCP** servers. MCP (Model Context Protocol) is an open standard for connecting AI agents to external tools and data sources, so an MCP server is essentially a set of tools your agents can call.
@@ -22,17 +22,17 @@ This page covers managing and installing existing extensions. To create one from
 
 Your tenant doesn't resolve extensions from a single registry. It resolves them from several **sources**, much the way a Linux system resolves packages from several apt sources:
 
-- **The platform catalogue** — the releases Rational AI publishes. Every tenant sees the same catalogue.
+- **The platform catalog** — the releases Rational AI publishes. Every tenant sees the same catalog.
 - **Your local packages** — anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
-- **Remote sources** — third-party registries that can be attached for your organisation. Whether any are attached, and which, is set up for you; from your side they simply contribute more packages to browse.
+- **Remote sources** — third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they simply contribute more packages to browse.
 
 Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
 
 <Admonition type="note" icon="📝" title="WHEN THE CATALOGUE AND YOUR OWN PACKAGES OVERLAP">
-You can upload your own package of an extension the platform catalogue also publishes — a patched build of something standard, for instance. There's no conflict to resolve up front, because overlap is settled **per version**:
+You can upload your own package of an extension the platform catalog also publishes — a patched build of something standard, for instance. There's no conflict to resolve up front, because overlap is settled **per version**:
 
-- For a version both offer, the **catalogue's copy wins** the listing. Your copy stays resolvable and resurfaces if the shared release is ever withdrawn.
-- A version **only you** have is always listed, right alongside the catalogue's versions.
+- For a version both offer, the **catalog's copy wins** the listing. Your copy stays resolvable and resurfaces if the shared release is ever withdrawn.
+- A version **only you** have is always listed, right alongside the catalog's versions.
 
 Packages you upload are attributed to your own tenant publisher automatically, so an overlap only happens when a manifest deliberately names a shared publisher.
 </Admonition>
@@ -49,7 +49,7 @@ Before you start, make sure you have:
 
 Every extension appears as a card on the **Extensions** page, and the card is your at-a-glance status check before you open anything. When an extension declares a version in its manifest, that **version** appears right next to the extension name, so you can confirm which release is installed without digging into details. Each card also carries an enable toggle for turning the extension on or off.
 
-## Install an extension from the catalogue
+## Install an extension from the catalog
 
 1. Go to **Settings** → **Extensions** and select **+ Add**.
 2. Browse the available extensions. The detail pane opens on the first not-yet-installed extension, so it's never blank when the dialog appears.
@@ -115,7 +115,7 @@ Many extensions connect to MCP servers running on your own machine, spawned as a
 
 ### Tell local and remote servers apart
 
-Open the extension's **details** page and find the **MCP servers** section. Each server is labelled: a remote server shows a **Remote** chip alongside its endpoint URL, while a local one shows a **Local** chip. The same view also lists the tools the extension provides, so you can see at a glance what your agents will be able to call.
+Open the extension's **details** page and find the **MCP servers** section. Each server is labeled: a remote server shows a **Remote** chip alongside its endpoint URL, while a local one shows a **Local** chip. The same view also lists the tools the extension provides, so you can see at a glance what your agents will be able to call.
 
 <img
   src={require('@site/static/img/screens/extension-mcp-tools.png').default}
@@ -134,7 +134,7 @@ Rational AI ships ready-to-use remote MCP manifests for many popular connectors,
 
 ## Result
 
-You know that extensions resolve from several sources — the platform catalogue, your own local packages, and any attached remote source — and how an overlap between them is settled per version. You can read an extension's version straight from its card, install one from the catalogue or by dropping a package onto the page, and you know that installing leaves it disabled until the first configuration starts it, discovers its tools, and enables it. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
+You know that extensions resolve from several sources — the platform catalog, your own local packages, and any attached remote source — and how an overlap between them is settled per version. You can read an extension's version straight from its card, install one from the catalog or by dropping a package onto the page, and you know that installing leaves it disabled until the first configuration starts it, discovers its tools, and enables it. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
 
 ## Related
 

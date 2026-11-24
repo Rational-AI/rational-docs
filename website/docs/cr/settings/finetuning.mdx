@@ -9,7 +9,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Fine-Tuning
 
-Fine-tuning lets you customise an AI model with your own data so it performs better on the tasks that matter to you. You pick a base model and a [training dataset](datasets.mdx), set a few training parameters, and launch a job that produces a tailored model. Use this section to start fine-tuning jobs and track the ones you've already run.
+Fine-tuning lets you customize an AI model with your own data so it performs better on the tasks that matter to you. You pick a base model and a [training dataset](datasets.mdx), set a few training parameters, and launch a job that produces a tailored model. Use this section to start fine-tuning jobs and track the ones you've already run.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -56,14 +56,14 @@ If you're unsure about a parameter, hover the information icon next to the field
 
 ## Follow and manage a fine-tuning
 
-Click a fine-tuning to open its details: status (**Pending**, **Training**, **Completed**, **Failed** or **Cancelled**), progress, the **Learning curves** chart of training and evaluation loss, and the parameters it ran with. If the measurements fail to load, click **Reload measurements**.
+Click a fine-tuning to open its details: status (**Pending**, **Training**, **Completed**, **Failed** or **Canceled**), progress, the **Learning curves** chart of training and evaluation loss, and the parameters it ran with. If the measurements fail to load, click **Reload measurements**.
 
 The **⋮** menus offer:
 
 * **Edit details** – change the name and description.
 * **Re-run** – start a new fine-tuning from this one's settings, with different parameters.
 * **Cancel run** – stop a training job and release its GPUs; checkpoints are kept.
-* **Retry run** – restart a failed or cancelled job from its latest complete checkpoint.
+* **Retry run** – restart a failed or canceled job from its latest complete checkpoint.
 * **Download weights** – once completed, download the trained adapter as a `.tar.gz`.
 * **Download training artifacts** – the captured inputs, checkpoints, configuration and full measurement history.
 * **Deploy** – once completed, make the model available in the [AI Model Registry](ai-model-registry.mdx).

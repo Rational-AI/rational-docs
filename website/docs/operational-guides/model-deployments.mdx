@@ -9,7 +9,7 @@ import Admonition from '@theme/Admonition';
 A model you host yourself only answers while it runs, and while it runs it holds a GPU or a good share of a server's memory. You want it ready when people use it, out of the way when they don't, and you want to know at a glance whether it is downloading, starting, serving or broken. In Rational AI you add an open-source model from Hugging Face, decide how many copies of it run and when it gives its hardware back, and follow every step from the AI Model Registry.
 
 <Admonition type="info" icon="📖" title="WHAT IS A DEPLOYMENT?">
-A self-hosted model in the registry describes *what* to run: the weights (for example a Hugging Face repository) and its **deploy settings**. Its **deployment** is the running copy on your hosting platform: on your own servers for an [on-premise installation](/operational-guides/run-models-on-premise), or on Rational AI's infrastructure in the cloud. A deployment has a **phase**, which says where it is in its lifecycle, and **replicas**, the running instances of the model that answer requests. Each model has at most one deployment.
+A self-hosted model in the registry describes *what* to run: the weights (for example a Hugging Face repository) and its **deploy settings**. Its **deployment** is the running copy on your hosting platform: on your own servers for an [on-premises installation](/operational-guides/run-models-on-premise), or on Rational AI's infrastructure in the cloud. A deployment has a **phase**, which says where it is in its lifecycle, and **replicas**, the running instances of the model that answer requests. Each model has at most one deployment.
 </Admonition>
 
 ## Prerequisites
@@ -22,7 +22,7 @@ Before you start, make sure you have:
 
 ## Add an open-source model
 
-The model picker searches Hugging Face live, so you see the current catalogue rather than a fixed list.
+The model picker searches Hugging Face live, so you see the current catalog rather than a fixed list.
 
 1. Go to **Settings** → **AI Model Registry** and select **Add new**.
 2. Choose **Choose an open source model** (*"Install a model available open source via Hugging Face"*) and select **Next**.
@@ -50,7 +50,7 @@ Where your hosting platform accepts uploaded weights, the **Add new** dialog als
 2. Pick the model file (a `.gguf` file) and check the **Name**, which is taken from the file name.
 3. Select **Confirm**. The file is uploaded and the model deployed; a large file can take several minutes.
 
-The option is hidden when the hosting platform accepts no uploads. That is the case for on-premise installations, which run models from Hugging Face.
+The option is hidden when the hosting platform accepts no uploads. That is the case for on-premises installations, which run models from Hugging Face.
 
 ## Review the deploy settings
 
@@ -60,7 +60,7 @@ Each self-hosted model has **Deploy settings**, read when it is deployed: what h
 - **The number of GPUs** — listed first where the platform has GPUs. `0` runs the model on the CPU, much more slowly.
 - **The runner's settings** — such as the GPU memory budget, the tool-call and reasoning parsers, extra runner arguments and environment variables. The form lists the ones your hosting platform supports, with the rarely needed ones under **Advanced settings**.
 
-Each field shows **Default:** and the value this model gets when you leave it alone. Choose **Custom** to set your own value, or, for a flag, **Don't pass** to leave it out entirely. Defaults follow the model: on-premise, a model deploys the way its published vLLM recipe launches it on your hardware. Environment variables whose name looks like a secret (a token, key or password) show as *"Set (hidden)"* once saved.
+Each field shows **Default:** and the value this model gets when you leave it alone. Choose **Custom** to set your own value, or, for a flag, **Don't pass** to leave it out entirely. Defaults follow the model: on-premises, a model deploys the way its published vLLM recipe launches it on your hardware. Environment variables whose name looks like a secret (a token, key or password) show as *"Set (hidden)"* once saved.
 
 <Admonition type="note" icon="📝" title="SAVED SETTINGS DO NOT REACH A RUNNING MODEL ON THEIR OWN">
 Saving the deploy settings changes what *should* run, not what runs. The deployment shows **Settings not deployed** and lists the fields that changed until you deploy them, and when the model is running you are asked right after saving whether to deploy them now. This way nobody changes a model in production by editing a form.

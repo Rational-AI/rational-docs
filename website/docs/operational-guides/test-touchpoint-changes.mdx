@@ -11,7 +11,7 @@ Changing a system prompt or swapping a model is easy to do and hard to be confid
 <Admonition type="info" icon="📖" title="THIS IS A REGRESSION CHECK, NOT AN EVALUATION SUITE">
 There's no curated dataset and no quality score. The baseline is simply **what the system actually did**, on real input from real users.
 
-That means a replay run can't tell you whether an answer is *good*. It tells you whether your change altered behaviour that was previously working — which is the question you actually have when you're about to edit a live prompt.
+That means a replay run can't tell you whether an answer is *good*. It tells you whether your change altered behavior that was previously working — which is the question you actually have when you're about to edit a live prompt.
 </Admonition>
 
 ## Prerequisites
@@ -66,7 +66,7 @@ Every case gets one of four verdicts:
 | Verdict | Meaning |
 |---------|---------|
 | **Same** | No meaningful difference detected. |
-| **Changed** | Behaviour differed on at least one signal. |
+| **Changed** | Behavior differed on at least one signal. |
 | **Diverged** | The candidate attempted a tool call the original never made, so the case stopped. |
 | **Failed** | The case couldn't be completed. |
 

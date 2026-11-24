@@ -9,7 +9,7 @@ import Admonition from '@theme/Admonition';
 Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document — flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer, how to leave comments on a PDF, and how to check that a resource's chunks are ready for search.
 
 <Admonition type="info" icon="📖" title="WHAT IS AN ANNOTATION?">
-An annotation marks a specific range of a resource and pairs it with a label and a colour. For text resources, the range is stored as character offsets — the exact start and end positions in the raw file — which are the same positions used when Rational AI splits the file into chunks (the smaller pieces it searches over). Because the highlight is anchored to those positions, it always points to the exact text you selected. Annotations show up inline in the viewer and are listed in the **Annotations** sidebar.
+An annotation marks a specific range of a resource and pairs it with a label and a color. For text resources, the range is stored as character offsets — the exact start and end positions in the raw file — which are the same positions used when Rational AI splits the file into chunks (the smaller pieces it searches over). Because the highlight is anchored to those positions, it always points to the exact text you selected. Annotations show up inline in the viewer and are listed in the **Annotations** sidebar.
 </Admonition>
 
 ## Prerequisites
@@ -33,14 +33,14 @@ Start in the resource you want to mark up.
 
 ## Create an annotation
 
-Highlight a passage to attach a label and colour to it.
+Highlight a passage to attach a label and color to it.
 
 1. In the viewer, **select the text** you want to annotate by dragging across it.
-2. When you release the selection, the **label/colour popover** opens.
-3. Choose or enter a **label** and pick a **colour**.
+2. When you release the selection, the **label/color popover** opens.
+3. Choose or enter a **label** and pick a **color**.
 4. Confirm to create the annotation.
 
-The selected passage is highlighted inline in your chosen colour, and the new annotation is added to the **Annotations** sidebar with its label and colour.
+The selected passage is highlighted inline in your chosen color, and the new annotation is added to the **Annotations** sidebar with its label and color.
 
 <Admonition type="note" icon="📝" title="OVERLAPPING SELECTIONS">
 If a new selection overlaps an existing annotation, the highlight clamps to the first range — the one that starts earlier. Nested or overlapping highlights aren't currently supported.
@@ -99,14 +99,14 @@ A chunk is only useful to [AI Search](/operational-guides/configure-rag) when it
 
 | Dot | What it means |
 |-----|---------------|
-| Grey | The chunk is disabled, so search ignores it. |
-| Warning colour | The chunk is enabled, but its embedding is not usable for retrieval, so search can't find it yet. |
+| Gray | The chunk is disabled, so search ignores it. |
+| Warning color | The chunk is enabled, but its embedding is not usable for retrieval, so search can't find it yet. |
 | Green | The chunk is enabled and embedded, so search can find it. |
 
 <Admonition type="note" icon="📝" title="A WARNING DOT USUALLY MEANS REPROCESS">
-A chunk shows the warning colour when its embedding is missing either from the chunk itself or from the vector store. Reprocessing the resource (see [Manage knowledge resources](/operational-guides/manage-knowledge-resources#recover-a-file-that-failed)) embeds it again.
+A chunk shows the warning color when its embedding is missing either from the chunk itself or from the vector store. Reprocessing the resource (see [Manage knowledge resources](/operational-guides/manage-knowledge-resources#recover-a-file-that-failed)) embeds it again.
 </Admonition>
 
 ## Result
 
-Your text resource now carries one or more labelled annotations. Each highlight appears inline in the viewer, anchored to the exact text you selected, and every annotation is listed in the **Annotations** sidebar where you can focus or delete it. Your PDFs can carry comments on passages and areas that your team can read on the page, and the dot on each chunk card tells you whether that chunk can be found by search.
+Your text resource now carries one or more labeled annotations. Each highlight appears inline in the viewer, anchored to the exact text you selected, and every annotation is listed in the **Annotations** sidebar where you can focus or delete it. Your PDFs can carry comments on passages and areas that your team can read on the page, and the dot on each chunk card tells you whether that chunk can be found by search.

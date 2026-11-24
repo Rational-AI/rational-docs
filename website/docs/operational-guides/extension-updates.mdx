@@ -154,13 +154,13 @@ A release can be **withdrawn** from circulation, usually because it shipped a se
 
 Tenant-side, both behave the same way, and the effects are deliberately conservative:
 
-- The release **disappears from the catalogue listing** and from the updates offered to you. You won't be shown it and can't accidentally move to it.
+- The release **disappears from the catalog listing** and from the updates offered to you. You won't be shown it and can't accidentally move to it.
 - Targeting it explicitly as an update **fails**, and installing it fresh is **refused**.
 - The release **remains observable by id**, flagged as withdrawn or revoked, so a reference to it never turns into a dead end.
 - **If your installation is already on it, nothing is taken away from you.** The release stays listed in that extension's version history: you keep running it, and it remains available as a rollback target.
 
 <Admonition type="caution" icon="⚠️" title="A WITHDRAWN RELEASE STILL RUNS — IT JUST STOPS SPREADING">
-Withdrawal removes a release from circulation; it does not reach into your tenant and stop it. If you're running a release that gets withdrawn, treat the disappearance from the catalogue as the signal to move: check the extension for a newer release and update once one is available.
+Withdrawal removes a release from circulation; it does not reach into your tenant and stop it. If you're running a release that gets withdrawn, treat the disappearance from the catalog as the signal to move: check the extension for a newer release and update once one is available.
 </Admonition>
 
 ## Uninstall

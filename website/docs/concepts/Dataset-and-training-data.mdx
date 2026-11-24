@@ -11,7 +11,7 @@ import Admonition from "@theme/Admonition";
 
 # Dataset and training data
 
-**Training data** is the collection of examples a model learns from. A **dataset** is that data organised into a usable form: a structured set of examples gathered, cleaned and labelled for a specific purpose. If a model's [architecture](./Model-architecture.mdx) is the blueprint, the dataset is the raw material it is built from.
+**Training data** is the collection of examples a model learns from. A **dataset** is that data organized into a usable form: a structured set of examples gathered, cleaned and labeled for a specific purpose. If a model's [architecture](./Model-architecture.mdx) is the blueprint, the dataset is the raw material it is built from.
 
 A model never learns facts the way a person memorises them. It learns **patterns** from the examples it sees. This is why the data matters so much: a model can only be as good, as broad and as fair as the data it was trained on. The common phrase captures it well: garbage in, garbage out.
 
@@ -22,7 +22,7 @@ Not all data is equally useful for training. A strong dataset tends to be:
 * **Relevant:** representative of the task and the domain the model will actually work in.
 * **High quality:** accurate, consistent and free of errors, duplicates and noise.
 * **Diverse:** covering the range of cases the model will meet, so it generalises rather than memorising.
-* **Well labelled:** where labels are needed, they are correct and applied consistently.
+* **Well labeled:** where labels are needed, they are correct and applied consistently.
 * **Balanced:** not skewed towards one group or outcome, which helps reduce bias.
 
 <Admonition type="note" icon="📝" title="Bias in, bias out">
@@ -35,12 +35,12 @@ Training data generally falls into a few categories, often combined:
 
 | Type           | What it means                                                | Example                                  |
 | :------------- | :----------------------------------------------------------- | :--------------------------------------- |
-| **Labelled**   | Each example is paired with the correct answer or category    | Emails tagged as *spam* or *not spam*    |
+| **Labeled**   | Each example is paired with the correct answer or category    | Emails tagged as *spam* or *not spam*    |
 | **Unlabelled** | Raw examples with no annotations                              | A large collection of web pages          |
-| **Structured** | Organised in a fixed schema, such as rows and columns         | A products table in a database           |
+| **Structured** | Organized in a fixed schema, such as rows and columns         | A products table in a database           |
 | **Unstructured** | Free‑form content without a fixed schema                    | Documents, PDFs, images, transcripts     |
 
-Large language models are first trained on huge amounts of mostly unlabelled text, then refined on smaller, carefully curated datasets through [model training](./Model-architecture.mdx) and finetuning.
+Large language models are first trained on huge amounts of mostly unlabelled text, then refined on smaller, carefully curated datasets through [model training](./Model-architecture.mdx) and fine-tuning.
 
 ## Datasets and your data in Rational AI
 
@@ -53,7 +53,7 @@ The lesson carries across: the better and cleaner the data you provide, the more
 
 ## Additional resources
 
-* [Knowledge](../cr/Knowledge.mdx): organise the data your agents draw on at answer time.
+* [Knowledge](../cr/Knowledge.mdx): organize the data your agents draw on at answer time.
 
 
 ---
@@ -64,7 +64,7 @@ The lesson carries across: the better and cleaner the data you provide, the more
 	items={[
 		{ label: "Model training", to: "/concepts/Model-training" },
 		{ label: "Model architecture", to: "/concepts/Model-architecture" },
-		{ label: "Finetuning", to: "/concepts/Finetuning" },
+		{ label: "Fine-tuning", to: "/concepts/Finetuning" },
 		{ label: "Knowledge", to: "/concepts/Knowledge" },
 		{ label: "Hallucinations", to: "/concepts/hallucinations" },
 	]}

@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Connect a Telegram bot
 
-A Telegram channel puts your agent behind a bot: people message the bot, the agent answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behaviour you'll want to get right before letting it loose in a busy chat.
+A Telegram channel puts your agent behind a bot: people message the bot, the agent answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behavior you'll want to get right before letting it loose in a busy chat.
 
 ## Prerequisites
 
@@ -58,7 +58,7 @@ Each Telegram chat becomes its own conversation. In supergroups with topics enab
 
 Users have one command that affects this directly: **`/reset`** closes the current conversation, so their next message starts a fresh one with no history behind it. **`/start`** and **`/help`** reply with the greeting you configure. All three appear in Telegram's own command menu, registered automatically when the bot connects.
 
-## Behaviour in group chats
+## Behavior in group chats
 
 Dropping a bot into a busy group goes badly if it answers everything. It doesn't:
 

@@ -57,7 +57,7 @@ Under **Model Registry**, keep **Platform Agents default** or choose a specific 
 ## Choose the tools
 
 <img
-  alt="The Ask me first section with the write tool selected, and the Extensions and tools catalogue below it"
+  alt="The Ask me first section with the write tool selected, and the Extensions and tools catalog below it"
   src={require('@site/static/img/screens/agents-profile-tools.png').default}
   style={{ maxWidth: '520px', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
@@ -88,7 +88,7 @@ An amber dot marks the tools that write or execute (`bash`, `edit`, `write`). Kn
 
 **Extensions & tools** lists every tool from the installed extensions, grouped by extension, with a search box and a *granted* count. Select the tools this agent may call. A tool whose extension still *needs setup* (typically a missing connector) cannot be selected until that is fixed.
 
-Tools reach the agent under the name shown in the catalogue, `<extension>_<tool>`; the same name is what **Ask me first** matches.
+Tools reach the agent under the name shown in the catalog, `<extension>_<tool>`; the same name is what **Ask me first** matches.
 
 ### Ask me first
 
@@ -106,7 +106,7 @@ An agent can do anything its tools allow, as often as it decides to, on everythi
 
 ## Give it a face
 
-**Identity** is purely cosmetic: it shapes the generated avatar so each agent is recognisable at a glance. Choose a **Chassis** (Hally, Pico, Orbit, Robo), a **Colour** and a **Screen**, then move the four sliders — **Rigor** changes the eyes, **Autonomy** the antenna, **Verbosity** the mouth, **Creativity** the sheen of the casing. None of this changes behaviour; the instructions do.
+**Identity** is purely cosmetic: it shapes the generated avatar so each agent is recognisable at a glance. Choose a **Chassis** (Hally, Pico, Orbit, Robo), a **Colour** and a **Screen**, then move the four sliders — **Rigor** changes the eyes, **Autonomy** the antenna, **Verbosity** the mouth, **Creativity** the sheen of the casing. None of this changes behavior; the instructions do.
 
 ## Decide what starts it
 
@@ -136,7 +136,7 @@ From here:
 - **Run now** opens **Run &lt;name&gt;**. Write the **Goal for this run** — *"Describe a concrete outcome"* — and select **Start run**. The agent's instructions still apply; the goal is what this run must deliver. For a quick question, use a [chat](./agent-chats) instead.
 - **Edit** reopens the profile panel. **Delete** is at the bottom of that panel; the agent's past runs are kept for audit.
 - **Pause** marks the agent as paused; see [Pause an agent](./agent-routines#pause-an-agent).
-- **Runs** lists every run of this agent with **Cancel** for the ones still going and **Retry** for those that failed, were cancelled or timed out.
+- **Runs** lists every run of this agent with **Cancel** for the ones still going and **Retry** for those that failed, were canceled or timed out.
 
 <img
   alt="The Run Iris dialog with a goal for the run and the Start run button"
@@ -148,7 +148,7 @@ From here:
 
 | Symptom | What to check |
 |---------|---------------|
-| **Run now** is greyed out | The profile has no instructions. Open **Edit** and write them. |
+| **Run now** is grayed out | The profile has no instructions. Open **Edit** and write them. |
 | The run fails with *"No text-generation model is available — add one to the registry first."* | There is no text-generation model in the AI Model Registry. Add one, or connect a subscription. |
 | The run fails with *"The configured Agents default model is unavailable."* | The **Agents model** default points to a model that was removed or withdrawn. Pick another under **Default models**, or set a model on the agent. |
 | The agent says a tool is not available | The tool is not granted on the profile, or its extension needs setup. Check **Extensions & tools** in the profile and the badges in the [Library](./agent-computers#browse-the-library). |

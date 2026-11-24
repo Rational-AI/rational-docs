@@ -9,7 +9,7 @@ import Admonition from '@theme/Admonition';
 The AI Model Registry is where every AI model the platform can use lives in one place. From here you connect providers, register their models, describe what each model can do, read what it costs and where it's already in use, and pick the defaults the rest of the platform falls back on. To deploy and run models you host yourself, see [Deploy and run self-hosted models](/operational-guides/model-deployments). This guide covers all of that, end to end.
 
 <Admonition type="info" icon="📖" title="WHAT IS THE AI MODEL REGISTRY?">
-A [large language model](/concepts/LLMs), or LLM, is the AI that actually generates text, embeddings, or images. Those models come from providers (OpenAI, OpenRouter, Xference, and others), and each provider is wired in through a *connector*. The registry is the catalogue that ties it together: add a connector, register the models it exposes, inspect each model's pricing, publisher, and usage, and choose the platform default model for each kind of task so the rest of the platform inherits a sensible fallback.
+A [large language model](/concepts/LLMs), or LLM, is the AI that actually generates text, embeddings, or images. Those models come from providers (OpenAI, OpenRouter, Xference, and others), and each provider is wired in through a *connector*. The registry is the catalog that ties it together: add a connector, register the models it exposes, inspect each model's pricing, publisher, and usage, and choose the platform default model for each kind of task so the rest of the platform inherits a sensible fallback.
 </Admonition>
 
 ## Prerequisites
@@ -75,7 +75,7 @@ If nothing references the model, the section shows an empty state.
 
 ## Describe what a model can do
 
-The platform decides what to offer around a model from what the registry says it can do: whether a chat may attach images, whether tools are sent, which reasoning levels the picker shows, which sizes an image model is asked for. Catalogues get this right most of the time; for a self-hosted model the registry can often only guess from the name. Correct it here when the guess is wrong.
+The platform decides what to offer around a model from what the registry says it can do: whether a chat may attach images, whether tools are sent, which reasoning levels the picker shows, which sizes an image model is asked for. Catalogs get this right most of the time; for a self-hosted model the registry can often only guess from the name. Correct it here when the guess is wrong.
 
 ### Edit capabilities and reasoning levels
 
@@ -100,7 +100,7 @@ An image generation model carries an account of what it can be asked for: output
 4. Select **Save**.
 
 <Admonition type="note" icon="📝" title="VALUES SET BY HAND ARE NO LONGER UPDATED BY THE PROVIDER">
-Once you save the form, the provider's catalogue stops overwriting the model, so a correction you made stays made. To go back, select **Restore the provider's values**: what you entered is discarded and replaced by whatever the provider reports, which may be nothing at all.
+Once you save the form, the provider's catalog stops overwriting the model, so a correction you made stays made. To go back, select **Restore the provider's values**: what you entered is discarded and replaced by whatever the provider reports, which may be nothing at all.
 </Admonition>
 
 ### Use decision models
@@ -109,7 +109,7 @@ A **Decision** model doesn't chat: it takes a structured question, with images i
 
 ## Document and approve a model
 
-The registry answers *which model, served by whom, on what hardware, at what price*. A risk function or a public tender asks a different set of questions: which exact weights are running, under what licence, approved for what use and forbidden for what, with which known limitations — and who signed that off.
+The registry answers *which model, served by whom, on what hardware, at what price*. A risk function or a public tender asks a different set of questions: which exact weights are running, under what license, approved for what use and forbidden for what, with which known limitations — and who signed that off.
 
 The **Governance** section of a model's drawer is where those answers live. It applies to third-party models too, which are usually the ones drawing the hardest questions.
 
@@ -144,7 +144,7 @@ The approval state shows as a chip. It reads as satisfied only when the model is
 <Admonition type="caution" icon="⚠️" title="SAVING AN APPROVED RECORD REVOKES ITS APPROVAL">
 Edit a substantive field on an approved model and the approval decays to **not reviewed**, clearing the sign-off stamp. The section warns you before you save and again afterwards.
 
-This is the behaviour you want. An approval that outlives a rewrite of the thing approved is worse than no approval, because it reads as a decision somebody actually took. The case it guards against is repurposing: an approved model quietly edited from "drafting replies to customer email" to "screening job applicants", still wearing its sign-off.
+This is the behavior you want. An approval that outlives a rewrite of the thing approved is worse than no approval, because it reads as a decision somebody actually took. The case it guards against is repurposing: an approved model quietly edited from "drafting replies to customer email" to "screening job applicants", still wearing its sign-off.
 
 Withdrawing an approval asks you to confirm first, and editing afterwards does not restore it.
 </Admonition>

@@ -129,7 +129,7 @@ If someone edited the model after you read it, its `deployRevision` moved on and
 
 The `scale` object sets how many replicas the deployment may run:
 
-| Scale | Behaviour |
+| Scale | Behavior |
 |---|---|
 | `min = max = n` | Always `n` replicas. `0`–`0` is a stopped deployment |
 | `min = 0`, `max ≥ 1` | On demand: it releases its hardware after `idleTimeout` without requests and starts again on the next one |

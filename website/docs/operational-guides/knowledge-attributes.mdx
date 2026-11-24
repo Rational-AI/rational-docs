@@ -9,7 +9,7 @@ import Admonition from '@theme/Admonition';
 A grid of plain text columns soon hits its limits: you retype a customer's name in every contract, compute renewal dates by hand, and can't tell at a glance how much each customer is worth. In a Rational AI [Knowledge](/operational-guides/create-knowledge), every attribute has a kind, and besides text, numbers and dates there are kinds that connect records and compute values for you: **links** between collections, **linked fields** that read through a link, **formulas**, **rollups** that count or sum linked records, and **people**. This guide explains each kind, how to create it, and how to rename an attribute safely.
 
 <Admonition type="info" icon="📖" title="WHAT IS AN ATTRIBUTE?">
-An attribute is a named field of the Knowledge's records, such as *Status*, *Amount* or *Account manager*, shown as a column in the [grid](/operational-guides/knowledge-collections-and-grid). Attributes belong to the Knowledge; each [collection](/operational-guides/knowledge-collections-and-grid#organise-records-into-collections) chooses which of them it shows. Its **kind** decides what values it accepts, how it is edited, and how it can be filtered, sorted, grouped and summarised. Some kinds are stored values you edit; others (linked field, formula, rollup) are computed and read-only.
+An attribute is a named field of the Knowledge's records, such as *Status*, *Amount* or *Account manager*, shown as a column in the [grid](/operational-guides/knowledge-collections-and-grid). Attributes belong to the Knowledge; each [collection](/operational-guides/knowledge-collections-and-grid#organize-records-into-collections) chooses which of them it shows. Its **kind** decides what values it accepts, how it is edited, and how it can be filtered, sorted, grouped and summarized. Some kinds are stored values you edit; others (linked field, formula, rollup) are computed and read-only.
 </Admonition>
 
 ## Prerequisites
@@ -28,7 +28,7 @@ The same editor opens from three places: the **+** at the end of the grid's head
 3. Fill in the options for that kind, described below.
 4. Select **Create** (or **Save** when you are changing an existing attribute).
 
-For **Single select** and **Multi select**, add the **Options** with **+ Add option** and give each a colour. You can also create new options later, straight from a cell.
+For **Single select** and **Multi select**, add the **Options** with **+ Add option** and give each a color. You can also create new options later, straight from a cell.
 
 <Admonition type="note" icon="📝" title="EDIT AS JSON SCHEMA IS THERE FOR WHAT THE FORM DOESN'T SHOW">
 Every attribute is stored as a JSON Schema. **Edit as JSON Schema** shows it as text, for the rare settings the form doesn't offer, such as a filter on a rollup. Select **Pick a type** to go back to the form.
@@ -84,13 +84,13 @@ An empty input, a division by zero or a value out of range gives an empty cell r
 
 ## Rollup
 
-A **Rollup** summarises the records linked to this one: how many opportunities a company has, their total value, the date of the latest meeting.
+A **Rollup** summarizes the records linked to this one: how many opportunities a company has, their total value, the date of the latest meeting.
 
-- **Over the records**: the linked records to summarise. You can follow one of this record's links (*"the Companies it links to"*) or the records whose link points *to* this record (*"Opportunities whose Company is this record"*).
+- **Over the records**: the linked records to summarize. You can follow one of this record's links (*"the Companies it links to"*) or the records whose link points *to* this record (*"Opportunities whose Company is this record"*).
 - **Calculate**: **Count records**, **Count filled**, **Count empty**, **Count unique values**, **Sum**, **Average**, **Minimum**, **Maximum**, **Earliest** or **Latest**.
 - **Of their**: the attribute to calculate on (not needed for **Count records**). Sums and averages take numbers, **Earliest** and **Latest** take dates; the list only offers attributes that fit.
 
-A rollup can summarise stored attributes, linked fields and formulas, but not a link or another rollup. The column is read-only; select a cell to [see the records behind it](/operational-guides/knowledge-collections-and-grid#follow-a-rollup-to-its-records).
+A rollup can summarize stored attributes, linked fields and formulas, but not a link or another rollup. The column is read-only; select a cell to [see the records behind it](/operational-guides/knowledge-collections-and-grid#follow-a-rollup-to-its-records).
 
 ## Person
 

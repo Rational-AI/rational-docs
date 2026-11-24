@@ -116,7 +116,7 @@ In the repository, go to **Settings** → **Webhooks** → **Add webhook** and f
 | **Secret** | the secret from the previous step |
 | **Which events** | the events you listed on the agent |
 
-`<tenant>` is your organisation's identifier on the platform, normally the first part of your Control Room address (`<tenant>.…`); your administrator can confirm it.
+`<tenant>` is your organization's identifier on the platform, normally the first part of your Control Room address (`<tenant>.…`); your administrator can confirm it.
 
 GitHub sends a *ping* as soon as the webhook is saved; the answer `{"status":"pong"}` in **Recent Deliveries** confirms that the address and the secret are right. From then on, every matching event answers `{"status":"queued","runId":"…"}` and a run appears in **History** with trigger `githubEvent`.
 

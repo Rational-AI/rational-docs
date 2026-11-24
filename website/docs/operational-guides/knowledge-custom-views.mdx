@@ -113,10 +113,10 @@ A calendar view places records on days and hours by one of their date attributes
 1. Open the **Grid**, select the collection tab and set the filter you want the calendar to show.
 2. Select **Save as view** (or **Save as new view** in a saved grid view).
 3. Enter a **Name** and, under **Show as**, choose **Calendar**. The option is there when the grid has a date or date-and-time column.
-4. Choose the **Date** that places each record, and optionally an **End**, a **Colour** (a single select attribute whose options colour the records) and **Solid when checked** (a checkbox, such as *Published*, that shows checked records solid and the others outlined).
+4. Choose the **Date** that places each record, and optionally an **End**, a **Colour** (a single select attribute whose options color the records) and **Solid when checked** (a checkbox, such as *Published*, that shows checked records solid and the others outlined).
 5. Select **Create**.
 
-The calendar switches between **Day**, **Week** and **Month**. With update rights you can drag a record to another day or time, stretch it to change its end, double-click it to tick its checkbox, or select an empty slot to add a record there. Select a record to edit or delete it. The colour options appear as chips with their counts, to filter what the calendar shows.
+The calendar switches between **Day**, **Week** and **Month**. With update rights you can drag a record to another day or time, stretch it to change its end, double-click it to tick its checkbox, or select an empty slot to add a record there. Select a record to edit or delete it. The color options appear as chips with their counts, to filter what the calendar shows.
 
 The gear above the calendar opens **Calendar settings**, where you can change the **Start** and **End** attributes, **Colour by** and **Solid when**, what a record is called (*"post"* and *"posts"* rather than *"event"*), which records it shows and whether it **Opens on** a day, week or month. Changes apply to everyone who opens the view.
 
@@ -200,7 +200,7 @@ Errors come back as `rational:resources:error` (or `rational:schema:error`). A s
 
 | Request | What it does |
 | --- | --- |
-| `rational:assistant:ask` | Sends a question to the Knowledge's assistant and returns its reply to the view (`rational:assistant:result`), for example to summarise the records on screen. |
+| `rational:assistant:ask` | Sends a question to the Knowledge's assistant and returns its reply to the view (`rational:assistant:result`), for example to summarize the records on screen. |
 | `rational:chat:ask` | Puts a question in the chat panel beside the view and opens it, so the user follows the answer there. It continues the open conversation; add `newChat: true` to start a new one. |
 | `rational:decision:ask` | Asks a decision model for a structured decision and returns it (`rational:decision:ask:result`). Without a model named in the request, it uses the **Decision model** chosen among the [default models](/operational-guides/ai-model-registry-features). |
 | `rational:tools:list`, `rational:tool:call` | Lists and calls the tools enabled on the Knowledge's assistant. |

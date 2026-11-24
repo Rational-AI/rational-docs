@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Run models on your own servers
 
-When Rational AI is installed on your premises, the reason is usually that data must not leave them, and that includes the prompts and documents you send to a model. An on-premise installation therefore runs its models itself, on the same machine as the platform or on extra machines you add for them. You choose and deploy every model from **Settings** → **AI Model Registry**, as in the cloud; this guide covers what is specific to your own servers: GPUs, memory, the weights on disk, the DGX Spark, and spreading models over several machines.
+When Rational AI is installed on your premises, the reason is usually that data must not leave them, and that includes the prompts and documents you send to a model. An on-premises installation therefore runs its models itself, on the same machine as the platform or on extra machines you add for them. You choose and deploy every model from **Settings** → **AI Model Registry**, as in the cloud; this guide covers what is specific to your own servers: GPUs, memory, the weights on disk, the DGX Spark, and spreading models over several machines.
 
 <Admonition type="info" icon="📖" title="WHAT RUNS A MODEL ON-PREMISE?">
 Each deployed model is a container on the Docker engine of your server, next to the platform's own services. Text generation models run on **vLLM**, an open-source inference engine; embedding models run on vLLM or on **text embeddings inference** (TEI). The platform starts, stops and watches these containers for you: you never run Docker commands to deploy a model. With several machines, the containers are spread over a **Docker Swarm**, a group of Docker engines that work as one.
@@ -16,9 +16,9 @@ Each deployed model is a container on the Docker engine of your server, next to 
 
 Before you start, make sure you have:
 
-- **An on-premise installation** of the current release, with administrative access to the Control Room.
+- **An on-premises installation** of the current release, with administrative access to the Control Room.
 - **Hardware for the models:** an NVIDIA GPU with its container runtime for good speed, or enough memory to run small models on the CPU.
-- **A Hugging Face token, for gated models only:** models such as Llama or Gemma need your organisation's own token, given to the installer with `--hf-token`. Public models (for example `BAAI/bge-m3`) need none.
+- **A Hugging Face token, for gated models only:** models such as Llama or Gemma need your organization's own token, given to the installer with `--hf-token`. Public models (for example `BAAI/bge-m3`) need none.
 - **For several machines:** shell access to each of them, the same processor architecture on all of them, and a network between them that you can open (see below).
 
 ## Add your first models
@@ -61,7 +61,7 @@ Model containers sit on a network of their own, shared only with the platform's 
 
 ## Run models on a DGX Spark
 
-An NVIDIA DGX Spark is an Arm machine whose GPU (a GB10) shares its memory with the rest of the system. The installer recognises it and adjusts:
+An NVIDIA DGX Spark is an Arm machine whose GPU (a GB10) shares its memory with the rest of the system. The installer recognizes it and adjusts:
 
 - **The right images.** It uses the Arm builds of the embedding runner, built for the GB10.
 - **80 GiB for models.** Because the platform needs memory too, the installation leaves 80 GiB of the shared memory to models and keeps the rest. A deployment's GPU memory budget counts against those 80 GiB, so `50%` means 40 GiB.

@@ -13,7 +13,7 @@ An Email channel plugs a mailbox into the platform: incoming mail becomes conver
 Before you start, make sure you have:
 
 - **A mailbox with IMAP and SMTP access**, and its server addresses.
-- **Credentials**: either an app password, or a Gmail or Microsoft 365 account you can authorise interactively.
+- **Credentials**: either an app password, or a Gmail or Microsoft 365 account you can authorize interactively.
 - **Administrative access** to **Settings** → **Channels**.
 
 ## Connect the mailbox
@@ -33,7 +33,7 @@ Connecting **validates both the IMAP and SMTP logins**. A mailbox that can recei
 | **App password** | Any IMAP/SMTP mailbox. Simplest where your provider supports it. |
 | **OAuth (XOAUTH2)** | Gmail and Microsoft 365, where app passwords are often disabled by policy. |
 
-For OAuth you authorise the mailbox interactively: the channel gives you an **Authorize mailbox access** action that takes you through your provider's consent screen and returns with the grant.
+For OAuth you authorize the mailbox interactively: the channel gives you an **Authorize mailbox access** action that takes you through your provider's consent screen and returns with the grant.
 
 <Admonition type="note" icon="📝" title="AN EXPIRED AUTHORISATION IS A VISIBLE STATE, NOT A SILENT STALL">
 OAuth grants expire or get revoked. When that happens the channel reports that it **needs authorisation** and surfaces the **Authorize mailbox access** button again.
@@ -45,7 +45,7 @@ Check the channel status if mail stops arriving — this is the most common reas
 
 **One email thread is one conversation.** Conversations are keyed by the mail thread itself, not by who sent it — so two separate threads from the same person are two separate conversations, exactly as they appear in their mail client.
 
-That's the behaviour email users expect, and it matters: collapsing everything from one address into a single conversation would blend an invoice query into a support request because they came from the same colleague.
+That's the behavior email users expect, and it matters: collapsing everything from one address into a single conversation would blend an invoice query into a support request because they came from the same colleague.
 
 Only unread mail is picked up, and **a message is marked read only once it has been successfully ingested**. If the platform restarts mid-fetch, the mail is picked up again on the next pass rather than disappearing — the failure mode is a duplicate, never a dropped message.
 

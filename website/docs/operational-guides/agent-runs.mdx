@@ -6,7 +6,7 @@ import Admonition from '@theme/Admonition';
 
 # Follow runs and approve actions
 
-Every piece of work an agent does is a **run**: it starts, works through the job step by step on the agent's computer, and ends *Completed*, *Failed*, *Cancelled* or *Timed out*. The run page shows the whole thing as it happens — what the agent said, each tool it called and what came back — and it is where you answer when the agent reaches a tool it must not use without you.
+Every piece of work an agent does is a **run**: it starts, works through the job step by step on the agent's computer, and ends *Completed*, *Failed*, *Canceled* or *Timed out*. The run page shows the whole thing as it happens — what the agent said, each tool it called and what came back — and it is where you answer when the agent reaches a tool it must not use without you.
 
 This guide follows **Quinn** pricing request for quotation RFQ-2026-0153: Quinn computes the offer on its own, then stops before writing the offer file because `write` is under **Ask me first**.
 
@@ -74,8 +74,8 @@ Anyone who can use the agent can approve or reject its calls, not only the perso
 ## Steer, stop or retry
 
 - **Message the agent** — while a run is going, the box at the bottom (*Steer or reply to the agent…*) sends a message the agent reads at its next step: add a detail, correct the direction, answer a question. Only the person who started the run can message it.
-- **Stop** — ends the run. The agent's computer confirms the stop; the run ends *Cancelled* and its task goes to *Needs you*.
-- **Retry** — for a run that failed, was cancelled or timed out. It starts a new run with the same goal; the old one stays in the history.
+- **Stop** — ends the run. The agent's computer confirms the stop; the run ends *Canceled* and its task goes to *Needs you*.
+- **Retry** — for a run that failed, was canceled or timed out. It starts a new run with the same goal; the old one stays in the history.
 - **Profile** — opens the agent's profile.
 
 ## Look back in History
@@ -83,12 +83,12 @@ Anyone who can use the agent can approve or reject its calls, not only the perso
 **Agents** → **History** lists every run, newest first: when it started, the goal, the agent, how it was started, the model and the outcome.
 
 <img
-  alt="The History page with six runs: three Done, two Cancelled and one Failed, each with agent, trigger and model"
+  alt="The History page with six runs: three Done, two Canceled and one Failed, each with agent, trigger and model"
   src={require('@site/static/img/screens/agents-history.png').default}
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-Filter by outcome with the chips at the top (**All**, **Done**, **Failed**, **Cancelled**, and any other outcome that occurred) and open a row to see the run. History shows the latest 200 runs.
+Filter by outcome with the chips at the top (**All**, **Done**, **Failed**, **Canceled**, and any other outcome that occurred) and open a row to see the run. History shows the latest 200 runs.
 
 | Status | Means |
 |--------|-------|
@@ -98,7 +98,7 @@ Filter by outcome with the chips at the top (**All**, **Done**, **Failed**, **Ca
 | **Retrying** | A step failed and is being tried again. |
 | **Done** / **Completed** | Finished with a verified result. |
 | **Failed** | Ended with an error, or without a verified result. |
-| **Cancelled** | Stopped by someone. |
+| **Canceled** | Stopped by someone. |
 | **Timed out** | Ran out of time. |
 | **Skipped** | A scheduled run that did not start because the previous one was still going. |
 

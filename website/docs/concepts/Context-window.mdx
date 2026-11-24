@@ -32,7 +32,7 @@ Working within the context window is a constant trade‑off:
 The platform is designed to make the most of whatever window a model has:
 
 * In a [RAG](./RAG.mdx) system, retrieval selects only the most relevant resources from your [Knowledge](../cr/Knowledge.mdx) and fits them into the window as context, rather than handing the model everything. Splitting documents into [embeddings and chunks](./RAG.mdx) is what makes this selection possible.
-* In [Conversations settings](../cr/settings/conversations.mdx), analyses such as title generation and topic detection let you set how many recent **messages to analyse**, keeping each request within a sensible context.
+* In [Conversations settings](../cr/settings/conversations.mdx), analyses such as title generation and topic detection let you set how many recent **messages to analyze**, keeping each request within a sensible context.
 * Choosing a [model](./Model-architecture.mdx) with a larger window lets a touchpoint reason over more knowledge or a longer conversation at once, at the cost of more tokens per request.
 
 <Admonition type="note" icon="📝" title="Bigger is not always better">
