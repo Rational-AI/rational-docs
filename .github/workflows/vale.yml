@@ -1,0 +1,28 @@
+name: Vale
+
+on:
+  pull_request:
+    paths:
+      - "website/docs/**"
+      - ".vale.ini"
+      - "styles/**"
+
+jobs:
+  vale:
+    name: Style lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ponytail: non-blocking until the Phase 1 cleanup lands; then set fail_on_error: true
+      - name: Vale
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: website/docs
+          filter_mode: added
+          reporter: github-pr-review
+          fail_on_error: false

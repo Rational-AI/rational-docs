@@ -1,0 +1,6 @@
+extends: existence
+message: "Bold each UI label on its own: **Settings** → **Area** (STYLE.md §4)."
+level: error
+scope: raw
+raw:
+  - '\*\*[^*\n]+ → [^*\n]+\*\*'

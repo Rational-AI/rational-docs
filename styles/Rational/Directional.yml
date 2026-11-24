@@ -1,0 +1,9 @@
+extends: existence
+message: "Don't give directions ('%s'): name or link the element instead."
+level: suggestion
+ignorecase: true
+tokens:
+  - right-hand
+  - left-hand
+  - on the right
+  - on the left

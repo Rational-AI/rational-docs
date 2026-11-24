@@ -1,0 +1,14 @@
+# Often-empty adverbs: cut them unless they carry real contrast or uncertainty.
+extends: existence
+message: "'%s' is often empty: keep it only if it marks a real contrast."
+level: suggestion
+ignorecase: true
+tokens:
+  - literally
+  - honestly
+  - actually
+  - truly
+  - fundamentally
+  - importantly
+  - crucially
+  - inherently

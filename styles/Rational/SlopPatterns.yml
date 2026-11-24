@@ -1,0 +1,15 @@
+# Sentence shapes that read as AI slop (STYLE.md §4, "AI slop").
+extends: existence
+message: "AI slop pattern: '%s'. State the point directly."
+level: warning
+ignorecase: true
+tokens:
+  # Binary contrast: "isn't X, it's Y", "not just X but Y"
+  - 'isn''t (?:just )?\w+(?: \w+){0,4}[,.;—-] (?:it''s|it is|but)'
+  - 'not just \w+(?: \w+){0,5},? but'
+  - 'not only \w+(?: \w+){0,5},? but also'
+  # Trailing -ing clause that pretends to explain
+  - ', (?:highlighting|underscoring|showcasing|reflecting|emphasizing|demonstrating) (?:the|its|our|their|how)'
+  # Fake-strong verbs
+  - 'serves as an?'
+  - 'acts as a (?:central|centralized|single)'

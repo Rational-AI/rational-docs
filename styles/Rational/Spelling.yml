@@ -1,0 +1,19 @@
+extends: substitution
+message: "Use US spelling '%s' instead of '%s'."
+level: warning
+ignorecase: true
+swap:
+  organisation: organization
+  organisations: organizations
+  organise: organize
+  organised: organized
+  behaviour: behavior
+  behaviours: behaviors
+  customise: customize
+  customised: customized
+  licence: license
+  colour: color
+  catalogue: catalog
+  analyse: analyze
+  recognise: recognize
+  prioritise: prioritize

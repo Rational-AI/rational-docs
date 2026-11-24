@@ -1,0 +1,7 @@
+# Em-dash clusters read as AI rhythm (STYLE.md §4).
+extends: occurrence
+message: "More than one em dash in this paragraph: use full stops or commas."
+level: warning
+scope: paragraph
+max: 1
+token: '—'
