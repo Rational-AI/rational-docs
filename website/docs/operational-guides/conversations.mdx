@@ -10,14 +10,14 @@ audience: [builder]
 Every chat your AI handles lands on the Conversations page, where you can review who it spoke with, through which touchpoint, how it went, and what was discussed. This guide shows how to find the conversations you care about, read one in full, and act on many at once.
 
 :::note[What is the conversations page?]
-A conversation (sometimes called a *room*) is one back-and-forth exchange between a user and your AI. The Conversations page lists every conversation your AI has taken part in, along with its user, touchpoint, topics, sentiment, status and date. Because a single exchange can wander across several subjects, each conversation can carry several topics, shown as separate chips.
+A conversation (sometimes called a *room*) is one back-and-forth exchange between a user and your AI. The Conversations page lists every conversation your AI has taken part in, along with its user, touchpoint, topics, sentiment, status and date. Because a single exchange can wander across several subjects, each conversation can carry several topics, shown as separate chips. Chats with the agents of the [Agents](/cr/Agents) section aren't listed here; see [Chat with agents](/operational-guides/agent-chats).
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Access to the Conversations page** — an account that can view conversations.
+- **Access to the Conversations page**: an account that can view conversations.
 - **At least one conversation** handled by your AI, so the table has rows to work with.
 
 ## Open the Conversations page
@@ -34,14 +34,14 @@ Each row is one conversation. Scan across the columns to size up a conversation 
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The Conversations list: every conversation with its detected topics, sentiment and status — sortable and searchable.*
+*The Conversations list: every conversation with its detected topics, sentiment and status, sortable and searchable.*
 
-- **Conversation** — the title and a preview of the latest message.
-- **User and touchpoint** — who the conversation was with, and the [touchpoint](/operational-guides/configure-touchpoints) it came through.
-- **Topics** — one chip per subject the conversation covered (see the next section).
-- **Sentiment** — the mood the AI detected in the conversation.
-- **Status** — for example, **open** or **closed**.
-- **Last message** — when the conversation was last active.
+- **Conversation**: the title and a preview of the latest message.
+- **User and touchpoint**: who the conversation was with, and the [touchpoint](/operational-guides/configure-touchpoints) it came through.
+- **Topics**: one chip per subject the conversation covered (see the next section).
+- **Sentiment**: the mood the AI detected in the conversation.
+- **Status**: for example, **open** or **closed**.
+- **Last message**: when the conversation was last active.
 
 Two icons beside a title tell you a conversation needs a person: a hand for **Needs review** (the row is also tinted in the warning color) and a headset for **With an operator**.
 
@@ -49,11 +49,11 @@ The topics and sentiment shown here are produced by your [Configure conversation
 
 ## Work with multiple topics
 
-Topics tell you what each conversation was actually about, so you can spot patterns across many chats at a glance. They're classified automatically — the AI reads each conversation and tags it without any manual work from you.
+Topics tell you what each conversation was actually about, so you can spot patterns across many chats at a glance. They're classified automatically: the AI reads each conversation and tags it without any manual work from you.
 
 Because one exchange can cover several subjects, the **Topics** column shows a separate chip for each:
 
-- A **single-topic** conversation shows one chip — for example, `Billing`.
+- A **single-topic** conversation shows one chip, for example `Billing`.
 - A **multi-topic** conversation shows up to two chips and a **+N** chip for the rest; click it to see them all.
 - A conversation with **no topics** shows none.
 
@@ -69,9 +69,9 @@ Use the **search** field in the header to find conversations. It matches titles 
 
 1. Select **Filters** in the header. The filters panel opens beside the table.
 2. Set the filters you need:
-   - **User**, **Touchpoint** and **Topics** — tick one or more values. The **User** list has its own search box and shows the names you ticked first.
-   - **Sentiment** and **Status** — pick one value.
-   - **Show only** — tick **Favorites** or **Needs review**.
+   - **User**, **Touchpoint** and **Topics**: tick one or more values. The **User** list has its own search box and shows the names you ticked first.
+   - **Sentiment** and **Status**: pick one value.
+   - **Show only**: tick **Favorites** or **Needs review**.
 3. Select **Apply**. The table shows only matching conversations, with a count of how many match.
 
 To start over, select **Clear** in the panel, then **Apply**. When nothing matches, the table offers **Clear** and **Edit filters** directly.
@@ -83,11 +83,11 @@ Applied filters are kept in the page URL, so a filtered view can be bookmarked o
 ## Open a conversation
 
 1. Click a row. The table collapses into a narrow list on the left, and the conversation fills the rest of the page.
-2. Read the thread: the user's messages are on the right, each agent reply shows who answered, and operator replies have their own style with a sent or failed state.
+2. Read the thread: the user's messages are on the right, each assistant reply shows who answered, and operator replies have their own style with a sent or failed state.
 3. Select **Details** in the conversation header to open the details drawer: user, touchpoint, status, sentiment, start and last-message dates, message count, ID, topics (with **Refresh labels**) and summary.
 4. Use **More conversation actions** for **Advanced mode** (the raw tool calls and errors behind each reply), **Copy conversation ID** or **Delete conversation**.
 
-While the agent is in charge, a take-over bar sits where the message box would be. From it you can **Take over**, **Stop generating** a runaway answer, or **Generate summary**. See [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
+While the assistant is in charge, a take-over bar sits where the message box would be. From it you can **Take over**, **Stop generating** a runaway answer, or **Generate summary**. See [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
 
 If the conversation is flagged for oversight, the review panel is at the top of the details drawer. See [Record oversight decisions](/operational-guides/human-oversight).
 
@@ -98,9 +98,9 @@ When you want to act on many conversations at once (say, clearing out test chats
 1. Select the rows you want using their checkboxes. To select a range, click the first checkbox, then hold **Shift** and click the last one.
 2. Open the **Actions** menu, which appears next to the header once rows are selected and shows how many you picked.
 3. Choose one of:
-   - **Refresh labels** — re-run the automatic analysis (such as sentiment and topics) on the selected conversations.
+   - **Refresh labels**: re-run the automatic analysis (such as sentiment and topics) on the selected conversations.
    - **Add to favorites** or **Remove from favorites**.
-   - **Delete** — remove the selected conversations, with their messages and attachments. The confirmation states how many conversations will be deleted.
+   - **Delete**: remove the selected conversations, with their messages and attachments. The confirmation states how many conversations will be deleted.
 
 :::note[The selection survives sorting and filtering]
 Rows stay selected when you sort or change filters, so you can build a selection across several views. That's also why the delete confirmation names the count: it may include rows you can't currently see.

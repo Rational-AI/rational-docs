@@ -7,7 +7,7 @@ audience: [builder]
 
 # Schedule and trigger agents
 
-Some work should happen without anyone asking: the morning briefing at eight, the sales report every Monday, a review every time a pull request is opened. A **routine** is an agent that is started by something other than you — a schedule, a GitHub event or a call from another system. This guide shows how to set each one up, how to see what is coming and how to hold a routine.
+Some work should happen without anyone asking: the morning briefing at eight, the sales report every Monday, a review every time a pull request is opened. A **routine** is an agent that is started by something other than you: a schedule, a GitHub event or a call from another system. This guide shows how to set each one up, how to see what is coming and how to hold a routine.
 
 :::note[A routine is an agent with a trigger]
 There is nothing to create besides the agent: its **Trigger** decides what starts it. A scheduled or event-driven run is the same as any other run (same instructions, same tools, same approvals), and it shows up in **History**, on the agent's page and on the routine's **Runs** tab.
@@ -15,9 +15,9 @@ There is nothing to create besides the agent: its **Trigger** decides what start
 
 ## Prerequisites
 
-- **An agent with instructions** — see [Build an agent](./create-an-agent). Write them for a run nobody is watching: say where the result goes and what "done" means.
+- **An agent with instructions**: see [Build an agent](./create-an-agent). Write them for a run nobody is watching, and say where the result goes and what "done" means.
 - **For GitHub:** admin rights on the repository, to add a webhook.
-- **For API calls:** an API key from **Settings** → **API keys** (see [Access Rational AI via API](/operational-guides/api-access#create-an-api-key)).
+- **For API calls:** an API key from **Settings** → **API Keys** (see [Access Rational AI via API](/operational-guides/api-access#create-an-api-key)).
 
 ## See your routines
 
@@ -51,7 +51,7 @@ Select a routine to open its panel: **Run now** starts it immediately, **Edit** 
   style={{ maxWidth: '520px', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-The cron expression has the usual five fields — minute, hour, day of the month, month, day of the week:
+The cron expression has the usual five fields (minute, hour, day of the month, month, day of the week):
 
 | Expression | Runs |
 |------------|------|
@@ -147,9 +147,9 @@ curl -X POST "https://<your address>/api/agents/v0/agents/<agent id>/execute" \
       }'
 ```
 
-- `task` — the one-line goal of the run, shown in History.
-- `instructions` — optional details for this run; the profile's instructions still apply.
-- `input` — optional JSON the agent receives as-is.
+- `task`: the one-line goal of the run, shown in History.
+- `instructions`: optional details for this run; the profile's instructions still apply.
+- `input`: optional JSON the agent receives as-is.
 
 The answer is the new run, with its `id` and `status`; follow it at `/agents/runs/<run id>`. The key acts as an administrator; add an `X-USER-ID: <user id>` header to act as a specific user, with that user's permissions. Setting the agent's trigger to `api` marks it as API-driven in **Routines**; an agent with any trigger can be started this way.
 

@@ -15,14 +15,14 @@ Whatever starts the agent (a task, a chat message, a schedule or a webhook), the
 
 ## Prerequisites
 
-- **Access to the Agents section** — see [Rational Agents](/cr/Agents#prerequisites).
+- **Access to the Agents section**: see [Rational Agents](/cr/Agents#prerequisites).
 - **A text-generation model** in the [AI Model Registry](/operational-guides/ai-model-registry-features), or the platform Agents default.
 - **Optional: extensions with tools.** Tools from installed [extensions](/operational-guides/manage-extensions) can be granted to an agent; the [Library](./agent-computers#browse-the-library) lists them all.
 
 ## Create the profile
 
 1. In **Agents**, select **Manage** next to *Team* in the sidebar (or open **Agents team**), then **New agent**.
-2. The **New agent** panel opens on the right. Type the **Name** (required) and, optionally, a **Role** — the role is shown under the name everywhere the agent appears.
+2. The **New agent** panel opens on the right. Type the **Name** (required) and, optionally, a **Role**. The role is shown under the name everywhere the agent appears.
 
 <img
   alt="The New agent panel with the name, the Draft with AI box, the one-line description and the Knowledge access list"
@@ -38,8 +38,8 @@ For Quinn, a good one-liner is: *"Price incoming requests for quotation from our
 
 ### Describe it
 
-- **What it does** — one line shown on the agent card: *"Turns incoming requests for quotation into priced, checked offers."*
-- **Instructions** — *"The system prompt for every run."* This is where the job lives. Say what the agent receives, what it must produce and in what shape, what it must never do and how to report back. Quinn's say, among other things, *"Never invent prices or codes. Write the offer as a Markdown file offers/&lt;RFQ code&gt;.md … Always write in English."*
+- **What it does**: one line shown on the agent card, such as *"Turns incoming requests for quotation into priced, checked offers."*
+- **Instructions**: *"The system prompt for every run."* This is where the job lives. Say what the agent receives, what it must produce and in what shape, what it must never do and how to report back. Quinn's say, among other things, *"Never invent prices or codes. Write the offer as a Markdown file offers/&lt;RFQ code&gt;.md … Always write in English."*
 
 :::note[Write instructions for a result that can be checked]
 Agents verify their own work before they finish: a run that produced a file, a record or a precise answer can be checked, a vague one cannot. *"Write the offer as offers/RFQ-….md with one row per line"* gives the agent, and you, a way to know it is done. An agent without instructions can be saved but not started: **Run now** and **Create & start session** stay disabled until you add them.
@@ -97,9 +97,9 @@ Tools reach the agent under the name shown in the catalog, `<extension>_<tool>`;
 
 At the bottom of the panel, a summary puts the three levels side by side:
 
-- **On its own** — the tools that run without asking.
-- **Asks you first** — the tools you ticked.
-- **Never** — anything outside the tools above.
+- **On its own**: the tools that run without asking.
+- **Asks you first**: the tools you ticked.
+- **Never**: anything outside the tools above.
 
 :::warning[Grant the least, gate what changes things]
 An agent can do anything its tools allow, as often as it decides to, on everything in its Knowledge scope. Give it only the tools the job needs, and put every tool that sends, writes or deletes under **Ask me first** until you have seen enough runs to trust it. See [Approve what the agent wants to do](./agent-runs#approve-what-the-agent-wants-to-do).
@@ -107,15 +107,15 @@ An agent can do anything its tools allow, as often as it decides to, on everythi
 
 ## Give it a face
 
-**Identity** is purely cosmetic: it shapes the generated avatar so each agent is recognisable at a glance. Choose a **Chassis** (Hally, Pico, Orbit, Robo), a **Colour** and a **Screen**, then move the four sliders — **Rigor** changes the eyes, **Autonomy** the antenna, **Verbosity** the mouth, **Creativity** the sheen of the casing. None of this changes behavior; the instructions do.
+**Identity** is purely cosmetic: it shapes the generated avatar so each agent is recognisable at a glance. Choose a **Chassis** (Hally, Pico, Orbit, Robo), a **Colour** and a **Screen**, then move the four sliders: **Rigor** changes the eyes, **Autonomy** the antenna, **Verbosity** the mouth, **Creativity** the sheen of the casing. None of this changes behavior; the instructions do.
 
 ## Decide what starts it
 
-**Trigger & execution** — *"What starts a run, whether it runs in the cloud, and whether you can steer it mid-run."*
+**Trigger & execution**: *"What starts a run, whether it runs in the cloud, and whether you can steer it mid-run."*
 
-- **Trigger** — `manual` (the default: tasks, chats and **Run now**), `schedule` for a cron schedule, or `githubEvent` for a GitHub webhook. Schedules and webhooks are covered in [Schedule and trigger agents](./agent-routines).
-- **Where** — keep `cloud`: runs execute on the agent's computer in the Rational AI cloud.
-- **Mode** — `autonomous` agents work through the job on their own; `interactive` agents are meant to be steered with messages while they work.
+- **Trigger**: `manual` (the default, used by tasks, chats and **Run now**), `schedule` for a cron schedule, or `githubEvent` for a GitHub webhook. Schedules and webhooks are covered in [Schedule and trigger agents](./agent-routines).
+- **Where**: keep `cloud`. Runs execute on the agent's computer in the Rational AI cloud.
+- **Mode**: `autonomous` agents work through the job on their own; `interactive` agents are meant to be steered with messages while they work.
 
 A run has 20 minutes to finish. Interactive agents, and agents with at least one tool under **Ask me first**, get six hours, so a run can wait for a person without timing out.
 
@@ -134,7 +134,7 @@ Open the agent from the team page to see its profile at a glance: the model, the
 
 From here:
 
-- **Run now** opens **Run &lt;name&gt;**. Write the **Goal for this run** — *"Describe a concrete outcome"* — and select **Start run**. The agent's instructions still apply; the goal is what this run must deliver. For a quick question, use a [chat](./agent-chats) instead.
+- **Run now** opens **Run &lt;name&gt;**. Write the **Goal for this run** (*"Describe a concrete outcome"*) and select **Start run**. The agent's instructions still apply; the goal is what this run must deliver. For a quick question, use a [chat](./agent-chats) instead.
 - **Edit** reopens the profile panel. **Delete** is at the bottom of that panel; the agent's past runs are kept for audit.
 - **Pause** marks the agent as paused; see [Pause an agent](./agent-routines#pause-an-agent).
 - **Runs** lists every run of this agent with **Cancel** for the ones still going and **Retry** for those that failed, were canceled or timed out.

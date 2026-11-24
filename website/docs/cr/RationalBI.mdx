@@ -19,13 +19,14 @@ Your work is organized into **projects**. A project is the workspace for one rep
 
 Before you start, make sure you have:
 
-- **Permission to use Rational BI.** An administrator grants it on your role in **Settings** → **Roles**. To build dashboards and reports, your role needs to be allowed to create and edit **BI projects**, **Dashboards** and **Reports**; see [Grant access to Rational BI](/operational-guides/roles-and-users#grant-access-to-rational-bi).
+- **The Rational BI module in your license.** The **BI** tab appears in the top bar only when the [license](/operational-guides/license) includes it.
+- **Permission to use Rational BI.** An administrator grants it on your role in **Settings** → **Roles**. To open the **BI** page, your role needs the **BI projects** row plus **Dashboards** or **Reports**. To build dashboards and reports, it needs **Create** and **Update** on **BI projects**, **Dashboards** and **Reports**; see [Grant access to Rational BI](/operational-guides/roles-and-users#grant-access-to-rational-bi).
 - **Data to chart.** A dashboard can only query what its project can reach: a [data source](/operational-guides/configure-sources) or a [Knowledge](/operational-guides/create-knowledge).
 - **A model** in the [AI Model Registry](/operational-guides/ai-model-registry-features) for the project to use when it generates charts and reports.
 
 ## Find your way around
 
-Open Rational BI by selecting **BI** in the top navigation bar, or from **Settings** → **Rational BI**. The first thing you see is your list of projects.
+Open Rational BI by selecting **BI** in the top navigation bar. The first thing you see is your list of projects. **Settings** → **Rational BI** is where you configure projects, not where you build dashboards.
 
 | Where | What you find there |
 |-------|---------------------|
@@ -34,7 +35,7 @@ Open Rational BI by selecting **BI** in the top navigation bar, or from **Settin
 | Project → **Reports** | The written summaries. **Generate with AI** writes a new one. |
 | Dashboard → **Chat** | The AI panel for adding or changing charts on an existing dashboard. |
 | Dashboard → **Actions** | **Edit**, **Auto-refresh**, **Auto layout** (moves widgets up to close empty gaps), **Download** and **Delete**. |
-| **Settings** → **Rational BI** → project | **Settings** (name and description), **Sources** (what it can query) and **Models** (what generates its charts and reports). |
+| **Settings** → **Rational BI** → project | **Settings** (name and description), **Sources** (what it can query), **Models** (what generates its charts and reports), **Tools** (what its AI chat can use) and, for administrators only, **Access** (who sees each table or view). |
 | **Settings** → **Rational BI** → **BI defaults** | The tenant-wide configuration every project inherits. Leave it to administrators. |
 
 ## How the pieces fit

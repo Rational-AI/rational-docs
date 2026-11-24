@@ -11,7 +11,9 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Touchpoints
 
-A touchpoint is a configured entry point through which users interact with an AI agent—for example, a chat assistant for a specific product or customer-care flow. Each touchpoint binds together a channel, a model and system prompt, the knowledge sources it can draw on and the tools it can call. Use this section to create touchpoints and tailor each one to a specific use case.
+A touchpoint is a configured assistant that people talk to, for example one that answers questions about a specific product or handles a customer-care flow. Each touchpoint binds together a channel, a model and system prompt, the knowledge sources it can draw on, the tools and skills it can use, and its memory. Use this section to create touchpoints and tailor each one to a specific use case.
+
+Touchpoints are not the agents of the [Agents](../Agents.mdx) section, which carry out jobs in runs on their own computer.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -26,8 +28,8 @@ A touchpoint is a configured entry point through which users interact with an AI
   <div className="featureBox__row">
     <LockIcon className="featureBox__icon" aria-hidden />
     <div>
-      Anyone with <span className="featureBox__pill">can edit</span>
-      access can create and manage touchpoints
+      Anyone whose role has <span className="featureBox__pill">Create</span> and <span className="featureBox__pill">Update</span>
+      on <strong>Touchpoints</strong> can create and manage touchpoints
     </div>
   </div>
 
@@ -39,7 +41,7 @@ The Touchpoints page lists every touchpoint as a card on the left. Each card sho
 
 ## Create a touchpoint
 
-Click **New** in the top-right corner. A new touchpoint is created and opened for editing so you can configure it through the tabs described below. Remember to **Save** your changes; **Undo** discards them.
+Select **New**. A new touchpoint is created and opened for editing so you can configure it through the tabs described below. It needs at least one [channel](/operational-guides/manage-channels) and one model: without them, the touchpoint isn't created. Remember to **Save** your changes; **Undo** discards them.
 
 The **Default touchpoint** button at the top of the list opens the workspace assistant used by the main [Chat](../Chats.mdx), so you can [change its prompt](/operational-guides/configure-touchpoints#change-the-workspace-assistants-prompt).
 
@@ -55,22 +57,22 @@ The details panel is organized into seven tabs:
 
 ### Models
 
-* **System prompt** – The instructions that define the agent's role and behavior for this touchpoint, with **Show unsaved changes** and **Expand editor**.
+* **System prompt** – The instructions that define the assistant's role and behavior for this touchpoint, with **Show unsaved changes** and **Expand editor**.
 * **Default model** – The model that powers the touchpoint's responses, overriding the platform default from [Conversations settings](conversations.mdx).
 * **Open advanced settings** – **Generation limits**: the default **Reasoning** level, whether users may change it per conversation, **Maximum output tokens** and **Stop generation on repetitive output**. See [Tune answer generation](/operational-guides/touchpoint-generation).
 * **Response verification** – Lets users check an answer against the retrieved knowledge.
 
 ### Sources
 
-Choose which [knowledge sources](sources.mdx) the touchpoint can draw on when answering, so the agent only uses the relevant data for its use case. **Can change records** lets the assistant also [create and update records](/operational-guides/configure-touchpoints#let-the-assistant-change-a-knowledge) in a knowledge.
+Choose which [knowledge sources](sources.mdx) the touchpoint can draw on when answering, so the assistant only uses the relevant data for its use case. **Can change records** lets the assistant also [create and update records](/operational-guides/configure-touchpoints#let-the-assistant-change-a-knowledge) in a knowledge.
 
 ### Tools
 
-Enable the [tools](extensions.mdx) the agent is allowed to call during a conversation, choose **When to ask for confirmation**, and set **How long a tool may take**.
+Enable the [tools](extensions.mdx) the assistant is allowed to call during a conversation, choose **When to ask for confirmation**, and set **How long a tool may take**.
 
 ### Skills
 
-Add the [skills](/operational-guides/agent-skills) the agent can use, which users can also pick with `/` in the chat.
+Add the [skills](/operational-guides/agent-skills) the assistant can use, which users can also pick with `/` in the chat.
 
 ### Memory
 

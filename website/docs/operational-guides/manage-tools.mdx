@@ -1,16 +1,18 @@
 ---
 sidebar_position: 28
-sidebar_label: Browse agent tools
+sidebar_label: Browse tools
 type: how-to
 audience: [builder, developer]
 ---
 
-# Browse the tools your agents can use
+# Browse the tools your touchpoints can use
 
-**Settings** → **Tools** is the catalog of everything an AI agent can do beyond chatting — search a knowledge base, run a read-only query, fetch a document, and more. This page is a reference: it shows you what's available and where each capability comes from.
+**Settings** → **Tools** is the catalog of the MCP tools your [touchpoints](/operational-guides/configure-touchpoints) can call beyond chatting: search a knowledge base, run a read-only query, fetch a document, and more. This page is a reference: it shows you what's available and where each capability comes from.
+
+The agents of the [Agents](/cr/Agents) section are granted tools in their own profile, and **Agents** → **Library** lists what they can be granted (see [Browse the library](/operational-guides/agent-computers#browse-the-library)).
 
 :::note[What is a tool?]
-A tool is a single capability the AI can invoke during a conversation — one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. Each extension runs an **MCP server** (MCP is the open standard for connecting AI agents to external tools), and that server is what publishes the tools you see here.
+A tool is a single capability the AI can invoke during a conversation: one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. Each extension runs an **MCP server** (MCP is the open standard for connecting AI models to external tools), and that server is what publishes the tools you see here.
 :::
 
 ## Browse available tools
@@ -31,35 +33,35 @@ Use the search box at the top to filter by name or description when the list gro
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The Tools registry: every tool available to your agents, grouped by the MCP server (extension) that provides it.*
+*The Tools registry: every tool available to your touchpoints, grouped by the MCP server (extension) that provides it.*
 
 The **RAG MCP server** alone provides several tools you'll see often:
 
-- **rag_query_simple** — simple semantic-search RAG (finds passages similar in meaning to the question).
-- **rag_query_graph** — graph RAG with expansion (follows links between related pieces of knowledge).
-- **execute_query** — runs a read-only SQL query against a knowledge base's SQLite database.
-- **list_databases** — lists the databases available in a knowledge base.
-- **get_schema** — returns the structure (tables and columns) of a database.
-- **get_resource** — fetches the contents of a specific document.
-- **get_user_context** — provides the AI with context about the current user.
+- **rag_query_simple**: simple semantic-search RAG (finds passages similar in meaning to the question).
+- **rag_query_graph**: graph RAG with expansion (follows links between related pieces of knowledge).
+- **execute_query**: runs a read-only SQL query against a knowledge base's SQLite database.
+- **list_databases**: lists the databases available in a knowledge base.
+- **get_schema**: returns the structure (tables and columns) of a database.
+- **get_resource**: fetches the contents of a specific document.
+- **get_user_context**: provides the AI with context about the current user.
 
 ## Where tools come from
 
 Three pieces work together, and it helps to keep them straight:
 
 1. **Extensions provide tools.** Installing an extension adds its MCP server's tools to your environment. To install or remove extensions, see [Manage extensions](/operational-guides/manage-extensions).
-2. **This Tools page is where you see them.** It's the full inventory of what's available, no matter which agent ends up using it.
-3. **A touchpoint is where you choose them.** A [touchpoint](/operational-guides/configure-touchpoints) is the configuration for a specific agent, and that's where you pick which of these tools the agent is actually allowed to call.
+2. **This Tools page is where you see them.** It's the full inventory of what's available, no matter which touchpoint ends up using it.
+3. **A touchpoint is where you choose them.** A [touchpoint](/operational-guides/configure-touchpoints) is the configuration for a specific assistant, and that's where you pick which of these tools the assistant is actually allowed to call.
 
 :::note[Seeing a tool isn't the same as using it]
-A tool appearing in this catalog means it exists in your environment, not that any agent is using it. An agent can only call a tool once you grant it in that agent's [touchpoint](/operational-guides/configure-touchpoints).
+A tool appearing in this catalog means it exists in your environment, not that any assistant is using it. An assistant can only call a tool once you enable it on its [touchpoint](/operational-guides/configure-touchpoints).
 :::
 
 ## Declared tools and discovered tools
 
 There are two moments at which you can see what an extension offers, and they don't mean quite the same thing.
 
-- **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started — useful for deciding whether an extension is worth setting up.
+- **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started. That's useful for deciding whether an extension is worth setting up.
 - **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog. The list is refreshed when you create or edit an MCP server configuration and when an extension is updated.
 
 :::note[An update that would break a touchpoint is refused]
@@ -87,4 +89,4 @@ Leaving the field empty makes the server follow the next limit down: the touchpo
 
 ## Result
 
-You know where to find every tool your agents can use, how to tell which extension provides each one, the difference between what an extension declares and what its running server actually serves, how to give a single slow MCP server more time than the rest of the touchpoint, and where to go next to actually grant a tool to an agent.
+You know where to find every tool your touchpoints can use, how to tell which extension provides each one, the difference between what an extension declares and what its running server actually serves, how to give a single slow MCP server more time than the rest of the touchpoint, and where to go next to actually enable a tool on a touchpoint.

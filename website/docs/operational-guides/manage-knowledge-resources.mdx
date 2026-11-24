@@ -7,25 +7,25 @@ audience: [builder]
 
 # Manage knowledge resources
 
-A [Knowledge](/operational-guides/create-knowledge) fills up over time — files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, following a processing run and recovering the files it failed on, finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
+A [Knowledge](/operational-guides/create-knowledge) fills up over time: files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, following a processing run and recovering the files it failed on, finding and bulk-deleting resources from the files table, removing a single resource from its card, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
 
 :::note[What is a resource?]
-A resource is a single curated item inside a Knowledge — usually a file that has been processed into a form the AI can search and quote from. You work with resources through three views of a Knowledge: the **files table** (a sortable list), the **attribute view** (one card per resource), and the **graph view** (a visual map). The tasks below all live in one of these three.
+A resource is a single curated item inside a Knowledge, usually a file that has been processed into a form the AI can search and quote from. You work with resources in the built-in views of a Knowledge, the **Grid** (a table of resources and their attributes) and the **Graph** (a visual map), in any saved or custom views, and in the **Files** table, which the **Files** button in the header opens to list the input files and their processing status.
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Administrative access:** an account with Knowledge management privileges.
+- **Rights on the Knowledge:** **Read** on the **Knowledge** row of your role to browse resources, **Update** to change them and its settings, **Delete** to delete them. See [Manage roles and users](/operational-guides/roles-and-users).
 - **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
 
 ## Choose which view a Knowledge opens in
 
-Opening a Knowledge lands you on its **Attributes list** (one card per resource), because that is the default. A graph is the better first impression for a small, richly connected Knowledge; a list is the better one for a few thousand documents. The choice is per Knowledge, so make it once and everyone opening that Knowledge gets it.
+Opening a Knowledge lands you on its default view: **Graph** or **Grid**, unless the Knowledge has a custom default view. A graph is the better first impression for a small, richly connected Knowledge; a list is the better one for a few thousand documents. The choice is per Knowledge, so make it once and everyone opening that Knowledge gets it.
 
 1. Open the Knowledge's settings and select the **Views** tab (see [Custom views](/operational-guides/knowledge-custom-views) for everything else on that tab).
-2. Under **Built-in views**, select the **Default** radio on **Graph view** or **Attributes list**.
+2. Under **Built-in views**, select the **Default** radio on **Graph view** or **Grid view**.
 3. Select **Save**.
 
 :::note[A disabled default falls back]
@@ -40,7 +40,7 @@ Processing a Knowledge can take hours, and a status word that never changes does
 A processing run is one pass of a Knowledge's pipeline over its files: each file is converted, run through its workflow, chunked, and embedded. A run starts when you select **Process knowledge**, when a source finishes a sync, or when an API client asks for it.
 :::
 
-1. Open the Knowledge and go to its **files** view. Each folder header — the uploaded files and every connected source — carries a **status chip** for the Knowledge's latest run.
+1. Open the Knowledge and go to its **files** view. Each folder header (the uploaded files and every connected source) carries a **status chip** for the Knowledge's latest run.
 2. While the run is pending or in progress, read the chip and the bar beside it:
    - the chip shows the **step** the run is currently on;
    - the bar and the counter show **files done out of files total** (for example *120 / 480*).
@@ -124,10 +124,10 @@ Deleting a resource also deletes everything extracted from it: chunks, embedding
 
 ## Delete a single resource from the attribute view
 
-When you only need to remove one resource, you can do it straight from its card in the attribute view — no need to switch to the table.
+When you only need to remove one resource, you can do it straight from its card in the attribute view, with no need to switch to the table.
 
 1. Open the Knowledge's **attribute view**.
-2. On the resource card, open the **⋮** (kebab) menu — the same menu that holds **See details**, **Mark as hidden**, and — for resources you can remove — **Delete**.
+2. On the resource card, open the **⋮** (kebab) menu. It's the same menu that holds **See details**, **Mark as hidden** and, for resources you can remove, **Delete**.
 3. Select **Delete**.
 4. In the **Confirm deletion** dialog, confirm with the critical-styled button.
 
@@ -145,11 +145,11 @@ The resource is removed, the list reloads, and you see the **Resource deleted su
 
 ## Upload files as resources
 
-Normally an uploaded file runs through a workflow — an automated set of steps that transforms it before it enters the Knowledge. But sometimes a file is already exactly what you want stored, and routing it through a workflow would only get in the way. The upload dialog lets you add such files directly as curated resources.
+Normally an uploaded file runs through a workflow, an automated set of steps that transforms it before it enters the Knowledge. But sometimes a file is already exactly what you want stored, and routing it through a workflow would only get in the way. The upload dialog lets you add such files directly as curated resources.
 
 1. Open the **upload dialog** for the Knowledge.
-2. **Upload** — select and upload your files.
-3. **Review** — for each uploaded file, choose one of:
+2. **Upload**: select and upload your files.
+3. **Review**: for each uploaded file, choose one of:
    - assign a processing **workflow** from the dropdown (it also includes a **Skip workflow** option), or
    - leave the workflow unset and tick **Add as resource**.
 4. Confirm. Files with a workflow run that workflow; files marked **Add as resource** are created as resources directly.
@@ -160,11 +160,11 @@ If you cancel at the review step, the files you already uploaded are deleted, so
 
 ## Edit a resource without losing your curation
 
-Editing a file's content in the Knowledge raises an obvious worry: the answers your AI gives come from chunks and embeddings derived from that file, so a stale index means the AI keeps quoting text you recently corrected. Saving an edit therefore reindexes the resources built from that file — the latest bytes are converted, the generated content chunks are replaced, and everything is chunked and embedded again, so [AI Search](/operational-guides/configure-rag) reflects your edit.
+Editing a file's content in the Knowledge raises an obvious worry: the answers your AI gives come from chunks and embeddings derived from that file, so a stale index means the AI keeps quoting text you recently corrected. Saving an edit therefore reindexes the resources built from that file: the latest bytes are converted, the generated content chunks are replaced, and everything is chunked and embedded again, so [AI Search](/operational-guides/configure-rag) reflects your edit.
 
 What it deliberately does *not* do is re-run the file's processing rules and workflows. Saving an edit is not a reprocess, so:
 
-- **Content you wrote by hand stays as you wrote it** — a workflow doesn't get a second chance to overwrite it.
+- **Content you wrote by hand stays as you wrote it**: a workflow doesn't get a second chance to overwrite it.
 - **Your annotations survive.** Only the generated content chunks are cleared; annotations you authored, and attribute metadata, are kept.
 - **Attributes and the knowledge database are untouched.**
 
@@ -184,8 +184,8 @@ A brand-new Knowledge has nothing to show in the graph view, so instead of a bla
 
 1. Open the **graph view** on a Knowledge that has no resources.
 2. From the centred empty state, choose an action:
-   - **Add manually** — opens the upload dialog so you can add resources; the graph reloads once they are in.
-   - **Go to settings** — takes you to the Knowledge settings, where you can [connect and sync a source](/operational-guides/integrate-data).
+   - **Add manually**: opens the upload dialog so you can add resources; the graph reloads once they are in.
+   - **Go to settings**: takes you to the Knowledge settings, where you can [connect and sync a source](/operational-guides/integrate-data).
 
 ## Reorder the attributes table columns
 
@@ -196,7 +196,7 @@ Put the columns you check most often where you can see them first. The attribute
 3. Release to drop the column into its new position.
 
 :::note[What stays put]
-The sticky first cell and the trailing actions menu stay fixed — they can't be dragged or displaced. Sorting still works on the **Name** column even though it's draggable too, and your column order is saved in the browser, so it survives a page reload.
+The sticky first cell and the trailing actions menu stay fixed; they can't be dragged or displaced. Sorting still works on the **Name** column even though it's draggable too, and your column order is saved in the browser, so it survives a page reload.
 :::
 
 ## Result

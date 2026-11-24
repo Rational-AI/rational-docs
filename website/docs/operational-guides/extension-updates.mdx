@@ -7,7 +7,7 @@ audience: [builder, developer]
 
 # Update and roll back extensions
 
-Extensions change over time: publishers ship fixes, add tools, and occasionally change what they ask you to configure. This guide covers the decisions you make around that — how much autonomy you give an extension to update itself, how the platform decides whether a new release is safe, what happens to your tools and touchpoints when an update lands, and how to get back to a known-good version when one doesn't work out.
+Extensions change over time: publishers ship fixes, add tools, and occasionally change what they ask you to configure. This guide covers the decisions you make around that: how much autonomy you give an extension to update itself, how the platform decides whether a new release is safe, what happens to your tools and touchpoints when an update lands, and how to get back to a known-good version when one doesn't work out.
 
 :::note[What is a release?]
 A **release** is one immutable combination of publisher, name, and version, together with its package. Publishing never overwrites: a fix is always a new version, never a new package behind an old version number.
@@ -25,18 +25,18 @@ Every installed extension carries an **update policy** that decides how much hap
 
 | Policy | What it does |
 |--------|--------------|
-| **Compatible auto** | Updates classified as compatible are applied for you, without asking. Anything classified breaking is listed but never applied automatically. |
-| **Notify only** *(default)* | Available updates are listed so you can see them, and nothing is ever applied by itself. You apply each one deliberately. |
-| **Pinned** | Stay on exactly this version. Nothing updates it — including you, until you unpin. |
+| **Compatible updates automatically** | Updates classified as compatible are applied for you, without asking. Anything classified breaking is listed but never applied automatically. |
+| **Notify me** *(default)* | Available updates are listed so you can see them, and nothing is ever applied by itself. You apply each one deliberately. |
+| **Pinned** | Stay on exactly this version. Nothing updates it, including you, until you unpin. |
 
 Under every policy, an available update still shows up in the list. The policy governs what gets *applied*, not what you get to *see*.
 
 :::warning[Pinned is a promise, not a preference]
 Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused: the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned — change the update policy to install updates"*.
 
-The policy selector is the only way out: set the extension back to **Notify only** or **Compatible auto**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
+The policy selector is the only way out: set the extension back to **Notify me** or **Compatible updates automatically**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
 
-Pin an extension when you have a reason to distrust change on it — a validated configuration you can't revalidate right now, a compliance freeze, an investigation in progress.
+Pin an extension when you have a reason to distrust change on it: a validated configuration you can't revalidate right now, a compliance freeze, an investigation in progress.
 :::
 
 ## Development mode temporarily suspends updates
@@ -51,13 +51,13 @@ before leaving development if an automatic update could overwrite them. See
 
 ## How compatibility is decided
 
-When a publisher records a new release, the platform doesn't take their word for whether it's safe. It **computes** a verdict by comparing the new release against its predecessor — the highest lower version of the same extension, from the same place it came from.
+When a publisher records a new release, the platform doesn't take their word for whether it's safe. It **computes** a verdict by comparing the new release against its predecessor, the highest lower version of the same extension, from the same place it came from.
 
 A release is classified **compatible** only when every one of these holds:
 
 - Every configuration parameter each MCP server declares comes back with the **same name and the same type**.
 - No parameter that used to be optional has become **required**.
-- Any **new** parameter is either optional or carries a default value — so the configuration you already saved stays valid without you touching it.
+- Any **new** parameter is either optional or carries a default value, so the configuration you already saved stays valid without you touching it.
 - No **MCP server** has disappeared or been renamed.
 - No **tool** has been removed.
 
@@ -83,7 +83,7 @@ Two things are worth knowing about how the verdict interacts with what the publi
 - **A publisher's declaration is a floor, never a ceiling.** If a publisher marks a release breaking (or as a security release), a clean diff cannot promote it back to compatible. If a publisher marks a release compatible but the diff says otherwise, the computed verdict wins.
 - **A first release has nothing to compare against**, so it keeps whatever it declared and is otherwise left unclassified.
 
-Only releases classified **compatible** are eligible to be applied automatically under the **Compatible auto** policy. Everything else waits for you.
+Only releases classified **compatible** are eligible to be applied automatically under the **Compatible updates automatically** policy. Everything else waits for you.
 
 ## Preview an update with a dry run
 
@@ -126,7 +126,7 @@ A failed update never strands your extension. If an update can't complete (say t
 
 Rolling back moves your installation to an earlier release it previously ran. Because releases are immutable and the last known-good release is tracked for you, a rollback restores a version you have actually verified, not an approximation of it.
 
-Rollback stays available regardless of update policy — including while an extension is pinned.
+Rollback stays available regardless of update policy, including while an extension is pinned.
 
 ## Repair an extension's files on disk
 
@@ -160,17 +160,17 @@ Tenant-side, both behave the same way, and the effects are deliberately conserva
 - The release **remains observable by id**, flagged as withdrawn or revoked, so a reference to it never turns into a dead end.
 - **If your installation is already on it, nothing is taken away from you.** The release stays listed in that extension's version history: you keep running it, and it remains available as a rollback target.
 
-:::warning[A withdrawn release still runs — it only stops spreading]
+:::warning[A withdrawn release still runs; it only stops spreading]
 Withdrawal removes a release from circulation; it does not reach into your tenant and stop it. If you're running a release that gets withdrawn, treat the disappearance from the catalog as the signal to move: check the extension for a newer release and update once one is available.
 :::
 
 ## Uninstall
 
-Uninstalling removes the extension's runtime — the installation itself, its MCP servers, its configurations, and its tools. It is deliberately not a purge of everything the extension ever touched:
+Uninstalling removes the extension's runtime: the installation itself, its MCP servers, its configurations, and its tools. It is deliberately not a purge of everything the extension ever touched:
 
 - **Touchpoints survive.** A touchpoint that granted one of the extension's tools stays exactly where it is; it loses that one binding.
 - **The release stays on record** as provenance. Uninstalling doesn't erase the fact that the package existed in your tenant.
-- **Re-installing is clean.** Because the release record is kept rather than destroyed, uploading or installing the very same package again reuses it and comes up as a fresh, working install — no duplicate-release conflict to work around.
+- **Re-installing is clean.** Because the release record is kept rather than destroyed, uploading or installing the very same package again reuses it and comes up as a fresh, working install, with no duplicate-release conflict to work around.
 
 ## Result
 
@@ -178,8 +178,8 @@ You can decide how much autonomy each extension gets, from fully automatic compa
 
 ## Related
 
-- [Manage extensions](/operational-guides/manage-extensions) — installing extensions and where they come from.
-- [Browse agent tools](/operational-guides/manage-tools) — the catalog of tools extensions provide.
-- [Configure touchpoints](/operational-guides/configure-touchpoints) — granting tools to a specific agent.
-- [Build an extension](/operational-guides/build-an-extension) — authoring a package and its manifest.
-- [Install solutions from the Marketplace](/operational-guides/marketplace) — updating, restoring and resetting an installed solution.
+- [Manage extensions](/operational-guides/manage-extensions): installing extensions and where they come from.
+- [Browse agent tools](/operational-guides/manage-tools): the catalog of tools extensions provide.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): granting tools to a specific agent.
+- [Build an extension](/operational-guides/build-an-extension): authoring a package and its manifest.
+- [Install solutions from the Marketplace](/operational-guides/marketplace): updating, restoring and resetting an installed solution.

@@ -1,4 +1,5 @@
-aside {
+aside,
+.navbar-sidebar {
 	--ifm-toc-border-color: transparent;
 
 	/* Deep teal used for active text and the accent bar */

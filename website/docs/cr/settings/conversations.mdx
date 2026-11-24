@@ -11,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Conversations
 
-The Conversations settings control how Rational AI enriches and processes end-user conversations behind the scenes. From here you configure four automatic analyses (**title generation**, **topic detection**, **sentiment analysis** and **summary generation**), each of which can be enabled independently and assigned its own model and prompt. You also define the **human oversight** rules that flag conversations for review, and the **statuses** a conversation can have.
+The Conversations settings control how Rational AI enriches and processes end-user conversations behind the scenes. From here you configure four automatic analyses (**title generation**, **topic detection**, **sentiment analysis** and **summary generation**), each of which can be enabled independently and assigned its own model and prompt. You also define the **human oversight** rules that flag conversations for review, and the **statuses** a conversation can have. These settings are platform defaults: each [touchpoint](touchpoints.mdx) can override title generation, topic detection and sentiment analysis on its **Models** tab.
 
 The model that writes the replies users see isn't set here: it's the **Conversational model** default in the [AI Model Registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), unless a [touchpoint](touchpoints.mdx) picks its own.
 
@@ -28,8 +28,8 @@ The model that writes the replies users see isn't set here: it's the **Conversat
   <div className="featureBox__row">
     <LockIcon className="featureBox__icon" aria-hidden />
     <div>
-      Anyone with <span className="featureBox__pill">can edit</span>
-      access can change these settings
+      Anyone whose role has <span className="featureBox__pill">Update</span>
+      on <strong>Conversations</strong> can change these settings. Adding or deleting a status is for administrators
     </div>
   </div>
 
@@ -56,7 +56,7 @@ When enabled, Rational AI automatically generates a short title for each convers
 
 ## Topics detection settings
 
-When enabled, each conversation is tagged with up to three topics from a defined list—useful for filtering, reporting and routing.
+When enabled, each conversation is tagged with up to three topics from a defined list, which is useful for filtering, reporting and routing.
 
 * **Enable topic detection** – Turn the feature on or off.
 * **Topics detection model** – The model used to classify the conversation.

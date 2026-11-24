@@ -7,7 +7,7 @@ audience: [admin]
 
 # Configure Gen for your team
 
-Generated content is only useful if it looks like it came from your organization. Under **Settings** → **Gen**, an administrator decides once which models Gen uses, what a good default image looks like, which brand styles and templates people start from, and how the document assistants behave — so everyone else can describe what they want.
+Generated content is only useful if it looks like it came from your organization. Under **Settings** → **Gen**, an administrator decides once which models Gen uses, what a good default image looks like, which brand styles and templates people start from, and how the document assistants behave, so everyone else can describe what they want.
 
 :::note[Defaults, presets and templates]
 Gen settings work in layers. **Generation defaults** are what every new image starts from. A **style preset** is a reusable look (a style text, a negative prompt and reference images) that people can switch on in the editor. A **template** is a complete starting point for one kind of image: model, settings, prompt and brand style together. People pick a template; the template falls back on the defaults for anything it doesn't set.
@@ -16,7 +16,7 @@ Gen settings work in layers. **Generation defaults** are what every new image st
 ## Prerequisites
 
 - **The Gen module in your license:** without it, **Gen** doesn't appear in **Settings** either.
-- **Administrative access:** everyone can read Gen's configuration, but only administrators can change it.
+- **Administrative access:** other users with the module can open **Settings** → **Gen** and read its **Photo & video** tab, but the other tabs are grayed out for them and only administrators can change anything.
 - **Models:** an image-generation model, and a text-generation model for the AI prompt rewrite and the document assistants, in the [AI Model Registry](/operational-guides/ai-model-registry-features).
 
 ## Open the Gen settings
@@ -27,7 +27,7 @@ Go to **Settings** and select **Gen**, in the **Capabilities** section. The page
 
 1. In **Photo & video**, open **Prompt defaults**, then **Generation defaults**. On a new workspace you'll see *"Image generation isn't set up yet"*: select **Set up image generation**.
 2. Choose the **Model** and the default settings every new image starts from: **Aspect ratio**, **Output quantity**, **Size**, **Quality**, **Background**, **Output format** and the rest. As in the editor, only the settings the model supports are offered.
-3. Decide whether to turn on **Let AI rewrite short prompts** — *"Expands one-liners into a fuller prompt before generating."* It applies to prompts of twelve words or fewer.
+3. Decide whether to turn on **Let AI rewrite short prompts**: *"Expands one-liners into a fuller prompt before generating."* It applies to prompts of twelve words or fewer.
 4. Save.
 
 :::note[The rewrite trades control for quality]
@@ -53,9 +53,9 @@ Use **Enable** or **Disable**, **Duplicate** and **Delete** on the template to m
 
 The tools offered in the image editor's **AI Tools** menu are set up under **AI tools**, with one tab per tool: **Expand**, **Remove background**, **Paint** and **Improve quality**. For each one, set:
 
-- **Model** — the image model that runs the tool.
-- **Background** — or leave it to the model.
-- **Prompt** — the instruction the tool sends with the image.
+- **Model**: the image model that runs the tool.
+- **Background**: or leave it to the model.
+- **Prompt**: the instruction the tool sends with the image.
 - **Enabled**.
 
 :::note[A tool without a prompt isn't offered]
@@ -67,8 +67,8 @@ A tool appears in the editor only when it has a prompt. That keeps people from r
 Each document area has its own assistant, configured on its tab. Changes apply to documents created from then on.
 
 1. Open the **Text**, **Slides** or **Canvas** tab and go to **Section defaults**.
-2. Under **Generation**, choose the **Model** and write the **Base prompt** — house style, tone, length. **Section instructions** shows, read-only, the instructions the platform itself gives the assistant for this kind of document.
-3. Under **Skills**, review the skills the assistant can use. The skill that writes the file — **docx**, **pptx** or **web-design** — is always on; add the supporting [skills](/operational-guides/agent-skills) you want.
+2. Under **Generation**, choose the **Model** and write the **Base prompt** (house style, tone, length). **Section instructions** shows, read-only, the instructions the platform itself gives the assistant for this kind of document.
+3. Under **Skills**, review the skills the assistant can use. The skill that writes the file (**docx**, **pptx** or **web-design**) is always on; add the supporting [skills](/operational-guides/agent-skills) you want.
 4. Under **Tools**, add the MCP servers whose tools the assistant may call, configure them, or remove them.
 5. Select **Save**. Until you do, your changes are a draft.
 

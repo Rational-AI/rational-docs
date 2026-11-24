@@ -10,21 +10,21 @@ audience: [builder]
 Importing rebuilds a Knowledge from a `.zip` archive that was previously exported from Rational AI, so you can move it into a new environment in one step instead of reassembling it by hand. To bring rows of a spreadsheet into an existing Knowledge as records instead, see [Import records from Excel or CSV](#import-records-from-excel-or-csv).
 
 :::note[What you're importing]
-A [Knowledge](/operational-guides/create-knowledge) is the searchable collection of content your AI answers from, bundled together with the settings that control how it retrieves and responds. An export archive packages that whole bundle, the content and the configuration, into a single `.zip` file. Importing unpacks it and recreates the Knowledge on the spot. To produce an archive in the first place, see [Export a Knowledge](/operational-guides/export-knowledge).
+A [Knowledge](/operational-guides/create-knowledge) is the content your AI answers from (resources and records), bundled together with the settings that control how it is processed and searched. How the AI responds (its model and instructions) is set on a touchpoint. An export archive packages that whole bundle, the content and the configuration, into a single `.zip` file. Importing unpacks it and recreates the Knowledge on the spot. To produce an archive in the first place, see [Export a Knowledge](/operational-guides/export-knowledge).
 :::
 
 You'd typically import a Knowledge to:
 
-- **Promote it between environments** — for example, move a Knowledge you built in staging into production.
-- **Restore a backup** — bring back a Knowledge from an archive saved earlier.
-- **Share a curated Knowledge** — hand a ready-made Knowledge to another tenant (a separate, isolated workspace).
+- **Promote it between environments**: for example, move a Knowledge you built in staging into production.
+- **Restore a backup**: bring back a Knowledge from an archive saved earlier.
+- **Share a curated Knowledge**: hand a ready-made Knowledge to another tenant (a separate, isolated workspace).
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Administrative access** — an account with Knowledge management privileges.
-- **An export archive** — a `.zip` file produced by the [Export a Knowledge](/operational-guides/export-knowledge) action.
+- **Permission to create a Knowledge**: **Create** on the **Knowledge** row of your role. The **New** menu that holds **Import knowledge** doesn't appear without it.
+- **An export archive**: a `.zip` file produced by the [Export a Knowledge](/operational-guides/export-knowledge) action.
 
 ## Import a Knowledge
 
@@ -40,14 +40,14 @@ Use this when you have an archive in hand and want a working copy of that Knowle
 
 1. Go to **Settings** → **Knowledge**.
 2. Select the **New** button. It opens a dropdown with two choices:
-   * **New knowledge** — starts an empty Knowledge from scratch (see [Create a Knowledge](/operational-guides/create-knowledge)).
-   * **Import knowledge** — rebuilds a Knowledge from an archive.
+   * **New knowledge**: starts an empty Knowledge from scratch (see [Create a Knowledge](/operational-guides/create-knowledge)).
+   * **Import knowledge**: rebuilds a Knowledge from an archive.
 3. Select **Import knowledge**, then choose the `.zip` archive from your computer.
 4. The archive uploads, and Rational AI recreates the Knowledge.
 
 ### Importing into an empty environment
 
-A brand-new tenant has no Knowledge yet, and its empty-state page shows the same **New** button. You don't need to create a placeholder Knowledge first — select **New** → **Import knowledge** and bring one in directly.
+A brand-new tenant has no Knowledge yet, and its empty-state page shows the same **New** button. You don't need to create a placeholder Knowledge first. Select **New** → **Import knowledge** and bring one in directly.
 
 :::note[Straight from empty]
 On a fresh tenant, importing is the fastest way to get started: a single archive populates the environment with both content and configuration, with nothing to set up beforehand.
@@ -63,7 +63,7 @@ You need the Knowledge **update** permission, and a file in `.xlsx`, `.xls`, `.c
 2. Drop the file in the dialog, or click to choose it. The file is read in your browser; CSV separators (comma, semicolon or tab) and encodings are detected for you.
 3. If the workbook has several sheets, choose the **Sheet**.
 4. Under **Import into**, choose a collection, **No collection**, or **New collection** with its name. The collection open in the grid is preselected.
-5. For each **Column in the file**, check **Import as**: **Name** (the column that names the records), an existing attribute, **New attribute** with the **Type** to create it with, or **Do not import**. Rational AI guesses all of this from the headers and sample values: a column named like an attribute goes to it, others become new attributes with the type their values suggest.
+5. For each **Column in the file**, check **Import as**: **Name** (the column that names the records), an existing attribute, **New attribute** with the **Type** to create it with, or **Do not import**. Rational AI guesses all of this from the headers and sample values. A column named like an attribute goes to it; others become new attributes with the type their values suggest.
 6. When numbers or dates are ambiguous, choose the **Decimal separator** (*1.234,5* or *1,234.5*) or the **Date order** (day first or month first).
 7. Select **Preview**. The preview shows the first 100 rows, with values that don't fit their attribute marked in red. If some rows have invalid values, choose **Skip the rows with invalid values** or **Import them, leaving the invalid values empty**.
 8. Select **Import N resources**.

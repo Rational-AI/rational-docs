@@ -12,7 +12,9 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-The **Knowledge** module is your central hub for storing, exploring and maintaining domain-specific information used by Rational AI. A knowledge set collects related resources (documents such as product catalogs and graphs) and organizes them into an interactive graph and searchable table. Use this module to ingest data, add metadata, view relationships between resources and prepare content for model ingestion.
+The **Knowledge** module is where you store, explore and maintain the domain-specific information Rational AI works from. A Knowledge holds resources (files processed from uploads and sources, such as product catalogs) and records (rows of attributes grouped into collections), and shows them as a graph, a grid and the views your team saves or writes. Use this module to bring in data, add attributes and annotations, see how resources relate, and make the content searchable for the assistants that answer from it (RAG).
+
+To open the module, your license must include the Knowledge module and your role needs **Read** on the **Knowledge** row. Creating, changing and deleting need **Create**, **Update** and **Delete** on the same row. See [Manage roles and users](/operational-guides/roles-and-users).
 
 <video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Knowledge module" poster="/img/videos/knowledge.jpg" src="/videos/knowledge_eng.mp4" />
 
@@ -22,7 +24,7 @@ The **Knowledge** module is your central hub for storing, exploring and maintain
 Use the top navigation bar of the Control Room to open the **Knowledge** section. From here you can:
  
 * **Browse existing knowledge bases:** each card shows the name of the knowledge set and a resource count. Use the search bar to filter by name.
-* **Create a new knowledge base:** select **New** and supply a name and description. Each knowledge set can have its own categories and tags to help organize resources.
+* **Create a new knowledge base:** select **New** → **New knowledge**. It is created straight away with a default name, and its settings open so you can name and describe it. Each knowledge set can have its own categories and tags to help organize resources.
 
 Once inside a knowledge base, the header shows the set name, a views button with the current view's icon and name, and a **Files** button for the input files. Open the views panel to switch between:
 
@@ -30,6 +32,12 @@ Once inside a knowledge base, the header shows the set name, a views button with
 * **Grid:** a spreadsheet-like table of records, with one tab per collection, editable cells, and server-side filters, groups, sorting and summaries. See [Collections and grid views](/operational-guides/knowledge-collections-and-grid).
 * **Saved and custom views:** grid, graph and calendar views saved by your team, dashboards, and views written in code. Pin up to five of them as tabs under the header. See [Custom views](/operational-guides/knowledge-custom-views).
 
+
+## Chat with a Knowledge
+
+Select **Chat** on a Knowledge's page to open its chat panel. The chat starts on the Knowledge's own touchpoint and lists only the conversations held with it. Every question you send also carries the filters you applied (categories, tags, relations) and the nodes you selected in the graph.
+
+The panel has the same conversation view as **Chat** (the tab in the top navigation), with **Advanced mode**, **Skills**, Canvas and the reasoning level. It doesn't offer **Knowledge bases**, **Web search**, **Deep Research**, **Voice conversation**, the model list or **Memory**, which belong to the workspace assistant in **Chat**. See [Chat and the other chats](/operational-guides/chat-experience#chat-and-the-other-chats).
 
 ## Work with resources
 

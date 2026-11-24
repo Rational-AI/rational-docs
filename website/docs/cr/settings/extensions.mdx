@@ -11,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Extensions
 
-Extensions add new capabilities to Rational AI. Depending on the one you install, an extension can give your agents new **tools** to use in a conversation (such as fetching a web page, querying a database or searching the web), **skills** they can draw on, a **channel** for users to message the assistant (like Telegram), a **source** your Knowledge bases sync files from, or a **workflow** that processes incoming files. Use this section to install extensions from the catalog or from your own package files, enable or disable them, configure their settings and review what each one provides. To build your own, see [Build an extension](/operational-guides/build-an-extension); to keep the ones you have current, see [Update and roll back extensions](/operational-guides/extension-updates).
+Extensions add new capabilities to Rational AI. Depending on the one you install, an extension can give your agents new **tools** to use in a conversation (such as fetching a web page, querying a database or searching the web), **skills** they can draw on, a **channel** for users to message the assistant (like Telegram), a **source** your Knowledge bases sync files from, or a **workflow** that processes incoming files. The [Marketplace](/operational-guides/marketplace) solutions are extensions too: installing one can also create a Knowledge base with its views and records, agents, BI dashboards and a website widget. Use this section to install extensions from the catalog or from your own package files, enable or disable them, configure their settings and review what each one provides. To build your own, see [Build an extension](/operational-guides/build-an-extension); to keep the ones you have current, see [Update and roll back extensions](/operational-guides/extension-updates).
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -19,15 +19,14 @@ Extensions add new capabilities to Rational AI. Depending on the one you install
   <div className="featureBox__row">
     <UsersIcon className="featureBox__icon" aria-hidden />
     <div>
-      Available on <a href="/pricing">any plan</a>
+      Needs no license module
     </div>
   </div>
 
   <div className="featureBox__row">
     <LockIcon className="featureBox__icon" aria-hidden />
     <div>
-      Anyone with <span className="featureBox__pill">can edit</span>
-      access can install and manage extensions
+      Roles with the <strong>Extensions</strong> row can view this page. On this page, only administrators can install, enable, configure, update or develop extensions
     </div>
   </div>
 
@@ -44,7 +43,7 @@ Selecting an extension shows its description and the capabilities it provides. W
 
 ## Add an extension
 
-Click **Add** in the top-right corner to browse the extensions you can install. From here you can:
+Click **Install** in the top-right corner to browse the extensions you can install. From here you can:
 
 * **Search** for an extension by name.
 * **Select** an extension to install (for example, Telegram, Fetch, GitHub, Postgres, Brave Search or Time).
@@ -77,7 +76,7 @@ With an extension selected, open the options menu (the three vertical dots) in t
 | Action | Description |
 |--------|-------------|
 | **Settings** | View and edit the extension's configuration (for example, credentials or connection details). |
-| **Update policy** | Choose how updates reach this extension: **Compatible auto** applies compatible updates for you, **Notify only** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. |
+| **Update policy** | Choose how updates reach this extension: **Compatible updates automatically** applies compatible updates for you, **Notify me** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. |
 | **Update** | Move the extension to a newer release when one is available. Disabled when the extension is already up to date, and replaced by *"Pinned — change the update policy to install updates"* while the extension is pinned. |
 | **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools survive and lose those bindings, and re-installing the same package later comes up clean. |
 

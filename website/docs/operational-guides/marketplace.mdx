@@ -16,8 +16,8 @@ A **solution** is an [extension](/operational-guides/manage-extensions) publishe
 ## Prerequisites
 
 - **A signed-in account:** everyone can browse the Marketplace and read the solution pages.
-- **Permission to install extensions:** installing needs the right to create extensions. Without it, you see **Ask an admin** instead of **Install** (see [Ask the admins to install a solution](#ask-the-admins-to-install-a-solution)).
-- **Edit access to the target Knowledge base:** only if you install a solution into a Knowledge base that already exists.
+- **Permission to install extensions:** installing needs **Create** on the **Extensions** row of your role. Without it, you see **Ask an administrator to install it** instead of **Install** (see [Ask the admins to install a solution](#ask-the-admins-to-install-a-solution)).
+- **Permission to update the target Knowledge base:** only if you install a solution into a Knowledge base that already exists. Your role needs **Update** on it in the **Knowledge** row.
 
 ## Find a solution
 
@@ -84,7 +84,7 @@ If the install fails, everything it had created is undone, so you can select **T
 
 If you can't install extensions, ask the people who can:
 
-1. On the solution's card or page, select **Ask an admin**.
+1. On the solution's card or page, select **Ask an administrator to install it**.
 2. Optionally, write in **Message (optional)** what you would use the solution for.
 3. Select **Send request**.
 
@@ -95,7 +95,7 @@ Every administrator gets an in-app notification with your name, your message and
 Open an installed solution from the **Installed** filter or from its card. Its page becomes the solution's status page:
 
 - **Setup:** the checklist from **Setup after install**, with the steps done so far. Select **Continue setup** to work through it. Ticks are saved with the installed solution.
-- **Components:** the solution's sources, agents, reminders and views, each with its state, for example **Active**, **Sync failed**, **Last run failed**, **Paused** or **Needs owners** (records nobody is notified for). Each problem comes with its action: **Retry**, **View log**, **Resume** or **Assign**. A view you deleted shows as **Removed**, and an update doesn't bring it back.
+- **Components:** the solution's sources, agents, reminders and views, each with its state, for example **Active**, **Sync failed**, **Last run failed**, **Paused** or **Needs owners** (records nobody is notified for). Each problem comes with its action (**Retry**, **View log**, **Resume** or **Assign**). A view you deleted shows as **Removed**, and an update doesn't bring it back.
 - **Overview** and **Versions:** the same content as before the install.
 
 The **More actions** menu has **Check for updates**, **Version history**, **Restart setup**, which marks every setup step as not done without touching any data, **Pause all agents** and **Uninstall…**. To open the solution's content, select **Open** followed by the Knowledge base name.
@@ -153,7 +153,7 @@ The Marketplace on your installation may show a different selection: Rational AI
 | **Anti-money-laundering for professional firms** | Due diligence, beneficial owner, retention and restricted assessments for a professional firm. | Professional services, Finance and insurance | IT + EN | Yes |
 | **Azienda agricola: register of treatments** | A farm's treatment register, with annotation and conversion terms and an export for the CAA. | Manufacturing | IT + EN | Yes |
 | **B2B customer prospecting** | Companies to contact with a score, research on their website with sources, custom questions for each company and e-mail sequences approved by a person. | Manufacturing | IT + EN | Yes |
-| **Banco di prova delle decisioni** | Try the decision model on your own cases: an image, a question, the probability of every answer and the action above the threshold. | Manufacturing, Professional services, Retail and fashion | EN | — |
+| **Banco di prova delle decisioni** | Try the decision model on your own cases: an image, a question, the probability of every answer and the action above the threshold. | Manufacturing, Professional services, Retail and fashion | EN | No |
 | **Campaign check: objectives, readings and weekly outcome per client** | Weekly campaign check per client, from CSV exports, with variances, owner and written outcome. | Professional services | IT + EN | Yes |
 | **CBAM: imports and supplier emissions** | Iron, steel and aluminium imports subject to CBAM, the 50-tonne threshold, the emissions data of the suppliers' installations and the deadlines of the first declaration. | Manufacturing | IT + EN | Yes |
 | **Charge check: quotations, reports and invoices** | Compares quotations, service reports and invoices line by line and shows findings with the two documents side by side. | Manufacturing, Professional services | IT + EN | Yes |
@@ -164,9 +164,9 @@ The Marketplace on your installation may show a different selection: Rational AI
 | **Construction sites: firms, DURC, credit license and SAL** | Sites and firms with notification, DURC, credit license, subcontracts and SAL, and a traffic light for each site. | Professional services | IT + EN | Yes |
 | **Contractors and work permits** | Contractors, documents, DUVRIs, work permits and the gatehouse in one place: whoever enters the plant has a qualified contractor, documents in order and an authorized job. | Manufacturing | IT + EN | Yes |
 | **Contracts and suppliers** | Every contract from draft to notice, with qualified suppliers and expiring certificates | Manufacturing, Retail and fashion, Professional services | IT + EN | Yes |
-| **Controlli su foto** | A decision model answers closed questions about each photo, with the probability of every answer; the uncertain ones go to a person. | Manufacturing, Public sector | EN | — |
-| **Controllo dei cedolini** | The consultant's payslips checked before they go out: each net pay compared with the month before, with the reason for every difference. | — | EN | — |
-| **Controllo dei DDT in arrivo** | The transport documents of incoming goods checked as you upload them, against requirements you write: every rejection with its reason. | Manufacturing, Retail and fashion, Professional services | IT | — |
+| **Controlli su foto** | A decision model answers closed questions about each photo, with the probability of every answer; the uncertain ones go to a person. | Manufacturing, Public sector | EN | No |
+| **Controllo dei cedolini** | The consultant's payslips checked before they go out: each net pay compared with the month before, with the reason for every difference. | None | EN | No |
+| **Controllo dei DDT in arrivo** | The transport documents of incoming goods checked as you upload them, against requirements you write: every rejection with its reason. | Manufacturing, Retail and fashion, Professional services | IT | No |
 | **Corporate governance** | Arrangements, quarterly indicators, treasury and reports to the board and the auditors in one place. | Manufacturing, Professional services, Finance and insurance | IT + EN | Yes |
 | **Cosmetic product file: PIF, annexes and undesirable effects** | Each cosmetic's product file with its formula compared to the annexes, label, PIF and undesirable effects. | Manufacturing | IT + EN | Yes |
 | **Credit collection** | Graduated payment reminders and customer replies, from the ERP's open items. | Manufacturing, Professional services | IT + EN | Yes |
@@ -177,7 +177,7 @@ The Marketplace on your installation may show a different selection: Rational AI
 | **Customer traffic light: color, credit limit, blocks and exceptions** | A color for each customer, computed by stored rules, with block and unblock proposals a person decides. | Manufacturing, Professional services | IT + EN | Yes |
 | **Cyber Resilience Act: vulnerabilities and reports** | Products, SBOM, vulnerabilities and Cyber Resilience Act art. 14 reports in one place: the 24 and 72 hour deadlines in sight, the drafts ready to submit. | Manufacturing | IT + EN | Yes |
 | **Document reading: types, fields and queue of doubtful pages** | Reads similar documents with a local vision model and sends only the doubtful pages to a person. | Manufacturing, Professional services | IT + EN | Yes |
-| **Document specification revisions** | What changes between two revisions of a specification, section by section and row by row, reviewed by a person. | Manufacturing | IT + EN | — |
+| **Document specification revisions** | What changes between two revisions of a specification, section by section and row by row, reviewed by a person. | Manufacturing | IT + EN | No |
 | **Due diligence data room** | Documents, checklist, requests, approvals and deadlines of a due diligence in one place. | Finance and insurance, Professional services | EN + IT | Yes |
 | **Energy and consumption** | Bills, meters and consumption by line with the energy cost per piece, the anomalies and the energy audit. | Manufacturing, Energy and utilities | IT + EN | Yes |
 | **Energy community** | Members, plants and GSE incentives of a renewable energy community, with the monthly split among the members. | Energy and utilities, Public sector | IT + EN | Yes |
@@ -191,7 +191,7 @@ The Marketplace on your installation may show a different selection: Rational AI
 | **Food safety: HACCP, allergens, labels and recalls** | A food manufacturer's HACCP plan with monitoring records, allergens, labels, food contact declarations and recall cases. | Manufacturing | IT + EN | Yes |
 | **Form filling** | Forms and questionnaires filled from company documents, with sources, expiry dates and a person's approval. | Manufacturing, Professional services | IT + EN | Yes |
 | **Funded training: Fondimpresa accounts, plans and registers** | Fondimpresa accounts, expiring credits, plans, registers and costs, with checks computed from the fund's rules. | Manufacturing, Professional services | IT + EN | Yes |
-| **Gestione del personale** | Hires, job changes and leavers, each employee's courses, medical visits and acknowledgements, with signed documents read and filed on the person. | — | IT + EN | Yes |
+| **Gestione del personale** | Hires, job changes and leavers, each employee's courses, medical visits and acknowledgements, with signed documents read and filed on the person. | None | IT + EN | Yes |
 | **Injuries, near misses and hazards** | The plant's injuries, near misses and hazards: report from a phone with the department's QR code, the INAIL report reminded by the hour, the rates computed by themselves. | Manufacturing | IT + EN | Yes |
 | **Installed base and service** | The machines installed at your customers: as-built per serial number, warranties, service requests, interventions and campaigns. | Manufacturing | IT + EN | Yes |
 | **Insurance and claims** | Policies, renewals, premiums, conditions, certificates and claims, with computed deadlines and a drafted claim notice. | Manufacturing | IT + EN | Yes |
@@ -226,12 +226,12 @@ The Marketplace on your installation may show a different selection: Rational AI
 | **Rational Academy** | The company's internal courses, assigned by department and job role, taken by employees with a personal code. | Manufacturing, Professional services | IT + EN | Yes |
 | **Rational Budget** | Budget against actuals month by month, with the monthly closings and the explanation of the variances. | Manufacturing, Finance and insurance | IT + EN | Yes |
 | **Recruiting** | Recruiting from the hiring request to the first day, with CV reading, scored interviews and data retention. | Manufacturing, Energy and utilities | IT + EN | Yes |
-| **Reporting channel** | A public page to report, also anonymously, and the handler's register with 7-day acknowledgement and 3-month feedback. | Manufacturing, Professional services, Public sector | IT + EN | — |
+| **Reporting channel** | A public page to report, also anonymously, and the handler's register with 7-day acknowledgement and 3-month feedback. | Manufacturing, Professional services, Public sector | IT + EN | No |
 | **Returns and warranty** | Customer returns and warranty claims from request to closure, with the warranty worked out, the costs and the recovery from suppliers. | Manufacturing | IT + EN | Yes |
 | **Risk assessment, emergencies and PPE** | The risk assessment with a P × D matrix and 30-day rework, the emergency plan and PPE issues signed on a tablet. | Manufacturing | IT + EN | Yes |
 | **SGSI ISO 27001** | Your ISMS's Statement of Applicability, risks, evidence and findings, with everyone's deadlines. | Professional services, Finance and insurance, Healthcare | EN | Yes |
 | **Shipments and transport** | Shipments to customers from pick-up to delivery, with carrier requests, PODs, freight invoices and claims. | Manufacturing | IT + EN | Yes |
-| **Social media editorial plan** | The social media editorial plan and calendar, for a small marketing team. | Professional services, Retail and fashion, Manufacturing | IT + EN | — |
+| **Social media editorial plan** | The social media editorial plan and calendar, for a small marketing team. | Professional services, Retail and fashion, Manufacturing | IT + EN | No |
 | **Specification revisions** | What changes between two revisions of a specification, component by component, drawings included. | Manufacturing | IT + EN | Yes |
 | **Supplier quality** | Supplier corrective action requests and 8Ds, audits, a monthly A/B/C scorecard and incoming inspection plans. | Manufacturing | IT + EN | Yes |
 | **Supplier quotation comparison** | Supplier quotations brought to one unit, currency and delivery basis, with what is missing and the decision frozen. | Manufacturing | IT + EN | Yes |

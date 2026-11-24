@@ -7,10 +7,10 @@ audience: [builder, developer]
 
 # Manage extensions
 
-Extensions are how you give Rational AI new capabilities, most often by connecting it to outside tools your agents can call. This guide walks through everything you do with extensions in the UI: where the packages you can install come from, installing one from the catalog or straight from a file, configuring it so it starts running, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
+Extensions are how you give Rational AI new capabilities: tools your agents can call, skills, channels, sources and workflows, and the complete use cases that [Marketplace](/operational-guides/marketplace) solutions install. This guide walks through everything you do with extensions in the UI: where the packages you can install come from, installing one from the catalog or straight from a file, configuring it so it starts running, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
 
 :::note[What is an extension?]
-An extension is a bundle that adds a capability to Rational AI, most commonly one or more **MCP** servers. MCP (Model Context Protocol) is an open standard for connecting AI agents to external tools and data sources, so an MCP server is essentially a set of tools your agents can call.
+An extension is a bundle that adds capabilities to Rational AI. Many extensions provide one or more **MCP** servers; others are Marketplace solutions that set up a Knowledge base with its views and records, agents and BI dashboards. MCP (Model Context Protocol) is an open standard for connecting AI agents to external tools and data sources, so an MCP server is essentially a set of tools your agents can call.
 
 Two distinct steps put an extension to work. **Installing** a package adds it into your tenant. **Configuring** it is what actually starts it running. These steps are separate and explicit, so a package landing in your tenant never silently starts talking to anything.
 :::
@@ -23,14 +23,14 @@ This page covers managing and installing existing extensions. To create one from
 
 Your tenant doesn't resolve extensions from a single registry. It resolves them from several **sources**, much the way a Linux system resolves packages from several apt sources:
 
-- **The platform catalog** — the releases Rational AI publishes. Every tenant sees the same catalog.
-- **Your local packages** — anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
-- **Remote sources** — third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they contribute more packages to browse.
+- **The platform catalog**: the releases Rational AI publishes. Every tenant sees the same catalog.
+- **Your local packages**: anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
+- **Remote sources**: third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they contribute more packages to browse.
 
 Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
 
 :::note[When the catalog and your own packages overlap]
-You can upload your own package of an extension the platform catalog also publishes — a patched build of something standard, for instance. There's no conflict to resolve up front, because overlap is settled **per version**:
+You can upload your own package of an extension the platform catalog also publishes (a patched build of something standard, for instance). There's no conflict to resolve up front, because overlap is settled **per version**:
 
 - For a version both offer, the **catalog's copy wins** the listing. Your copy stays resolvable and resurfaces if the shared release is ever withdrawn.
 - A version **only you** have is always listed, right alongside the catalog's versions.
@@ -62,7 +62,7 @@ Extensions you've already installed remain in the list, shown **disabled** with 
 
 ## Install a package from a file
 
-Do this when you have a package of your own — something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
+Do this when you have a package of your own: something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
 
 1. Go to **Settings** → **Extensions**.
 2. Drag the package from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag, confirming the page will accept the file.
@@ -80,12 +80,12 @@ installation explicitly placed in development mode accepts file edits.
 
 ## Configure an extension so it starts running
 
-Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully — it lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
+Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully. It lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
 
 Creating the extension's first MCP-server configuration is what does the rest, in one step: it **starts the server, discovers the tools it actually serves, and enables the extension**.
 
 1. Open the extension on **Settings** → **Extensions**.
-2. Open its settings and fill in what the extension asks for — API keys, connection strings, endpoints.
+2. Open its settings and fill in what the extension asks for: API keys, connection strings, endpoints.
 3. Save. The extension comes up enabled, and its tools appear.
 
 An extension whose parameters all carry defaults has nothing left to resolve, so it comes up configured and enabled the moment you install it, with no extra step.
@@ -139,6 +139,6 @@ You know that extensions resolve from several sources (the platform catalog, you
 
 ## Related
 
-- [Update and roll back extensions](/operational-guides/extension-updates) — update policies, compatibility, and recovering from a bad update.
-- [Browse agent tools](/operational-guides/manage-tools) — the catalog of tools your installed extensions provide.
-- [Build an extension](/operational-guides/build-an-extension) — authoring a package and its manifest.
+- [Update and roll back extensions](/operational-guides/extension-updates): update policies, compatibility, and recovering from a bad update.
+- [Browse agent tools](/operational-guides/manage-tools): the catalog of tools your installed extensions provide.
+- [Build an extension](/operational-guides/build-an-extension): authoring a package and its manifest.

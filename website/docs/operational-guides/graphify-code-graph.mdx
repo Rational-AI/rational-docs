@@ -10,25 +10,25 @@ audience: [builder]
 A [Knowledge](/operational-guides/create-knowledge) can ingest an entire Git repository and turn it into a **code graph**: every file, symbol, and relationship in the codebase becomes a navigable part of the Knowledge. Graphify analyzes the repository, fills the Knowledge with structured resources, installs an interactive graph viewer, and gives the Knowledge chat a tool that answers questions about the code. This guide takes you from a clone URL to a Knowledge you can browse and query.
 
 :::note[What is Graphify?]
-Graphify is a code-analysis engine. It parses a repository and builds a graph where nodes are files and symbols (functions, classes, and so on), edges are the relationships between them (defines, references, calls), and **communities** are clusters of files that belong together. In Rational AI, Graphify is a **processing rule** you select when attaching a Git Source to a Knowledge — the graph it produces *is* the Knowledge's content.
+Graphify is a code-analysis engine. It parses a repository and builds a graph where nodes are files and symbols (functions, classes, and so on), edges are the relationships between them (defines, references, calls), and **communities** are clusters of files that belong together. In Rational AI, Graphify is a **processing rule** you select when attaching a Git Source to a Knowledge. The graph it produces *is* the Knowledge's content.
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Access to the AI Control Room Settings area**, for both **Sources** and **Knowledge**.
-- **An HTTPS clone URL** for the repository you want to ingest — for example `https://github.com/id-Software/DOOM.git`.
+- **The Knowledge module in your license**, with **Create** on the **Sources** row of your role and **Update** on the **Knowledge** row (to attach the source). See [Manage roles and users](/operational-guides/roles-and-users).
+- **An HTTPS clone URL** for the repository you want to ingest, for example `https://github.com/id-Software/DOOM.git`.
 - **For a private repository:** the credentials needed to create a **Git credentials** connector for the repository host. Public repositories need no connector.
 
 ## Create a Git repository Source
 
-The repository enters the platform as a regular Source. Nothing about the Source itself is Graphify-specific — the same Source could feed other Knowledge bases with other rules.
+The repository enters the platform as a regular Source. Nothing about the Source itself is Graphify-specific: the same Source could feed other Knowledge bases with other rules.
 
 1. Go to **Settings** → **Sources** and create a **Git repository** Source.
 2. Enter the **Repository URL** (an HTTPS clone URL).
 3. For a private repository, create a **Git credentials** connector for the repository host and select it under **Credentials (optional)**. Leave it empty for a public repository.
-4. Optionally set **Branch, tag, or commit** — leave it blank to use the repository's default branch — and turn on **Include Git submodules** if the repository uses them.
+4. Optionally set **Branch, tag, or commit** (leave it blank to use the repository's default branch), and turn on **Include Git submodules** if the repository uses them.
 
 <img
   src={require('@site/static/img/screens/source-git-repository.png').default}
@@ -68,23 +68,23 @@ During the sync, the repository is checked out, snapshotted, and analyzed by Gra
 
 | Category | What it holds | Relations |
 | :--- | :--- | :--- |
-| **Overview** | A single codebase overview resource. | — |
-| **Workspace** | One resource per workspace (top-level area) of the repository. | — |
+| **Overview** | A single codebase overview resource. | None |
+| **Workspace** | One resource per workspace (top-level area) of the repository. | None |
 | *Code files* | One resource per analyzed file, categorized by its workspace. | **references** between files that use each other. |
 | **Community** | A cluster of files that Graphify groups together. | **contains** the files in the cluster. |
 | **Symbol** | A significant function, class, or other symbol. | **defined_in** the file that declares it. |
 
 :::note[No chunking, no embeddings]
-The Graphify rule is a dedicated processing path. It does not chunk, embed, or index the code for [RAG](/operational-guides/configure-rag) — questions are answered by querying the graph directly, so the answers reflect the code's actual structure rather than text similarity.
+The Graphify rule is a dedicated processing path. It does not chunk, embed, or index the code for [RAG](/operational-guides/configure-rag). Questions are answered by querying the graph directly, so the answers reflect the code's actual structure rather than text similarity.
 :::
 
 ## Explore the graph
 
-Processing also installs Graphify's interactive viewer as a [custom view](/operational-guides/knowledge-custom-views) on the Knowledge page. Open the Knowledge and switch to the Graphify view to explore the graph visually — files, symbols, communities, and the edges between them. The resources themselves behave like any other Knowledge content: browse them in the standard views, filter by category, and follow relations from the resource details panel.
+Processing also installs Graphify's interactive viewer as a [custom view](/operational-guides/knowledge-custom-views) on the Knowledge page. Open the Knowledge and switch to the Graphify view to explore the graph visually: files, symbols, communities, and the edges between them. The resources themselves behave like any other Knowledge content: browse them in the standard views, filter by category, and follow relations from the resource details panel.
 
 ## Ask questions about the code
 
-The Knowledge's Touchpoint is equipped with the **`query_graph`** tool. When you chat with the Knowledge, each question is answered by running Graphify's query engine against the stored graph — on demand, with no server left running between questions.
+The Knowledge's Touchpoint is equipped with the **`query_graph`** tool. When you chat with the Knowledge, each question is answered by running Graphify's query engine against the stored graph on demand, with no server left running between questions.
 
 For a Knowledge built from the public DOOM repository, try:
 

@@ -7,7 +7,9 @@ audience: [user, builder]
 
 # Conversations
 
-The **Conversations** module is where every exchange between your users and Rational AI's agents comes together. Whenever someone interacts with a [touchpoint](./settings/touchpoints.mdx), the messages are captured here as a single conversation and automatically enriched with a title, topics and sentiment. Use this module to monitor activity, review what your agents are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
+The **Conversations** module is where staff review the conversations people have with your [touchpoints](./settings/touchpoints.mdx). Whenever someone talks to a touchpoint, the messages are captured here as a single conversation and automatically enriched with a title, topics and sentiment. Use this module to monitor activity, review what your assistants are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
+
+The page appears for anyone whose role has access to **Conversations**. A role that grants every conversation shows them all; otherwise you see only your own. Taking over a conversation, starring, generating a summary, refreshing labels and recording an oversight decision are for administrators. Chats with the agents of the [Agents](./Agents.mdx) section aren't listed here: they stay in **Agents** → **Chats**.
 
 ## Navigate your conversations
 
@@ -49,14 +51,14 @@ Choose **Apply** to filter the table, or **Clear** to empty the panel. The **Fil
 
 ## Open a conversation
 
-Click any row (or choose **Open** from the row's **Actions** menu) to open the conversation. The table collapses into a narrow list on the left and the thread fills the rest of the page, with the user's messages on the right, the agent's replies labeled with who answered, and operator replies in their own style with a sent or failed state.
+Click any row (or choose **Open** from the row's **Actions** menu) to open the conversation. The table collapses into a narrow list on the left and the thread fills the rest of the page, with the user's messages on the right, the assistant's replies labeled with who answered, and operator replies in their own style with a sent or failed state.
 
 The conversation header gives you several tools:
 
 * **Search** within the conversation.
 * **Star** to add the conversation to your favorites.
 * **Details** opens the details drawer on the right (see below).
-* **More conversation actions** holds **Advanced mode**, **Copy conversation ID** and **Delete conversation**. **Advanced mode** exposes the underlying message objects: tool calls, JSON payloads, `tool_call_id`s and any errors the agent encountered. Use it to understand exactly what happened behind a reply.
+* **More conversation actions** holds **Advanced mode**, **Copy conversation ID** and **Delete conversation**. **Advanced mode** exposes the underlying message objects: tool calls, JSON payloads, `tool_call_id`s and any errors the assistant encountered. Use it to understand exactly what happened behind a reply.
 
 ### The details drawer
 
@@ -66,10 +68,10 @@ When a conversation is flagged for human oversight, the review decision also sit
 
 ### The take-over bar
 
-While the agent is in charge of a conversation, a bar replaces the message box at the bottom. It states who holds the conversation (for example, *"The AI handles this conversation"* or *"The AI is answering the user"*) and offers:
+While the assistant is in charge of a conversation, a bar replaces the message box at the bottom. It states who holds the conversation (for example, *"The AI handles this conversation"* or *"The AI is answering the user"*) and offers:
 
-* **Take over:** hand the conversation from the agent to you, so you can reply directly when a user needs personal attention.
-* **Stop generating:** end an answer the agent is generating right now, without taking the conversation over.
+* **Take over:** hand the conversation from the assistant to you, so you can reply directly when a user needs personal attention.
+* **Stop generating:** end an answer the assistant is generating right now, without taking the conversation over.
 * **Generate summary:** open an AI summary of the conversation for a quick recap of a long thread.
 
 For the full procedure, see [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
@@ -85,7 +87,7 @@ The rules that raise the flag are configured in [Conversations settings](./setti
 ## Best practices
 
 * **Triage with filters:** combine the **Sentiment** and **Status** filters, or **Show only** conversations that need review, to surface conversations that may need attention.
-* **Take over when it counts:** when an agent is struggling or a user asks for a person, use **Take over** rather than letting the thread stall. If the agent is only stuck on a runaway answer, **Stop generating** is enough.
+* **Take over when it counts:** when an assistant is struggling or a user asks for a person, use **Take over** rather than letting the thread stall. If the assistant is only stuck on a runaway answer, **Stop generating** is enough.
 * **Keep labels current:** after editing your topic list or switching models, select the affected conversations and **Refresh labels** so reporting stays accurate.
 * **Debug with Advanced mode:** when a reply looks wrong, turn on **Advanced mode** to inspect the tool calls and errors behind it before changing a prompt or model.
 
@@ -95,4 +97,4 @@ The rules that raise the flag are configured in [Conversations settings](./setti
 
 * [Conversations settings](./settings/conversations.mdx): configure title generation, topic detection, sentiment analysis, summaries and oversight rules.
 * [Governance](./Governance.mdx): review aggregated metrics and audit logs for conversational activity.
-* [Knowledge](./Knowledge.mdx): manage the information your agents draw on during conversations.
+* [Knowledge](./Knowledge.mdx): manage the information your assistants draw on during conversations.

@@ -2,7 +2,7 @@
 sidebar_position: 21
 sidebar_label: Touchpoint
 title: Touchpoint
-description: What a touchpoint is, what it binds together, and how touchpoints turn a model into a purpose-built agent in Rational AI.
+description: What a touchpoint is, what it binds together, and how touchpoints turn a model into a purpose-built assistant in Rational AI.
 type: concept
 audience: [user, builder]
 ---
@@ -11,7 +11,7 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 # Touchpoint
 
-A **touchpoint** is a configured entry point through which users interact with an AI agent, for example a chat assistant for a specific product or a customer‑care flow. It is the unit that turns a general‑purpose model into a purpose‑built agent for one job.
+A **touchpoint** is a configured assistant that people talk to, for example one for a specific product or a customer‑care flow. It is the unit that turns a general‑purpose model into a purpose‑built assistant for one job. It is not an agent of the [Agents](../cr/Agents.mdx) section: agents carry out jobs in runs, while a touchpoint answers people in conversations.
 
 Where a model is generic, a touchpoint is specific. The same underlying model can power many touchpoints, each with its own personality, knowledge and rules, in the same way one engine can power very different vehicles.
 
@@ -19,16 +19,17 @@ Where a model is generic, a touchpoint is specific. The same underlying model ca
 
 A touchpoint brings several ingredients into a single configuration:
 
-* **A [channel](./Channels.mdx):** how and where users reach the agent.
+* **A [channel](./Channels.mdx):** how and where users reach the assistant. The channel only carries the messages.
 * **A model and system prompt:** the [model](./Model-architecture.mdx) that generates replies and the instructions that shape its behavior.
-* **Knowledge:** the [knowledge](./Knowledge.mdx) sources the agent is allowed to draw on.
-* **Tools:** the actions it can take, such as semantic retrieval or database queries.
+* **Knowledge:** the [knowledge](./Knowledge.mdx) sources the assistant is allowed to draw on.
+* **Tools and skills:** the actions it can take, such as semantic retrieval or database queries, and the skills it can use.
+* **Memory:** what it carries from one conversation to the next.
 
 Because all of this lives in one place, each touchpoint can be tailored precisely to its use case, and changed without affecting the others.
 
 ## Why touchpoints matter
 
-Touchpoints are how you put AI in front of real users safely and deliberately. They let you decide exactly what an agent knows, how it speaks and what it can do, and they make each interaction measurable: every conversation through a touchpoint can be reviewed and its usage tracked.
+Touchpoints are how you put AI in front of real users safely and deliberately. They let you decide exactly what an assistant knows, how it speaks and what it can do, and they make each interaction measurable: every conversation through a touchpoint can be reviewed and its usage tracked.
 
 ## Touchpoints in Rational AI
 
@@ -36,7 +37,7 @@ You build and tailor them in the [Touchpoints](../cr/settings/touchpoints.mdx) s
 
 ## Additional resources
 
-* [Touchpoints settings](../cr/settings/touchpoints.mdx): create and configure your agents.
+* [Touchpoints settings](../cr/settings/touchpoints.mdx): create and configure your touchpoints.
 
 
 ---

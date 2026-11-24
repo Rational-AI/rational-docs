@@ -58,7 +58,7 @@ Say what a feature does *not* do, what is irreversible, and what happens to data
 - **One idea per sentence. Aim for 15–20 words, and stay under 25.**
 - **Paragraphs: 3 sentences max.** If a paragraph contains a sequence, make it a numbered list.
 - Lead with the goal or condition: "To rename a group, select…" / "If the model isn't listed, …"
-- No em-dash chains. Use one em dash per sentence at most, or prefer a full stop.
+- No em dashes (—). Use a full stop, a comma, a colon or parentheses instead. The only exception is UI text quoted exactly as it appears on screen.
 
 ### Headings
 - **Sentence case** everywhere: "Configure the chunking strategy", not "Configure The Chunking Strategy". After a colon, capitalize the first word: "Phase 1: Semantic search".
@@ -130,7 +130,7 @@ Many pages are drafted with AI. That's fine, but the result must not read like i
 | Colon reveals | "The best part: it learns." | a plain sentence |
 | Synonym cycling | agent → assistant → tool for the same thing | repeat the right term (§5) |
 | Recap endings | a last paragraph that restates the page ("You now have…") | end with **Next steps** |
-| Em-dash rhythm | more than one em dash per paragraph | full stops, commas |
+| Em dashes | any em dash (—) in our prose | full stops, commas, colons, parentheses |
 | Decorative formatting | emoji in headings or callouts, bold mid-sentence for emphasis, bullets for two sentences of prose | plain prose. Bold is for UI labels |
 
 Vale flags the first six patterns and em dashes (`Rational.Slop`, `Rational.SlopPatterns`, `Rational.EmDash`). Colon reveals, synonym cycling and recap endings need a reader, so the PR checklist includes a detect pass (§7).
@@ -160,6 +160,7 @@ Product nouns appear in the UI, so they follow the UI. Generic concepts stay low
 |---|---|---|
 | **AI Control Room** on first mention, then **Control Room** | the control room, CR | Product name |
 | **Rational AI** (company and platform) | Rational.ai, rational | |
+| **Chat**, **Knowledge**, **Conversations**, **Governance**, **BI**, **Apps**, **Agents**, **Gen**, **Marketplace** | Chat module, the Knowledge module | Modules are named exactly as in the top navigation, with no "module" after the name. Say "module" only for license modules ("the Knowledge module in your license") |
 | **Rational BI**, **Rational Gen** | RationalBI | Two words |
 | **Knowledge** (the object you create: "create a Knowledge") | knowledge base, KB | ⚠️ Team to confirm, see open decisions |
 | **touchpoint** (lowercase in prose, **Touchpoints** when it's the UI label) | Touchpoint mid-sentence | |
@@ -208,6 +209,7 @@ New product terms go into this table *before* they appear in the docs.
 
 ## 7. Page checklist (paste into every PR)
 
+- [ ] The feature was studied in the `rational-ai` code (frontend, `en.json`, backend), not taken from commits, PRs or old docs, and the page says what the module is for and who uses it
 - [ ] The page has one type (tutorial / how-to / reference / concept), declared in front matter
 - [ ] The first sentence says what the reader will be able to do, or what the thing is
 - [ ] Prerequisites list roles or permissions and anything that must exist first

@@ -12,8 +12,8 @@ This guide explains how to create, configure, and manage processing rules in the
 
 :::note[Glossary]
 What is a **processing rule**?  
-Processing rules define how incoming data is interpreted, validated, filtered, and transformed before or during workflow execution.
-While workflows describe _how_ a process runs, processing rules define _how data is evaluated and controlled within that process_.
+A processing rule is a Python script that picks which step processes each file, based on document type, content, source or any custom rule. It routes files and doesn't transform them: the step it picks does the work.
+A Knowledge uses its processing rule when its **Default workflow** is the **Classic pipeline**. Set the **Default processing rule** on the Knowledge's **Sources** tab, and override it for one attached source if needed.
 :::
 
 To manage processing rules, open the **Settings** area and navigate to **Workflows** from the left sidebar. 

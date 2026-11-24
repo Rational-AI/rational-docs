@@ -12,8 +12,8 @@ audience: [admin]
 :::warning[Audit trail is not the governance audit log]
 Two different things carry similar names. Keep them apart:
 
-- **Settings** → **Audit trail** (this page) — one row per **access or change to a record**: who opened a conversation, who deleted a user, who changed a dashboard. It's about *people reaching data*.
-- **Governance** → **Audit log** ([Monitor usage and cost](/operational-guides/governance)) — one row per **model request**: which model, how many tokens, what it cost, how fast. It's about *the AI doing work*.
+- **Settings** → **Audit trail** (this page): one row per **access or change to a record**, such as who opened a conversation, who deleted a user, who changed a dashboard. It's about *people reaching data*.
+- **Governance** → **Audit log** ([Monitor usage and cost](/operational-guides/governance)): one row per **model request**, recording which model, how many tokens, what it cost, how fast. It's about *the AI doing work*.
 
 If the question is "who looked at this?", you want this page. If it's "what did the model do and what did it cost?", you want Governance.
 :::
@@ -22,19 +22,19 @@ If the question is "who looked at this?", you want this page. If it's "what did 
 
 Before you start, make sure you have:
 
-- **Administrative access:** the trail is admin-only, and deliberately so — it records who reached what, which is itself sensitive.
+- **Administrative access:** the trail is admin-only, and deliberately so, because it records who reached what, which is itself sensitive.
 
 ## Read the trail
 
 Go to **Settings** → **Audit trail**. Each entry carries five things:
 
 - **When** the action happened.
-- **Who** did it. An entry with no actor reads **System** — background work, not missing data.
-- **Action** — what was done. **Read** is a first-class action here, which is the whole point: it's the one nothing else in the platform records.
-- **Resource** — what was acted on.
-- **Detail** — a one-line summary of the entry.
+- **Who** did it. An entry with no actor reads **System**. That means background work, not missing data.
+- **Action**: what was done. **Read** is a first-class action here, which is the whole point. It's the one nothing else in the platform records.
+- **Resource**: what was acted on.
+- **Detail**: a one-line summary of the entry.
 
-The table is paged and sortable, **newest first** by default, because the question that brings anyone here is almost always what happened most recently. Filter by action to narrow it: **Read**, **Created**, **Updated**, **Deleted**, **Started**, **Canceled**, **Approved**, or **Rejected**. Changing the filter resets you to the first page rather than stranding you on page four of two.
+The table is paged and sortable, **newest first** by default, because the question that brings anyone here is almost always what happened most recently. Filter by action to narrow it: **Read**, **Created**, **Updated**, **Deleted**, **Started**, **Cancelled**, **Approved**, or **Rejected**. Changing the filter resets you to the first page rather than stranding you on page four of two.
 
 :::note[Only deletions are colored]
 Reads are the bulk of the trail, so colouring them would turn the column into decoration. The color is reserved for the destructive action, which keeps it meaning something when you scan the page.
@@ -42,7 +42,7 @@ Reads are the bulk of the trail, so colouring them would turn the column into de
 
 ## Why entries can be trusted
 
-Entries are **append-only, enforced by the database itself**: an attempt to update a row is rejected outright, not merely disallowed by the application. That distinction is the point — a trail the application can rewrite is a log, not evidence, and *"we only ever insert"* is a claim a reviewer would otherwise have to take on faith.
+Entries are **append-only, enforced by the database itself**: an attempt to update a row is rejected outright, not merely disallowed by the application. That distinction is the point: a trail the application can rewrite is a log, not evidence, and *"we only ever insert"* is a claim a reviewer would otherwise have to take on faith.
 
 :::warning[The honest limit: entries can't be altered, but they can be removed]
 Deletion is still permitted, because entries have to age out eventually and a retention sweep is the legitimate way to do that.
@@ -52,7 +52,7 @@ So the guarantee is precise, and worth stating precisely when someone asks: **fa
 
 Two further details matter when you're reading old entries:
 
-- **The actor is recorded verbatim**, not looked up when you view the page. An entry still names the person correctly after that user has been deleted — which is exactly the moment someone goes looking.
+- **The actor is recorded verbatim**, not looked up when you view the page. An entry still names the person correctly after that user has been deleted, which is exactly the moment someone goes looking.
 - **A refused access is not recorded as a read.** Entries are written *after* the access check passes, so the trail holds reads that actually happened rather than reads that were attempted.
 
 ## What is recorded today
@@ -85,9 +85,9 @@ Every read of an entry's values writes a new **Read** entry to the trail. The pe
 
 ## Related
 
-- [Set data retention](/operational-guides/data-retention) — the policy that governs how long entries live.
-- [Erase a person's data](/operational-guides/erase-personal-data) — an erasure records itself here before it runs.
-- [Monitor usage and cost](/operational-guides/governance) — the other, differently named log: one row per model call.
+- [Set data retention](/operational-guides/data-retention): the policy that governs how long entries live.
+- [Erase a person's data](/operational-guides/erase-personal-data): an erasure records itself here before it runs.
+- [Monitor usage and cost](/operational-guides/governance): the other, differently named log, with one row per model call.
 
 ## Result
 

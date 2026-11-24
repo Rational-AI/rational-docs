@@ -1,0 +1,77 @@
+---
+title: November 2026
+description: Marketplace, Knowledge records and views, Rational Gen, model deployments, the new chat composer, Governance enforcement, and on-premises operations.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+Rational AI ships continuously. This page groups the changes of November 2026 that you can see or configure. Each entry says where to find it.
+
+{/* truncate */}
+
+## New
+
+### Marketplace
+
+Install ready-made solutions (Knowledge bases, extensions and example data, plus starting agents where your license includes Agents) from a catalog filtered by industry, use case and feature. You can preview updates, restore a previous version, restart setup, or uninstall.
+
+**How to access:** **Marketplace** in the top navigation · [Install solutions from the Marketplace](/operational-guides/marketplace)
+
+### Knowledge records, views and graph
+
+Knowledge bases now hold structured records:
+
+- **Collections and grid:** collections as tabs, inline editing saved in one batch, filters, grouping, sorting and summaries, and shared grid views. See [Work with records in collections and grid views](/operational-guides/knowledge-collections-and-grid).
+- **Attributes:** link, linked field, formula, rollup and person attributes. See [Choose the right kind of attribute](/operational-guides/knowledge-attributes).
+- **Reminders:** email and in-app reminders on date attributes. See [Get reminded before a date in your records](/operational-guides/knowledge-reminders).
+- **Graph:** group, filter and color the relations between records, and save graph views. See [Explore a Knowledge as a graph](/operational-guides/knowledge-graph).
+- **Embed:** publish views on your website with one script tag or a WordPress shortcode. See [Embed a Knowledge](/operational-guides/embed-knowledge).
+
+### Rational Gen
+
+Generate images from templates and style presets, write Word and PowerPoint documents and HTML canvases through a side chat, and prepare social posts that you verify and publish to LinkedIn, Instagram and Facebook. Requires the Gen module in your license. Image generation is open to everyone with the module; documents, slides, canvases and social posts are for administrators.
+
+**How to access:** the **Gen** tab in the top navigation · [Generate images with Gen](/operational-guides/gen-images), [Generate documents, slides and web pages](/operational-guides/gen-documents), [Create and publish social posts](/operational-guides/social-studio), [Configure Gen for your team](/operational-guides/configure-gen)
+
+### Model deployments
+
+Self-hosted models get a deployment lifecycle: pick a model from Hugging Face or upload a `.gguf` file, set minimum replicas and when idle replicas are released, then stop, resume or warm up a deployment.
+
+**How to access:** **Settings** → **AI Model Registry** · [Deploy and run self-hosted models](/operational-guides/model-deployments)
+
+### Run models on your own hardware
+
+On-premises installations can serve models with Docker on GPU or CPU, on a DGX Spark, or on a multi-machine swarm.
+
+**How to access:** host commands · [Run models on your own servers](/operational-guides/run-models-on-premise)
+
+### Touchpoint generation and memory
+
+Touchpoints have a default reasoning level, a maximum output length, stop-on-repetition, response verification, and personal or shared memory with an approval policy.
+
+**How to access:** **Settings** → **Touchpoints** · [Tune how a touchpoint generates answers](/operational-guides/touchpoint-generation), [Give a touchpoint memory](/operational-guides/touchpoint-memory)
+
+### Install and update on-premises
+
+A single page covers installing with `install.sh`, the nightly update with its checks and automatic rollback, and what the installation reports to Rational AI.
+
+**How to access:** host commands · [Install and update an on-premises installation](/operational-guides/install-and-update)
+
+## Improved
+
+- **Chat composer.** In the **Chat** tab, one **+** menu holds files, Knowledge bases, web search, Deep Research, Canvas, voice, memory, skills and tools. Knowledge bases, web search and Deep Research work with the workspace assistant. Answers can be branched into a new chat, verified claim by claim, and exported as JSON. See [Use Chat](/operational-guides/chat-experience).
+- **Governance** (administrators). Five tabs (Overview, Usage, Applications, Audit log, Costs). **Blocked** and **Unacceptable** applications are now refused, and **High** risk makes every tool call wait for approval. See [Monitor usage, cost, and audit logs](/operational-guides/governance) and [Govern AI applications and provider costs](/operational-guides/govern-ai-applications).
+- **Conversations.** A docked **Filters** panel with multi-select filters, and per-task model defaults for titles, topics, sentiment and summaries. See [Work with Conversations](/operational-guides/conversations).
+- **Channels.** Voice notes are transcribed and photos are read by the model. See [Manage channels](/operational-guides/manage-channels).
+- **Sources.** **Automatic** sync for Git, Google Drive, OneDrive and HTTP sources, a RabbitMQ queue source, and new connectors for Google Vertex AI, Microsoft SQL Server and RabbitMQ. See [Configure data sources](/operational-guides/configure-sources) and [Configure a connector](/operational-guides/configure-connectors).
+- **Knowledge processing.** Follow a processing run per folder, see why a file failed, and pick a default workflow for uploads and syncs. See [Manage knowledge resources](/operational-guides/manage-knowledge-resources).
+- **Rational BI.** A guided tour, per-table access for groups and roles (set by administrators), and AI-suggested questions. See [Build BI dashboards](/operational-guides/rational-bi).
+- **Account settings.** Change your profile and password, see active sessions, and sign out of all devices. See [Manage your own account](/operational-guides/manage-your-account).
+- **API.** Touchpoint API keys, each touchpoint available as an MCP server, and a System One compatible endpoint. See [Access Rational AI via API](/operational-guides/api-access).
+
+## Changed
+
+- **Model deployment API.** The old deploy, pause, cancel and register routes are gone. Use `/models/{id}/deployment`. See [Deploy open-source models via API](/operational-guides/api/deploy-open-source-models).
+- **Tunnel address.** The Control Room is now reached at `control-room.<domain>`. See [Reach an on-premises installation through the Rational AI Tunnel](/operational-guides/tunnel) to move an existing installation.
+- **Off-site backup** is on by default, and restore uses `rational offsite-list` and `rational offsite-restore`. See [Back up and restore an on-premises installation](/operational-guides/backup-and-restore).
+- **Removed:** the `--inference-context` option for on-premises models.
