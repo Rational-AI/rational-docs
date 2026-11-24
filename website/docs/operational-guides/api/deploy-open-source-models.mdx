@@ -147,10 +147,10 @@ curl -s "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/
 
 The answer has the `deployment` itself, plus `outOfDate` and `changedFields`, which say whether the model's settings changed since it was deployed. The deployment carries:
 
-- `phase` — where it is in its lifecycle (table below).
+- `phase`: where it is in its lifecycle (table below).
 - `readyReplicas` and `desiredReplicas` — how many replicas answer, out of how many it should run.
 - `reason` and `message` — why it waits or why it failed, for example `WaitingForCapacity`, `SlowStart`, `OutOfMemory`, `Crashed`.
-- `progress` — what the platform is doing right now, such as pulling an image.
+- `progress`: what the platform is doing right now, such as pulling an image.
 - `lastTransitionAt` and `lastUsedAt` — when it entered its phase, and when it last served a request.
 
 | Phase | Meaning |
@@ -208,11 +208,11 @@ curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<M
 
 ## Troubleshooting
 
-- **`404` on every call** — check the address: calls go to `/api/management/v0/...` on the Control Room's own host.
-- **`409` on create** — another model has that name or identifier; list the models and reuse it, or choose another name.
-- **`409` on deploy** — the `revision` you sent is stale; read the model and deploy its current `deployRevision`.
-- **Stuck in `provisioning` with `WaitingForCapacity`** — no GPU or node has room for it. Free one, or give the deployment fewer GPUs.
-- **`failed` with `OutOfMemory` or `Crashed`** — the `message` carries the runner's own error. Lower the context length or the GPU memory budget, or pick a smaller or quantized model, then deploy again.
+- **`404` on every call**: check the address: calls go to `/api/management/v0/...` on the Control Room's own host.
+- **`409` on create**: another model has that name or identifier; list the models and reuse it, or choose another name.
+- **`409` on deploy**: the `revision` you sent is stale; read the model and deploy its current `deployRevision`.
+- **Stuck in `provisioning` with `WaitingForCapacity`**: no GPU or node has room for it. Free one, or give the deployment fewer GPUs.
+- **`failed` with `OutOfMemory` or `Crashed`**: the `message` carries the runner's own error. Lower the context length or the GPU memory budget, or pick a smaller or quantized model, then deploy again.
 
 ## Result
 

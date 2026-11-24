@@ -49,10 +49,10 @@ Every chat completion that goes through the proxy is recorded as the conversatio
 
 Filter down to the examples you want with the fields you can actually answer:
 
-- **Touchpoint** — which agent's traffic.
-- **Model** — which model produced it.
+- **Touchpoint**: which agent's traffic.
+- **Model**: which model produced it.
 - **Date range.**
-- **Successful calls only** — exclude the ones that errored.
+- **Successful calls only**: exclude the ones that errored.
 
 The counts update as you type: how many requests match, how many will become training examples, and how many are held out. You can see the size of what you're about to create before you create it.
 
@@ -144,11 +144,11 @@ Two things you don't set, and shouldn't have to:
 
 Training takes a while, and a job that reports nothing but "running" is impossible to make decisions about. Select a run in the list to open its drawer, which shows what it's actually doing and refreshes every few seconds while the run is live:
 
-- **Status** — **Pending**, **Training**, **Completed**, **Failed** or **Canceled** — with who created the run and its **Duration**.
-- **Progress** — a bar with the percentage, the current step and the latest loss.
-- **Learning curves** — a chart of **Training loss** and **Evaluation loss** step by step. Because the run is evaluated against the held-out split, you can see **overfitting while it's still happening**: training loss falling while evaluation loss flattens or rises is the signal to stop.
-- **Error** — the failure reason, if it fails, rather than a run that stops.
-- **Parameters** — the batch size, epochs, learning rate and LoRA settings the run actually used.
+- **Status**: **Pending**, **Training**, **Completed**, **Failed** or **Canceled** — with who created the run and its **Duration**.
+- **Progress**: a bar with the percentage, the current step and the latest loss.
+- **Learning curves**: a chart of **Training loss** and **Evaluation loss** step by step. Because the run is evaluated against the held-out split, you can see **overfitting while it's still happening**: training loss falling while evaluation loss flattens or rises is the signal to stop.
+- **Error**: the failure reason, if it fails, rather than a run that stops.
+- **Parameters**: the batch size, epochs, learning rate and LoRA settings the run actually used.
 
 The chart shows the latest 2,000 measurements; the complete history is in the run's training artifacts (see below). If the measurements can't be loaded, the drawer says so and offers **Reload measurements** to try again.
 
@@ -192,8 +192,8 @@ To run the model somewhere else, or keep a copy outside the platform, open the r
 
 ## Related
 
-- [Manage AI models in the registry](/operational-guides/ai-model-registry-features) — where a deployed model lands.
-- [Monitor usage and cost](/operational-guides/governance) — the recorded traffic a dataset can be built from.
+- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): where a deployed model lands.
+- [Monitor usage and cost](/operational-guides/governance): the recorded traffic a dataset can be built from.
 
 ## Result
 

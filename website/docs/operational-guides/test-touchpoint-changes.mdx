@@ -34,8 +34,8 @@ Make your change to the touchpoint and save. Instead of applying immediately, yo
 
 Choosing **Test first** asks which conversations to replay:
 
-- **The most recent conversations** — 20 by default.
-- **Only conversations with negative feedback** — the ones users already told you went badly, which is often where a prompt change is aimed.
+- **The most recent conversations**: 20 by default.
+- **Only conversations with negative feedback**: the ones users already told you went badly, which is often where a prompt change is aimed.
 - **A hand-picked set** you choose yourself.
 
 The dialog shows **how many you selected out of the total** and a cost estimate that re-prices as you change the selection, so a large archive is never quietly swept into an expensive run. Runs are capped at **100 conversations**.
@@ -77,10 +77,10 @@ Results open with **diverged and changed cases first**, with unchanged cases col
 
 Comparison is deterministic and is **not** a text diff — two differently worded answers that do the same thing count as the same. The signals are:
 
-- **Which tools were called** — the difference between the two sets.
-- **Citations** — what the answer referenced.
+- **Which tools were called**: the difference between the two sets.
+- **Citations**: what the answer referenced.
 - **Errored or empty answers.**
-- **Output shape** — whether it's still JSON, and whether the length stayed within a ±50% band.
+- **Output shape**: whether it's still JSON, and whether the length stayed within a ±50% band.
 
 Cost and latency are reported too, and flagged when they more than double — but they never change the verdict. A slower answer is information, not a regression.
 
@@ -112,9 +112,9 @@ The one place they *are* visible is [governance](/operational-guides/governance)
 
 ## Related
 
-- [Configure touchpoints](/operational-guides/configure-touchpoints) — the settings a replay run tests.
-- [Monitor usage and cost](/operational-guides/governance) — where a run's cost shows up.
-- [Rate an answer](/operational-guides/chat-experience#rate-an-answer) — the negative feedback you can replay against.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): the settings a replay run tests.
+- [Monitor usage and cost](/operational-guides/governance): where a run's cost shows up.
+- [Rate an answer](/operational-guides/chat-experience#rate-an-answer): the negative feedback you can replay against.
 
 ## Result
 

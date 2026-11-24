@@ -1,7 +1,9 @@
-# Em-dash clusters read as AI rhythm (STYLE.md §4).
-extends: occurrence
-message: "More than one em dash in this paragraph: use full stops or commas."
-level: warning
-scope: paragraph
-max: 1
-token: '—'
+# No em dashes in the docs (STYLE.md §4). Use a full stop, comma, colon or
+# parentheses. UI text quoted verbatim ("…") is the only exception: .vale.ini
+# ignores quoted strings that contain one.
+extends: existence
+message: "No em dashes: use a full stop, comma, colon or parentheses (STYLE.md §4)."
+level: error
+nonword: true
+tokens:
+  - '—'

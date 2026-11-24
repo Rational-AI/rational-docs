@@ -23,9 +23,9 @@ This page covers managing and installing existing extensions. To create one from
 
 Your tenant doesn't resolve extensions from a single registry. It resolves them from several **sources**, much the way a Linux system resolves packages from several apt sources:
 
-- **The platform catalog** — the releases Rational AI publishes. Every tenant sees the same catalog.
-- **Your local packages** — anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
-- **Remote sources** — third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they contribute more packages to browse.
+- **The platform catalog**: the releases Rational AI publishes. Every tenant sees the same catalog.
+- **Your local packages**: anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
+- **Remote sources**: third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they contribute more packages to browse.
 
 Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
 
@@ -139,6 +139,6 @@ You know that extensions resolve from several sources (the platform catalog, you
 
 ## Related
 
-- [Update and roll back extensions](/operational-guides/extension-updates) — update policies, compatibility, and recovering from a bad update.
-- [Browse agent tools](/operational-guides/manage-tools) — the catalog of tools your installed extensions provide.
-- [Build an extension](/operational-guides/build-an-extension) — authoring a package and its manifest.
+- [Update and roll back extensions](/operational-guides/extension-updates): update policies, compatibility, and recovering from a bad update.
+- [Browse agent tools](/operational-guides/manage-tools): the catalog of tools your installed extensions provide.
+- [Build an extension](/operational-guides/build-an-extension): authoring a package and its manifest.

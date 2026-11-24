@@ -50,7 +50,7 @@ A dashboard can only chart data the project can reach, so point the project at i
 2. Open its **Sources** tab. Everything the project can query is listed in a single table, whether it came from a [data source](/operational-guides/configure-sources) or from a [Knowledge](/operational-guides/create-knowledge):
    - **Name**, with the provider's own icon, so you can tell a cloud-storage source from a Knowledge at a glance.
    - **Description**.
-   - **Files** — how many files that entry contributes.
+   - **Files**: how many files that entry contributes.
 3. Use the **Add…** field below the table to attach another source or Knowledge; use the row's **⋮** menu to **Delete** one.
 4. Select **Save**.
 
@@ -67,9 +67,9 @@ By default, everyone who can open a project can query all of its data. When some
 1. In **Settings** → **Rational BI**, open the project and select the **Access** tab.
 2. The table lists every **Table or view** of the project's Knowledges, grouped by Knowledge, with **Who can see** next to each.
 3. Select a row and choose:
-   - **Everyone in this project** — the default.
+   - **Everyone in this project**: the default.
    - **Nobody**.
-   - **Selected groups and roles** — search for the [groups and roles](/operational-guides/roles-and-users) that should see it.
+   - **Selected groups and roles**: search for the [groups and roles](/operational-guides/roles-and-users) that should see it.
 4. Select **Save**.
 
 The rule applies everywhere the project's data is read: dashboards, reports and the project's AI chat. A chart built on data someone can't see tells them *"You don't have access to this chart's data"* instead of showing numbers. Administrators always see everything.
@@ -121,13 +121,13 @@ Generated charts are saved to the dashboard as they are produced, so navigating 
 
 Select **Actions** → **Edit** to rearrange a dashboard. In edit mode you can drag widgets around the grid, resize them from the corner grip, and add structure from the settings sidebar's **Sections** tab:
 
-- **Title** — a heading, at level **Heading 1** to **Heading 4**, so a long dashboard reads as sections rather than a wall of charts.
-- **Free text** — a paragraph of explanation next to the numbers.
-- **KPI card** — one headline number with its label. It is backed by a query, so it refreshes like a chart.
-- **Graphs** — a chart.
-- **Tables** — the data behind one of the dashboard's charts, shown as a table. Pick the chart from the list.
-- **Divider** — a horizontal rule.
-- **Spacer** — empty space between blocks. In edit mode, set its minimum height in pixels.
+- **Title**: a heading, at level **Heading 1** to **Heading 4**, so a long dashboard reads as sections rather than a wall of charts.
+- **Free text**: a paragraph of explanation next to the numbers.
+- **KPI card**: one headline number with its label. It is backed by a query, so it refreshes like a chart.
+- **Graphs**: a chart.
+- **Tables**: the data behind one of the dashboard's charts, shown as a table. Pick the chart from the list.
+- **Divider**: a horizontal rule.
+- **Spacer**: empty space between blocks. In edit mode, set its minimum height in pixels.
 
 The sidebar's **Settings** tab holds what applies to the whole dashboard, including **Global colors** and **Delete dashboard**. Select **Save** to keep your changes, or **Cancel** to drop them.
 
@@ -135,11 +135,11 @@ The sidebar's **Settings** tab holds what applies to the whole dashboard, includ
 
 Select a chart to open **Chart settings** in the sidebar:
 
-- **Chart type** — bar, line, area, scatter, pie, donut, radar, or **Geographic map**.
+- **Chart type**: bar, line, area, scatter, pie, donut, radar, or **Geographic map**.
 - **Data source**, **SQL Query** and **Available tables** — what the chart queries.
 - **Colors** and **Legend position**.
-- **Advanced (Spec)** — the underlying chart specification, when you want to hand-tune something the controls don't expose.
-- **Remove chart** — take this widget off the dashboard.
+- **Advanced (Spec)**: the underlying chart specification, when you want to hand-tune something the controls don't expose.
+- **Remove chart**: take this widget off the dashboard.
 
 :::note[Geographic maps]
 A **Geographic map** colors each region by its value. Two maps are available today: **US states** and **Italian regions**. You don't upload any map files: Rational AI looks at the chart's categories and picks the map whose names they match, so a column of US state names or Italian region names is all it needs. Capitalisation and extra spaces don't matter. You can also ask for a map in the chat, for example *"sales by region on a map of Italy"*.

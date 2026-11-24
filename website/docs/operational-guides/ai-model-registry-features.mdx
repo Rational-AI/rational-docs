@@ -17,8 +17,8 @@ A [large language model](/concepts/LLMs), or LLM, is the AI that actually genera
 
 Before you start, make sure you have:
 
-- **Administrative access** — an account with AI model management privileges.
-- **At least one connector** — a configured provider (for example OpenAI, OpenRouter, Xference, or an OpenAI Compatible endpoint) so the registry has models to list.
+- **Administrative access**: an account with AI model management privileges.
+- **At least one connector**: a configured provider (for example OpenAI, OpenRouter, Xference, or an OpenAI Compatible endpoint) so the registry has models to list.
 
 ## Inspect a model
 
@@ -31,9 +31,9 @@ Check what a model costs before you make it a default or point a new workload at
 The **Pricing** section appears on a model's overview only for models that have pricing configured (for example a self-hosted model with a cost set). The platform stores raw per-second and per-token costs internally and scales them back into human-readable units, so you may see any of:
 
 - **Per request**
-- **Per hour** — the stored per-second cost × 3600
-- **Per 1M input tokens** — the stored per-token cost × 1,000,000
-- **Per 1M output tokens** — the stored per-token cost × 1,000,000
+- **Per hour**: the stored per-second cost × 3600
+- **Per 1M input tokens**: the stored per-token cost × 1,000,000
+- **Per 1M output tokens**: the stored per-token cost × 1,000,000
 
 :::note[Only priced rows are shown]
 Pricing chips appear only when pricing is enabled for the model, and any row with no cost is hidden. A model priced only per token, for instance, won't show a per-request chip.
@@ -59,10 +59,10 @@ Before you change or remove a model, see what's leaning on it — so you don't q
 
 Scroll to the **Used in** section, below the overview. Each entry shows its kind, the roles the model fills there, and a link through to that consumer:
 
-- **Touchpoint** — roles: default, available, sentiment, topic, title. A touchpoint is a configured entry point where users talk to the AI, such as a chat widget or channel.
-- **Knowledge base** — role: embedding. An embedding is the numeric representation of text that powers search and retrieval.
+- **Touchpoint**: roles: default, available, sentiment, topic, title. A touchpoint is a configured entry point where users talk to the AI, such as a chat widget or channel.
+- **Knowledge base**: role: embedding. An embedding is the numeric representation of text that powers search and retrieval.
 - **Conversations** (room configuration) — roles: conversational, sentiment, topic, title.
-- **Fine-tuning** — role: base model.
+- **Fine-tuning**: role: base model.
 
 If nothing references the model, the section shows an empty state.
 
@@ -159,11 +159,11 @@ Pick the model the platform reaches for when a specific consumer hasn't pinned o
 1. Go to **Settings** → **AI Model Registry**.
 2. Open the **Default models** panel above the models table (*"Choose the model used by default for each task type."*).
 3. Set any of these fields — all are optional and can be cleared. Each lists only enabled models of the matching purpose:
-   - **Conversational model** — the default for conversations. Lists **Text generation** models. Used by chat when a touchpoint has no model of its own.
-   - **Coding model** — the default for code generation. Lists **Text generation** models. Stored for future use.
-   - **Embedding model** — the default for embeddings. Lists **Embedding** models. Used by knowledge creation when no embedding model is supplied.
-   - **Image generation model** — the default for image generation. Lists **Image generation** models. Used by image requests that don't name a model of their own.
-   - **Decision model** — the default for decisions. Lists **Decision** models. Used by decisions that name no model, such as those of knowledge views.
+   - **Conversational model**: the default for conversations. Lists **Text generation** models. Used by chat when a touchpoint has no model of its own.
+   - **Coding model**: the default for code generation. Lists **Text generation** models. Stored for future use.
+   - **Embedding model**: the default for embeddings. Lists **Embedding** models. Used by knowledge creation when no embedding model is supplied.
+   - **Image generation model**: the default for image generation. Lists **Image generation** models. Used by image requests that don't name a model of their own.
+   - **Decision model**: the default for decisions. Lists **Decision** models. Used by decisions that name no model, such as those of knowledge views.
 4. Select **Save**. Your selection is saved to the active platform configuration.
 
 :::note[The coding default is the only one nothing reads yet]
@@ -200,8 +200,8 @@ Use this when your provider speaks the OpenAI API but isn't one of the dedicated
 
 1. In the **Add a new connector** browser, choose **OpenAI Compatible**.
 2. Fill in both required fields:
-   - **Base URL** — the OpenAI-compatible endpoint of your provider.
-   - **API Key** — the key for that endpoint.
+   - **Base URL**: the OpenAI-compatible endpoint of your provider.
+   - **API Key**: the key for that endpoint.
 3. Save. The connector behaves exactly like the OpenAI connector but talks to your custom base URL.
 
 ## Result

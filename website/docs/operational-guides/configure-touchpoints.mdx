@@ -164,8 +164,8 @@ Reach for this when you want one specific capability with parameters tuned exact
 
 A **Manual** parameter doesn't have to be a fixed literal. It can reference a value carried on the conversation, resolved at the moment the tool is called:
 
-- `${userStore.<key>}` — a value from the conversation's **user store**.
-- `${system.<key>}` — a value from its **system store**, which is set when the conversation is created.
+- `${userStore.<key>}`: a value from the conversation's **user store**.
+- `${system.<key>}`: a value from its **system store**, which is set when the conversation is created.
 
 The practical difference between the two is *when* you can write them. The system store is fixed at creation, so an integration that embeds a chat surface it doesn't control the bootstrap of can't use it; the user store can be written afterwards, so it works in that case too.
 

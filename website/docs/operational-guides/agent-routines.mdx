@@ -15,7 +15,7 @@ There is nothing to create besides the agent: its **Trigger** decides what start
 
 ## Prerequisites
 
-- **An agent with instructions** — see [Build an agent](./create-an-agent). Write them for a run nobody is watching: say where the result goes and what "done" means.
+- **An agent with instructions**: see [Build an agent](./create-an-agent). Write them for a run nobody is watching: say where the result goes and what "done" means.
 - **For GitHub:** admin rights on the repository, to add a webhook.
 - **For API calls:** an API key from **Settings** → **API keys** (see [Access Rational AI via API](/operational-guides/api-access#create-an-api-key)).
 
@@ -147,9 +147,9 @@ curl -X POST "https://<your address>/api/agents/v0/agents/<agent id>/execute" \
       }'
 ```
 
-- `task` — the one-line goal of the run, shown in History.
-- `instructions` — optional details for this run; the profile's instructions still apply.
-- `input` — optional JSON the agent receives as-is.
+- `task`: the one-line goal of the run, shown in History.
+- `instructions`: optional details for this run; the profile's instructions still apply.
+- `input`: optional JSON the agent receives as-is.
 
 The answer is the new run, with its `id` and `status`; follow it at `/agents/runs/<run id>`. The key acts as an administrator; add an `X-USER-ID: <user id>` header to act as a specific user, with that user's permissions. Setting the agent's trigger to `api` marks it as API-driven in **Routines**; an agent with any trigger can be started this way.
 

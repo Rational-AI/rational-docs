@@ -44,11 +44,11 @@ Each tool row in the **Tools** tab carries a **Sensitive** badge. Select it to t
 
 Hover the badge and the tooltip tells you where the current answer comes from:
 
-- **You marked this tool as sensitive.** — your explicit override.
-- **You marked this tool as not sensitive.** — your explicit override, the other way.
-- **Declared as sensitive by the MCP server.** — the server's own annotation, which you have not overridden.
-- **Declared as not sensitive by the MCP server.** — likewise.
-- **Not declared as sensitive by the MCP server.** — the server said nothing, so the tool is treated as not sensitive.
+- **You marked this tool as sensitive.** Your explicit override.
+- **You marked this tool as not sensitive.** Your explicit override, the other way.
+- **Declared as sensitive by the MCP server.** The server's own annotation, which you have not overridden.
+- **Declared as not sensitive by the MCP server.** Likewise.
+- **Not declared as sensitive by the MCP server.** The server said nothing, so the tool is treated as not sensitive.
 
 :::note[The MCP server's annotation is a hint, not a verdict]
 An MCP server can declare its own tools read-only or destructive, but that declaration is written by whoever built the server — Rational AI treats it as a hint. Your override is the trust boundary: once you have toggled a tool, your choice sticks. Tools you never touch keep following the server's declaration, including when the extension is re-synced and its annotations change.
@@ -59,7 +59,7 @@ An MCP server can declare its own tools read-only or destructive, but that decla
 When the assistant reaches a gated call, generation pauses and an approval card is pinned above the composer:
 
 - *"The assistant wants to use"*, followed by the **tool name**.
-- **This is a sensitive tool.** on the calls that were gated for being sensitive.
+- **This is a sensitive tool.** On the calls that were gated for being sensitive.
 - **Reject** and **Approve** buttons.
 
 Selecting **Approve** runs the tool — the button shows **Running…** while it does. Selecting **Reject** records a refusal that the assistant sees as the tool's answer, so it continues without the result rather than silently retrying. Either way, once every pending call in the turn has been answered, generation resumes on its own and the card disappears; the outcome is then visible in the conversation as the tool's response.

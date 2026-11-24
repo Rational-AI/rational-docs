@@ -100,9 +100,9 @@ Both native channels also refuse to answer automated mail and other bots, so two
 
 Attachments are configured per channel, and off is a legitimate setting:
 
-- **Accept attachments** — whether files, photos and voice notes sent to this channel are accepted at all.
-- **Attachment types** — a comma-separated list of file extensions or MIME prefixes (for example `pdf, docx, image/`). Leave it empty to accept every type; anything not listed is rejected.
-- **Attachment size limit (MB)** — a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that. Telegram bots can't download files over 20 MB, which is also that channel's default.
+- **Accept attachments**: whether files, photos and voice notes sent to this channel are accepted at all.
+- **Attachment types**: a comma-separated list of file extensions or MIME prefixes (for example `pdf, docx, image/`). Leave it empty to accept every type; anything not listed is rejected.
+- **Attachment size limit (MB)**: a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that. Telegram bots can't download files over 20 MB, which is also that channel's default.
 
 Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input, documents have their text extracted, and voice notes are transcribed, so the agent can actually read all three. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
 
@@ -140,10 +140,10 @@ When the wait ends, the agent answers once, with the whole burst of messages in 
 
 ## Related
 
-- [Connect a Telegram bot](/operational-guides/connect-telegram) — bot setup, groups, and commands.
-- [Connect a mailbox](/operational-guides/connect-email) — IMAP, OAuth, and email threading.
-- [Configure touchpoints](/operational-guides/configure-touchpoints) — what the agent on the other side of the channel actually is.
-- [Channels](/concepts/Channels) — the concept, and how channels relate to touchpoints.
+- [Connect a Telegram bot](/operational-guides/connect-telegram): bot setup, groups, and commands.
+- [Connect a mailbox](/operational-guides/connect-email): IMAP, OAuth, and email threading.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): what the agent on the other side of the channel actually is.
+- [Channels](/concepts/Channels): the concept, and how channels relate to touchpoints.
 
 ## Result
 

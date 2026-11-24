@@ -58,7 +58,7 @@ Say what a feature does *not* do, what is irreversible, and what happens to data
 - **One idea per sentence. Aim for 15–20 words, and stay under 25.**
 - **Paragraphs: 3 sentences max.** If a paragraph contains a sequence, make it a numbered list.
 - Lead with the goal or condition: "To rename a group, select…" / "If the model isn't listed, …"
-- No em-dash chains. Use one em dash per sentence at most, or prefer a full stop.
+- No em dashes (—). Use a full stop, a comma, a colon or parentheses instead. The only exception is UI text quoted exactly as it appears on screen.
 
 ### Headings
 - **Sentence case** everywhere: "Configure the chunking strategy", not "Configure The Chunking Strategy". After a colon, capitalize the first word: "Phase 1: Semantic search".
@@ -130,7 +130,7 @@ Many pages are drafted with AI. That's fine, but the result must not read like i
 | Colon reveals | "The best part: it learns." | a plain sentence |
 | Synonym cycling | agent → assistant → tool for the same thing | repeat the right term (§5) |
 | Recap endings | a last paragraph that restates the page ("You now have…") | end with **Next steps** |
-| Em-dash rhythm | more than one em dash per paragraph | full stops, commas |
+| Em dashes | any em dash (—) in our prose | full stops, commas, colons, parentheses |
 | Decorative formatting | emoji in headings or callouts, bold mid-sentence for emphasis, bullets for two sentences of prose | plain prose. Bold is for UI labels |
 
 Vale flags the first six patterns and em dashes (`Rational.Slop`, `Rational.SlopPatterns`, `Rational.EmDash`). Colon reveals, synonym cycling and recap endings need a reader, so the PR checklist includes a detect pass (§7).
