@@ -93,13 +93,16 @@ Oggi le pagine `cr/*` mescolano tre cose: una mappa della sezione, una spiegazio
 
 ## 5. Roadmap
 
-| Fase | Settimane | Output | Gap chiusi |
+Aggiornata il 24/11/2026. Lo studio del codice di `rational-ai` ha mostrato che molte pagine descrivevano male i moduli, quindi è stata aggiunta una fase dedicata all'accuratezza.
+
+| Fase | Stato | Output | Gap chiusi |
 |---|---|---|---|
-| **0 — Fondamenta** | 1 | `STYLE.md` (da doc 02), `CLAUDE.md` per la doc, 4 template, Vale in CI (non bloccante), pulizia di junk, duplicati, stub e descrizioni | G1, G6, G7 |
-| **1 — Coerenza** | 2 | Passaggio meccanico su terminologia, percorsi UI, callout, ortografia, casing dei titoli e riempitivi; `type:` nel front matter di tutte le 114 pagine; Vale diventa bloccante | G2–G5, G8 |
-| **2 — Struttura** | 3–4 | Nuova sidebar per audience, release notes, troubleshooting hub, llms.txt e `.md`, "last updated", widget di feedback, revisione delle pagine `cr/*` | G9–G11, G15, G16 |
-| **3 — Contenuti enterprise** | 5–6 | Security & architecture, SSO/SCIM, quickstart per ruolo, API overview, errori e limiti | G12–G14, G18 |
-| **4 — Crescita** | 7–8+ | API reference generata, galleria use case, rollout playbook, connettori uniformati, decisione sull'italiano | G17, G19–G22 |
+| **0 · Fondamenta** | ✅ PR #100 | `STYLE.md`, `CLAUDE.md`, template, Vale in CI, pulizia di file inutili, duplicati e stub | G1, G6, G7 |
+| **1 · Coerenza** | ✅ PR #102 | Terminologia, inglese US, percorsi UI, callout nativi, titoli, riempitivi e AI slop; `type:` e `audience:` nel front matter; Vale bloccante | G2–G5, G8 |
+| **2 · Struttura** | ✅ PR #103 | Sidebar per pubblico, i moduli in Get started, release notes mensili, troubleshooting hub, `llms.txt` e `.md`, data di aggiornamento; correzione di introduzioni e prerequisiti verificate sul codice; zero em dash; regola "studia il codice prima di scrivere" | G9–G11, G15, G16 |
+| **3 · Accuratezza** | in corso | Corpo delle pagine verificato sul codice, home e footer allineati alla sidebar (footer chiaro, a quattro colonne), pagine mancanti per funzioni rilasciate (presentazioni di Apps, Gen e Marketplace; guide per Teams, Slack, WhatsApp; client MCP; estensione per browser) | parte di G19 |
+| **4 · Contenuti enterprise** | da fare, serve engineering | Sicurezza e architettura, identità e accesso, quickstart per ruolo, errori e limiti. Prima va deciso cosa si può dire pubblicamente su identità e API | G12–G14, G18 |
+| **5 · Crescita** | da fare | API reference generata (serve uno spec OpenAPI), galleria di casi d'uso, playbook di rollout, pagine dei connettori uniformi, decisione sull'italiano | G17, G19–G22 |
 
 ## 6. Metriche (da misurare ogni mese)
 
