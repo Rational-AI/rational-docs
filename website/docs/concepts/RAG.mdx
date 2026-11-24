@@ -28,7 +28,7 @@ It is ideal for:
 
 ### How Naive RAG works
 Naive RAG follows a straightforward pipeline:
-**User Query → Embedding → Vector Search → Top-K Results → Context Window Filter → LLM**  
+**User Query** → **Embedding** → **Vector Search** → **Top-K Results** → **Context Window Filter** → **LLM**  
 1. The process begins by converting the user query into an embedding (a numerical representation of meaning).
 2. The system compares this embedding with document embeddings stored in the knowledge base.
 
@@ -63,7 +63,7 @@ It is designed for:
 
 ### How Graph RAG works
 Graph RAG implements a more sophisticated pipeline:
-**User Query → Embedding → Vector Search → Top-K Results → Graph Expansion → Relevance Filtering → Final Ranking → Context Window Filter → LLM.**
+**User Query** → **Embedding** → **Vector Search** → **Top-K Results** → **Graph Expansion** → **Relevance Filtering** → **Final Ranking** → **Context Window Filter** → **LLM.**
 
 The process occurs in three main phases:
 1. **Semantic search**: operates identically to Naive RAG. It converts the query to an embedding, finds semantically similar documents, and filters them by a semantic threshold.  
