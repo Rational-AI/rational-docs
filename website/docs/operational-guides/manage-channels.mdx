@@ -16,7 +16,7 @@ A channel is a surface your users reach an agent through — a Telegram bot, a m
 *The **Channels** list: each channel, its type, who provides it, and its mode.*
 
 :::note[What is a channel?]
-A **channel** is the medium through which people reach an agent: the doorway into the conversation. It doesn't change *what* the agent knows — that's the [touchpoint](/operational-guides/configure-touchpoints) — it changes *where* and *how* people talk to it.
+A **channel** is the medium through which people reach an agent: the doorway into the conversation. It doesn't change *what* the agent knows (that's the [touchpoint](/operational-guides/configure-touchpoints)); it changes *where* and *how* people talk to it.
 
 Inbound messages become conversations you can read in [Conversations](/cr/Conversations), and replies go back out over the same channel in whatever form that surface expects.
 :::
@@ -53,7 +53,7 @@ Whichever kind you pick, the configuration form is generated from the provider's
 6. Save.
 
 :::note[The provider is fixed at creation]
-A channel's type and provider are chosen when you create it and can't be changed afterwards. Everything else — the name, the mode, the credentials, the policies — stays editable. If you need a different provider, create a new channel.
+A channel's type and provider are chosen when you create it and can't be changed afterwards. Everything else (the name, the mode, the credentials, the policies) stays editable. If you need a different provider, create a new channel.
 :::
 
 ## Choose the mode
@@ -105,7 +105,7 @@ Attachments are configured per channel, and off is a legitimate setting:
 Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input, documents have their text extracted, and voice notes are transcribed, so the agent can actually read all three. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
 
 :::note[A voice note reaches the agent as the user's own words]
-A voice note — a Telegram voice message, or an audio file in any channel — is transcribed before the agent answers, and the agent reads the transcript as what the user said. The reply waits for the transcription to finish. If transcription fails, times out or finds only silence, the agent is told so, and the message still reaches it rather than being dropped. A voice note still has to pass the channel's attachment settings: with **Accept attachments** off, or audio missing from **Attachment types**, it's refused like any other file.
+A voice note (a Telegram voice message, or an audio file in any channel) is transcribed before the agent answers, and the agent reads the transcript as what the user said. The reply waits for the transcription to finish. If transcription fails, times out or finds only silence, the agent is told so, and the message still reaches it rather than being dropped. A voice note still has to pass the channel's attachment settings: with **Accept attachments** off, or audio missing from **Attachment types**, it's refused like any other file.
 :::
 
 ## Shape how the agent replies

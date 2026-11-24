@@ -51,7 +51,7 @@ The extensions on offer come from more than one place: the **platform catalog** 
 
 ## Configure an extension
 
-Installing never asks for configuration up front. An extension that still needs values from you lands **installed and disabled**, with nothing running — install it now, set it up when you have the credentials.
+Installing never asks for configuration up front. An extension that still needs values from you lands **installed and disabled**, with nothing running. Install it now, set it up when you have the credentials.
 
 Saving its first configuration is what starts the extension: the MCP server starts, its tools are discovered, and the extension is enabled. If a required value is missing, the save is refused with a validation error and the extension stays disabled, so nothing ever half-starts. An extension whose values all have defaults comes up enabled immediately, with no extra step.
 
@@ -77,6 +77,6 @@ With an extension selected, open the options menu (the three vertical dots) in t
 | **Settings** | View and edit the extension's configuration (for example, credentials or connection details). |
 | **Update policy** | Choose how updates reach this extension: **Compatible auto** applies compatible updates for you, **Notify only** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. |
 | **Update** | Move the extension to a newer release when one is available. Disabled when the extension is already up to date, and replaced by *"Pinned — change the update policy to install updates"* while the extension is pinned. |
-| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools survive and simply lose those bindings, and re-installing the same package later comes up clean. |
+| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools survive and lose those bindings, and re-installing the same package later comes up clean. |
 
 For what "compatible" actually means, what happens to your touchpoints when an update lands, and how to roll back, see [Update and roll back extensions](/operational-guides/extension-updates).

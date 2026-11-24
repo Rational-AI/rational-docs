@@ -5,10 +5,10 @@ sidebar_label: Approve tool calls
 
 # Approve tool calls before they run
 
-An agent that can only read is easy to trust. As soon as it can write — send a message, update a record, delete a file — you want a human in the loop for the calls that matter. Rational AI lets you decide, per [touchpoint](/operational-guides/configure-touchpoints), which tool calls need a person to say yes: the assistant pauses, the user approves or rejects, and only then does the tool run.
+You can trust an agent that can only read. As soon as it can write (send a message, update a record, delete a file), you want a human in the loop for the calls that matter. Rational AI lets you decide, per [touchpoint](/operational-guides/configure-touchpoints), which tool calls need a person to say yes: the assistant pauses, the user approves or rejects, and only then does the tool run.
 
 :::note[What is an approval gate?]
-When the assistant decides to use a tool, it normally calls it and carries on. An **approval gate** parks that call instead: the turn stops, an approval card appears in the chat, and the tool runs only if the user selects **Approve**. Which calls get gated is decided by the touchpoint's approval policy, combined with whether the individual tool is considered **sensitive** — a tool that changes something rather than just reading it.
+When the assistant decides to use a tool, it normally calls it and carries on. An **approval gate** parks that call instead: the turn stops, an approval card appears in the chat, and the tool runs only if the user selects **Approve**. Which calls get gated is decided by the touchpoint's approval policy, combined with whether the individual tool is considered **sensitive** — a tool that changes something rather than only reading it.
 :::
 
 ## Prerequisites

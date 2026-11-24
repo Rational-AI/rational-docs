@@ -23,7 +23,7 @@ Your tenant doesn't resolve extensions from a single registry. It resolves them 
 
 - **The platform catalog** — the releases Rational AI publishes. Every tenant sees the same catalog.
 - **Your local packages** — anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
-- **Remote sources** — third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they simply contribute more packages to browse.
+- **Remote sources** — third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they contribute more packages to browse.
 
 Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
 
@@ -78,7 +78,7 @@ installation explicitly placed in development mode accepts file edits.
 
 ## Configure an extension so it starts running
 
-Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully — it simply lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
+Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully — it lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
 
 Creating the extension's first MCP-server configuration is what does the rest, in one step: it **starts the server, discovers the tools it actually serves, and enables the extension**.
 
@@ -92,7 +92,7 @@ An extension whose parameters all carry defaults has nothing left to resolve, so
 If you save a configuration that's missing a required value, the save is refused with a clear validation error and the extension stays disabled and unconfigured. Nothing half-starts, and you can correct the value and save again.
 :::
 
-An extension can hold **more than one** configuration of the same server — a second set of credentials, a second endpoint — and each discovers its own tools. The first configuration is the default one and can't be deleted while the extension is installed; deleting any of the extras leaves the extension enabled on the default.
+An extension can hold **more than one** configuration of the same server (a second set of credentials, a second endpoint), and each discovers its own tools. The first configuration is the default one and can't be deleted while the extension is installed; deleting any of the extras leaves the extension enabled on the default.
 
 ## Pick a connector instead of typing a credential
 
@@ -128,12 +128,12 @@ Open the extension's **details** page and find the **MCP servers** section. Each
 For a remote server that requires authentication, enter the token or header value in the extension-configuration form. That value comes from your configuration and is never written into the manifest, so credentials stay out of the shared bundle. Headers that resolve to empty are dropped automatically, which means a public, no-auth server is never sent a blank header.
 
 :::note[Ready-made remote extensions]
-Rational AI ships ready-to-use remote MCP manifests for many popular connectors, including GitHub, Linear, Atlassian, monday, Airtable, Supabase, Snowflake, Sentry, PagerDuty, and Shopify. Each one just needs an endpoint URL and an authentication header from your configuration. There's also a generic **remote-mcp** extension for connecting any other remote MCP server: supply its URL and, if needed, an `Authorization` header.
+Rational AI ships ready-to-use remote MCP manifests for many popular connectors, including GitHub, Linear, Atlassian, monday, Airtable, Supabase, Snowflake, Sentry, PagerDuty, and Shopify. Each one only needs an endpoint URL and an authentication header from your configuration. There's also a generic **remote-mcp** extension for connecting any other remote MCP server: supply its URL and, if needed, an `Authorization` header.
 :::
 
 ## Result
 
-You know that extensions resolve from several sources — the platform catalog, your own local packages, and any attached remote source — and how an overlap between them is settled per version. You can read an extension's version straight from its card, install one from the catalog or by dropping a package onto the page, and you know that installing leaves it disabled until the first configuration starts it, discovers its tools, and enables it. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
+You know that extensions resolve from several sources (the platform catalog, your own local packages, and any attached remote source) and how an overlap between them is settled per version. You can read an extension's version straight from its card, install one from the catalog or by dropping a package onto the page, and you know that installing leaves it disabled until the first configuration starts it, discovers its tools, and enables it. For extensions with remote MCP servers, you can spot them by the **Remote** chip and endpoint URL and supply their credentials through the extension-configuration form, all without ever putting a secret into a manifest.
 
 ## Related
 

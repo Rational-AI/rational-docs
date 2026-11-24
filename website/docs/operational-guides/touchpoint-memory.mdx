@@ -8,7 +8,7 @@ sidebar_label: Memory and long chats
 Out of the box, every conversation starts from zero: the assistant doesn't know that this person prefers short answers, or that your company calls its customers "members". And a conversation that runs long enough eventually outgrows what the model can read at once. The **Memory** tab of a [touchpoint](/operational-guides/configure-touchpoints) handles both: what the assistant carries from one conversation to the next, and what it does when a single conversation gets too long.
 
 :::note[What is touchpoint memory?]
-Memory is a short list of facts the assistant reads at the start of every conversation on the touchpoint. **Personal memory** is about one person and only they can open it. **Shared memory** is about everything else — the company, its customers, how things are named — and applies to everyone who uses the assistant. Memory holds facts only; how a task is done belongs in a [skill](/operational-guides/agent-skills).
+Memory is a short list of facts the assistant reads at the start of every conversation on the touchpoint. **Personal memory** is about one person and only they can open it. **Shared memory** is about everything else (the company, its customers, how things are named) and applies to everyone who uses the assistant. Memory holds facts only; how a task is done belongs in a [skill](/operational-guides/agent-skills).
 :::
 
 ## Prerequisites
@@ -34,7 +34,7 @@ Both kinds of memory are off by default.
 
 4. Save the touchpoint. The memories list appears once memory is on and saved.
 
-While memory is on, the assistant gets a `memory` tool it uses to add, update and remove entries during a chat. Users see each change in the conversation — *"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Forgot"* — with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
+While memory is on, the assistant gets a `memory` tool it uses to add, update and remove entries during a chat. Users see each change in the conversation (*"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Forgot"*), with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
 
 :::note[Memory is kept short on purpose]
 Each memory is at most 280 characters, a person's memory holds 1,500 characters in all, and the shared memory 3,000. Links, credentials and long or multi-line text are refused. When a store is nearly full, the assistant merges older memories rather than piling on new ones.

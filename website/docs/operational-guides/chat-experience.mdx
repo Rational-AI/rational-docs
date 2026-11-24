@@ -5,7 +5,7 @@ sidebar_label: Use the chat
 
 # Use the chat
 
-The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, shaping a request with the composer (model, reasoning level, knowledge, skills), following how an answer was built and which sources it used, checking an answer against your knowledge, branching and regenerating, working with the files the agent creates, listening and dictating, managing and exporting your chats, and — for support agents — stepping into a conversation the AI is handling.
+The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, shaping a request with the composer (model, reasoning level, knowledge, skills), following how an answer was built and which sources it used, checking an answer against your knowledge, branching and regenerating, working with the files the agent creates, listening and dictating, managing and exporting your chats, and (for support agents) stepping into a conversation the AI is handling.
 
 :::note[What is the chat?]
 The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints) — a configured entry point that decides which AI model and which knowledge the chat draws on, and which of the options below users get. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
@@ -38,7 +38,7 @@ Every conversation begins by choosing who you want to talk to.
 *A new chat opens with a personalized, time-aware greeting.*
 
 :::note[Every chat surface greets you]
-The greeting is not limited to the chat page. It also appears in the chat panels embedded elsewhere in the product — inside a [Knowledge](/operational-guides/create-knowledge), in a [BI](/operational-guides/rational-bi) dashboard — including chats that don't exist yet, where nothing is created until you send your first message. Suggested questions are a separate thing and only appear where the touchpoint supplies them.
+The greeting is not limited to the chat page. It also appears in the chat panels embedded elsewhere in the product (inside a [Knowledge](/operational-guides/create-knowledge), in a [BI](/operational-guides/rational-bi) dashboard), including chats that don't exist yet, where nothing is created until you send your first message. Suggested questions are a separate thing and only appear where the touchpoint supplies them.
 :::
 
 :::note[New chat remembers your last touchpoint]
@@ -118,9 +118,9 @@ Images are passed to the model as vision input. For documents, the text is extra
 
 ### Open an attachment
 
-The attachment on a message is a button: select it to get the file itself, not just its name. It opens in a new browser tab, where the browser previews what it can — PDFs, images, text — and downloads the rest.
+The attachment on a message is a button: select it to get the file itself, not only its name. It opens in a new browser tab, where the browser previews what it can (PDFs, images, text) and downloads the rest.
 
-This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) — a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram) — the attachment is the only route to what the sender actually sent.
+This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) (a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram)), the attachment is the only route to what the sender actually sent.
 
 :::note[Large corpora belong in a Knowledge]
 Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the agent to search over, store them in a [Knowledge](/operational-guides/create-knowledge) instead — Rational AI indexes that content for retrieval-augmented answers ([RAG](/concepts/RAG)), where the agent looks up relevant passages at answer time rather than reading whole files inline.
@@ -128,7 +128,7 @@ Document extraction is bounded by size, page, and character caps. For large or n
 
 ## Follow how an answer was built
 
-While the agent works, a line above the answer reads *"Rational AI is thinking..."* with a live summary of what it's doing. When it's done, everything it did before answering — reasoning, knowledge searches, web searches, tools and skill runs — is folded into that single line, for example *"Thought for 8s"* or *"Thought for 12s, used skill xlsx, 4 steps"*. Select it to read the steps in order.
+While the agent works, a line above the answer reads *"Rational AI is thinking..."* with a live summary of what it's doing. When it's done, everything it did before answering (reasoning, knowledge searches, web searches, tools and skill runs) is folded into that single line, for example *"Thought for 8s"* or *"Thought for 12s, used skill xlsx, 4 steps"*. Select it to read the steps in order.
 
 - A **knowledge search** reads *"Searched 2 knowledge bases and read 5 documents"*.
 - A **tool** reads *"Used …"* with the tool's name.
@@ -168,7 +168,7 @@ Beyond reading a reply, you can regenerate it, rewrite your own question, branch
 Under each AI message are **copy**, the thumbs-up / thumbs-down pair for feedback, **Regenerate response**, the sources pill, and **‹ ›** arrows with a version counter (for example **1/2**) when alternatives exist. The **⋯** menu shows which model generated the answer and adds **Read aloud**, **Verify response** and **Branch into a new chat**.
 
 :::note[Some actions depend on the touchpoint]
-Regenerating, editing and verifying are each switched on per touchpoint, and rating, regenerating, editing and branching need permission to update conversations. An action that isn't available simply doesn't appear.
+Regenerating, editing and verifying are each switched on per touchpoint, and rating, regenerating, editing and branching need permission to update conversations. An action that isn't available doesn't appear.
 :::
 
 ### Generate an alternative answer
@@ -190,7 +190,7 @@ Use this when you want to rephrase a question and explore a different line of co
 
 ### Branch into a new chat
 
-Versions keep alternatives inside one chat. When you want to take a conversation somewhere else entirely — try another approach, hand a copy to yourself for a different task — branch it into a chat of its own.
+Versions keep alternatives inside one chat. When you want to take a conversation somewhere else entirely (try another approach, hand a copy to yourself for a different task), branch it into a chat of its own.
 
 1. On a finished AI message, open **⋯** → **Branch into a new chat**.
 2. A new chat opens with the same title and touchpoint, containing the conversation up to and including that answer — only the versions you were viewing, not the alternatives.
@@ -248,7 +248,7 @@ Verification measures whether the retrieved documents back a claim, not whether 
 
 ## Work with the files the agent creates
 
-Documents the agent writes for you — a Word report from a skill, a page built in Canvas — open in the **Canvas** panel beside the chat. Select the file's name at the top of the panel to open its menu:
+Documents the agent writes for you (a Word report from a skill, a page built in Canvas) open in the **Canvas** panel beside the chat. Select the file's name at the top of the panel to open its menu:
 
 | Action | What it does |
 |--------|--------------|
@@ -322,12 +322,12 @@ Choosing **Italian** or **English** explicitly skips the detection pass, which i
 :::note[Dictation on the new-chat screen needs a signed-in account]
 Inside a conversation, anyone who can use that conversation can dictate into it — including a visitor on an anonymous touchpoint.
 
-On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation just to hold a recording would leave an empty one behind every time someone discarded the text.
+On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation only to hold a recording would leave an empty one behind every time someone discarded the text.
 :::
 
 ## Keep going in a long conversation
 
-A model can read only so much of a conversation at once. When a chat gets that long, the assistant usually carries on from a summary of the earlier messages, and a divider marks the spot: *"The assistant now works from a summary of the messages above"*. Everything above it is still in your history; the assistant just reads it in condensed form.
+A model can read only so much of a conversation at once. When a chat gets that long, the assistant usually carries on from a summary of the earlier messages, and a divider marks the spot: *"The assistant now works from a summary of the messages above"*. Everything above it is still in your history; the assistant reads it in condensed form.
 
 Some touchpoints stop instead: the chat says *"This conversation is as long as the assistant can follow."* and offers **New conversation**. The touchpoint's owner chooses which — see [Memory and long chats](/operational-guides/touchpoint-memory#choose-what-happens-when-a-conversation-gets-too-long).
 
@@ -356,7 +356,7 @@ Give a chat a clear title so you can find it later — type one yourself or let 
 
 ### Export a chat
 
-Select the chat's title, then **Export chat**. A JSON file named after the chat downloads, with the chat's details and every event in it — messages, versions and steps — ready to archive or to process with your own tools.
+Select the chat's title, then **Export chat**. A JSON file named after the chat downloads, with the chat's details and every event in it (messages, versions and steps), ready to archive or to process with your own tools.
 
 :::note[An export shows what you are allowed to see]
 The export applies the same rules as the chat: unless you are an administrator, tool calls appear without their arguments or raw output.
@@ -380,7 +380,7 @@ Takeover is exclusive. If another operator has already taken the conversation, t
 
 ### Stop an answer without taking over
 
-Sometimes the AI is only stuck on one answer — looping, or running a tool that has gone wrong — and you don't want to take the conversation away from it.
+Sometimes the AI is only stuck on one answer (looping, or running a tool that has gone wrong) and you don't want to take the conversation away from it.
 
 1. While the AI is answering, select **Stop generating** in the take-over bar.
 2. The answer ends and the conversation stays with the AI, which replies normally to the user's next message.
@@ -403,4 +403,4 @@ Summary behavior is governed by the **Summary generation settings** section on t
 
 ## Result
 
-You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting — on every chat surface, including one that hasn't been created yet — and shape each request from one composer, choosing the model, reasoning level, knowledge and skill. You can line up follow-up messages while answers generate, attach files, follow every step behind an answer in one timeline, open its sources, verify it claim by claim, regenerate or branch it into a new chat, and see why an answer stopped early. Files the agent creates can be edited, downloaded as PDF or saved to a knowledge; chats are grouped by date, renamed with AI-generated titles and exported as JSON; and — as a support agent — you can take over a conversation, stop a runaway answer without taking over, and review its AI-generated summary before stepping in.
+You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting (on every chat surface, including one that hasn't been created yet) and shape each request from one composer, choosing the model, reasoning level, knowledge and skill. You can line up follow-up messages while answers generate, attach files, follow every step behind an answer in one timeline, open its sources, verify it claim by claim, regenerate or branch it into a new chat, and see why an answer stopped early. Files the agent creates can be edited, downloaded as PDF or saved to a knowledge; chats are grouped by date, renamed with AI-generated titles and exported as JSON; and, as a support agent, you can take over a conversation, stop a runaway answer without taking over, and review its AI-generated summary before stepping in.

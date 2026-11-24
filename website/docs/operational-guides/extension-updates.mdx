@@ -30,7 +30,7 @@ Every installed extension carries an **update policy** that decides how much hap
 Under every policy, an available update still shows up in the list. The policy governs what gets *applied*, not what you get to *see*.
 
 :::warning[Pinned is a promise, not a preference]
-Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused — the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned — change the update policy to install updates"*.
+Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused: the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned — change the update policy to install updates"*.
 
 The policy selector is the only way out: set the extension back to **Notify only** or **Compatible auto**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
 
@@ -85,7 +85,7 @@ Only releases classified **compatible** are eligible to be applied automatically
 
 ## Preview an update with a dry run
 
-An update can be run as a **dry run**: the platform performs the same preflight checks it would for a real update — including whether your current configuration still satisfies the new release — and reports what it finds without committing anything. Your extension stays on its current version and your touchpoints are untouched.
+An update can be run as a **dry run**: the platform performs the same preflight checks it would for a real update (including whether your current configuration still satisfies the new release) and reports what it finds without committing anything. Your extension stays on its current version and your touchpoints are untouched.
 
 Dry runs are allowed regardless of update policy, so a pinned extension can still be checked before you decide whether to unpin it.
 
@@ -113,7 +113,7 @@ An extension lists the tools its manifest declares even before any configuration
 
 ## When an update fails
 
-A failed update never strands your extension. If an update can't complete — say the new release requires a configuration value you haven't supplied — then:
+A failed update never strands your extension. If an update can't complete (say the new release requires a configuration value you haven't supplied), then:
 
 - The extension **keeps running the release it was already on**. The version doesn't move.
 - The failure is recorded in the extension's operation history, so you can see what was attempted and why it stopped.
@@ -149,7 +149,7 @@ The command restores the release's files whether or not the installation is in [
 
 ## Withdrawn releases
 
-A release can be **withdrawn** from circulation, usually because it shipped a serious bug. A stronger form, **revocation**, applies when a release has to be treated as unsafe — a leaked credential in the package, for instance — and carries a stated reason.
+A release can be **withdrawn** from circulation, usually because it shipped a serious bug. A stronger form, **revocation**, applies when a release has to be treated as unsafe (a leaked credential in the package, for instance) and carries a stated reason.
 
 Tenant-side, both behave the same way, and the effects are deliberately conservative:
 
@@ -158,7 +158,7 @@ Tenant-side, both behave the same way, and the effects are deliberately conserva
 - The release **remains observable by id**, flagged as withdrawn or revoked, so a reference to it never turns into a dead end.
 - **If your installation is already on it, nothing is taken away from you.** The release stays listed in that extension's version history: you keep running it, and it remains available as a rollback target.
 
-:::warning[A withdrawn release still runs — it just stops spreading]
+:::warning[A withdrawn release still runs — it only stops spreading]
 Withdrawal removes a release from circulation; it does not reach into your tenant and stop it. If you're running a release that gets withdrawn, treat the disappearance from the catalog as the signal to move: check the extension for a newer release and update once one is available.
 :::
 
@@ -166,7 +166,7 @@ Withdrawal removes a release from circulation; it does not reach into your tenan
 
 Uninstalling removes the extension's runtime — the installation itself, its MCP servers, its configurations, and its tools. It is deliberately not a purge of everything the extension ever touched:
 
-- **Touchpoints survive.** A touchpoint that granted one of the extension's tools stays exactly where it is; it simply loses that one binding.
+- **Touchpoints survive.** A touchpoint that granted one of the extension's tools stays exactly where it is; it loses that one binding.
 - **The release stays on record** as provenance. Uninstalling doesn't erase the fact that the package existed in your tenant.
 - **Re-installing is clean.** Because the release record is kept rather than destroyed, uploading or installing the very same package again reuses it and comes up as a fresh, working install — no duplicate-release conflict to work around.
 

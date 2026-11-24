@@ -68,7 +68,7 @@ Its limitation is worth knowing before you choose it: **an event carries the tex
 
 ## Curate a dataset
 
-A dataset built from real traffic will contain examples you don't want to train on. Open one and its entries are rendered as the conversations they are — tool calls shown as `name(arguments)` rather than raw JSON — each carrying a chip showing whether it's a **training** or **held-out** example.
+A dataset built from real traffic will contain examples you don't want to train on. Open one and its entries are rendered as the conversations they are (tool calls shown as `name(arguments)` rather than raw JSON), each carrying a chip showing whether it's a **training** or **held-out** example.
 
 - **Removing** an example is a single action from the example itself. Most curation is removal, so it's the quick one.
 - **Correcting** one opens it as JSON. The shape differs by format, and a form modeling only some formats would silently drop whatever it didn't recognize.
@@ -145,7 +145,7 @@ Training takes a while, and a job that reports nothing but "running" is impossib
 - **Status** — **Pending**, **Training**, **Completed**, **Failed** or **Canceled** — with who created the run and its **Duration**.
 - **Progress** — a bar with the percentage, the current step and the latest loss.
 - **Learning curves** — a chart of **Training loss** and **Evaluation loss** step by step. Because the run is evaluated against the held-out split, you can see **overfitting while it's still happening**: training loss falling while evaluation loss flattens or rises is the signal to stop.
-- **Error** — the failure reason, if it fails, rather than a run that simply stops.
+- **Error** — the failure reason, if it fails, rather than a run that stops.
 - **Parameters** — the batch size, epochs, learning rate and LoRA settings the run actually used.
 
 The chart shows the latest 2,000 measurements; the complete history is in the run's training artifacts (see below). If the measurements can't be loaded, the drawer says so and offers **Reload measurements** to try again.
@@ -195,4 +195,4 @@ To run the model somewhere else, or keep a copy outside the platform, open the r
 
 ## Result
 
-You've assembled a dataset — ideally from recorded traffic, so tool calls and system prompts survive into training — curated out the examples you didn't want, and launched a run whose parameters are actually applied. You can watch its learning curves against a genuinely held-out split, stop it when it stops improving, resume it from its last checkpoint if it fails, deploy the result into the model registry, and download its weights to use elsewhere. To keep improving it, curate the dataset and launch another run.
+You've assembled a dataset (ideally from recorded traffic, so tool calls and system prompts survive into training), curated out the examples you didn't want, and launched a run whose parameters are actually applied. You can watch its learning curves against a genuinely held-out split, stop it when it stops improving, resume it from its last checkpoint if it fails, deploy the result into the model registry, and download its weights to use elsewhere. To keep improving it, curate the dataset and launch another run.

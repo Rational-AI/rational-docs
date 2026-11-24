@@ -5,10 +5,10 @@ sidebar_label: Access via API
 
 # Access Rational AI via API
 
-Rational AI's models are available not just in the chat interface but also to your own code. This guide walks you through creating the key your application needs to authenticate, finding a working code snippet for any model, giving one application a key that reaches a single [touchpoint](/operational-guides/configure-touchpoints) and nothing else, using that touchpoint's tools from any MCP client, and calling a Decision model through the System One compatible API.
+Rational AI's models are available to your own code as well as in the chat interface. This guide walks you through creating the key your application needs to authenticate, finding a working code snippet for any model, giving one application a key that reaches a single [touchpoint](/operational-guides/configure-touchpoints) and nothing else, using that touchpoint's tools from any MCP client, and calling a Decision model through the System One compatible API.
 
 :::note[What is API access?]
-An API (Application Programming Interface) is the channel your own applications and scripts use to talk to Rational AI's models directly, instead of a person typing into the chat UI. You prove who you are with an **API key** — a long secret string you generate in **Settings** — and send requests to your workspace's gateway.
+An API (Application Programming Interface) is the channel your own applications and scripts use to talk to Rational AI's models directly, instead of a person typing into the chat UI. You prove who you are with an **API key** (a long secret string you generate in **Settings**) and send requests to your workspace's gateway.
 
 That gateway is **OpenAI-compatible**, meaning it understands the same request format as OpenAI's widely-used API. The practical payoff: you can reuse the standard OpenAI SDKs (the official code libraries) and existing tooling without writing anything custom.
 :::
@@ -36,7 +36,7 @@ Your API keys live on a dedicated settings page that lists every key with its na
 
 ### Create an API key
 
-Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key makes it easy to track usage and revoke access later without disrupting anything else.
+Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key lets you track usage and revoke access later without disrupting anything else.
 
 1. Go to **Settings** → **API keys**.
 2. Select **New** (shown as **Add new** when the list is empty).
@@ -175,7 +175,7 @@ A touchpoint with no key shows *"No key yet. Only operators can call this API."*
 
 ## Use a touchpoint's tools from an MCP client
 
-The same touchpoint is also served as an MCP server, so any client that speaks the Model Context Protocol — an IDE assistant, a desktop AI app, another agent — can use the tools you configured on it.
+The same touchpoint is also served as an MCP server, so any client that speaks the Model Context Protocol (an IDE assistant, a desktop AI app, another agent) can use the tools you configured on it.
 
 - **URL:** `https://<your-host>/api/compat/v0/touchpoints/{id}/mcp`, where `{id}` is the **Touchpoint ID** from the **Settings** tab. The URL isn't shown in the interface; build it from the touchpoint's base URL by replacing `/openai` with `/mcp`.
 - **Transport:** Streamable HTTP, stateless.

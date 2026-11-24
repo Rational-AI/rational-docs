@@ -58,7 +58,7 @@ So you should expect to find a trace of the erasure afterwards. That isn't the e
 
 Both operations remove the account from your identity provider as well as from Rational AI. If the provider can't be reached, **the request fails and nothing is changed on either side**.
 
-That's the safe outcome: you can simply run it again once the provider is back. A partial success would leave an identity that still authenticates against a tenant with no record of it — an account nobody can see and nobody can remove.
+That's the safe outcome: you can run it again once the provider is back. A partial success would leave an identity that still authenticates against a tenant with no record of it — an account nobody can see and nobody can remove.
 
 An account that has *already* been removed from the provider is treated as success, since that is the state the operation exists to produce.
 
@@ -70,4 +70,4 @@ An account that has *already* been removed from the provider is treated as succe
 
 ## Result
 
-You can answer a right-to-erasure request from the users page, and you know why **Erase all data** sits beside **Delete user** rather than replacing it. You know exactly what erasure destroys and what it deliberately leaves — the shape of your model-call history, minus the person — that it reports counts you should check, and that it records itself in the audit trail so you can evidence it afterwards.
+You can answer a right-to-erasure request from the users page, and you know why **Erase all data** sits beside **Delete user** rather than replacing it. You know exactly what erasure destroys and what it deliberately leaves (the shape of your model-call history, minus the person), that it reports counts you should check, and that it records itself in the audit trail so you can evidence it afterwards.

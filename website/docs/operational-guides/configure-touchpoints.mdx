@@ -24,7 +24,7 @@ Before you start, make sure you have:
 Go to **Settings** → **Touchpoints** and select the touchpoint you want to configure. This opens the configuration panel, where access settings live, alongside the **Tools** tab.
 
 :::note[A new touchpoint inherits the platform's model]
-Create a touchpoint without naming a model and it takes your platform's default **Conversational model** — the one set under **Settings** → **AI Model Registry** as *"Default model for conversations"* — and adds it to its own list of allowed models. The rule lives in the backend, so it applies equally to touchpoints created through the API. A model you choose explicitly is always kept, and existing touchpoints are left exactly as they are; change the platform default and only touchpoints created afterwards pick it up.
+Create a touchpoint without naming a model and it takes your platform's default **Conversational model** (the one set under **Settings** → **AI Model Registry** as *"Default model for conversations"*) and adds it to its own list of allowed models. The rule lives in the backend, so it applies equally to touchpoints created through the API. A model you choose explicitly is always kept, and existing touchpoints are left exactly as they are; change the platform default and only touchpoints created afterwards pick it up.
 :::
 
 A touchpoint's settings are spread over seven tabs:
@@ -85,7 +85,7 @@ Only enable **Allow anonymous access** when the touchpoint is genuinely meant to
 
 ## Let the assistant change a knowledge
 
-By default an assistant only reads the knowledge attached to it. For an assistant whose job is to keep records up to date — logging a request, updating a customer, filing a document — you can let it write as well, one knowledge at a time.
+By default an assistant only reads the knowledge attached to it. For an assistant whose job is to keep records up to date (logging a request, updating a customer, filing a document), you can let it write as well, one knowledge at a time.
 
 1. Open the touchpoint's **Sources** tab.
 2. On the knowledge you want the assistant to maintain, switch on **Can change records**.
@@ -146,7 +146,7 @@ An MCP tool that never answers would otherwise leave the conversation waiting. E
 The limit applies to every MCP server on the touchpoint. To give one slow server more time (or less), set **Tool call time limit** in that server's configuration dialog; leave it empty to follow the touchpoint's limit.
 
 :::note[A tool that keeps timing out stops the answer]
-One slow call is just a failed step. If the tool runs out of time on every attempt, the answer stops with *"Generation stopped: the tool "…" ran out of time on every attempt."* and a **Regenerate response** button. That's the moment to raise the limit for that server, or to look at why it is slow.
+One slow call is only a failed step. If the tool runs out of time on every attempt, the answer stops with *"Generation stopped: the tool "…" ran out of time on every attempt."* and a **Regenerate response** button. That's the moment to raise the limit for that server, or to look at why it is slow.
 :::
 
 ## Add a single tool
@@ -172,7 +172,7 @@ A parameter set to **Manual** is stripped from the tool schema the model is show
 
 That makes it the right mechanism for the caller's identity, a tenant reference, or a capability issued by the host: anything where letting the model supply the value would be the vulnerability.
 
-The alternative — having the agent read a value with a tool like `get_user_context` and pass it back as an argument — routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorization, it belongs in a Manual parameter, not in the conversation.
+The alternative (having the agent read a value with a tool like `get_user_context` and pass it back as an argument) routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorization, it belongs in a Manual parameter, not in the conversation.
 :::
 
 :::note[Single-configuration shortcut]
@@ -181,7 +181,7 @@ When the server has only one configuration, the configuration dropdown is hidden
 
 ## Bulk-add a configuration's tools
 
-When you trust a configuration's defaults and just want everything it offers, add all of its tools in one action instead of picking them one by one. There are two entry points:
+When you trust a configuration's defaults and want everything it offers, add all of its tools in one action instead of picking them one by one. There are two entry points:
 
 - **Pick a configuration** in the **Add MCP server configuration…** picker to add all of its tools at once.
 - Use the **Add all tools** action on a configuration row, found in its `⋮` menu.

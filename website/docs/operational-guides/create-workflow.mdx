@@ -81,7 +81,7 @@ The available capabilities aren't hardcoded in the interface — Rational AI fet
 
 **On the workflow detail view**, the capabilities you assigned appear again as read-only, non-clickable chips directly below the description — a quick summary of what the workflow is tagged to extract. To change them, edit the workflow and toggle the chips.
 
-**Capability tags also filter where you pick a workflow.** When the context requires a capability — for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images** — the list is filtered to show only workflows that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every workflow is listed.
+**Capability tags also filter where you pick a workflow.** When the context requires a capability (for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images**), the list is filtered to show only workflows that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every workflow is listed.
 
 ### Workflow logic
 
@@ -142,9 +142,9 @@ Let's break it down:
 ### Testing your workflow locally
 
 It is convenient to perform workflow development on your local machine, before using them into Rational AI.
-This is not only possible, but also encouraged, as it allows to use your favorite IDE and debugging tools.
+This is possible and encouraged, as it allows to use your favorite IDE and debugging tools.
 
-To run your workflow locally, you just need to make it executable and pass a properly formatted input as argument to it.
+To run your workflow locally, you only need to make it executable and pass a properly formatted input as argument to it.
 
 Let's suppose to call the above-defined workflow as `lorem-ipsum-wf.py`. We can make it executable by running the command:
 ```

@@ -8,7 +8,7 @@ sidebar_label: Build an agent
 An agent is only as good as its profile. The instructions say what the job is and how to do it; the tools say what it can touch; **Ask me first** says where it must stop and wait for you. This guide walks through the profile field by field, using **Quinn**, a quotation analyst who prices requests for quotation and must never write an offer without a person looking at it first.
 
 :::note[The profile drives every run]
-Whatever starts the agent — a task, a chat message, a schedule or a webhook — the run starts from the profile: its instructions become the system prompt, its model answers, and it can use only the tools and Knowledge bases listed there. Changing the profile changes the next run, not the ones already going.
+Whatever starts the agent (a task, a chat message, a schedule or a webhook), the run starts from the profile: its instructions become the system prompt, its model answers, and it can use only the tools and Knowledge bases listed there. Changing the profile changes the next run, not the ones already going.
 :::
 
 ## Prerequisites
@@ -91,7 +91,7 @@ Tools reach the agent under the name shown in the catalog, `<extension>_<tool>`;
 
 ### Ask me first
 
-**Ask me first** — *"These pause the run and wait for your approval on every call."* — lists every tool you granted, built-in or from an extension. Tick the ones that must wait for a person. Quinn has `read` and `write`, and `write` is ticked: Quinn can read and compute freely, but every file it wants to write is shown to you first.
+**Ask me first** (*"These pause the run and wait for your approval on every call."*) lists every tool you granted, built-in or from an extension. Tick the ones that must wait for a person. Quinn has `read` and `write`, and `write` is ticked: Quinn can read and compute freely, but every file it wants to write is shown to you first.
 
 At the bottom of the panel, a summary puts the three levels side by side:
 

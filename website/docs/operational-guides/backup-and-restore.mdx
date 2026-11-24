@@ -5,7 +5,7 @@ sidebar_label: Back up and restore
 
 # Back up and restore an on-premises installation
 
-An on-premises Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings** → **Backup** copies all of them, in one run, to a destination you own — a network share, an S3 bucket, an FTP or SFTP server, or a mounted folder — on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and how to bring an installation back from one with the `rational` command on the host.
+An on-premises Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings** → **Backup** copies all of them, in one run, to a destination you own (a network share, an S3 bucket, an FTP or SFTP server, or a mounted folder) on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and how to bring an installation back from one with the `rational` command on the host.
 
 :::note[On-premises only]
 The Backup page is on by default on every on-premises installation set up with `install.sh` (see [Install and update](./install-and-update)): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
@@ -38,7 +38,7 @@ Every update takes a local backup first, so a bad release can be rolled back. Th
 | **extensions** | The installed extensions directory | A `tar.gz` per backup |
 | **sqld** | The knowledge databases (Rational BI, SQLite resources) | A `tar.gz` per backup |
 
-Each run produces a folder named after its UTC start time (`2026-09-09T02-30-00Z`) with a `manifest.json` describing what it holds. The object-storage mirror is **never pruned**: files deleted from the application stay in the mirror, so every dump — old or new — finds the attachments it references. Retention only removes whole backup folders.
+Each run produces a folder named after its UTC start time (`2026-09-09T02-30-00Z`) with a `manifest.json` describing what it holds. The object-storage mirror is **never pruned**: files deleted from the application stay in the mirror, so every dump, old or new, finds the attachments it references. Retention only removes whole backup folders.
 
 :::note[What is not backed up]
 The weights of the models the installation runs, the audio model cache and the Python package caches are not part of a backup: they are re-downloaded on demand after a restore. The session cache is not backed up either; after a restore everyone signs in again.

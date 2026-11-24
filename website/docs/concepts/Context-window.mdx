@@ -12,7 +12,7 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 The **context window** is the maximum amount of text a model can consider at one time. It covers everything the model reads and writes for a single request: the system instructions, the knowledge retrieved for it, the conversation so far, the user's latest question and the reply it generates. Anything that doesn't fit in the window is invisible to the model.
 
-Think of it as the model's short‑term memory, or the size of its desk. A larger desk lets you spread out more documents and work with all of them at once; a smaller one forces you to put some away. The model is not "forgetting", it simply never sees what is left off the desk.
+Think of it as the model's short‑term memory, or the size of its desk. A larger desk lets you spread out more documents and work with all of them at once; a smaller one forces you to put some away. The model is not "forgetting", it never sees what is left off the desk.
 
 ## Tokens, not words
 
@@ -35,7 +35,7 @@ The platform is designed to make the most of whatever window a model has:
 * Choosing a [model](./Model-architecture.mdx) with a larger window lets a touchpoint reason over more knowledge or a longer conversation at once, at the cost of more tokens per request.
 
 :::note[Bigger is not always better]
-A large context window is useful, but a focused, well‑retrieved context usually produces better answers than simply stuffing the window full. Quality of context beats quantity.
+A large context window is useful, but a focused, well‑retrieved context usually produces better answers than stuffing the window full. Quality of context beats quantity.
 :::
 
 ---

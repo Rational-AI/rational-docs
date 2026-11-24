@@ -60,7 +60,7 @@ On **Settings** → **Rational BI** → **Projects**, every project card has an 
 
 ### Choose who sees each table and view
 
-By default, everyone who can open a project can query all of its data. When some of it is sensitive — salaries next to headcount, margins next to revenue — narrow it table by table.
+By default, everyone who can open a project can query all of its data. When some of it is sensitive (salaries next to headcount, margins next to revenue), narrow it table by table.
 
 1. In **Settings** → **Rational BI**, open the project and select the **Access** tab.
 2. The table lists every **Table or view** of the project's Knowledges, grouped by Knowledge, with **Who can see** next to each.
@@ -73,7 +73,7 @@ By default, everyone who can open a project can query all of its data. When some
 The rule applies everywhere the project's data is read: dashboards, reports and the project's AI chat. A chart built on data someone can't see tells them *"You don't have access to this chart's data"* instead of showing numbers. Administrators always see everything.
 
 :::note[A view is judged on its own]
-Granting a view does not expose the table underneath it. That lets you publish an aggregated view — totals by department, say — to everyone, while the table with individual rows stays restricted. To the people who can't see it, a hidden table looks exactly like one that doesn't exist, so even the AI chat can't reveal its name.
+Granting a view does not expose the table underneath it. That lets you publish an aggregated view (totals by department, say) to everyone, while the table with individual rows stays restricted. To the people who can't see it, a hidden table looks exactly like one that doesn't exist, so even the AI chat can't reveal its name.
 :::
 
 ### Offer suggested questions
@@ -105,7 +105,7 @@ Inside a project, **Dashboards** holds your dashboards and **Reports** holds the
 
 Once the dashboard exists, open **Chat** on it whenever you want to add or change charts.
 
-The chat can also chart the **records** of a Knowledge — a collection with its filters, groupings and summaries — rather than a SQL query: ask for it, for example *"open deals by stage from the CRM"*. Record-based widgets are computed for each viewer with that viewer's own access, so two people can see different numbers on the same dashboard. They take one collection each, aren't affected by the dashboard's filter bar, and show no rows inside a report.
+The chat can also chart the **records** of a Knowledge (a collection with its filters, groupings and summaries) rather than a SQL query: ask for it, for example *"open deals by stage from the CRM"*. Record-based widgets are computed for each viewer with that viewer's own access, so two people can see different numbers on the same dashboard. They take one collection each, aren't affected by the dashboard's filter bar, and show no rows inside a report.
 
 :::note[Numbers follow your language]
 Charts write numbers and dates the way your interface language does: switch to Italian and *25,000.8* becomes *25.000,8* and months read *gen, feb*. KPI cards built on records are formatted the same way. KPI cards built on a SQL query keep the format they were given when they were last refreshed.

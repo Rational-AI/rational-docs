@@ -6,8 +6,8 @@ sidebar_label: Build an extension
 # Build an extension
 
 Extensions are how you add new capabilities to Rational AI without changing the
-platform itself. A single extension is a small package — a manifest plus,
-optionally, some code — that the platform installs and wires into the right
+platform itself. A single extension is a small package (a manifest plus,
+optionally, some code) that the platform installs and wires into the right
 place: a tool an agent can call, a messaging channel users can write to, a
 source your Knowledge bases sync from, or a workflow that processes incoming
 files. This guide explains the kinds of extensions you can build, the manifest
@@ -18,7 +18,7 @@ that describes each one, and how to package and install them.
 An extension is a package described by a single `manifest.json`. The manifest
 declares one or more **providers** — capabilities the platform installs. The
 same package can ship several providers at once, but most extensions declare
-just one. Installing an extension reads its manifest and registers whatever it
+only one. Installing an extension reads its manifest and registers whatever it
 provides; uninstalling reverses that.
 :::
 
@@ -60,7 +60,7 @@ my-extension/
 ```
 
 A **remote** extension (an MCP server hosted elsewhere) ships no code at all —
-it is just the `manifest.json`.
+it is only the `manifest.json`.
 
 ### Common manifest fields
 
@@ -212,8 +212,8 @@ Declare it under `channelProviders` and pick a `type` (`Telegram`, `RationalAI`,
 ```
 
 The channel's `configuration` follows the same field shape as everything else
-(see [Configuration fields](#configuration-fields)). Hidden, pre-filled fields —
-such as a webhook URL the platform owns — are marked `isHidden: true`.
+(see [Configuration fields](#configuration-fields)). Hidden, pre-filled fields
+(such as a webhook URL the platform owns) are marked `isHidden: true`.
 
 ## 3. Source extensions
 
@@ -371,7 +371,7 @@ extension is how you remove it.
 
 ## Configuration fields
 
-Every provider that needs user input — credentials, endpoints, options — declares
+Every provider that needs user input (credentials, endpoints, options) declares
 a `configuration` map. Each entry is a field the platform renders at install
 time. The fields are consistent across provider types:
 

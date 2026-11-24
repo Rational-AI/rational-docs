@@ -19,7 +19,7 @@ That property is the interoperable way for a file to declare it was produced by 
 
 ## When it is applied
 
-The marker is written **before the image is stored**, not added on the way out. Every copy that subsequently leaves — a download, the gallery, an API response — carries it, because they're all serving an already-marked file.
+The marker is written **before the image is stored**, not added on the way out. Every copy that subsequently leaves (a download, the gallery, an API response) carries it, because they're all serving an already-marked file.
 
 Marking on the way out would leave the stored object unmarked and make correctness depend on every future download path remembering to add it.
 

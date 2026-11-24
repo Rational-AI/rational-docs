@@ -5,7 +5,7 @@ sidebar_label: Tunnel
 
 # Reach an on-premises installation through the Rational AI Tunnel
 
-An on-premises Rational AI installation runs on a machine inside your network: a DGX Spark in the server room, a workstation under a desk. Out of the box it is reachable only from that network. **Settings** → **Tunnel** gives it a public endpoint under `rational.is` — `https://control-room.<yourcompany>.rational.is` — with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
+An on-premises Rational AI installation runs on a machine inside your network: a DGX Spark in the server room, a workstation under a desk. Out of the box it is reachable only from that network. **Settings** → **Tunnel** gives it a public endpoint under `rational.is` (`https://control-room.<yourcompany>.rational.is`), with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
 
 :::note[On-premises only]
 The Tunnel page exists only on installations that were provisioned with a Rational AI hub connection. On the managed cloud the platform handles addresses and certificates for you and the page is not shown.

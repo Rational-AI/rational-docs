@@ -5,7 +5,7 @@ sidebar_label: External Graphify MCP
 
 # Use Graphify from an external MCP client
 
-The [code graph](/operational-guides/graphify-code-graph) a Graphify Knowledge builds from a Git repository doesn't have to stay inside the Control Room. With the **Graphify query MCP server**, coding agents such as Claude Code or Codex can ask questions about that repository — "where is the main loop, and what does it call?" — and get answers backed by the Knowledge's graph. Access is granted by the Knowledge's **embed key**, so the client never needs an administrator API key. This guide takes you from a Git repository to a working `query_graph` tool inside your coding agent.
+The [code graph](/operational-guides/graphify-code-graph) a Graphify Knowledge builds from a Git repository doesn't have to stay inside the Control Room. With the **Graphify query MCP server**, coding agents such as Claude Code or Codex can ask questions about that repository ("where is the main loop, and what does it call?") and get answers backed by the Knowledge's graph. Access is granted by the Knowledge's **embed key**, so the client never needs an administrator API key. This guide takes you from a Git repository to a working `query_graph` tool inside your coding agent.
 
 :::note[What is the Graphify MCP server?]
 MCP (Model Context Protocol) is the standard coding agents use to plug in external tools. The Graphify query MCP server is a small server, launched by the agent itself over stdio, that exposes one main tool: `query_graph`. When the server is configured with an embed key, the tool is **scoped**: it is bound to that one Knowledge, its graph is downloaded read-only, and the tool doesn't ask for (or accept) a Knowledge ID — the key alone decides what the client can see.

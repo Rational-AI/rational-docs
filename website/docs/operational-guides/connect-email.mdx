@@ -55,7 +55,7 @@ The plain-text body is used where a message has one. For HTML-only mail the mark
 Outgoing replies are sent as both plain text and HTML, so they render well in any client, and carry the headers that make threading work: a correct `Re:` subject and the references tying the reply to the message it answers. In the recipient's mail client, the answer lands **inside the existing thread** rather than starting a new one.
 
 :::note[A failed send is retried, not lost]
-Replies are queued before they're sent. If your SMTP server is unreachable, the send is retried with a widening gap — starting after about a minute and backing off to a maximum of six hours — before it's finally marked failed.
+Replies are queued before they're sent. If your SMTP server is unreachable, the send is retried with a widening gap (starting after about a minute and backing off to a maximum of six hours) before it's finally marked failed.
 
 A brief mail-server outage therefore delays a reply rather than silently dropping it, which is the difference between a late answer and a customer who never hears back.
 :::

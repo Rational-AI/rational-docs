@@ -5,7 +5,7 @@ sidebar_label: Configure sources
 
 # Configure data sources
 
-A data source is where Rational AI goes to fetch content. Once you connect one to a [Knowledge](/operational-guides/create-knowledge) — the searchable collection of documents your AI answers from — Rational AI can pull that content in and keep it up to date.
+A data source is where Rational AI goes to fetch content. Once you connect one to a [Knowledge](/operational-guides/create-knowledge) (the searchable collection of documents your AI answers from), Rational AI can pull that content in and keep it up to date.
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
@@ -158,4 +158,4 @@ The extension's config schema is stored at install time, so an existing **Fetch*
 
 ## Result
 
-Your Knowledge now has the data sources it needs, each syncing when it should — automatically on change, on a schedule, or on demand — and backing off on its own when a sync keeps failing. You can add an extension-contributed source such as **ArXiv Catchup** that syncs PDFs from a chosen category, validated **HTTP** sources that fetch from one or more web URLs, a **RabbitMQ** queue whose documents are processed and answered on a result queue, and set the **Fetch** extension's `robots.txt` handling to match how you intend to use it. Once a source is saved and synced, its content is available for the Knowledge to process.
+Your Knowledge now has the data sources it needs, each syncing when it should (automatically on change, on a schedule, or on demand) and backing off on its own when a sync keeps failing. You can add an extension-contributed source such as **ArXiv Catchup** that syncs PDFs from a chosen category, validated **HTTP** sources that fetch from one or more web URLs, a **RabbitMQ** queue whose documents are processed and answered on a result queue, and set the **Fetch** extension's `robots.txt` handling to match how you intend to use it. Once a source is saved and synced, its content is available for the Knowledge to process.

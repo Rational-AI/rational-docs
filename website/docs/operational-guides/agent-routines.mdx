@@ -8,7 +8,7 @@ sidebar_label: Schedule and trigger agents
 Some work should happen without anyone asking: the morning briefing at eight, the sales report every Monday, a review every time a pull request is opened. A **routine** is an agent that is started by something other than you — a schedule, a GitHub event or a call from another system. This guide shows how to set each one up, how to see what is coming and how to hold a routine.
 
 :::note[A routine is an agent with a trigger]
-There is nothing to create besides the agent: its **Trigger** decides what starts it. A scheduled or event-driven run is the same as any other run — same instructions, same tools, same approvals — and it shows up in **History**, on the agent's page and on the routine's **Runs** tab.
+There is nothing to create besides the agent: its **Trigger** decides what starts it. A scheduled or event-driven run is the same as any other run (same instructions, same tools, same approvals), and it shows up in **History**, on the agent's page and on the routine's **Runs** tab.
 :::
 
 ## Prerequisites
@@ -132,7 +132,7 @@ Deliveries are accepted from any repository that has the webhook URL and the sec
 
 ## Start it from another system
 
-Any system that can make an HTTP request — a CRM, a ticketing tool, a nightly script — can hand work to an agent:
+Any system that can make an HTTP request (a CRM, a ticketing tool, a nightly script) can hand work to an agent:
 
 ```bash
 curl -X POST "https://<your address>/api/agents/v0/agents/<agent id>/execute" \
