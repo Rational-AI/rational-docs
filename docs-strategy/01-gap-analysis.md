@@ -64,7 +64,7 @@ Le pagine sono state lette il 24/11/2026. Ogni affermazione sui competitor viene
 | G9 | **Informazioni organizzate per tipo di pagina, non per audience.** Chi amministra, chi costruisce e chi usa leggono le stesse tre sezioni | Langdock, Glean |
 | G10 | **Release notes assenti.** Le PR di prodotto (#94–#99) aggiornano la doc, ma nessuno può vedere "cosa è cambiato" | Glean, Mistral |
 | G11 | **Nessun hub di troubleshooting o FAQ.** Il troubleshooting è sparso in 10 guide | Glean, Dust, Anthropic (errori) |
-| G12 | **Nessuna guida SSO/identity**, pur essendo citata in 5 pagine. Dal codice risulta che ogni tenant usa Keycloak o Zitadel, configurati in OIDC da CLI (`tenant --identity-registration`); non ci sono una UI per IdP esterni né SCIM. La pagina va scritta su questo | Langdock, Mistral, Anthropic |
+| G12 | **Nessuna guida SSO/identity**, pur essendo citata in 5 pagine. Dal codice risulta che l'identity provider si configura per tenant lato piattaforma, senza una UI per IdP esterni né SCIM. La pagina va scritta su questo, con engineering | Langdock, Mistral, Anthropic |
 | G13 | **Nessuna pagina su architettura, sicurezza e flussi dei dati.** Per un prodotto on-prem e "sovereign AI" è la pagina che i CISO cercano per prima | Glean (Security & Architecture), OpenAI (your-data) |
 | G14 | **Nessun quickstart per ruolo** (admin installa, builder crea un agente, sviluppatore chiama l'API) | Mistral, Glean |
 | G15 | **Contenuti non leggibili dagli LLM**: niente llms.txt, niente `.md`, niente Copy page | Langdock, OpenAI, Anthropic, Cohere |

@@ -73,7 +73,7 @@ Oggi le pagine `cr/*` mescolano tre cose: una mappa della sezione, una spiegazio
 | P0 | Release notes (struttura + ultime 6 release ricostruite dalle PR #94–#99) | reference | tutti | Glean, Mistral | 1 g |
 | P0 | Troubleshooting hub + 10 FAQ prese dalle 10 sezioni "Troubleshoot" esistenti | how-to | tutti | Dust, Glean | 2 g |
 | P0 | Security & architecture: componenti, flussi dei dati, cosa esce dalla rete (cloud vs on-prem) | concept + reference | admin/CISO | Glean, OpenAI your-data | 3 g, **serve l'engineering** |
-| P1 | Identity e sign-in: Keycloak/Zitadel per tenant, OIDC da CLI, federazione con Entra/Okta dalla console dell'IdP | how-to | admin | Langdock, Mistral | 2 g, **da validare con engineering il percorso di federazione** |
+| P1 | Identity e sign-in: identity provider per tenant, federazione con Entra/Okta | how-to | admin | Langdock, Mistral | 2 g, **da validare con engineering il percorso di federazione** |
 | P1 | Quickstart admin: install and secure | tutorial | admin | Mistral (tempo stimato, step, verifica) | 1 g |
 | P1 | Quickstart builder: first agent (fabbrica di fasteners) | tutorial | builder | Diataxis | 1 g |
 | P1 | API overview: auth, base URL cloud vs on-prem, errori comuni | reference | dev | Langdock | 1 g |
@@ -88,7 +88,7 @@ Oggi le pagine `cr/*` mescolano tre cose: una mappa della sezione, una spiegazio
 1. **Inglese US o UK.** Oggi prevale l'UK ("organisation" 19 contro 6). Consiglio l'**US**: è la convenzione di Google e Microsoft, dei pacchetti Vale pronti e di tutti i competitor analizzati. Il cambio è meccanico e riguarda circa 60 occorrenze.
 2. **Il nome "Knowledge".** La UI dice "a Knowledge", la prosa alterna "Knowledge base" e "knowledge base". Va scelto un termine e fissato nella tabella della terminologia.
 3. **Italiano sì o no.** Il locale `it` è stato rimosso perché non era tradotto. Consiglio di **non tradurre** finché la versione inglese non è stabile (fine della fase 2). Dopo, eventualmente, solo Get started e Administration, e con traduzione assistita e revisione. Langdock mantiene EN/DE, ma con un team dedicato.
-4. **SSO e SCIM.** Dal codice: identity provider per tenant (Keycloak o Zitadel), OIDC configurato da CLI, nessuno SCIM, nessuna UI per IdP esterni. Va confermato con engineering se la federazione con Entra, Okta o Google (fatta dalla console di Keycloak o Zitadel) è supportata ufficialmente.
+4. **SSO e SCIM.** Dal codice: identity provider configurato per tenant lato piattaforma, nessuno SCIM, nessuna UI per IdP esterni. Va confermato con engineering cosa dire pubblicamente e se la federazione con Entra, Okta o Google è supportata ufficialmente.
 5. **Spec OpenAPI.** Esiste o va generato dal backend? Da questo dipende G17.
 
 ## 5. Roadmap
