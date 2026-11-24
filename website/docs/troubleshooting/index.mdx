@@ -1,0 +1,73 @@
+---
+title: Troubleshooting
+sidebar_label: Troubleshooting
+description: Find the fix for a problem by its symptom, across installation, agents, models, the API and integrations.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+# Troubleshooting
+
+Find your symptom below and follow the link to its fix. Each guide has a **Troubleshooting** table with the cause and what to check.
+
+If your problem isn't listed, search the docs for the exact error message: most guides quote the messages the product shows.
+
+## Installation and operations
+
+**[Install and update](/operational-guides/install-and-update#troubleshooting)**
+- The nightly update never installs anything
+- An update was rolled back
+- `rational sync` fails with HTTP 401
+- `install.sh` refuses the release
+- A local backup is refused before it starts
+
+**[Back up and restore](/operational-guides/backup-and-restore#troubleshooting)**
+- **Test destination** fails with *permission denied*
+- A backup fails with *pg_dump: server version mismatch*
+- A component is *skipped*, or the backups list is empty
+- `rational offsite-restore` reports a missing or masked destination
+
+**[Rational AI Tunnel](/operational-guides/tunnel#troubleshooting)**
+- The endpoint does not resolve, or resolves to an old IP
+- Reachable on the local network but not from outside
+- Certificate warning in the browser
+- The endpoint never appears
+
+**[License](/operational-guides/license#troubleshooting)**
+- *The platform does not know this code*
+- *The license does not verify*, or was issued for another installation
+- A module stays hidden after an activation
+
+## Agents
+
+**[Create an agent](/operational-guides/create-an-agent#troubleshooting)**
+- **Run now** is grayed out
+- *"No text-generation model is available"* or *"The configured Agents default model is unavailable."*
+- The agent says a tool is not available
+
+**[Agent runs](/operational-guides/agent-runs#troubleshooting)**
+- The run stays *Queued*
+- The run ends *Failed* with a verification message, or *Timed out*
+- *Stop* reports that cancellation was not confirmed
+
+**[Agent computers](/operational-guides/agent-computers#troubleshooting)**
+- *"Computer service was not found"* or *"did not respond in time"*
+- The desktop shows *Disconnected*
+
+## Models and the API
+
+**[Deploy open-source models via API](/operational-guides/api/deploy-open-source-models#troubleshooting)**
+- `404` on every call, or `409` on create or deploy
+- A deployment is stuck in `provisioning` with `WaitingForCapacity`
+- A deployment `failed` with `OutOfMemory` or `Crashed`
+
+## Integrations
+
+**[Graphify MCP server](/operational-guides/external-graphify-mcp#troubleshooting)**
+- The server can't reach Rational AI, or authentication fails
+- `query_graph` returns nothing
+- `uv` fails to start the server
+
+**[User details panel](/operational-guides/personalize-user-details#troubleshooting)**
+- Only Basic info shows, or a widget is empty or never appears
+- Your changes disappeared on the next update

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "website/docs/**"
+      - "website/release-notes/**"
       - ".vale.ini"
       - "styles/**"
 
@@ -24,7 +25,7 @@ jobs:
       - name: Vale
         uses: errata-ai/vale-action@reviewdog
         with:
-          files: website/docs
+          files: '["website/docs", "website/release-notes"]'
           vale_flags: "--minAlertLevel=error"
           filter_mode: added
           reporter: github-pr-review
