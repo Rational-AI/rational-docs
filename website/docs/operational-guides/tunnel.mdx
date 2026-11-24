@@ -104,7 +104,7 @@ A connector whose OAuth app still redirects to `rational-control-room.<domain>`,
 
 ## Check that it works
 
-- **From outside your network** (a phone off Wi-Fi is the quickest test), open the endpoint shown on the page. The login page should load with a valid certificate — no warning.
+- **From outside your network** (a phone off Wi-Fi is the quickest test), open the endpoint shown on the page. The login page should load with a valid certificate and no warning.
 - On the page, **Last sync** should be within the last minute or two. An older time means the machine cannot reach `control-room.rational.is`: check its internet access.
 - **Certificate** should read *valid until* a date a few weeks or months ahead. *Not issued yet* right after provisioning is normal; it appears within a couple of minutes.
 - On the machine, `sudo rational status` prints the current path (tunnel on, or direct on your public IP) and `sudo rational sync` runs the check-in immediately, printing what it applied.

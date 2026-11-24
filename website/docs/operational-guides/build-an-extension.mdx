@@ -18,14 +18,14 @@ that describes each one, and how to package and install them.
 
 :::note[What is an extension?]
 An extension is a package described by a single `manifest.json`. The manifest
-declares one or more **providers** — capabilities the platform installs. The
+declares one or more **providers**: capabilities the platform installs. The
 same package can ship several providers at once, but most extensions declare
 only one. Installing an extension reads its manifest and registers whatever it
 provides; uninstalling reverses that.
 :::
 
 :::note[Building vs. installing]
-This page is the **authoring** guide — how to *create* an extension. If you only
+This page is the **authoring** guide: how to *create* an extension. If you only
 need to install, configure, enable or disable extensions from the registry, see
 [Settings → Extensions](/cr/settings/extensions) instead.
 :::
@@ -61,7 +61,7 @@ my-extension/
 └── make-tar.sh          # builds the distributable .tar.bz2
 ```
 
-A **remote** extension (an MCP server hosted elsewhere) ships no code at all —
+A **remote** extension (an MCP server hosted elsewhere) ships no code at all;
 it is only the `manifest.json`.
 
 ### Common manifest fields
@@ -90,7 +90,7 @@ agents call them during a conversation. There are two transports.
 
 ### Local (stdio)
 
-A local server runs as a process the platform spawns. This is the default — omit
+A local server runs as a process the platform spawns. This is the default: omit
 `transportType` and supply a `command` and `arguments`:
 
 ```json
@@ -166,14 +166,14 @@ the user provides at install time.
 
 :::note[Remote extensions ship no code]
 A remote extension has no server to build, so it is distributed as a **plain
-`manifest.json`** — upload the file directly, no `.tar.bz2`. With no bundled
+`manifest.json`**. Upload the file directly, no `.tar.bz2`. With no bundled
 `icon.png`, set the manifest's `icon` field to a URL or an embedded `data:` URI.
 :::
 
 :::tip[OAuth is not yet supported]
 Remote providers authenticate with a static value (a token or key) carried in a
 header. Servers that require an interactive OAuth 2.1 / DCR flow can't yet be
-expressed in a manifest — use a token-based server where one is offered.
+expressed in a manifest, so use a token-based server where one is offered.
 :::
 
 ### Agent skills
@@ -181,7 +181,7 @@ expressed in a manifest — use a token-based server where one is offered.
 Agent skills are delivered as a specialised MCP server extension: a sandbox
 server (`mcpServerProviders`) that loads `SKILL.md` skills from the package and
 offers them to the model with progressive disclosure. You author the skills as
-Markdown with frontmatter and bundle them alongside the server — the manifest
+Markdown with frontmatter and bundle them alongside the server. The manifest
 shape is the same local-stdio form shown above.
 
 ## 2. Channel extensions
@@ -287,7 +287,7 @@ already synced marks it for processing again, so the change applies on the next
 sync.
 :::
 
-:::note[The resolver only lists — the platform downloads]
+:::note[The resolver only lists; the platform downloads]
 Your program's job is to return *which* files to sync, not to fetch them. The
 worker downloads each returned file and applies the `expiry` policy, so a
 resolver that returns only items inside the configured window gets out-of-window
@@ -306,7 +306,7 @@ A workflow provider points at a script in the package; on install, the platform
 reads that script and registers it as a global processing workflow. Because the
 script follows the same stdin/stdout contract as any
 [hand-written workflow](/operational-guides/create-workflow), the existing
-worker runs it unchanged — no extra wiring.
+worker runs it unchanged, with no extra wiring.
 
 ```json
 {
@@ -339,7 +339,7 @@ worker runs it unchanged — no extra wiring.
 | `timeout` | Per-run timeout in minutes passed to the activity. |
 | `isActive` | Whether the workflow is assignable immediately after install. |
 
-The script itself is an ordinary processing workflow — a `process(document,
+The script itself is an ordinary processing workflow: a `process(document,
 options)` function wired up with `run(process)`, with its dependencies declared
 inline in [PEP 723](https://peps.python.org/pep-0723/) format so the worker
 resolves them at run time:
@@ -367,7 +367,7 @@ run(process)
 :::warning[Extension workflows are read-only]
 A workflow installed from an extension is **read-only**: it appears in
 **Settings** → **Workflows** and can be assigned to files, but it can't be edited or
-deleted from the UI — its owning extension manages it. Uninstalling the
+deleted from the UI, because its owning extension manages it. Uninstalling the
 extension is how you remove it.
 :::
 
@@ -383,7 +383,7 @@ time. The fields are consistent across provider types:
 | `description` | Help text. Plain HTML links are allowed for "how to get this value" instructions. |
 | `type` | A JSON Schema fragment **encoded as a string**, for example, `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
 | `isRequired` | Whether the user must supply a value. |
-| `isHidden` | `true` for values the platform fills in itself (for example, a webhook URL) — they don't appear in the form. |
+| `isHidden` | `true` for values the platform fills in itself (for example, a webhook URL). They don't appear in the form. |
 | `defaultValue` | Pre-filled value. |
 | `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly; `{ "kind": "connector", "type": "braveApiKey" }` means the user picks a saved [connector](/operational-guides/configure-connectors) of that type. |
 
@@ -392,8 +392,8 @@ is filled in automatically with the built-in Rational AI connector when the
 extension is first configured. Use it for a server that calls the Rational AI
 API on the tenant's behalf.
 
-Reference a configured value elsewhere in the manifest with `${fieldName}` —
-that's how the GitHub example above pulls `accessToken` into its
+Reference a configured value elsewhere in the manifest with `${fieldName}`.
+That's how the GitHub example above pulls `accessToken` into its
 `Authorization` header.
 
 ## List your extension in the Marketplace
@@ -495,7 +495,7 @@ PYTHON
 ```
 
 Exclude generated `artifacts/` from Git. A **remote** extension skips packaging
-entirely — its `manifest.json` *is* the distributable.
+entirely: its `manifest.json` *is* the distributable.
 
 Install the result from the Control Room: open **Settings** → **Extensions**, click
 **Add**, and upload the archive (or, for a remote extension, the manifest). Once

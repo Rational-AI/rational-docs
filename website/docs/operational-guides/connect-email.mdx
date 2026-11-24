@@ -21,7 +21,7 @@ Before you start, make sure you have:
 
 1. Go to **Settings** → **Channels** and select **New channel**.
 2. Choose **Email** as the type.
-3. Name the channel and fill in the mailbox configuration — servers, address, and credentials.
+3. Name the channel and fill in the mailbox configuration: servers, address, and credentials.
 4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode). **Manual** is a reasonable starting point for a mailbox: mail is captured and put in front of a person, and nothing is sent until someone sends it.
 5. Save.
 
@@ -39,16 +39,16 @@ For OAuth you authorize the mailbox interactively: the channel gives you an **Au
 :::note[An expired authorization is a visible state, not a silent stall]
 OAuth grants expire or get revoked. When that happens the channel reports that it **needs authorization** and surfaces the **Authorize mailbox access** button again.
 
-Check the channel status if mail stops arriving — this is the most common reason a mailbox that worked yesterday is quiet today, and it's fixed by re-authorising rather than by re-entering anything.
+Check the channel status if mail stops arriving. This is the most common reason a mailbox that worked yesterday is quiet today, and it's fixed by re-authorising rather than by re-entering anything.
 :::
 
 ## How mail becomes conversations
 
-**One email thread is one conversation.** Conversations are keyed by the mail thread itself, not by who sent it — so two separate threads from the same person are two separate conversations, exactly as they appear in their mail client.
+**One email thread is one conversation.** Conversations are keyed by the mail thread itself, not by who sent it, so two separate threads from the same person are two separate conversations, exactly as they appear in their mail client.
 
 That's the behavior email users expect, and it matters: collapsing everything from one address into a single conversation would blend an invoice query into a support request because they came from the same colleague.
 
-Only unread mail is picked up, and **a message is marked read only once it has been successfully ingested**. If the platform restarts mid-fetch, the mail is picked up again on the next pass rather than disappearing — the failure mode is a duplicate, never a dropped message.
+Only unread mail is picked up, and **a message is marked read only once it has been successfully ingested**. If the platform restarts mid-fetch, the mail is picked up again on the next pass rather than disappearing. The failure mode is a duplicate, never a dropped message.
 
 The plain-text body is used where a message has one. For HTML-only mail the markup is stripped down to readable text.
 
@@ -67,7 +67,7 @@ A brief mail-server outage therefore delays a reply rather than silently droppin
 An agent that answers automated mail will eventually find something that answers back. The channel refuses to ingest:
 
 - Mail marked as **automatically submitted**, or carrying **bulk**, **list** or **junk** precedence.
-- Mail asking for **auto-responses to be suppressed** — the header out-of-office replies set.
+- Mail asking for **auto-responses to be suppressed** (the header out-of-office replies set).
 - Mail from **bounce, no-reply and postmaster** addresses.
 - Mail from **the channel's own address**, so it can never answer itself.
 
@@ -75,11 +75,11 @@ Your [allowed senders](/operational-guides/manage-channels#control-who-can-write
 
 ## Attachments
 
-Attachments arrive under your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in) — allowed or not, restricted by type, and capped in size.
+Attachments arrive under your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in): allowed or not, restricted by type, and capped in size.
 
 An accepted document has its text extracted **before the message is posted to the conversation**, so the agent sees the contents when it composes its answer rather than reacting to a filename. Extraction is given a bounded window; a document that takes longer doesn't hold the message up indefinitely.
 
-Operators can open or download what arrived from the conversation — see [Use the chat](/operational-guides/chat-experience).
+Operators can open or download what arrived from the conversation. See [Use the chat](/operational-guides/chat-experience).
 
 ## Related
 

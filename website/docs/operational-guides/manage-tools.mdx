@@ -7,10 +7,10 @@ audience: [builder, developer]
 
 # Browse the tools your agents can use
 
-**Settings** → **Tools** is the catalog of everything an AI agent can do beyond chatting — search a knowledge base, run a read-only query, fetch a document, and more. This page is a reference: it shows you what's available and where each capability comes from.
+**Settings** → **Tools** is the catalog of everything an AI agent can do beyond chatting: search a knowledge base, run a read-only query, fetch a document, and more. This page is a reference: it shows you what's available and where each capability comes from.
 
 :::note[What is a tool?]
-A tool is a single capability the AI can invoke during a conversation — one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. Each extension runs an **MCP server** (MCP is the open standard for connecting AI agents to external tools), and that server is what publishes the tools you see here.
+A tool is a single capability the AI can invoke during a conversation: one specific action like "search the knowledge base" or "fetch a document." Tools come from [extensions](/operational-guides/manage-extensions), the add-ons you install. Each extension runs an **MCP server** (MCP is the open standard for connecting AI agents to external tools), and that server is what publishes the tools you see here.
 :::
 
 ## Browse available tools
@@ -59,7 +59,7 @@ A tool appearing in this catalog means it exists in your environment, not that a
 
 There are two moments at which you can see what an extension offers, and they don't mean quite the same thing.
 
-- **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started — useful for deciding whether an extension is worth setting up.
+- **Declared tools** are what the extension's manifest promises. They're visible on the extension itself as soon as it's installed, even before you've configured anything and before any server has started. That's useful for deciding whether an extension is worth setting up.
 - **Discovered tools** are what a running MCP server actually reports. They're what lands in this catalog. The list is refreshed when you create or edit an MCP server configuration and when an extension is updated.
 
 :::note[An update that would break a touchpoint is refused]

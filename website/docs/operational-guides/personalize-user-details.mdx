@@ -47,7 +47,7 @@ Each user record carries two fields that drive personalization:
 
 | Field | Type | Purpose |
 |-------|------|---------|
-| `context` | free-form JSON object | The **data** you want to surface — any key/value pairs (loyalty tier, orders, account number, …). |
+| `context` | free-form JSON object | The **data** you want to surface: any key/value pairs (loyalty tier, orders, account number, …). |
 | `contextConfiguration.widgets` | list of widget definitions | The **widgets** that render that data inside the panel. |
 
 A *widget* is a [custom element](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
@@ -81,7 +81,7 @@ Before you start, make sure you have:
 - A place to host a small JavaScript bundle that the browser can fetch over
   HTTPS (a CDN, object storage, or any static host).
 
-## Step 1 — Build a profile widget
+## Step 1: Build a profile widget
 
 A profile widget is a standard custom element that reads its data from a
 property. The example below defines an `orders-list` element that renders an
@@ -121,7 +121,7 @@ loading a script if an element with that tag is already registered, so reusing
 a tag across widgets can lead to the wrong component rendering.
 :::
 
-## Step 2 — Attach data to the user's `context`
+## Step 2: Attach data to the user's `context`
 
 Put the data your widget needs into the user's `context` bag. Keys here must
 match the `inputs` your widget declares in the next step.
@@ -141,7 +141,7 @@ match the `inputs` your widget declares in the next step.
 `context` is **merged**, not replaced: the keys you send are added or updated,
 and any keys already stored on the user are preserved.
 
-## Step 3 — Register the widget on the user
+## Step 3: Register the widget on the user
 
 Declare the widget in `contextConfiguration.widgets`, mapping each `context`
 key your widget needs to an input:
@@ -161,7 +161,7 @@ key your widget needs to an input:
 ```
 
 With this configuration the panel will set `ordersListElement.orders =
-context.orders` before rendering — exactly the property the widget in Step 1
+context.orders` before rendering, which is exactly the property the widget in Step 1
 reads.
 
 :::warning[Configuration is replaced]
@@ -228,4 +228,4 @@ Under the hood, when the **User** view renders it:
 | Only Basic info shows | The user has no `contextConfiguration.widgets`, or the conversation is anonymous (no linked user). |
 | The widget renders but is empty | The `inputs` names don't match the keys in `context`, or those keys weren't sent. |
 | The widget never appears | The `url` failed to load, or the script doesn't register the declared `tagName`. Check the browser console for load errors. |
-| Your changes disappeared on the next update | `contextConfiguration` was sent without the full widget list — it is replaced, not merged. |
+| Your changes disappeared on the next update | `contextConfiguration` was sent without the full widget list. It is replaced, not merged. |

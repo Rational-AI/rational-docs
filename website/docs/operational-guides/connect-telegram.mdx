@@ -21,10 +21,10 @@ Before you start, make sure you have:
 1. Go to **Settings** → **Channels** and select **New channel**.
 2. Choose **Telegram** as the type.
 3. Name the channel and paste the **bot token**.
-4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode) — **Automatic** if the agent should answer on its own.
+4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode): **Automatic** if the agent should answer on its own.
 5. Save.
 
-The token is validated against Telegram as you connect, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code — the quickest way to get people to the right bot.
+The token is validated against Telegram as you connect, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code, the quickest way to get people to the right bot.
 
 :::note[The default works on localhost]
 You don't need a public URL, a domain, or a tunnel. The default transport polls Telegram for new messages, which works behind a firewall and on a laptop, so the happy path is only a BotFather token.
@@ -46,7 +46,7 @@ Both transports feed the same pipeline, so everything below behaves identically 
 Telegram messages arrive as more than plain text:
 
 - **Text and captions.**
-- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes** — subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than only acknowledge.
+- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes**, subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than only acknowledge.
 - **Locations, contacts and polls**, rendered into text the agent can work with.
 
 :::note[An album is one message, not three]
@@ -75,7 +75,7 @@ Beyond that, a **rate limit applies per chat**, so one chat flooding the bot can
 
 You can pin extra instructions to individual chats: supply lines pairing a chat id with a prompt, and that prompt is appended to the touchpoint's system prompt for that chat only.
 
-This is how one bot serves two audiences without two bots — the same agent, with a different framing in the internal support group than in the public one.
+This is how one bot serves two audiences without two bots: the same agent, with a different framing in the internal support group than in the public one.
 
 ## What replies look like
 
@@ -94,7 +94,7 @@ Some smaller touches worth knowing about, because people ask:
 Two things are not supported yet, and are worth knowing before you promise them:
 
 - **The agent cannot send files out.** Inbound attachments work; outbound ones aren't wired up.
-- **Answers arrive complete, not word by word.** There's no progressive editing of a message as the answer generates — the typing indicator covers the wait instead.
+- **Answers arrive complete, not word by word.** There's no progressive editing of a message as the answer generates; the typing indicator covers the wait instead.
 
 ## Related
 

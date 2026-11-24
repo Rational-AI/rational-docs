@@ -34,7 +34,7 @@ Every update takes a local backup first, so a bad release can be rolled back. Th
 
 | Component | What is captured | How |
 |-----------|------------------|-----|
-| **postgres** | Every database on the server: the application data of every tenant, the workflow engine, the identity provider. This is also where the key ring that protects stored credentials lives, so a backup is sensitive material — keep the destination as private as the installation itself. | One `pg_dump` per database plus the roles, streamed to the destination |
+| **postgres** | Every database on the server: the application data of every tenant, the workflow engine, the identity provider. This is also where the key ring that protects stored credentials lives, so a backup is sensitive material. Keep the destination as private as the installation itself. | One `pg_dump` per database plus the roles, streamed to the destination |
 | **qdrant** | The vector collections (embeddings behind knowledge retrieval) | One snapshot per collection, streamed to the destination and removed from the vector store afterwards |
 | **storage** | The object storage: attachments, synced source files, extension packages | An incremental mirror in the `storage/` folder of the destination, shared by every backup |
 | **extensions** | The installed extensions directory | A `tar.gz` per backup |
@@ -73,7 +73,7 @@ Go to **Settings** → **Backup** and pick the destination **Type**. The fields 
 | **S3 bucket** | Endpoint, provider (`Other` for a NAS or MinIO, `AWS` for Amazon), region, access key ID, secret access key | Bucket and prefix, for example, `my-bucket/rational` |
 | **FTP server** | Host, port (21), user, password | Folder |
 | **SFTP server** | Host, port (22), user, password | Folder |
-| **Local folder (NFS mount)** | — | The absolute path of a folder the worker can see, typically an NFS mount added to the worker container |
+| **Local folder (NFS mount)** | None | The absolute path of a folder the worker can see, typically an NFS mount added to the worker container |
 
 On an installation set up with `install.sh`, do not choose **Local folder**: the path is inside the worker's container, is lost with it, and cannot be restored with `rational offsite-restore`. Ask the owner of the destination for an account that can write only the backup folder.
 
@@ -116,7 +116,7 @@ A failed run reports the error in place of the size. A backup that fails half-wa
 Two things are worth checking now and then:
 
 - **Last backup** keeps moving and says *completed*. A schedule nobody watches is a schedule that can silently stop.
-- The list under **Backups at the destination** is what the destination actually holds, read from it each time the page loads — not a log kept by the application. If the destination disappears, so does the list.
+- The list under **Backups at the destination** is what the destination actually holds, read from it each time the page loads, not a log kept by the application. If the destination disappears, so does the list.
 
 ## Restore
 

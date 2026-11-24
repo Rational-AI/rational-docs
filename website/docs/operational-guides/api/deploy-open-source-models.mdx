@@ -37,7 +37,7 @@ Before you begin, make sure you have:
 - **The Hugging Face repository** of the model, for example `Qwen/Qwen3-8B`. Check that it exists on [huggingface.co](https://huggingface.co): the API stores the name as you send it.
 - **Hardware for it.** On your own servers, the GPUs or memory the model needs (see [Run models on your own servers](/operational-guides/run-models-on-premise)); on Rational AI's cloud, a plan that includes self-hosted models.
 
-## Step 1 — Check what your hosting can deploy
+## Step 1: Check what your hosting can deploy
 
 Every installation has one hosting platform for its models. Ask it what it accepts before you create anything:
 
@@ -59,7 +59,7 @@ The answer lists the hosting targets (one today) with their `provider` and `capa
 
 `defaultIdleTimeoutSeconds` is how long an on-demand deployment waits without requests before it releases its hardware, when it doesn't set its own timeout.
 
-## Step 2 — Create the model
+## Step 2: Create the model
 
 `POST /management/v0/models` creates a model. A self-hosted model uses the `rationalAI` discriminator and names its weights in `artifact`:
 
@@ -109,7 +109,7 @@ curl -s -X PUT "https://control-room.[your-domain]/api/management/v0/models/<MOD
 
 The upload is accepted only once per model. The model cannot be deployed until it completes.
 
-## Step 3 — Deploy the model
+## Step 3: Deploy the model
 
 `POST /management/v0/models/{id}/deployment` applies the model's current deploy parameters. It carries the `revision` you are confirming, which must equal the model's `deployRevision`, and optionally a scale:
 
@@ -138,7 +138,7 @@ The `scale` object sets how many replicas the deployment may run:
 
 `idleTimeout` is a duration such as `"00:15:00"`; leave it out to use the installation's default (`defaultIdleTimeoutSeconds`, ten minutes unless your installation changed it). Each hosting platform clamps the range to what it supports, reported as `maxReplicas`.
 
-## Step 4 — Follow the deployment
+## Step 4: Follow the deployment
 
 ```bash
 curl -s "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
@@ -148,10 +148,10 @@ curl -s "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/
 The answer has the `deployment` itself, plus `outOfDate` and `changedFields`, which say whether the model's settings changed since it was deployed. The deployment carries:
 
 - `phase`: where it is in its lifecycle (table below).
-- `readyReplicas` and `desiredReplicas` — how many replicas answer, out of how many it should run.
-- `reason` and `message` — why it waits or why it failed, for example `WaitingForCapacity`, `SlowStart`, `OutOfMemory`, `Crashed`.
+- `readyReplicas` and `desiredReplicas`: how many replicas answer, out of how many it should run.
+- `reason` and `message`: why it waits or why it failed, for example `WaitingForCapacity`, `SlowStart`, `OutOfMemory`, `Crashed`.
 - `progress`: what the platform is doing right now, such as pulling an image.
-- `lastTransitionAt` and `lastUsedAt` — when it entered its phase, and when it last served a request.
+- `lastTransitionAt` and `lastUsedAt`: when it entered its phase, and when it last served a request.
 
 | Phase | Meaning |
 |---|---|
@@ -208,7 +208,7 @@ curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<M
 
 ## Troubleshooting
 
-- **`404` on every call**: check the address: calls go to `/api/management/v0/...` on the Control Room's own host.
+- **`404` on every call**: check the address. Calls go to `/api/management/v0/...` on the Control Room's own host.
 - **`409` on create**: another model has that name or identifier; list the models and reuse it, or choose another name.
 - **`409` on deploy**: the `revision` you sent is stale; read the model and deploy its current `deployRevision`.
 - **Stuck in `provisioning` with `WaitingForCapacity`**: no GPU or node has room for it. Free one, or give the deployment fewer GPUs.

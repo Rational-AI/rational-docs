@@ -33,7 +33,7 @@ This guide follows **Quinn** pricing request for quotation RFQ-2026-0153: Quinn 
 The header shows the agent, the run status and how it was started, the model, where it ran and how long it has been going. Below it, **Conversation & activity** tells the run in order:
 
 - **The goal** you gave, as the first message.
-- **The activity**, collapsed into one line — *Show activity · 29 tools · rational_verify_completion* — with the number of tool calls and the latest. While the run works the line reads *Running: &lt;tool&gt; — &lt;summary&gt;*. Expand it to see every step: the commands it ran, the files it read, the Knowledge it searched; expand a step to see its arguments and result.
+- **The activity**, collapsed into one line (*"Show activity · 29 steps · rational_verify_completion"*), with the number of steps and the latest one. While the run works the line reads *"Running: &lt;step&gt; — &lt;summary&gt;"*. Expand it to see every step: the commands it ran, the files it read, the Knowledge it searched; expand a step to see its arguments and result.
 - **The agent's messages**, between the activity blocks. The last one is the answer; for a task it is also posted as a comment.
 - **Approval cards**, when the agent is waiting for you.
 - **Links to delegated runs**, when the agent handed part of the job to another agent.
@@ -43,7 +43,7 @@ When the agent saves documents during the run, **What it produced** lists them, 
 The footer carries the run ID, the workflow ID, when it was created and finished, and the model.
 
 :::note[Agents check their own work]
-Before a run can end as *Completed*, the agent verifies that the outcome really exists — the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends *Failed* with *"Completion could not be verified after three continuation attempts. Review the plan and evidence."* and its task goes to *Needs you*: read the activity, adjust the task or the instructions, and retry.
+Before a run can end as *Completed*, the agent verifies that the outcome really exists: the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends *Failed* with *"Completion could not be verified after three continuation attempts. Review the plan and evidence."* and its task goes to *Needs you*: read the activity, adjust the task or the instructions, and retry.
 :::
 
 ## Approve what the agent wants to do
@@ -61,7 +61,7 @@ When the agent calls a tool that is under **Ask me first** on its profile, the r
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-The card reads *"The agent wants your approval"*, names the tool (**Approve write?**) and shows the exact arguments of the call — here the path `offers/RFQ-2026-0153.md` and the content Quinn wants to write, line prices included. Read them as you would read a colleague's draft:
+The card reads *"The agent wants your approval"*, names the tool (**Approve write?**) and shows the exact arguments of the call. Here that's the path `offers/RFQ-2026-0153.md` and the content Quinn wants to write, line prices included. Read them as you would read a colleague's draft:
 
 - **Approve** runs the tool with exactly those arguments and the agent continues.
 - **Reject** tells the agent no; it carries on without that call and can explain, try another way or ask you.
@@ -74,7 +74,7 @@ Anyone who can use the agent can approve or reject its calls, not only the perso
 
 ## Steer, stop or retry
 
-- **Message the agent**: while a run is going, the box at the bottom (*Steer or reply to the agent…*) sends a message the agent reads at its next step: add a detail, correct the direction, answer a question. Only the person who started the run can message it.
+- **Message the agent**: while a run is going, the box at the bottom (*Steer or reply to the agent…*) sends a message the agent reads at its next step. Use it to add a detail, correct the direction, or answer a question. Only the person who started the run can message it.
 - **Stop**: ends the run. The agent's computer confirms the stop; the run ends *Canceled* and its task goes to *Needs you*.
 - **Retry**: for a run that failed, was canceled or timed out. It starts a new run with the same goal; the old one stays in the history.
 - **Profile**: opens the agent's profile.

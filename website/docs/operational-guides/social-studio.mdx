@@ -7,10 +7,10 @@ audience: [user]
 
 # Create and publish social posts
 
-A good social post is several pieces that have to agree with each other: a hook, a caption, a set of hashtags, one or more images with words on them — each sized and limited differently by every network. The **Social studio** in Gen builds a post step by step from a template, shows it the way the network will, checks it against the network's limits, and publishes it to your LinkedIn, Instagram or Facebook page.
+A good social post is several pieces that have to agree with each other: a hook, a caption, a set of hashtags, one or more images with words on them, each sized and limited differently by every network. The **Social studio** in Gen builds a post step by step from a template, shows it the way the network will, checks it against the network's limits, and publishes it to your LinkedIn, Instagram or Facebook page.
 
 :::note[What is a social template?]
-A **social template** is a recipe for one kind of post in one format — an Instagram carousel, a LinkedIn post, a Story. It is a **pipeline** of steps: text steps (a storyline, a caption, hashtags) that the assistant writes, and image steps (a cover, the slides) that Gen draws. Each step knows what earlier steps it takes from, so the slides follow the storyline and the caption follows the slides.
+A **social template** is a recipe for one kind of post in one format: an Instagram carousel, a LinkedIn post, a Story. It is a **pipeline** of steps: text steps (a storyline, a caption, hashtags) that the assistant writes, and image steps (a cover, the slides) that Gen draws. Each step knows what earlier steps it takes from, so the slides follow the storyline and the caption follows the slides.
 :::
 
 ## Prerequisites
@@ -18,7 +18,7 @@ A **social template** is a recipe for one kind of post in one format — an Inst
 - **The Gen module in your license.**
 - **Administrative access:** the **Social** area is available to administrators only.
 - **A social template:** see [Create social templates](#create-social-templates).
-- **To publish:** a **LinkedIn**, **Instagram** or **Facebook** connector for the page you post to — see [Configure a connector](/operational-guides/configure-connectors). Without one you can still build posts and download them.
+- **To publish:** a **LinkedIn**, **Instagram** or **Facebook** connector for the page you post to (see [Configure a connector](/operational-guides/configure-connectors)). Without one you can still build posts and download them.
 
 ## Choose a format
 
@@ -34,7 +34,7 @@ A **social template** is a recipe for one kind of post in one format — an Inst
 1. Select the **Gen** tab, then **Social**.
 2. Select the **Generate** tile, choose a format, and pick one of its templates.
 3. The composer opens with the template's steps listed as a checklist. Start with the **Brief**: what the post is about, who it's for, anything it must say. It's optional, but every step starts from it.
-4. Work through the steps. Each one shows its state — **Pending**, **Generating**, **Ready**, **Out of date**, **Failed** or **Written by hand**:
+4. Work through the steps. Each one shows its state (**Pending**, **Generating**, **Ready**, **Out of date**, **Failed** or **Written by hand**):
    - **Text steps** run in the post's chat and come back as candidates; pick the one you like, or write your own.
    - **Image steps** draw with Gen's image pipeline. Select **Generate**, or **Regenerate** for another attempt. On a carousel, **Generate all** draws the slides one after another.
 5. Check the preview, which shows the post the way the network does. Edit the text directly in the preview, and drag the overlay text on an image, or change its color and font.
@@ -43,7 +43,7 @@ A **social template** is a recipe for one kind of post in one format — an Inst
 Because steps build on each other, editing the storyline after the slides were drawn doesn't silently leave slides that tell a different story: the steps that depend on it are marked **Out of date**, so you can see what to regenerate.
 :::
 
-Once every step is done, the post is **Ready**. Select **Download** at any time to get a zip with each slide rendered with its words on it, plus the caption — for formats you post by hand, or to share for review.
+Once every step is done, the post is **Ready**. Select **Download** at any time to get a zip with each slide rendered with its words on it, plus the caption. Use it for formats you post by hand, or to share for review.
 
 ## Publish a post
 
@@ -62,12 +62,12 @@ Once published, the post can only be edited or removed on the network itself. If
 1. Go to **Settings** → **Gen** and open the **Social** tab.
 2. Select **New** and choose the format the template is for.
 3. On **General**, fill in the **Name**, **Description** and **Prompt**, choose the **Image model**, and optionally a default page under **Publish to**. Decide whether the template is offered when people create a post.
-4. On **Pipeline**, build the steps with **Add a step**. For each one set its **Type** (text or image), **Name** and **Instructions**, which earlier steps it **Takes from**, whether it **Asks the person** for input, and — for image steps — the **Aspect ratio**; set how many **Candidates** a text step proposes and how many **Slides** a carousel has.
+4. On **Pipeline**, build the steps with **Add a step**. For each one set its **Type** (text or image), **Name** and **Instructions**, which earlier steps it **Takes from**, whether it **Asks the person** for input, and, for image steps, the **Aspect ratio**; set how many **Candidates** a text step proposes and how many **Slides** a carousel has.
 5. On **Style**, set the brand kit the images use.
 6. Save.
 
 :::note[The pipeline is checked against the format]
-The **Checks** next to the pipeline enforce what the format needs — a carousel, for example, needs a storyline step and a slides step. Until every check passes, saving is blocked with *"Fix the pipeline's checks to save."*, so nobody can be handed a template that can't produce a valid post.
+The **Checks** next to the pipeline enforce what the format needs. A carousel, for example, needs a storyline step and a slides step. Until every check passes, saving is blocked with *"Fix the pipeline's checks to save."*, so nobody can be handed a template that can't produce a valid post.
 :::
 
 ## Result

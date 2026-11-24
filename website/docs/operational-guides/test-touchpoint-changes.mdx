@@ -7,12 +7,12 @@ audience: [builder]
 
 # Test a touchpoint change before it goes live
 
-Changing a system prompt or swapping a model is quick to do and hard to be confident about. **Replay testing** re-runs the touchpoint's own past conversations against your pending change and reports what came out different — so you find out before your users do.
+Changing a system prompt or swapping a model is quick to do and hard to be confident about. **Replay testing** re-runs the touchpoint's own past conversations against your pending change and reports what came out different, so you find out before your users do.
 
 :::note[This is a regression check, not an evaluation suite]
 There's no curated dataset and no quality score. The baseline is **what the system actually did**, on real input from real users.
 
-That means a replay run can't tell you whether an answer is *good*. It tells you whether your change altered behavior that was previously working — which is the question you actually have when you're about to edit a live prompt.
+That means a replay run can't tell you whether an answer is *good*. It tells you whether your change altered behavior that was previously working. That's the question you actually have when you're about to edit a live prompt.
 :::
 
 ## Prerequisites
@@ -48,16 +48,16 @@ Testing is an offer, never a gate. You can always decline it, and it can never f
 
 ## What happens during a run
 
-Your pending edits are applied to a **candidate** — a temporary duplicate of the touchpoint. The candidate is disabled, hidden from every listing and picker, and deleted as soon as you apply or discard the change. Your live touchpoint is untouched for the entire run: **only an explicit Apply ever writes your edits to it.**
+Your pending edits are applied to a **candidate**: a temporary duplicate of the touchpoint. The candidate is disabled, hidden from every listing and picker, and deleted as soon as you apply or discard the change. Your live touchpoint is untouched for the entire run: **only an explicit Apply ever writes your edits to it.**
 
 Each selected conversation is replayed in its own shadow conversation, with the user's turns replayed against the candidate configuration.
 
 :::warning[Tools are never actually called during a replay]
-This is the property that makes replaying production conversations safe. When the candidate calls a tool, the answer comes from **what that tool returned in the original conversation** — nothing is executed. No email is sent twice, no record is written again, no external system is touched.
+This is the property that makes replaying production conversations safe. When the candidate calls a tool, the answer comes from **what that tool returned in the original conversation**. Nothing is executed. No email is sent twice, no record is written again, no external system is touched.
 
 It also explains a verdict you'll see: if the candidate tries a call the original conversation never made, there's no recorded answer to replay. That case is marked **Diverged**, the intended call is recorded so you can see what it wanted to do, and the case stops there rather than running it.
 
-A diverged case isn't a failure — it's often the most interesting result in the run, because it means your change altered *what the agent decided to do*, not only how it phrased things.
+A diverged case is often the most interesting result in the run: it means your change altered *what the agent decided to do*, not only how it phrased things.
 :::
 
 ## Read the results
@@ -71,18 +71,18 @@ Every case gets one of four verdicts:
 | **Diverged** | The candidate attempted a tool call the original never made, so the case stopped. |
 | **Failed** | The case couldn't be completed. |
 
-Results open with **diverged and changed cases first**, with unchanged cases collapsed into a single line — the ones that need your attention are the ones you see. Expanding a row shows the original and the replayed conversation side by side.
+Results open with **diverged and changed cases first**, with unchanged cases collapsed into a single line, so the ones that need your attention are the ones you see. Expanding a row shows the original and the replayed conversation side by side.
 
 ### What "changed" is actually measured on
 
-Comparison is deterministic and is **not** a text diff — two differently worded answers that do the same thing count as the same. The signals are:
+Comparison is deterministic and is **not** a text diff: two differently worded answers that do the same thing count as the same. The signals are:
 
 - **Which tools were called**: the difference between the two sets.
 - **Citations**: what the answer referenced.
 - **Errored or empty answers.**
 - **Output shape**: whether it's still JSON, and whether the length stayed within a ±50% band.
 
-Cost and latency are reported too, and flagged when they more than double — but they never change the verdict. A slower answer is information, not a regression.
+Cost and latency are reported too, and flagged when they more than double, but they never change the verdict. A slower answer is information, not a regression.
 
 :::note[In a multi-turn case, only the first difference is a comparison]
 Once a replayed conversation diverges from the original, everything after that point is a response to a *different* conversation than the one the original agent was having.
@@ -99,7 +99,7 @@ Past runs stay available read-only under the touchpoint's **Test runs** tab, so 
 
 ## What a replay does not touch
 
-Replays are deliberately invisible to the rest of the platform. Shadow conversations don't appear in your conversation lists, chat statistics, or datasets built from events. They never raise oversight flags, never generate titles, topics or sentiment, and are **never delivered to a channel** — a replayed Telegram conversation sends nobody a message.
+Replays are deliberately invisible to the rest of the platform. Shadow conversations don't appear in your conversation lists, chat statistics, or datasets built from events. They never raise oversight flags, never generate titles, topics or sentiment, and are **never delivered to a channel**, so a replayed Telegram conversation sends nobody a message.
 
 The one place they *are* visible is [governance](/operational-guides/governance), by design: replay model calls are attributed to the candidate rather than the live touchpoint. Test runs cost real money, so they appear as their own line rather than silently inflating your live touchpoint's spend.
 
@@ -107,7 +107,7 @@ The one place they *are* visible is [governance](/operational-guides/governance)
 
 - **Anonymous and embedded traffic is excluded** from replay sources while the data-processing question is settled.
 - **Conversations with attachments replay as text only**, so a case that hinged on a document won't be a faithful reproduction.
-- **Comparison is behavioural, not semantic.** There is no judge assessing whether the new answer is *better* — only whether it behaved differently.
+- **Comparison is behavioural, not semantic.** There is no judge assessing whether the new answer is *better*, only whether it behaved differently.
 - **Shadow conversations are currently kept indefinitely.**
 
 ## Related

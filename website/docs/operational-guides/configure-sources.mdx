@@ -20,7 +20,7 @@ A data source is where Rational AI goes to fetch content. Once you connect one t
 This guide covers how a source decides when to sync, including the **Automatic** mode that syncs only when something changed, and the source types that need their own setup: extension-contributed sources such as **ArXiv Catchup**, the built-in **HTTP** source, a **RabbitMQ** queue, and the `robots.txt` behavior of the **Fetch** extension.
 
 :::note[What is a data source?]
-A data source defines where Rational AI pulls files from when it syncs a Knowledge. Some sources are built in (such as HTTP). Others come from extensions — add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
+A data source defines where Rational AI pulls files from when it syncs a Knowledge. Some sources are built in (such as HTTP). Others come from extensions: add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
 :::
 
 ## Prerequisites
@@ -148,7 +148,7 @@ Delivery is *at least once* in both directions: a message is acknowledged only a
 
 ## Make the Fetch extension ignore robots.txt
 
-By default the **Fetch** extension respects `robots.txt` on every call. `robots.txt` is a file websites publish to tell automated crawlers which pages they may visit. Respecting it is usually the right thing — but it can cause a direct, user-initiated fetch (for example, an API endpoint that `robots.txt` disallows) to be refused as if it were crawler traffic. You can make this behavior configurable.
+By default the **Fetch** extension respects `robots.txt` on every call. `robots.txt` is a file websites publish to tell automated crawlers which pages they may visit. Respecting it is usually the right thing, but it can cause a direct, user-initiated fetch (for example, an API endpoint that `robots.txt` disallows) to be refused as if it were crawler traffic. You can make this behavior configurable.
 
 1. Go to **Settings** → **Extensions** and open the **Fetch** extension configuration.
 2. Toggle the **Ignore robots.txt** checkbox. Boolean parameters render as an inline checkbox in the extension config UI.

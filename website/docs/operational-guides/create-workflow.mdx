@@ -70,7 +70,7 @@ If you’re a new user, the workflow page may initially be empty. In this case, 
 
 ### Extraction capabilities
 
-Between the **Description** field and the **Code** editor, the **New workflow** and **Edit workflow** modals include an **Extraction capabilities** section. This is where you tag a workflow with the kinds of content it pulls out of a document — such as **Images**, **Tables**, or **Annotations**. The tags don't change what the workflow does; they describe it, so the platform can surface the right workflow in the right place.
+Between the **Description** field and the **Code** editor, the **New workflow** and **Edit workflow** modals include an **Extraction capabilities** section. This is where you tag a workflow with the kinds of content it pulls out of a document, such as **Images**, **Tables**, or **Annotations**. The tags don't change what the workflow does; they describe it, so the platform can surface the right workflow in the right place.
 
 Select capabilities by toggling their chips:
 
@@ -78,10 +78,10 @@ Select capabilities by toggling their chips:
 - **Saved with the workflow.** Your selection is included in the payload when you click **Add**, or **Save** when editing.
 
 :::note[The capability list is dynamic]
-The available capabilities aren't hardcoded in the interface — Rational AI fetches the master list (Images, Tables, Annotations, and any future additions) from the backend, so the set can grow without a front-end change.
+The available capabilities aren't hardcoded in the interface. Rational AI fetches the master list (Images, Tables, Annotations, and any future additions) from the backend, so the set can grow without a front-end change.
 :::
 
-**On the workflow detail view**, the capabilities you assigned appear again as read-only, non-clickable chips directly below the description — a quick summary of what the workflow is tagged to extract. To change them, edit the workflow and toggle the chips.
+**On the workflow detail view**, the capabilities you assigned appear again as read-only, non-clickable chips directly below the description, as a quick summary of what the workflow is tagged to extract. To change them, edit the workflow and toggle the chips.
 
 **Capability tags also filter where you pick a workflow.** When the context requires a capability (for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images**), the list is filtered to show only workflows that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every workflow is listed.
 

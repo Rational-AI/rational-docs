@@ -7,7 +7,7 @@ audience: [builder]
 
 # Annotate resources
 
-Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document — flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer, how to leave comments on a PDF, and how to check that a resource's chunks are ready for search.
+Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document: flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer, how to leave comments on a PDF, and how to check that a resource's chunks are ready for search.
 
 :::note[What is an annotation?]
 An annotation marks a specific range of a resource and pairs it with a label and a color. For text resources, the range is stored as character offsets (the exact start and end positions in the raw file), which are the same positions used when Rational AI splits the file into chunks (the smaller pieces it searches over). Because the highlight is anchored to those positions, it always points to the exact text you selected. Annotations show up inline in the viewer and are listed in the **Annotations** sidebar.
@@ -44,7 +44,7 @@ Highlight a passage to attach a label and color to it.
 The selected passage is highlighted inline in your chosen color, and the new annotation is added to the **Annotations** sidebar with its label and color.
 
 :::note[Overlapping selections]
-If a new selection overlaps an existing annotation, the highlight clamps to the first range — the one that starts earlier. Nested or overlapping highlights aren't currently supported.
+If a new selection overlaps an existing annotation, the highlight clamps to the first range (the one that starts earlier). Nested or overlapping highlights aren't currently supported.
 :::
 
 ## Review and manage annotations

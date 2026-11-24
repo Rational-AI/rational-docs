@@ -7,7 +7,7 @@ audience: [builder]
 
 # Manage channels
 
-A channel is a surface your users reach an agent through — a Telegram bot, a mailbox, the web chat. This guide covers what every channel has in common: the types available, how a channel decides whether the agent answers on its own, the connection lifecycle, the controls over who may write in and what they may send, and how replies are shaped for messaging apps. The per-type setup lives in its own guide.
+A channel is a surface your users reach an agent through: a Telegram bot, a mailbox, the web chat. This guide covers what every channel has in common: the types available, how a channel decides whether the agent answers on its own, the connection lifecycle, the controls over who may write in and what they may send, and how replies are shaped for messaging apps. The per-type setup lives in its own guide.
 
 <img
   src={require('@site/static/img/screens/channels-settings.png').default}
@@ -28,7 +28,7 @@ Inbound messages become conversations you can read in [Conversations](/cr/Conver
 Before you start, make sure you have:
 
 - **Administrative access:** an account with channel management privileges.
-- **The credentials for the surface you're connecting.** A Telegram bot token, or a mailbox login — see the per-type guides below.
+- **The credentials for the surface you're connecting.** A Telegram bot token, or a mailbox login. See the per-type guides below.
 
 ## Channel types
 
@@ -43,12 +43,12 @@ Two kinds of channel exist, and they behave differently once connected.
 
 **Extension-provided channels** come from an [extension](/operational-guides/manage-extensions) that declares a channel provider. They're driven by the extension rather than by the platform, so what they support depends on the extension.
 
-Whichever kind you pick, the configuration form is generated from the provider's own schema — so the fields you're asked for are the ones that surface actually needs, and a value of the wrong type is rejected when you save rather than failing later at connection time.
+Whichever kind you pick, the configuration form is generated from the provider's own schema, so the fields you're asked for are the ones that surface actually needs, and a value of the wrong type is rejected when you save rather than failing later at connection time.
 
 ## Create a channel
 
 1. Go to **Settings** → **Channels** and select **New channel**.
-2. Enter a **name**. It must be unique across all channels — matching is exact and case-sensitive, so `Support` and `support` are two different names. A duplicate is rejected with an error under the field.
+2. Enter a **name**. It must be unique across all channels. Matching is exact and case-sensitive, so `Support` and `support` are two different names. A duplicate is rejected with an error under the field.
 3. Choose the **type**, or the extension and channel provider for an extension-backed channel.
 4. Set the **mode** (see below).
 5. Fill in the configuration the form asks for.
@@ -66,24 +66,24 @@ The mode decides whether the agent answers by itself or a person does.
 |------|-------------------------------------|
 | **Automatic** | The conversation is assigned to the agent, which replies on its own. |
 | **Manual** | The conversation is ingested and assigned to an **operator**. Nothing is sent until a person replies. |
-| **Draft** | Same routing as manual — assigned to an operator, nothing sent automatically. |
+| **Draft** | Same routing as manual: assigned to an operator, nothing sent automatically. |
 
 The practical split is **Automatic versus everything else**: only Automatic lets the agent reply without a human. Manual and Draft both ingest the message and put it in front of a person, so a channel in either mode never sends anything you didn't send yourself.
 
-Use Manual or Draft when you want the conversation captured and visible but not answered — a mailbox you're still evaluating, or a surface where every outgoing message needs a human behind it.
+Use Manual or Draft when you want the conversation captured and visible but not answered: a mailbox you're still evaluating, or a surface where every outgoing message needs a human behind it.
 
 ## Connect, check, and disconnect
 
 Native channels report a real connection state, which you'll find in the channel's details drawer along with the controls to change it.
 
-- **Connect** validates your credentials against the live service before the channel is considered usable — a wrong bot token or a rejected mailbox login fails here rather than silently swallowing messages later.
+- **Connect** validates your credentials against the live service before the channel is considered usable. A wrong bot token or a rejected mailbox login fails here rather than silently swallowing messages later.
 - **Status** reports what the connection is actually doing: connected, in error, or disconnected. Email adds a state for a mailbox whose authorization has expired and needs re-granting.
 - **Disconnect** stops the channel and drops its stored tokens and connection state.
 
 Editing credentials re-validates them, and for Telegram also re-registers the bot so the change takes effect rather than leaving the old configuration live.
 
 :::note[Credentials are masked, and saving the mask is safe]
-Bot tokens, mailbox passwords and OAuth secrets are masked wherever the channel is read back — they never leave the platform in the clear once stored.
+Bot tokens, mailbox passwords and OAuth secrets are masked wherever the channel is read back; they never leave the platform in the clear once stored.
 
 That means you can edit any other field and save without retyping the secret: a masked value returned unchanged keeps what's already stored. You only need to enter a credential again when you actually want to replace it.
 :::
@@ -92,7 +92,7 @@ That means you can edit any other field and save without retyping the secret: a 
 
 Every channel supports an **allowed senders** list. Leave it empty and anyone who can reach the surface can start a conversation; fill it in and everyone else is ignored.
 
-Messages from senders that aren't allowed are dropped silently rather than answered with a refusal — a bot that argues with strangers is a bot that confirms it exists. The channel keeps a count of what it ignored, shown in the details drawer, so a filter that's too strict is visible rather than mysterious.
+Messages from senders that aren't allowed are dropped silently rather than answered with a refusal. A bot that argues with strangers is a bot that confirms it exists. The channel keeps a count of what it ignored, shown in the details drawer, so a filter that's too strict is visible rather than mysterious.
 
 Both native channels also refuse to answer automated mail and other bots, so two systems can't get into a reply loop with each other. The per-type guides describe exactly what each one screens out.
 
@@ -104,7 +104,7 @@ Attachments are configured per channel, and off is a legitimate setting:
 - **Attachment types**: a comma-separated list of file extensions or MIME prefixes (for example `pdf, docx, image/`). Leave it empty to accept every type; anything not listed is rejected.
 - **Attachment size limit (MB)**: a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that. Telegram bots can't download files over 20 MB, which is also that channel's default.
 
-Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input, documents have their text extracted, and voice notes are transcribed, so the agent can actually read all three. Operators can open or download what arrived — see [Use the chat](/operational-guides/chat-experience).
+Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input, documents have their text extracted, and voice notes are transcribed, so the agent can actually read all three. Operators can open or download what arrived; see [Use the chat](/operational-guides/chat-experience).
 
 :::note[A voice note reaches the agent as the user's own words]
 A voice note (a Telegram voice message, or an audio file in any channel) is transcribed before the agent answers, and the agent reads the transcript as what the user said. The reply waits for the transcription to finish. If transcription fails, times out or finds only silence, the agent is told so, and the message still reaches it rather than being dropped. A voice note still has to pass the channel's attachment settings: with **Accept attachments** off, or audio missing from **Attachment types**, it's refused like any other file.

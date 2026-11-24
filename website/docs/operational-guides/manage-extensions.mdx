@@ -30,7 +30,7 @@ Your tenant doesn't resolve extensions from a single registry. It resolves them 
 Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
 
 :::note[When the catalog and your own packages overlap]
-You can upload your own package of an extension the platform catalog also publishes — a patched build of something standard, for instance. There's no conflict to resolve up front, because overlap is settled **per version**:
+You can upload your own package of an extension the platform catalog also publishes (a patched build of something standard, for instance). There's no conflict to resolve up front, because overlap is settled **per version**:
 
 - For a version both offer, the **catalog's copy wins** the listing. Your copy stays resolvable and resurfaces if the shared release is ever withdrawn.
 - A version **only you** have is always listed, right alongside the catalog's versions.
@@ -62,7 +62,7 @@ Extensions you've already installed remain in the list, shown **disabled** with 
 
 ## Install a package from a file
 
-Do this when you have a package of your own — something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
+Do this when you have a package of your own: something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
 
 1. Go to **Settings** → **Extensions**.
 2. Drag the package from your file system and drop it anywhere on the page. A dashed drop overlay appears while you drag, confirming the page will accept the file.
@@ -80,12 +80,12 @@ installation explicitly placed in development mode accepts file edits.
 
 ## Configure an extension so it starts running
 
-Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully — it lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
+Installing never demands configuration up front. A package that needs values you haven't supplied still installs successfully. It lands **installed and disabled**, with no configuration and nothing running. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
 
 Creating the extension's first MCP-server configuration is what does the rest, in one step: it **starts the server, discovers the tools it actually serves, and enables the extension**.
 
 1. Open the extension on **Settings** → **Extensions**.
-2. Open its settings and fill in what the extension asks for — API keys, connection strings, endpoints.
+2. Open its settings and fill in what the extension asks for: API keys, connection strings, endpoints.
 3. Save. The extension comes up enabled, and its tools appear.
 
 An extension whose parameters all carry defaults has nothing left to resolve, so it comes up configured and enabled the moment you install it, with no extra step.

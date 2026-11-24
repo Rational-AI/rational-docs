@@ -7,7 +7,7 @@ audience: [admin]
 
 # How generated images declare they were made by AI
 
-Every image Rational AI generates carries a machine-readable marker saying a model made it. The marker is embedded in the file itself, so it keeps saying so once the file has left the platform — in a download, an export, or a response from the API.
+Every image Rational AI generates carries a machine-readable marker saying a model made it. The marker is embedded in the file itself, so it keeps saying so once the file has left the platform: in a download, an export, or a response from the API.
 
 ## What is embedded
 
@@ -28,12 +28,12 @@ Marking on the way out would leave the stored object unmarked and make correctne
 Two practical consequences:
 
 - **Re-marking is harmless.** An image that already carries the marker isn't given a second one.
-- **Unrecognized formats pass through untouched.** PNG and JPEG are marked. Anything else is stored exactly as generated rather than risking a corrupted file — an unlabelled image is a smaller failure than a broken one, and you can't tell the difference after the fact.
+- **Unrecognized formats pass through untouched.** PNG and JPEG are marked. Anything else is stored exactly as generated rather than risking a corrupted file. An unlabelled image is a smaller failure than a broken one, and you can't tell the difference after the fact.
 
-:::warning[This is a declaration, not a signed provenance manifest — it is not C2PA]
+:::warning[A declaration, not a C2PA provenance manifest]
 The distinction matters if you're answering a question about provenance, because the two are often spoken of as though they were the same thing.
 
-The marker establishes **what the file is**: something a model generated. It does **not** establish that nobody has altered the file since, and anyone who wants to strip it can — it's metadata, not a seal.
+The marker establishes **what the file is**: something a model generated. It does **not** establish that nobody has altered the file since, and anyone who wants to strip it can. It's metadata, not a seal.
 
 C2PA additionally binds the claim to a signing identity, so the assertion can be shown not to have been tampered with. That requires a certificate and a signing service, and Rational AI does not do it today. If a tender or a policy asks specifically for C2PA, this does not satisfy it.
 :::
@@ -46,4 +46,4 @@ C2PA additionally binds the claim to a signing identity, so the assertion can be
 
 ## Result
 
-You can state precisely what a generated image discloses about itself: an embedded, interoperable IPTC declaration that a model made it, written before storage so every copy that leaves carries it — and you know the honest limit of that claim, which is that it is an unsigned declaration rather than a tamper-evident C2PA manifest.
+You can state precisely what a generated image discloses about itself: an embedded, interoperable IPTC declaration that a model made it, written before storage so every copy that leaves carries it. You also know the honest limit of that claim, which is that it is an unsigned declaration rather than a tamper-evident C2PA manifest.
