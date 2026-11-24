@@ -147,3 +147,8 @@
 	border-radius: 8px;
 	margin-bottom: 1.5rem;
 }
+
+/* Callout titles read as written (sentence case), not uppercased: STYLE.md §4 */
+.theme-admonition [class*="admonitionHeading"] {
+	text-transform: none;
+}

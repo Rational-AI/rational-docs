@@ -31,6 +31,46 @@ const config: Config = {
 				redirects: [{ from: "/operational-guides/agents", to: "/cr/Agents" }],
 			},
 		],
+		[
+			// llms.txt, llms-full.txt and a .md copy of every page, for AI assistants
+			"docusaurus-plugin-llms",
+			{
+				title: "Rational AI documentation",
+				description:
+					"How to set up, use, administer and extend Rational AI, the enterprise AI platform.",
+				docsDir: "docs",
+				ignoreFiles: ["**/_*"],
+				excludeImports: true,
+				removeDuplicateHeadings: true,
+				generateMarkdownFiles: true,
+				includeOrder: [
+					"operational-guides/get-started.mdx",
+					"operational-guides/**",
+					"cr/**",
+					"concepts/**",
+				],
+			},
+		],
+		[
+			// Release notes: a blog instance, so they get dates and RSS/Atom feeds
+			"@docusaurus/plugin-content-blog",
+			{
+				id: "release-notes",
+				path: "release-notes",
+				routeBasePath: "release-notes",
+				blogTitle: "Release notes",
+				blogDescription: "What changed in Rational AI, release by release.",
+				blogSidebarTitle: "All releases",
+				blogSidebarCount: "ALL",
+				showReadingTime: false,
+				onInlineAuthors: "ignore",
+				onUntruncatedBlogPosts: "ignore",
+				feedOptions: {
+					type: ["rss", "atom"],
+					title: "Rational AI release notes",
+				},
+			},
+		],
 	],
 
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -79,6 +119,7 @@ const config: Config = {
 					// Remove this to remove the "edit this page" links.
 					editUrl:
 						"https://github.com/Rational-AI/rational-docs/edit/main/website/",
+					showLastUpdateTime: true,
 				},
 				blog: false,
 				// blog: {
