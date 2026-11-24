@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-sidebar_label: Chat
+sidebar_label: Chat module
 type: reference
 audience: [user, builder]
 ---
 
-# Chat
+# Chat module
 
-The **Chat** module is an interactive workspace where you can talk to your agents directly. Choose a [touchpoint](./settings/touchpoints.mdx), ask a question in natural language, and the agent answers using the data, knowledge and tools configured for it. Use this module to explore your data, test how a touchpoint behaves before you share it, have the agent draft documents for you, and pick up where past conversations left off. For step-by-step instructions, see [Use the chat](/operational-guides/chat-experience).
+The **Chat** module is the page the Control Room opens on: the workspace where the people in your organization talk to Rational AI. Every signed-in user can use it. A chat starts with the **workspace assistant** (**Rational chat** in the picker), or with any [touchpoint](./settings/touchpoints.mdx) you can use, and the assistant answers with the model, knowledge and tools that touchpoint has. Use it to ask questions about your data, draft documents, test how a touchpoint behaves, and pick up earlier chats. It is not where your customers chat: they reach touchpoints through their channels, and staff review those conversations in [Conversations](./Conversations.mdx). For step-by-step instructions, see [Use the Chat module](/operational-guides/chat-experience).
 
 <video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Chat module" poster="/img/videos/chat.jpg" src="/videos/chat_eng.mp4" />
 
@@ -15,8 +15,8 @@ The **Chat** module is an interactive workspace where you can talk to your agent
 
 Open the **Chat** section from the top navigation bar of the Control Room. To begin:
 
-* **Choose a touchpoint** from the selector at the top of the page. **Rational Chat**, the workspace assistant, comes first, followed by the enabled touchpoints. This sets which agent you're talking to, along with the knowledge and data sources it can reach.
-* **Ask a question**, or click one of the **suggested questions** beneath the greeting to start with a ready‑made question. The suggestions are defined per touchpoint.
+* **Choose a touchpoint** by selecting the assistant's name at the top of the page. **Rational chat**, the workspace assistant, comes first, followed by the enabled touchpoints you can use. This sets which assistant you're talking to, along with the knowledge and data sources it can reach.
+* **Ask a question**, or select one of up to three **suggested questions** below the composer. The suggestions are defined per touchpoint.
 
 The agent replies in the thread, drawing on its connected sources. While it works, a single line above the answer summarizes what it's doing (reasoning, searching your knowledge, using tools or running a [skill](/operational-guides/agent-skills)), and you can open it afterwards to see every step.
 
@@ -26,9 +26,9 @@ One message box serves both the new-chat screen and every conversation:
 
 | Control | What it does |
 | :------ | :----------- |
-| **+** (*Open tools menu*) | Attach files and photos, choose **Knowledge bases**, switch on **Web search**, **Deep Research**, **Canvas**, **Voice conversation** or **Advanced mode**, pick a **Skill**, and turn memory off for a new chat. Each active option shows as a removable chip. |
+| **+** (*Open tools menu*) | Attach files and photos, choose **Knowledge bases**, switch on **Web search**, **Deep Research**, **Canvas**, **Voice conversation** or **Advanced mode**, pick a **Skill**, and turn memory off for a new chat. Each active option shows as a removable chip. **Knowledge bases**, **Web search** and **Deep Research** work only with the workspace assistant. |
 | **`/`** | Typed in an empty message, lists the touchpoint's skills; the one you pick becomes a chip at the start of your message. |
-| **Model and reasoning** | Shows the model and reasoning level in use and lets you change them for this conversation, where the touchpoint allows it. |
+| **Model and reasoning** | Shows the model and reasoning level in use. The model can be changed only in your own chats with the workspace assistant; the reasoning level wherever the touchpoint allows it. |
 | **Mic** | Dictate a message (or hold **Ctrl+Shift+D**); the arrow beside it sets the **Audio language**. |
 | **Send** / **Stop generating** | Send your message, or stop an answer that is still being written. |
 
@@ -36,13 +36,13 @@ One message box serves both the new-chat screen and every conversation:
 
 ## The sidebar
 
-The panel on the left keeps your chats within reach. You can collapse or expand it with the toggle at the top.
+The sidebar keeps your chats within reach. You can collapse or expand it with the toggle at the top.
 
-* **New chat** starts a fresh conversation, with the touchpoint you used last already selected.
+* **New chat** starts a fresh conversation with the workspace assistant.
 * **Search** finds an earlier chat by its content.
-* **Chat history** lists your past threads, each given an automatic title and grouped into **Today**, **Yesterday**, **Previous 7 days** and **Older**. Open the options menu (three dots) on a thread to **Rename chat** or **Delete** it.
+* The list shows your chats, each with an automatic title, grouped into **Today**, **Yesterday**, **Previous 7 days** and **Older**. Administrators, and roles that can see all conversations, see every chat in the workspace. Open the options menu (three dots) on a chat to **Rename chat** or **Delete** it.
 
-Select a chat's title at the top of the page to **Rename** it, **Copy link to chat**, **Export chat** as a JSON file, manage its **Memory**, or **Delete** it.
+Select a chat's title at the top of the page to **Rename** it, **Copy link to chat**, **Export chat** as a JSON file, manage its **Memory**, or **Delete** it. Renaming and the **Memory** switch are for administrators.
 
 ## Working in a conversation
 
@@ -50,15 +50,15 @@ Each thread shows your messages alongside the agent's replies in order. Under ea
 
 Documents the agent creates open in the **Canvas** panel beside the chat, where you can edit Office files, download them (including as PDF), rename them, or **Save to knowledge**.
 
-Every chat you start is saved to your history and recorded in the [Conversations](./Conversations.mdx) module, where it can be reviewed, labeled and audited.
+Every chat is also a conversation record, so people with access to [Conversations](./Conversations.mdx) can review, label and audit it.
 
 
 ---
 
 ## Related resources
 
-* [Use the chat](/operational-guides/chat-experience): step-by-step guide to every chat feature.
-* [Touchpoints](./settings/touchpoints.mdx): configure the agents, knowledge and suggested prompts available in Chat.
-* [Conversations](./Conversations.mdx): review, label and audit the chats your agents have had.
+* [Use the Chat module](/operational-guides/chat-experience): step-by-step guide to every chat feature.
+* [Touchpoints](./settings/touchpoints.mdx): configure the assistants, knowledge and suggested questions available in Chat.
+* [Conversations](./Conversations.mdx): review, label and audit the conversations touchpoints have had.
 * [Knowledge](./Knowledge.mdx): manage the information your agents draw on when they answer.
 * [Governance](./Governance.mdx): track usage, cost and performance across conversations.

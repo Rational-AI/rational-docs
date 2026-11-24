@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # Vale packages, downloaded by `vale sync`
 styles/Google/
+
+# Local product map built from the private rational-ai code: never commit
+docs-strategy/product-map/

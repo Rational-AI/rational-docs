@@ -5,27 +5,30 @@ type: how-to
 audience: [user]
 ---
 
-# Use the chat
+# Use the Chat module
 
-The chat is where you talk to your Rational AI agent. This guide covers the everyday experience: starting a conversation, shaping a request with the composer (model, reasoning level, knowledge, skills), following how an answer was built and which sources it used, checking an answer against your knowledge, branching and regenerating, working with the files the agent creates, listening and dictating, managing and exporting your chats, and (for support agents) stepping into a conversation the AI is handling.
+The Chat module is the **Chat** tab in the top navigation, and the page the Control Room opens on. It is where you and your colleagues talk to Rational AI: by default to the **workspace assistant**, or to any touchpoint you can use. This guide covers starting a chat, shaping a request in the composer, following how an answer was built, checking and branching answers, working with the files the assistant creates, voice, and managing your chats.
 
-:::note[What is the chat?]
-The chat is the conversation view your end users see. Each chat lives in its own room tied to a [touchpoint](/operational-guides/configure-touchpoints): a configured entry point that decides which AI model and which knowledge the chat draws on, and which of the options below users get. The chat keeps your full message history and lets you regenerate, edit, and branch answers. Support agents can also step into a conversation the AI is running and take manual control.
+:::note[Who the Chat module is for]
+The Chat module is for the people in your organization who sign in to the Control Room. Every signed-in user can open it: it needs no license module and no permission. Your customers never see this page. They reach a [touchpoint](/operational-guides/configure-touchpoints) through its channels (a website widget, Telegram, email and so on), and staff review those conversations in [Conversations](/operational-guides/conversations).
+
+Each chat is tied to one touchpoint, which decides the model, the knowledge and the options you get. The workspace assistant is the touchpoint Rational AI creates for every workspace: in the picker it appears as **Rational chat**.
 :::
 
-## The Chat module and the chat inside a Knowledge
+## The Chat module and the other chats
 
-Rational AI has two places to chat. This guide covers the **Chat module**, the **Chat** tab in the top navigation. Each Knowledge also has its own **Chat** panel, on the Knowledge's page.
+Several places in Rational AI have a chat. This guide covers the **Chat module** only. A Knowledge has its own **Chat** panel on its page, a BI project has an AI chat beside its dashboards, [Conversations](/operational-guides/conversations) is where staff review and take over the conversations touchpoints have with your users, and Agents have chats of their own.
 
-Both use the same conversation view: answers, sources, history, Canvas and export work the same way. They differ in where they start and what they send:
+The Chat module and the chat inside a Knowledge use the same conversation view, so answers, sources, versions, Canvas and export work the same way. They differ here:
 
 | | Chat module | Chat inside a Knowledge |
 |---|---|---|
 | **Where** | The **Chat** tab | **Chat** on a Knowledge's page |
-| **Touchpoint** | You pick one: **Rational Chat** or any enabled touchpoint | The Knowledge's own touchpoint |
-| **Chat list** | All your chats, across touchpoints | Only the chats with the Knowledge's touchpoint |
+| **Who can open it** | Every signed-in user | People who can open that Knowledge (needs the Knowledge module in your license) |
+| **Touchpoint** | The workspace assistant (**Rational chat**) by default, or any enabled touchpoint you can use | The Knowledge's own touchpoint |
+| **Chat list** | Your own chats, grouped by day. Administrators, and roles that can see all conversations, see every chat in the workspace | Only the chats with the Knowledge's touchpoint |
 | **Context sent with each message** | What you add in the composer | The Knowledge's current filters (categories, tags, relations) and the nodes you selected in the graph |
-| **Composer options** | **Knowledge bases**, web search, Deep Research, Canvas, **Voice conversation**, the **Model and reasoning** picker, and **Memory** | Attachments and Canvas. The options in the previous cell are only in the Chat module |
+| **Composer options** | Attachments, Canvas, **Advanced mode**, **Skills**, the reasoning level, plus **Knowledge bases**, **Web search**, **Deep Research**, **Voice conversation**, the model list and **Memory** | Attachments, Canvas, **Advanced mode**, **Skills** and the reasoning level. No **Knowledge bases**, **Web search**, **Deep Research**, **Voice conversation**, model list or **Memory** |
 
 To chat with one Knowledge and send your current filters and selection with each question, use its own panel. See [Start a chat with your Knowledge](/operational-guides/create-knowledge#start-a-chat-with-your-knowledge).
 
@@ -33,19 +36,22 @@ To chat with one Knowledge and send your current filters and selection with each
 
 Before you start, make sure you have:
 
-- **Access to the chat:** an account that can open the chat view.
-- **At least one enabled touchpoint:** the touchpoint determines which model and knowledge the chat uses. **Rational Chat**, the workspace assistant, is always available.
-- **For document attachments:** files in a supported format (images, PDF, Word, Excel, PowerPoint, or text / markdown / CSV / JSON).
-- **For takeover:** an operator account with access to the backoffice conversation view.
+- **A Control Room account.** Anyone who signs in can open **Chat** and start a chat.
+- **To keep writing in a chat:** a role with **Update** on **Conversations**. Without it you can start a chat but not send further messages, dictate, rate, regenerate, edit or branch in it.
+- **A working workspace assistant.** It needs an enabled default conversational model in the [AI Model Registry](/operational-guides/ai-model-registry-features). If it can't start, the page shows *"The default assistant could not be loaded."* and you can still pick another touchpoint.
+- **For attachments:** images, PDF, text, Markdown, CSV, JSON, or Word, Excel and PowerPoint files in `.docx`, `.xlsx` and `.pptx` format.
+- **To take over a conversation:** an administrator account. See [Take over an AI-managed conversation](#take-over-an-ai-managed-conversation).
 
 ## Start a new chat
 
-Every conversation begins by choosing who you want to talk to.
+The Chat page opens on the workspace assistant, ready for a new chat.
 
-1. Select **New chat**.
-2. Use the touchpoint selector at the top of the page to choose who to talk to. **Rational Chat**, the workspace assistant, comes first, followed by the enabled touchpoints.
-3. The chat opens with a personalized greeting instead of a blank prompt, sitting above the center of the panel. The greeting is generated dynamically from the time of day (morning, afternoon, or evening) and your name, so the exact wording varies from visit to visit. For example: *"Hi Admin, what do you need this evening?"*, *"Good evening, Admin."*, or *"Evening, Admin. How can I assist?"*.
-4. Type your question, or select one of up to three suggested questions when the touchpoint offers them.
+1. Select **New chat**. It always starts on the workspace assistant.
+2. To talk to another touchpoint, select the assistant's name at the top of the page and pick one. **Rational chat** (the workspace assistant) comes first, followed by the enabled touchpoints you can use, by name.
+3. A greeting with your first name sits above the composer, for example *"Good evening, Alex"* or *"What's on your mind?"*. It changes with the time of day.
+4. Type your question. If the touchpoint offers suggested questions, up to three appear below the composer: selecting one puts it in the message box, and you send it.
+
+Nothing is created until you send the first message.
 
 <img
   src={require('@site/static/img/screens/chat-greeting.png').default}
@@ -53,15 +59,7 @@ Every conversation begins by choosing who you want to talk to.
   style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*A new chat opens with a personalized, time-aware greeting.*
-
-:::note[Every chat surface greets you]
-The greeting is not limited to the chat page. It also appears in the chat panels embedded elsewhere in the product (inside a [Knowledge](/operational-guides/create-knowledge), in a [BI](/operational-guides/rational-bi) dashboard), including chats that don't exist yet, where nothing is created until you send your first message. Suggested questions are a separate thing and only appear where the touchpoint supplies them.
-:::
-
-:::note[New chat remembers your last touchpoint]
-Rational AI remembers the last touchpoint you chatted with, and the next **New chat** starts with it already selected; you can still switch. If that touchpoint has since been disabled or deleted, nothing is preselected and you pick a valid one.
-:::
+*A new chat opens with a greeting for the time of day.*
 
 ## Shape your request in the composer
 
@@ -70,13 +68,14 @@ Everything that changes how a request is handled lives in the composer, one mess
 | Option | What it does |
 |--------|--------------|
 | **Add files and photos** | Attach files to the message. See [Attach files to a message](#attach-files-to-a-message). |
+| **Attach page** | Attach the web page the Rational AI browser extension captured. Appears only when there is one. |
 | **Knowledge bases** | Choose which knowledge the assistant searches, or see which it can use. See [Choose the knowledge to search](#choose-the-knowledge-to-search). |
-| **Web search** | Have the assistant look things up on the web for this request. |
-| **Deep Research** | Have the assistant investigate a question in depth, across many sources. |
+| **Web search** | Have the assistant look things up on the web for this request. Works only with the workspace assistant. |
+| **Deep Research** | Have the assistant investigate a question in depth, across many sources. Works only with the workspace assistant, and only when its **Canvas mode** is on. |
 | **Canvas** | Generate a web page or design in the [Canvas](/operational-guides/agent-skills#preview-web-pages-in-canvas) panel beside the chat. Offered when the touchpoint's **Canvas mode** is on. |
-| **Voice conversation** | Talk with the assistant out loud: it listens, answers and reads the answer back. |
+| **Voice conversation** | Talk with the assistant out loud: it listens, answers and reads the answer back. On the new-chat screen, offered only for the workspace assistant. |
 | **Advanced mode** | Show the technical detail behind each answer. See [Follow how an answer was built](#follow-how-an-answer-was-built). |
-| **Memory** | On a new chat, start it with the touchpoint's [memory](/operational-guides/touchpoint-memory) switched off (the chip reads **Memory off**). |
+| **Memory** | On a new chat with a touchpoint that keeps [memory](/operational-guides/touchpoint-memory), start it with memory switched off (the chip reads **Memory off**). |
 | **Skills** | Pick a skill for this request. It's the same list you get by typing `/`. |
 | **Tools** | On a new chat, see which tools the assistant can use. |
 
@@ -87,21 +86,23 @@ Options the touchpoint doesn't offer don't appear. While an answer is generating
 The button next to the send button (*"Model and reasoning"*) shows the model and reasoning level in use, for example *gpt-5, Medium*. Select it to change them.
 
 1. Under **Model**, pick another model. Use **Search models** to find one. Selecting the current model again returns to the default. The new model answers from your next message.
-2. Under **Reasoning**, pick how hard the model thinks before answering, from **Off** to **Max**. Only the levels the model supports are shown. Selecting the highlighted level again returns to the touchpoint's default.
+2. Under **Reasoning**, pick how hard the model thinks before answering: **Off**, **Minimal**, **Low**, **Medium**, **High**, **XHigh** or **Max**. Only the levels the model supports are shown. Selecting the highlighted level again returns to the touchpoint's default.
 
 :::note[The touchpoint decides what you can change]
-Choosing the model is a feature of **Rational Chat**, in your own chats. The reasoning level can be changed on any touchpoint whose owner allows it; otherwise the popover shows the level as *"… set by the assistant"*. Either choice applies to this conversation only. See [Tune answer generation](/operational-guides/touchpoint-generation).
+You can choose the model only in your own chats with the workspace assistant. In other chats the list may still appear, but a change is refused with *"The change could not be saved"*. The reasoning level can be changed on any touchpoint whose owner allows it; otherwise the popover shows the level as *"… set by the assistant"*. Either choice applies to this conversation only. See [Tune answer generation](/operational-guides/touchpoint-generation).
 :::
 
 ### Choose the knowledge to search
 
-With **Rational Chat**, you decide which of your knowledge bases a request searches.
+In your own chats with the workspace assistant, you decide which of your knowledge bases a request searches.
 
 1. Open **+** → **Knowledge bases**.
 2. Tick the knowledge bases to use; **Search knowledge bases** filters a long list, and the counter shows how many are selected.
 3. To go back to searching everything you can read, select **Use all**.
 
-The chip shows the knowledge base's name, or how many are selected. On other touchpoints the list is read-only: **Available knowledge** shows what the assistant was configured with, and access is checked whenever a tool runs.
+The chip shows the knowledge base's name, or how many are selected. The selection never gives access to anything you can't already read.
+
+Other touchpoints search the knowledge they were configured with. On the new-chat screen, **Knowledge bases** shows it read-only as **Available knowledge**. Inside an existing chat with another touchpoint, a change is refused with *"Only workspace chats can choose their knowledge"*.
 
 ### Pick a skill with `/`
 
@@ -124,7 +125,7 @@ The queue is saved per chat in your browser, so queued messages survive a page r
 
 Attach images and documents to a message so the agent can use them directly in its answer.
 
-1. Open **+** → **Add files and photos**, or drag files onto the composer. Images, PDF, Word, Excel, PowerPoint, text, markdown, CSV and JSON files are accepted.
+1. Open **+** → **Add files and photos**, or drag files onto the composer. Images, PDF, text, Markdown, CSV and JSON files are accepted, and Word, Excel and PowerPoint files in `.docx`, `.xlsx` and `.pptx` format (not the older `.doc`, `.xls` and `.ppt`).
 2. A card for each attachment appears in the composer while it uploads; the send button waits until every upload has finished.
 3. Send the message. The attachments appear above your message in the history.
 
@@ -186,7 +187,7 @@ Beyond reading a reply, you can regenerate it, rewrite your own question, branch
 Under each AI message are **copy**, the thumbs-up / thumbs-down pair for feedback, **Regenerate response**, the sources pill, and **‹ ›** arrows with a version counter (for example **1/2**) when alternatives exist. The **⋯** menu shows which model generated the answer and adds **Read aloud**, **Verify response** and **Branch into a new chat**.
 
 :::note[Some actions depend on the touchpoint]
-Regenerating, editing and verifying are each switched on per touchpoint, and rating, regenerating, editing and branching need permission to update conversations. An action that isn't available doesn't appear.
+Regenerating, editing and verifying are each switched on per touchpoint. Sending more messages, rating, regenerating, editing and branching need **Update** on **Conversations**. An action that isn't available doesn't appear.
 :::
 
 ### Generate an alternative answer
@@ -251,14 +252,14 @@ If the same message keeps coming back, the touchpoint's owner can adjust its lim
 
 ## Check an answer against your knowledge
 
-On touchpoints with response verification switched on, you can check an answer, claim by claim, against the knowledge documents retrieved for the conversation.
+On touchpoints with response verification switched on and the knowledge search tool enabled, you can check an answer, claim by claim, against the knowledge documents retrieved for the conversation.
 
-1. On an AI message, open **⋯** → **Verify response**. *"Verifying response…"* shows while it runs.
+1. On an AI message, open **⋯** → **Verify response**. **Verifying** shows while it runs.
 2. A status line summarizes the check, for example *"6 sentences, 9 claims checked against 3 documents."*, and the answer is underlined: **green** for supported, **yellow** for uncertain, **red** for unsupported.
 3. Hover an underlined part to see the verdict and its best match score.
 4. Select an underlined part, or **View details**, to open the **Claim list**. It lists every sentence with its state; for the selected one, **Generative context** shows the excerpts it was compared with and how closely each matched, from 0 to 1.
 
-Select **Verify response** again to hide the underlines. If nothing in the answer can be checked, the status line says *"No verifiable claims were found in this response."*
+Select **Verify response** again to hide the underlines. If nothing in the answer can be checked, the status line says **No verifiable sentences**.
 
 :::note[Unsupported isn't the same as wrong]
 Verification measures whether the retrieved documents back a claim, not whether the claim is true. A red underline means *"No knowledge document supports this claim, or the documents contradict it"*. Treat it as a cue to look closer, especially for anything the answer took from general knowledge rather than from your documents.
@@ -338,7 +339,7 @@ Choosing **Italian** or **English** explicitly skips the detection pass, which i
 :::
 
 :::note[Dictation on the new-chat screen needs a signed-in account]
-Inside a conversation, anyone who can use that conversation can dictate into it, including a visitor on an anonymous touchpoint.
+Inside an existing chat, dictating needs the same **Update** on **Conversations** as typing.
 
 On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation only to hold a recording would leave an empty one behind every time someone discarded the text.
 :::
@@ -351,9 +352,13 @@ Some touchpoints stop instead: the chat says *"This conversation is as long as t
 
 ## Find, rename and export your chats
 
-The chat list groups your chats by the day you started them: **Today**, **Yesterday**, **Previous 7 days** and **Older**. Use the search box to find one by its content. A dot next to a chat tells you when it **Needs your approval**, is **Working**, **Stopped with an error**, or is **Finished, not read yet**.
+The chat list shows your own chats. Administrators, and roles that can see all conversations (such as the built-in **Manager** role), see every chat in the workspace, including the conversations touchpoints have with your customers. Chats are grouped by the day they started: **Today**, **Yesterday**, **Previous 7 days** and **Older**. Chats with no messages are not listed. Use the search box to find one by its content. A dot next to a chat tells you when it **Needs your approval**, is **Working**, **Stopped with an error**, or is **Finished, not read yet**.
 
-Each chat's **⋯** menu in the list has **Rename chat** and **Delete**. Select the chat's title at the top of the page for more: **Rename**, **Copy link to chat**, **Export chat**, **Memory**, and **Delete**.
+Each chat's **⋯** menu in the list has **Rename chat** and **Delete**. Select the chat's title at the top of the page for more: **Rename**, **Copy link to chat**, **Export chat**, **Memory**, and **Delete**. **Copy link to chat** copies a link that only people who can already read the chat can open.
+
+:::note[Renaming and the Memory switch are for administrators]
+**Rename**, **Generate with AI** and the **Memory** switch save through administrator-only actions. For other users the change is refused.
+:::
 
 ### Rename a chat
 
@@ -382,7 +387,7 @@ The export applies the same rules as the chat: unless you are an administrator, 
 
 ## Take over an AI-managed conversation
 
-In the backoffice [conversation view](/operational-guides/conversations), the AI answers automatically while the conversation is assigned to it. Instead of a message box, a take-over bar sits at the bottom of the conversation and says who holds it: *"The AI handles this conversation"*, *"The AI is answering the user"* (with a green dot while it generates), *"Another operator is handling this conversation"* or *"This conversation is closed"*. The sections below cover stepping in, stopping a runaway answer, and reviewing what the AI has handled so far.
+This happens in [Conversations](/operational-guides/conversations), not in the Chat module, and taking over, handing back and generating a summary are for administrators. There, the AI answers automatically while the conversation is assigned to it. Instead of a message box, a take-over bar sits at the bottom of the conversation and says who holds it: *"The AI handles this conversation"*, *"The AI is answering the user"* (with a green dot while it generates), *"Another operator is handling this conversation"* or *"This conversation is closed"*. The sections below cover stepping in, stopping a runaway answer, and reviewing what the AI has handled so far.
 
 ### Step in and reply
 
@@ -419,6 +424,8 @@ The summaries you generate are also listed under **Summary** in the conversation
 
 Summary behavior is governed by the **Summary generation settings** section on the [Conversations settings](/cr/settings/conversations) page, where you can toggle generation and set the model, the number of messages to consider (`0` means all), and the prompt template (with **Restore default**).
 
-## Result
+## Next steps
 
-You can hold a full conversation with your Rational AI agent: start a chat with a personalized greeting (on every chat surface, including one that hasn't been created yet) and shape each request from one composer, choosing the model, reasoning level, knowledge and skill. You can line up follow-up messages while answers generate, attach files, follow every step behind an answer in one timeline, open its sources, verify it claim by claim, regenerate or branch it into a new chat, and see why an answer stopped early. Files the agent creates can be edited, downloaded as PDF or saved to a knowledge; chats are grouped by date, renamed with AI-generated titles and exported as JSON; and, as a support agent, you can take over a conversation, stop a runaway answer without taking over, and review its AI-generated summary before stepping in.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): set what each assistant can do in the chat.
+- [Pick a skill with `/`](/operational-guides/agent-skills#pick-a-skill-with-): use skills in your requests.
+- [Work with Conversations](/operational-guides/conversations): review the conversations touchpoints have with your users.
