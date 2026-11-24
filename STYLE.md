@@ -61,7 +61,7 @@ Say what a feature does *not* do, what is irreversible, and what happens to data
 - No em-dash chains. Use one em dash per sentence at most, or prefer a full stop.
 
 ### Headings
-- **Sentence case** everywhere: "Configure the chunking strategy", not "Configure The Chunking Strategy".
+- **Sentence case** everywhere: "Configure the chunking strategy", not "Configure The Chunking Strategy". After a colon, capitalize the first word: "Phase 1: Semantic search".
 - How-to H1 and H2: **start with an imperative verb** ("Connect a model", "Add your data").
 - Concept H1: a noun phrase ("Retrieval-augmented generation").
 - Reference H1: the object ("Knowledge settings").

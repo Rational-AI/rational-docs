@@ -169,7 +169,7 @@ A first deployment can take several minutes while the weights download. Temporar
 `PATCH /management/v0/models/{id}/deployment` changes the scale immediately, without restarting running replicas. `replicas` optionally says how many to run now, within the new range:
 
 ```bash
-# Stop it: no replicas, and requests do not wake it
+# Stop it: No replicas, and requests do not wake it
 curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
   -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
   -d '{ "scale": { "min": 0, "max": 0 } }'

@@ -17,10 +17,10 @@ exceptions:
   - Rational Core
   - Rational Knowledge
   - AI Model Registry
-  - Knowledge
-  - Marketplace
+  - "[Kk]nowledge"
+  - "[Mm]arketplace"
   - Social Studio
-  - Gen
+  - "[Gg]en"
   - BI
   - API
   - MCP
@@ -44,3 +44,38 @@ exceptions:
   - Docker
   - Kubernetes
   - Vale
+  - OAuth
+  - IAM
+  - SQL
+  - Microsoft
+  - Microsoft SQL Server
+  - Google
+  - Google Drive
+  - Google Cloud
+  - RabbitMQ
+  - Office
+  - Claude
+  - Claude Code
+  - Git
+  - System One
+  - "[Dd]ecision"
+  - "[Hh]istory"
+  - "[Oo]verview"
+  - "[Cc]onversations"
+  - "[Ee]mbed"
+  - AI Search
+  - "[Aa]ccount settings"
+  - "[Rr]esponses"
+  - "[Tt]ext"
+  - "[Ss]lides"
+  - "[Cc]anvas"
+  - "[Ss]ource"
+  - Naive
+  - Graph RAG
+  - Naive RAG
+  - OpenRouter
+  - Client ID
+  - "[Aa]gents"
+  - Rational Agents
+  - Tunnel
+  - Rational AI Tunnel

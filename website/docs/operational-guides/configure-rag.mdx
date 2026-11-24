@@ -83,7 +83,7 @@ The Graph RAG tool runs in three phases. Each phase has settings that trade brea
  
 - **Knowledge IDs:** the Knowledge bases this tool searches. Select one or more.
 - **Use Graph Expansion:** the master switch for following relationships. Off means a basic semantic search only.
-### Phase 1: semantic search
+### Phase 1: Semantic search
  
 The tool first finds resources that match the meaning of the query.
  
@@ -92,7 +92,7 @@ The tool first finds resources that match the meaning of the query.
 | **Initial Search Limit** | How many results to fetch before filtering. | Higher (e.g. 200) widens the pool but adds latency. |
 | **Semantic Threshold** (0.0 to 1.0) | Minimum similarity score to keep a result. | Lower (0.3) = more results; higher (0.7) = more precise. |
  
-### Phase 2: graph expansion
+### Phase 2: Graph expansion
  
 The tool takes the strongest Phase 1 results and follows their relationships to find related resources.
  
@@ -102,7 +102,7 @@ The tool takes the strongest Phase 1 results and follows their relationships to 
 | **Relationship Types** | Which kinds of relationships to follow (for example "is part of", "references"). | Leave empty to follow all types. |
 | **Max Graph Results** (minimum 1) | How many related resources to retrieve per starting resource. | Controls breadth and performance. |
  
-### Phase 3: final ranking
+### Phase 3: Final ranking
  
 The tool combines results from both phases, scores them, and fits them into the model's context window. Phase 2 resources get a hybrid score that blends meaning and keyword overlap.
  

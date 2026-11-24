@@ -5,7 +5,7 @@ sidebar_label: RAG
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-# Retrieval-Augmented Generation (RAG)
+# Retrieval-augmented generation (RAG)
 **Retrieval-Augmented Generation (RAG)** is a technique that enhances Large Language Models (LLMs) by retrieving relevant information from a knowledge base before generating a response.
 
 Instead of relying only on what the model learned during training, a RAG system actively searches your organization’s knowledge, selects the most relevant resources, and provides them to the model as context.  
@@ -119,7 +119,7 @@ Graph RAG:
 Rational AI agents are not limited to RAG-based retrieval. They may also have access to structured database tools such as **SQLite** and **Postgres**, which allow the execution of SQL queries over relational databases.
 For this reason, proper Touchpoint configuration requires more than choosing between Naive RAG and Graph RAG. It also requires determining when structured database queries are more appropriate than semantic retrieval.
 
-### Tool Enablement
+### Tool enablement
 Tool availability should reflect the actual structure of the Knowledge environment.  
 
 For example:
@@ -131,7 +131,7 @@ For example:
 Proper configuration avoids unnecessary complexity and ensures predictable behavior.
 
 
-### Retrieval Strategy
+### Retrieval strategy
 As a general rule, **RAG** should be the **default retrieval method**. Most user queries are expressed in natural language and do not include precise identifiers. **Semantic search is therefore the most reliable starting point.**
 
 When both RAG tools are available:
@@ -143,7 +143,7 @@ Graph RAG may return a richer result set but requires more processing time.
 Because RAG returns a limited number of results, the model may need to execute multiple retrieval passes for complex queries.
 
 
-### When to Use SQL
+### When to use SQL
 SQL tools are *not* suitable for general semantic search; they are best used for structured operations, such as:
 * Exact matches using unique identifiers (IDs, exact names)  
 When generating SQL without a unique identifier, the query should maximize matching coverage, for example by using LIKE or ILIKE operators and including relevant synonyms.
@@ -152,7 +152,7 @@ When generating SQL without a unique identifier, the query should maximize match
 * Deterministic database queries
 
 
-### Combined Usage
+### Combined usage
 In more advanced scenarios, RAG and SQL should be used together.
 
 A typical pattern is:
