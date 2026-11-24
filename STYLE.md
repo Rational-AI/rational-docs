@@ -169,7 +169,7 @@ Product nouns appear in the UI, so they follow the UI. Generic concepts stay low
 | **extension**, **Marketplace** | plugin, add-on | |
 | **connector** vs **source** | | connector = credentials to a service; source = what gets synced |
 | **on-premises** (adj.), **on-prem** OK in headings | on-premise | |
-| **sign in** (verb), **sign-in** (noun) | log in, login | |
+| **sign in** (verb), **sign-in** (noun) | log in | "login" is fine as a noun for a database or OS account ("a SQL Server login") and in UI labels that use it |
 | **SSO**, **SAML**, **SCIM**, **RAG**, **LLM** | | Spell out on first use per page |
 
 New product terms go into this table *before* they appear in the docs.

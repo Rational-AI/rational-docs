@@ -1,6 +1,8 @@
 ---
 sidebar_position: 5
 sidebar_label: Configure Graph RAG
+type: how-to
+audience: [builder]
 ---
 
  
@@ -89,7 +91,7 @@ The tool first finds resources that match the meaning of the query.
  
 | Setting | What it does | Effect |
 | :--- | :--- | :--- |
-| **Initial Search Limit** | How many results to fetch before filtering. | Higher (e.g. 200) widens the pool but adds latency. |
+| **Initial Search Limit** | How many results to fetch before filtering. | Higher (for example, 200) widens the pool but adds latency. |
 | **Semantic Threshold** (0.0 to 1.0) | Minimum similarity score to keep a result. | Lower (0.3) = more results; higher (0.7) = more precise. |
  
 ### Phase 2: Graph expansion
@@ -117,7 +119,7 @@ combined_score = (semanticWeight * semantic_score) + (keywordWeight * keyword_ov
 | **Semantic Weight** / **Keyword Weight** (must add to 1.0) | Balances meaning against exact-term overlap. | High Semantic Weight (0.8) favors topic; high Keyword Weight (0.8) favors matching terms. |
 | **Keyword Overlap Method** | The algorithm for scoring term overlap. | **Fuzzy** is recommended (handles partial matches and typos). Jaccard, dice, and cosine are also available. |
 | **Relevance Threshold** (0.0 to 1.0) | Final filter for Phase 2 resources. | Only resources at or above this score are kept. |
-| **Target Context Utilization** (0.5 to 0.95) | Share of the context window to fill with retrieved text. | Leave room for the prompts and the model's answer (e.g. 0.9 fills 90%). |
+| **Target Context Utilization** (0.5 to 0.95) | Share of the context window to fill with retrieved text. | Leave room for the prompts and the model's answer (for example, 0.9 fills 90%). |
  
 ## Result
  

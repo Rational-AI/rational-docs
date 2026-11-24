@@ -1,6 +1,8 @@
 ---
 sidebar_position: 21
 sidebar_label: Configure sources
+type: how-to
+audience: [admin, builder]
 ---
 
 # Configure data sources
@@ -77,7 +79,7 @@ Go to **Settings** → **Extensions** and install the **ArXiv Catchup** extensio
 2. Select a **Group**, then an **Archive**, then a **Category**. These cascade through arXiv's fixed subject taxonomy, so each choice narrows the next.
 3. Choose a **window** for how far back to look for papers.
 4. Set the **max-papers limit** (default `500`) to cap how many papers each sync fetches.
-5. *(Optional)* Add a **cron** schedule — a time-based rule, like "every night at 2am" — to sync the source automatically.
+5. *(Optional)* Add a **cron** schedule (a time-based rule, like "every night at 2 AM") to sync the source automatically.
 
 ### Save and sync
 
@@ -153,7 +155,7 @@ By default the **Fetch** extension respects `robots.txt` on every call. `robots.
 3. Save the configuration.
 
 :::note[Reinstall to pick up the toggle]
-The extension's config schema is stored at install time, so an existing **Fetch** install must be reinstalled before the **Ignore robots.txt** toggle appears. With the toggle off (the default), `robots.txt` is respected; with it on, the previously-blocked fetch succeeds.
+The extension's config schema is stored at install time, so an existing **Fetch** install must be reinstalled before the **Ignore robots.txt** toggle appears. With the toggle off (the default), `robots.txt` is respected; with it on, the previously blocked fetch succeeds.
 :::
 
 ## Result

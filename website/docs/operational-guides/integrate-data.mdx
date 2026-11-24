@@ -2,6 +2,8 @@
 sidebar_position: 1
 sidebar_label: Integrate external data
 slug: /operational-guides/integrate-data
+type: how-to
+audience: [admin, builder]
 ---
 
 
@@ -42,14 +44,14 @@ The connectors page is divided into two sections:
     Some providers (for example, Google) also display enabled services and linked projects.
 
 ### Creating a new connector
-If no connectors are configured, the page will be empty. To start, click the **+ Add** button and select a provider from the available catalog (e.g., Google, AWS, OpenAI).
+If no connectors are configured, the page will be empty. To start, click the **+ Add** button and select a provider from the available catalog (for example, Google, AWS, OpenAI).
 Each provider has specific authentication requirements. Some providers require only an API key, while others, such as Google, use a full OAuth authorization flow.
 
 Each configuration modal includes a link to a guide for obtaining the required credentials.
 
 After selecting a provider, you will be presented with a configuration form. 
 You must provide:
-* A **name** (e.g., _Admin Google access_);
+* A **name** (for example, _Admin Google access_);
 * A **description**, optional but **strongly recommended** for long term maintenance and team collaboration;
 * **Credentials** obtained from the provider (key, tokens, or OAuth configuration);
 When finished click **Add**. The connector will appear in the list on the left.
@@ -145,7 +147,7 @@ For periodic synchronization, you can define a schedule, such as: every number o
 Choose a frequency based on how often your external data changes.
 
 You must also define how deletions are handled:
-* **Cascade delete**: files deleted from the original source (e.g., from Google Drive) are also removed from the Rational AI.
+* **Cascade delete**: files deleted from the original source (for example, from Google Drive) are also removed from the Rational AI.
 * **Keep**: deleted external files remain stored in Rational AI.
 
 
@@ -177,7 +179,7 @@ Now that you have your credentials, set up the AWS connector in Rational AI.
 * Navigate to **Settings** and select **Connectors** from the left sidebar.
 * Add a new connector: Click the **+ Add** button and select **AWS** from the list of available providers.
 * Fill out the configuration form:
-    * **Name** (e.g., S3 Access for Marketing Data).
+    * **Name** (for example, S3 Access for Marketing Data).
     * **Description** (optional but strongly recommended).
     * **Access Key ID**: paste the public key generated in Step 1.
     * **Secret Access Key**: paste the private key.
@@ -189,10 +191,10 @@ The AWS S3 connector is now **ready for use**. You can link it to specific bucke
 After configuring the connector, you need to define the source to specify which S3 buckets should be synchronized.
 * Navigate to **Sources** and click **+ New**.
 * Fill out the source form:
-    * **Name** (e.g., S3 Log Bucket).
+    * **Name** (for example, S3 Log Bucket).
     * **Description** to explain the content.
     * **Type**: find **Amazon S3** and pick the AWS connector you created earlier under it.
-    * Under **Advanced settings**, enter the **Bucket**, the **Region** where it is located (e.g., `eu-central-1`) and, if needed, the **Endpoint** (usually `https://s3.amazonaws.com` or a region-specific endpoint).
+    * Under **Advanced settings**, enter the **Bucket**, the **Region** where it is located (for example, `eu-central-1`) and, if needed, the **Endpoint** (usually `https://s3.amazonaws.com` or a region-specific endpoint).
 * In the file panel on the right, **browse the bucket** and tick the folders and files you wish to include in the synchronization.
 * Click **Add** to create the source.
 
@@ -207,7 +209,7 @@ This procedure is essential to allow your application to securely access Google 
 Before creating credentials, you need an **active Google Cloud project**:
 * Go to the [Google Cloud Console](https://console.cloud.google.com/).
 * In the upper-left project menu, select **New Project** (or choose an existing project).
-* Enable the required APIs (e.g., `Google Drive API`), via **APIs & Services > Library**.
+* Enable the required APIs (for example, `Google Drive API`), via **APIs & Services > Library**.
 
 ### Configure the OAuth consent screen
 Google requires an OAuth consent screen to inform users about the access your app is requesting:

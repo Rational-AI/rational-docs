@@ -1,5 +1,7 @@
 ---
 sidebar_position: 3
+type: reference
+audience: [admin, builder]
 ---
 
 import UsersIcon from '@site/static/img/users.svg';
@@ -45,7 +47,7 @@ When you create a dataset you choose the format its entries follow. The structur
 | Format | Description |
 |--------|-------------|
 | **Alpaca** | Instruction-style entries, each pairing an instruction (and optional input) with the expected response. Best for single-turn, task-oriented fine-tuning. |
-| **ShareGPT** | Conversation-style entries, each containing a list of turns labeled by role (e.g. `human`, `gpt`). Best for multi-turn, chat-oriented fine-tuning. |
+| **ShareGPT** | Conversation-style entries, each containing a list of turns labeled by role (for example, `human`, `gpt`). Best for multi-turn, chat-oriented fine-tuning. |
 
 ## Create a dataset
 
@@ -59,7 +61,7 @@ Click **New** in the top-right corner and choose how you want to build the datas
 * Choose **From file**
 * Enter a **Name** and an optional **Description**
 * Pick the **Format** (Alpaca or ShareGPT) that matches your file
-* Drag a file into the upload area, or click **Click or drag here your dataset** to select one from your computer
+* Drag a file into the upload area, or select **Click or drag here your dataset** to select one from your computer
 * Click **Save**
 
 The uploaded file must follow the structure of the selected format, otherwise the import is rejected.

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: Create a workflow
+type: how-to
+audience: [builder]
 ---
 
 # Create a workflow
@@ -133,11 +135,11 @@ run(process)
 ```
 
 Let's break it down:
-- the workflow starts with an incipit which species the script dependencies (in the PEP 723 format): this allows to specify arbitrary script dependencies in your workflow, no whitelisted packages!
+- the workflow starts with a header that declares the script dependencies (in the PEP 723 format), so you can use any package, not only an allowlisted set.
 - at the bottom we can find the workflow entrypoint, the `run(process)` function, which is an utility function to invoke the `process` function defined
 - the workflow business logic is specified in the `process` function: it takes as input the document over which the workflow is applied, and some options that might be used to store values later used in the workflow code
-- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, i.e. `knowledge = Knowledge(document.knowledge_id)`
-- the workflow might return a dictionary specifying the Rational Resources created and their textual content, i.e. text/markdown, to be automatically chunked and embedded according to the Knowledge settings
+- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, that is, `knowledge = Knowledge(document.knowledge_id)`
+- the workflow might return a dictionary specifying the Rational Resources created and their textual content, that is, text/markdown, to be automatically chunked and embedded according to the Knowledge settings
 
 ### Testing your workflow locally
 

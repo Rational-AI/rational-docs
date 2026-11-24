@@ -1,6 +1,8 @@
 ---
 sidebar_position: 31
 sidebar_label: Back up and restore
+type: how-to
+audience: [admin]
 ---
 
 # Back up and restore an on-premises installation
@@ -67,8 +69,8 @@ Go to **Settings** → **Backup** and pick the destination **Type**. The fields 
 
 | Type | Fields | Path |
 |------|--------|------|
-| **Network share (SMB / Samba)** | Host, port (445), user, password, domain | Share and folder, e.g. `backups/rational` |
-| **S3 bucket** | Endpoint, provider (`Other` for a NAS or MinIO, `AWS` for Amazon), region, access key ID, secret access key | Bucket and prefix, e.g. `my-bucket/rational` |
+| **Network share (SMB / Samba)** | Host, port (445), user, password, domain | Share and folder, for example, `backups/rational` |
+| **S3 bucket** | Endpoint, provider (`Other` for a NAS or MinIO, `AWS` for Amazon), region, access key ID, secret access key | Bucket and prefix, for example, `my-bucket/rational` |
 | **FTP server** | Host, port (21), user, password | Folder |
 | **SFTP server** | Host, port (22), user, password | Folder |
 | **Local folder (NFS mount)** | — | The absolute path of a folder the worker can see, typically an NFS mount added to the worker container |

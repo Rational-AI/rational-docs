@@ -1,6 +1,8 @@
 ---
 sidebar_position: 19
 sidebar_label: RAG 
+type: concept
+audience: [user, builder]
 ---
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
@@ -47,7 +49,7 @@ For example, if the query is:
 What are the symptoms of diabetes
 ```
 
-Naive RAG retrieves documents discussing diabetes symptoms based on semantic similarity, without considering related documents (e.g., treatment guidelines or clinical studies).
+Naive RAG retrieves documents discussing diabetes symptoms based on semantic similarity, without considering related documents (for example, treatment guidelines or clinical studies).
 
 ## Graph RAG
 Graph RAG extends semantic search by incorporating knowledge graph relationships. Along with directly relevant documents, it **retrieves related resources connected through explicit relationships**.
@@ -136,7 +138,7 @@ As a general rule, **RAG** should be the **default retrieval method**. Most user
 
 When both RAG tools are available:
 * **Naive RAG** should be **preferred for simple, well-defined questions** where the answer is likely contained in a single document and relational context is not required.
-* **Graph RAG** should be **preferred for broader or more complex queries** where relationships between documents add value (e.g., citations, references, hierarchies, interconnected content).
+* **Graph RAG** should be **preferred for broader or more complex queries** where relationships between documents add value (for example, citations, references, hierarchies, interconnected content).
 
 Graph RAG may return a richer result set but requires more processing time.
 
@@ -148,7 +150,7 @@ SQL tools are *not* suitable for general semantic search; they are best used for
 * Exact matches using unique identifiers (IDs, exact names)  
 When generating SQL without a unique identifier, the query should maximize matching coverage, for example by using LIKE or ILIKE operators and including relevant synonyms.
 * Aggregations such as COUNT, SUM, or AVG
-* Numerical filters (e.g., price thresholds)
+* Numerical filters (for example, price thresholds)
 * Deterministic database queries
 
 
@@ -157,7 +159,7 @@ In more advanced scenarios, RAG and SQL should be used together.
 
 A typical pattern is:
 1. **Use RAG** to identify relevant entities or retrieve contextual information.
-2. **Extract** structured **data** (e.g., IDs, categories).
+2. **Extract** structured **data** (for example, IDs, categories).
 3. **Use SQL** for precise filtering or aggregation.
 
 RAG provides semantic alignment; SQL provides structured precision. Used *together*, they enable accurate and context-aware retrieval across both unstructured and structured knowledge.

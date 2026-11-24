@@ -18,11 +18,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ponytail: non-blocking until the Phase 1 cleanup lands; then set fail_on_error: true
+      # Blocks on errors in changed lines only; warnings and suggestions are advisory
       - name: Vale
         uses: errata-ai/vale-action@reviewdog
         with:
           files: website/docs
           filter_mode: added
           reporter: github-pr-review
-          fail_on_error: false
+          fail_on_error: true

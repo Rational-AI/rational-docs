@@ -1,6 +1,8 @@
 ---
 sidebar_position: 6
 sidebar_label: Build an extension
+type: how-to
+audience: [developer]
 ---
 
 # Build an extension
@@ -36,7 +38,7 @@ manifest fills in. The main types are:
 | Provider | Manifest key | What it adds | Ships code? |
 |----------|--------------|--------------|-------------|
 | **MCP server** | `mcpServerProviders` | Tools, prompts and resources an agent can call during a conversation (fetch a page, query a database, search the web). | Local: yes. Remote: no. |
-| **Channel** | `channelProviders` | An inbound/outbound messaging channel users talk to the assistant through (e.g. Telegram). | No |
+| **Channel** | `channelProviders` | An inbound/outbound messaging channel users talk to the assistant through (for example, Telegram). | No |
 | **Source** | `sourceProviders` | A data source your Knowledge bases sync files from, with an optional retention window. | Usually yes |
 | **Workflow** | `workflowProviders` | A processing workflow that transforms files as they enter a Knowledge base. | Yes |
 
@@ -70,7 +72,7 @@ providers it declares:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `id` | yes | A stable UUID for the extension. Generate it once (`uuidgen`) and keep it for the life of the extension. |
-| `nameIdentifier` | yes | A short machine slug, e.g. `time`, `github-remote`. Determines the archive filename and inner root prefix. |
+| `nameIdentifier` | yes | A short machine slug, for example, `time`, `github-remote`. Determines the archive filename and inner root prefix. |
 | `version` | yes | Semantic release version (`1.0.0`); determines the archive filename and inner root suffix. |
 | `name` | yes | Display name shown in the registry. |
 | `description` | no | A sentence or two describing what the extension does. Shown to the user before they install. |
@@ -119,9 +121,9 @@ Useful fields on a local `mcpServerProviders` entry:
 | Field | Description |
 |-------|-------------|
 | `command` / `arguments` | The process to spawn and its arguments. |
-| `path` | Working directory the process is spawned in, relative to the install dir (e.g. `dist`). |
+| `path` | Working directory the process is spawned in, relative to the install dir (for example, `dist`). |
 | `environment` | Environment variables for the process. Values support `${config.*}` interpolation, so secrets come from the user's configuration. |
-| `installScript` / `uninstallScript` | Commands run once when the extension is installed / removed (e.g. to fetch dependencies). |
+| `installScript` / `uninstallScript` | Commands run once when the extension is installed / removed (for example, to fetch dependencies). |
 | `beforeCallScript` / `afterCallScript` | Commands run around each tool call. |
 | `configuration` | The user-facing config schema (see [Configuration fields](#configuration-fields)). |
 
@@ -239,7 +241,7 @@ stdin, and reads back a `{ "files": [...] }` list to download.
       "configuration": {
         "category": {
           "alias": "Category",
-          "description": "arXiv category to fetch, e.g. cs.AI.",
+          "description": "arXiv category to fetch, for example, cs.AI.",
           "type": "{\"type\":\"string\"}",
           "isRequired": true,
           "isHidden": false
@@ -255,7 +257,7 @@ stdin, and reads back a `{ "files": [...] }` list to download.
 | `runtime.command` / `arguments` | The resolver program. It receives the source config on stdin and prints `{ "files": [...] }` on stdout. |
 | `runtime.path` | Working directory for the program, relative to the install dir. |
 | `runtime.protocol` | Contract version the worker expects (`list-json-v1`). |
-| `expiry.mode` | `window` removes any previously-synced file the resolver no longer returns; `none` never deletes. |
+| `expiry.mode` | `window` removes any previously synced file the resolver no longer returns; `none` never deletes. |
 
 Each entry in the returned `files` list names one file. Besides its `filename`,
 it carries either a `url` the platform downloads or the file's `content` inline,
@@ -332,7 +334,7 @@ worker runs it unchanged — no extra wiring.
 
 | Field | Description |
 |-------|-------------|
-| `path` | Directory inside the package the script lives in (e.g. `dist`). |
+| `path` | Directory inside the package the script lives in (for example, `dist`). |
 | `script` | Filename of the workflow script, relative to `path`. |
 | `timeout` | Per-run timeout in minutes passed to the activity. |
 | `isActive` | Whether the workflow is assignable immediately after install. |
@@ -379,9 +381,9 @@ time. The fields are consistent across provider types:
 |-------|-------------|
 | `title` / `alias` | The label shown to the user. (`title` on MCP providers, `alias` on channels and sources.) |
 | `description` | Help text. Plain HTML links are allowed for "how to get this value" instructions. |
-| `type` | A JSON Schema fragment **encoded as a string**, e.g. `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
+| `type` | A JSON Schema fragment **encoded as a string**, for example, `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
 | `isRequired` | Whether the user must supply a value. |
-| `isHidden` | `true` for values the platform fills in itself (e.g. a webhook URL) — they don't appear in the form. |
+| `isHidden` | `true` for values the platform fills in itself (for example, a webhook URL) — they don't appear in the form. |
 | `defaultValue` | Pre-filled value. |
 | `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly; `{ "kind": "connector", "type": "braveApiKey" }` means the user picks a saved [connector](/operational-guides/configure-connectors) of that type. |
 
