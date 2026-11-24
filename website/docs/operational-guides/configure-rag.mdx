@@ -19,7 +19,7 @@ A basic (naive) RAG search finds resources that match the meaning of a query. Gr
  
 Before you start, make sure you have:
  
-- Access to the AI Control Room **Settings** area.
+- The Knowledge module in your license, **Create** and **Update** on the **Knowledge** row of your role, and **Update** on the **Touchpoints** row to tune the tool. See [Manage roles and users](/operational-guides/roles-and-users).
 - An embedding model available in the **AI Model Registry**.
 - Content (documents or other resources) ready to add to a Knowledge.
 ## How the setup works
@@ -57,7 +57,7 @@ Chunking, embedding, and keyword extraction currently run on textual resources o
  
 Keyword extraction tags each chunk with its most representative terms. Graph RAG uses these terms as an extra signal when ranking results.
  
-1. Turn on **Allow Keywords Extraction**.
+1. Turn on **Allow keywords extraction**.
 2. Set the **maximum number of entities per chunk**.
 3. Choose an extraction approach:
 

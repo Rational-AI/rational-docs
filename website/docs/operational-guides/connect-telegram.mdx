@@ -7,7 +7,7 @@ audience: [builder]
 
 # Connect a Telegram bot
 
-A Telegram channel puts your agent behind a bot: people message the bot, the agent answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behavior you'll want to get right before letting it loose in a busy chat.
+A Telegram channel puts a touchpoint's assistant behind a bot: people message the bot, the assistant answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behavior you'll want to get right before letting it loose in a busy chat.
 
 ## Prerequisites
 
@@ -18,10 +18,10 @@ Before you start, make sure you have:
 
 ## Connect the bot
 
-1. Go to **Settings** → **Channels** and select **New channel**.
+1. Go to **Settings** → **Channels** and select **Add**.
 2. Choose **Telegram** as the type.
 3. Name the channel and paste the **bot token**.
-4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode): **Automatic** if the agent should answer on its own.
+4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode): **Automatic** if the assistant should answer on its own.
 5. Save.
 
 The token is validated against Telegram as you connect, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code, the quickest way to get people to the right bot.
@@ -41,16 +41,16 @@ Telegram can deliver messages two ways, and the channel supports both.
 
 Both transports feed the same pipeline, so everything below behaves identically whichever you pick.
 
-## What the agent can receive
+## What the assistant can receive
 
 Telegram messages arrive as more than plain text:
 
 - **Text and captions.**
-- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes**, subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the agent can actually read rather than only acknowledge.
-- **Locations, contacts and polls**, rendered into text the agent can work with.
+- **Photos** (the largest size available), **documents**, **video**, **audio** and **video notes**, subject to your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in). Documents have their text extracted, so a mailed-in PDF is something the assistant can actually read rather than only acknowledge.
+- **Locations, contacts and polls**, rendered into text the assistant can work with.
 
 :::note[An album is one message, not three]
-When someone sends three photos as an album, Telegram delivers them as three separate updates. The channel collapses them back into a single message, so the agent takes one turn over the whole set instead of answering three times.
+When someone sends three photos as an album, Telegram delivers them as three separate updates. The channel collapses them back into a single message, so the assistant takes one turn over the whole set instead of answering three times.
 :::
 
 ## How conversations are grouped
@@ -75,7 +75,7 @@ Beyond that, a **rate limit applies per chat**, so one chat flooding the bot can
 
 You can pin extra instructions to individual chats: supply lines pairing a chat id with a prompt, and that prompt is appended to the touchpoint's system prompt for that chat only.
 
-This is how one bot serves two audiences without two bots: the same agent, with a different framing in the internal support group than in the public one.
+This is how one bot serves two audiences without two bots: the same assistant, with a different framing in the internal support group than in the public one.
 
 ## What replies look like
 
@@ -93,7 +93,7 @@ Some smaller touches worth knowing about, because people ask:
 
 Two things are not supported yet, and are worth knowing before you promise them:
 
-- **The agent cannot send files out.** Inbound attachments work; outbound ones aren't wired up.
+- **The assistant cannot send files out.** Inbound attachments work; outbound ones aren't wired up.
 - **Answers arrive complete, not word by word.** There's no progressive editing of a message as the answer generates; the typing indicator covers the wait instead.
 
 ## Related
@@ -104,4 +104,4 @@ Two things are not supported yet, and are worth knowing before you promise them:
 
 ## Result
 
-Your bot is connected with nothing but a BotFather token, polling by default so it needs no public URL. You know which message types reach the agent, that albums arrive as one turn, how conversations map to chats and forum topics, and that the bot stays quiet in groups unless it's actually being addressed.
+Your bot is connected with nothing but a BotFather token, polling by default so it needs no public URL. You know which message types reach the assistant, that albums arrive as one turn, how conversations map to chats and forum topics, and that the bot stays quiet in groups unless it's actually being addressed.

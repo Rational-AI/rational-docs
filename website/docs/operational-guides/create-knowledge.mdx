@@ -7,27 +7,28 @@ audience: [builder]
 
 # Create a Knowledge base
  
-A Knowledge is the store of resources your AI searches when answering questions. This guide takes you from an empty Knowledge to a configured one you can chat with.
+A Knowledge is a workspace for your organization's information: the resources your AI searches when answering questions, and the records your team keeps up to date. This guide takes you from an empty Knowledge to a configured one you can chat with.
  
 
 :::note[What is a Knowledge?]
-A Knowledge holds your resources (documents, FAQs, manuals) and the rules for processing them. It is what Rational AI's RAG system searches to ground its answers in your own data.
+A Knowledge holds your resources (documents, FAQs, manuals) and the rules for processing them, which Rational AI's RAG system searches to ground its answers in your own data. It can also hold records grouped into collections, with attributes, reminders, saved and custom views, an embed widget for your website, and its own chat.
 :::
 
 ## Prerequisites
  
 Before you start, make sure you have:
  
-- **Administrative access:** an account with Knowledge management privileges.
+- **The Knowledge module in your license:** without it, **Knowledge** doesn't appear in the navigation or in **Settings**. See [License and activation](/operational-guides/license).
+- **Permission to create a Knowledge:** **Create** on the **Knowledge** row of your role, plus **Update** to configure it. See [Manage roles and users](/operational-guides/roles-and-users).
 - **A list of your data sources:** the documents, FAQs, or manuals that will feed the Knowledge (see **Settings** → **Sources**).
 - **The required extensions installed:**
   - **Time Server:** needed for time-based searches (filtering by date or temporal relevance).
   - **Rational Knowledge - RAG Query Server:** enables advanced queries and the RAG model on the Knowledge.
-- **AI models configured:** at least one **Text Generation** model and one **Embedding** model, active in the **AI Model Registry** (see **Settings** → **AI Model Registry**).
+- **AI models configured:** a **Text Generation** model for the Knowledge's chat, and an **Embedding** model if you turn on **Allow AI search**, both active in the **AI Model Registry** (see **Settings** → **AI Model Registry**).
 ## Add a Knowledge
  
-1. Go to **Settings** → **Knowledge** and select **+ New**.
-2. Enter a clear **name** (for example `Data Marketing 2026 KB`).
+1. Open the **Knowledge** tab and select **New** → **New knowledge**. Rational AI creates the Knowledge with a default name and opens its settings.
+2. Replace the default with a clear **name** (for example `Data Marketing 2026 KB`).
 3. Add a **description** of the content and purpose. This helps your team maintain it later: the description is shown on the Knowledge's card in the **Knowledge** tab, on one line under the name.
 
 {/* Immagine knowledge list with new button */}

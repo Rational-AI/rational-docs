@@ -7,19 +7,18 @@ audience: [builder]
 
 # Create a workflow
 
-Workflows automate data transformation in Rational AI. This guide covers creating, configuring, and testing workflows that convert raw data into AI-ready knowledge using AI.
+Workflows automate data transformation in Rational AI. This guide covers creating, configuring, and testing the Python steps that convert raw data into AI-ready knowledge.
 
 
 :::note[What is a workflow?]
-Workflows automate the transformation of raw data into AI-ready knowledge. They extract key information, augment it, identify connections between data points, and structure everything into a queryable knowledge base that your AI applications can use.
+Workflows process the files a Knowledge receives: they extract key information, augment it, identify connections between data points, and store the results in the Knowledge for your AI to use. **Settings** → **Workflows** holds two kinds. A **workflow** is a pipeline whose nodes you connect on a graph, and a Knowledge can run it as its **Default workflow**. A **step** is a single Python script, edited and test-run in the browser; workflows call steps as nodes, and the **Classic pipeline** runs the step a [processing rule](/operational-guides/create-processing-rule) picks for each file.
 :::
 
 ## Prerequisites
 
 Before creating workflows, ensure you have:
-- Permissions to access to the AI Control Room Settings area
-- A Knowledge base created (workflows operate on Knowledge bases)
-- Python and `uv` package manager installed ([installation guide](https://docs.astral.sh/uv/))
+- **Create** and **Update** on the **Workflows** row of your role. See [Manage roles and users](/operational-guides/roles-and-users).
+- A Knowledge to run them on, to see their results.
 
 ## Access the workflow interface
 
@@ -146,7 +145,7 @@ Let's break it down:
 It is convenient to perform workflow development on your local machine, before using them into Rational AI.
 This is possible and encouraged, as it allows to use your favorite IDE and debugging tools.
 
-To run your workflow locally, you only need to make it executable and pass a properly formatted input as argument to it.
+Local runs need Python and the [`uv` package manager](https://docs.astral.sh/uv/). To run your workflow locally, make it executable and pass a properly formatted input as argument to it.
 
 Let's suppose to call the above-defined workflow as `lorem-ipsum-wf.py`. We can make it executable by running the command:
 ```

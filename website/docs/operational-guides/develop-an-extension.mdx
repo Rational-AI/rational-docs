@@ -13,9 +13,11 @@ when you are satisfied; a repository, commit, package or publication is not
 required to try a change.
 
 Development mode applies to **one installation in one tenant**. Only an
-installation explicitly marked as development accepts file writes, and only an
-administrator can enable development or change files. Anyone who can read the
-extension can list, view and download its files. Published packages and other
+installation explicitly marked as development accepts file writes. Enabling
+development and changing files need **Update** on the extension in the
+**Extensions** row of your role; in the Control Room, only administrators see the
+**Development** tab. Anyone who can read the extension can list, view and
+download its files. Published packages and other
 installations are unchanged.
 
 ## Edit remotely
@@ -141,8 +143,8 @@ rationalai-cli-extensions extensions dev stop --profile remote --directory ./ext
 You can also select **Disable development** on the **Development** tab.
 Turning development off blocks further file mutations and resumes the saved
 update policy. It does not roll files back: the current files stay in place until
-an ordinary update or reinstall replaces them. **Compatible auto** can update
-again; **Notify only** and **Pinned** keep their normal behavior.
+an ordinary update or reinstall replaces them. **Compatible updates automatically** can update
+again; **Notify me** and **Pinned** keep their normal behavior.
 
 While development is on, the installation can't be updated or uninstalled,
 even manually: you get *"Exit development mode before updating this extension."*

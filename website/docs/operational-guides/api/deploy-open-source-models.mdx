@@ -33,7 +33,7 @@ Earlier releases deployed with `POST /models/{id}/deploy` and controlled a deplo
 
 Before you begin, make sure you have:
 
-- **An API key or session with model management rights** on the Control Room. The examples send it as `Authorization: Bearer $TOKEN`; from an authenticated browser session you can drop that header.
+- **A workspace API key or a signed-in session** on the Control Room. A workspace key from **Settings** → **API Keys** acts as an administrator; a session needs **Create** on the **AI Model Registry** row of its role to register and deploy, and **Update** to change the scale. The examples send it as `Authorization: Bearer $TOKEN`; from an authenticated browser session you can drop that header.
 - **The Hugging Face repository** of the model, for example `Qwen/Qwen3-8B`. Check that it exists on [huggingface.co](https://huggingface.co): the API stores the name as you send it.
 - **Hardware for it.** On your own servers, the GPUs or memory the model needs (see [Run models on your own servers](/operational-guides/run-models-on-premise)); on Rational AI's cloud, a plan that includes self-hosted models.
 

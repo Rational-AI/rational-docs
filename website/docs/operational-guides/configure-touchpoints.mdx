@@ -7,19 +7,18 @@ audience: [builder]
 
 # Configure touchpoints
 
-A touchpoint is the bridge between one of your [Knowledges](/operational-guides/create-knowledge) and the people (or systems) asking it questions. It decides two things: who is allowed to reach the agent, and which tools the agent may use when it answers. This guide walks through the touchpoint configuration panel and the **Tools** tab.
+A touchpoint is a configured assistant that people (or systems) talk to over a channel. It sets the assistant's system prompt and models, the knowledge it reads, the tools and skills it can use, its memory, and who may reach it. This guide walks through the touchpoint configuration panel and the **Tools** tab.
 
 :::note[What is a touchpoint?]
-A touchpoint connects a Knowledge to the outside world. It carries the access settings for the agent and the set of tools the agent is allowed to use when answering. Those tools come from your installed MCP servers. MCP (Model Context Protocol) is the standard Rational uses to let an AI agent call out to external capabilities like search or database queries. When you create a Knowledge, Rational also creates a default touchpoint for it, which you then refine here.
+A touchpoint is an assistant that answers people in conversations. It is not an agent of the [Agents](/cr/Agents) section, and it is not the channel, which only carries the messages. You can create a touchpoint yourself, and some are created for you: creating a [Knowledge](/operational-guides/create-knowledge) also creates the Knowledge's touchpoint, and the **Default touchpoint** is the workspace assistant behind the [Chat](/cr/Chats). Its tools come from your installed MCP servers. MCP (Model Context Protocol) is the standard Rational uses to let an assistant call out to external capabilities like search or database queries.
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Administrative access:** an account with touchpoint management privileges.
-- **A touchpoint to configure:** for example the default touchpoint created with your Knowledge.
-- **At least one MCP extension installed:** a touchpoint can only offer tools that an installed MCP server exposes (for example the `rational-knowledge-rag` extension). See [Manage extensions](/operational-guides/manage-extensions) if you need to install one.
+- **Permission to manage touchpoints:** a role with **Create** and **Update** on **Touchpoints** (see [Roles and users](/operational-guides/roles-and-users)).
+- **A touchpoint to configure:** for example the touchpoint created with your Knowledge. To create a new one with **New**, you need at least one [channel](/operational-guides/manage-channels) and one model; without them, the touchpoint isn't created.
 
 ## Open a touchpoint
 
@@ -45,7 +44,7 @@ Changes are saved with **Save** at the bottom of the panel, and **Undo** discard
 
 ## Edit the system prompt
 
-The **System prompt**, at the top of the **Models** tab, is the standing instruction the agent follows on this touchpoint. Two controls sit beside the field, and both matter once a prompt grows past a few lines:
+The **System prompt**, at the top of the **Models** tab, is the standing instruction the assistant follows on this touchpoint. Two controls sit beside the field, and both matter once a prompt grows past a few lines:
 
 - **Show unsaved changes** switches the field into a read-only diff view, comparing what's saved against what you've typed. On a long prompt this is the difference between knowing what you changed and hoping you remember. It's disabled while nothing has changed.
 - **Expand editor** gives the prompt a much taller editing area, hiding the surrounding fields while you work.
@@ -68,7 +67,7 @@ Rewriting the prompt changes how the assistant talks and what it focuses on. Whi
 
 ## Control who can reach the touchpoint
 
-Use this to decide whether someone must sign in before they can talk to the agent. By default they must.
+Use this to decide whether someone must sign in before they can talk to the assistant. By default they must.
 
 <img
   src={require('@site/static/img/screens/touchpoint-anonymous.png').default}
@@ -103,7 +102,7 @@ The default touchpoint has no such switch: there, the assistant changes records 
 
 ## Work with tools
 
-The **Tools** tab is where you choose exactly which capabilities the agent can call. Open it to see your tools organized in a nested view rather than as a flat table:
+The **Tools** tab is where you choose exactly which capabilities the assistant can call. Tools are optional: a touchpoint can only offer tools that an installed MCP server exposes (for example the `rational-knowledge-rag` extension), so see [Manage extensions](/operational-guides/manage-extensions) if you need to install one. Open it to see your tools organized in a nested view rather than as a flat table:
 
 - One **card per MCP server**.
 - Under each server, a **`CONFIGURATION`** list. A configuration is a named, reusable set of settings (parameters and sources) for that server.
@@ -120,7 +119,7 @@ Two pickers drive everything in this tab. Both render as grouped, styled lists s
 
 ## Decide when a tool needs confirmation
 
-Choosing which tools an agent *may* call is one decision; choosing which of those calls a human has to approve first is another. The second one sits at the top of the same **Tools** tab, under **When to ask for confirmation**: *"Before running a tool, the assistant can ask the user to confirm."*
+Choosing which tools an assistant *may* call is one decision; choosing which of those calls a human has to approve first is another. The second one sits at the top of the same **Tools** tab, under **When to ask for confirmation**: *"Before running a tool, the assistant can ask the user to confirm."*
 
 1. In the **Tools** tab, open the **When to ask for confirmation** dropdown.
 2. Choose the policy for this touchpoint:
@@ -156,7 +155,7 @@ One slow call is only a failed step. If the tool runs out of time on every attem
 Reach for this when you want one specific capability with parameters tuned exactly how you like.
 
 1. In the **Tools** tab, open the **Add tool…** dropdown and select a tool from its MCP server group.
-2. In the **Add tool** dialog, set each parameter's mode using its **Default / Auto / Manual** dropdown. **Default** inherits the configuration's value, **Auto** lets the agent decide at answer time, and **Manual** lets you fix the value yourself.
+2. In the **Add tool** dialog, set each parameter's mode using its **Default / Auto / Manual** dropdown. **Default** inherits the configuration's value, **Auto** lets the assistant decide at answer time, and **Manual** lets you fix the value yourself.
 3. To undo a change to any parameter, use the **revert-to-default** button next to its mode dropdown. The button disables itself once the parameter is back in default mode.
 4. Select **Confirm**.
 
@@ -174,7 +173,7 @@ A parameter set to **Manual** is stripped from the tool schema the model is show
 
 That makes it the right mechanism for the caller's identity, a tenant reference, or a capability issued by the host: anything where letting the model supply the value would be the vulnerability.
 
-The alternative (having the agent read a value with a tool like `get_user_context` and pass it back as an argument) routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorization, it belongs in a Manual parameter, not in the conversation.
+The alternative (having the assistant read a value with a tool like `get_user_context` and pass it back as an argument) routes exactly that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorization, it belongs in a Manual parameter, not in the conversation.
 :::
 
 :::note[Single-configuration shortcut]
@@ -210,7 +209,7 @@ Create a configuration when you want a named, reusable set of settings for a ser
 Some tools take a knowledge-reference parameter (`knowledgeId` / `knowledge_id`) to say which Knowledge they should act against. Rather than asking you to paste a raw ID, this parameter renders as a **searchable knowledge dropdown**.
 
 1. In the **Add tool** dialog, find the knowledge-id parameter.
-2. Set its mode to **Manual** to override it, or leave it on **Auto** / **Default** to let the agent resolve it.
+2. Set its mode to **Manual** to override it, or leave it on **Auto** / **Default** to let the assistant resolve it.
 3. Open the dropdown and **filter by name** to find the Knowledge you want. The touchpoint's knowledges are shown by **name** and resolved to their **id** behind the scenes.
 
 :::note[No more raw IDs]
@@ -219,4 +218,4 @@ Because knowledge IDs are never surfaced in the UI, this dropdown is the support
 
 ## Result
 
-Your touchpoint now controls its own access through the **Allow anonymous access** toggle, starts from the platform's default conversational model unless you pick one yourself, may keep the knowledge you choose up to date, bounds how long each tool call may take, presents a nested **Tools** view grouped by MCP server and configuration, decides through **When to ask for confirmation** which calls need a human to approve them, and lets you add tools either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs, so the agent has exactly the tools and references it needs to answer against your Knowledge.
+Your touchpoint now controls its own access through the **Allow anonymous access** toggle, starts from the platform's default conversational model unless you pick one yourself, may keep the knowledge you choose up to date, bounds how long each tool call may take, presents a nested **Tools** view grouped by MCP server and configuration, decides through **When to ask for confirmation** which calls need a human to approve them, and lets you add tools either one at a time or in bulk with defaults inherited. Knowledge-id parameters are filled from a searchable dropdown instead of raw IDs, so the assistant has exactly the tools and references it needs to answer against your Knowledge.

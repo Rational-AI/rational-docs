@@ -2,7 +2,7 @@
 sidebar_position: 6
 sidebar_label: Rational Agents
 type: reference
-audience: [user, builder]
+audience: [admin, builder]
 ---
 
 # Rational Agents
@@ -38,7 +38,7 @@ The examples in these guides follow one small team at a fastener manufacturer:
 Before you start, make sure you have:
 
 - **The Agents module in your license.** The **Agents** tab appears in the top bar only when the license includes it; see [License and activation](/operational-guides/license).
-- **Administrative access.** Agents, their tasks and their runs are governed by the platform permission system; today, the people who work with agents are administrators.
+- **Administrative access.** Only administrators see the **Agents** tab today. The **Roles** page lists rows for agents, but no role can grant access to the section yet.
 - **A text-generation model** in the [AI Model Registry](/operational-guides/ai-model-registry-features). Agents without a model of their own use the platform **Agents model** default (see [Choose the model agents use](#choose-the-model-agents-use)).
 - **A cloud installation.** Agent runs and agent computers run on the Rational AI cloud; the on-premises bundle does not include them yet.
 
@@ -49,7 +49,7 @@ Open **Agents** in the top bar. The **Workplace** sidebar is the same on every p
 | Sidebar entry | What you find there | Guide |
 |---------------|---------------------|-------|
 | **Project picker** | Narrows the whole section to one project; the gear next to it opens **Projects**. | [Delegate work with tasks](/operational-guides/agent-tasks) |
-| **Tasks** | The board of work you handed to agents: *Queued*, *Working*, *Needs you*, *Done*. The orange badge counts runs waiting for your approval. | [Delegate work with tasks](/operational-guides/agent-tasks) |
+| **Tasks** | The board of work you handed to agents: *Queued*, *Working*, *To review*, *Done*. The badge counts the tasks to review plus the runs waiting for your approval (*X to review, Y to approve*). | [Delegate work with tasks](/operational-guides/agent-tasks) |
 | **Chats** | Direct and group conversations with your agents. | [Chat with agents](/operational-guides/agent-chats) |
 | **Routines** | Every agent with its trigger, tools and last run; pause and resume them here. | [Schedule and trigger agents](/operational-guides/agent-routines) |
 | **History** | Every run, newest first, filterable by outcome. | [Follow runs and approve actions](/operational-guides/agent-runs) |
@@ -57,15 +57,15 @@ Open **Agents** in the top bar. The **Workplace** sidebar is the same on every p
 | **Computers** | Each agent's workspace machine and its open run. | [Agent computers and the tools library](/operational-guides/agent-computers) |
 | **Library** | Every tool and skill that can be granted to an agent. | [Agent computers and the tools library](/operational-guides/agent-computers) |
 
-In the roster, the dot and the second line tell you what each agent is doing: *Idle*, *Working*, *Starting*, *Needs you*, *Retrying* or *Failed*, followed by the task it is working on.
+In the roster, the dot and the second line tell you what each agent is doing: *Idle*, *Queued*, *Working*, *To approve*, *Retrying*, *Last run failed* or *Last run timed out*, followed by the task it is working on.
 
 ## How the pieces fit
 
 1. **Build the agent** once: instructions, model, tools, the tools that must ask first, Knowledge access and what starts it.
 2. **Give it work** in one of three ways: a **task** on the board, a message in a **chat**, or a **trigger** (a schedule, an API call, a GitHub event) that starts it without anyone opening the page.
 3. **Each piece of work is a run.** You can follow it live, steer it with a message, stop it or retry it.
-4. **When the agent reaches a tool you marked "Ask me first"**, the run pauses and the task moves to *Needs you* until someone approves or rejects the call.
-5. **When the run ends**, its answer is posted on the task, the task moves to *Done* (or back to *Needs you* if something went wrong) and the run stays in **History**.
+4. **When the agent reaches a tool you marked "Ask me first"**, the run pauses and the task moves into *To review* until someone approves or rejects the call.
+5. **When the run ends**, its answer is posted on the task, the task moves to *Done* (or into *To review* if something went wrong) and the run stays in **History**.
 
 ## Choose the model agents use
 

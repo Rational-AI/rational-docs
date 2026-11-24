@@ -1,16 +1,18 @@
 ---
 sidebar_position: 17
-sidebar_label: Build agent skills
+sidebar_label: Build touchpoint skills
 type: how-to
 audience: [builder, developer]
 ---
 
-# Build and run agent skills
+# Build and run touchpoint skills
 
 A skill is a reusable capability you hand to the AI: a folder of instructions and helper files the model can read and run on demand. Instead of explaining the same multi-step task every time, you package it once, and the model reaches for it whenever a conversation calls for it. This guide takes you from installing a skill to running one in chat, and optionally previewing the web pages a skill produces in Canvas.
 
-:::note[What is an agent skill?]
-An agent skill is a [Hermes-compatible](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) folder containing a `SKILL.md` manual (the instructions, written in plain Markdown with a short YAML header) plus any helper files it needs. Skills are shipped by [extensions](/operational-guides/manage-extensions) and attached to a [touchpoint](/operational-guides/configure-touchpoints), the connection point between a conversation and the tools available to it. In chat, the model sees only each skill's name and description. It pulls the full manual, and runs any commands in an isolated sandbox, only when it decides the skill is the right fit.
+:::note[What is a skill?]
+A skill is a [Hermes-compatible](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) folder containing a `SKILL.md` manual (the instructions, written in plain Markdown with a short YAML header) plus any helper files it needs. Skills are shipped by [extensions](/operational-guides/manage-extensions) and attached to a [touchpoint](/operational-guides/configure-touchpoints), the assistant that answers a conversation. In chat, the model sees only each skill's name and description. It pulls the full manual, and runs any commands in an isolated sandbox, only when it decides the skill is the right fit.
+
+This guide covers skills on a touchpoint. The agents of the [Agents](/cr/Agents) section get skills from the same extensions, through **Agents** → **Library** (see [Browse the library](/operational-guides/agent-computers#browse-the-library)).
 :::
 
 ## Prerequisites

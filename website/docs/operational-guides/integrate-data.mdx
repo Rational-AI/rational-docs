@@ -9,13 +9,15 @@ audience: [admin, builder]
 
 # Integrate external data
 
-This guide explains how to connect Rational AI to external platforms (such as Google, AWS, or OpenAI) and synchronize their data using connectors and sources.   
+This guide explains how to connect Rational AI to external platforms (such as Google Drive, AWS, or Azure) and synchronize their data using connectors and sources.   
 The process consists of two steps:
 
 1. **Create and authorize a connector** to access an external provider;
 2. **Define a source** that uses the connector to retrieve data.
 
-Both steps are _required_ for the platform to securely access and synchronize external content.
+Sources that read a private service need a connector for its credentials. **HTTP** sources, public Git repositories and extension-contributed sources need none, and some connectors (OpenAI, for example) serve AI models rather than sources.
+
+To follow both steps, your role needs **Create** on the **Connectors** and **Sources** rows, and your license must include the Knowledge module, which **Sources** belongs to. See [Manage roles and users](/operational-guides/roles-and-users).
 
 ## Establishing the connector
 Connectors handle authentication and permissions for external services. To manage connectors open the **Settings** and navigate to **Connectors** from the left-hand sidebar.
@@ -38,7 +40,6 @@ The connectors page is divided into two sections:
 2. **Right panel**: details of the selected connector, including:
     * Name and description
     * Provider
-    * Next scheduled synch
     * Usage by AI models, sources, and tools.
 
     Some providers (for example, Google) also display enabled services and linked projects.

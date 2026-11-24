@@ -7,7 +7,7 @@ audience: [developer]
 
 # Access Rational AI via API
 
-Rational AI's models are available to your own code as well as in the chat interface. This guide walks you through creating the key your application needs to authenticate, finding a working code snippet for any model, giving one application a key that reaches a single [touchpoint](/operational-guides/configure-touchpoints) and nothing else, using that touchpoint's tools from any MCP client, and calling a Decision model through the System One compatible API.
+Rational AI's models are available to your own code as well as in the chat interface, and so is the rest of the platform: a workspace API key reaches the whole Rational AI API with administrator rights. This guide walks you through creating the key your application needs to authenticate, finding a working code snippet for any model, giving one application a key that reaches a single [touchpoint](/operational-guides/configure-touchpoints) and nothing else, using that touchpoint's tools from any MCP client, and calling a Decision model through the System One compatible API.
 
 :::note[What is API access?]
 An API (Application Programming Interface) is the channel your own applications and scripts use to talk to Rational AI's models directly, instead of a person typing into the chat UI. You prove who you are with an **API key** (a long secret string you generate in **Settings**) and send requests to your workspace's gateway.
@@ -19,7 +19,7 @@ That gateway is **OpenAI-compatible**, meaning it understands the same request f
 
 Before you start, make sure you have:
 
-- **Access to the API keys settings page.** The **API keys** entry must be visible in your **Settings** navigation.
+- **An administrator account to create a workspace key.** Other users can open **Settings** → **API Keys** if their role has the **API Keys** row, but only an administrator can create a key.
 - **At least one active model.** A model configured in the **AI Model Registry** that you intend to call. See [AI Model Registry features](/operational-guides/ai-model-registry-features) if you need to set one up.
 - **An HTTP client or OpenAI SDK.** For example cURL, the Python OpenAI SDK, or the TypeScript OpenAI SDK.
 - **For a touchpoint key:** a touchpoint on the **API** channel, and permission to edit it.
@@ -40,7 +40,7 @@ Your API keys live on a dedicated settings page that lists every key with its na
 
 Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key lets you track usage and revoke access later without disrupting anything else.
 
-1. Go to **Settings** → **API keys**.
+1. Go to **Settings** → **API Keys**.
 2. Select **New** (shown as **Add new** when the list is empty).
 3. In the **Generate new key** dialog, enter a **Name** for the key, for example `My personal API key`.
 4. Select **Create**.
@@ -51,14 +51,14 @@ The full key is returned a single time, on creation. The dialog can't be dismiss
 :::
 
 :::warning[A key from this page acts with administrator rights]
-Keys created under **Settings** → **API keys** belong to the workspace, not to one application: they can call every model through the gateway and every touchpoint's API. When an application only needs to talk to one assistant, give it a [touchpoint key](#give-an-application-its-own-touchpoint-key) instead.
+Keys created under **Settings** → **API Keys** belong to the workspace, not to one application: they authenticate as an administrator, whoever created them, and reach the whole Rational AI API, not only the model gateway and touchpoint APIs. Anyone holding one can read and change everything an administrator can. When an application only needs to talk to one assistant, give it a [touchpoint key](#give-an-application-its-own-touchpoint-key) instead.
 :::
 
 ### Disable or delete an API key
 
 Switch a key off the moment it is no longer needed or might be compromised, for example a key that was committed to a shared repository or belonged to someone who has left.
 
-1. Go to **Settings** → **API keys**.
+1. Go to **Settings** → **API Keys**.
 2. Open the menu on the key's row.
 3. Choose what to do:
    - **Disable** stops the key from authenticating but keeps it in the list, so you can **Enable** it again later.
@@ -172,7 +172,7 @@ Requests through a touchpoint run with that touchpoint's system prompt first and
 Both ask for confirmation (**Rotate API key**, **Revoke API key**) and can't be undone. Rotating or revoking needs permission to edit the touchpoint.
 
 :::note[Without a key the API is operator-only]
-A touchpoint with no key shows *"No key yet. Only operators can call this API."* Operators are administrators and holders of a workspace key from **Settings** → **API keys**; they can call every touchpoint's API, with or without a touchpoint key.
+A touchpoint with no key shows *"No key yet. Only operators can call this API."* Operators are administrators and holders of a workspace key from **Settings** → **API Keys**; they can call every touchpoint's API, with or without a touchpoint key.
 :::
 
 ## Use a touchpoint's tools from an MCP client
@@ -195,7 +195,7 @@ A touchpoint that [AI application governance](/operational-guides/govern-ai-appl
 Some questions don't need prose back: pick one of these options, give this a score, answer yes or no. Rational AI serves **Decision** models through an API compatible with System One, so clients built on the TypeSafe SDK can ask typed questions and get typed answers.
 
 - **Base URL:** `https://<your-host>/api/compat/v0/typesafe`. The SDK adds `/v1/systemone` (ask) and `/v1/models` (list the Decision models) itself.
-- **Authentication:** a workspace key from **Settings** → **API keys**. Touchpoint keys don't work here.
+- **Authentication:** a workspace key from **Settings** → **API Keys**. Touchpoint keys don't work here.
 - **Model:** only models whose purpose is **Decision** are served. If the request names no model, the **Decision model** default applies.
 
 The **Use via API** snippets on a Decision model in the [AI Model Registry](/operational-guides/ai-model-registry-features) already point at this base URL.

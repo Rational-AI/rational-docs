@@ -27,7 +27,7 @@ The Tunnel page exists only on installations that were provisioned with a Ration
 | **Certificate** | Issued by Rational AI for the name and its subdomains (Let's Encrypt, renewed automatically). Browsers trust it out of the box: nothing to install on any client. |
 | **Tunnel** | With the tunnel on, your endpoint points at `vpn.rational.is`, which forwards each connection, still encrypted, through a private WireGuard tunnel to your machine. Rational AI only reads the name the browser asked for; it never sees the content. |
 | **Direct** | With the tunnel off, your endpoint points at your public IP and your router forwards the ports below to the machine. |
-| **Licence** | The license of the installation is delivered and renewed through the same channel; its status is on **Settings** → **License**. |
+| **License** | The license of the installation is delivered and renewed through the same channel; its status is on **Settings** → **Licence**. |
 
 The machine checks in with Rational AI once a minute. That is when a switch you flip takes effect, a renewed certificate is installed, and a changed public IP is followed. [What the installation reports to Rational AI](./install-and-update#what-the-installation-reports-to-rational-ai) lists what the check-in carries.
 
@@ -72,7 +72,7 @@ Port 80 only redirects browsers to HTTPS; forwarding it is convenient, not requi
 
 ## Provision the machine
 
-The installation is connected to the hub when it is installed. Rational AI creates your license and gives you its activation code; the code is redeemed by the installation (at install time, or later on **Settings** → **License**), which registers it on the platform. Rational AI then sets the installation's **subdomain** (`acme` names it `acme.rational.is`). From a laptop with SSH access to the machine:
+The installation is connected to the hub when it is installed. Rational AI creates your license and gives you its activation code; the code is redeemed by the installation (at install time, or later on **Settings** → **Licence**), which registers it on the platform. Rational AI then sets the installation's **subdomain** (`acme` names it `acme.rational.is`). From a laptop with SSH access to the machine:
 
 ```bash
 ./install.sh --ip 192.168.1.20 --user rational --password '<password>' \
@@ -117,4 +117,4 @@ A connector whose OAuth app still redirects to `rational-control-room.<domain>`,
 | Reachable on the local network, not from outside, tunnel on | The tunnel needs UDP 51820 out to `vpn.rational.is`. A firewall that blocks it keeps the traffic from reaching the machine. |
 | Reachable on the local network, not from outside, tunnel off | The router rules (443 and 80, TCP, to the LAN address shown) and the public IP: see the caution above about shared addresses. |
 | Certificate warning in the browser | The certificate has not been issued yet, or the machine has not checked in since it was renewed. Wait a couple of minutes; `sudo rational sync` forces it. |
-| The endpoint never appears, **Last sync** stays *never* | The installation has no identity on the platform yet: activate the license (**Settings** → **License**), then wait a minute; and check that the operator set the subdomain on the platform console. |
+| The endpoint never appears, **Last sync** stays *never* | The installation has no identity on the platform yet: activate the license (**Settings** → **Licence**), then wait a minute; and check that the operator set the subdomain on the platform console. |

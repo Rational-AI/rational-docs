@@ -25,8 +25,8 @@ Every installed extension carries an **update policy** that decides how much hap
 
 | Policy | What it does |
 |--------|--------------|
-| **Compatible auto** | Updates classified as compatible are applied for you, without asking. Anything classified breaking is listed but never applied automatically. |
-| **Notify only** *(default)* | Available updates are listed so you can see them, and nothing is ever applied by itself. You apply each one deliberately. |
+| **Compatible updates automatically** | Updates classified as compatible are applied for you, without asking. Anything classified breaking is listed but never applied automatically. |
+| **Notify me** *(default)* | Available updates are listed so you can see them, and nothing is ever applied by itself. You apply each one deliberately. |
 | **Pinned** | Stay on exactly this version. Nothing updates it, including you, until you unpin. |
 
 Under every policy, an available update still shows up in the list. The policy governs what gets *applied*, not what you get to *see*.
@@ -34,7 +34,7 @@ Under every policy, an available update still shows up in the list. The policy g
 :::warning[Pinned is a promise, not a preference]
 Pinning is stronger than it looks. While an extension is pinned, even an explicit, manual update is refused: the platform will not move a pinned extension off its version for any reason. The **Update** button is replaced by *"Pinned — change the update policy to install updates"*.
 
-The policy selector is the only way out: set the extension back to **Notify only** or **Compatible auto**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
+The policy selector is the only way out: set the extension back to **Notify me** or **Compatible updates automatically**, then apply the update. Dry runs and rollbacks stay available the whole time, so you can still investigate a pinned extension and still recover it.
 
 Pin an extension when you have a reason to distrust change on it: a validated configuration you can't revalidate right now, a compliance freeze, an investigation in progress.
 :::
@@ -83,7 +83,7 @@ Two things are worth knowing about how the verdict interacts with what the publi
 - **A publisher's declaration is a floor, never a ceiling.** If a publisher marks a release breaking (or as a security release), a clean diff cannot promote it back to compatible. If a publisher marks a release compatible but the diff says otherwise, the computed verdict wins.
 - **A first release has nothing to compare against**, so it keeps whatever it declared and is otherwise left unclassified.
 
-Only releases classified **compatible** are eligible to be applied automatically under the **Compatible auto** policy. Everything else waits for you.
+Only releases classified **compatible** are eligible to be applied automatically under the **Compatible updates automatically** policy. Everything else waits for you.
 
 ## Preview an update with a dry run
 

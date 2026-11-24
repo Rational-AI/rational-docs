@@ -2,7 +2,7 @@
 sidebar_position: 4
 sidebar_label: Personalize user details
 type: how-to
-audience: [user]
+audience: [builder, developer]
 ---
 
 # Personalize the user details panel
@@ -11,7 +11,7 @@ When an operator opens a conversation in the AI Control Room, the right-hand
 details sidebar shows a **User** panel with information about the person on the
 other side of the chat. This guide explains what the panel renders by default
 and how to enrich it with your own user data (extra fields and fully custom
-widgets), so agents see the business context they need without leaving the
+widgets), so operators see the business context they need without leaving the
 conversation.
 
 
@@ -25,7 +25,7 @@ attach to that user.
 
 ## What the panel shows by default
 
-Open **Conversations** from the left sidebar, select a conversation, then open
+Open **Conversations** from the top navigation, select a conversation, then open
 the **User** view in the details sidebar. Out of the box the panel renders a
 **Basic info** card built entirely from the real user record:
 
@@ -75,8 +75,8 @@ you are free to render tables, badges, timelines, or anything else.
 
 Before you start, make sure you have:
 
-- Permission to manage users (the same access required to edit a user in the
-  Control Room).
+- The **Update** permission on **Users** in your [role](/operational-guides/roles-and-users),
+  or an administrator account.
 - The **ID** of the user you want to personalize.
 - A place to host a small JavaScript bundle that the browser can fetch over
   HTTPS (a CDN, object storage, or any static host).

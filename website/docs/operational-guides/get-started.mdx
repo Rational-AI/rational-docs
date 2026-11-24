@@ -17,7 +17,8 @@ Under the hood this is **RAG**, retrieval-augmented generation: the assistant pu
 
 ## Prerequisites
 
-- **Administrative access** to the Control Room settings.
+- **The Knowledge module in your license.** Without it, the **Knowledge** tab doesn't appear.
+- **An Admin account, or a role with Create** on the **AI Model Registry** and **Knowledge** rows. See [Manage roles and users](/operational-guides/roles-and-users).
 - **Some content to load**: documents, an FAQ, a spreadsheet, anything text-based.
 
 ## 1. Connect a model
@@ -34,11 +35,11 @@ Full details: [Manage AI models in the registry](/operational-guides/ai-model-re
 
 A Knowledge holds your content together with the rules for searching it.
 
-1. Go to **Settings** → **Knowledge**, select **New**, and give it a clear name.
+1. Open the **Knowledge** tab and select **New** → **New knowledge**. Rational AI creates it with a default name and opens its settings: give it a clear name.
 2. On the **AI Search** tab, turn on **Allow AI search**, pick your **Embedding model**, and choose a **Chunking type** (**Semantic Chunker** is a good default).
 3. **Save**.
 
-Creating a Knowledge also creates a **Touchpoint** for it automatically, complete with a working RAG tool, so you'll have something to chat with straight away. Full details: [Create a Knowledge](/operational-guides/create-knowledge).
+Creating a Knowledge also creates a touchpoint for it, named after it (for example *Sales FAQ - Touchpoint* for a Knowledge called *Sales FAQ*), with the tools to search it, so you have an assistant to chat with straight away. Full details: [Create a Knowledge](/operational-guides/create-knowledge).
 
 ## 3. Add your data
 
@@ -47,7 +48,7 @@ A new Knowledge is empty. Fill it either way:
 - **Connect a source and sync it**: a shared drive, a website, a database. See [Integrate external data](/operational-guides/integrate-data).
 - **Upload files directly** into the Knowledge: [Manage knowledge resources](/operational-guides/manage-knowledge-resources).
 
-As content arrives it's chunked and embedded automatically, ready to be searched.
+Uploaded files are processed straight away: split into chunks and embedded, ready to be searched. Files from a source are processed when the source syncs, according to its sync mode (**Manual**, **Periodic** or **Automatic**). See [Configure data sources](/operational-guides/configure-sources).
 
 ## 4. Chat with your assistant
 
@@ -69,7 +70,7 @@ The assistant retrieves the relevant pieces and answers from them. Asking someth
 
 *Your assistant, ready in the Chat.*
 
-More on the chat (attachments, exploring alternative answers, renaming, and agent takeover): [Use the chat](/operational-guides/chat-experience).
+More on chatting (attachments, alternative answers, sources and verification): [Use the Chat module](/operational-guides/chat-experience).
 
 :::note[Want to shape the assistant?]
 Open **Settings** → **Touchpoints** to set the conversation model, the system prompt that gives the assistant its personality and rules, which tools it can use, and whether it allows anonymous access. See [Configure touchpoints](/operational-guides/configure-touchpoints).
@@ -83,7 +84,7 @@ The Control Room adapts to small screens. When the window is narrower than a des
 
 You have a working assistant. From here you can:
 
-- **See how it's used**: cost, latency, and a per-call audit log. See [Monitor usage, cost, and audit logs](/operational-guides/governance).
+- **See how it's used** (administrators): cost, latency, and a per-call audit log. See [Monitor usage, cost, and audit logs](/operational-guides/governance).
 - **Review conversations** with automatic titles, topics, and sentiment. See [Work with conversations](/operational-guides/conversations) and [Configure conversation processing](/operational-guides/conversation-processing).
 - **Automate ingestion**: turn raw data into knowledge as it arrives. See [Create a workflow](/operational-guides/create-workflow).
 - **Add capabilities**: give the assistant new [tools](/operational-guides/manage-tools) by installing [extensions](/operational-guides/manage-extensions).
@@ -91,6 +92,3 @@ You have a working assistant. From here you can:
 - **Customize a model**: train one on your own examples. See [Fine-tune a model](/operational-guides/fine-tune-a-model).
 - **Set up your own account**: profile, password, and the devices you're signed in on. See [Manage your own account](/operational-guides/manage-your-account).
 
-## Result
-
-You've connected a model, created a Knowledge, loaded your data, and chatted with an assistant grounded in it. That's the core loop of Rational AI. Everything else builds on it.

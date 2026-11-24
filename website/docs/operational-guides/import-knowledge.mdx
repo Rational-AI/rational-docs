@@ -10,7 +10,7 @@ audience: [builder]
 Importing rebuilds a Knowledge from a `.zip` archive that was previously exported from Rational AI, so you can move it into a new environment in one step instead of reassembling it by hand. To bring rows of a spreadsheet into an existing Knowledge as records instead, see [Import records from Excel or CSV](#import-records-from-excel-or-csv).
 
 :::note[What you're importing]
-A [Knowledge](/operational-guides/create-knowledge) is the searchable collection of content your AI answers from, bundled together with the settings that control how it retrieves and responds. An export archive packages that whole bundle, the content and the configuration, into a single `.zip` file. Importing unpacks it and recreates the Knowledge on the spot. To produce an archive in the first place, see [Export a Knowledge](/operational-guides/export-knowledge).
+A [Knowledge](/operational-guides/create-knowledge) is the content your AI answers from (resources and records), bundled together with the settings that control how it is processed and searched. How the AI responds (its model and instructions) is set on a touchpoint. An export archive packages that whole bundle, the content and the configuration, into a single `.zip` file. Importing unpacks it and recreates the Knowledge on the spot. To produce an archive in the first place, see [Export a Knowledge](/operational-guides/export-knowledge).
 :::
 
 You'd typically import a Knowledge to:
@@ -23,7 +23,7 @@ You'd typically import a Knowledge to:
 
 Before you start, make sure you have:
 
-- **Administrative access**: an account with Knowledge management privileges.
+- **Permission to create a Knowledge**: **Create** on the **Knowledge** row of your role. The **New** menu that holds **Import knowledge** doesn't appear without it.
 - **An export archive**: a `.zip` file produced by the [Export a Knowledge](/operational-guides/export-knowledge) action.
 
 ## Import a Knowledge

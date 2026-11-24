@@ -7,7 +7,9 @@ audience: [builder]
 
 # Connect a mailbox
 
-An Email channel plugs a mailbox into the platform: incoming mail becomes conversations, and replies go back out as properly threaded email that lands in the right place in the recipient's client. This guide covers connecting the mailbox, the two ways to authenticate, how mail maps to conversations, and the loop protection that stops your agent arguing with an out-of-office responder.
+An Email channel plugs a mailbox into the platform: incoming mail becomes conversations, and replies go back out as properly threaded email that lands in the right place in the recipient's client. This guide covers connecting the mailbox, the two ways to authenticate, how mail maps to conversations, and the loop protection that stops your assistant arguing with an out-of-office responder.
+
+A touchpoint whose channel is this mailbox answers the mail. An agent of the [Agents](/cr/Agents) section can also be bound to the mailbox, so that a new email starts it. A mailbox that no touchpoint uses and no agent is bound to is left unread.
 
 ## Prerequisites
 
@@ -19,7 +21,7 @@ Before you start, make sure you have:
 
 ## Connect the mailbox
 
-1. Go to **Settings** → **Channels** and select **New channel**.
+1. Go to **Settings** → **Channels** and select **Add**.
 2. Choose **Email** as the type.
 3. Name the channel and fill in the mailbox configuration: servers, address, and credentials.
 4. Choose the [mode](/operational-guides/manage-channels#choose-the-mode). **Manual** is a reasonable starting point for a mailbox: mail is captured and put in front of a person, and nothing is sent until someone sends it.
@@ -64,7 +66,7 @@ A brief mail-server outage therefore delays a reply rather than silently droppin
 
 ## Loop protection
 
-An agent that answers automated mail will eventually find something that answers back. The channel refuses to ingest:
+An assistant that answers automated mail will eventually find something that answers back. The channel refuses to ingest:
 
 - Mail marked as **automatically submitted**, or carrying **bulk**, **list** or **junk** precedence.
 - Mail asking for **auto-responses to be suppressed** (the header out-of-office replies set).
@@ -77,7 +79,7 @@ Your [allowed senders](/operational-guides/manage-channels#control-who-can-write
 
 Attachments arrive under your channel's [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in): allowed or not, restricted by type, and capped in size.
 
-An accepted document has its text extracted **before the message is posted to the conversation**, so the agent sees the contents when it composes its answer rather than reacting to a filename. Extraction is given a bounded window; a document that takes longer doesn't hold the message up indefinitely.
+An accepted document has its text extracted **before the message is posted to the conversation**, so the assistant sees the contents when it composes its answer rather than reacting to a filename. Extraction is given a bounded window; a document that takes longer doesn't hold the message up indefinitely.
 
 Operators can open or download what arrived from the conversation. See [Use the chat](/operational-guides/chat-experience).
 

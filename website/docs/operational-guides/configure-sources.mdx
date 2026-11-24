@@ -7,7 +7,7 @@ audience: [admin, builder]
 
 # Configure data sources
 
-A data source is where Rational AI goes to fetch content. Once you connect one to a [Knowledge](/operational-guides/create-knowledge) (the searchable collection of documents your AI answers from), Rational AI can pull that content in and keep it up to date.
+A data source is where Rational AI goes to fetch content. Once you attach one to a [Knowledge](/operational-guides/create-knowledge) (the searchable collection of documents your AI answers from), a touchpoint or a Rational BI project, Rational AI can pull that content in and keep it up to date.
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
@@ -20,15 +20,16 @@ A data source is where Rational AI goes to fetch content. Once you connect one t
 This guide covers how a source decides when to sync, including the **Automatic** mode that syncs only when something changed, and the source types that need their own setup: extension-contributed sources such as **ArXiv Catchup**, the built-in **HTTP** source, a **RabbitMQ** queue, and the `robots.txt` behavior of the **Fetch** extension.
 
 :::note[What is a data source?]
-A data source defines where Rational AI pulls files from when it syncs a Knowledge. Some sources are built in (such as HTTP). Others come from extensions: add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
+A data source defines where Rational AI pulls files from, and when. The source syncs on its own schedule; each Knowledge it is attached to then processes the synced files in a separate step, with its own **Data processing log**. Some sources are built in (such as HTTP). Others come from extensions: add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Administrative access:** an account with source and extension management privileges.
-- **A Knowledge to attach the source to** (see **Settings** → **Knowledge**).
+- **The Knowledge module in your license:** **Sources** sits in the Knowledge section of **Settings** and is hidden without it.
+- **Rights on sources:** **Create**, **Update** or **Delete** on the **Sources** row of your role, for the changes you want to make. See [Manage roles and users](/operational-guides/roles-and-users).
+- **Somewhere to attach the source:** a Knowledge (see **Settings** → **Knowledge**), a touchpoint or a Rational BI project.
 - **The relevant extension installed** when configuring an extension-contributed source (see **Settings** → **Extensions**).
 
 ## Choose when a source syncs

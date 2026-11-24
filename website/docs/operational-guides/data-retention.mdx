@@ -28,11 +28,11 @@ Go to **Settings** → **Data retention**. There are three independent limits, e
 
 | Period | What it removes | What survives |
 |--------|-----------------|---------------|
-| **Captured request bodies** | The prompt and response text recorded against a model call | The call record itself: who, when, which model, how many tokens, what it cost |
-| **Captured requests** | The whole call record, bodies included | Nothing of that call |
+| **Prompt and response bodies** | The prompt and response text recorded against a model call | The call record itself: who, when, which model, how many tokens, what it cost |
+| **Model call records** | The whole call record, bodies included | Nothing of that call |
 | **Closed conversations** | Conversations that have ended, and their messages and Canvas artifacts | Nothing of that conversation |
 
-Each field states what disappears when it fires, because "30 days" is not a decision anyone can weigh without knowing what's lost.
+The page suggests 30 days for **Prompt and response bodies** and 365 days for **Model call records**, and never applies a suggestion for you. Each field states what disappears when it fires, because "30 days" is not a decision anyone can weigh without knowing what's lost.
 
 ### Why bodies and call records are separate
 

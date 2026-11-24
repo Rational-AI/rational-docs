@@ -10,14 +10,14 @@ audience: [builder]
 A [Knowledge](/operational-guides/create-knowledge) doesn't have to live only inside the Control Room. With the **Embed** feature you can put a Knowledge on any web page as a self-contained widget: visitors browse its records, open the one they need and ask its assistant questions, right there on your site, without signing in. This guide covers configuring the widget on the **Embed** settings tab, choosing what it publishes and how it looks, capping what the public chat can cost, collecting visitor contacts and statistics, and adding the widget to a page or a WordPress site.
 
 :::note[What is the embed widget?]
-The embed widget is a public, read-only window onto one Knowledge. You decide what it shows (which views, in what order, whether visitors can search, filter or open a record, whether a chat is available) and Rational AI gives you a single `<script>` tag to paste into your site. The widget loads in an isolated frame and talks to your Knowledge through one **embed key**, so no Control Room login is ever required of your visitors, and nothing they do can change your records.
+The embed widget is a public window onto one Knowledge. You decide what it shows (which views, in what order, whether visitors can search, filter or open a record, whether a chat is available) and Rational AI gives you a single `<script>` tag to paste into your site. The widget loads in an isolated frame and talks to your Knowledge through one **embed key**, so no Control Room sign-in is ever required of your visitors. Visitors can't edit your records, even in grids. They can add new ones through the contact form, which writes to the collection you choose, and what their chat costs counts against the **Monthly budget**.
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Administrative access:** an account with Knowledge management privileges.
+- **Update rights on the Knowledge:** **Update** on the **Knowledge** row of your role. Without it the **Embed** tab opens read-only. See [Manage roles and users](/operational-guides/roles-and-users).
 - **A Knowledge to publish:** with the records or resources you want visitors to see, and the [views](/operational-guides/knowledge-custom-views) you want to show them.
 - **A place for the tag:** access to the HTML of the page where the widget should appear, or a WordPress site with the **Rational AI Observatory** plugin.
 
