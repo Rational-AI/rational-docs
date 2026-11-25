@@ -19,18 +19,18 @@ This guide covers skills on a touchpoint. The agents of the [Agents](/cr/Agents)
 
 Before you start, make sure you have:
 
-- **Administrative access**: an account with extension and touchpoint management privileges.
-- **The sandbox extension installed**: the **Agent Skills** extension (`agent-skills`), which provides the sandboxed `skill_exec` runtime (the safe, isolated environment where skill commands actually run). Its seven bundled skills are `docx`, `pptx`, `xlsx` and `pdf` for documents, `web-design` for [Canvas](#preview-web-pages-in-canvas) pages, and `humanizer` and `plan`.
-- **A skills-providing extension**: any extension that ships skills under `skills/<name>/SKILL.md`. The skill list is shown on the registry entry **before** you install.
+- **Permissions:** the admin role to install extensions, and a role with **Update** on **Touchpoints** to bind skills.
+- **The sandbox extension installed**: the **Agent Skills** extension (`agent-skills`), which provides the sandboxed `skill_exec` runtime (the safe, isolated environment where skill commands run). Its seven bundled skills are `docx`, `pptx`, `xlsx` and `pdf` for documents, `web-design` for [Canvas](#preview-web-pages-in-canvas) pages, and `humanizer` and `plan`.
+- **A skills-providing extension**: any extension that ships skills under `skills/<name>/SKILL.md`.
 - **A touchpoint**: an existing touchpoint to bind skills to (see **Settings** → **Touchpoints**).
 
 ## Install a skill-providing extension
 
 Skills arrive inside extensions, so getting a new skill means installing the extension that carries it.
 
-1. Go to **Settings** → **Extensions** and open the **registry**.
-2. Select an extension. Its detected skills are listed on the entry before you install, so you know exactly what you're getting.
-3. Select **Install**. Each skill is registered and its files are unpacked onto the extensions volume.
+1. Go to **Settings** → **Extensions** and select **Browse**.
+2. Select the extension.
+3. Select **Install**. Each skill the extension ships becomes available to your touchpoints, and appears in the **Skills** tab's picker.
 
 Uninstalling the extension later removes its skills.
 
@@ -43,12 +43,12 @@ The `skill_exec` runtime is provided by the **agent-skills** extension, and skil
 Installing a skill makes it available; binding it to a touchpoint makes it usable. A skill only appears in chat once it's bound to the touchpoint that conversation runs against.
 
 1. Go to **Settings** → **Touchpoints** and open the touchpoint you want to use.
-2. Open the **Skills** tab (next to **Tools**).
-3. In the picker (where skills are grouped by the extension that ships them), **add** the skills you want.
-4. To stop offering a skill later, remove it from the same tab.
+2. Open the **Skills** tab (next to **Tools**). Its table lists the skills already enabled, with their **Skill**, **Description**, **Version** and **Extension**.
+3. In the **Add skill** picker, where skills are grouped by the extension that ships them, select the skills you want.
+4. To stop offering a skill later, select **Remove skill** in its row's menu. The touchpoint stops using it; the skill itself stays installed.
 
 :::note[Tools take precedence]
-If a skill and a touchpoint tool share a name, the touchpoint tool wins. Binding a skill has no per-binding configuration: you add or remove it.
+If a touchpoint tool has the same name as one of the skill tools (`skill_view`, `skill_exec`), the touchpoint tool wins. Binding a skill has no per-binding configuration: you add or remove it.
 :::
 
 ## Run a skill from chat
@@ -57,10 +57,11 @@ Once a touchpoint has bound skills, you don't have to invoke them by name. You a
 
 ### How the model reaches a skill
 
-The model is given a short list of each bound skill's **name and description**, plus two virtual tools it calls on its own:
+The model is given a short list of each bound skill's **name and description**, plus virtual tools it calls on its own:
 
 - **`skill_view`** reads the full `SKILL.md`, a helper file, or a directory listing, so the model loads the detail only when it needs it, not all at once.
-- **`skill_exec`** runs a command for the skill in an isolated, per-conversation workspace seeded with a copy of the skill folder, under a timeout. It returns the exit code, stdout/stderr, and the list of files produced.
+- **`skill_exec`** runs a command for the skill in an isolated, per-conversation workspace seeded with a copy of the skill folder, under a timeout. It returns the exit code, stdout/stderr, and the list of files produced. Files attached to the conversation are placed in the same workspace.
+- **`knowledge_file`**, offered only when the chat can reach a Knowledge, copies a file from the Knowledge into the skill's workspace.
 
 ### Trigger a run
 
@@ -79,7 +80,7 @@ Leaving the choice to the model works most of the time. When it doesn't, or when
 The same list is under **Skills** in the composer's **+** menu, which keeps any text you have already typed. To drop the skill before sending, select the chip's **✕**, or press **Backspace** in an empty composer.
 
 :::note[Picking a skill steers the model, it doesn't bypass it]
-The message goes out as `/<skill> <your request>`, and Rational AI tells the model that you chose that skill: read its instructions first and follow them. The model still does the work, so your request after the chip is what it acts on. If the menu says *"No skills are enabled for this chat"*, the touchpoint has no skills bound; users who can manage extensions find **Manage skills** in the **+** menu's **Skills** submenu.
+The message goes out as `/<skill> <your request>`, and Rational AI tells the model that you chose that skill: read its instructions first and follow them. The model still does the work, so your request after the chip is what it acts on. If the menu says *"No skills are enabled for this chat"*, the touchpoint has no skills bound; users who can open **Settings** → **Extensions** find **Manage skills** in the **+** menu's **Skills** submenu.
 :::
 
 ### Follow what happened
@@ -106,8 +107,8 @@ The `pdf` skill in **Agent Skills** builds PDF documents (letters, notices, repo
 The skill writes new documents. It has no steps for merging, splitting or filling in existing PDFs. If you'll want to edit the text afterwards, ask for a Word document (`docx`) instead.
 :::
 
-:::note[Skills can be written in any language]
-The sandbox runs commands with `bash`, so it's language-agnostic. The backend container ships `python3` (with `uv`), `node`, `npm`/`npx` and `bash`. Python is first-class: the sandbox lazily provisions a shared virtualenv (python-pptx, python-docx, openpyxl, pypdf, pillow, and more). JavaScript skills can `npm install` their own dependencies, and TypeScript skills bring their own transpiler (for example via `npx tsx`).
+:::note[What a skill can run]
+The sandbox runs each command with `bash`, under a time limit of 120 seconds by default and 600 at most. It provides the core shell utilities, Python with preinstalled document libraries (python-pptx, python-docx, openpyxl, pypdf, pillow and reportlab), and Node.js. There is no package manager and nothing can be installed at run time, so a skill can only use what the sandbox already has.
 :::
 
 ## Preview web pages in Canvas
@@ -116,12 +117,12 @@ When a skill builds a self-contained web page, **Canvas** renders it live in a p
 
 ### Open Canvas for a request
 
-1. In the composer, enable the **Canvas** toggle chip before sending. The panel opens with a loading spinner, so generation never looks frozen.
-2. Ask for a web page or UI. The backend's **web-design** skill builds a single self-contained `index.html`.
+1. In the composer's **+** menu, select **Canvas** before sending. A **Canvas** chip appears in the composer. While the answer is generated, the panel shows a loading spinner, so generation never looks frozen.
+2. Ask for a web page or UI. The **web-design** skill builds a single self-contained `index.html` (or an `image.svg`).
 3. On completion, the skill step shows an artifact **card** (icon, skill, size, **Open**) and the Canvas panel opens automatically.
 
 :::note[You can leave the toggle off]
-Auto-detect also works with **Canvas** off: web and UI requests are routed to a web-design skill automatically. Enable the toggle when you want to be sure a request is treated as a Canvas page.
+Auto-detect also works with **Canvas** off: the model is told to prefer a web-design skill for web and UI requests. Select **Canvas** when you want to be sure a request is treated as a Canvas page. The **Canvas** item appears only when the touchpoint has **Canvas mode** turned on.
 :::
 
 ### Work with the result
@@ -129,13 +130,15 @@ Auto-detect also works with **Canvas** off: web and UI requests are routed to a 
 In the Canvas panel you can:
 
 - Switch between **Code** and **Preview** (a sandboxed preview iframe and a read-only code view).
-- Move between snapshots with the **version arrows ‹ N/M ›**. Versions are saved to `localStorage`, so they survive a page refresh.
-- **Resize**, go **fullscreen**, **refresh**, **download**, or **close** the panel. It also closes automatically when you switch chats.
+- Move between snapshots with **Previous version** and **Next version**. Versions are saved in your browser, so they survive a page refresh.
+- Resize the panel, or use **Fullscreen**, **Refresh**, **Copy**, **Download** and **Close**. It also closes automatically when you switch chats.
 
-:::note[Preview is private to the author]
-The preview iframe is sandboxed and only rendered on the author's own chat page. It's removed from the staff [Conversations](/operational-guides/conversations) view, so a generated page runs only in its author's session.
+:::note[The preview runs only in the chat]
+The preview is sandboxed and opens only in the Canvas panel of **Chat** and of a Knowledge's chat. The staff [Conversations](/operational-guides/conversations) view has no Canvas panel, so a generated page doesn't run when someone reviews the conversation there.
 :::
 
-## Result
 
-You now have an extension's skills installed, bound to a touchpoint through the **Skills** tab, and runnable from chat. The model reads each skill's manual with `skill_view` and runs it in an isolated sandbox with `skill_exec`; the conversation shows the process steps and lets you download or preview any files produced. With **Canvas** enabled, self-contained web pages are previewed live, with versioned snapshots, right beside the chat.
+## Next steps
+
+- [Configure touchpoints](/operational-guides/configure-touchpoints): the other tabs of the touchpoint the skills are bound to.
+- [Manage extensions](/operational-guides/manage-extensions): install, update and remove the extensions that ship skills.

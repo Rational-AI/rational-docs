@@ -51,7 +51,7 @@ The command:
 
 Any other option is passed to the provisioning script unchanged.
 
-The installation starts **with no models**: no embedding model, no chat model. An administrator adds and deploys them in **Settings** → **Models**, on the machine's own GPU (see [AI model registry](/operational-guides/ai-model-registry-features)). A knowledge base needs an embedding model, and a chat a text model, before they work.
+The installation starts **with no models**: no embedding model, no chat model. An administrator adds and deploys them in **Settings** → **AI Model Registry**, on the machine's own GPU (see [Run models on your own servers](./run-models-on-premise)). A knowledge base needs an embedding model, and a chat a text model, before they work.
 
 :::note[Turn on the off-site backup straight away]
 The backups every update takes are kept on the same disk as the installation: they protect against a bad update, not against a lost machine. Set a destination in **Settings** → **Backup** as soon as the installation holds data you care about. See [Back up and restore](./backup-and-restore).
@@ -186,6 +186,8 @@ An installation set up with `--domain` instead of a connection to Rational AI se
 | `install.sh` refuses the release | The release has no image for the machine's architecture (the DGX Spark is arm64). Pick another `--tag`, or install from a bundle. |
 | A local backup is refused before it starts | The disk lacks the space for it. Free some space, or move older data off the machine. |
 
-## Result
+## Next steps
 
-The machine runs Rational AI, updates itself every night, and takes a backup and runs your packages' checks around every update, rolling back on its own when a release breaks something. You know which commands to run on the host, and exactly what the installation sends to Rational AI.
+- [Activate the license](./license) if you installed without `--code`.
+- [Add your first models](./run-models-on-premise#add-your-first-models).
+- [Set up the off-site backup](./backup-and-restore).

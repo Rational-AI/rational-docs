@@ -34,27 +34,25 @@ Extensions add new capabilities to Rational AI. Depending on the one you install
 
 ## Browse installed extensions
 
-The Extensions page lists every installed extension as a card on the left. Each card shows the extension's name and icon, a toggle to enable or disable it, and counters summarising the capabilities it provides.
+The Extensions page has three views: **Installed**, **Updates** and **Browse**. **Installed** lists every installed extension as a card with its name, icon and version, and counters for the tools, sources and channels it provides. A card also shows **Configuration needed** when its server still needs parameters, and **Update available** or **Review required** when a newer release exists.
 
-* **Search** – Use the search box above the list to filter extensions by name.
-* **Select** – Click a card to open its details in the panel on the right.
-
-Selecting an extension shows its description and the capabilities it provides. When an extension provides tools, you'll also see the number of **tools provided** and a card for each tool with its name and a short description of what it does.
+* **Search**: use the search box to filter extensions by name.
+* **Select**: select a card to open its details: an **Overview** of what it provides (each tool with a short description), **Release notes**, **Versions** and **Activity**.
 
 ## Add an extension
 
-Click **Install** in the top-right corner to browse the extensions you can install. From here you can:
+Select **Install** to browse the extensions you can install. Each one is marked **Rational AI catalogue** (published by Rational AI) or **Local** (uploaded to this tenant), and extensions you already have are marked **Already installed**. Select one and then **Configure extension**:
 
-* **Search** for an extension by name.
-* **Select** an extension to install (for example, Telegram, Fetch, GitHub, Postgres, Brave Search or Time).
+1. If the extension runs an MCP server, the **Set default configuration** form opens. Fill in the values it needs, such as an API key.
+2. Select **Install extension**.
 
-The extensions on offer come from more than one place: the **platform catalog** that Rational AI publishes, your own **local packages** (anything you installed from a file by dropping it onto this page), and any remote source attached for your organization. You can also install your own package at any time by dragging it onto the Extensions page.
+An extension with no server to configure, such as one that only adds a source, installs as soon as you select **Configure extension**.
+
+To install your own package, select **Add private extension** and choose the file, or drag the file onto the Extensions page. A private extension is installed in this tenant only.
 
 ## Configure an extension
 
-Installing never asks for configuration up front. An extension that still needs values from you lands **installed and disabled**, with nothing running. Install it now, set it up when you have the credentials.
-
-Saving its first configuration is what starts the extension: the MCP server starts, its tools are discovered, and the extension is enabled. If a required value is missing, the save is refused with a validation error and the extension stays disabled, so nothing ever half-starts. An extension whose values all have defaults comes up enabled immediately, with no extra step.
+To change an installed extension's values later, select it and open **Settings** from the options menu. An extension installed from a file that still needs values shows **Configuration needed** and provides no tools until you save its settings.
 
 ## Develop an installed extension
 
@@ -67,17 +65,21 @@ edits, Git recovery and resuming package updates when you leave development.
 
 ## Enable or disable an extension
 
-Use the toggle on each extension card to turn it on or off. A disabled extension stays installed and keeps its configuration, but its tools are not available to agents until you re-enable it. This is useful for temporarily taking an extension out of service without uninstalling it.
+Use the switch on each extension card to turn it on or off. A disabled extension stays installed and keeps its configuration, but its tools are not available to agents until you turn it back on. Use it to take an extension out of service for a while without uninstalling it.
 
 ## Manage an extension
 
-With an extension selected, open the options menu (the three vertical dots) in the details panel to access:
+With an extension selected, the **Update policy** list sets how updates reach it: **Compatible updates automatically** applies compatible updates for you, **Notify me** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. When an update is available, an **Update** button appears next to the version; while the extension is pinned, it reads *"Pinned. Change the update policy to install updates."* instead.
+
+The options menu (the three vertical dots) holds:
 
 | Action | Description |
 |--------|-------------|
-| **Settings** | View and edit the extension's configuration (for example, credentials or connection details). |
-| **Update policy** | Choose how updates reach this extension: **Compatible updates automatically** applies compatible updates for you, **Notify me** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. |
-| **Update** | Move the extension to a newer release when one is available. Disabled when the extension is already up to date, and replaced by *"Pinned — change the update policy to install updates"* while the extension is pinned. |
-| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools survive and lose those bindings, and re-installing the same package later comes up clean. |
+| **Settings** | View and edit the extension's configuration (for example, credentials or connection details). Unavailable when there is nothing to configure. |
+| **Refresh remote tools** | Read the tool list again from the extension's remote MCP servers. Only for extensions with a remote server. |
+| **Update to latest version** | Move the extension to the newest release. Unavailable when it is already up to date. |
+| **Install a different version** | Pick another published release, older or newer. |
+| **Roll back** | Return to the last release that worked. Unavailable when there is none. |
+| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools keep working without them, and re-installing the same package later starts clean. |
 
 For what "compatible" actually means, what happens to your touchpoints when an update lands, and how to roll back, see [Update and roll back extensions](/operational-guides/extension-updates).

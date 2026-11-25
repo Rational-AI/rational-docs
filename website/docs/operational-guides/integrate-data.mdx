@@ -35,27 +35,25 @@ Connectors handle authentication and permissions for external services. To manag
     }}
 /> 
 
-The connectors page is divided into two sections:
-1. **Left panel**: a list of all configured connectors.
-2. **Right panel**: details of the selected connector, including:
+The connectors page has two parts:
+1. A list of all configured connectors.
+2. The details of the selected connector, including:
     * Name and description
-    * Provider
-    * Usage by AI models, sources, and tools.
-
-    Some providers (for example, Google) also display enabled services and linked projects.
+    * **Provider**
+    * Usage by **AI Models**, **Sources** and **Tools**.
 
 ### Creating a new connector
-If no connectors are configured, the page will be empty. To start, click the **+ Add** button and select a provider from the available catalog (for example, Google, AWS, OpenAI).
+If no connectors are configured, the page is empty. To start, select **Add** and pick a provider under **Browse connectors** (for example, Google, AWS, OpenAI).
 Each provider has specific authentication requirements. Some providers require only an API key, while others, such as Google, use a full OAuth authorization flow.
 
-Each configuration modal includes a link to a guide for obtaining the required credentials.
+For several providers, such as AWS, OpenAI and Google, the form links to a guide for obtaining the required credentials.
 
 After selecting a provider, you will be presented with a configuration form. 
 You must provide:
 * A **name** (for example, _Admin Google access_);
 * A **description**, optional but **strongly recommended** for long term maintenance and team collaboration;
 * **Credentials** obtained from the provider (key, tokens, or OAuth configuration);
-When finished click **Add**. The connector will appear in the list on the left.
+When finished, select **Add** (**Add and authorize** for providers that sign in with OAuth, such as Google). The connector appears in the list.
 
 Some providers require additional configuration steps or authorization flows.
 Consult the **provider-specific guides** to learn how to add each one from start to finish.
@@ -73,7 +71,7 @@ If authentication fails or permissions are incomplete, a red broken-link icon <i
     boxSizing: 'border-box',
     verticalAlign: 'middle',
     }}
-/>  will appear next to the connector name. 
+/>  appears next to the connector name. 
 
 To resolve the issue:
 1. Open the connector’s option menu;
@@ -86,10 +84,10 @@ Always resolve authentication errors before creating sources.
 
 ## Adding a data source
 Once a connector is active, you can define one or more sources to specify which data should be retrieved and synchronized. 
-Navigate to **Sources** in the left-hand sidebar and click the **+ New** button.
+Go to **Settings** → **Sources** and select **Add**.
 
 ### Creating a source
-The **Add new source** dialog puts the form on the left and, for source types whose files you pick, a file panel on the right.
+The **Add new source** dialog shows the form and, for source types whose files you pick, a file panel.
 
 1. Enter a **name** (es. _Marketing assets 2024_) and a **description** explaining the content and purpose, for long term maintenance and team collaboration.
 2. In **Type**, pick the source type and the connector in one go. Each type that needs a connector is a heading with its connectors listed under it, for example **Google Drive** with the connector you created in the previous phase. Types that need no connector, such as **HTTP**, are picked directly. A type that needs a connector you haven't created yet isn't listed.
@@ -98,7 +96,7 @@ The **Add new source** dialog puts the form on the left and, for source types wh
     * type in *"Filter files and folders..."* to narrow the tree;
     * tick the folders and files you want, or use **Select all**;
     * check **Files selected** to see how many items you picked. A folder counts as one pick, and everything inside it is synced.
-5. Click **Add** to confirm.
+5. Select **Add** to confirm. Rational AI creates the source and runs its first sync straight away.
 
 :::note[Resize the file panel for long names]
 Drag the divider between the form and the file panel, or focus it and use the arrow keys, to give the panel more room when file and folder names are long.
@@ -109,7 +107,7 @@ If a connector with authentication issues has been selected, it won't be able to
 :::
 
 ### Configuring synchronization settings
-By default, new sources are created with manual synchronization. You can freely change this from the **Sync settings** (available in the <img
+After that first sync, new sources use manual synchronization. You can freely change this from the **Sync settings** (available in the <img
   src={require('@site/static/img/screens/more-vert.png').default}
   alt="Three vertical dots icon that opens a menu with additional options."
   style={{ 
@@ -144,11 +142,11 @@ You can choose between three modes:
 
 See [Configure data sources](/operational-guides/configure-sources#choose-when-a-source-syncs) for how each mode behaves and what happens when syncs keep failing.
 
-For periodic synchronization, you can define a schedule, such as: every number of minutes, every hour, once a day, once a week, once a month.  
+For periodic synchronization, pick a **Sync schedule**: **Every number of minutes**, **Every number of hours**, **Every hour**, **Every day**, **Weekly** or **Monthly**.  
 Choose a frequency based on how often your external data changes.
 
 You must also define how deletions are handled:
-* **Cascade delete**: files deleted from the original source (for example, from Google Drive) are also removed from the Rational AI.
+* **Cascade delete**: files deleted from the original source (for example, from Google Drive) are also removed from Rational AI.
 * **Keep**: deleted external files remain stored in Rational AI.
 
 
@@ -178,29 +176,29 @@ The Secret Access Key is **only shown once**. If lost, you must delete the old k
 Now that you have your credentials, set up the AWS connector in Rational AI.
 
 * Navigate to **Settings** and select **Connectors** from the left sidebar.
-* Add a new connector: Click the **+ Add** button and select **AWS** from the list of available providers.
+* Add a new connector: select **Add**, then **AWS** from the list of available providers.
 * Fill out the configuration form:
     * **Name** (for example, S3 Access for Marketing Data).
     * **Description** (optional but strongly recommended).
-    * **Access Key ID**: paste the public key generated in Step 1.
-    * **Secret Access Key**: paste the private key.
-    * Click **Add** to save and activate the connector.
+    * **Access Key**: paste the access key ID generated in the previous step.
+    * **Secret Key**: paste the secret access key.
+    * Select **Add** to save and activate the connector.
       
 The AWS S3 connector is now **ready for use**. You can link it to specific buckets in the next step.
 
 ### Configure the AWS S3 source
 After configuring the connector, you need to define the source to specify which S3 buckets should be synchronized.
-* Navigate to **Sources** and click **+ New**.
+* Navigate to **Sources** and select **Add**.
 * Fill out the source form:
     * **Name** (for example, S3 Log Bucket).
     * **Description** to explain the content.
     * **Type**: find **Amazon S3** and pick the AWS connector you created earlier under it.
     * Under **Advanced settings**, enter the **Bucket**, the **Region** where it is located (for example, `eu-central-1`) and, if needed, the **Endpoint** (usually `https://s3.amazonaws.com` or a region-specific endpoint).
-* In the file panel on the right, **browse the bucket** and tick the folders and files you wish to include in the synchronization.
-* Click **Add** to create the source.
+* In the file panel, **browse the bucket** and tick the folders and files you wish to include in the synchronization.
+* Select **Add** to create the source.
 
 :::note
-This source, like all sources, is created with **manual synchronization** by default. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
+This source, like all sources, runs a first sync when you add it and then uses **manual synchronization**. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
 :::
 
 ## Integrate Google Drive data
@@ -247,28 +245,28 @@ The Client Secret is private. **Never** share it or publish it.
 :::
 
 ### Configure the connector
-* Navigate to **Settings > Connectors** and click **+ Add**.
+* Navigate to **Settings** → **Connectors** and select **Add**.
 * Select **Google** from the provider list.
 * Fill out the configuration form:
     * Name: for example `Google Drive access for marketing`.
     * Description: optional but strongly recommended for long-term maintenance and team collaboration purposes.
-    * Client ID: paste the public Client ID from the previous step.
-    * Client secret: paste the private Client Secret ID from the previous step.
-* Click **Add** to save and activate the connector.
+    * **Client ID**: paste the public Client ID from the previous step.
+    * **Client Secret**: paste the private Client Secret from the previous step.
+* Select **Add and authorize**, then complete the Google sign-in to activate the connector.
 
-The Google connector is now ready to define specific data sources, such as Drive folders or BigQuery datasets.
+The Google connector is now ready to back **Google Drive** sources.
 
 ### Configure the Google Drive source
-* Got to **Sources** and click **+ New**.
+* Go to **Sources** and select **Add**.
 * Complete the source form:
     * **Name**: for example `Marketing team Drive`.
     * **Description**: optional but strongly recommended for long-term maintenance and team collaboration purposes.
     * **Type**: find **Google Drive** and pick the connector created in the previous step under it.
-* In the file panel on the right, browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
-* Click **Add** to create the source.
+* In the file panel, browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
+* Select **Add** to create the source.
 
 :::note
-This source, like all sources, is created with **manual synchronization** by default. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
+This source, like all sources, runs a first sync when you add it and then uses **manual synchronization**. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
 :::
 
 ## Integrate OpenRouter data
@@ -287,12 +285,12 @@ Treat your API key like a password. **Never** share it publicly or commit it to 
 :::
 
 ### Configure the connector
-* Navigate to **Settings > Connectors** and click **+ Add**.
+* Navigate to **Settings** → **Connectors** and select **Add**.
 * Select **OpenRouter** from the provider list.
 * Fill out the configuration form:
     * **Name**: for example `OpenRouter access for marketing`.
     * **Description**: optional but strongly recommended for long-term maintenance and team collaboration purposes.
-    * **API key**: paste the key you generated in the previous step.
-* Click **Add** to save and activate the connector.
+    * **API Key**: paste the key you generated in the previous step.
+* Select **Add** to save and activate the connector.
 
 The OpenRouter connector is now ready. OpenRouter provides AI models rather than files, so it doesn't back a source: use it in the [AI Model Registry](/operational-guides/ai-model-registry-features) to add a proxy to an OpenRouter model.

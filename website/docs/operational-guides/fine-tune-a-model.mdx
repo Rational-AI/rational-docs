@@ -26,7 +26,7 @@ Before you start, make sure you have:
 
 A dataset is the training data your fine-tuning run will learn from. You manage datasets under **Settings** → **Datasets**, where the table lists each one by **Name**, **Format**, **Entries**, **Created at**, **Updated at**, and **Current version**.
 
-Datasets are versioned: you can edit the data and create new versions later, so you're never locked into your first attempt.
+Datasets are versioned: every time you append, edit or remove examples, the **Current version** number goes up, so you can tell which state of the data a run trained on.
 
 To start, select **New**. The menu offers several ways to build a dataset.
 
@@ -48,14 +48,15 @@ This is the option to reach for when you want to fine-tune the thing this produc
 
 Every chat completion that goes through the proxy is recorded as the conversation the model actually saw, **including the system prompt, the tool calls it made, and what those tools returned**. Building a dataset from that captures the agent's real behavior rather than an approximation of it.
 
-Filter down to the examples you want with the fields you can actually answer:
+Select **New** → **From recorded traffic**, then filter down to the examples you want:
 
-- **Touchpoint**: which agent's traffic.
-- **Model**: which model produced it.
-- **Date range.**
-- **Successful calls only**: exclude the ones that errored.
+- **Touchpoints**: which agents' traffic. Leave it on **All** for every touchpoint.
+- **Models**: which models produced it.
+- **From**: the period to take traffic from.
+- **Successful calls only**: exclude the calls the provider refused.
+- **Maximum examples** and **Held out (%)**: how many examples to keep, and what share to hold out for measuring.
 
-The counts update as you type: how many requests match, how many will become training examples, and how many are held out. You can see the size of what you're about to create before you create it.
+The counts update as you type: how many requests match, how many will become training examples, and how many are held out. Select **Create dataset**. You can see the size of what you're about to create before you create it.
 
 :::note[A dataset doesn't evaporate when your retention policy fires]
 Entries **copy** the content they were built from rather than pointing at it. Captured request bodies have their own retention clock, and a dataset whose examples vanished on the next sweep would not be a dataset.
@@ -73,8 +74,8 @@ Its limitation is worth knowing before you choose it: **an event carries the tex
 
 A dataset built from real traffic will contain examples you don't want to train on. Open one and its entries are rendered as the conversations they are (tool calls shown as `name(arguments)` rather than raw JSON), each carrying a chip showing whether it's a **training** or **held-out** example.
 
-- **Removing** an example is a single action from the example itself. Most curation is removal, so it's the quick one.
-- **Correcting** one opens it as JSON. The shape differs by format, and a form modeling only some formats would silently drop whatever it didn't recognize.
+- **Removing** an example is a single action from the example itself: **Remove example**. Most curation is removal, so it's the quick one.
+- **Correcting** one with **Edit example** opens it as JSON. The shape differs by format, and a form modeling only some formats would silently drop whatever it didn't recognize.
 - A format that genuinely can't be edited **says so**, rather than accepting an edit and quietly discarding it.
 
 :::note[The held-out split, and why it matters]
@@ -145,7 +146,7 @@ Two things you don't set, and shouldn't have to:
 
 Training takes a while, and a job that reports nothing but "running" is impossible to make decisions about. Select a run in the list to open its drawer, which shows what it's actually doing and refreshes every few seconds while the run is live:
 
-- **Status**: **Pending**, **Training**, **Completed**, **Failed** or **Canceled**, along with who created the run and its **Duration**.
+- **Status**: **Pending**, **Training**, **Completed**, **Failed** or **Cancelled**, along with who created the run and its **Duration**.
 - **Progress**: a bar with the percentage, the current step and the latest loss.
 - **Learning curves**: a chart of **Training loss** and **Evaluation loss** step by step. Because the run is evaluated against the held-out split, you can see **overfitting while it's still happening**. Training loss falling while evaluation loss flattens or rises is the signal to stop.
 - **Error**: the failure reason, if it fails, rather than a run that stops.
@@ -158,7 +159,7 @@ The drawer's **⋮** menu holds what you can do with the run:
 | Action | When it's offered | What it does |
 |---|---|---|
 | **Cancel run** | While training | Stops the training job and releases its GPUs. Saved checkpoints are kept. |
-| **Retry run** | Failed or canceled | Starts the same run again, from its latest complete checkpoint when there is one. |
+| **Retry run** | Failed or cancelled | Starts the same run again, from its latest complete checkpoint when there is one. |
 | **Start training** | Pending | Captures the dataset as it is now and starts training. |
 | **Re-run** | Always | Opens the dialog pre-filled with this run's settings, to launch a *new* run with different parameters. |
 | **Edit details** | Always | Changes the name and description only. |
@@ -183,7 +184,7 @@ Run status is reconciled by reading the job back from the cluster, so a restart 
 
 ## Use your fine-tuned model
 
-When the run finishes, **Deploy** in its drawer makes the fine-tuned model available in the [AI Model Registry](/operational-guides/ai-model-registry-features) alongside your other models. It's the same thing the registry's **Install your own fine-tuned model** option points to. From there you can activate it and use it like any other model in Rational AI. Deploying never silently replaces a deployment that is already serving.
+When the run finishes, **Deploy** in its drawer makes the fine-tuned model available in the [AI Model Registry](/operational-guides/ai-model-registry-features) alongside your other models. From there you can activate it and use it like any other model in Rational AI. Deploying never silently replaces a deployment that is already serving.
 
 ### Take the weights with you
 
@@ -191,11 +192,7 @@ To run the model somewhere else, or keep a copy outside the platform, open the r
 
 **Download training artifacts**, in the drawer, is the bigger package: `<run name>-training.tar.gz` with the captured inputs, the resumable checkpoints, the configuration and the full measurement history. It needs read access to both the run and its dataset, since it contains the training data.
 
-## Related
+## Next steps
 
 - [Manage AI models in the registry](/operational-guides/ai-model-registry-features): where a deployed model lands.
 - [Monitor usage and cost](/operational-guides/governance): the recorded traffic a dataset can be built from.
-
-## Result
-
-You've assembled a dataset (ideally from recorded traffic, so tool calls and system prompts survive into training), curated out the examples you didn't want, and launched a run whose parameters are actually applied. You can watch its learning curves against a genuinely held-out split, stop it when it stops improving, resume it from its last checkpoint if it fails, deploy the result into the model registry, and download its weights to use elsewhere. To keep improving it, curate the dataset and launch another run.

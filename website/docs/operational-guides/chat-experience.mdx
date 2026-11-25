@@ -12,7 +12,7 @@ audience: [user]
 :::note[Who Chat is for]
 Chat is for the people in your organization who sign in to the Control Room. Every signed-in user can open it: it needs no license module and no permission. Your customers never see this page. They reach a [touchpoint](/operational-guides/configure-touchpoints) through its channels (a website widget, Telegram, email and so on), and staff review those conversations in [Conversations](/operational-guides/conversations).
 
-Each chat is tied to one touchpoint, which decides the model, the knowledge and the options you get. The workspace assistant is the touchpoint Rational AI creates for every workspace: in the picker it appears as **Rational chat**.
+Each chat is tied to one touchpoint, which decides the model, the knowledge and the options you get. The workspace assistant is the touchpoint Rational AI creates for every workspace: in the picker it appears as **Rational Chat**.
 :::
 
 ## Chat and the other chats
@@ -25,7 +25,7 @@ Chat and the chat inside a Knowledge use the same conversation view, so answers,
 |---|---|---|
 | **Where** | The **Chat** tab | **Chat** on a Knowledge's page |
 | **Who can open it** | Every signed-in user | People who can open that Knowledge (needs the Knowledge module in your license) |
-| **Touchpoint** | The workspace assistant (**Rational chat**) by default, or any enabled touchpoint you can use | The Knowledge's own touchpoint |
+| **Touchpoint** | The workspace assistant (**Rational Chat**) by default, or any enabled touchpoint you can use | The Knowledge's own touchpoint |
 | **Chat list** | Your own chats, grouped by day. Administrators, and roles that can see all conversations, see every chat in the workspace | Only the chats with the Knowledge's touchpoint |
 | **Context sent with each message** | What you add in the composer | The Knowledge's current filters (categories, tags, relations) and the nodes you selected in the graph |
 | **Composer options** | Attachments, Canvas, **Advanced mode**, **Skills**, the reasoning level, plus **Knowledge bases**, **Web search**, **Deep Research**, **Voice conversation**, the model list and **Memory** | Attachments, Canvas, **Advanced mode**, **Skills** and the reasoning level. No **Knowledge bases**, **Web search**, **Deep Research**, **Voice conversation**, model list or **Memory** |
@@ -47,7 +47,7 @@ Before you start, make sure you have:
 The Chat page opens on the workspace assistant, ready for a new chat.
 
 1. Select **New chat**. It always starts on the workspace assistant.
-2. To talk to another touchpoint, select the assistant's name at the top of the page and pick one. **Rational chat** (the workspace assistant) comes first, followed by the enabled touchpoints you can use, by name.
+2. To talk to another touchpoint, select the assistant's name at the top of the page and pick one. **Rational Chat** (the workspace assistant) comes first, followed by the enabled touchpoints you can use, by name.
 3. A greeting with your first name sits above the composer, for example *"Good evening, Alex"* or *"What's on your mind?"*. It changes with the time of day.
 4. Type your question. If the touchpoint offers suggested questions, up to three appear below the composer: selecting one puts it in the message box, and you send it.
 
@@ -102,7 +102,7 @@ In your own chats with the workspace assistant, you decide which of your knowled
 
 The chip shows the knowledge base's name, or how many are selected. The selection never gives access to anything you can't already read.
 
-Other touchpoints search the knowledge they were configured with. On the new-chat screen, **Knowledge bases** shows it read-only as **Available knowledge**. Inside an existing chat with another touchpoint, a change is refused with *"Only workspace chats can choose their knowledge"*.
+Other touchpoints search the knowledge they were configured with. On the new-chat screen, **Knowledge bases** shows it read-only as **Available knowledge**. Inside an existing chat with another touchpoint, the picker still appears, but a change is refused with *"The change could not be saved"*.
 
 ### Pick a skill with `/`
 
@@ -113,17 +113,17 @@ Type `/` in an empty composer to list the skills enabled on the touchpoint, keep
 You don't have to wait for one answer to finish before lining up your next thought.
 
 1. Type your message in the composer and send it.
-2. While the agent is still generating its response, a second message can't be sent in parallel. Instead it's **queued** and shown as a chip under **Queued**, above the input.
+2. While the assistant is still generating its response, a second message can't be sent in parallel. Instead it's **queued** and shown as a chip under **Queued**, above the input.
 3. Queued messages are sent **automatically and in order** as soon as the previous turn completes.
 4. To cancel a pending send, hover the chip and select the **✕** (*"Remove from queue"*). Hovering also shows the tooltip **"Message waiting to be sent"**.
 
 :::note[The queue survives reloads]
-The queue is saved per chat in your browser, so queued messages survive a page reload or switching between chats, and resume sending once the agent is idle. Queued chips are text only: attachments apply to messages you send directly, not to queued ones.
+The queue is saved per chat in your browser, so queued messages survive a page reload or switching between chats, and resume sending once the assistant is idle.
 :::
 
 ## Attach files to a message
 
-Attach images and documents to a message so the agent can use them directly in its answer.
+Attach images and documents to a message so the assistant can use them directly in its answer.
 
 1. Open **+** → **Add files and photos**, or drag files onto the composer. Images, PDF, text, Markdown, CSV and JSON files are accepted, and Word, Excel and PowerPoint files in `.docx`, `.xlsx` and `.pptx` format (not the older `.doc`, `.xls` and `.ppt`).
 2. A card for each attachment appears in the composer while it uploads; the send button waits until every upload has finished.
@@ -139,15 +139,15 @@ Images are passed to the model as vision input. For documents, the text is extra
 
 The attachment on a message is a button: select it to get the file itself, not only its name. It opens in a new browser tab, where the browser previews what it can (PDFs, images, text) and downloads the rest.
 
-This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) (a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram)), the attachment is the only route to what the sender actually sent.
+This matters most for files you never had a local copy of. When a conversation arrives through a [channel](/operational-guides/manage-channels) (a document mailed in through an [Email channel](/operational-guides/connect-email), a PDF sent to a [Telegram bot](/operational-guides/connect-telegram)), the attachment is the only route to what the sender sent.
 
 :::note[Large corpora belong in a Knowledge]
-Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the agent to search over, store them in a [Knowledge](/operational-guides/create-knowledge) instead. Rational AI indexes that content for retrieval-augmented answers ([RAG](/concepts/RAG)), where the agent looks up relevant passages at answer time rather than reading whole files inline.
+Document extraction is bounded by size, page, and character caps. For large or numerous documents you want the assistant to search over, store them in a [Knowledge](/operational-guides/create-knowledge) instead. Rational AI indexes that content for retrieval-augmented answers ([RAG](/concepts/RAG)), where the assistant looks up relevant passages at answer time rather than reading whole files inline.
 :::
 
 ## Follow how an answer was built
 
-While the agent works, a line above the answer reads *"Rational AI is thinking..."* with a live summary of what it's doing. When it's done, everything it did before answering (reasoning, knowledge searches, web searches, tools and skill runs) is folded into that single line, for example *"Thought for 8s"* or *"Thought for 12s, used skill xlsx, 4 steps"*. Select it to read the steps in order.
+While the assistant works, a line above the answer reads *"Rational AI is thinking..."* with a live summary of what it's doing. When it's done, everything it did before answering (reasoning, knowledge searches, web searches, tools and skill runs) is folded into that single line, for example *"Thought for 8s"* or *"Thought for 12s, used skill xlsx, 4 steps"*. Select it to read the steps in order.
 
 - A **knowledge search** reads *"Searched 2 knowledge bases and read 5 documents"*.
 - A **tool** reads *"Used …"* with the tool's name.
@@ -192,7 +192,7 @@ Regenerating, editing and verifying are each switched on per touchpoint. Sending
 
 ### Generate an alternative answer
 
-Use this when an answer is close but you'd like to see how the agent would phrase it differently.
+Use this when an answer is close but you'd like to see how the assistant would phrase it differently.
 
 1. On an AI message, select **Regenerate response**.
 2. A new version is added and the counter updates (for example **2/2**). The chat auto-advances to the newest version.
@@ -205,7 +205,7 @@ Use this when you want to rephrase a question and explore a different line of co
 1. On one of your own messages, select **Edit**.
 2. An inline edit box opens with the hint *"Saving creates a new version of this conversation."*
 3. Adjust the text and select **Save** (or press Enter).
-4. A new version is created and the agent answers it. Attachments on the original message are carried onto the new version, so they survive the edit.
+4. A new version is created and the assistant answers it. Attachments on the original message are carried onto the new version, so they survive the edit.
 
 ### Branch into a new chat
 
@@ -221,7 +221,7 @@ The new chat keeps your choice of model and knowledge bases, but attachments and
 
 ### Rate an answer
 
-Tell the agent's owners whether an answer worked. The two thumbs buttons on the action row open a short dialog rather than recording a silent vote, so a rating always comes with the reason behind it.
+Tell the touchpoint's owners whether an answer worked. The two thumbs buttons on the action row open a short dialog rather than recording a silent vote, so a rating always comes with the reason behind it.
 
 1. On an AI message, select **thumbs up** (*Give positive feedback*) or **thumbs down** (*Give negative feedback*).
 2. For negative feedback, tick as many reasons as apply under **Add details**: **Confusing**, **False**, **Offensive**, **Useless**, or **Other**.
@@ -252,22 +252,22 @@ If the same message keeps coming back, the touchpoint's owner can adjust its lim
 
 ## Check an answer against your knowledge
 
-On touchpoints with response verification switched on and the knowledge search tool enabled, you can check an answer, claim by claim, against the knowledge documents retrieved for the conversation.
+On touchpoints with response verification switched on and the knowledge search tool enabled, you can check an answer, sentence by sentence, against the knowledge documents retrieved for the conversation.
 
 1. On an AI message, open **⋯** → **Verify response**. **Verifying** shows while it runs.
-2. A status line summarizes the check, for example *"6 sentences, 9 claims checked against 3 documents."*, and the answer is underlined: **green** for supported, **yellow** for uncertain, **red** for unsupported.
-3. Hover an underlined part to see the verdict and its best match score.
-4. Select an underlined part, or **View details**, to open the **Claim list**. It lists every sentence with its state; for the selected one, **Generative context** shows the excerpts it was compared with and how closely each matched, from 0 to 1.
+2. Each checked sentence of the answer is highlighted: **green** for **Supported**, **yellow** for **Unsupported**, **red** for **Disproven**.
+3. Hover a highlighted sentence to see its state.
+4. Select a highlighted sentence to open **Response verification**. Sentences are grouped under **To check** (disproven and unsupported) and **Supported**. For the selected sentence, **Sources** lists the excerpts it was compared with, each with its knowledge base and a **high match**, **medium match** or **low match** label.
 
-Select **Verify response** again to hide the underlines. If nothing in the answer can be checked, the status line says **No verifiable sentences**.
+Select **Verify response** again to hide the highlights. If nothing in the answer can be checked, the action row shows **No verifiable sentences**. If the check fails, select **Verification failed, retry**.
 
 :::note[Unsupported isn't the same as wrong]
-Verification measures whether the retrieved documents back a claim, not whether the claim is true. A red underline means *"No knowledge document supports this claim, or the documents contradict it"*. Treat it as a cue to look closer, especially for anything the answer took from general knowledge rather than from your documents.
+Verification measures how close the answer is to the excerpts from the knowledge bases consulted, not whether it is true. Treat an unsupported or disproven sentence as a cue to look closer, especially for anything the answer took from general knowledge rather than from your documents.
 :::
 
-## Work with the files the agent creates
+## Work with the files the assistant creates
 
-Documents the agent writes for you (a Word report from a skill, a page built in Canvas) open in the **Canvas** panel beside the chat. Select the file's name at the top of the panel to open its menu:
+Documents the assistant writes for you (a Word report from a skill, a page built in Canvas) open in the **Canvas** panel beside the chat. Select the file's name at the top of the panel to open its menu:
 
 | Action | What it does |
 |--------|--------------|
@@ -316,7 +316,7 @@ Markdown is stripped before anything is read, so fenced code blocks and link tar
 :::note[The voice follows the answer, not the interface]
 An Italian answer is read in Italian even if you're using Rational AI in English. What's spoken is the language of the text, not the language of the UI.
 
-Playback also starts before the whole answer has been synthesised. The reply is spoken in sentence groups, with the next fetched while the current one plays, so you hear the first words after about a second rather than waiting for a long answer to render in full.
+Playback starts before the whole answer has been synthesized. The reply is spoken in sentence groups, with the next fetched while the current one plays, so you hear the first words as soon as the first group is ready.
 :::
 
 ### Dictate a message
@@ -332,17 +332,11 @@ Dictation works in both composers: inside an existing conversation, and on the n
 
 The arrow next to the mic button opens **Audio language**, with three options: **Detect automatically** (the default), **Italian**, or **English**. Your choice is remembered and applies to both dictation and reading aloud.
 
-Automatic really is automatic in both directions: each recording is detected as it's transcribed, and the language of an answer is detected from the answer itself, falling back to your own locale only when a message is too short to identify.
+With **Detect automatically**, each recording is detected as it's transcribed, and the language of an answer is detected from the answer itself, falling back to your own locale only when a message is too short to identify.
 
-:::note[Pinning the language makes dictation noticeably faster]
-Choosing **Italian** or **English** explicitly skips the detection pass, which is worth roughly 40% of the transcription time. If you always dictate in the same language, pin it.
-:::
+Choosing **Italian** or **English** explicitly skips the detection pass, so transcription is faster. If you always dictate in the same language, pin it.
 
-:::note[Dictation on the new-chat screen needs a signed-in account]
 Inside an existing chat, dictating needs the same **Update** on **Conversations** as typing.
-
-On the new-chat screen there is no conversation yet, so dictation there requires a signed-in account. Creating a conversation only to hold a recording would leave an empty one behind every time someone discarded the text.
-:::
 
 ## Keep going in a long conversation
 
@@ -362,12 +356,11 @@ Each chat's **⋯** menu in the list has **Rename chat** and **Delete**. Select 
 
 ### Rename a chat
 
-Give a chat a clear title so you can find it later. Type one yourself or let the agent name it for you.
+Give a chat a clear title so you can find it later. Type one yourself or let the assistant name it for you.
 
-1. Open the **Rename chat** modal for the chat.
-2. Edit the title manually, or select the **Generate with AI** spark button to the right of the title input.
-3. When you use **Generate with AI**, the icon shows a loading throbber while the title is regenerated, then the AI-generated title replaces the input text and the field is marked as AI-generated (purple background).
-4. Save the new title.
+1. Select **Rename chat** in the chat's **⋯** menu in the list, or **Rename** in the title menu.
+2. Edit the title, or select the spark button (*"Generate with AI"*) next to the field. The generated title replaces the text, and the field is marked as AI-generated.
+3. Select **Save**.
 
 <img
   src={require('@site/static/img/screens/chat-rename-ai.png').default}
@@ -398,7 +391,7 @@ Take over when a customer needs a human: a sensitive case, an edge case, or anyt
 3. When you're done, select **Hand back to the AI**. If you've left an unsent draft, you're asked to confirm with **Discard draft and hand back**, since the draft is deleted.
 
 :::note[First come, first served]
-Takeover is exclusive. If another operator has already taken the conversation, the bar says so, there's no **Take over** button, and an attempt that races another operator is blocked with a toast. Control never returns to the AI on its own. It returns only when you explicitly hand the conversation back.
+Takeover is exclusive. If another operator has already taken the conversation, the bar says so, there's no **Take over** button, and an attempt that races another operator is blocked with *"Another operator has already taken over this conversation."* Control never returns to the AI on its own. It returns only when you explicitly hand the conversation back.
 :::
 
 ### Stop an answer without taking over
@@ -422,7 +415,7 @@ Before stepping in, get up to speed in seconds with an AI-written recap of the c
 
 The summaries you generate are also listed under **Summary** in the conversation's **Details** drawer, which offers **Generate summary** too. Summaries aren't stored on the server, so the drawer lists only the ones generated in your current session.
 
-Summary behavior is governed by the **Summary generation settings** section on the [Conversations settings](/cr/settings/conversations) page, where you can toggle generation and set the model, the number of messages to consider (`0` means all), and the prompt template (with **Restore default**).
+Summary behavior is governed by the **Summary generation settings** section on the [Conversations settings](/cr/settings/conversations) page, where you can turn generation on or off and set the model, the number of messages to consider (`0` means all), and the prompt template (with **Restore default**).
 
 ## Next steps
 

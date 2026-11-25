@@ -10,7 +10,7 @@ audience: [builder]
 Not everything is a task. Sometimes you want to ask Quinn how a surcharge was computed, have Scout dig into one of this morning's stories, or put Quinn and Iris in the same room to check an offer against last week's volumes. **Chats** are conversations with one agent or with a group, where every message you send is picked up as work and every answer keeps the context of the conversation.
 
 :::note[A message is a run]
-Each message you send starts a run for each agent in the chat, with the conversation so far as context. The answer appears in the chat; the run behind it, with its full activity, is one click away (**View run**) and stays in **History**. Approvals work the same as anywhere else: when an agent reaches a tool under **Ask me first**, the approval card appears in the chat.
+Each message you send starts a run for each agent it mentions by name (`@Name`), or for every agent in the chat when it mentions none or `@everyone`, with the conversation so far as context. The run acts as you, with your permissions. The answer appears in the chat; the run behind it, with its full activity, is one click away (**View run**) and stays in **History**. Approvals work the same as anywhere else: when an agent reaches a tool under **Ask me first**, the approval card appears in the chat.
 :::
 
 ## Prerequisites
@@ -21,10 +21,8 @@ Each message you send starts a run for each agent in the chat, with the conversa
 
 1. Open **Agents** → **Chats** and select **+** (*New chat*).
 2. Pick one agent for a **direct chat**, or several for a **group chat** (up to 20). The footer confirms which: *1 agent · direct chat* or *3 agents · group chat*.
-3. For a group, give it a **Group name**.
+3. For a group, enter a **Group name**.
 4. Select **Start chat**.
-
-You can also start a chat right after creating an agent with **Create & start session** in its profile.
 
 ## Talk to the agents
 
@@ -32,11 +30,11 @@ Type in the composer (*Message &lt;chat&gt;…*) and send. The agents answer in 
 
 - **Messages keep the conversation's context.** You don't need to repeat what was said.
 - **One run at a time per agent.** While an agent's computer is busy, new messages wait in order and are picked up one after the other.
-- **Steer a run in progress.** In a direct chat, tick **Steer the current run at its next safe boundary** to send your message into the run that is already going, instead of queuing a new one.
+- **Steer a run in progress.** In a direct chat, select **Steer the current run at its next safe boundary** to send your message into the run that is already going, instead of queuing a new one.
 - **Follow the work.** **View run** opens the run behind an answer. If a run did not finish, the message shows *Failed*, *Timed out*, *Stopped* or *Skipped* with **View run**, **Use message again** and **Technical details**.
 - **Scroll back** with **Load earlier messages**; **Jump to latest** brings you back down.
 
-The header shows who is in the chat. **Role** (direct chat) or the info panel (**About …**) lists the agent's identifier, the participants, its instructions, the tools it may use and the runs shown in the chat. In a group, **Add agent** brings in another member, and selecting the group name renames it.
+The header shows who is in the chat. **Role** (direct chat) or the info panel (**About …**) lists the agent's identifier, the participants, its instructions, the tools it may use and the runs shown in the chat. In a group, **Add agent** brings in another member, and selecting the group name renames it. **Add people** shares the chat with colleagues who can use every agent in it.
 
 ## Keep the list tidy
 
@@ -44,13 +42,13 @@ Right-click a chat, or use its **More options** menu:
 
 - **Pin** / **Unpin** keeps a chat at the top.
 - **Move to new section** groups chats under a heading; select a section heading to rename it, and **+** next to it to start a chat in that section.
-- **Mark as Unread**, **Duplicate**, **Copy conversation ID**.
-- **Edit Profile** opens the agent's profile.
+- **Mark as unread**, **Duplicate** (a copy with the same agents and history, for you alone), **Copy conversation ID**.
+- **Edit profile** opens the agent's profile.
 - **Hide from sidebar** hides a chat without deleting it; hidden chats are listed under **Hidden chats**, where **Restore** brings them back.
-- **Delete** removes the chat. The agents and their runs are kept.
+- **Delete** removes the chat for everyone in it. The agents and their runs are kept. Only the person who started the chat can rename it, add agents or people, or delete it; the others can **Leave**.
 
-:::note[Chats are personal]
-Your chats are visible only to you. The runs they start appear in **History** like any other run, and only the person who started a run can send it further messages.
+:::note[Who sees a chat]
+A chat is visible to the person who started it and to the people added with **Add people**. Pinning, sections, hiding and unread marks are each person's own. The runs a chat starts appear in **History** like any other run, and only the person who started a run can send it further messages.
 :::
 
 ## When to use a chat, a task or Run now

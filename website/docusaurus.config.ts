@@ -229,54 +229,63 @@ const config: Config = {
 				// { to: "/blog", label: "Blog", position: "left" },
 			],
 		},
+		// Light footer that follows the theme; columns mirror the sidebar sections
 		footer: {
-			style: "dark",
+			style: "light",
+			logo: {
+				alt: "Rational AI",
+				src: "img/logo.svg",
+				href: "https://rational.is",
+				width: 28,
+				height: 28,
+			},
 			links: [
 				{
-					title: "Docs",
+					title: "Get started",
 					items: [
+						{ label: "Quickstart", to: "/operational-guides/get-started" },
+						{ label: "The modules", to: "/cr/Chats" },
+						{ label: "Concepts", to: "/concepts/Generative-AI" },
+					],
+				},
+				{
+					title: "Guides",
+					items: [
+						{ label: "Use Chat", to: "/operational-guides/chat-experience" },
 						{
-							label: "Docs",
-							to: "/",
+							label: "Create a Knowledge",
+							to: "/operational-guides/create-knowledge",
+						},
+						{
+							label: "Administration & security",
+							to: "/operational-guides/install-and-update",
+						},
+						{ label: "Developers", to: "/operational-guides/api-access" },
+					],
+				},
+				{
+					title: "Help",
+					items: [
+						{ label: "Troubleshooting", to: "/troubleshooting" },
+						{ label: "Release notes", to: "/release-notes" },
+						{
+							label: "Release notes RSS",
+							href: "pathname:///release-notes/rss.xml",
 						},
 					],
 				},
 				{
-					title: "Resources",
+					title: "Rational AI",
 					items: [
+						{ label: "Website", href: "https://rational.is" },
 						{
-							label: "Rational AI",
-							to: "https://rational.is",
-						},
-						// {
-						//   label: "Stack Overflow",
-						//   href: "",
-						// },
-						// {
-						//   label: "Discord",
-						//   href: "",
-						// },
-						// {
-						//   label: "X",
-						//   href: "",
-						// },
-					],
-				},
-				{
-					title: "More",
-					items: [
-						// {
-						// 	label: "Blog",
-						// 	to: "/blog",
-						// },
-						{
-							label: "GitHub",
-							href: "https://github.com/Rational-AI/",
+							label: "Docs on GitHub",
+							href: "https://github.com/Rational-AI/rational-docs",
 						},
 					],
 				},
 			],
-			copyright: `Copyright © ${new Date().getFullYear()} Rational AI.`,
+			copyright: `© ${new Date().getFullYear()} Rational AI`,
 		},
 		prism: {
 			theme: prismThemes.github,

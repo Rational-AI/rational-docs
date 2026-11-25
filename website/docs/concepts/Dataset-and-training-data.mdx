@@ -14,7 +14,7 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 **Training data** is the collection of examples a model learns from. A **dataset** is that data organized into a usable form: a structured set of examples gathered, cleaned and labeled for a specific purpose. If a model's [architecture](./Model-architecture.mdx) is the blueprint, the dataset is the raw material it is built from.
 
-A model never learns facts the way a person memorises them. It learns **patterns** from the examples it sees. This is why the data matters so much: a model can only be as good, as broad and as fair as the data it was trained on. The common phrase captures it well: garbage in, garbage out.
+A model never learns facts the way a person memorizes them. It learns **patterns** from the examples it sees. This is why the data matters so much: a model can only be as good, as broad and as fair as the data it was trained on. The common phrase captures it well: garbage in, garbage out.
 
 ## What makes a dataset good
 
@@ -22,7 +22,7 @@ Not all data is equally useful for training. A strong dataset tends to be:
 
 * **Relevant:** representative of the task and the domain the model will actually work in.
 * **High quality:** accurate, consistent and free of errors, duplicates and noise.
-* **Diverse:** covering the range of cases the model will meet, so it generalises rather than memorising.
+* **Diverse:** covering the range of cases the model will meet, so it generalizes rather than memorizing.
 * **Well labeled:** where labels are needed, they are correct and applied consistently.
 * **Balanced:** not skewed towards one group or outcome, which helps reduce bias.
 
@@ -37,16 +37,17 @@ Training data generally falls into a few categories, often combined:
 | Type           | What it means                                                | Example                                  |
 | :------------- | :----------------------------------------------------------- | :--------------------------------------- |
 | **Labeled**   | Each example is paired with the correct answer or category    | Emails tagged as *spam* or *not spam*    |
-| **Unlabelled** | Raw examples with no annotations                              | A large collection of web pages          |
+| **Unlabeled** | Raw examples with no annotations                              | A large collection of web pages          |
 | **Structured** | Organized in a fixed schema, such as rows and columns         | A products table in a database           |
 | **Unstructured** | Free‑form content without a fixed schema                    | Documents, PDFs, images, transcripts     |
 
-Large language models are first trained on huge amounts of mostly unlabelled text, then refined on smaller, carefully curated datasets through [model training](./Model-architecture.mdx) and fine-tuning.
+Large language models are first trained on huge amounts of mostly unlabeled text, then refined on smaller, carefully curated datasets through [model training](./Model-training.mdx) and fine-tuning.
 
 ## Datasets and your data in Rational AI
 
-In the platform, you don't retrain a base model, but the same principles apply to the data you bring:
+In the platform, the same principles apply to the data you bring:
 
+* A [dataset](../cr/settings/datasets.mdx) under **Settings** → **Datasets** holds the examples a [fine-tuning](./Finetuning.mdx) run learns from, built from a file, from recorded model traffic or from conversation events. A run trains on part of it and holds the rest out to measure the result.
 * The information you add to [Knowledge](../cr/Knowledge.mdx) becomes the data your agents reason over through retrieval. Its quality, coverage and freshness shape the quality of the answers, as training data shapes a model.
 * Curating that data, with clear sources, sensible structure and good metadata, is the equivalent of building a good dataset for retrieval rather than for training.
 
@@ -55,6 +56,7 @@ The lesson carries across: the better and cleaner the data you provide, the more
 ## Additional resources
 
 * [Knowledge](../cr/Knowledge.mdx): organize the data your agents draw on at answer time.
+* [Datasets](../cr/settings/datasets.mdx): build the training data a fine-tuning run needs.
 
 
 ---

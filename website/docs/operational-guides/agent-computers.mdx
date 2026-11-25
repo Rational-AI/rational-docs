@@ -28,29 +28,30 @@ Open **Agents** → **Computers**.
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-The page lists every agent with its computer and its open run, if any. The count at the top shows how many runs are open.
+The page lists every agent with its computer and its open run, if any. The count at the top shows how many runs are open (*N open runs*).
 
 - **With an open run**, the card shows *Open run* and its status, with **View run** and **Stop run**.
-- **Without one**, it says *"No open run. The computer may still be running."*: the computer's own state is shown in the panel below.
+- **Without one**, it says *No open run*; the computer's own state is shown in its **Computer** panel.
 
 The same **Computer** panel is on every agent's page.
 
 | State | Means |
 |-------|-------|
-| `notCreated` | The agent has never needed its computer. The first run, or **Start computer**, creates it. |
-| `running` | Up and ready. |
-| `idle` | Up, with no work; it will stop on its own. |
-| `stopped` | Stopped; files and skills are kept. |
+| **Not started yet** | The agent has never needed its computer. The first run, or **Start computer**, creates it. |
+| **Running** | Up and ready. |
+| **Idle** | Up, with no work; it stops on its own. |
+| **Stopped** | Stopped; files and skills are kept. |
+| **Disabled** | Computers are not enabled on this installation. |
 
 ## Control a computer
 
 - **Start computer** starts it ahead of a run, so the first step does not wait.
 - **Show desktop** opens the computer's desktop inside the page, **Open desktop** in a new tab; the viewer has **Fit to window**, **Clipboard**, **Ctrl+Alt+Del**, **Full screen** and **Reconnect**. Watching the desktop while a run works is the quickest way to see what the agent is doing in its browser.
 - **Stop** shuts it down. Files stay.
-- **Install gstack** installs a ready-made toolkit of browser automation and skills on the computer (**Reinstall gstack** to update it). It can take several minutes; the installed skills are listed under *N installed skills*.
+- **More computer actions** has **Install browser tools**, which installs a ready-made toolkit of browser automation and skills on the computer (**Reinstall browser tools** to update it), plus **Repair** and **Restart desktop**. Installing can take several minutes; the installed skills are listed under *N installed skills*. Restarting the desktop closes its open windows and keeps the files.
 
 :::warning[The desktop is the agent's, not yours]
-Whatever you do on the desktop happens on the agent's machine, in the middle of its work. Use it to watch, or to unblock something the agent asked you about (a sign-in page, a confirmation), not to work alongside it while a run is going.
+Whatever you do on the desktop happens on the agent's machine, in the middle of its work. Use it to watch, or to unblock something the agent asked you about (a sign-in page, a confirmation), not to work alongside it while a run is going. On the run page, **Take control** lets you use the desktop and **Hand back to the agent** returns it.
 :::
 
 ## Browse the library
@@ -63,7 +64,7 @@ Whatever you do on the desktop happens on the agent's machine, in the middle of 
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-- **Tools**: grouped by extension. Expand one to see its tools, with the name the agent will see; that is also the name **Ask me first** matches. **Search a tool…** filters them, **Read-only tools** keeps only those that do not change anything. A *Needs setup* badge means the extension still needs a connector before an agent can use it.
+- **Tools**: grouped by extension, with the count on the tab. Expand one to see its tools, with the name the agent will see; that is also the name **Ask me first** matches. **Search a tool…** filters them, **Read-only tools** keeps only those that do not change anything. A *Needs setup* badge means the extension still needs a connector before an agent can use it.
 - **Skills**: *"Every skill the installed extensions register for your agents"*, with **Search a skill…**. Touchpoints use skills from the same extensions; see [Build and run touchpoint skills](/operational-guides/agent-skills).
 
 Installing an extension does not give it to anyone. A tool runs only for an agent it was granted to on its profile, and only on the Knowledge bases that agent was granted. To add tools, install an extension ([Manage extensions](/operational-guides/manage-extensions)); to give them to an agent, select them under **Extensions & tools** in its profile ([Build an agent](./create-an-agent#extensions-and-tools)).

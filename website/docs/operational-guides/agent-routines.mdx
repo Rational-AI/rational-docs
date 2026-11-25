@@ -7,7 +7,7 @@ audience: [builder]
 
 # Schedule and trigger agents
 
-Some work should happen without anyone asking: the morning briefing at eight, the sales report every Monday, a review every time a pull request is opened. A **routine** is an agent that is started by something other than you: a schedule, a GitHub event or a call from another system. This guide shows how to set each one up, how to see what is coming and how to hold a routine.
+Some work should happen without anyone asking: the morning briefing at eight, the sales report every Monday, a review every time a pull request is opened. A **routine** is an agent that is started by something other than you: a schedule, a call from another system, a GitHub event, a new email, a new Knowledge file or a changed record. This guide shows how to set each one up, how to see what is coming and how to hold a routine.
 
 :::note[A routine is an agent with a trigger]
 There is nothing to create besides the agent: its **Trigger** decides what starts it. A scheduled or event-driven run is the same as any other run (same instructions, same tools, same approvals), and it shows up in **History**, on the agent's page and on the routine's **Runs** tab.
@@ -18,6 +18,8 @@ There is nothing to create besides the agent: its **Trigger** decides what start
 - **An agent with instructions**: see [Build an agent](./create-an-agent). Write them for a run nobody is watching, and say where the result goes and what "done" means.
 - **For GitHub:** admin rights on the repository, to add a webhook.
 - **For API calls:** an API key from **Settings** → **API Keys** (see [Access Rational AI via API](/operational-guides/api-access#create-an-api-key)).
+- **For new emails:** an Email channel (see [Connect a mailbox](/operational-guides/connect-email)).
+- **For new files and changed records:** a Knowledge base the agent may use.
 
 ## See your routines
 
@@ -29,21 +31,21 @@ Open **Agents** → **Routines**.
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-The counters at the top show how many routines there are, how many are enabled or paused and how many failed their last run. Every agent is listed with its trigger, its tools, the outcome of its last run and a **Pause**/**Resume** button. Search with **Search routines…**, filter by **Scheduled**, **Event**, **API**, **Active**, **Paused** or **Failed**, and sort by **Recently run**, **Name**, **Status** or **Failing first**; the two buttons on the right switch between list and grid.
+The line under the title counts the routines, how many are enabled and how many failed their last run. Every agent is listed with its trigger, its tools, the outcome of its last run and a **Pause**/**Resume** action. Search with **Search routines…**, filter by trigger (**Trigger: Scheduled**, **Trigger: Event**, **Trigger: API**) and by status (**Status: Enabled**, **Status: Paused**, **Status: Last run failed**), and sort by **Recently run**, **Name**, **Status** or **Failing first**; **List view** and **Grid view** switch the layout.
 
 Select a routine to open its panel: **Run now** starts it immediately, **Edit** opens the profile, and the **Overview**, **Trigger**, **Permissions** and **Runs** tabs show what it does, what starts it, what it may touch and how it went.
 
-**New Routine** opens a new agent profile with the trigger already set to `schedule`.
+**New routine** opens a new agent profile with the trigger already set to **Schedule**.
 
 ## Run it on a schedule
 
 **Scout** writes the market briefing every weekday at 08:00, Rome time.
 
-1. Open the agent's profile (**Edit**), or create it with **New Routine**.
-2. Under **Trigger & execution**, set **Trigger** to `schedule`.
-3. Under **Schedule**, keep **Cron** and write the expression: `0 8 * * 1-5`.
-4. Set the **Timezone**, for example `Europe/Rome`. Without one, the schedule follows the server's timezone.
-5. Select **Save profile**.
+1. Open the agent's profile (**Edit**), or create it with **New routine**.
+2. Under **Trigger & execution**, set **Trigger** to **Schedule**.
+3. Under **Schedule**, keep **Cron** and enter the expression: `0 8 * * 1-5`.
+4. Set the **Time zone**, for example `Europe/Rome`. Without one, the schedule follows the server's time zone.
+5. Select **Save** (or **Create agent** for a new one).
 
 <img
   alt="Scout's Trigger and execution section: trigger schedule, Cron 0 8 * * 1-5, timezone Europe/Rome, cloud, autonomous"
@@ -60,15 +62,15 @@ The cron expression has the usual five fields (minute, hour, day of the month, m
 | `*/30 8-18 * * 1-5` | Every 30 minutes from 08:00 to 18:30, on weekdays |
 | `0 6 1 * *` | At 06:00 on the first day of every month |
 
-If a scheduled run is due while the previous one is still going, it is skipped rather than stacked. When the agent has no model of its own, the platform Agents default is picked when the run starts.
+If a scheduled run is due while the previous one is still going, it is not stacked on top of it. When the agent has no model of its own, the platform Agents default is picked when the run starts.
 
 :::note[Use cron, not interval]
-The **Interval** option (*Every n minutes*) does not create a schedule yet, and saving a profile with it removes the cron schedule the agent had. For a regular interval, write it as a cron expression, such as `*/15 * * * *` for every 15 minutes.
+The **Interval** option (**Every** *n* **minutes**) does not create a schedule yet, and saving a profile with it removes the cron schedule the agent had. For a regular interval, write it as a cron expression, such as `*/15 * * * *` for every 15 minutes.
 :::
 
 ## See what's coming in the calendar
 
-**Calendar**, the third view on the **Tasks** page, lays the scheduled runs of the next seven days on a week grid from 07:00 to 21:00, next to today's runs and approvals.
+**Agents** → **Calendar** (also the third view on the **Tasks** page) lays the upcoming scheduled runs on a week calendar, in Rome time, next to past runs and approvals.
 
 <img
   alt="The week calendar with Scout's 08:00 briefing on each weekday"
@@ -76,7 +78,7 @@ The **Interval** option (*Every n minutes*) does not create a schedule yet, and 
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
-**Filter** narrows it to recurring or one-time routines and to active or paused ones; paused routines show as *&lt;name&gt; · paused* in the all-day row. The legend at the bottom tells routines, tasks and approvals apart.
+**Filter** narrows it by schedule (**All**, **Recurring**, **One-time**) and by status (**All**, **Active**, **Paused**, **Stopped after failures**, **On hold**). A paused routine shows once, all day today, as *Paused, it will not run*. The legend tells routines, tasks and approvals apart.
 
 ## Run it on a GitHub event
 
@@ -84,10 +86,11 @@ The **Interval** option (*Every n minutes*) does not create a schedule yet, and 
 
 ### Configure the agent
 
-1. In the profile, set **Trigger** to `githubEvent`.
-2. **Repository**: `organisation/repository`, for example `acme/web-shop`.
-3. **Events**: a comma-separated list of GitHub event names, for example `pull_request` or `pull_request, push`. Leave it empty to accept every event.
-4. Select **Save profile**.
+1. In the profile, set **Trigger** to **GitHub event**.
+2. **Repository**: `organisation/repository`, for example `acme/web-shop`. Deliveries from any other repository are ignored.
+3. **Events**: a comma-separated list of GitHub event names, for example `pull_request` or `pull_request, push`. Write `event.action` to match a single action, for example `pull_request.opened`. Leave it empty to accept every event.
+4. Optionally, narrow it further with **Only if** and **AI check** (see [Filter events before they start a run](#filter-events-before-they-start-a-run)).
+5. Select **Save**.
 
 <img
   alt="Rev's Trigger and execution section: trigger githubEvent, repository acme/web-shop, events pull_request"
@@ -119,18 +122,49 @@ In the repository, go to **Settings** → **Webhooks** → **Add webhook** and f
 
 `<tenant>` is your organization's identifier on the platform, normally the first part of your Control Room address (`<tenant>.…`); your administrator can confirm it.
 
-GitHub sends a *ping* as soon as the webhook is saved; the answer `{"status":"pong"}` in **Recent Deliveries** confirms that the address and the secret are right. From then on, every matching event answers `{"status":"queued","runId":"…"}` and a run appears in **History** with trigger `githubEvent`.
+GitHub sends a *ping* as soon as the webhook is saved; the answer `{"status":"pong"}` in **Recent Deliveries** confirms that the address and the secret are right. From then on, every matching event answers `{"status":"queued","runId":"…"}` and a run appears in **History** started by *GitHub event*.
 
 | GitHub shows | Means |
 |--------------|-------|
-| `401` | Wrong agent ID, or the signature does not match the secret. Regenerate the secret and paste it again. |
-| `{"status":"ignored","reason":"paused"}` | The agent is paused. |
-| `{"status":"ignored","eventName":"…"}` | The event is not in the agent's **Events** list. |
+| `401` | Wrong agent ID, the agent's trigger is not **GitHub event**, or the signature does not match the secret. Regenerate the secret and paste it again. |
+| `{"status":"ignored","reason":"paused"}` | The agent is paused or disabled. |
+| `{"status":"ignored","reason":"limit"}` | The agent has used its monthly budget. |
+| `{"status":"ignored","eventName":"…"}` | The event is not in the agent's **Events** list, or it comes from another repository. |
+| `{"status":"skipped","runId":"…"}` | The event did not pass **Only if** or **AI check**. |
 | `{"status":"duplicate"}` | GitHub redelivered an event that already started a run. |
 
-:::warning[The repository field is not a filter]
-Deliveries are accepted from any repository that has the webhook URL and the secret; the **Repository** on the profile tells the agent where the events come from but does not reject other repositories. Keep the secret on the repositories you mean.
-:::
+## Start it from a webhook
+
+Any system that can send an HTTP POST (a form tool, a monitoring alert, a CRM automation) can start a run, without an API key.
+
+1. In the profile, set **Trigger** to **Webhook** and save the agent. Its **Address** appears.
+2. Select **Generate key** and copy the key: it is not shown again. **Rotate key** replaces it, and systems still sending the old key are refused.
+3. Send each request to the **Address**, with the key as a bearer token (`Authorization: Bearer <key>`), or sign the raw body with it (HMAC-SHA256) in an `X-Signature-256` header.
+
+Each request starts a run whose input is the request body (up to 256 KB). An `Idempotency-Key` header makes a repeated request start no second run. Requests to a paused or over-budget agent are acknowledged without starting a run, and **AI check** can skip the ones that do not concern the agent.
+
+## Start it on a new email
+
+1. In the profile, set **Trigger** to **New email**.
+2. Under **Mailbox**, choose an Email channel.
+3. Optionally, set **Only if** on **From**, **Subject**, **Text**, **Has attachments** or **Attachment names**, and an **AI check**.
+4. Select **Save**.
+
+Each mail the channel receives starts a run with the sender, subject, text and attachments.
+
+## Start it on a new file or a changed record
+
+For **New file**, choose the **Knowledge** and, optionally, a **Collection** (**Every file** by default). Each file of the base, or of the collection, that finishes processing starts a run with the file and its records.
+
+For **Record changed**, choose the **Knowledge**, optionally a **Collection** (**Every record**), **When** (**Created or updated**, **Created** or **Updated**), the **Fields** whose change counts, and an **Only if** filter. Each record created or changed starts a run within a minute, one run per record however many saves it took. The agent's own changes never start it; other agents' changes do, so two agents that write each other's records can start each other in turn.
+
+When the agent's **Knowledge access** lists specific bases, the trigger's Knowledge must be one of them.
+
+## Filter events before they start a run
+
+For **GitHub event** and **New email**, **Only if** keeps only the events that match a filter. For those two and **Webhook**, **AI check** asks a yes-or-no question about each event, such as *"Is this a purchase order?"*, and starts a run only when the answer is yes with at least the confidence you set (*% sure*).
+
+An event that does not pass starts no run and shows as *Skipped* in **History**. The AI check uses the cheapest model of the agent's own provider and counts toward the agent's budget; when the check itself fails, the event starts its run.
 
 ## Start it from another system
 
@@ -151,12 +185,13 @@ curl -X POST "https://<your address>/api/agents/v0/agents/<agent id>/execute" \
 - `instructions`: optional details for this run; the profile's instructions still apply.
 - `input`: optional JSON the agent receives as-is.
 
-The answer is the new run, with its `id` and `status`; follow it at `/agents/runs/<run id>`. The key acts as an administrator; add an `X-USER-ID: <user id>` header to act as a specific user, with that user's permissions. Setting the agent's trigger to `api` marks it as API-driven in **Routines**; an agent with any trigger can be started this way.
+The answer is the new run, with its `id` and `status`; follow it at `/agents/runs/<run id>`. The key acts as an administrator; add an `X-USER-ID: <user id>` header to act as a specific user, with that user's permissions. Setting the agent's trigger to **API** marks it as API-driven in **Routines**; an agent with any trigger can be started this way.
 
 ## Pause an agent
 
-**Pause** (on the agent's page or its row in **Routines**) marks the agent as *Paused*: its card and routine row say so, GitHub deliveries are ignored, and its upcoming runs leave the calendar. **Resume** clears it.
+**Pause** (on the agent's page or its row in **Routines**) marks the agent as *Paused*: its schedule stops firing, its other triggers no longer start runs, and its upcoming runs leave the calendar. **Resume** clears it.
 
-:::warning[To stop a schedule, change the trigger]
-Pausing does not remove the cron schedule itself. To be sure a scheduled agent stops running, set its **Trigger** back to `manual` and save; set it to `schedule` again when you want it back.
-:::
+An agent can also be paused for you:
+
+- *Budget reached*: the agent used its **Monthly budget**. Raise or remove the budget on the agent's page to resume it.
+- *Paused: unread*: with **Pause scheduled agents nobody reads** turned on in **Settings** → **Agents**, a scheduled agent is paused when nobody opened its last 10 results over at least 14 days. Its owner is notified and can resume it.

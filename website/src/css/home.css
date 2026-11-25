@@ -255,6 +255,13 @@
 	gap: clamp(24px, 2.6vw, 40px);
 }
 
+/* Six cards: three per row on wide screens, so the rows are even (3 + 3, not 4 + 2) */
+@media (min-width: 997px) {
+	.homeGrid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
 /* MARK: Card */
 .homeCard {
 	position: relative;

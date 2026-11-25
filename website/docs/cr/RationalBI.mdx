@@ -30,13 +30,14 @@ Open Rational BI by selecting **BI** in the top navigation bar. The first thing 
 
 | Where | What you find there |
 |-------|---------------------|
-| **BI** → project list | Every project you can see. **New** creates one. |
-| Project → **Dashboards** | The project's dashboards. **New** → **Generate with AI** starts one. |
-| Project → **Reports** | The written summaries. **Generate with AI** writes a new one. |
+| **BI** → project list | Every project you can see. **New** takes you to **Settings** → **Rational BI** to create one. |
+| Project → **Dashboards** | The project's dashboards. **New dashboard** (or **+** next to **Recents**) starts one, with AI or by hand. |
+| Project → **Reports** | The written summaries. **+** next to **Reports** generates a new one. |
 | Dashboard → **Chat** | The AI panel for adding or changing charts on an existing dashboard. |
+| Dashboard → **Filters** | The dashboard's filters: lists of values or date ranges that narrow every chart that uses them. |
 | Dashboard → **Actions** | **Edit**, **Auto-refresh**, **Auto layout** (moves widgets up to close empty gaps), **Download** and **Delete**. |
 | **Settings** → **Rational BI** → project | **Settings** (name and description), **Sources** (what it can query), **Models** (what generates its charts and reports), **Tools** (what its AI chat can use) and, for administrators only, **Access** (who sees each table or view). |
-| **Settings** → **Rational BI** → **BI defaults** | The tenant-wide configuration every project inherits. Leave it to administrators. |
+| **Settings** → **Rational BI** → **BI defaults** | The **Chat model**, **Model template prompt** and **Default tools** that new projects start with, and the **Report starter prompt** used for every report. Changing them needs the **BI defaults** permission. |
 
 ## How the pieces fit
 
@@ -51,7 +52,7 @@ Open Rational BI by selecting **BI** in the top navigation bar. The first thing 
 
 You usually start a dashboard with AI and then refine it:
 
-* **Generate it with AI:** in a project, select **New** → **Generate with AI** and describe the dashboard you want in plain language. Rational AI builds it for you. Later, open **Chat** on the dashboard to add or change charts.
+* **Generate it with AI:** in a project, select **New dashboard** → **Generate with AI** and describe the dashboard you want in plain language. Rational AI builds it for you. Later, open **Chat** on the dashboard to add or change charts.
 * **Lay it out by hand:** select **Actions** → **Edit**, then drag widgets around the grid and resize them from the corner grip. The sidebar's **Sections** tab adds structure:
 
 | Widget | What it is for |
@@ -83,7 +84,7 @@ A **Geographic map** colors each region by its value. Two maps are available tod
 
 ## Keep the numbers current
 
-A saved dashboard shows the data captured when its charts were generated. Select **Actions** → **Auto-refresh** and choose an interval: **Off** (the default), every **30 seconds**, every **minute**, every **5 minutes** or every **15 minutes**. While the dashboard is open, Rational AI re-runs each chart's saved query on that interval and updates the results in place.
+A saved dashboard shows the data captured when its charts were generated. Select **Actions** → **Auto-refresh** and choose an interval: **Off** (the default), **30 seconds**, **1 minute**, **5 minutes** or **15 minutes**. While the dashboard is open, Rational AI re-runs each chart's saved query on that interval and updates the results in place.
 
 :::note[Refreshing is not regenerating]
 No model is involved in a refresh: the same chart, newer numbers. It is deterministic and cheap. If a refresh fails, the dashboard keeps the last good data instead of interrupting whoever is looking at it.
@@ -91,7 +92,7 @@ No model is involved in a refresh: the same chart, newer numbers. It is determin
 
 ## Reports
 
-A dashboard answers "what do the numbers look like"; a report answers "what should we take from them". In a project, open **Reports**, select **Generate with AI**, choose one or more dashboards and describe what the report should cover. Then use the report's **Chat** to ask for a different emphasis, a shorter summary or an extra section. Its **Actions** menu holds **Edit**, **Duplicate**, **Download** and **Delete**.
+A dashboard answers "what do the numbers look like"; a report answers "what should we take from them". In a project, select **+** next to **Reports**, choose one or more dashboards, describe what the report should cover and select **Generate with AI**. Review the draft and select **Create** to save it. Then use the report's **Chat** to ask for a different emphasis, a shorter summary or an extra section, or **Edit** to rearrange it. Its **Actions** menu holds **Refresh data**, **Duplicate**, **Auto layout**, **Download** (PDF, CSV or Excel) and **Delete**.
 
 ---
 

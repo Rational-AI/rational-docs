@@ -28,12 +28,12 @@ Open any model to see its full profile: what it costs, who published it, how it'
 
 Check what a model costs before you make it a default or point a new workload at it.
 
-The **Pricing** section appears on a model's overview only for models that have pricing configured (for example a self-hosted model with a cost set). The platform stores raw per-second and per-token costs internally and scales them back into human-readable units, so you may see any of:
+The **Pricing** section appears on a model's overview only for models that have pricing configured (for example a self-hosted model with a cost set). Costs are shown in the units people think in, so you may see any of:
 
-- **Per request**
-- **Per hour**: the stored per-second cost × 3600
-- **Per 1M input tokens**: the stored per-token cost × 1,000,000
-- **Per 1M output tokens**: the stored per-token cost × 1,000,000
+- **Cost per request**
+- **Cost per hour**, **Cost per minute** or **Cost per second**, depending on the time unit set for the model
+- **Cost per 1M input tokens**, **Cost per 1M output tokens**, **Cost per 1M cached input tokens**, **Cost per 1M cache-write tokens** and **Cost per 1M reasoning tokens**
+- **Cost per image** and **Cost per web search**
 
 :::note[Only priced rows are shown]
 Pricing chips appear only when pricing is enabled for the model, and any row with no cost is hidden. A model priced only per token, for instance, won't show a per-request chip.
@@ -95,7 +95,7 @@ The model's overview also shows its **Context length** and **Max output tokens**
 
 An image generation model carries an account of what it can be asked for: output sizes, pictures per request, reference images, seed, negative prompt, output formats, quality levels and more. The image tools offer only what the model declares, so a request never asks for a size the model refuses.
 
-1. Open an **Image generation** model and find the **Image capabilities** section. A chip says where the values came from: **From the provider** or **Set by hand**. A model nobody has described says so, and every setting stays on offer.
+1. Open an image generation model (**Image gen** in the **Purpose** column) and find the **Image capabilities** section. A chip says where the values came from: **From the provider** or **Set by hand**. A model nobody has described says so, and every setting stays on offer.
 2. Select **Edit what this model accepts** to open the full form on its own page.
 3. Switch on each setting the model has and fill in its values. For **Output size**, choose how the model is sized: **Shapes** (aspect ratios), **Fixed sizes** (written as `1024x1536`) or **Free dimensions**.
 4. Select **Save**.
@@ -121,11 +121,11 @@ The **Governance** section of a model's drawer is where those answers live. It a
 | **Version** | The specific release in use |
 | **Weights digest** | The fingerprint of the exact weights running |
 | **Licence** | The terms the model is used under |
-| **Provenance URL** | Where the model came from |
+| **Provenance** | Where the model came from |
 | **Intended purpose** | What the model may be used for, in prose |
 | **Prohibited uses** | What it must not be used for |
 | **Known limitations** | Where it is known to perform badly or unreliably |
-| **Evaluation summary** | What testing was done and what it showed |
+| **Evaluation** | What testing was done and what it showed |
 
 :::warning[Intended purpose is not the model's purpose]
 Two near-identical names answering completely different questions:
@@ -140,10 +140,10 @@ Removing exactly this ambiguity is what the governance record is for, so it's wo
 
 **Save** writes documentation. **Approve** records a decision and stamps who took it and when. They're separate controls because they're separate acts, usually taken by different people. Folding them together would make *"I changed the intended purpose"* indistinguishable from *"I approve the new intended purpose"*.
 
-The approval state shows as a chip. It reads as satisfied only when the model is approved; **not reviewed** and **withdrawn** both read as a caution rather than a failure, since neither is an error. They're not a sign-off.
+The approval state shows as a chip. It reads as satisfied only when the model is approved; **Not reviewed** and **Withdrawn** both read as a caution rather than a failure, since neither is an error. They're not a sign-off.
 
 :::warning[Saving an approved record revokes its approval]
-Edit a substantive field on an approved model and the approval decays to **not reviewed**, clearing the sign-off stamp. The section warns you before you save and again afterwards.
+Edit a substantive field on an approved model and the approval decays to **Not reviewed**, clearing the sign-off stamp. The section warns you before you save and again afterwards.
 
 This is the behavior you want. An approval that outlives a rewrite of the thing approved is worse than no approval, because it reads as a decision somebody actually took. The case it guards against is repurposing: an approved model quietly edited from "drafting replies to customer email" to "screening job applicants", still wearing its sign-off.
 
@@ -159,15 +159,16 @@ Pick the model the platform reaches for when a specific consumer hasn't pinned o
 1. Go to **Settings** → **AI Model Registry**.
 2. Open the **Default models** panel above the models table (*"Choose the model used by default for each task type."*).
 3. Set any of these fields. All are optional and can be cleared. Each lists only enabled models of the matching purpose:
-   - **Conversational model**: the default for conversations. Lists **Text generation** models. Used by chat when a touchpoint has no model of its own.
-   - **Coding model**: the default for code generation. Lists **Text generation** models. Stored for future use.
-   - **Embedding model**: the default for embeddings. Lists **Embedding** models. Used by knowledge creation when no embedding model is supplied.
-   - **Image generation model**: the default for image generation. Lists **Image generation** models. Used by image requests that don't name a model of their own.
+   - **Conversational model**: the default for conversations. Lists **Text gen** models. Used by chat when a touchpoint has no model of its own.
+   - **Coding model**: the default for code generation. Lists **Text gen** models. Stored for future use.
+   - **Agents model**: *"Used by agents without a model override."* Lists **Text gen** models.
+   - **Embedding model**: the default for embeddings. Lists **Embeddings** models. Used by knowledge creation when no embedding model is supplied.
+   - **Image generation model**: the default for image generation. Lists **Image gen** models. Used by image requests that don't name a model of their own.
    - **Decision model**: the default for decisions. Lists **Decision** models. Used by decisions that name no model, such as those of knowledge views.
 4. Select **Save**. Your selection is saved to the active platform configuration.
 
 :::note[The coding default is the only one nothing reads yet]
-The **Conversational**, **Embedding**, **Image generation** and **Decision** defaults are all used today. The **Coding** default is stored and shown so that code generation inherits it when it ships.
+The **Conversational**, **Agents**, **Embedding**, **Image generation** and **Decision** defaults are all used today. The **Coding** default is stored and shown so that code generation inherits it when it ships.
 :::
 
 ## Require approval before a model answers
@@ -178,7 +179,7 @@ For how approval fits with the rest of your AI governance, see [Govern AI applic
 
 ## Add a provider connector
 
-A connector is the bridge between the registry and an external model provider. Open **Settings** → **AI Models**, start the **Add connector** flow, and pick the connector that matches your provider. The two below cover the cases where the setup isn't obvious.
+A connector is the bridge between the registry and an external model provider. Go to **Settings** → **Connectors**, select **Add**, and pick the connector that matches your provider. The two below cover the cases where the setup isn't obvious.
 
 ### Add Xference
 
@@ -186,7 +187,7 @@ Reach for Xference when you want a model provider running with nothing but an AP
 
 Xference is a one-click connector that uses a fixed OpenAI-compatible endpoint behind the scenes.
 
-1. In the **Add connector** dialog, choose **Xference**.
+1. In the **Add a new connector** dialog, choose **Xference**.
 2. Enter your **API key**.
 3. Save. The platform discovers the available models from the Xference endpoint and proxies chat through the same path as OpenRouter.
 
@@ -204,6 +205,7 @@ Use this when your provider speaks the OpenAI API but isn't one of the dedicated
    - **API Key**: the key for that endpoint.
 3. Save. The connector behaves exactly like the OpenAI connector but talks to your custom base URL.
 
-## Result
+## Next steps
 
-You can now inspect any model's pricing, publisher, architecture and usage from the AI Model Registry, correct what a model can do (vision, tools, reasoning, image settings), cap its output, set platform default models for conversations, embeddings, images and decisions, require approval before models answer, and add Xference or OpenAI Compatible providers so their models are available to your conversations and knowledge bases.
+* [Deploy and run self-hosted models](/operational-guides/model-deployments): run an open-source model on your own hardware.
+* [Govern AI applications](/operational-guides/govern-ai-applications): how model approval fits with the rest of your AI governance.

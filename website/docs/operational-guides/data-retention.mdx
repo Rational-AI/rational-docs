@@ -47,7 +47,7 @@ Bodies only exist in the first place when a model has **tracing** switched on, w
 :::
 
 :::warning[Bodies cannot outlive their call record]
-Setting the body period longer than the captured-request period is refused when you save, rather than accepted and quietly ignored. The call record is deleted first, so a longer body period would never get the chance to run, so the setting would look applied and do nothing.
+Setting the body period longer than the **Model call records** period is refused when you save, rather than accepted and quietly ignored. The call record is deleted first, so a longer body period would never get the chance to run, so the setting would look applied and do nothing.
 :::
 
 ## The suggested values are hints, not defaults
@@ -58,16 +58,18 @@ That's deliberate. Choosing a deletion schedule on behalf of a tenant whose use 
 
 ## Open conversations are never swept
 
-The closed-conversation period only ever touches conversations that have ended. A live conversation is never deleted, at any age.
+The closed-conversation period only ever touches closed conversations, and counts from each conversation's last activity. An open conversation is never deleted, at any age.
 
 A long-running conversation that's still in use is a support question, not a retention one, and deleting one out from under someone mid-sentence is a worse outcome than keeping it.
 
 ## Check that the sweep is running
 
-The sweep runs **hourly**. Beside the save button you'll find the two facts that tell you it happened:
+The sweep runs **hourly**. The page header shows the two facts that tell you it happened:
 
 - **Last sweep**: when the sweep last ran.
-- **Rows deleted**: how much it removed on that run.
+- **records removed**: how many records it removed on that run.
+
+Until the first sweep, the header reads *No sweep has run yet.*
 
 These matter more than they look. A retention policy nobody can see running is a retention policy nobody has reason to believe. When someone asks you to evidence that deletion actually occurs, this is the answer.
 
@@ -77,17 +79,14 @@ Once your policy has caught up with your backlog, most sweeps find nothing to de
 
 ## What retention does not cover
 
-Two things are deliberately outside this policy, so plan for them separately:
+Three things are deliberately outside this policy, so plan for them separately:
 
 - **Knowledge files.** Deleting a knowledge resource cascades into embeddings, the vector database and processing rules. That's a destructive path with its own consequences, handled from [Manage knowledge resources](/operational-guides/manage-knowledge-resources) rather than swept on a timer.
+- **The [audit trail](/operational-guides/audit-trail).** Its entries are not swept, at any age.
 - **Legal hold.** There is no way to exempt an individual conversation from retention. If you need material preserved beyond your policy for a dispute or an investigation, export it before the period fires.
 
 ## Related
 
-- [Review the audit trail](/operational-guides/audit-trail): who read or changed what, and why its entries age out under a separate rule.
+- [Review the audit trail](/operational-guides/audit-trail): who read or changed what. This policy does not remove its entries.
 - [Erase a person's data](/operational-guides/erase-personal-data): the immediate, targeted erasure that answers a data subject request.
 - [Monitor usage and cost](/operational-guides/governance): the dashboards and call-by-call log that read the call records this policy bounds.
-
-## Result
-
-You can set three independent retention periods, and you know exactly what each one removes and what it leaves behind, including that clearing prompt bodies leaves your usage and cost history untouched. You know empty means keep forever, that the suggested values are never applied for you, that live conversations are never swept, and where to look for the evidence that the hourly sweep is doing its job.

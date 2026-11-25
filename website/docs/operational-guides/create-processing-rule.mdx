@@ -17,10 +17,10 @@ A Knowledge uses its processing rule when its **Default workflow** is the **Clas
 :::
 
 To manage processing rules, open the **Settings** area and navigate to **Workflows** from the left sidebar. 
-Then switch to the **Processing rules** tab from the top-left section of the page.
+Then switch to the **Processing rules** tab.
 
 ## Understanding the interface
-The Processing Rules page follows the same structure as the workflows section and is divided into two main areas.
+The **Processing rules** tab follows the same structure as the **Workflows** tab and has two main areas.
 
 <img
   src={require('@site/static/img/screens/processing-rules.png').default}
@@ -36,31 +36,25 @@ The Processing Rules page follows the same structure as the workflows section an
 /> 
 
 ### Rules list
-The left panel displays all processing rules that have been created.
-For each rule, you can see:
-* The rule name.
-* An enable/disable toggle.
-
-This list allows you to quickly identify which rules are active and which are currently inactive.
+The list shows all processing rules that have been created, by name, with a search box. Processing rules have no enable switch: a rule runs when a Knowledge or one of its sources uses it.
 
 ### Rule editor
-When you select a rule, its configuration is displayed in the editor on the right side.
+When you select a rule, its editor opens.
 
 The editor includes:
-* The rule name and description.
-* The editable logic or configuration area (JSON or script-based input).
-* An action menu that allows you to:
-    * Edit the rule details (name, description, and logic).
-    * Delete the rule.
+* The rule name.
+* The rule's Python code.
+* **Save** and **Undo** for your changes.
+* A **⋮** menu with **Open in Lab**, **Download** (the `.py` file), **Export (JSON)** and **Delete**. Deleting a rule keeps the workflow runs that used it.
 
 ## Creating your first processing rule
-If you’re a new user, the page will appear empty. In this case, you can create your first rule in a few simple steps.
-* Click the **+ New** button in the center of the page.
-* Enter a clear and descriptive **name**: for example `MyProcessingRule`
-* Optionally, add a short **description** explaining the rule’s purpose and scope.
-* Define the **rule logic** in the code input area.
+If you're a new user, the page shows *"No processing rules"*. Create your first rule in a few steps:
+* Select **New** (or **Add new** on the empty page), then **From scratch**. **Import JSON** loads a rule exported elsewhere.
+* Replace *Untitled processing rule* with a clear and descriptive **name**: for example `MyProcessingRule`.
+* Define the **rule logic** in the code editor.
+* Select **Save**.
 
-Once these fields are filled, you can proceed to enabling and testing the rule.
+To put the rule to work, select it as the **Default processing rule** on a Knowledge's **Sources** tab, or as the **Processing rule** in a source's **Data processing settings**.
 
 ## Processing rule logic
 
@@ -112,5 +106,7 @@ run(router)
 As for the workflows, the entrypoint is the `run` function which triggers the processing rule business logic, the `router` function.
 Basically, here we decide the workflow to apply, based on some characteristics of the Knowledge document, for example, its filename.
 
-## Related concepts
-[Workflows](create-workflow)
+## Next steps
+
+- [Create a workflow](/operational-guides/create-workflow)
+- [Import, export, and time out workflow rules](/operational-guides/workflow-rules)

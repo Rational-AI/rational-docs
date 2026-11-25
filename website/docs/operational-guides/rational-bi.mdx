@@ -19,7 +19,7 @@ Select the **BI** tab in the top navigation. The tab appears only when your [lic
 
 The first thing you see is your list of projects. If you haven't created any yet, this is an empty state inviting you to make your first one.
 
-The first time you open BI, a two-minute guided tour walks you through projects, dashboards, the chat and reports. Skip it if you like; you can replay it at any time with the **Guide** button.
+The first time you open BI, a guided tour walks you through projects, dashboards, the chat and reports. Skip it if you like; you can replay it at any time with the **Guide** button.
 
 <img
   src={require('@site/static/img/screens/bi-projects.png').default}
@@ -33,10 +33,11 @@ The first time you open BI, a two-minute guided tour walks you through projects,
 
 Everything in Rational BI lives inside a project, so the first step is to create one.
 
-1. From the **BI** area, select **New**.
-2. Give the project a clear **name**, something that describes the dashboards it will hold, for example `Sales Reporting`.
+1. From the **BI** area, select **New**. This opens **Settings** → **Rational BI**.
+2. Select **New** → **From scratch**. Rational AI creates a project called *New project* and opens its configuration.
+3. Replace the name with one that describes the dashboards it will hold, for example `Sales Reporting`, add a description, and select **Save**.
 
-Your new project appears in the list and opens as a workspace ready for you to start building.
+Your new project appears in the project list in the **BI** area. Creating a project needs **Create** on the **BI projects** row of your role.
 
 :::note[Group dashboards by purpose]
 Use a separate project for each distinct reporting area or audience. Keeping related dashboards together makes them easier to find and to manage as your reporting grows.
@@ -51,14 +52,13 @@ A dashboard can only chart data the project can reach, so point the project at i
    - **Name**, with the provider's own icon, so you can tell a cloud-storage source from a Knowledge at a glance.
    - **Description**.
    - **Files**: how many files that entry contributes.
-3. Use the **Add…** field below the table to attach another source or Knowledge; use the row's **⋮** menu to **Delete** one.
-4. Select **Save**.
+3. Use the **Add...** field below the table to attach another source or Knowledge, and the row's **⋮** menu to **Remove** one. Each change is saved straight away.
 
 The neighbouring tabs cover the rest of the project: **Settings** for its name and description, **Models** for the models and instructions it uses when generating charts and reports, and **Tools** for what its assistant can call. Administrators also see an **Access** tab, covered below.
 
 ### Switch a project off
 
-On **Settings** → **Rational BI** → **Projects**, every project card has an enable switch. Turn it off and the project disappears from the **BI** area for everyone, while its configuration stays intact in **Settings**. It's a way to park a project you are still preparing, or retire one without deleting it. Turning the switch back on restores it as it was.
+On **Settings** → **Rational BI** → **Projects**, every project card has an enable switch. Turn it off and the project disappears from the **BI** area for everyone, while its configuration stays intact in **Settings**. The switch needs **Update** on **BI projects**. It's a way to park a project you are still preparing, or retire one without deleting it. Turning the switch back on restores it as it was.
 
 ### Choose who sees each table and view
 
@@ -77,6 +77,15 @@ The rule applies everywhere the project's data is read: dashboards, reports and 
 :::note[A view is judged on its own]
 Granting a view does not expose the table underneath it. That lets you publish an aggregated view (totals by department, say) to everyone, while the table with individual rows stays restricted. To the people who can't see it, a hidden table looks exactly like one that doesn't exist, so even the AI chat can't reveal its name.
 :::
+
+### Filter rows and mask columns
+
+For the tables and views of a database tagged **Virtual** in its Knowledge, the **Access** tab can go further than all or nothing. Select **Rows and columns** on the row:
+
+- **Row filter**: a SQL condition on the view's columns. Insert a placeholder such as `{{user.email}}` or `{{user.groups}}` and each viewer sees only the rows that match their own values. The condition is checked when a query runs, not when you save, and administrators are never filtered.
+- **Column masks**: set a column to **Partial** (keeps the first and last character of a text) or **Hidden** (returns no value). Columns left **Visible** are shown as they are.
+
+Select **Save**. The row then shows **Filtered** or the number of masked columns. If **Who can see** is **Nobody**, there is nothing to filter: choose who can see the view first.
 
 ### Offer suggested questions
 
@@ -149,13 +158,13 @@ A **Geographic map** colors each region by its value. Two maps are available tod
 
 A saved dashboard shows the data captured when its charts were generated. To keep an open dashboard current, give it a refresh interval.
 
-1. Open the dashboard and select **Actions** → **Auto-refresh**. The menu item shows the current setting.
+1. Open the dashboard and select **Actions** → **Auto-refresh**. The menu item shows the current setting, for example **Auto-refresh · Off**.
 2. Choose an interval:
    - **Off** (the default): you refresh the dashboard yourself.
-   - **Every 30 seconds**
-   - **Every minute**
-   - **Every 5 minutes**
-   - **Every 15 minutes**
+   - **30 seconds**
+   - **1 minute**
+   - **5 minutes**
+   - **15 minutes**
 
 While the dashboard is open, Rational AI re-runs each widget's saved query on that interval and patches the results in place.
 
@@ -163,9 +172,17 @@ While the dashboard is open, Rational AI re-runs each widget's saved query on th
 Auto-refresh re-runs the query the chart already has. No model is involved, so it is deterministic and cheap: the same chart, newer numbers. Asking the AI for a *different* chart is a separate, deliberate action in the chat. Background refreshes are also silent: if one fails, the dashboard keeps showing the last good data rather than interrupting whoever is looking at it.
 :::
 
-The rest of the **Actions** menu holds **Edit**, **Auto layout**, **Download** and **Delete**.
+The rest of the **Actions** menu holds **Edit**, **Auto layout**, **Download** and **Delete**. **Edit**, **Auto-refresh** and **Auto layout** appear only when your role has **Update** on **Dashboards**, and **Delete** only with **Delete** on **Dashboards**.
 
 **Auto layout** tidies the grid: it moves every widget up as far as it fits, closing the empty gaps left after moving or removing widgets, and saves the result. Widget sizes stay the same.
+
+## Filter a dashboard
+
+Select **Filters** on a dashboard to open its filter panel. Each filter is a list of values to pick from, or a date range. Pick values and select **Apply**; the charts and KPI cards that use the filter are highlighted and re-run their queries. **Clear** removes your selection.
+
+- To generate filter suggestions from the dashboard's data, select **Refresh filters** (the refresh button at the top of the panel).
+- To add one yourself, select **Add filter**, choose a **Table** and a **Column**, and optionally a column to **Show this instead of the value** (for example a name instead of an ID, taken from a **Lookup table**). Then select **Add**.
+- A filter written into the widgets' queries without a column behind it filters nothing. **Add filter** then offers **Unlinked filter**: pick the filter and the column it should use.
 
 ## Export a dashboard
 
@@ -197,15 +214,34 @@ Pins and their order are stored in your browser, not in your account. They don't
 
 A dashboard answers "what do the numbers look like"; a report answers "what should we take from them".
 
-1. In the project, open **Reports** and select **Generate with AI**.
-2. Select one or more dashboards and describe what you want the report to cover.
-3. Once it exists, open the report and use **Chat** to work on it conversationally: ask for a different emphasis, a shorter summary, an added section.
-4. The report's **Actions** menu holds **Edit**, **Duplicate**, **Download**, and **Delete**.
+1. In the project sidebar, select **+** next to **Reports**. The **Generate report with AI** dialog opens.
+2. In **Reference dashboard(s)**, select one or more dashboards. Edit the **Prompt** to say what the report should cover.
+3. Select **Generate with AI**. To lay the report out yourself instead, select **Create manually**.
+4. The report opens as a draft. Review it and select **Create** to save it.
+5. Use the report's **Chat** to work on it conversationally: ask for a different emphasis, a shorter summary, an added section. In **Edit** mode, the **Report settings** sidebar adds sections: graphs and tables from the linked dashboards, dividers, images and web components. KPI cards aren't supported in reports yet.
+
+The report's **Actions** menu holds **Refresh data** (re-runs the queries behind its graphs and tables), **Duplicate**, **Auto layout**, **Download** (**PDF**, **CSV** or **Excel**) and **Delete**.
 
 ## Show a dashboard inside a Knowledge
 
 A dashboard doesn't have to stay in the BI area. It can be rendered inside a [Knowledge as a custom view](/operational-guides/knowledge-custom-views), so the people working with the documents see the numbers next to them, with the dashboard's own auto-refresh interval respected.
 
-## Result
+## Move a project to another tenant
 
-You have a Rational BI project pointed at its sources and Knowledges, with the sensitive tables restricted to the people who should see them and suggested questions to get the chat going. You have dashboards you can either generate from a conversation or lay out by hand with headings, text, and dividers, charts tuned down to their type, colors, and basemap, an auto-refresh interval that keeps an open dashboard current without regenerating anything, exports to PDF, CSV and Tableau, pins for the dashboards you open every day, and reports that turn those dashboards into something you can send to somebody.
+To copy a project, open it in **Settings** → **Rational BI**, open the menu next to its name and select **Export (JSON)**. To bring it in, select **New** → **Import JSON** and choose the file. The import creates a new project with the file's dashboards and reports. If the file refers to Knowledges that don't exist in this tenant, a message lists them, and the widgets that query them don't load until you point the project at the right sources.
+
+## Set the defaults for new projects
+
+**Settings** → **Rational BI** → **BI defaults** holds the tenant-wide settings for BI. Changing them needs **Update** on the **BI defaults** row of your role. The model and tools are copied into new projects only, so projects that already exist keep their own.
+
+| Setting | What it does |
+|---|---|
+| **Chat model** | The model used for chats in new BI projects. BI works best with a coding model, because chart generation and data queries rely on tool calling. |
+| **Model template prompt** | The core instructions for the assistant when it analyzes data or generates dashboards. |
+| **Report starter prompt** | The instructions Rational AI follows whenever it generates a report, in every project. What someone types in the report's **Prompt** is added to them. |
+| **Default tools** | The tools available in new projects. The `rag_query_simple` and `rag_query_graph` tools run a semantic search, so they need the project's Knowledge to have an embedding model. |
+
+## Next steps
+
+* [Custom views](/operational-guides/knowledge-custom-views): show a dashboard inside a Knowledge.
+* [Manage roles and users](/operational-guides/roles-and-users#grant-access-to-rational-bi): give people the BI permissions they need.

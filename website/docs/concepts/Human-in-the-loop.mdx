@@ -28,7 +28,11 @@ Human-in-the-loop is not all-or-nothing. The right amount of oversight depends o
 
 ## Human-in-the-loop in Rational AI
 
-The platform is built so that AI work can be inspected rather than taken on trust. Grounding answers in your [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) narrows how far output can drift, and every conversation through a [touchpoint](/concepts/Touchpoint) can be reviewed, keeping a person in the loop wherever the stakes call for it.
+Grounding answers in your [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) narrows how far output can drift. Beyond that, a person can step in at several points:
+
+* **Tool calls in chat:** each [touchpoint](/concepts/Touchpoint) decides when the assistant asks the user to confirm a tool before running it: never, only for sensitive tools, or always. See [Approve tool calls before they run](/operational-guides/approve-tool-calls).
+* **Agent actions:** tools under **Ask me first** on an agent's profile pause the run until someone approves or rejects the call. See [Follow runs and approve actions](/operational-guides/agent-runs#approve-what-the-agent-wants-to-do).
+* **Conversations:** staff can review every touchpoint conversation in **Conversations** and take one over, which suspends the AI replies. Human oversight rules flag the conversations that need a person. See [Review flagged conversations](/operational-guides/human-oversight).
 
 ---
 

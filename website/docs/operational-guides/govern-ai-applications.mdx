@@ -61,7 +61,7 @@ To change any of this later, select **Edit** in the row's actions menu. The same
 
 ## Decide what each application may do
 
-The status and the risk tier are not labels: Rational AI checks them every time a model request is admitted, whether it comes from a chat, a touchpoint's API, or a direct call through the proxy.
+The status and the risk tier are not labels: Rational AI checks them every time a model request is admitted, whether it comes from a chat, an agent, a touchpoint's API, or a direct call through the proxy.
 
 | Setting | What happens to new requests |
 |---|---|
@@ -95,10 +95,10 @@ Every registration, change, and deletion of an application is written to the [au
 
 Applications are one side of the decision; the models they use are the other. Each model has a governance record where an administrator documents it and approves it (see [Document and approve a model](/operational-guides/ai-model-registry-features#document-and-approve-a-model)). The model approval policy decides whether that approval is required.
 
-1. Go to **Settings** → **AI Models**.
-2. In the **Model approval** card, read the current state. It names the models that have not been reviewed, each a link to its details.
-3. Switch on **Require approval**.
-4. Read the confirmation. It lists the models that have not been approved and will refuse every request (chats, API calls, and knowledge processing that use them) until someone approves them.
+1. Go to **Settings** → **AI Model Registry**.
+2. In the **Model approval** section, read the current state. It names the models that have not been reviewed, each a link to its details.
+3. Turn on **Require approval**.
+4. Read the confirmation. It lists the models that have not been approved and will refuse every request (chats, agents, API calls, and knowledge processing that use them) until someone approves them.
 5. Select **Require approval** to confirm.
 
 | Model approval state | Approval not required (default) | Approval required |
@@ -142,20 +142,22 @@ Token counts only become costs once Rational AI knows what your providers charge
 A model's price is not always "so much per million tokens", so the price editor covers the shapes providers actually bill in:
 
 - The **currency** the provider charges in. Costs are converted into your reporting currency for display, and the original amount is kept.
-- **Token dimensions**: input, output, and cached input priced separately.
-- **Per-request**, **per-image**, and **web-search** components.
-- **Time-based billing** for self-hosted models and reserved capacity, charged by the hour, minute, or second and derived from how long the deployment was actually up.
+- **Token rates**, per 1M tokens: **Input**, **Output**, **Cached input**, **Cache write**, and **Reasoning**, each priced separately.
+- **Per request**, **Per image**, and **Per web search** prices.
+- **Runtime** billing for self-hosted models, charged per hour, minute, or second. **When runtime is billed** sets whether it is charged **Only while deployed** or as **Reserved capacity, always billed**.
+- A **Source** for the rate: **Manual**, **Provider catalog**, or **Contract**.
 
-For providers that publish a catalog, prices can be imported instead of typed: an **OpenRouter** connector can synchronize model pricing on demand, and manual and contract overrides you entered yourself are preserved rather than overwritten.
+For providers that publish a catalog, prices can be imported instead of typed: an **OpenRouter** connector can synchronize model pricing on demand, and rates whose source is **Manual** or **Contract** are preserved rather than overwritten.
 
 ### Provider subscriptions
 
-Some spend does not vary per call at all: a monthly API plan, a yearly enterprise token pool. Model it as a subscription on the provider's connector. **Provider subscriptions** on the **Overview** opens the subscriptions of your busiest connector in **Settings** → **Connectors**.
+Some spend does not vary per call at all: a monthly API plan, a yearly enterprise token pool. Model it as a subscription on the provider's connector. **Provider subscriptions** on the **Overview** opens the subscriptions of the connector that serves the most models, in **Settings** → **Connectors**.
 
-1. Open the provider's connector in **Settings** → **Connectors** and add a **Provider subscription**.
-2. Enter the recurring **amount** and its period (**Monthly** or **Yearly**), and the dates it **starts** and (optionally) **ends**.
-3. Choose the **Cost allocation**, for example **Allocate by application usage**, which spreads the fixed fee across applications in proportion to what they used.
-4. Under **Included usage and overage**, add an allowance per usage type: **All tokens** or **Requests**, how much is **Included**, the **Scale** (units, million, billion), and the **Overage** rate charged beyond it, per million tokens or per unit for requests.
+1. Open the provider's connector in **Settings** → **Connectors** and, under **Provider pricing and subscriptions**, select **Add plan**.
+2. Enter a **Plan name**, the **Currency**, the **Recurring cost** and its **Billing period** (**Monthly** or **Yearly**), and the dates it **Starts** and (optionally) **Ends**.
+3. Choose the **Cost allocation**: **Allocate by application usage** spreads the fixed fee across applications in proportion to what they used, and **Keep as shared provider cost** leaves it unallocated.
+4. Under **Included usage and overage**, select **Add allowance** for each usage type (for example **All tokens**, **Input tokens**, **Requests**, or **Images**), and enter how much is **Included**, the **Scale** (**units**, **millions**, or **billions**), and the overage rate charged beyond it: **Overage / 1M** for tokens, **Overage / unit** for the others.
+5. Select **Save plan**.
 
 <img
   src={require('@site/static/img/screens/provider-subscription.png').default}
@@ -191,6 +193,8 @@ Pricing is never finished all at once, so Governance tells you how much of it is
 
 The same card also shows the **Error rate** and the **Cache hit rate** for the period, so a spike in spend can be read next to a spike in retries.
 
-## Result
+## Next steps
 
-You have an inventory of every application calling your AI, touchpoints included, each registered with an owner, an environment, a risk tier, and tags. **Blocked** and **Unacceptable** applications are refused, **High** risk touchpoints wait for a person on every tool call, and with **Require approval** on, only approved models answer. Requests are attributed by the `X-RationalAI-Application` header or the proxy's default key, and provider pricing (per-token, per-request, time-based, subscriptions, or synchronized from a catalog) turns the token counts into costs in one reporting currency, with **Cost coverage** telling you how much of the picture is still missing.
+- [Monitor usage, cost, and audit logs](/operational-guides/governance): follow the traffic of the applications you registered.
+- [Document and approve a model](/operational-guides/ai-model-registry-features#document-and-approve-a-model): the governance record that **Require approval** checks.
+- [Approve tool calls before they run](/operational-guides/approve-tool-calls): what a person sees when a **High** risk touchpoint waits for approval.

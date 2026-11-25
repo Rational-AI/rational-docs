@@ -55,11 +55,11 @@ Hover over a chart to read the value for a single day or time bucket.
 
 ## Filter what you're looking at
 
-Filters live in a panel on the right, so they stay out of the way until you need them.
+Filters live in the **Filters** panel, which stays closed until you open it.
 
 1. Select **Filters** in the toolbar. The button shows how many filters are active.
 2. Set the filters you need. The panel lists only the filters that change the open tab:
-   - **Touchpoints**, **Models**, and **Applications**: up to four of each. They apply to **Overview**, **Usage**, and the request list in **Audit log**. **Applications** is not available for conversational usage.
+   - **Touchpoints**, **Models**, and **Applications**: up to four of each. They apply to **Overview**, **Usage**, and the request list in **Audit log**. **Touchpoints** and **Models** exclude each other, and **Models** and **Applications** are not available for conversational usage.
    - **Period**: *Last 24 hours*, *Last 7 days*, *Last 30 days* (the default), *Last 3 months*, *Last 6 months*, *Last year*, or *All*. It applies to every tab except **Costs**.
 3. Select **Apply**. Nothing reloads until you do, so you can change several filters and pay for a single refresh.
 
@@ -113,7 +113,9 @@ The list keeps itself current: new requests appear as they are captured, without
 
 ### Review workflow runs
 
-Switch the **Audit log** from **Requests** to **Workflow runs** to see each run of your [workflows](/operational-guides/create-workflow) in the period, with **Started**, **Status**, **Workflow**, **Duration**, and **Failure**. Select a run to open its details in the docked panel, including the current step and the error code of a failed run. When your plan meters workflow runtime, the top of this view shows the minutes used this month.
+Switch the **Audit log** from **Requests** to **Workflow runs** to see each run of your [workflows](/operational-guides/create-workflow) in the period, with **Started**, **Status**, **Workflow**, **Duration**, and **Failure**. Select a run to open its details in the docked panel, including the current step and the error code of a failed run.
+
+The top of this view shows the workflow runtime used this calendar month, against your limit or your plan's allowance. File ingestion, agents, and workflow runs all count toward these minutes. To cap them, enter a number in **Monthly limit, minutes** and select **Save limit**: once the limit is reached, new workflow runs stop. When the plan's minutes are used up, work keeps running at a lower priority.
 
 ## Review costs in the cost ledger
 
@@ -125,6 +127,8 @@ All governance costs are shown in a single reporting currency, which you choose 
 Governance used to open on a **Dashboard** tab next to an **Audit Log** tab. Bookmarks and shared links to those tabs still work: the Dashboard opens **Overview**, and the Audit Log opens the request list in **Audit log**.
 :::
 
-## Result
+## Next steps
 
-You start from the **Overview**, where **Needs attention** points you to anything that needs fixing and the totals summarize the period. The **Usage** tab shows the trends, the filter panel scopes every tab to the touchpoints, models, applications, and period you care about, and the **Audit log** shows each request in a docked panel, with its cost, speed, and, when tracing allows, its payloads. To turn the application names in these tables into an owned, priced inventory, continue with [Govern AI applications](/operational-guides/govern-ai-applications).
+- [Govern AI applications](/operational-guides/govern-ai-applications): register the applications in these tables and price what they use.
+- [Review the audit trail](/operational-guides/audit-trail): who opened or changed a record.
+- [Set data retention](/operational-guides/data-retention): how long captured requests and payloads are kept.

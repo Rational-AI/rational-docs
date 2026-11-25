@@ -7,7 +7,7 @@ audience: [builder]
 
 # Follow runs and approve actions
 
-Every piece of work an agent does is a **run**: it starts, works through the job step by step on the agent's computer, and ends *Done*, *Failed*, *Cancelled* or *Timed out*. The run page shows the whole thing as it happens (what the agent said, each tool it called and what came back), and it is where you answer when the agent reaches a tool it must not use without you.
+Every piece of work an agent does is a **run**: it starts, works through the job step by step on the agent's computer, and ends *Done*, *Failed*, *Cancelled*, *Timed out* or, for an event that did not pass the trigger's filter, *Skipped*. The run page shows the whole thing as it happens (what the agent said, each tool it called and what came back), and it is where you answer when the agent reaches a tool it must not use without you.
 
 This guide follows **Quinn** pricing request for quotation RFQ-2026-0153: Quinn computes the offer on its own, then stops before writing the offer file because `write` is under **Ask me first**.
 
@@ -40,10 +40,10 @@ The header shows the agent, the run status and how it was started, the model, wh
 
 When the agent saves documents during the run, **What it produced** lists them, each with its version and **Open**.
 
-The footer carries the run ID, the workflow ID, when it was created and finished, and the model.
+**Show computer** opens the agent's computer next to the run. The footer carries the run ID, the workflow ID, when it was created and finished, and the model.
 
 :::note[Agents check their own work]
-Before a run can end as *Completed*, the agent verifies that the outcome really exists: the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends *Failed* with *"Completion could not be verified after three continuation attempts. Review the plan and evidence."* and its task goes into *To review*: read the activity, adjust the task or the instructions, and retry.
+Before a run can end as *Completed*, the agent verifies that the outcome really exists: the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends *Failed* with *"Completion could not be verified after three continuation attempts"*, followed by the reason, and its task goes into *To review*: read the activity, adjust the task or the instructions, and retry.
 :::
 
 ## Approve what the agent wants to do
@@ -64,12 +64,14 @@ When the agent calls a tool that is under **Ask me first** on its profile, the r
 The card reads *"The agent wants your approval"*, names the tool (**Approve write?**) and shows the exact arguments of the call. Here that's the path `offers/RFQ-2026-0153.md` and the content Quinn wants to write, line prices included. Read them as you would read a colleague's draft:
 
 - **Approve** runs the tool with exactly those arguments and the agent continues.
+- Change the arguments first and the button becomes **Approve with changes**: the tool runs with your version.
+- **Approve and don't ask again** approves the call and takes the tool off **Ask me first** for the next calls.
 - **Reject** tells the agent no; it carries on without that call and can explain, try another way or ask you.
 
-Either way the run goes back to *Running*. The agent can also stop to ask you something on its own: the card then shows its question instead of a tool name.
+Either way the run goes back to *Running*. The agent can also stop to ask you something on its own: the card then reads *"The agent has a question"* and shows its question instead of a tool name.
 
 :::note[Who can answer]
-Anyone who can use the agent can approve or reject its calls, not only the person who started the run. An agent that waits keeps waiting: runs of agents with **Ask me first** tools have up to six hours before they time out.
+Anyone who can use the agent can answer the runs they started. Answering a run someone else started, or selecting **Approve and don't ask again**, needs permission to edit the agent. An agent that waits keeps waiting: runs of agents with **Ask me first** tools have up to six hours before they time out.
 :::
 
 ## Steer, stop or retry
@@ -101,7 +103,7 @@ Filter by outcome with the chips at the top (**All**, **Done**, **Failed**, **Ca
 | **Failed** | Ended with an error, or without a verified result. |
 | **Cancelled** | Stopped by someone. |
 | **Timed out** | Ran out of time. |
-| **Skipped** | A scheduled run that did not start because the previous one was still going. |
+| **Skipped** | An event that did not pass the trigger's filter or **AI check**, so the agent did not work on it. |
 
 ## Troubleshooting
 

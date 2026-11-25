@@ -13,82 +13,120 @@ type CardItem = {
 type Category = {
 	icon: string;
 	title: string;
-	pages: string;
 	description: string;
 	to?: string;
 	items: CardItem[];
 	comingSoon?: boolean;
 };
 
+// One card per sidebar section, in sidebar order (website/sidebars.ts).
+// No page counts: they went stale with every new page.
 const CATEGORIES: Category[] = [
-	// Hidden for now — re-enable when the product pages are ready.
-	// {
-	// 	icon: "⚡️",
-	// 	title: "Getting started",
-	// 	pages: "5 products",
-	// 	description:
-	// 		"Get to know the Rational products, what they do, and who they are for, before you start building.",
-	// 	comingSoon: true,
-	// 	items: [
-	// 		{ label: "Rational AI", to: "#" },
-	// 		{ label: "Rational Knowledge", to: "#" },
-	// 		{ label: "Rational Gen", to: "#" },
-	// 		{ label: "Rational BI", to: "#" },
-	// 		{ label: "Rational Core", to: "#" },
-	// 	],
-	// },
 	{
-		icon: "🎛️",
-		title: "Control Room",
-		pages: "8 pages",
+		icon: "🚀",
+		title: "Get started",
 		description:
-			"Understand every module of the platform and what every control in the settings section does.",
-		to: "/cr/Chats",
+			"Build your first assistant, then take a tour of the modules in the top navigation.",
+		to: "/operational-guides/get-started",
 		items: [
+			{ label: "Quickstart", to: "/operational-guides/get-started" },
 			{ label: "Chat", to: "/cr/Chats" },
 			{ label: "Knowledge", to: "/cr/Knowledge" },
 			{ label: "Conversations", to: "/cr/Conversations" },
-			{ label: "Governance", to: "/cr/Governance" },
-			{ label: "Settings", to: "/cr/settings/ai-model-registry" },
+			{ label: "Rational BI", to: "/cr/RationalBI" },
 		],
 	},
 	{
 		icon: "🛠️",
-		title: "Operational guides",
-		pages: "30+ pages",
+		title: "Use Rational AI",
 		description:
-			"Follow step-by-step procedures to complete common tasks from start to finish.",
-		to: "/operational-guides/get-started",
+			"Step-by-step guides to chat, build Knowledge bases and touchpoints, connect data and channels, and work with agents.",
+		to: "/operational-guides/chat-experience",
 		items: [
-			{ label: "Get started", to: "/operational-guides/get-started" },
+			{ label: "Use Chat", to: "/operational-guides/chat-experience" },
+			{
+				label: "Create a Knowledge",
+				to: "/operational-guides/create-knowledge",
+			},
 			{
 				label: "Integrate external data",
 				to: "/operational-guides/integrate-data",
 			},
-			{ label: "Create a workflow", to: "/operational-guides/create-workflow" },
 			{
-				label: "Create a processing rule",
-				to: "/operational-guides/create-processing-rule",
+				label: "Configure touchpoints",
+				to: "/operational-guides/configure-touchpoints",
+			},
+			{ label: "Manage channels", to: "/operational-guides/manage-channels" },
+		],
+	},
+	{
+		icon: "🔐",
+		title: "Administration & security",
+		description:
+			"Install and run Rational AI, manage people and roles, govern AI use, and keep your data compliant.",
+		to: "/operational-guides/install-and-update",
+		items: [
+			{
+				label: "Install and update",
+				to: "/operational-guides/install-and-update",
 			},
 			{
-				label: "Create a knowledge",
-				to: "/operational-guides/create-knowledge",
+				label: "Manage roles and users",
+				to: "/operational-guides/roles-and-users",
+			},
+			{ label: "Monitor usage and cost", to: "/operational-guides/governance" },
+			{ label: "Data retention", to: "/operational-guides/data-retention" },
+			{ label: "Audit trail", to: "/operational-guides/audit-trail" },
+		],
+	},
+	{
+		icon: "🧩",
+		title: "Developers",
+		description:
+			"Call Rational AI from your own code, and extend it with your own extensions.",
+		to: "/operational-guides/api-access",
+		items: [
+			{
+				label: "Access Rational AI via API",
+				to: "/operational-guides/api-access",
+			},
+			{
+				label: "Deploy models via API",
+				to: "/operational-guides/api/deploy-open-source-models",
+			},
+			{
+				label: "Build an extension",
+				to: "/operational-guides/build-an-extension",
+			},
+			{
+				label: "Develop an extension",
+				to: "/operational-guides/develop-an-extension",
 			},
 		],
 	},
 	{
 		icon: "📖",
 		title: "Concepts",
-		pages: "22 pages",
 		description:
 			"Learn the ideas behind the platform, so the rest of the docs make sense.",
 		to: "/concepts/Generative-AI",
 		items: [
-			{ label: "GenAI", to: "/concepts/Generative-AI" },
-			{ label: "Natural Language Processing", to: "/concepts/NLP" },
-			{ label: "Large Language Models", to: "/concepts/LLMs" },
-			{ label: "Model architecture", to: "/concepts/Model-architecture" },
+			{ label: "Generative AI", to: "/concepts/Generative-AI" },
+			{ label: "Large language models", to: "/concepts/LLMs" },
+			{ label: "Retrieval-augmented generation", to: "/concepts/RAG" },
+			{ label: "Touchpoints", to: "/concepts/Touchpoint" },
 			{ label: "Context windows", to: "/concepts/Context-window" },
+		],
+	},
+	{
+		icon: "🧭",
+		title: "Help",
+		description:
+			"Find the fix for a problem by its symptom, and see what changed in each release.",
+		to: "/troubleshooting",
+		items: [
+			{ label: "Troubleshooting", to: "/troubleshooting" },
+			{ label: "Release notes", to: "/release-notes" },
 		],
 	},
 ];
@@ -177,7 +215,6 @@ function CategoryCard({ category }: { category: Category }) {
 				<span className="homeCard__icon">{category.icon}</span>
 				<div className="homeCard__heading">
 					<span className="homeCard__title">{category.title}</span>
-					<span className="homeCard__pages">{category.pages}</span>
 				</div>
 				{category.comingSoon && (
 					<span className="homeCard__chip">

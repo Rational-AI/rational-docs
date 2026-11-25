@@ -38,51 +38,38 @@ Navigate to **Settings** → **Workflows** from the left sidebar. This is the ce
 /> 
 
 ### Workflow list
-The left panel displays all workflows that have been created in your environment, in two groups:
-* **Workflows**: the pipelines a Knowledge can run, built in the visual editor.
-* **Steps**: the code scripts, like the one on this page, that a pipeline or a [processing rule](/operational-guides/create-processing-rule) calls.
-For each workflow, you can see:
-* The workflow name.
-* An enable/disable toggle.
+The **Workflows** tab lists everything created in your environment, in four groups:
+* **Workflows**: the pipelines a Knowledge can run, each with an enable switch. Select **+** (*"Add workflow"*) to create one.
+* **Steps**: the Python scripts, like the one on this page, that a workflow or a [processing rule](/operational-guides/create-processing-rule) calls. Select **+** (*"Add step"*), then **From scratch** or **Import JSON**.
+* **Control flow** and **Builtins**: the ready-made nodes a workflow can use. Select one to read its usage and parameters.
 
-This list gives you a high-level view of which processes are active and which aren’t.
+The **Processing rules** tab next to **Workflows** holds the [processing rules](/operational-guides/create-processing-rule).
 
 ### Workflow editor
-When you select a workflow from the list, its details are displayed on the right side. This is where you define how your workflow behaves.
+A new workflow is created as *Untitled workflow*, switched off. Selecting it opens its code, written with the workflow builder, next to a **Graph** canvas that draws it. On the canvas you can drag nodes to arrange them, drag ports to connect them, and press **Del** to remove them. Select **Save** to keep your changes, or **Undo** to drop them. Switch the workflow on in the list when it is ready.
 
-The editor includes:
-* The workflow **name and description**.
-* The **editable logic** or configuration area (JSON or script-based input).
-* An action menu that allows you to:
-    /* * Open the workflow in the Lab. */
-    * Edit its logic.
-    * Delete the workflow.
+## Creating your first step
+If you're a new user, the page may initially be empty. Create your first step in a few steps:
 
+* Select **+** next to **Steps** (or **Add new** on the empty page), then **From scratch**.
+* Replace *Untitled workflow* with a clear and descriptive **name**: for example `PDF processing step`.
+* Optionally, add a short **description** explaining its purpose. This is _strongly_ recommended for long-term maintainability.
+* Write the code in the editor and select **Save**.
 
-## Creating your first workflow
-If you’re a new user, the workflow page may initially be empty. In this case, you can create your first workflow in a few simple steps.
+The step's **⋮** menu holds **Workflow Settings** (**Timeout (minutes)**), **Export (JSON)**, **Download** (the `.py` file), **Open in Lab** and **Delete**.
 
-* Click the **+ New** button in the center of the page.
-* Enter a clear and descriptive **name**: for example `PDF processing workflow`.
-* Optionally, add a short **description** explaining the purpose of the workflow. This is _strongly_ recommended for long-term maintainability.
-* **Enable your workflow** from the list and you’re done. 
+### Capabilities
 
-### Extraction capabilities
+Under the description, the **Capabilities** field (*"Select capabilities"*) tags a step with the kinds of content it pulls out of a document, such as **Images**, **Tables**, or **Annotations**. The tags don't change what the step does; they describe it, so the platform can surface the right step in the right place.
 
-Between the **Description** field and the **Code** editor, the **New workflow** and **Edit workflow** modals include an **Extraction capabilities** section. This is where you tag a workflow with the kinds of content it pulls out of a document, such as **Images**, **Tables**, or **Annotations**. The tags don't change what the workflow does; they describe it, so the platform can surface the right workflow in the right place.
+- **Choose any number.** A step can carry no capabilities, exactly one, or several.
+- **Saved with the step.** Your selection is saved when you select **Save**.
 
-Select capabilities by toggling their chips:
-
-- **Choose any number.** Click a chip to select it, click it again to clear it. A workflow can carry no capabilities, exactly one, or several.
-- **Saved with the workflow.** Your selection is included in the payload when you click **Add**, or **Save** when editing.
-
-:::note[The capability list is dynamic]
-The available capabilities aren't hardcoded in the interface. Rational AI fetches the master list (Images, Tables, Annotations, and any future additions) from the backend, so the set can grow without a front-end change.
+:::note[The capability list can grow]
+Rational AI loads the list of capabilities from the platform, so new kinds can appear without an update to the interface.
 :::
 
-**On the workflow detail view**, the capabilities you assigned appear again as read-only, non-clickable chips directly below the description, as a quick summary of what the workflow is tagged to extract. To change them, edit the workflow and toggle the chips.
-
-**Capability tags also filter where you pick a workflow.** When the context requires a capability (for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images**), the list is filtered to show only workflows that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every workflow is listed.
+**Capability tags also filter where you pick a step.** When the context requires a capability (for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images**), the list shows only the steps that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every step is listed.
 
 ### Workflow logic
 
@@ -140,9 +127,13 @@ Let's break it down:
 - the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, that is, `knowledge = Knowledge(document.knowledge_id)`
 - the workflow might return a dictionary specifying the Rational Resources created and their textual content, that is, text/markdown, to be automatically chunked and embedded according to the Knowledge settings
 
+### Test a step in the browser
+
+Select **Test run** in the step's editor. Under **Input (JSON)**, provide the step's input: `"file_id"` is loaded as the document, and any other keys are passed as options. Use `{}` for a step that takes no input. Select **Run** to see the **Output**. Save the step before you run it.
+
 ### Testing your workflow locally
 
-It is convenient to perform workflow development on your local machine, before using them into Rational AI.
+It is also convenient to perform workflow development on your local machine, before using them into Rational AI.
 This is possible and encouraged, as it allows to use your favorite IDE and debugging tools.
 
 Local runs need Python and the [`uv` package manager](https://docs.astral.sh/uv/). To run your workflow locally, make it executable and pass a properly formatted input as argument to it.

@@ -7,22 +7,22 @@ audience: [builder]
 
 # Work with Conversations
 
-Every chat your AI handles lands on the Conversations page, where you can review who it spoke with, through which touchpoint, how it went, and what was discussed. This guide shows how to find the conversations you care about, read one in full, and act on many at once.
+Every chat your touchpoints handle lands on the **Conversations** page, where you can review who it spoke with, through which touchpoint, how it went, and what was discussed. This guide shows how to find the conversations you care about, read one in full, and act on many at once.
 
 :::note[What is the conversations page?]
-A conversation (sometimes called a *room*) is one back-and-forth exchange between a user and your AI. The Conversations page lists every conversation your AI has taken part in, along with its user, touchpoint, topics, sentiment, status and date. Because a single exchange can wander across several subjects, each conversation can carry several topics, shown as separate chips. Chats with the agents of the [Agents](/cr/Agents) section aren't listed here; see [Chat with agents](/operational-guides/agent-chats).
+A conversation is one back-and-forth exchange between a user and a touchpoint. The Conversations page lists every conversation your role lets you see, along with its user, touchpoint, topics, sentiment, status and date. Because a single exchange can wander across several subjects, each conversation can carry several topics, shown as separate chips. Chats with the agents of the [Agents](/cr/Agents) section aren't listed here; see [Chat with agents](/operational-guides/agent-chats).
 :::
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
-- **Access to the Conversations page**: an account that can view conversations.
+- **Access to the Conversations page**: a role with access to **Conversations**. A role that grants every conversation shows them all; otherwise you see only your own. Starring, **Refresh labels**, **Take over** and **Generate summary** are for administrators, and **Delete** needs **Delete** on **Conversations**.
 - **At least one conversation** handled by your AI, so the table has rows to work with.
 
 ## Open the Conversations page
 
-From the topbar, select the **Conversations** navigation icon. The page opens to its header (page title, a **Filters** button and a **search** field) above the conversations table. The rows scroll inside the table, so the paginator at the bottom always stays in sight.
+In the top navigation, select **Conversations**. The page opens to its header (page title, a **Filters** button and a **search** field) above the conversations table. The rows scroll inside the table, so the paginator at the bottom always stays in sight.
 
 ## Read the table
 
@@ -40,22 +40,22 @@ Each row is one conversation. Scan across the columns to size up a conversation 
 - **User and touchpoint**: who the conversation was with, and the [touchpoint](/operational-guides/configure-touchpoints) it came through.
 - **Topics**: one chip per subject the conversation covered (see the next section).
 - **Sentiment**: the mood the AI detected in the conversation.
-- **Status**: for example, **open** or **closed**.
-- **Last message**: when the conversation was last active.
+- **Status**: for example, **Open** or **Closed**.
+- **Last message**: when the conversation was last active. The table is sorted by this column, newest first.
 
 Two icons beside a title tell you a conversation needs a person: a hand for **Needs review** (the row is also tinted in the warning color) and a headset for **With an operator**.
 
-The topics and sentiment shown here are produced by your [Configure conversation processing](/operational-guides/conversation-processing) settings.
+The topics and sentiment shown here come from the analyses described in [Configure conversation processing](/operational-guides/conversation-processing). A conversation without a sentiment shows **Unavailable**.
 
 ## Work with multiple topics
 
-Topics tell you what each conversation was actually about, so you can spot patterns across many chats at a glance. They're classified automatically: the AI reads each conversation and tags it without any manual work from you.
+Topics tell you what each conversation was about, so you can spot patterns across many chats at a glance. When topic detection is on, a model reads each conversation and tags it with topics from your topic list.
 
 Because one exchange can cover several subjects, the **Topics** column shows a separate chip for each:
 
 - A **single-topic** conversation shows one chip, for example `Billing`.
-- A **multi-topic** conversation shows up to two chips and a **+N** chip for the rest; click it to see them all.
-- A conversation with **no topics** shows none.
+- A **multi-topic** conversation shows up to two chips and a **+N** chip for the rest; select it to see them all.
+- A conversation with **no topics** shows **None**.
 
 ## Filter and search
 
@@ -69,43 +69,44 @@ Use the **search** field in the header to find conversations. It matches titles 
 
 1. Select **Filters** in the header. The filters panel opens beside the table.
 2. Set the filters you need:
-   - **User**, **Touchpoint** and **Topics**: tick one or more values. The **User** list has its own search box and shows the names you ticked first.
+   - **User**, **Touchpoint** and **Topics**: select one or more values. The **User** list has its own search box and shows the names you ticked first.
    - **Sentiment** and **Status**: pick one value.
-   - **Show only**: tick **Favorites** or **Needs review**.
+   - **Show only**: select **Favourites** or **Needs review**.
 3. Select **Apply**. The table shows only matching conversations, with a count of how many match.
 
 To start over, select **Clear** in the panel, then **Apply**. When nothing matches, the table offers **Clear** and **Edit filters** directly.
 
 :::note[Filters are part of the page address]
-Applied filters are kept in the page URL, so a filtered view can be bookmarked or shared, and the panel always shows what is actually applied. Nothing changes until you select **Apply**, so you can set several filters without the table reloading after each one.
+Applied filters are kept in the page URL, so a filtered view can be bookmarked or shared, and the panel always shows what is applied. Nothing changes until you select **Apply**, so you can set several filters without the table reloading after each one.
 :::
 
 ## Open a conversation
 
-1. Click a row. The table collapses into a narrow list on the left, and the conversation fills the rest of the page.
-2. Read the thread: the user's messages are on the right, each assistant reply shows who answered, and operator replies have their own style with a sent or failed state.
-3. Select **Details** in the conversation header to open the details drawer: user, touchpoint, status, sentiment, start and last-message dates, message count, ID, topics (with **Refresh labels**) and summary.
+1. Select a row. The table collapses into a narrow list, and the conversation fills the rest of the page.
+2. Read the thread: the user's messages are set apart from the replies, each assistant reply shows who answered, and operator replies have their own style with a sent or failed state.
+3. Select **Details** in the conversation header to open the details drawer: user, touchpoint, status, sentiment, start and last-message dates, message count, ID, topics (with **Refresh labels**) and, when summary generation is on, the summary.
 4. Use **More conversation actions** for **Advanced mode** (the raw tool calls and errors behind each reply), **Copy conversation ID** or **Delete conversation**.
 
-While the assistant is in charge, a take-over bar sits where the message box would be. From it you can **Take over**, **Stop generating** a runaway answer, or **Generate summary**. See [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
+While the assistant is in charge, a take-over bar sits where the message box would be. From it you can **Take over**, **Stop generating** an answer in progress, or **Generate summary** when summary generation is on. See [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
 
-If the conversation is flagged for oversight, the review panel is at the top of the details drawer. See [Record oversight decisions](/operational-guides/human-oversight).
+If the conversation is flagged for oversight, the review panel is at the end of the details drawer. See [Record oversight decisions](/operational-guides/human-oversight).
 
 ## Run bulk actions
 
 When you want to act on many conversations at once (say, clearing out test chats), the **Actions** menu handles them in a single step.
 
-1. Select the rows you want using their checkboxes. To select a range, click the first checkbox, then hold **Shift** and click the last one.
+1. Select the rows you want using their checkboxes. To select a range, select the first checkbox, then hold **Shift** and select the last one.
 2. Open the **Actions** menu, which appears next to the header once rows are selected and shows how many you picked.
 3. Choose one of:
    - **Refresh labels**: re-run the automatic analysis (such as sentiment and topics) on the selected conversations.
-   - **Add to favorites** or **Remove from favorites**.
+   - **Add to favourites** or **Remove from favourites**.
    - **Delete**: remove the selected conversations, with their messages and attachments. The confirmation states how many conversations will be deleted.
 
 :::note[The selection survives sorting and filtering]
 Rows stay selected when you sort or change filters, so you can build a selection across several views. That's also why the delete confirmation names the count: it may include rows you can't currently see.
 :::
 
-## Result
+## Next steps
 
-You can browse every conversation in a full-height table; read each one's user, touchpoint, topics, sentiment, status and date at a glance; spot the ones waiting for a review or held by an operator; filter with a panel that only changes the table when you apply it; open a conversation with its details beside it; and act on a selection in bulk from the **Actions** menu.
+- [Configure conversation processing](/operational-guides/conversation-processing): choose which analyses run and with which model.
+- [Record oversight decisions](/operational-guides/human-oversight): review the conversations your rules flag.
