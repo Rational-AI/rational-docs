@@ -30,10 +30,15 @@ const CATEGORIES: Category[] = [
 		to: "/operational-guides/get-started",
 		items: [
 			{ label: "Quickstart", to: "/operational-guides/get-started" },
-			{ label: "Chat", to: "/cr/Chats" },
-			{ label: "Knowledge", to: "/cr/Knowledge" },
-			{ label: "Conversations", to: "/cr/Conversations" },
-			{ label: "Rational BI", to: "/cr/RationalBI" },
+			{
+				label: "Quickstart for administrators",
+				to: "/operational-guides/quickstart-admin",
+			},
+			{
+				label: "Quickstart for developers",
+				to: "/operational-guides/quickstart-developer",
+			},
+			{ label: "The modules", to: "/cr/Chats" },
 		],
 	},
 	{
@@ -67,16 +72,16 @@ const CATEGORIES: Category[] = [
 		to: "/operational-guides/install-and-update",
 		items: [
 			{
-				label: "Install and update",
-				to: "/operational-guides/install-and-update",
-			},
-			{
 				label: "Manage roles and users",
 				to: "/operational-guides/roles-and-users",
 			},
 			{ label: "Monitor usage and cost", to: "/operational-guides/governance" },
 			{ label: "Data retention", to: "/operational-guides/data-retention" },
 			{ label: "Audit trail", to: "/operational-guides/audit-trail" },
+			{
+				label: "Install and update (on-premises)",
+				to: "/operational-guides/install-and-update",
+			},
 		],
 	},
 	{
@@ -87,20 +92,20 @@ const CATEGORIES: Category[] = [
 		to: "/operational-guides/api-access",
 		items: [
 			{
-				label: "Access Rational AI via API",
-				to: "/operational-guides/api-access",
+				label: "Quickstart for developers",
+				to: "/operational-guides/quickstart-developer",
 			},
 			{
-				label: "Deploy models via API",
-				to: "/operational-guides/api/deploy-open-source-models",
+				label: "Access Rational AI via API",
+				to: "/operational-guides/api-access",
 			},
 			{
 				label: "Build an extension",
 				to: "/operational-guides/build-an-extension",
 			},
 			{
-				label: "Develop an extension",
-				to: "/operational-guides/develop-an-extension",
+				label: "Deploy models via API",
+				to: "/operational-guides/api/deploy-open-source-models",
 			},
 		],
 	},
@@ -122,10 +127,12 @@ const CATEGORIES: Category[] = [
 		icon: "🧭",
 		title: "Help",
 		description:
-			"Find the fix for a problem by its symptom, and see what changed in each release.",
+			"Find the fix for a problem by its symptom or error message, check a limit, and see what changed in each release.",
 		to: "/troubleshooting",
 		items: [
 			{ label: "Troubleshooting", to: "/troubleshooting" },
+			{ label: "Error messages", to: "/reference/error-messages" },
+			{ label: "Limits and quotas", to: "/reference/limits" },
 			{ label: "Release notes", to: "/release-notes" },
 		],
 	},
@@ -225,19 +232,21 @@ function CategoryCard({ category }: { category: Category }) {
 			<p className="homeCard__body">{category.description}</p>
 			<ul className="homeCard__list">
 				{category.items.map((item) => (
-					<li className="homeCard__listItem" key={item.label}>
-						<DocIcon />
-						<span>{item.label}</span>
+					<li key={item.label}>
+						<Link className="homeCard__listItem" to={item.to}>
+							<DocIcon />
+							<span>{item.label}</span>
+						</Link>
 					</li>
 				))}
 			</ul>
 			{category.to && (
-				<span className="homeCard__cta">
+				<Link className="homeCard__cta" to={category.to}>
 					<Translate id="home.card.cta">Go to section</Translate>
 					<span className="homeCard__arrow" aria-hidden="true">
 						{" →"}
 					</span>
-				</span>
+				</Link>
 			)}
 		</>
 	);
@@ -250,11 +259,8 @@ function CategoryCard({ category }: { category: Category }) {
 		);
 	}
 
-	return (
-		<Link className="homeCard" to={category.to}>
-			{inner}
-		</Link>
-	);
+	// Not one big link: each quick link and "Go to section" is its own link
+	return <div className="homeCard">{inner}</div>;
 }
 
 export default function Home(): React.ReactElement {
