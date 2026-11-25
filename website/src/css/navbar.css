@@ -34,19 +34,39 @@ html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	margin-left: 0.5rem;
 }
 
-/* Search box: the magnifier uses the placeholder's gray (Infima's icon is an
-   SVG background with fill="currentColor", which always renders black), and the
-   ⌘K hint gets room so it doesn't touch the word "Search". */
+/* Search box. Infima's magnifier is an SVG background with
+   fill="currentColor", which always renders black, so each theme gets an
+   icon in its own placeholder color. */
 :root {
+	--ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="%23606770" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
+}
+html[data-theme="dark"] {
 	--ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="%23bec3c9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
 }
-@media (min-width: 997px) {
+
+/* Light theme: an active-looking field (white, hairline border), not the
+   gray fill that reads as disabled. */
+html[data-theme="light"] .navbar .navbar__search-input {
+	background-color: #ffffff;
+	box-shadow: inset 0 0 0 1px var(--ifm-color-emphasis-300);
+	color: var(--ifm-font-color-base);
+}
+html[data-theme="light"] .navbar .navbar__search-input::placeholder {
+	color: var(--ifm-color-emphasis-600);
+}
+html[data-theme="light"] .navbar .navbar__search-input:focus {
+	box-shadow: inset 0 0 0 1px var(--ifm-color-primary);
+}
+
+/* Room for the ⌘K hint so it doesn't touch the word "Search"; phones don't
+   get the keyboard hint at all. */
+@media (min-width: 576px) {
 	.navbar .navbar__search-input {
-		padding-right: 4.5rem;
+		width: 12.5rem;
+		padding-right: 4rem;
 	}
 }
-/* No keyboard shortcut hint on tablets and phones */
-@media (max-width: 996px) {
+@media (max-width: 575px) {
 	.navbar [class*="searchHintContainer"] {
 		display: none;
 	}
