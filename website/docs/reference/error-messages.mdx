@@ -1,0 +1,158 @@
+---
+title: Error messages
+sidebar_label: Error messages
+description: The error messages Rational AI shows, what each one means and what to do about it.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+# Error messages
+
+Messages are quoted as the English interface shows them. A **…** stands for a name or a number that changes from case to case. For problems without a message, see [Troubleshooting](/troubleshooting).
+
+## Sign-in and account
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"Your account isn't active yet"* | Your account is disabled, or still waiting for an administrator's approval. | Ask your administrator to enable it. See [Manage roles and users](/operational-guides/roles-and-users). |
+| *"Use your invitation link"* | Your email address is already registered in this workspace, and you signed in another way. | Open the invitation link from your email, or sign in with the account it belongs to. |
+| *"We couldn't sign you in"* | The sign-in failed for another reason. The page shows an **Error code**. | Try again. If it persists, give the error code to your administrator. |
+| *"The image is too large"* | The profile picture is over 5 MB. | Pick a smaller image. See [Edit your profile](/operational-guides/manage-your-account#edit-your-profile). |
+| *"The file must be an image"* | The file picked as profile picture isn't an image. | Pick an image file. |
+| *"Your password is managed by your organisation's identity provider."* | Your account signs in through your organization's identity provider, so its password can't be changed in Rational AI. | Change the password with your identity provider. See [Manage your own account](/operational-guides/manage-your-account). |
+
+## Chat
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"Unsupported file type. Attach an image, PDF or text document."* | The file type can't be attached. Office files are accepted only as `.docx`, `.xlsx` and `.pptx`. | Convert the file, or attach a supported type. See [Attach files to a message](/operational-guides/chat-experience#attach-files-to-a-message). |
+| *"Attachment exceeds the maximum size of 25 MB."* | The file is larger than an attachment can be. | Add large documents to a Knowledge instead. See [Limits and quotas](/reference/limits#chat-and-attachments). |
+| *"Attachments are disabled for this touchpoint."* | The touchpoint doesn't accept attachments. | Ask the touchpoint's owner to allow them. |
+| *"You can select up to 10 context items. Remove one before adding another."* | The message already has 10 context items. | Remove one first. |
+| *"The default assistant could not be loaded."* | The workspace assistant can't start, usually because there is no enabled default conversational model. | Pick another touchpoint, or ask an administrator to set the default model. See [AI Model Registry features](/operational-guides/ai-model-registry-features). |
+| *"Could not access the microphone. Check the browser's permission for this site."* | The browser blocked the microphone. | Allow the microphone for the site in the browser settings. See [Dictate a message](/operational-guides/chat-experience#dictate-a-message). |
+| *"Could not transcribe the recording. Please try again."* | The recording could not be turned into text. | Dictate again. Recordings are limited to 25 MB. |
+| *"Answer cut short: the model reached its output limit."* | The answer hit the maximum length it may have. | Ask the assistant to continue, or raise the output limit. See [When an answer stops early](/operational-guides/chat-experience#when-an-answer-stops-early). |
+| *"Answer cut short: the generation ran past its time limit."* | The answer took longer than allowed. | Regenerate, or ask for a shorter answer. |
+| *"Generation stopped: the model used up its output allowance before writing an answer."* | The model spent its whole output limit reasoning. | Lower the reasoning level or raise the output limit. See [Generation settings](/operational-guides/touchpoint-generation). |
+| *"Generation stopped: the model ran out of time before writing an answer."* | The model reached its time limit before answering. | Regenerate, or lower the reasoning level. |
+| *"Generation stopped: the model returned an empty answer."* | The model answered with nothing. | Select **Regenerate response**. |
+| *"Generation stopped after … tokens because the model kept repeating itself."* | The model was stuck in a loop. | Select **Regenerate response**, or rephrase the request. |
+| *"Generation stopped after reaching the 40-call tool limit. Try regenerating or split the request into smaller steps."* | The answer used 40 tool calls, the most one answer may make. | Split the request into smaller steps. |
+| *"Generation stopped because the tool “…” failed … consecutive times. Review the failed step above before trying again."* | The same tool failed five times in a row. | Open the failed step in the answer to see why. Check the tool's configuration. |
+| *"Generation stopped: the tool “…” ran out of time on every attempt."* | The tool never answered within its time limit. | Give the tool more time. See [Set how long a tool may take](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take). |
+| *"This assistant cannot answer: it has been blocked by an administrator."* | An administrator blocked this AI application. | Ask an administrator. See [Govern AI applications](/operational-guides/govern-ai-applications). |
+| *"This assistant cannot answer: its model has been disabled by an administrator."* | The touchpoint's model is disabled in the registry. | Ask an administrator to enable it, or to pick another model. See [Enable or disable a model](/operational-guides/model-deployments#enable-or-disable-a-model). |
+| *"This assistant cannot answer: its model has not been approved for use."* | The workspace accepts only approved models, and this one isn't. | Ask an administrator to approve it. See [AI Model Registry features](/operational-guides/ai-model-registry-features). |
+| *"This assistant cannot answer: its model is no longer approved for use."* | The model's approval was withdrawn. | Ask an administrator to approve it again or change the model. |
+| *"The response could not be completed."* | The answer failed for another reason. | Turn on **Advanced mode** to see the error, then regenerate. |
+| *"This conversation is as long as the assistant can follow."* | The touchpoint stops long chats instead of summarizing them. | Select **New conversation**. See [Keep going in a long conversation](/operational-guides/chat-experience#keep-going-in-a-long-conversation). |
+| *"This spreadsheet cannot be previewed. It may be unavailable, damaged or too large."* | The file can't be shown in **Canvas**, for example because it is over 25 MB. | Download it instead. |
+| *"The change could not be saved"* | The model or knowledge choice can't be changed on this touchpoint. | Change the model only in your own chats with the workspace assistant. See [Use the chat](/operational-guides/chat-experience#choose-the-model-and-reasoning-level). |
+| *"Could not submit your feedback. Please try again"* | The rating was not saved. | Rate the answer again. |
+
+## Knowledge
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"The file is larger than 10 MB"* | The spreadsheet is too large to import. | Split it into smaller files. See [Import records from Excel or CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv). |
+| *"The sheet has more than 5000 rows: split it into smaller files"* | An import holds at most 5,000 rows. | Split the sheet. |
+| *"Choose an .xlsx, .xls, .csv, .tsv or .txt file"* | The import doesn't read this file type. | Save the sheet in one of these formats. |
+| *"The file could not be read"* | The file is damaged or not a real spreadsheet. | Open and save it again in a spreadsheet application. |
+| *"… has too many or too long values for a single select: make it text"* | The column has too many distinct values for a single select. | Import the column as text. |
+| *"No one who can read the knowledge is called …"* | A person column names someone without access to the Knowledge. | Fix the name, or give the person access first. |
+| *"Nothing was saved: fix the values that do not fit their attribute"* | At least one edited cell holds a value its attribute doesn't accept. | Fix the cells marked as invalid, then save. See [Edit records in the grid](/operational-guides/knowledge-collections-and-grid#edit-records-in-the-grid). |
+| *"A collection with this name already exists"* | Collection names are unique in a Knowledge. | Pick another name. |
+| *"Another attribute already has this name"* | Attribute names are unique in a Knowledge. | Pick another name. |
+| *"You have already pinned 5 views: unpin one to pin another"* | A Knowledge pins at most five views. | Unpin a view first. |
+| *"Error while exporting knowledge"* | The export failed, or took longer than the two minutes the page waits. | Try again later. See [Export a Knowledge](/operational-guides/export-knowledge). |
+
+## Embed widget
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"You have reached today's message limit. Come back tomorrow to ask more."* | The visitor used up **Messages per visitor per day**. | Raise or clear the limit. See [Set up the chat](/operational-guides/embed-knowledge#set-up-the-chat). |
+| *"The chat is paused for this month. You can keep browsing the content."* | The widget reached its **Monthly budget**. | Raise or clear the budget. |
+| *"You have sent your details several times. Try again later."* | A visitor sends the contact form at most five times an hour. | Wait an hour. |
+| *"This widget isn't available"* | The page uses an embed key that was rotated or is wrong. | Copy the current snippet from the Knowledge's **Embed** tab. See [Embed a Knowledge](/operational-guides/embed-knowledge). |
+
+## Sources and channels
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"Enter a valid URL starting with http:// or https://"* | An HTTP source URL is malformed. | Correct the address. See [Configure an HTTP source](/operational-guides/configure-sources#configure-an-http-source). |
+| *"Could not stop the sync"* | The running sync didn't stop. | Try again. |
+| *"Error while connecting the channel"* | The messaging service refused the channel's credentials. | Check the credentials. See [Microsoft Teams](/operational-guides/connect-teams#troubleshooting) or [Slack](/operational-guides/connect-slack#troubleshooting). |
+| *"Error while sending the test message"* | The test message didn't reach the channel. | Check that the channel shows **Connected** and its credentials are valid. See [Manage channels](/operational-guides/manage-channels). |
+| *"The workflow "…" is disabled and cannot be run. Enable it from the workflow settings to use it again."* | A run was requested for a disabled step. | Enable it in **Settings** → **Workflows**. See [Create a workflow](/operational-guides/create-workflow). |
+
+## Agents
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"No text-generation model is available — add one to the registry first."* | The AI Model Registry has no text-generation model. | Add one, or connect a subscription. See [Create an agent](/operational-guides/create-an-agent#troubleshooting). |
+| *"The configured Agents default model is unavailable."* | The default model for agents was removed or withdrawn. | Pick another under **Default models**, or set a model on the agent. |
+| *"Couldn't draft this agent. Fill it in by hand."* | **Draft with AI** failed. | Write the profile yourself. |
+| *"Could not start the assigned agent. Check permissions, model and workflow availability, then retry."* | The task's agent could not start a run. | Check the agent's model and permissions. See [Start and move tasks](/operational-guides/agent-tasks#start-and-move-tasks). |
+| *"Completion could not be verified after three continuation attempts: …"* | The agent could not prove the result. The run ends **Failed**. | Make the goal checkable and retry. See [Agent runs](/operational-guides/agent-runs#troubleshooting). |
+| *"The agent stopped after too many recovery attempts."* | The run kept failing and gave up. | Read the run's activity, fix the cause, then retry. |
+| *"Cancellation was not confirmed by the runtime. The task may still be active; check its computer and retry cancellation."* | The computer didn't confirm the stop in time. | Wait a few seconds, check the status, and stop it again if needed. |
+| *"A file can be at most 10 MB."* | A task attachment is over 10 MB. | Attach a smaller file. |
+| *"A task holds at most 30 files."* | The task already has 30 attachments. | Remove one first. |
+| *"Pick between 1 and 20 agents."* | A chat has 1 to 20 agents. | Change the selection. See [Chat with agents](/operational-guides/agent-chats). |
+| *"This link has expired or is no longer valid. Open the run in the app to decide."* | An approval link from an email is older than 24 hours, or the approval was already decided. | Open the run in **Agents** and decide there. |
+| *"Computer environments are not enabled on this server. Contact your administrator to configure the service."* | The installation has no computer service. | Ask your administrator. See [Agent computers](/operational-guides/agent-computers#troubleshooting). |
+| *"Computer service was not found. Ask your administrator to check this deployment."* | The computer service is down or not configured. | Ask your administrator, then select **Retry connection**. |
+| *"The Computer service did not respond in time."* | A computer is starting or under load. | Select **Retry connection** after a few seconds. |
+| *"You do not have permission to perform this action."* | Your role lacks the right for this action in Agents. | Ask an administrator for the right. See [Manage roles and users](/operational-guides/roles-and-users). |
+| *"Enter an amount above zero, or leave it empty for no limit."* | The agent's monthly budget is zero or negative. | Enter a positive amount, or clear the field. |
+
+## Models and the API
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"Model already exists"* | Another model has the same name or model identifier. | Change the identifier or the name. See [AI Model Registry](/cr/settings/ai-model-registry). |
+| *"This model has billing history, which stays associated with it, so it cannot be deleted. Disable it instead."* | Models with recorded costs can't be deleted. | Disable the model. |
+| *"This workspace's plan does not include hosting your own models on our GPUs."* | The plan has no hosted GPUs. | Use a connected provider, or contact Rational AI. See [Model deployments](/operational-guides/model-deployments). |
+| *"'…' is not deployed."* | The model has no running deployment. | Deploy or resume it. See [Stop, resume or warm up a model](/operational-guides/model-deployments#stop-resume-or-warm-up-a-model). |
+| *"'…' is warming up; retry shortly."* | The model was idle and is starting. Requests wait up to 120 seconds. | Retry after the time in the `Retry-After` header. Raise **Minimum replicas** to avoid the wait. |
+| *"'…' has not been approved, and this workspace only uses approved models."* | The workspace requires approval, and this model has none. | Ask an administrator to approve it. |
+| *"The application '…' has been blocked by an administrator."* | An administrator blocked the calling application. | Ask an administrator. See [Govern AI applications](/operational-guides/govern-ai-applications). |
+| *"A touchpoint with this name already exists. Please try again."* | Touchpoint names are unique. | Pick another name. |
+
+## Extensions and Marketplace
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"Pinned. Change the update policy to install updates."* | The extension's update policy keeps it at its version. | Change the update policy. See [Extension updates](/operational-guides/extension-updates). |
+| *"Exit development mode before updating this extension."* | The extension is in development mode. | Exit development mode, then update. See [Develop an extension](/operational-guides/develop-an-extension). |
+| *"The extension is already up to date."* | No newer release exists. | Nothing to do. |
+| *"The manifest exceeds the 2 MiB metadata limit."* | `manifest.json` is over 2 MiB. | Move large content out of the manifest. |
+| *"You already asked for this solution today"* | One request per solution per day reaches the administrators. | Ask again tomorrow. See [Ask the admins to install a solution](/operational-guides/marketplace#ask-the-admins-to-install-a-solution). |
+
+## Rational BI and Gen
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"The workbook opens in Tableau Desktop, but this server cannot create the extracts Tableau Public requires."* | The export works only for Tableau Desktop on this installation. | Open the workbook in Tableau Desktop. See [Export a dashboard](/operational-guides/rational-bi#export-a-dashboard). |
+| *"Image generation isn't set up yet"* | No image model is configured for Gen. | Set it up in the Gen settings. See [Configure Gen](/operational-guides/configure-gen). |
+| *"An image is already being generated. Wait for it to finish."* | A session generates one image at a time. | Wait for the current image. See [When a generation fails](/operational-guides/gen-images#when-a-generation-fails). |
+| *"This generation is taking longer than expected. Refresh its status to check again."* | The image wasn't ready after 20 minutes. | Refresh its status later. |
+| *"The model returned … image(s) of the … requested."* | The model produced fewer images than asked. | Try again or choose another model. |
+| *"Reference image exceeds the maximum size of 10 MB."* | A reference image is over 10 MB. | Use a smaller image. |
+| *"Your session expired. Sign in again to continue."* | Your sign-in expired. | Sign in again. |
+| *"Fix the pipeline's checks to save."* | A social template step breaks a rule of the pipeline. | Fix the flagged step. See [Create social templates](/operational-guides/social-studio#create-social-templates). |
+
+## License and backups
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"The platform does not know this code."* | The code is mistyped, already used on another installation, revoked or expired. | Check the code as printed. See [License](/operational-guides/license#troubleshooting). |
+| *"The licence does not verify: it is not a Rational AI licence, or it was altered."* | The pasted license file is incomplete, comes from another platform, or was edited. | Paste the whole license file again, exactly as you received it. See [License](/operational-guides/license#troubleshooting). |
+| *"This licence was issued for another installation."* | The license file is bound to a different activation. | Ask Rational AI for a license file for this installation. See [License](/operational-guides/license#troubleshooting). |
+| *"The destination could not be written"* | **Test destination** could not write to the backup destination. | Check that the user can write to the share or folder. See [Back up and restore](/operational-guides/backup-and-restore#troubleshooting). |
+
+## Next steps
+
+- [Limits and quotas](/reference/limits)
+- [Troubleshooting](/troubleshooting)
