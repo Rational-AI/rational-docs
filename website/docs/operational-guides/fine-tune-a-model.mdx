@@ -126,7 +126,7 @@ Fine-tuning here trains a small **adapter** (a LoRA adapter) on top of the base 
 
 - **Rank:** how much capacity the adapter has, 16 by default. The main dial. Raise it when a run isn't learning enough from your examples or the task is more varied.
 - **Alpha:** how strongly the adapter's contribution is scaled, 16 by default. It is usually equal to the rank, so while the two are equal, changing **Rank** changes **Alpha** with it.
-- **Dropout:** how much regularisation is applied during training, between 0 and 0.99, 0 by default. Raise it if the model starts memorising your examples instead of learning from them.
+- **Dropout:** how much regularization is applied during training, between 0 and 0.99, 0 by default. Raise it if the model starts memorizing your examples instead of learning from them.
 
 :::note[Leave the defaults alone to start]
 Every parameter ships with a sensible default, and launching without touching any of them gives you a reasonable run. Change one when you have a specific reason and a first result to compare against.
@@ -159,7 +159,7 @@ The drawer's **⋮** menu holds what you can do with the run:
 | Action | When it's offered | What it does |
 |---|---|---|
 | **Cancel run** | While training | Stops the training job and releases its GPUs. Saved checkpoints are kept. |
-| **Retry run** | Failed or cancelled | Starts the same run again, from its latest complete checkpoint when there is one. |
+| **Retry run** | Failed or canceled | Starts the same run again, from its latest complete checkpoint when there is one. |
 | **Start training** | Pending | Captures the dataset as it is now and starts training. |
 | **Re-run** | Always | Opens the dialog pre-filled with this run's settings, to launch a *new* run with different parameters. |
 | **Edit details** | Always | Changes the name and description only. |

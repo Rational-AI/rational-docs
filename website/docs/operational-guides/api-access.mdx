@@ -185,7 +185,7 @@ The same touchpoint is also served as an MCP server, so any client that speaks t
 - **What it offers:** the touchpoint's enabled tools, and nothing else (no skills, prompts or resources).
 
 :::note[Approval moves to the MCP client]
-Unlike the OpenAI API, the MCP server does list tools that need approval under the touchpoint's [confirmation policy](/operational-guides/configure-touchpoints#decide-when-a-tool-needs-confirmation). It marks them as destructive and as requiring approval, so a well-behaved MCP client asks its own user before calling them. Rational AI doesn't block the call itself, so connect only clients you trust to honour that flag.
+Unlike the OpenAI API, the MCP server does list tools that need approval under the touchpoint's [confirmation policy](/operational-guides/configure-touchpoints#decide-when-a-tool-needs-confirmation). It marks them as destructive and as requiring approval, so a well-behaved MCP client asks its own user before calling them. Rational AI doesn't block the call itself, so connect only clients you trust to honor that flag.
 :::
 
 A touchpoint that [AI application governance](/operational-guides/govern-ai-applications) blocks, or rates as an unacceptable risk, refuses MCP calls.

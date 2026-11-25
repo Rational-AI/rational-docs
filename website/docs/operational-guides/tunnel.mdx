@@ -65,7 +65,7 @@ Turn off **Rational AI Tunnel**. The page shows a **Configure your router** box 
 The page also lists the machine's LAN address (**This machine**) and **Your public IP**. Add the two rules on your router (the feature is usually called *port forwarding*, *NAT* or *virtual server*), then press **Save**. Within a minute the endpoint resolves to your public IP; if your provider changes it, the installation notices at the next check-in and the endpoint follows.
 
 :::warning[A direct connection needs a reachable public IP]
-If your provider puts you behind a shared address (carrier-grade NAT, common on mobile and some fibre connections), forwarded ports never reach you and the installation becomes unreachable from outside as soon as the tunnel is off. If in doubt, keep the tunnel on, or ask your provider for a public IP first. Switching the tunnel back on restores access within a minute.
+If your provider puts you behind a shared address (carrier-grade NAT, common on mobile and some fiber connections), forwarded ports never reach you and the installation becomes unreachable from outside as soon as the tunnel is off. If in doubt, keep the tunnel on, or ask your provider for a public IP first. Switching the tunnel back on restores access within a minute.
 :::
 
 Port 80 only redirects browsers to HTTPS; forwarding it is convenient, not required.
