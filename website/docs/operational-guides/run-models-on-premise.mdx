@@ -19,12 +19,11 @@ Before you start, make sure you have:
 
 - **An on-premises installation** of the current release, with administrative access to the Control Room.
 - **Hardware for the models:** an NVIDIA GPU with its container runtime for good speed, or enough memory to run small models on the CPU.
-- **A Hugging Face token, for gated models only:** models such as Llama or Gemma need your organization's own token, given to the installer with `--hf-token`. Public models (for example `BAAI/bge-m3`) need none.
-- **For several machines:** shell access to each of them, the same processor architecture on all of them, and a network between them that you can open (see below).
+- **A Hugging Face token, for gated models only:** models such as Llama or Gemma need your organization's own token, which Rational AI sets on the installation. Public models (for example `BAAI/bge-m3`) need none.
 
 ## Add your first models
 
-A new installation starts with **no models**: no embedding model and no chat model. Re-running the installer never adds, changes or removes a model. Until you add them, a Knowledge cannot index documents and chats cannot answer.
+A new installation starts with **no models**: no embedding model and no chat model. Until you add them, a Knowledge cannot index documents and chats cannot answer.
 
 1. Go to **Settings** → **AI Model Registry** and select **Add new** → **Choose an open source model**.
 2. Add an **embedding model** first, for example `BAAI/bge-m3`, and deploy it.
@@ -54,7 +53,7 @@ Model weights are large, so the platform keeps them out of the way:
 
 - **One cache for all models.** The weights download into a Docker volume, `rai-model-cache`, shared by every model container. A model is downloaded once and survives restarts and redeployments.
 - **Out of the backup.** The [backup](/operational-guides/backup-and-restore) leaves the weights out, since they can always be downloaded again. The local backup taken before every update also leaves out the captured model calls, so a rollback brings them back empty.
-- **Kept when a model is removed.** Deleting a deployment leaves its weights in the cache. Once no model container runs, `sudo docker volume rm rai-model-cache` on the host reclaims the disk.
+- **Kept when a model is removed.** Deleting a deployment leaves its weights in the cache. Rational AI can reclaim that disk once no model runs.
 
 :::note[Model containers are kept away from your data]
 Model containers sit on a network of their own, shared only with the platform's backend. A model can answer requests, but cannot reach the databases or any other part of the platform.
@@ -62,7 +61,7 @@ Model containers sit on a network of their own, shared only with the platform's 
 
 ## Run models on a DGX Spark
 
-An NVIDIA DGX Spark is an Arm machine whose GPU (a GB10) shares its memory with the rest of the system. The installer recognizes it and adjusts:
+An NVIDIA DGX Spark is an Arm machine whose GPU (a GB10) shares its memory with the rest of the system. The installation recognizes it and adjusts:
 
 - **The right images.** It uses the Arm builds of the embedding runner, built for the GB10.
 - **80 GiB for models.** Because the platform needs memory too, the installation leaves 80 GiB of the shared memory to models and keeps the rest. A deployment's GPU memory budget counts against those 80 GiB, so `50%` means 40 GiB.
@@ -72,66 +71,33 @@ An NVIDIA DGX Spark is an Arm machine whose GPU (a GB10) shares its memory with 
 If several models' budgets add up to more than 80 GiB, they don't all start: vLLM refuses to start without the free memory it was given. Size the budgets so that the models you want running at the same time fit together.
 :::
 
-:::note[`--inference-context` no longer exists]
-Earlier releases capped the context of the installation's own inference engine with `--inference-context`. That engine is gone, and the installer now refuses the flag. Set the **Context Length** in each model's deploy settings instead: a smaller context leaves more memory for concurrent requests.
-:::
-
 ## Spread models over several machines
 
-One machine may not have enough GPUs for every model you need. You can add **model nodes**: machines that only run models, with Docker, the NVIDIA runtime and their GPUs, and nothing else of the platform. The machine with the platform, the **control node**, then manages a Docker Swarm, and each deployment runs wherever there is room for it, with as many replicas as you ask for.
+One machine may not have enough GPUs for every model you need. Rational AI can add **model nodes**: machines that only run models, joined to the machine with the platform in a Docker Swarm. You keep deploying from **Settings** → **AI Model Registry**, and each deployment runs wherever there is room for it, with as many replicas as you ask for.
 
-1. **Turn the control node into the swarm's manager.** Run the installer on it with `--swarm`, once; later runs keep the swarm:
-
-   ```bash
-   ./install.sh --ip <ip-of-control-node> --user rational --password '…' --swarm
-   ```
-
-   If the control node has several networks, add `--swarm-address <address>` to run the swarm on the one that faces the model nodes, and `--swarm-pool <cidr>` to keep the swarm's internal networks away from your own routes (for example a VPN). Both apply only when the swarm is created.
-
-2. **Join each model node.** Run the installer for each extra machine with `--join` and the control node's address:
-
-   ```bash
-   ./install.sh --ip <ip-of-model-node> --user rational --password '…' --join <ip-of-control-node>
-   ```
-
-   The installer reads what it needs from the control node over SSH; the join token is never written on a command line.
-
-3. **Open the network between the machines.** Your firewall must let through:
-
-   | Port | Between |
-   |---|---|
-   | 2377/tcp | every node → the control node |
-   | 7946/tcp and 7946/udp | all nodes |
-   | 4789/udp | all nodes |
-   | IP protocol 50 (ESP) | all nodes (the encryption of the models network) |
-
-   The installer opens nothing itself.
-
-4. **Deploy your models again.** When the control node becomes a swarm manager, the models that ran as plain containers are removed: deploy them again from **Settings** → **AI Model Registry**.
-
-5. **Check the swarm.** `sudo rational status` on the control node lists the nodes and the model services; on a model node, it shows the node's swarm state and its GPUs.
-
-:::warning[Every node must be the same kind of machine]
-The control node chooses the runner images and the tuned defaults for the whole swarm, so all nodes need the same processor architecture, and ideally the same hardware. The installer refuses a model node of another architecture: a DGX Spark and an x86 server cannot share a swarm.
-:::
-
-Good to know about a swarm:
-
+- **Every node must be the same kind of machine.** All nodes need the same processor architecture, and ideally the same hardware: a DGX Spark and an x86 server can't share a swarm.
 - **GPUs are counted.** Every node declares its GPUs to the swarm, and a deployment reserves as many as it has, so two models never share a card by accident. A node without GPUs runs models on the CPU.
 - **Each node keeps its own weights.** A node downloads the weights of the models it runs into its own cache. On DGX Sparks, the 80 GiB for models apply to each node.
-- **Removing a node.** Run `sudo docker swarm leave` on it, then `sudo docker node rm <name>` on the control node. The models it ran move to the other nodes.
+- **Models are deployed again once.** When the machine with the platform starts managing a swarm, the models that ran on it are removed: deploy them again from **Settings** → **AI Model Registry**.
+
+Your firewall must let the machines reach each other on these ports. The installation opens nothing itself.
+
+| Port | Between |
+|---|---|
+| 2377/tcp | every node → the machine with the platform |
+| 7946/tcp and 7946/udp | all nodes |
+| 4789/udp | all nodes |
+| IP protocol 50 (ESP) | all nodes (the encryption of the models network) |
 
 ## Move from an earlier release
 
-Installations from earlier releases ran their models outside the registry, on an engine of their own (`text-llm`, or a vLLM behind a gateway, with optional inference nodes). The first `install.sh` run of a current release removes that engine and leaves its data on disk. After it, as an administrator:
+Installations from earlier releases ran their models outside the registry, on an engine of their own (`text-llm`, or a vLLM behind a gateway, with optional inference nodes). Moving to a current release removes that engine. After the move, as an administrator:
 
 1. **Expect the old models to fail.** Their deployments show **Failed** because their engine no longer exists.
 2. **Add them again as registry models** and deploy them: the embedding model first (`BAAI/bge-m3` embeds like the old `bge-m3:latest`), then the chat model.
 3. **Move the defaults and the touchpoints** to the new models, then delete the old models and their *Inference* connector.
 4. **Check each Knowledge.** A Knowledge keeps the embedding model it was indexed with; point it at `BAAI/bge-m3` to keep its existing vectors. Another embedding model means indexing again.
-5. **Reclaim the disk** once the new models run: `sudo rm -rf /opt/rational/data/ollama /opt/rational/data/vllm`.
-
-A former inference node can join the control node's swarm as a model node once its old engine is stopped. The nightly update does not perform this move: it needs an `install.sh` run.
+Rational AI frees the disk the old engine used once the new models run.
 
 ## Next steps
 

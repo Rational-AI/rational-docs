@@ -7,21 +7,21 @@ audience: [admin]
 
 # Back up and restore an on-premises installation
 
-An on-premises Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings** → **Backup** copies all of them, in one run, to a destination you own (a network share, an S3 bucket, or an FTP or SFTP server) on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and how to bring an installation back from one with the `rational` command on the host.
+An on-premises Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings** → **Backup** copies all of them, in one run, to a destination you own (a network share, an S3 bucket, or an FTP or SFTP server) on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and what happens when one is restored.
 
 :::note[On-premises only]
-The Backup page is on by default on every on-premises installation set up with `install.sh` (see [Your on-premises installation](./on-premises-installation)): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
+The Backup page is on by default on every [on-premises installation](./on-premises-installation): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
 :::
 
 :::note[The backups taken before every update are not enough]
 Every update takes a local backup first, so a bad release can be rolled back. Those backups stay on the same disk as the installation: a failed disk or a lost machine takes them along. The backup on this page goes to a destination of yours, away from the machine. Set it up on every installation that holds data you care about.
 
-| | Local backup (`rational backup`) | Off-site backup (**Settings** → **Backup**) |
+| | Local backup | Off-site backup (**Settings** → **Backup**) |
 |---|---|---|
 | Protects against | A bad update | A lost machine or disk, a deleted knowledge base |
-| When | Before every update, or by hand | Daily, or **Back up now** |
-| Where | `/opt/rational/backups/` on the same disk | Your NAS, S3 bucket or FTP/SFTP server |
-| Restore with | `rational restore DIR` or `rational rollback` | `rational offsite-restore NAME` |
+| When | Before every update | Daily, or **Back up now** |
+| Where | The installation's own disk | Your NAS, S3 bucket or FTP/SFTP server |
+| Restored by | The update itself, when it rolls back | Rational AI, on request |
 :::
 
 <img
@@ -51,16 +51,6 @@ The weights of the models the installation runs, the audio model cache and the P
 Before you start, make sure you have:
 
 - **Administrative access.** The page is admin-gated.
-- **Backup enabled on the installation.** Installations set up with `install.sh` have it on. A stack you assembled yourself with Docker Compose needs `Backup__Enabled=true` on the backend, and the worker that performs the backup (`temporal-worker`) needs to know where the live data is:
-
-  | Variable | Value on a Compose installation |
-  |----------|--------------------------------|
-  | `BACKUP_POSTGRES_URL` | `postgresql://postgres:<password>@db:5432/postgres` |
-  | `BACKUP_QDRANT_URL` | `http://vectordb:6333` (plus `BACKUP_QDRANT_API_KEY` if one is set) |
-  | `BACKUP_EXTENSIONS_PATH` | The extensions directory, mounted into the worker (for example `./data/extensions:/rationalai/backend/extensions`) |
-  | `BACKUP_SQLD_PATH` | The libsql data directory, mounted into the worker (for example `./data/sqld:/backup/sqld`) |
-
-  A component whose variable is missing is reported as *skipped*, not as a failure.
 - **A destination with enough space** for the database dumps, the vector snapshots and a full copy of the object storage. The worker itself needs no free disk: everything is streamed.
 
 ## Set the destination
@@ -75,7 +65,7 @@ Go to **Settings** → **Backup** and pick the destination **Type**. The fields 
 | **SFTP server** | Host, port (22), user, password | Folder |
 | **Local folder (NFS mount)** | None | The absolute path of a folder the worker can see, typically an NFS mount added to the worker container |
 
-On an installation set up with `install.sh`, do not choose **Local folder**: the path is inside the worker's container, is lost with it, and cannot be restored with `rational offsite-restore`. Ask the owner of the destination for an account that can write only the backup folder.
+Don't choose **Local folder**: the path is inside a container of the installation, is lost with it, and can't be restored. Ask the owner of the destination for an account that can write only the backup folder.
 
 The folder is created on first use. Select **Test destination** before saving: the worker writes and deletes a small marker file there, which proves the credentials, the path and the write permission in one go. A failure comes back with the reason (a wrong password, a read-only share, an unreachable host).
 
@@ -120,88 +110,32 @@ Two things are worth checking now and then:
 
 ## Restore
 
-Restoring replaces the current data with a backup, which is why it is not a button: the application must be stopped while its databases are dropped and recreated. It runs from a shell on the machine, with the `rational` command.
+Restoring replaces the current data with a backup, which is why it is not a button: the application must be stopped while its databases are dropped and recreated. Rational AI runs the restore on the machine. To ask for one, send Rational AI the name of the backup you want, as listed under **Backups at the destination** (for example `2026-09-30T01-30-00Z`).
 
 :::danger[A restore overwrites everything]
 Every database, the vectors, the object storage, the extensions and the knowledge databases are replaced by the backup's contents. Anything created after that backup was taken is lost. Take a fresh backup first if there is any doubt.
 :::
 
-### Give the machine its copy of the destination
+A restore can also bring back only some components, for example only the vectors and the knowledge databases.
 
-The application keeps the destination's password encrypted, so the machine needs its own copy of the destination settings in `/opt/rational/backup-destination.env`. Do this once, when you set the destination up, not on the day you need it.
+The application keeps the destination's password encrypted, so a restore needs its own copy of the destination's settings, password included. Agree with Rational AI how it gets them when you set the destination up, not on the day you need a restore. **Copy restore command** on any backup copies those settings, with the secrets masked as `********`.
 
-1. In **Backups at the destination**, select **Copy restore command** on any backup. It copies the destination settings as variables; the secrets are masked as `********`.
-2. On the machine, create the file, readable by root only, and paste the variables into it:
-
-   ```bash
-   sudo install -m 0600 /dev/null /opt/rational/backup-destination.env
-   sudo nano /opt/rational/backup-destination.env
-   ```
-
-   Keep only the `NAME=value` lines; a leading `-e ` and a trailing `\` are tolerated. Write the real password in place of `********`. It looks like this:
-
-   ```bash
-   RCLONE_CONFIG_BACKUP_TYPE=sftp
-   RCLONE_CONFIG_BACKUP_HOST='nas.example.lan'
-   RCLONE_CONFIG_BACKUP_USER='rational'
-   RCLONE_CONFIG_BACKUP_PASS='<the password>'
-   BACKUP_ROOT='backup:rational'
-   ```
-
-3. Check that the machine can read the destination:
-
-   ```bash
-   sudo rational offsite-list
-   ```
-
-   It lists each backup with its size and what it holds.
-4. Keep a copy of this file and of `/opt/rational/.env` **off the machine**, separately from the backups. Neither is part of a backup, and a replacement machine cannot read the backups without them.
-
-### Restore a backup
-
-1. Choose the backup with `sudo rational offsite-list`.
-2. Run the restore with its name:
-
-   ```bash
-   sudo rational offsite-restore 2026-09-30T01-30-00Z
-   ```
-
-   It checks the backup while the application is still running, then asks you to type the backup name again to confirm. It stops the application, restores the databases, the vectors, the files, the extensions and the knowledge databases, and starts everything again.
-
-   | Option | When to use it |
-   |--------|----------------|
-   | `--only postgres,qdrant,storage,extensions,sqld` | Restore only some components, for example `--only qdrant,sqld`. |
-   | `--yes` | Skip the confirmation, for a script. |
-
-3. Sign in and check a recent conversation, a knowledge base and an extension. Extensions may take a moment on first use while their packages are downloaded again.
-
-A restore that fails part-way leaves the application stopped: run it again, or go back to a local backup with `sudo rational restore /opt/rational/backups/<folder>`.
-
-:::note[The command on the page is for stacks you assembled yourself]
-**Copy restore command** gives a `docker compose run … temporal-worker rational-backup restore` command. On an installation set up with `install.sh`, use it only as the source of the destination settings and restore with `rational offsite-restore`, which stops the right services and mounts the right folders.
-:::
-
-A few consequences to know about:
+After a restore:
 
 - Everyone is signed out: sessions are not part of a backup.
+- Check a recent conversation, a knowledge base and an extension. Extensions may take a moment on first use while their packages are downloaded again.
 - The backup includes the workflow engine's state. A backup run that was in progress when that backup was taken may resume and complete after the restore; it is harmless.
-- Restore into the **same release** of Rational AI that took the backup, or a newer one: the application migrates the database forward on start, never backwards.
-
-### Restore on a replacement machine
-
-1. Put the saved `.env` at `/opt/rational/.env` on the new machine **before** installing: the installation keeps the secrets it finds there, and the restored data refers to some of them.
-2. Install with `install.sh` (see [Your on-premises installation](./on-premises-installation)).
-3. Write `/opt/rational/backup-destination.env` from your saved copy and run `sudo rational offsite-restore NAME`.
-4. If **Settings** → **Licence** asks for it, activate the license again.
+- A backup goes back only into the release that took it, or a newer one: the application migrates the database forward on start, never backwards.
+- On a replacement machine, **Settings** → **Licence** may ask you to activate the license again.
 
 ### Rehearse it
 
-A backup that has never been restored is a hope, not a plan. Restore into a spare installation once after setting the destination up, and again after major updates: it is the only way to know the destination is really usable.
+Ask Rational AI to restore one into a spare installation once after setting the destination up, and again after major updates: it is the only way to know the destination is really usable.
 
 ## Limits
 
 - **Backups are not encrypted.** The dumps and archives are stored as they are; the destination's own access control and disk encryption are the protection.
-- **Not in the backup:** `/opt/rational/.env` (the secrets), the certificates, the connection to Rational AI and `backup-destination.env`. Keep `.env` and `backup-destination.env` off the machine, separately from the backups.
+- **Not in the backup:** the installation's own secrets, its certificates and its connection to Rational AI. A replacement machine can't read the backups without those secrets.
 - **The object-storage mirror only grows:** deleted attachments stay there.
 
 ## Troubleshooting
@@ -209,9 +143,6 @@ A backup that has never been restored is a hope, not a plan. Restore into a spar
 | Symptom | Likely cause |
 |---------|--------------|
 | **Test destination** fails with *permission denied* | The share or folder is read-only for the given user. |
-| The status shows *failed* with *pg_dump: server version mismatch* | The worker image is older than the database server; update the worker. |
-| A component is *skipped* | Its `BACKUP_*` variable is not set on the worker, or the path it points at does not exist there. |
+| The status shows *failed* with *pg_dump: server version mismatch* | The backup worker is older than the database. Contact Rational AI. |
+| A component is *skipped* | The installation isn't set up to back that component up. Contact Rational AI. |
 | The backups list is empty though runs completed | The destination path was changed after those runs: the list reads the current path. |
-| `rational offsite-restore` says *no off-site destination* | `/opt/rational/backup-destination.env` is missing: see [Give the machine its copy of the destination](#give-the-machine-its-copy-of-the-destination). |
-| `rational offsite-restore` says a value is still the `********` mask | Write the real password in `backup-destination.env`. |
-| `rational offsite-restore` says *a local destination is not kept on this host* | The destination is a **Local folder**. Switch to SMB, SFTP, FTP or S3. |
