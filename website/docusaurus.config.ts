@@ -99,7 +99,6 @@ const config: Config = {
 					// Remove this to remove the "edit this page" links.
 					editUrl:
 						"https://github.com/Rational-AI/rational-docs/edit/main/website/",
-					showLastUpdateTime: true,
 				},
 				blog: false,
 				// blog: {
