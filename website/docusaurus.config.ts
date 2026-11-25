@@ -215,8 +215,8 @@ const config: Config = {
 				// 	position: "left",
 				// 	label: "Docs",
 				// },
-				// Navbar search hidden — search lives in the homepage hero.
-				// (Full-text search is still reachable via /search and Cmd/Ctrl+K.)
+				// The search box is injected by the local-search theme; navbar.css hides it
+				// only on the home page, where the hero has its own.
 				// {
 				// 	type: "search",
 				// 	position: "left",

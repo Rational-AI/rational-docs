@@ -6,8 +6,8 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top {
 	border-bottom: 1px solid var(--ifm-table-border-color);
 }
 
-/* Hide the navbar search box (auto-injected by the local-search theme).
-   Search lives in the homepage hero instead. */
-.navbar [class*="navbarSearchContainer"] {
+/* Navbar search (auto-injected by the local-search theme) on every docs page.
+   Only the home page hides it, because its hero has the big search box. */
+html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	display: none;
 }
