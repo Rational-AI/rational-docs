@@ -88,7 +88,7 @@ const CATEGORIES: Category[] = [
 		icon: "🧩",
 		title: "Developers",
 		description:
-			"Call Rational AI's models and API from your own code.",
+			"Call Rational AI from your own code, and extend it with your own extensions.",
 		to: "/operational-guides/api-access",
 		items: [
 			{
@@ -100,8 +100,12 @@ const CATEGORIES: Category[] = [
 				to: "/operational-guides/api-access",
 			},
 			{
-				label: "Manage extensions",
-				to: "/operational-guides/manage-extensions",
+				label: "Build an extension",
+				to: "/operational-guides/build-an-extension",
+			},
+			{
+				label: "Deploy models via API",
+				to: "/operational-guides/api/deploy-open-source-models",
 			},
 		],
 	},
