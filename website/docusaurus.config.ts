@@ -28,7 +28,10 @@ const config: Config = {
 		[
 			"@docusaurus/plugin-client-redirects",
 			{
-				redirects: [{ from: "/operational-guides/agents", to: "/cr/Agents" }],
+				redirects: [
+					{ from: "/operational-guides/agents", to: "/cr/Agents" },
+					{ from: "/operational-guides/install-and-update", to: "/operational-guides/on-premises-installation" },
+				],
 			},
 		],
 		[
@@ -237,7 +240,7 @@ const config: Config = {
 						},
 						{
 							label: "Administration & security",
-							to: "/operational-guides/install-and-update",
+							to: "/operational-guides/on-premises-installation",
 						},
 						{ label: "Developers", to: "/operational-guides/api-access" },
 					],

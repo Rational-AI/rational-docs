@@ -10,7 +10,7 @@ audience: [admin]
 An on-premises Rational AI installation keeps its data in several places: a PostgreSQL database, a vector store, an object storage, the installed extensions and the knowledge databases. **Settings** → **Backup** copies all of them, in one run, to a destination you own (a network share, an S3 bucket, or an FTP or SFTP server) on a daily schedule or on demand. This guide covers what a backup contains, how to set the destination up, how to check that backups are really happening, and how to bring an installation back from one with the `rational` command on the host.
 
 :::note[On-premises only]
-The Backup page is on by default on every on-premises installation set up with `install.sh` (see [Install and update](./install-and-update)): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
+The Backup page is on by default on every on-premises installation set up with `install.sh` (see [Your on-premises installation](./on-premises-installation)): it only needs a destination. On the managed cloud the platform backs the data up for you and the page is not shown.
 :::
 
 :::note[The backups taken before every update are not enough]
@@ -190,7 +190,7 @@ A few consequences to know about:
 ### Restore on a replacement machine
 
 1. Put the saved `.env` at `/opt/rational/.env` on the new machine **before** installing: the installation keeps the secrets it finds there, and the restored data refers to some of them.
-2. Install with `install.sh` (see [Install and update](./install-and-update)).
+2. Install with `install.sh` (see [Your on-premises installation](./on-premises-installation)).
 3. Write `/opt/rational/backup-destination.env` from your saved copy and run `sudo rational offsite-restore NAME`.
 4. If **Settings** → **Licence** asks for it, activate the license again.
 

@@ -29,7 +29,7 @@ The Tunnel page exists only on installations that were provisioned with a Ration
 | **Direct** | With the tunnel off, your endpoint points at your public IP and your router forwards the ports below to the machine. |
 | **License** | The check-in uses the identity the installation receives when its license is activated, so nothing reaches the endpoint before activation. The license status is on **Settings** → **Licence**. |
 
-The machine checks in with Rational AI once a minute. That is when a change to the tunnel setting takes effect, a renewed certificate is installed, and a changed public IP is followed. [What the installation reports to Rational AI](./install-and-update#what-the-installation-reports-to-rational-ai) lists what the check-in carries.
+The machine checks in with Rational AI once a minute. That is when a change to the tunnel setting takes effect, a renewed certificate is installed, and a changed public IP is followed. [What an installation sends to Rational AI](./data-sent-to-rational-ai) lists what the check-in carries.
 
 ## Prerequisites
 
@@ -79,7 +79,7 @@ The installation is connected to the hub when it is installed. Rational AI creat
   --code RAI-XXXXX-XXXXX-XXXXX-XXXXX
 ```
 
-It installs or updates the whole stack, activates the license, and installs the minute check-in that brings the endpoint, the certificate and the tunnel once the subdomain is set. The hub defaults to `https://control-room.rational.is`. Re-running it later is safe. See [Install and update](./install-and-update) for the options and the nightly update, and [License and activation](./license) for what the code does and for machines without internet access.
+It installs or updates the whole stack, activates the license, and installs the minute check-in that brings the endpoint, the certificate and the tunnel once the subdomain is set. The hub defaults to `https://control-room.rational.is`. Re-running it later is safe. See [Your on-premises installation](./on-premises-installation) for the options and the nightly update, and [License and activation](./license) for what the code does and for machines without internet access.
 
 ## Move an existing installation to the control-room address
 

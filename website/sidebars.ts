@@ -138,7 +138,8 @@ const sidebars: SidebarsConfig = {
 
 		section("Administration & security", [
 			folder("Install & operate", [
-				"install-and-update",
+				"on-premises-installation",
+				"data-sent-to-rational-ai",
 				"run-models-on-premise",
 				"tunnel",
 				"backup-and-restore",

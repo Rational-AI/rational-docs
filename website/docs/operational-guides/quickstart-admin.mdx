@@ -14,7 +14,7 @@ Two sections apply only to an on-premises installation, one that runs on a machi
 ## Prerequisites
 
 - **An administrator account** on the workspace.
-- **For an on-premises installation:** the machine installed with `install.sh` (see [Install and update](/operational-guides/install-and-update)) and the activation code Rational AI sent you.
+- **For an on-premises installation:** the machine Rational AI installed for you (see [Your on-premises installation](/operational-guides/on-premises-installation)).
 - **For models from a provider:** the provider's API key, for example from OpenAI or Anthropic.
 
 ## 1. Sign in and find Settings
@@ -98,9 +98,7 @@ An on-premises installation updates itself every night and takes a local backup 
 
 1. Go to **Settings** → **Backup** and set a destination you own: a network share, an S3 bucket, or an FTP or SFTP server.
 2. Select **Test destination**, then **Back up now**, and check that the backup appears in the list.
-3. On the machine, run `sudo rational status` to see the installed release and the state of the stack.
-
-Restoring is done on the machine with the `rational` command. See [Back up and restore an on-premises installation](/operational-guides/backup-and-restore) and [Install and update an on-premises installation](/operational-guides/install-and-update).
+Restoring is done by Rational AI. See [Back up and restore an on-premises installation](/operational-guides/backup-and-restore) and [Your on-premises installation](/operational-guides/on-premises-installation).
 
 ## Where to go next
 

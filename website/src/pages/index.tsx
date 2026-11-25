@@ -69,7 +69,7 @@ const CATEGORIES: Category[] = [
 		title: "Administration & security",
 		description:
 			"Install and run Rational AI, manage people and roles, govern AI use, and keep your data compliant.",
-		to: "/operational-guides/install-and-update",
+		to: "/operational-guides/on-premises-installation",
 		items: [
 			{
 				label: "Manage roles and users",
@@ -79,8 +79,8 @@ const CATEGORIES: Category[] = [
 			{ label: "Data retention", to: "/operational-guides/data-retention" },
 			{ label: "Audit trail", to: "/operational-guides/audit-trail" },
 			{
-				label: "Install and update (on-premises)",
-				to: "/operational-guides/install-and-update",
+				label: "Your on-premises installation",
+				to: "/operational-guides/on-premises-installation",
 			},
 		],
 	},
