@@ -22,6 +22,14 @@ html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	   of the toggle: put it back in the flow so the two sit side by side. */
 	.navbar__items--right [class*="navbarSearchContainer"] {
 		position: static;
-		margin-left: 0.5rem;
 	}
+}
+
+/* Search first, theme toggle at the far right, at every width */
+.navbar__items--right [class*="navbarSearchContainer"] {
+	order: 1;
+}
+.navbar__items--right [class*="colorModeToggle"] {
+	order: 2;
+	margin-left: 0.5rem;
 }
