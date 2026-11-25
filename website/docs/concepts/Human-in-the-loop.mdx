@@ -1,5 +1,5 @@
 ---
-sidebar_position: 20.1
+sidebar_position: 12
 sidebar_label: Human-in-the-loop
 title: Human-in-the-loop
 description: What human-in-the-loop means, why model output needs human oversight, and where it fits in Rational AI.
@@ -12,9 +12,9 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 # Human-in-the-loop
 
-**Human-in-the-loop** is a way of working in which the agent proposes and a person approves before anything consequential happens. Instead of letting the model act on its own, a human stays in the decision path, reviewing, correcting or signing off on its output.
+**Human-in-the-loop** is a way of working in which the AI proposes and a person approves before anything consequential happens. Instead of letting the model act on its own, a human stays in the decision path, reviewing, correcting or signing off on its output.
 
-The reason is the nature of the model itself. Output is [non-deterministic](/concepts/Non-determinism), can be confidently wrong (a [hallucination](/concepts/hallucinations)) and can drift toward telling you what you want to hear ([sycophancy](/concepts/Sycophancy)). A human in the loop is the check that catches the cases automated grounding and review do not.
+The reason is the nature of the model itself. Output is [non-deterministic](/reference/glossary#non-determinism), can be confidently wrong (a [hallucination](/concepts/hallucinations)) and can drift toward telling you what you want to hear ([sycophancy](/reference/glossary#sycophancy)). A human in the loop is the check that catches the cases automated grounding and review do not.
 
 :::note[A dial, not a switch]
 Human-in-the-loop is not all-or-nothing. The right amount of oversight depends on the stakes: low-risk, reversible tasks may need little or none, while decisions that are costly, public or hard to undo warrant a human signing off every time.
@@ -23,7 +23,7 @@ Human-in-the-loop is not all-or-nothing. The right amount of oversight depends o
 ## When to keep a human in the loop
 
 * **High stakes:** outputs that are costly, public-facing or hard to reverse.
-* **Low confidence:** answers about recent or fast-changing facts, or topics near the model's [knowledge cutoff](/concepts/Knowledge-cutoff).
+* **Low confidence:** answers about recent or fast-changing facts, or topics near the model's [knowledge cutoff](/reference/glossary#knowledge-cutoff).
 * **Sensitive judgement:** decisions that need accountability or domain expertise a model cannot supply.
 
 ## Human-in-the-loop in Rational AI
@@ -40,9 +40,7 @@ Grounding answers in your [Knowledge](/concepts/Knowledge) through [RAG](/concep
 
 <ConnectsTo
 	items={[
-		{ label: "Non-determinism", to: "/concepts/Non-determinism" },
 		{ label: "Hallucinations", to: "/concepts/hallucinations" },
-		{ label: "Sycophancy", to: "/concepts/Sycophancy" },
 		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
 	]}
 />

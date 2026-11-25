@@ -19,13 +19,9 @@ The area has five tabs. Each tab opens with a heading that names the period it r
 |---|---|
 | **Overview** | A **Needs attention** summary, the headline totals (led by **Total costs**), a featured chart, **Cost composition**, **Governance health**, and the **Top applications** by requests. |
 | **Usage** | Charts over time, grouped by topic. A switch selects **APIs** or **Conversational** traffic. |
-| **Applications** | The inventory of applications seen in proxy traffic or registered by hand, with their status, risk tier, owner, environment, tags, and usage. |
-| **Audit log** | One row for each model request that went through the proxy. A switch at the top shows the **Workflow runs** instead. |
-| **Costs** | The cost ledger: rates, booked costs, amortised assets, and node pools, plus the **Reported in** currency. |
-
-:::note[Old dashboard and audit log links still work]
-Before the redesign, Governance had a **Dashboard** tab and an **Audit Log** tab. Bookmarks and shared links to those tabs still open the right place: a link to the Dashboard opens **Overview**, and a link to the Audit Log opens the request list in **Audit log**.
-:::
+| **Applications** | The inventory of applications that have called your models through Rational AI or were registered by hand, with their status, risk tier, owner, environment, tags, and usage. |
+| **Audit log** | One row for each request sent to your models through Rational AI. A switch at the top shows the **Workflow runs** instead. |
+| **Costs** | What your AI costs to run, from model prices to hardware, plus the **Reported in** currency. |
 
 ## Overview
 
@@ -79,7 +75,7 @@ Select a row to open the request in a panel docked beside the list. The panel sh
 
 ## Costs
 
-The **Costs** tab is titled **Cost ledger**. It shows where costs come from (**Infrastructure runtime**, **Facility and operations**, **Amortised assets**, **Provider subscriptions**), with **Total costs** and **Cost coverage**, and has four sections: **Rate history**, **Booked costs**, **Amortised assets**, and **Node pools**. **Reported in**, at the top right, sets the currency that every governance cost is shown in.
+The **Costs** tab, titled **Cost ledger**, is where you record what your AI costs to run, from model prices to hardware, so that Governance can report total costs. It shows where costs come from (**Infrastructure runtime**, **Facility and operations**, **Amortised assets**, **Provider subscriptions**), with **Total costs** and **Cost coverage**, and has four sections: **Rate history**, **Booked costs**, **Amortised assets**, and **Node pools**. **Reported in**, at the top right, sets the currency that every governance cost is shown in.
 
 ## Filters
 

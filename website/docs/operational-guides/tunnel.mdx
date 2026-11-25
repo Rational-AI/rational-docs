@@ -7,7 +7,7 @@ audience: [admin]
 
 # Reach an on-premises installation through the Rational AI Tunnel
 
-An on-premises Rational AI installation runs on a machine inside your network: a DGX Spark in the server room, a workstation under a desk. Out of the box it is reachable only from that network. **Settings** → **Tunnel** gives it a public endpoint under `rational.is` (`https://control-room.<yourcompany>.rational.is`), with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
+An on-premises Rational AI installation runs on a machine inside your network and is reachable only from that network. **Settings** → **Tunnel** gives it a public endpoint under `rational.is` (`https://control-room.<yourcompany>.rational.is`), with a browser-trusted certificate, and lets you choose how the traffic gets there: through the **Rational AI Tunnel**, which works behind any router with nothing to configure, or **directly**, which is faster and needs a couple of port-forwarding rules on your router.
 
 :::note[On-premises only]
 The Tunnel page exists only on installations connected to Rational AI. On the managed cloud the platform handles addresses and certificates for you and the page is not shown.
@@ -25,7 +25,7 @@ The Tunnel page exists only on installations connected to Rational AI. On the ma
 |-------|--------------|
 | **Endpoint** | Your installation is named `<yourcompany>.rational.is`; the application answers at `control-room.<yourcompany>.rational.is`. Rational AI manages the DNS records. |
 | **Certificate** | Issued by Rational AI for the name and its subdomains (Let's Encrypt, renewed automatically). Browsers trust it out of the box: nothing to install on any client. |
-| **Tunnel** | With the tunnel on, your endpoint points at `vpn.rational.is`, which forwards each connection, still encrypted, through a private WireGuard tunnel to your machine. Rational AI only reads the name the browser asked for; it never sees the content. |
+| **Tunnel** | With the tunnel on, your endpoint points at `vpn.rational.is`, which forwards each connection, still encrypted, through a private tunnel to your machine. Rational AI only reads the name the browser asked for; it never sees the content. |
 | **Direct** | With the tunnel off, your endpoint points at your public IP and your router forwards the ports below to the machine. |
 | **License** | The check-in uses the identity the installation receives when its license is activated, so nothing reaches the endpoint before activation. The license status is on **Settings** → **Licence**. |
 
@@ -43,13 +43,12 @@ Open **Settings** → **Tunnel**. The **Endpoint** section shows the installatio
 
 ### Rational AI Tunnel (the default)
 
-Leave **Rational AI Tunnel** on and press **Save** if you changed anything. Within a minute the endpoint resolves to `vpn.rational.is` and the installation is reachable from anywhere.
+Leave **Rational AI Tunnel** on and select **Save** if you changed anything. Within a minute the endpoint resolves to `vpn.rational.is` and the installation is reachable from anywhere.
 
 Choose the tunnel when:
 
 - you cannot, or would rather not, change the router's configuration;
 - the machine sits behind a carrier-grade NAT, a 4G/5G router or a network you do not control;
-- you want it working now and can tune later.
 
 The cost is latency: every byte makes a round trip through the tunnel, so pages and generations feel somewhat slower than on the local network. Users on the local network are not affected in either mode: the application is always reachable at the same endpoint from inside too.
 
@@ -62,27 +61,13 @@ Turn off **Rational AI Tunnel**. The page shows a **Configure your router** box 
 | 443 | TCP | `<the machine's LAN address>:443` |
 | 80 | TCP | `<the machine's LAN address>:80` |
 
-The page also lists the machine's LAN address (**This machine**) and **Your public IP**. Add the two rules on your router (the feature is usually called *port forwarding*, *NAT* or *virtual server*), then press **Save**. Within a minute the endpoint resolves to your public IP; if your provider changes it, the installation notices at the next check-in and the endpoint follows.
+The page also lists the machine's LAN address (**This machine**) and **Your public IP**. Add the two rules on your router (the feature is usually called *port forwarding*, *NAT* or *virtual server*), then select **Save**. Within a minute the endpoint resolves to your public IP; if your provider changes it, the installation notices at the next check-in and the endpoint follows.
 
 :::warning[A direct connection needs a reachable public IP]
 If your provider puts you behind a shared address (carrier-grade NAT, common on mobile and some fiber connections), forwarded ports never reach you and the installation becomes unreachable from outside as soon as the tunnel is off. If in doubt, keep the tunnel on, or ask your provider for a public IP first. Switching the tunnel back on restores access within a minute.
 :::
 
 Port 80 only redirects browsers to HTTPS; forwarding it is convenient, not required.
-
-## After a move to the control-room address
-
-Installations used to be served at `https://rational-control-room.<domain>`. They are now served at `https://control-room.<domain>`: `https://rational-control-room.acme.rational.is` becomes `https://control-room.acme.rational.is`. Rational AI moves each installation. Only the address changes; every conversation, knowledge base, file and setting stays as it is. The old address does not keep working: once the installation has moved, it answers *404* (*No tenant is served on host …*).
-
-Before the move, list what still names the old address, and update it once the installation has moved:
-
-- Bookmarks, and links in emails already sent. Pending invitations can be sent again from **Settings** → **Users**: the new email links to the new address.
-- An external identity provider configured for the installation: register its redirect URIs on the new address.
-- OAuth apps used by connectors (their redirect URI is under `https://control-room.<domain>/api/`) and webhooks you registered with third parties.
-
-:::warning[Integrations on the old address stop working at once]
-A connector whose OAuth app still redirects to `rational-control-room.<domain>`, or a webhook that still posts there, fails from the moment the installation moves.
-:::
 
 ## Check that it works
 

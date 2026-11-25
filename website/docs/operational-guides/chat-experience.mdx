@@ -7,7 +7,7 @@ audience: [user]
 
 # Use Chat
 
-**Chat** is the tab in the top navigation that the Control Room opens on. It is where you and your colleagues talk to Rational AI: by default to the **workspace assistant**, or to any touchpoint you can use. This guide covers starting a chat, shaping a request in the composer, following how an answer was built, checking and branching answers, working with the files the assistant creates, voice, and managing your chats.
+**Chat**, the tab the Control Room opens on, is where you and your colleagues talk to Rational AI: by default to the **workspace assistant**, or to any touchpoint you can use.
 
 :::note[Who Chat is for]
 Chat is for the people in your organization who sign in to the Control Room. Every signed-in user can open it: it needs no license module and no permission. Your customers never see this page. They reach a [touchpoint](/operational-guides/configure-touchpoints) through its channels (a website widget, Telegram, email and so on), and staff review those conversations in [Conversations](/operational-guides/conversations).
@@ -34,13 +34,10 @@ To chat with one Knowledge and send your current filters and selection with each
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
 - **A Control Room account.** Anyone who signs in can open **Chat** and start a chat.
 - **To keep writing in a chat:** a role with **Update** on **Conversations**. Without it you can start a chat but not send further messages, dictate, rate, regenerate, edit or branch in it.
 - **A working workspace assistant.** It needs an enabled default conversational model in the [AI Model Registry](/operational-guides/ai-model-registry-features). If it can't start, the page shows *"The default assistant could not be loaded."* and you can still pick another touchpoint.
 - **For attachments:** images, PDF, text, Markdown, CSV, JSON, or Word, Excel and PowerPoint files in `.docx`, `.xlsx` and `.pptx` format.
-- **To take over a conversation:** an administrator account. See [Take over an AI-managed conversation](#take-over-an-ai-managed-conversation).
 
 ## Start a new chat
 
@@ -63,7 +60,7 @@ Nothing is created until you send the first message.
 
 ## Shape your request in the composer
 
-Everything that changes how a request is handled lives in the composer, one message box shared by the new-chat screen and every conversation. The **+** button (*"Open tools menu"*) opens the options; each one you switch on shows as a chip in the composer, and its **✕** turns it off again.
+Everything that changes how a request is handled lives in the composer, one message box shared by the new-chat screen and every conversation. The **+** button (*"Open tools menu"*) opens the options; each one you turn on shows as a chip in the composer, and its **✕** turns it off again.
 
 | Option | What it does |
 |--------|--------------|
@@ -97,7 +94,7 @@ You can choose the model only in your own chats with the workspace assistant. In
 In your own chats with the workspace assistant, you decide which of your knowledge bases a request searches.
 
 1. Open **+** → **Knowledge bases**.
-2. Tick the knowledge bases to use; **Search knowledge bases** filters a long list, and the counter shows how many are selected.
+2. Select the knowledge bases to use; **Search knowledge bases** filters a long list, and the counter shows how many are selected.
 3. To go back to searching everything you can read, select **Use all**.
 
 The chip shows the knowledge base's name, or how many are selected. The selection never gives access to anything you can't already read.
@@ -117,9 +114,7 @@ You don't have to wait for one answer to finish before lining up your next thoug
 3. Queued messages are sent **automatically and in order** as soon as the previous turn completes.
 4. To cancel a pending send, hover the chip and select the **✕** (*"Remove from queue"*). Hovering also shows the tooltip **"Message waiting to be sent"**.
 
-:::note[The queue survives reloads]
-The queue is saved per chat in your browser, so queued messages survive a page reload or switching between chats, and resume sending once the assistant is idle.
-:::
+Queued messages are kept if you reload the page or switch to another chat.
 
 ## Attach files to a message
 
@@ -129,7 +124,7 @@ Attach images and documents to a message so the assistant can use them directly 
 2. A card for each attachment appears in the composer while it uploads; the send button waits until every upload has finished.
 3. Send the message. The attachments appear above your message in the history.
 
-Images are passed to the model as vision input. For documents, the text is extracted in the background and fed to the model as reference content, so generation never waits on extraction.
+The assistant sees images when the model supports them, and reads the text of documents.
 
 :::note[The touchpoint decides whether files are allowed]
 **Add files and photos** appears only when the touchpoint allows attachments. A file of another type is refused with *"Unsupported file type. Attach an image, PDF or text document."*
@@ -156,7 +151,7 @@ While the assistant works, a line above the answer reads *"Rational AI is thinki
 
 ### See the technical detail with Advanced mode
 
-Switch on **+** → **Advanced mode** when you need to understand or debug an answer. The steps then show their technical detail, including the three phases of each knowledge search:
+Turn on **+** → **Advanced mode** when you need to understand or debug an answer. The steps then show their technical detail, including the three phases of each knowledge search:
 
 | Phase | What happens |
 |-------|--------------|
@@ -224,7 +219,7 @@ The new chat keeps your choice of model and knowledge bases, but attachments and
 Tell the touchpoint's owners whether an answer worked. The two thumbs buttons on the action row open a short dialog rather than recording a silent vote, so a rating always comes with the reason behind it.
 
 1. On an AI message, select **thumbs up** (*Give positive feedback*) or **thumbs down** (*Give negative feedback*).
-2. For negative feedback, tick as many reasons as apply under **Add details**: **Confusing**, **False**, **Offensive**, **Useless**, or **Other**.
+2. For negative feedback, select as many reasons as apply under **Add details**: **Confusing**, **False**, **Offensive**, **Useless**, or **Other**.
 3. Add an optional note: *"What was satisfying about this response?"* for positive feedback, *"What was unsatisfying about this response?"* for negative.
 4. Select **Send**. A **Thanks for your feedback** toast confirms it, and the thumb you chose switches to its filled icon so you can see at a glance which messages you have rated.
 
@@ -316,7 +311,6 @@ Markdown is stripped before anything is read, so fenced code blocks and link tar
 :::note[The voice follows the answer, not the interface]
 An Italian answer is read in Italian even if you're using Rational AI in English. What's spoken is the language of the text, not the language of the UI.
 
-Playback starts before the whole answer has been synthesized. The reply is spoken in sentence groups, with the next fetched while the current one plays, so you hear the first words as soon as the first group is ready.
 :::
 
 ### Dictate a message
@@ -351,7 +345,7 @@ The chat list shows your own chats. Administrators, and roles that can see all c
 Each chat's **⋯** menu in the list has **Rename chat** and **Delete**. Select the chat's title at the top of the page for more: **Rename**, **Copy link to chat**, **Export chat**, **Memory**, and **Delete**. **Copy link to chat** copies a link that only people who can already read the chat can open.
 
 :::note[Renaming and the Memory switch are for administrators]
-**Rename**, **Generate with AI** and the **Memory** switch save through administrator-only actions. For other users the change is refused.
+Only administrators can save **Rename**, **Generate with AI** and the **Memory** switch. For other users the change is refused.
 :::
 
 ### Rename a chat
@@ -377,45 +371,6 @@ Select the chat's title, then **Export chat**. A JSON file named after the chat 
 :::note[An export shows what you are allowed to see]
 The export applies the same rules as the chat: unless you are an administrator, tool calls appear without their arguments or raw output.
 :::
-
-## Take over an AI-managed conversation
-
-This happens in [Conversations](/operational-guides/conversations), not in Chat, and taking over, handing back and generating a summary are for administrators. There, the AI answers automatically while the conversation is assigned to it. Instead of a message box, a take-over bar sits at the bottom of the conversation and says who holds it: *"The AI handles this conversation"*, *"The AI is answering the user"* (with a green dot while it generates), *"Another operator is handling this conversation"* or *"This conversation is closed"*. The sections below cover stepping in, stopping a runaway answer, and reviewing what the AI has handled so far.
-
-### Step in and reply
-
-Take over when a customer needs a human: a sensitive case, an edge case, or anything you'd rather handle yourself.
-
-1. Select **Take over** in the take-over bar. The conversation is assigned to you, the AI pauses, and the message box appears with the cursor already in it.
-2. A divider marks the moment you took over, and the bar above the message box reads *"You are replying as an operator. The AI is paused."* Reply as needed: **Ctrl+Enter** (**Cmd+Enter** on macOS) sends.
-3. When you're done, select **Hand back to the AI**. If you've left an unsent draft, you're asked to confirm with **Discard draft and hand back**, since the draft is deleted.
-
-:::note[First come, first served]
-Takeover is exclusive. If another operator has already taken the conversation, the bar says so, there's no **Take over** button, and an attempt that races another operator is blocked with *"Another operator has already taken over this conversation."* Control never returns to the AI on its own. It returns only when you explicitly hand the conversation back.
-:::
-
-### Stop an answer without taking over
-
-Sometimes the AI is only stuck on one answer (looping, or running a tool that has gone wrong) and you don't want to take the conversation away from it.
-
-1. While the AI is answering, select **Stop generating** in the take-over bar.
-2. The answer ends and the conversation stays with the AI, which replies normally to the user's next message.
-
-:::note[Stopping is supervision, not a takeover]
-An answer that is still generating holds the conversation's queue until it ends, so the user's next messages wait behind it. **Stop generating** frees the queue without changing who is in charge. It's also available after you take over, in the operator bar, if the AI was still answering when you stepped in.
-:::
-
-### Read the AI conversation summary
-
-Before stepping in, get up to speed in seconds with an AI-written recap of the conversation so far.
-
-1. Select **Generate summary** in the take-over bar to open the conversation summary.
-2. The summary is read-only and AI-generated, covering the main problem, key points, and resolution status. A resolution status badge (**Open / In progress / Resolved**) and the conversation's sentiment badge are shown.
-3. Select **Copy summary** to copy it, or **Take over** to take the conversation directly from the summary.
-
-The summaries you generate are also listed under **Summary** in the conversation's **Details** drawer, which offers **Generate summary** too. Summaries aren't stored on the server, so the drawer lists only the ones generated in your current session.
-
-Summary behavior is governed by the **Summary generation settings** section on the [Conversations settings](/cr/settings/conversations) page, where you can turn generation on or off and set the model, the number of messages to consider (`0` means all), and the prompt template (with **Restore default**).
 
 ## Next steps
 

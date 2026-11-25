@@ -1,197 +1,68 @@
 ---
 sidebar_position: 11
-sidebar_label: Manage knowledge resources
+sidebar_label: Add and manage content
 type: how-to
 audience: [builder]
 ---
 
-# Manage knowledge resources
+# Add and manage content in a Knowledge
 
-A [Knowledge](/operational-guides/create-knowledge) fills up over time: files get uploaded, sources get synced, and before long you have a lot to keep track of. This guide covers the everyday housekeeping: choosing which view a Knowledge opens in, following a processing run and recovering the files it failed on, finding and bulk-deleting resources from the files table, removing a single resource from the Grid, adding uploaded files straight in as resources, editing a resource without losing your curation, getting started from an empty Knowledge, and arranging the table columns to suit how you work.
-
-:::note[What is a resource?]
-A resource is a single curated item inside a Knowledge, usually a file that has been processed into a form the AI can search and quote from. You work with resources in the built-in views of a Knowledge, the **Grid** (a table of resources and their attributes) and the **Graph** (a visual map), in any saved or custom views, and in the **Files** table, which the **Files** button in the header opens to list the input files and their processing status.
-:::
+Upload files to a [Knowledge](/operational-guides/create-knowledge), follow their processing, fix the files that fail, and clean up the ones you no longer need. Each processed file becomes a resource that the AI can search and quote. The **Files** button in the Knowledge's header opens the table of input files and their processing status.
 
 ## Prerequisites
 
-Before you start, make sure you have:
+- **Read** on the **Knowledge** row of your role to browse files, **Create** to upload them, **Update** to reprocess or edit them, and **Delete** to delete them. See [Manage roles and users](/operational-guides/roles-and-users).
 
-- **Rights on the Knowledge:** **Read** on the **Knowledge** row of your role to browse resources, **Update** to change them and its settings, **Delete** to delete them. See [Manage roles and users](/operational-guides/roles-and-users).
-- **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
+## Upload files {#upload-files}
 
-## Choose which view a Knowledge opens in
+1. Open the Knowledge and select **Add file** in the **Options** menu (in the **Grid**, the menu is **Actions**).
+2. In **Add file**, add your files or a folder and select **Upload**.
+3. In **Workflows review**, for each file, either pick a **workflow** or leave it on **Skip workflow** and select **Add as resource** to store the file as it is.
+4. Select **Confirm**.
 
-Opening a Knowledge lands you on its default view: **Graph** or **Grid**, unless the Knowledge has a custom default view. A graph is the better first impression for a small, richly connected Knowledge; a list is the better one for a few thousand documents. The choice is per Knowledge, so make it once and everyone opening that Knowledge gets it.
+If the Knowledge has a processing rule, Rational AI skips the review step and the rule assigns each file its workflow. If you select **Cancel** in **Workflows review**, the files you uploaded are deleted.
 
-1. Open the Knowledge's settings and select the **Views** tab (see [Custom views](/operational-guides/knowledge-custom-views) for everything else on that tab).
-2. Under **Built-in views**, open the **⋮** menu on **Graph view** or **Grid view** and select **Set as default view**. The view must be turned on.
-
-The change saves at once, and the default view shows a **Default** label.
-
-:::note[Turning off the default view]
-If you turn off the built-in view that is the default, the other built-in view becomes the default, as long as it is turned on. The default view also travels with the Knowledge when you export and import it.
-:::
+To keep a Knowledge in sync with a folder or service instead, see [Integrate external data](/operational-guides/integrate-data).
 
 ## Follow a processing run
 
-Processing a Knowledge can take hours, and a status word that never changes doesn't tell you whether the run is advancing or stuck. The files view reports the run while it happens, says how it ended, and points you to the files that need attention.
+A processing run is one pass of the Knowledge's pipeline over its files. It starts when you select **Reprocess knowledge** in the **Options** menu, when a source finishes a sync, or when an API client asks for it.
 
-:::note[What is a processing run?]
-A processing run is one pass of a Knowledge's pipeline over its files: each file is converted, run through its workflow, chunked, and embedded. A run starts when you select **Reprocess knowledge** in the view's **Options** menu, when a source finishes a sync, or when an API client asks for it.
-:::
+1. Open the Knowledge and select **Files**. A status chip for the latest run sits on the folder header: on **Local** when the Knowledge has no sources, otherwise on each source's folder.
+2. While the run is in progress, the chip shows the current step, and the bar and counter show files done out of the total (for example *120 / 480*). They refresh every 30 seconds.
+3. When the run ends, a toast reads *"Processing complete"*, or *"Processing failed"* with the Knowledge name and the reason. It appears even if you moved to another tab.
+4. If the run failed, was canceled, or timed out, the chip turns into an **Error** chip. Hover over it to read the cause.
 
-1. Open the Knowledge and select **Files**. A **status chip** for the Knowledge's latest run sits on the folder header: on **Local** when the Knowledge has no sources, otherwise on each source's folder.
-2. While the run is pending or in progress, read the chip and the bar beside it:
-   - the chip shows the **step** the run is currently on;
-   - the bar and the counter show **files done out of files total** (for example *120 / 480*).
-3. When the run ends, a toast appears and stays until you close it: *"Processing complete"*, or *"Processing failed"* followed by the Knowledge name and the reason. You see it even if you moved to another tab while the run was going.
-4. If the run failed, was canceled, or timed out, the chip turns into an **Error** chip. Hover over it to read the root cause: the innermost error of the chain, the one you can act on.
-
-:::note[The page checks the run every 30 seconds]
-The chip, the step, and the counter refresh every 30 seconds, so the latest change can take up to half a minute to appear. A Knowledge that has never been processed shows no chip.
-:::
+The **Last processing** column shows how long each file's last attempt took, with its date underneath. Use it to find the slowest files.
 
 ### Recover a file that failed
 
-A failed file is the one row you have to do something about, so its reason and its fix sit in the row itself.
-
-1. In the files table, look at the **Status** column. A failed file shows the **Error** chip with the error text under it, cut to two lines; hover over the text to read it in full.
-2. Select **Reprocess** under the error. It opens the same dialog as **Reprocess** in the row's **⋮** menu.
+1. In the files table, find the file with the **Error** chip in the **Status** column. Hover over the error text to read it in full.
+2. Select **Reprocess** under the error.
 3. Choose how to process the file and confirm.
 
-### Read a file's processing log
+When the error text isn't enough, open the row's **⋮** menu and select **See logs details**. The **Processing log** dialog lists each attempt with its **Time**, **Status**, and **Details**.
 
-When the error text isn't enough, the file's log shows what happened on each attempt.
+## Delete files
 
-1. Open the row's **⋮** menu and select **See logs details**.
-2. The **Processing log** dialog shows the file's current **Status** and error, and its **Processing history**: one row per event with its **Time**, **Status**, and **Details**.
+1. In the files table, select the rows to delete. To go beyond the page, select the header checkbox, then **Select all N**: it selects every file that matches your filters.
+2. Open the **⋮** menu next to the selected count and select **Delete selected**.
+3. Read the count in the **Delete resources** dialog and confirm.
 
-### Check how long processing took
+After **Select all N**, changing any single checkbox clears the whole selection, so narrow the filters before you select all. The **Name**, **Updated at**, and **Size** columns are sortable, which helps find large or stale files.
 
-The **Last processing** column, right after **Name**, shows how long the file's last processing attempt took, with its date underneath. While a file is processing, its status chip shows the current step and the elapsed time, updated every second. Use it to find the files that take longest to process.
-
-:::note[The column hides in narrow layouts]
-**Last processing** is hidden on small screens and when a resource drawer is open beside the table, to leave room for the name and the status.
+:::danger[Deletion can't be undone]
+Deleting a file also deletes everything extracted from it: chunks, embeddings, and annotations.
 :::
 
-## Work with the files table
+## Edit a resource
 
-The files table is the fastest way to see everything in a Knowledge at a glance, and the right place to clean house when you have many resources to act on at once.
+When you edit a file's content in the Knowledge and save, Rational AI chunks and embeds the new text again, so [search](/operational-guides/configure-rag) reflects your edit. It doesn't rerun the file's workflow or processing rule, so content you wrote by hand, your annotations, and the record's attributes stay as they are.
 
-### Sort the list
-
-Sorting helps you spot the largest files, the stale ones, or a specific resource by name.
-
-1. Open the Knowledge and select **Files**.
-2. Select a column header to sort by it. The **Name**, **Updated at**, and **Size** columns are sortable.
-
-### Select resources
-
-Selection is how you tell the table which resources a bulk action should apply to.
-
-1. Tick the **row checkboxes** for the resources you want.
-2. To grab the whole page at once, use the **header checkbox**. When only some rows are selected, it shows an indeterminate state so you can tell at a glance that the selection is partial.
-3. To go beyond the page, use **Select all N** next to the count. It appears once the whole page is checked and more files match your filters, and it selects every matching file across all pages.
-4. Check the ***N* selected** indicator to confirm how many rows you have chosen before you act on them.
-
-:::note[A select-all selection can't be trimmed]
-After **Select all N**, ticking or unticking any single checkbox clears the whole selection. Rational AI selects every matching file without listing them one by one, so there is no list to remove a single file from. Narrow the filters first, then select all.
-:::
-
-### Bulk delete resources
-
-When you have several resources to remove, delete them together instead of one at a time.
-
-1. Select one or more rows using the checkboxes, or every matching file with **Select all N**.
-2. Open the **⋮** menu next to the selected count and select **Delete selected**. The same menu holds **Assign workflow**, which applies to the same selection.
-3. Confirm in the **Delete resources** dialog. When you selected all files, the dialog states the exact number that will be deleted, for example *"All 1240 resources and everything extracted from them are deleted."*
-
-:::warning[Deletion cannot be undone]
-Deleting a resource also deletes everything extracted from it: chunks, embeddings, and annotations. Read the count in the dialog before you confirm.
-:::
-
-## Delete a single resource from the Grid
-
-When you only need to remove one resource, you can do it from its row in the **Grid**, without opening **Files**.
-
-1. Open the Knowledge's **Grid** view.
-2. At the end of the resource's row, open the **⋮** menu. It holds **See details**, **Download**, **Mark as hidden** and, if your role can delete, **Delete**.
-3. Select **Delete**.
-4. In the **Delete record** dialog, select **Delete record**. The record is deleted with its links and history.
-
-<img
-  src={require('@site/static/img/screens/resource-row-menu.png').default}
-  alt="The options menu on a resource showing See details and Mark as hidden"
-  style={{ width: '100%', maxWidth: '380px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
-/>
-
-*The options menu on a resource row in the Grid.*
-
-:::note[What happens on confirm]
-The resource is removed, the list reloads, and you see the **Resource deleted successfully** toast. If the deletion fails, an error toast appears instead.
-:::
-
-## Upload files as resources
-
-Normally an uploaded file runs through a workflow, an automated set of steps that transforms it before it enters the Knowledge. But sometimes a file is already exactly what you want stored, and routing it through a workflow would only get in the way. The upload dialog lets you add such files directly as curated resources.
-
-1. In the Knowledge, open **Actions** and select **Add file**.
-2. In **Add file**, add your files or a folder and select **Upload**.
-3. In **Workflows review**, for each uploaded file, either:
-   - pick a **workflow** from the list, or
-   - leave it on **Skip workflow** and select **Add as resource**.
-4. Select **Confirm**. Files with a workflow run that workflow; files marked **Add as resource** are created as resources directly.
-
-If the Knowledge has a processing rule, the review step is skipped: the rule assigns each file its workflow.
-
-:::note[Canceling the review step]
-If you select **Cancel** in **Workflows review**, the files you already uploaded are deleted, so nothing is left orphaned in the Knowledge.
-:::
-
-## Edit a resource without losing your curation
-
-Editing a file's content in the Knowledge raises an obvious worry: the answers your AI gives come from chunks and embeddings derived from that file, so a stale index means the AI keeps quoting text you recently corrected. Saving an edit therefore reindexes the resources built from that file: the latest bytes are converted, the generated content chunks are replaced, and everything is chunked and embedded again, so [AI Search](/operational-guides/configure-rag) reflects your edit.
-
-What it deliberately does *not* do is re-run the file's processing rules and workflows. Saving an edit is not a reprocess, so:
-
-- **Content you wrote by hand stays as you wrote it**: a workflow doesn't get a second chance to overwrite it.
-- **Your annotations survive.** Only the generated content chunks are cleared; annotations you authored, and attribute metadata, are kept.
-- **Attributes and the knowledge database are untouched.**
-
-Reprocessing the Knowledge (or letting a scheduled sync do it) is still the way to re-run the full pipeline when that is what you actually want.
-
-:::note[A finished sync refreshes its Knowledge]
-You don't have to reprocess by hand after new content arrives either: when a [source](/operational-guides/configure-sources) attached to the Knowledge uses the **Automatic** sync mode in its **Data processing settings**, the data is processed again every time the source brings in changes.
-:::
-
-:::note[Reprocessing keeps a Knowledge database]
-A `.db` file uploaded to a Knowledge is loaded into a [Knowledge Database](/operational-guides/sqlite-resource-database). That file can legitimately be processed again (by a manual reprocess or a scheduled sync), and doing so no longer drops the database it produced. The processing runs against a database that is still there.
-:::
-
-## Start from an empty Knowledge
-
-A brand-new Knowledge has nothing to show in the graph view, so instead of a blank canvas it offers a guided empty state (with the zoom toolbar hidden) that points you toward your first resources.
-
-1. Open the **Graph** view on a Knowledge that has no resources.
-2. From the centred empty state, choose an action:
-   - **Add manually**: opens the upload dialog so you can add resources; the graph reloads once they are in.
-   - **Go to settings**: takes you to the Knowledge settings, where you can [connect and sync a source](/operational-guides/integrate-data).
-
-## Reorder the attributes table columns
-
-Put the columns you check most often where you can see them first. The **Grid** lets you drag attribute columns into any order, and remembers your choice.
-
-1. Open the Knowledge's **Grid** view.
-2. Drag a **column header** left or right. A vertical marker shows where the column will land.
-3. Release to drop the column into its new position.
-
-:::note[What stays put]
-The selection column, the **Name** column and the trailing actions column stay fixed; they can't be dragged or displaced. Your column order is saved in the browser for each collection, so it survives a page reload.
-:::
+To rerun the full pipeline, reprocess the Knowledge. A [source](/operational-guides/configure-sources) set to the **Automatic** sync mode in its **Data processing settings** reprocesses the files it brings in every time they change.
 
 ## Next steps
 
 - [Work with records in collections and grid views](/operational-guides/knowledge-collections-and-grid)
+- [Annotate resources](/operational-guides/annotate-resources)
 - [Configure data sources](/operational-guides/configure-sources)
-- [Configure Graph RAG](/operational-guides/configure-rag)

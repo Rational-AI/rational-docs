@@ -7,12 +7,12 @@ audience: [developer]
 
 # Access Rational AI via API
 
-Rational AI's models are available to your own code as well as in the chat interface, and so is the rest of the platform: a workspace API key reaches the whole Rational AI API with administrator rights. This guide walks you through creating the key your application needs to authenticate, finding a working code snippet for any model, giving one application a key that reaches a single [touchpoint](/operational-guides/configure-touchpoints) and nothing else, using that touchpoint's tools from any MCP client, and calling a Decision model through the System One compatible API.
+Your own applications can call Rational AI's models with an API key. Use this guide to create and manage keys, copy a working code snippet for a model, and give an application a key that reaches only one [touchpoint](/operational-guides/configure-touchpoints).
 
 :::note[What is API access?]
 An API (Application Programming Interface) is the channel your own applications and scripts use to talk to Rational AI's models directly, instead of a person typing into the chat UI. You prove who you are with an **API key** (a long secret string you generate in **Settings**) and send requests to your workspace's gateway.
 
-That gateway is **OpenAI-compatible**, meaning it understands the same request format as OpenAI's widely used API. The practical payoff: you can reuse the standard OpenAI SDKs (the official code libraries) and existing tooling without writing anything custom.
+The gateway is **OpenAI-compatible**: it accepts the same requests as OpenAI's API, so you can use the standard OpenAI SDKs and existing tools.
 :::
 
 ## Prerequisites
@@ -26,7 +26,7 @@ Before you start, make sure you have:
 
 ## Manage your API keys
 
-Your API keys live on a dedicated settings page that lists every key with its name, a masked value, the date it was created, and whether it is **Enabled** or **Disabled**. From here you create new keys, switch them off, and delete the ones you no longer trust.
+**Settings** → **API Keys** lists every key with its name, a masked value, the date it was created, and whether it is **Enabled** or **Disabled**.
 
 <img
   src={require('@site/static/img/screens/apikeys-settings.png').default}
@@ -38,7 +38,7 @@ Your API keys live on a dedicated settings page that lists every key with its na
 
 ### Create an API key
 
-Create a key whenever you have a new application, script, or person that needs to call the API. Giving each its own named key lets you track usage and revoke access later without disrupting anything else.
+Give each application, script, or person its own named key, so you can revoke one without disrupting the others.
 
 1. Go to **Settings** → **API Keys**.
 2. Select **New** (shown as **Add new** when the list is empty).
@@ -47,7 +47,7 @@ Create a key whenever you have a new application, script, or person that needs t
 5. The **Generate new secret key** dialog shows the full key. Use the copy button to copy it, store it somewhere safe, then select **Done**.
 
 :::note[The key is shown only once]
-The full key is returned a single time, on creation. The dialog can't be dismissed by pressing Escape or clicking outside it, so you don't lose the key by accident; once you select **Done**, the list only ever shows a masked value and there is no way to reveal the secret again. If you lose it, delete the key and generate a new one.
+Once you select **Done**, the list shows only a masked value and the key can't be shown again. If you lose it, delete the key and generate a new one.
 :::
 
 :::warning[A key from this page acts with administrator rights]
@@ -56,7 +56,7 @@ Keys created under **Settings** → **API Keys** belong to the workspace, not to
 
 ### Disable or delete an API key
 
-Switch a key off the moment it is no longer needed or might be compromised, for example a key that was committed to a shared repository or belonged to someone who has left.
+Disable a key as soon as it is no longer needed or might be compromised.
 
 1. Go to **Settings** → **API Keys**.
 2. Open the menu on the key's row.
@@ -71,14 +71,10 @@ A deleted key can't be viewed or recovered, and every request that still uses it
 
 ## Call a model
 
-With a key in hand, the fastest way to get a request working is to copy a ready-made snippet for the exact model you want, then plug in your key.
-
 ### Find the code for a model
 
-Every model in the registry comes with a snippet you can copy and run, pre-filled for that specific model.
-
 1. Open the **AI Model Registry** and select the model you want to call to open its details drawer.
-2. In the model overview, find the **Use via API** section below the capabilities block and expand it (it is collapsed by default).
+2. In the model overview, expand the **Use via API** section.
 3. Choose the tab for your language:
    - **cURL**
    - **Python** (OpenAI SDK)
@@ -93,11 +89,11 @@ Every model in the registry comes with a snippet you can copy and run, pre-fille
 
 ***Use via API**: ready-made cURL, Python and TypeScript snippets that call the model through the OpenAI-compatible API.*
 
-Each snippet points at your workspace's OpenAI-compatible endpoint group at `/compat/v0/openai` (for example `/api/compat/v0/openai/chat/completions`). The request's `model` field is already set to the model's identifier, which the backend uses to route your request to the right model, so you don't have to look it up yourself.
+Each snippet already points at your workspace's gateway, with the `model` field set to the model's identifier.
 
 ### Authenticate your requests
 
-Requests are authenticated with the API key you generated, passed as a **Bearer token** (a standard way of attaching a secret to an HTTP request in its `Authorization` header):
+Send the API key as a **Bearer token** in the `Authorization` header:
 
 ```
 Authorization: Bearer $RATIONAL_AI_API_KEY
@@ -107,47 +103,14 @@ Set the `RATIONAL_AI_API_KEY` environment variable (or your own secret store) to
 
 ## Choose between chat completions and responses
 
-The gateway serves **both** of OpenAI's APIs side by side, so you don't have to rewrite an application around whichever one Rational AI happens to prefer.
-
-| API | Endpoint | Reach for it when |
-|-----|----------|-------------------|
-| **Chat completions** | `/compat/v0/openai/chat/completions` | You have existing code built on it, or you want the simplest possible request |
-| **Responses** | `/compat/v0/openai/responses` | You're starting fresh, or using an OpenAI SDK's default path; Responses is the API OpenAI documents first and its SDKs reach for by default |
-
-Both are available on your workspace endpoint group (`/api/compat/v0/openai`) and on each API touchpoint's group (`/api/compat/v0/touchpoints/{id}/openai`). The ready-made snippets in the registry use chat completions; switching to Responses is a matter of changing the endpoint and the request shape, with the same key and the same base URL.
-
-### The Responses endpoints
-
-| Endpoint | What it does |
-|----------|--------------|
-| `POST /compat/v0/openai/responses` | Create a response, streamed or not |
-| `GET /compat/v0/openai/responses/{id}` | Retrieve a stored response |
-| `DELETE /compat/v0/openai/responses/{id}` | Delete one |
-| `POST /compat/v0/openai/responses/{id}/cancel` | Cancel a background response |
-| `GET /compat/v0/openai/responses/{id}/input_items` | List a response's input items |
-
-Model resolution, request overrides, touchpoint attribution and governance capture work exactly as they do for a chat completion. A response is recorded with its usage, cost and time to first token like any other call, so nothing disappears from your [governance reporting](/operational-guides/governance) by choosing one API over the other.
-
-:::note[The response ID you get back is Rational AI's, not the provider's]
-Responses are addressed by id, and the id you receive is minted by the gateway: a `resp_` value identifying the call as Rational AI recorded it, not the id the upstream provider used internally.
-
-This is what makes the follow-up operations work at all: a gateway id resolves to exactly one model and one provider, while a provider's id promises nothing of the sort; two accounts on the same provider number their responses independently.
-
-Practically, it means two things. **Chaining works normally**: pass a `previous_response_id` you were given and it's translated back on the way through. And **an id the gateway didn't mint is not found**. You can't hand it an id you got from somewhere else, and you can't reach another touchpoint's responses with a touchpoint key.
-:::
-
-:::warning[Not every provider implements every operation]
-Past creating a response, these operations reach whatever the upstream provider actually supports, and the gateway forwards its answer as-is.
-
-OpenAI stores responses, so retrieve, delete and cancel behave as documented. Ollama implements only response *creation* and returns 404 for the rest, which you'll see verbatim. If your application depends on retrieving or canceling a stored response, check that the provider behind your model supports it before building on it.
-:::
+The gateway accepts both OpenAI APIs, **Chat completions** and **Responses**, with the same key and the same base URL. The snippets in the registry use chat completions. Every call is recorded in [Governance](/operational-guides/governance) with its usage and cost, whichever API you use.
 
 ## Give an application its own touchpoint key
 
-A workspace key opens everything. Most integrations need much less: one assistant, with its prompt, models and tools already decided by you. A touchpoint on the **API** channel gives an application exactly that, behind a key of its own.
+A workspace key opens everything. When an application only needs one assistant, give it a key for a touchpoint on the **API** channel instead.
 
 :::note[What is a touchpoint key?]
-A touchpoint key is a secret that authenticates against **one** touchpoint and nothing else. It opens that touchpoint's OpenAI-compatible API at `/api/compat/v0/touchpoints/{id}/openai` and its [MCP server](#use-a-touchpoints-tools-from-an-mcp-client). It can't call the workspace gateway, another touchpoint, or any management API. Each touchpoint has at most one key at a time.
+A touchpoint key is a secret that authenticates against **one** touchpoint and nothing else. It opens that touchpoint's OpenAI-compatible API and its [MCP server](#use-a-touchpoints-tools-from-an-mcp-client). It can't call the workspace gateway, another touchpoint, or any management API. Each touchpoint has at most one key at a time.
 :::
 
 1. Go to **Settings** → **Touchpoints** and open a touchpoint whose **Channel** is **API**.
@@ -159,7 +122,7 @@ A touchpoint key is a secret that authenticates against **one** touchpoint and n
 The key can be sent as `Authorization: Bearer <key>` or in an `X-API-KEY` header.
 
 :::note[The application talks to your assistant, not to a bare model]
-Requests through a touchpoint run with that touchpoint's system prompt first and its enabled tools executed on the server, so the application gets the same assistant your users get in chat. Tools that would need a human's approval are left out of these requests, since there is no one in the loop to approve them; skills are not offered either. Values that [Manual tool parameters](/operational-guides/configure-touchpoints#fill-a-manual-parameter-from-the-conversation) read from `${system.…}` or `${userStore.…}` are taken from the request's `metadata`.
+Requests through a touchpoint use its system prompt and its enabled tools, so the application gets the same assistant your users get in chat. Tools that need a person's approval and skills are left out.
 :::
 
 ### Rotate or revoke a touchpoint key
@@ -179,30 +142,20 @@ A touchpoint with no key shows *"No key yet. Only operators can call this API."*
 
 The same touchpoint is also served as an MCP server, so any client that speaks the Model Context Protocol (an IDE assistant, a desktop AI app, another agent) can use the tools you configured on it.
 
-- **URL:** `https://<your-host>/api/compat/v0/touchpoints/{id}/mcp`, where `{id}` is the **Touchpoint ID** from the **Settings** tab. The URL isn't shown in the interface; build it from the touchpoint's base URL by replacing `/openai` with `/mcp`.
+- **URL:** the touchpoint's **Base URL** with `/openai` at the end replaced by `/mcp`.
 - **Transport:** Streamable HTTP, stateless.
 - **Authentication:** the touchpoint key (or operator credentials), exactly as for the touchpoint's OpenAI API.
 - **What it offers:** the touchpoint's enabled tools, and nothing else (no skills, prompts or resources).
 
 :::note[Approval moves to the MCP client]
-Unlike the OpenAI API, the MCP server does list tools that need approval under the touchpoint's [confirmation policy](/operational-guides/configure-touchpoints#decide-when-a-tool-needs-confirmation). It marks them as destructive and as requiring approval, so a well-behaved MCP client asks its own user before calling them. Rational AI doesn't block the call itself, so connect only clients you trust to honor that flag.
+The MCP server lists tools that need approval under the touchpoint's [confirmation policy](/operational-guides/configure-touchpoints#decide-when-a-tool-needs-confirmation), marked as requiring approval. The MCP client is responsible for asking its user, so connect only clients you trust.
 :::
 
 A touchpoint that [AI application governance](/operational-guides/govern-ai-applications) blocks, or rates as an unacceptable risk, refuses MCP calls.
 
 ## Ask a Decision model through the System One compatible API
 
-Some questions don't need prose back: pick one of these options, give this a score, answer yes or no. Rational AI serves **Decision** models through an API compatible with System One, so clients built on the TypeSafe SDK can ask typed questions and get typed answers.
-
-- **Base URL:** `https://<your-host>/api/compat/v0/typesafe`. The SDK adds `/v1/systemone` (ask) and `/v1/models` (list the Decision models) itself.
-- **Authentication:** a workspace key from **Settings** → **API Keys**. Touchpoint keys don't work here.
-- **Model:** only models whose purpose is **Decision** are served. If the request names no model, the **Decision model** default applies.
-
-The **Use via API** snippets on a Decision model in the [AI Model Registry](/operational-guides/ai-model-registry-features) already point at this base URL.
-
-:::note[A decision model needs a provider that speaks system one]
-Decision models come from a **System One Compatible** connector, or from OpenRouter. See [Configure connectors](/operational-guides/configure-connectors).
-:::
+**Decision** models return a choice, a score or a yes/no answer instead of prose. Call them with a workspace key; touchpoint keys don't work. The **Use via API** snippets on a Decision model in the [AI Model Registry](/operational-guides/ai-model-registry-features) are ready to use.
 
 ## Next steps
 

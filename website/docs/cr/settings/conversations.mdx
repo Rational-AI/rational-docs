@@ -13,7 +13,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 The Conversations settings control how Rational AI enriches and processes end-user conversations behind the scenes. From here you configure four automatic analyses (**title generation**, **topic detection**, **sentiment analysis** and **summary generation**), each of which can be enabled independently and assigned its own model and prompt. You also define the **human oversight** rules that flag conversations for review, and the **statuses** a conversation can have. These settings are platform defaults: each [touchpoint](touchpoints.mdx) can override title generation, topic detection and sentiment analysis on its **Models** tab.
 
-The model that writes the replies users see isn't set here: it's the **Conversational model** default in the [AI Model Registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), unless a [touchpoint](touchpoints.mdx) picks its own.
+The model that writes the replies users see is the **Conversational model** default in the [AI Model Registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), unless a [touchpoint](touchpoints.mdx) picks its own.
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -96,6 +96,6 @@ See [Record oversight decisions](/operational-guides/human-oversight) for what r
 
 ## Conversations status
 
-Define the stages of a conversation and how they appear in the conversation list. Every tenant starts with **Open** and **Closed**, which can't be deleted. Type a new status in **Type new…**, pick an icon for each, and mark the ones that end a conversation as **Closed status**. A status that conversations still use can't be deleted.
+Define the stages of a conversation and how they appear in the conversation list. Every workspace starts with **Open** and **Closed**, which can't be deleted. Type a new status in **Type new…**, pick an icon for each, and mark the ones that end a conversation as **Closed status**. A status that conversations still use can't be deleted.
 
 Status changes are saved as you make them. Use **Save** to apply your changes to the analyses and rules, or **Cancel** to discard them.

@@ -9,288 +9,60 @@ audience: [admin, builder]
 
 # Integrate external data
 
-This guide explains how to connect Rational AI to external platforms (such as Google Drive, AWS, or Azure) and synchronize their data using connectors and sources.   
-The process consists of two steps:
+To make files from an external service searchable in a Knowledge, you connect three pieces: a [connector](/operational-guides/configure-connectors) that holds the credentials, a [source](/operational-guides/configure-sources) that says which files to sync, and the Knowledge that processes them. This page walks through the whole path with Google Drive. Other providers follow the same steps with their own credentials; see [Available providers](/operational-guides/configure-connectors#available-providers).
 
-1. **Create and authorize a connector** to access an external provider;
-2. **Define a source** that uses the connector to retrieve data.
+## Prerequisites
 
-Sources that read a private service need a connector for its credentials. **HTTP** sources, public Git repositories and extension-contributed sources need none, and some connectors (OpenAI, for example) serve AI models rather than sources.
-
-To follow both steps, your role needs **Create** on the **Connectors** and **Sources** rows, and your license must include the Knowledge module, which **Sources** belongs to. See [Manage roles and users](/operational-guides/roles-and-users).
-
-## Establishing the connector
-Connectors handle authentication and permissions for external services. To manage connectors open the **Settings** and navigate to **Connectors** from the left-hand sidebar.
-
-<img
-  src={require('@site/static/img/screens/connectors.png').default}
-  alt="Dashboard interface displaying the Connectors page."
-  style={{ 
-    width: '100%', 
-    maxHeight: '100%', 
-    objectFit: 'contain',
-    border: '1px solid #E4E4E7',
-    borderRadius: '6px',
-    boxSizing: 'border-box',
-    }}
-/> 
-
-The connectors page has two parts:
-1. A list of all configured connectors.
-2. The details of the selected connector, including:
-    * Name and description
-    * **Provider**
-    * Usage by **AI Models**, **Sources** and **Tools**.
-
-### Creating a new connector
-If no connectors are configured, the page is empty. To start, select **Add** and pick a provider under **Browse connectors** (for example, Google, AWS, OpenAI).
-Each provider has specific authentication requirements. Some providers require only an API key, while others, such as Google, use a full OAuth authorization flow.
-
-For several providers, such as AWS, OpenAI and Google, the form links to a guide for obtaining the required credentials.
-
-After selecting a provider, you will be presented with a configuration form. 
-You must provide:
-* A **name** (for example, _Admin Google access_);
-* A **description**, optional but **strongly recommended** for long term maintenance and team collaboration;
-* **Credentials** obtained from the provider (key, tokens, or OAuth configuration);
-When finished, select **Add** (**Add and authorize** for providers that sign in with OAuth, such as Google). The connector appears in the list.
-
-Some providers require additional configuration steps or authorization flows.
-Consult the **provider-specific guides** to learn how to add each one from start to finish.
-
-### Authentication issues 
-If authentication fails or permissions are incomplete, a red broken-link icon <img
-  src={require('@site/static/img/screens/auth-error.png').default}
-  alt="Broken chain link icon, indicating an authentication error or disconnected access."
-  style={{ 
-    width: '1.5em', 
-    maxHeight: '1.5em', 
-    objectFit: 'contain',
-    border: '1px solid #E4E4E7',
-    borderRadius: '6px',
-    boxSizing: 'border-box',
-    verticalAlign: 'middle',
-    }}
-/>  appears next to the connector name. 
-
-To resolve the issue:
-1. Open the connector’s option menu;
-2. Select **Complete authentication**;
-3. Repeat the authorization process.
-
-:::warning
-Always resolve authentication errors before creating sources.
-:::
-
-## Adding a data source
-Once a connector is active, you can define one or more sources to specify which data should be retrieved and synchronized. 
-Go to **Settings** → **Sources** and select **Add**.
-
-### Creating a source
-The **Add new source** dialog shows the form and, for source types whose files you pick, a file panel.
-
-1. Enter a **name** (es. _Marketing assets 2024_) and a **description** explaining the content and purpose, for long term maintenance and team collaboration.
-2. In **Type**, pick the source type and the connector in one go. Each type that needs a connector is a heading with its connectors listed under it, for example **Google Drive** with the connector you created in the previous phase. Types that need no connector, such as **HTTP**, are picked directly. A type that needs a connector you haven't created yet isn't listed.
-3. Fill in the type's own fields. Picking a type scrolls them into view.
-4. Choose what to sync in the file panel. It shows *"Pick a type and connector on the left"* until the connection is complete, then lists the files and folders the connector can reach:
-    * type in *"Filter files and folders..."* to narrow the tree;
-    * tick the folders and files you want, or use **Select all**;
-    * check **Files selected** to see how many items you picked. A folder counts as one pick, and everything inside it is synced.
-5. Select **Add** to confirm. Rational AI creates the source and runs its first sync straight away.
-
-:::note[Resize the file panel for long names]
-Drag the divider between the form and the file panel, or focus it and use the arrow keys, to give the panel more room when file and folder names are long.
-:::
-
-:::warning
-If a connector with authentication issues has been selected, it won't be able to access external data and no folder will be available for selection. Return to the **Connectors** page and re-authenticate before continuing.
-:::
-
-### Configuring synchronization settings
-After that first sync, new sources use manual synchronization. You can freely change this from the **Sync settings** (available in the <img
-  src={require('@site/static/img/screens/more-vert.png').default}
-  alt="Three vertical dots icon that opens a menu with additional options."
-  style={{ 
-    width: '1.5em', 
-    maxHeight: '1.5em', 
-    objectFit: 'contain',
-    border: '1px solid #E4E4E7',
-    borderRadius: '6px',
-    boxSizing: 'border-box',
-    verticalAlign: 'middle',
-    }}
-/>  options menu).
-
-<img
-  src={require('@site/static/img/screens/sync-settings.png').default}
-  alt="Dashboard interface displaying a source's synchronization settings."
-  style={{ 
-    width: '100%', 
-    maxHeight: '100%', 
-    objectFit: 'contain',
-    border: '1px solid #E4E4E7',
-    borderRadius: '6px',
-    boxSizing: 'border-box',
-    }}
-/> 
-
-
-You can choose between three modes:
-* **Automatic**: Rational AI checks the source every two minutes and syncs only when something changed. Available for Git, Google Drive, OneDrive, and HTTP sources.
-* **Periodic**: data is synchronized automatically at scheduled intervals.
-* **Manual**: synchronization only occurs when triggered manually with **Sync now**.
-
-See [Configure data sources](/operational-guides/configure-sources#choose-when-a-source-syncs) for how each mode behaves and what happens when syncs keep failing.
-
-For periodic synchronization, pick a **Sync schedule**: **Every number of minutes**, **Every number of hours**, **Every hour**, **Every day**, **Weekly** or **Monthly**.  
-Choose a frequency based on how often your external data changes.
-
-You must also define how deletions are handled:
-* **Cascade delete**: files deleted from the original source (for example, from Google Drive) are also removed from Rational AI.
-* **Keep**: deleted external files remain stored in Rational AI.
-
-
-## Integrate AWS data
-To integrate your application with Amazon S3, you must first establish a secure connection. 
-This is done by generating a pair of security credentials (keys) that act like a username and password for your automated processes.
-
-### Generate IAM credentials
-Before configuring the connector, you need an **Identity and Access Management (IAM)** user with the correct permissions.
-* **Sign in** to the [AWS Management Console](https://aws.amazon.com/console/) and navigate to **IAM Dashboard > Users**. 
-* **Create a new user**: 
-    * Click **Create user**.
-    * Under **Permissions options**, select **Attach policies directly**. 
-    * Search for and check `AmazonS3FullAccess` (or a more restricted policy if required).  
-* **Create Access keys**:
-   * Click username of newly created user.
-   * **Security credentials > Access keys** and click **Create access key**.
-   * Select `Application running outside AWS` as the use case.   
-* You will see your **Access Key ID** and **Secret Access Key**. Download the `.csv` file
-
-:::warning
-The Secret Access Key is **only shown once**. If lost, you must delete the old key and create a new one.
-:::
-
-
-### Configure the connector
-Now that you have your credentials, set up the AWS connector in Rational AI.
-
-* Navigate to **Settings** and select **Connectors** from the left sidebar.
-* Add a new connector: select **Add**, then **AWS** from the list of available providers.
-* Fill out the configuration form:
-    * **Name** (for example, S3 Access for Marketing Data).
-    * **Description** (optional but strongly recommended).
-    * **Access Key**: paste the access key ID generated in the previous step.
-    * **Secret Key**: paste the secret access key.
-    * Select **Add** to save and activate the connector.
-      
-The AWS S3 connector is now **ready for use**. You can link it to specific buckets in the next step.
-
-### Configure the AWS S3 source
-After configuring the connector, you need to define the source to specify which S3 buckets should be synchronized.
-* Navigate to **Sources** and select **Add**.
-* Fill out the source form:
-    * **Name** (for example, S3 Log Bucket).
-    * **Description** to explain the content.
-    * **Type**: find **Amazon S3** and pick the AWS connector you created earlier under it.
-    * Under **Advanced settings**, enter the **Bucket**, the **Region** where it is located (for example, `eu-central-1`) and, if needed, the **Endpoint** (usually `https://s3.amazonaws.com` or a region-specific endpoint).
-* In the file panel, **browse the bucket** and tick the folders and files you wish to include in the synchronization.
-* Select **Add** to create the source.
-
-:::note
-This source, like all sources, runs a first sync when you add it and then uses **manual synchronization**. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
-:::
+- **Create** on the **Connectors** and **Sources** rows of your role. See [Manage roles and users](/operational-guides/roles-and-users).
+- **The Knowledge module in your license.** **Sources** is hidden without it.
+- **A [Knowledge](/operational-guides/create-knowledge)** to receive the files.
+- **A Google Cloud project** where you can create OAuth credentials.
 
 ## Integrate Google Drive data
-This procedure is essential to allow your application to securely access Google services (such as Drive, Calendar, or Gmail) on behalf of your users.
 
-### Prepare your Google Cloud project
-Before creating credentials, you need an **active Google Cloud project**:
-* Go to the [Google Cloud Console](https://console.cloud.google.com/).
-* In the upper-left project menu, select **New Project** (or choose an existing project).
-* Enable the required APIs (for example, `Google Drive API`), via **APIs & Services > Library**.
+### 1. Create OAuth credentials in Google Cloud
 
-### Configure the OAuth consent screen
-Google requires an OAuth consent screen to inform users about the access your app is requesting:
-* Go to **APIs & Services > OAuth consent screen**.
-* Choose the **User type**:
-    * **Internal**: only for your Google Workspace team.
-    * **External**: For any user with a Google account.
-* Click **Create** and fill in the basic info: App name, User support email, Developer contact email.
-* Save and continue. You can skip the **Scopes** section for initial testing.
+1. In the [Google Cloud Console](https://console.cloud.google.com/), open your project and enable the **Google Drive API** under **APIs & Services** → **Library**.
+2. Under **APIs & Services** → **OAuth consent screen**, set up the consent screen. Choose **Internal** to limit sign-in to your Google Workspace.
+3. Under **APIs & Services** → **Credentials**, create an **OAuth client ID** of type **Web application**.
+4. In **Authorized redirect URIs**, add the address you open Rational AI at, followed by `/api/management/v0/oauth/callback`. For example, `https://ai.example.com/api/management/v0/oauth/callback`.
+5. Copy the **Client ID** and **Client Secret**.
 
-### Create credentials (Client ID)
-With the project ready, you can generate the keys.
-* Go to **APIs & Services > Credentials**.
-* Click **+ CREATE CREDENTIALS** and select **OAuth client ID**.
-* Choose the **Application type**:
-    * **Web application** (most common): for websites built with React, Node, PHP, etc.
-    * **Android/iOS**: for native mobile apps.
-    * **Desktop app**: for command-line tools (CLI) or installable software.
-- Set **Authorized redirect URIs**: this is the URL Google uses to return an authorization code after login.
-    * Must start with `http://` or `https://`
-    * Cannot contain fragments, relative paths, wildcards, or public IPs.
-    * Use the following URL: `https://[your-domain].rational.is/api/management/v0/oauth/callback`.
+### 2. Add the Google connector
 
-:::note
-Replace `[your-domain]` with your own tenant identifier.
-:::
+1. In Rational AI, go to **Settings** → **Connectors** and select **Add**.
+2. Choose **Google**.
+3. Enter a **Name**, for example *Marketing Drive*, and paste the **Client ID** and **Client Secret**.
+4. Select **Add and authorize** and sign in with the Google account whose files you want to sync.
 
-### Download credentials
-* After clicking **Create**, a pop-up displays your **Client ID** and **Client Secret**.
-* Click **Download JSON** to save a local copy containing all the credentials.
+### 3. Add a Google Drive source
 
-:::warning
-The Client Secret is private. **Never** share it or publish it.
-:::
+1. Go to **Settings** → **Sources** and select **Add**.
+2. Enter a **Name**, for example *Marketing team Drive*.
+3. In **Type**, find **Google Drive** and select your connector under it.
+4. In the file panel, select the folders, shared drives, or files to sync. Use *"Filter files and folders..."* to narrow the tree. A selected folder is synced with everything inside it.
+5. Select **Add**. Rational AI creates the source and runs its first sync.
 
-### Configure the connector
-* Navigate to **Settings** → **Connectors** and select **Add**.
-* Select **Google** from the provider list.
-* Fill out the configuration form:
-    * Name: for example `Google Drive access for marketing`.
-    * Description: optional but strongly recommended for long-term maintenance and team collaboration purposes.
-    * **Client ID**: paste the public Client ID from the previous step.
-    * **Client Secret**: paste the private Client Secret from the previous step.
-* Select **Add and authorize**, then complete the Google sign-in to activate the connector.
+### 4. Choose when the source syncs
 
-The Google connector is now ready to back **Google Drive** sources.
+After the first sync, a new source syncs only when you select **Sync now**. To keep it up to date, open the source's **⋮** menu, select **Sync settings**, and choose **Automatic** or **Periodic**. See [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
 
-### Configure the Google Drive source
-* Go to **Sources** and select **Add**.
-* Complete the source form:
-    * **Name**: for example `Marketing team Drive`.
-    * **Description**: optional but strongly recommended for long-term maintenance and team collaboration purposes.
-    * **Type**: find **Google Drive** and pick the connector created in the previous step under it.
-* In the file panel, browse the accessible Google Drive structure and **choose the specific folders**, shared Drives, or individual files to sync.
-* Select **Add** to create the source.
+### 5. Attach the source to a Knowledge
 
-:::note
-This source, like all sources, runs a first sync when you add it and then uses **manual synchronization**. Check the [Sync settings section](#configuring-synchronization-settings) to learn how to update them.
-:::
+1. Go to **Settings** → **Knowledge**, open the Knowledge, and select the **Sources** tab.
+2. In **Add source...**, select the source. It's added at once.
+3. To process the synced files now, open the source's **⋮** menu and select **Process now**. To process changes whenever the source syncs, see [Process a Knowledge whenever its source changes](/operational-guides/configure-sources#process-a-knowledge-whenever-its-source-changes).
 
-## Integrate OpenRouter data
-This procedure allows your application to access OpenRouter endpoints using API keys, enabling Rational AI to interact with OpenRouter models and data.
+## Troubleshooting
 
-### Generate API key
-* **Log In**: visit [OpenRouter](https://openrouter.ai/) ￼and login with your account, or create a new one if you don't have one already (use email, Google, or GitHub).
-* Click your profile icon and select **Keys**.
-* Click **Create API Key**:
-    * Provide a recognizable **name** to track its usage.
-    * Optionally define a credit limit to manage spending and/or an expiration date for the key.
-    * Immediately **copy the generated key** (starting with `sk-or-v1-`). You will **not be able to see it again** after leaving the page.
+| Symptom | What to check |
+|---|---|
+| A red broken-link icon next to the connector | The sign-in failed or expired. Open the connector's menu, select **Complete authentication**, and sign in again. |
+| The file panel lists no folders | The selected connector can't reach the service. Fix its authentication on the **Connectors** page, then add the source again. |
+| Google shows a redirect URI error during sign-in | The **Authorized redirect URIs** entry must match the address you open Rational AI at exactly, followed by `/api/management/v0/oauth/callback`. |
 
-:::warning
-Treat your API key like a password. **Never** share it publicly or commit it to repositories.
-:::
+## Next steps
 
-### Configure the connector
-* Navigate to **Settings** → **Connectors** and select **Add**.
-* Select **OpenRouter** from the provider list.
-* Fill out the configuration form:
-    * **Name**: for example `OpenRouter access for marketing`.
-    * **Description**: optional but strongly recommended for long-term maintenance and team collaboration purposes.
-    * **API Key**: paste the key you generated in the previous step.
-* Select **Add** to save and activate the connector.
-
-The OpenRouter connector is now ready. OpenRouter provides AI models rather than files, so it doesn't back a source: use it in the [AI Model Registry](/operational-guides/ai-model-registry-features) to add a proxy to an OpenRouter model.
+- [Configure connectors](/operational-guides/configure-connectors): every provider and what it needs.
+- [Configure data sources](/operational-guides/configure-sources): sync modes and other source types.
+- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the files in a Knowledge.

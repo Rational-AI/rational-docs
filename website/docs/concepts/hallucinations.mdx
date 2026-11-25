@@ -1,8 +1,8 @@
 ---
-sidebar_position: 7
+sidebar_position: 11
 sidebar_label: Hallucinations
 title: Hallucinations
-description: What hallucinations are in generative AI, why they happen, the main types, and how to reduce them.
+description: What hallucinations are, why models produce them, and how Rational AI reduces them.
 type: concept
 audience: [user, builder]
 ---
@@ -12,54 +12,29 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 # Hallucinations
 
-In the context of Generative AI and Large Language Models (LLMs), **hallucinations** refer to the phenomenon in which a model generates outputs that are fluent and plausible but factually incorrect, misleading, or unsupported by reliable evidence.
+A **hallucination** is an answer that sounds right but is false, or isn't supported by any source. The model isn't lying: it writes the most likely words for the question, and sometimes the most likely words are wrong.
 
-These outputs are not random errors. They are coherent responses produced by the model based on learned statistical patterns rather than verified knowledge.
+## Why models hallucinate
 
-:::note[Hallucinations are not lies]
-The model has no intentionality or awareness that it is producing false information. A hallucination is a pattern-based prediction that happens to be wrong, not a deliberate falsehood.
-:::
+- **They predict text, they don't check facts.** A model writes what usually follows, which reads well even when it's wrong.
+- **Their knowledge is fixed.** A model knows only what was in its training data, up to its [knowledge cutoff](/reference/glossary#knowledge-cutoff), and nothing about your organization.
+- **Vague questions leave gaps.** When a question is unclear, the model fills the gaps with plausible guesses.
 
-## Why "hallucinations"?
+## What they look like
 
-The term draws an analogy with human hallucinations, where the brain perceives things that are not present in reality. Similarly, LLMs "perceive" and generate content based on internal patterns rather than external truth.
+| Type | Example |
+| :--- | :--- |
+| Wrong facts | A wrong date, name or figure: "The Eiffel Tower was built in 1867" (it was 1889). |
+| Invented sources | A citation, a policy number or a link that doesn't exist. |
+| Misread question | A question about Python the language answered about pythons the snakes. |
+| Invented things | A product, a person or a rule that was never real. |
 
-## Causes of hallucinations
+## How Rational AI reduces them
 
-Hallucinations arise from structural characteristics of LLMs, such as:
-
-1. **Probabilistic generation**: LLMs generate text by predicting the most likely next token, not by validating facts. As a result, they prioritize linguistic coherence over factual accuracy.
-2. **Training data limitations**: models learn from imperfect, incomplete, and sometimes contradictory data sources, which can introduce inaccuracies.
-3. **Parametric knowledge compression**: information is compressed into model weights, leading to lossy reconstruction where details may be distorted or conflated.
-4. **Lack of real-time knowledge**: most LLMs do not have native access to live databases or external verification systems during generation.
-5. **Ambiguous or incomplete prompts**: vague or under-specified inputs can lead models to "fill in gaps" with fabricated information.
-6. **Overgeneralization**: models may apply learned patterns to contexts where they are not valid.
-
-## Types of hallucinations
-
-| Type | Description | Example |
-| :--- | :--- | :--- |
-| Factual hallucination | Incorrect dates, names, statistics, or events | "The Eiffel Tower was built in 1867" (actually 1889) |
-| Source hallucination | Invented citations or references | Citing a paper with DOI 10.1234/fake.2023 that does not exist |
-| Logical hallucination | Internally inconsistent reasoning | "All cats are mammals. Dogs are cats. Therefore, dogs are mammals." |
-| Contextual hallucination | Misinterpretation of user intent | A user asks about Python (programming) but receives information about pythons (snakes) |
-| Fabricated content | Creation of non-existent entities or concepts | Inventing a historical figure or scientific discovery |
-
-:::note[A non-exhaustive set]
-The table above shows a small, non-exhaustive set of examples. While there are several methods to identify hallucinations (human review, fact-checking, automated verification systems), fully automated detection remains an open research challenge.
-:::
-
-## Mitigation strategies
-
-To reduce the occurrence of hallucinations, several approaches can be employed:
-
-1. **Retrieval-augmented generation (RAG)**: integrates external knowledge sources to ground model responses in verified data.
-2. **Fine-tuning and alignment**: improves reliability through high-quality, curated data and human feedback.
-3. **Prompt engineering**: carefully structured prompts reduce ambiguity and guide accurate responses.
-4. **Confidence calibration**: encourages the model to express uncertainty when appropriate.
-5. **Human-in-the-loop systems**: maintain human oversight for critical outputs.
-6. **Multi-model verification**: cross-checks outputs across different models to identify inconsistencies.
-7. **Temperature and sampling parameters**: lower temperature settings reduce randomness and creative divergence.
+- **Answers from your data.** With [RAG](./RAG.mdx), an assistant searches your [Knowledge](./Knowledge.mdx) and answers from the passages it finds, and Chat shows the sources it used.
+- **Checking an answer.** **Verify response** in Chat checks an answer against the retrieved knowledge and marks the sentences it can't support. See [Check an answer against your knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+- **Clear instructions.** A touchpoint's [system prompt](./System-prompt.mdx) can tell the assistant to say when it doesn't know.
+- **A person in the loop.** For answers that matter, have someone review them before they're used. See [Human-in-the-loop](./Human-in-the-loop.mdx).
 
 ---
 
@@ -68,11 +43,5 @@ To reduce the occurrence of hallucinations, several approaches can be employed:
 <ConnectsTo
 	items={[
 		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Generative AI", to: "/concepts/Generative-AI" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-		{ label: "Sycophancy", to: "/concepts/Sycophancy" },
-		{ label: "Knowledge cutoff", to: "/concepts/Knowledge-cutoff" },
-		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
 	]}
 />

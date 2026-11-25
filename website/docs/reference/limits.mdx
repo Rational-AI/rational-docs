@@ -32,7 +32,7 @@ See [Use the chat](/operational-guides/chat-experience) and [Memory and long cha
 
 ## Knowledge and files
 
-See [Manage Knowledge resources](/operational-guides/manage-knowledge-resources), [Collections and the grid](/operational-guides/knowledge-collections-and-grid) and [Import a Knowledge](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
+See [Add and manage content](/operational-guides/manage-knowledge-resources), [Collections and the grid](/operational-guides/knowledge-collections-and-grid) and [Import a Knowledge](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
 
 | Limit | Value | Where it applies | Can it be changed? |
 |---|---|---|---|
@@ -57,7 +57,7 @@ See [Manage Knowledge resources](/operational-guides/manage-knowledge-resources)
 
 ## Custom views
 
-See [Custom views](/operational-guides/knowledge-custom-views#let-a-view-talk-to-rational-ai).
+See [Set up the views of a Knowledge](/operational-guides/knowledge-custom-views).
 
 | Limit | Value | Where it applies | Can it be changed? |
 |---|---|---|---|
@@ -134,11 +134,6 @@ See [Manage extensions](/operational-guides/manage-extensions) and [Marketplace]
 | Limit | Value | Where it applies | Can it be changed? |
 |---|---|---|---|
 | Extension package | 1 GiB compressed, 2 GiB expanded | Installing a package | No |
-| Installed extension directory | 2 GiB and 100,000 files | Development mode | No |
-| `manifest.json` | 2 MiB | Development mode | No |
-| File path in a package | 512 characters | Packages and development mode | No |
-| Text editor preview | 2 MiB | Files opened in the browser editor | No |
-| Listing screenshot | 5 MB each | `screenshots` in the listing | No |
 | Example records | 5,000 per provider, files up to 25 MB | Records an extension installs | No |
 | Install request message | 1,000 characters, one request per solution per day | **Ask the admins** in the Marketplace | No |
 
@@ -159,9 +154,6 @@ See [Access Rational AI via API](/operational-guides/api-access).
 
 | Limit | Value | Where it applies | Can it be changed? |
 |---|---|---|---|
-| Resources created in one request | 500 | Bulk resource creation | No |
-| Files created in one request | 500 | Bulk file creation | No |
-| Annotations in one request | 500, body up to 16 MB | Bulk annotation creation and embedding updates | No |
 | Records returned by one query | 1,000 | Record queries, and up to 1,000 IDs per query | No |
 | Semantic search query | 1,000 characters | Semantic record search | No |
 | Records per page of an embedded view | 100 | Embedded view queries | No |

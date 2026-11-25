@@ -7,35 +7,22 @@ audience: [builder]
 
 # Annotate resources
 
-Annotations let you highlight a passage in a resource and pin a label to it. Use them to mark up your text the way you'd mark up a printed document: flagging a definition, tagging a section, or calling out a passage you want to find again later. This guide shows you how to annotate a `.txt` or `.md` resource in the selectable text viewer, how to leave comments on a PDF, and how to check that a resource's chunks are ready for search. Annotations can also mark images and tables, and a workflow can create them for you (**Auto-annotate**); this guide covers the manual text and comment annotations.
-
-:::note[What is an annotation?]
-An annotation marks a specific range of a resource and pairs it with a label and a color. For text resources, the range is stored as character offsets (the exact start and end positions in the raw file), which are the same positions used when Rational AI splits the file into chunks (the smaller pieces it searches over). Because the highlight is anchored to those positions, it always points to the exact text you selected. Annotations show up inline in the viewer and are listed in the **Annotations** sidebar.
-:::
+Highlight a passage in a text resource and give it a label and a color, or leave a comment on a PDF, so you and your colleagues find it again later. Annotations show inline in the viewer and are listed in the **Annotations** sidebar. A workflow can also create annotations for you, including on images and tables (**Auto-annotate**).
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
-- **A Knowledge** containing at least one resource. A [Knowledge](/operational-guides/create-knowledge) is the container that holds your data in Rational AI.
-- **Rights on the Knowledge:** **Read** on the **Knowledge** row of your role to see annotations, **Create** to add them, **Update** to change them and **Delete** to remove them. See [Manage roles and users](/operational-guides/roles-and-users).
+- **Rights on the Knowledge:** **Read** on the **Knowledge** row of your role to see annotations, **Create** to add them, **Update** to change them, and **Delete** to remove them. See [Manage roles and users](/operational-guides/roles-and-users).
 - **A text resource** in a supported format: `.txt` or `.md`. Other formats such as `json`, `xml`, and `html` open in the syntax-highlighted editor and can't be annotated here.
 - **A PDF resource**, if you want to leave comments on a document.
 
-:::note[Annotate Markdown in its source]
-Markdown resources open with a **Preview** and a **Source** toggle. Annotate in **Source**, which shows the raw text, so each highlight's character offsets match the stored file 1:1. The source is also editable: saving an edit can shift existing highlights, because their offsets don't move with the text.
-:::
-
 ## Open a text resource
 
-Start in the resource you want to mark up.
+1. Open the **Knowledge** tab and select the card of the Knowledge that holds your resource.
+2. Open the `.txt` or `.md` resource. A `.txt` file shows as selectable text. A `.md` file opens on **Preview**: select **Source** to annotate it.
 
-1. Open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge that holds your resource.
-2. Find your `.txt` or `.md` resource and open it. A `.txt` file renders as selectable raw text; for a `.md` file, select **Source**. The **Annotations** sidebar lists the resource's annotations.
+Editing a Markdown source after you annotate it can shift existing highlights, because they don't move with the text.
 
 ## Create an annotation
-
-Highlight a passage to attach a label and color to it.
 
 1. In the viewer, **select the text** you want to annotate by dragging across it.
 2. When you release the selection, the **label/color popover** opens.
@@ -44,25 +31,18 @@ Highlight a passage to attach a label and color to it.
 
 The selected passage is highlighted inline in your chosen color, and the new annotation is added to the **Annotations** sidebar with its label and color.
 
-:::note[Overlapping selections]
-If a new selection overlaps an existing annotation, the highlight clamps to the first range (the one that starts earlier). Nested or overlapping highlights aren't currently supported.
-:::
+Annotations can't overlap or nest.
 
 ## Review and manage annotations
 
-The **Annotations** sidebar lists every annotation on the resource, and is where you go back to find, jump to, or clean up your highlights.
+In the **Annotations** sidebar:
 
-### Focus an annotation
-
-When a resource has many highlights, use the sidebar to jump straight to one. Select an entry to scroll the viewer to that passage and briefly flash its highlight.
-
-### Delete an annotation
-
-To remove a highlight you no longer need, delete its entry in the sidebar. The inline highlight is cleared from the text.
+- Select an entry to scroll the viewer to that passage and flash its highlight.
+- Delete an entry to remove its highlight from the text.
 
 ## Comment on a PDF
 
-A review often comes down to a remark on one sentence or one figure. A comment attaches your note to a passage or to an area of a PDF page, and stays on the page where your colleagues will see it.
+A comment attaches a note to a passage or to an area of a PDF page, where your colleagues see it.
 
 1. Open a PDF resource in the Knowledge.
 2. In the tool rail beside the document, open the small arrow on the **comment** button (*"Comment options"*) and pick a gesture. The button remembers your choice, so next time a single click is enough:
@@ -71,9 +51,7 @@ A review often comes down to a remark on one sentence or one figure. A comment a
 3. In the popover, type your note in the *"Write a comment"* field.
 4. Select **Save**. The comment appears on the page as a note that carries its text, and it scrolls and zooms with the document.
 
-:::note[An abandoned comment leaves nothing behind]
-The comment is created only when you save it. If you close the popover without saving, nothing is stored.
-:::
+If you close the popover without saving, no comment is created.
 
 ### Review and edit comments
 
@@ -85,8 +63,6 @@ The **Annotations** panel lists comments grouped by page, each with its note and
 
 ### Show or hide annotations on the page
 
-When a page is crowded with highlights, hide the kinds you don't need right now.
-
 1. Select the **eye** button (*"Show or hide annotations"*).
 2. Turn **Text**, **Images**, **Tables**, or **Comments** on or off, or use **Hide all** and **Show all**.
 
@@ -94,22 +70,15 @@ This changes only what is drawn on the document: the **Annotations** panel keeps
 
 ## Check that chunks are ready for search
 
-A chunk is only useful to [AI Search](/operational-guides/configure-rag) when it is enabled and its embedding (the vector used for retrieval) is actually stored. The dot on each chunk card tells you which is which.
-
-1. Open a resource and select the **Chunks** tab.
-2. Look at the dot in the top-right corner of each chunk card:
+Open a resource and select the **Chunks** tab. The dot on each chunk card says whether [search](/operational-guides/configure-rag) can find it:
 
 | Dot | What it means |
 |-----|---------------|
+| Green | Search can find the chunk. |
+| Warning color | Search can't find the chunk yet. [Reprocess the file](/operational-guides/manage-knowledge-resources#recover-a-file-that-failed) to fix it. |
 | Gray | The chunk is disabled, so search ignores it. |
-| Warning color | The chunk is enabled, but its embedding is not usable for retrieval, so search can't find it yet. |
-| Green | The chunk is enabled and embedded, so search can find it. |
-
-:::note[A warning dot usually means reprocess]
-A chunk shows the warning color when its embedding is missing either from the chunk itself or from the vector store. Reprocessing the resource (see [Manage knowledge resources](/operational-guides/manage-knowledge-resources#recover-a-file-that-failed)) embeds it again.
-:::
 
 ## Next steps
 
-- [Manage knowledge resources](/operational-guides/manage-knowledge-resources)
+- [Add and manage content](/operational-guides/manage-knowledge-resources)
 - [Configure Graph RAG](/operational-guides/configure-rag)

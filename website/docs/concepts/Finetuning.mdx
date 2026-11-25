@@ -11,7 +11,7 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 # Fine-tuning
 
-**Fine-tuning** takes a model that has already been trained on broad, general data and continues its [training](./Model-training.mdx) on a smaller, focused dataset. The result is a model that keeps its general abilities but performs noticeably better on your specific task, domain or style.
+**Fine-tuning** takes a model that has already been trained on broad, general data and continues its [training](/reference/glossary#training) on a smaller, focused dataset. The result is a model that keeps its general abilities but performs noticeably better on your specific task, domain or style.
 
 The analogy is hiring an experienced professional and giving them a few weeks of training on how your company works. They already know their craft; you are adapting that expertise to your particular needs.
 
@@ -30,7 +30,7 @@ A good rule of thumb: reach for retrieval when the model lacks **knowledge**, an
 A fine-tuning job generally requires:
 
 * A **base model** to start from.
-* A **[training dataset](./Dataset-and-training-data.mdx)** of high‑quality examples in a consistent format.
+* A **[training dataset](/reference/glossary#dataset)** of high‑quality examples in a consistent format.
 * A few **training parameters** that control how the job runs.
 
 The quality and consistency of the dataset matters far more than its size. A small, clean set of examples usually beats a large, noisy one.
@@ -51,9 +51,5 @@ The platform provides a dedicated [Fine‑Tuning](../cr/settings/finetuning.mdx)
 
 <ConnectsTo
 	items={[
-		{ label: "Model training", to: "/concepts/Model-training" },
-		{ label: "RLHF", to: "/concepts/RLHF" },
-		{ label: "Dataset and training data", to: "/concepts/Dataset-and-training-data" },
-		{ label: "Inference", to: "/concepts/Inference" },
 	]}
 />

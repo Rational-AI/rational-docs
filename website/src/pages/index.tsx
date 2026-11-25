@@ -110,13 +110,12 @@ const CATEGORIES: Category[] = [
 		title: "Concepts",
 		description:
 			"Learn the ideas behind the platform, so the rest of the docs make sense.",
-		to: "/concepts/Generative-AI",
+		to: "/concepts/Touchpoint",
 		items: [
-			{ label: "Generative AI", to: "/concepts/Generative-AI" },
-			{ label: "Large language models", to: "/concepts/LLMs" },
 			{ label: "Retrieval-augmented generation", to: "/concepts/RAG" },
 			{ label: "Touchpoints", to: "/concepts/Touchpoint" },
-			{ label: "Context windows", to: "/concepts/Context-window" },
+			{ label: "Knowledge", to: "/concepts/Knowledge" },
+			{ label: "Glossary", to: "/reference/glossary" },
 		],
 	},
 	{

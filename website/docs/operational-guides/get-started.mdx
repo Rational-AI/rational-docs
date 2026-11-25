@@ -2,65 +2,20 @@
 sidebar_position: 0
 sidebar_label: Quickstart
 type: tutorial
-audience: [builder]
+audience: [user, builder]
 ---
 
 # Get started with Rational AI
 
-Rational AI lets you build an assistant that answers from *your* data instead of guessing. This guide is the fastest path from an empty workspace to a working chat grounded in your own content, and a map of where to go next.
+Rational AI is an AI platform that runs on your own servers. You and your colleagues use it from the AI Control Room, a web app where you chat with AI assistants, search your company's documents, and build dashboards. This page gets you to a first answer, then shows a builder how to set up an assistant that answers from your own content.
 
-:::note[The four pieces]
-You'll meet four building blocks, and you set them up in order. A **Model** does the actual thinking (it lives in the [AI Model Registry](/operational-guides/ai-model-registry-features)). A **Knowledge** is the store of your content the assistant searches (see [Create a Knowledge](/operational-guides/create-knowledge)). A **Touchpoint** wires a model and a Knowledge together into a working assistant. You and your colleagues talk to it in the Control Room; your customers reach it through a [channel](/operational-guides/manage-channels).
-:::
+## Start chatting
 
-Under the hood this is **RAG**, retrieval-augmented generation: the assistant pulls the most relevant pieces of your Knowledge and answers from them, so replies are grounded in your data rather than invented. New to the terms? The [RAG](/concepts/RAG) and [LLMs](/concepts/LLMs) concept pages are a two-minute primer.
+Every signed-in user can use **Chat**, and it is the page the Control Room opens on.
 
-## Prerequisites
-
-- **The Knowledge module in your license.** Without it, the **Knowledge** tab doesn't appear.
-- **An Admin account, or a role with Create** on the **AI Model Registry** and **Knowledge** rows. See [Manage roles and users](/operational-guides/roles-and-users).
-- **Some content to load**: documents, an FAQ, a spreadsheet, anything text-based.
-
-## 1. Connect a model
-
-Your assistant needs two kinds of model: a **text-generation** model to write answers, and an **embedding** model to turn your content into something searchable.
-
-1. Go to **Settings** → **AI Model Registry** and select **New**.
-2. Add a model. Proxy a provider such as OpenAI, Anthropic, or Gemini through a [connector](/operational-guides/configure-connectors), or pull an open-source model from Hugging Face.
-3. Confirm that one text-generation model and one embedding model show as **Available**.
-
-Full details: [Manage AI models in the registry](/operational-guides/ai-model-registry-features) and [Configure a connector](/operational-guides/configure-connectors).
-
-## 2. Create a Knowledge
-
-A Knowledge holds your content together with the rules for searching it.
-
-1. Open the **Knowledge** tab and select **New** → **New knowledge**. Rational AI creates it with a default name and opens its settings: give it a clear name.
-2. On the **AI Search** tab, turn on **Allow AI search**, pick your **Embedding model**, and check the **Chunking type** (the default is **Recursive Chunker**).
-3. **Save**.
-
-Creating a Knowledge also creates a touchpoint for it, named after it (for example *Sales FAQ - Touchpoint* for a Knowledge called *Sales FAQ*), with the tools to search it, so you have an assistant to chat with straight away. Full details: [Create a Knowledge](/operational-guides/create-knowledge).
-
-## 3. Add your data
-
-A new Knowledge is empty. Fill it either way:
-
-- **Connect a source and sync it**: a shared drive, a website, a database. See [Integrate external data](/operational-guides/integrate-data).
-- **Upload files directly** into the Knowledge: [Manage knowledge resources](/operational-guides/manage-knowledge-resources).
-
-Uploaded files are processed straight away: split into chunks and embedded, ready to be searched. Files from a source are processed when the source syncs, according to its sync mode (**Manual**, **Periodic** or **Automatic**). See [Configure data sources](/operational-guides/configure-sources).
-
-## 4. Chat with your assistant
-
-The quickest check is the chat inside your Knowledge:
-
-1. Open the **Knowledge** tab and select your Knowledge.
-2. Select **Chat**. The chat starts on the Knowledge's touchpoint.
-3. Ask a question your content can answer.
-
-Your colleagues can also use it from **Chat**: open the **Chat** tab, select the assistant's name at the top and pick the Knowledge's touchpoint. To make it available to your customers, connect the touchpoint to a [channel](/operational-guides/manage-channels). See [Chat and the other chats](/operational-guides/chat-experience#chat-and-the-other-chats).
-
-The assistant retrieves the relevant pieces and answers from them. Asking something you already know the answer to is the quickest way to confirm everything's wired up.
+1. Sign in to the Control Room.
+2. Type a question in the message box and send it. The answer comes from **Rational Chat**, the workspace assistant.
+3. To talk to a different assistant, select the assistant's name at the top of the page and pick one of the touchpoints you can use.
 
 <img
   src={require('@site/static/img/screens/chat-greeting.png').default}
@@ -68,27 +23,57 @@ The assistant retrieves the relevant pieces and answers from them. Asking someth
   style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*Your assistant, ready in the Chat.*
+Attachments, sources, web search and the other chat features are in [Use Chat](/operational-guides/chat-experience). The Control Room also works on a phone or tablet.
 
-More on chatting (attachments, alternative answers, sources and verification): [Use Chat](/operational-guides/chat-experience).
+## Build an assistant on your own content
 
-:::note[Want to shape the assistant?]
-Open **Settings** → **Touchpoints** to set the conversation model, the system prompt that gives the assistant its personality and rules, which tools it can use, and whether it allows anonymous access. See [Configure touchpoints](/operational-guides/configure-touchpoints).
-:::
+Builders set up the assistants that everyone else chats with. An assistant answers from your content through RAG (retrieval-augmented generation): it finds the most relevant passages in your documents and writes its answer from them. See [RAG](/concepts/RAG) for a short introduction.
 
-## Use Rational AI on a phone or tablet
+You work with four building blocks, in this order. A **model** generates the text, and you add it in the [AI Model Registry](/operational-guides/ai-model-registry-features). A **Knowledge** holds your content and the rules for searching it. A **touchpoint** combines a model, a Knowledge, and tools into an assistant, and a [channel](/operational-guides/manage-channels) makes a touchpoint available to your customers outside the Control Room.
 
-The Control Room adapts to small screens. When the window is narrower than a desktop, the tabs in the top header give way to a menu button that opens a **Navigation** drawer with every section and **Settings**. On a phone, the **Settings** sidebar and the chat list become drawers of their own, detail pages get a **Back** button, and buttons and fields grow to a comfortable size for a finger. Chat, Conversations, Knowledge, BI, Workflows, Gen and Settings are all laid out for touch.
+### Prerequisites
 
-## Where to go next
+- **The Knowledge module in your license.** Without it, the **Knowledge** tab doesn't appear.
+- **An Admin account, or a role with Create** on the **AI Model Registry** and **Knowledge** rows. See [Manage roles and users](/operational-guides/roles-and-users).
+- **Some content to load**: documents, an FAQ, a spreadsheet, anything text-based.
 
-You have a working assistant. From here you can:
+### 1. Connect a model
 
-- **See how it's used** (administrators): cost, latency, and a per-call audit log. See [Monitor usage, cost, and audit logs](/operational-guides/governance).
-- **Review conversations** with automatic titles, topics, and sentiment. See [Work with conversations](/operational-guides/conversations) and [Configure conversation processing](/operational-guides/conversation-processing).
-- **Automate ingestion**: turn raw data into knowledge as it arrives. See [Create a workflow](/operational-guides/create-workflow).
-- **Add capabilities**: give the assistant new [tools](/operational-guides/manage-tools) by installing [extensions](/operational-guides/manage-extensions).
-- **Sharpen answers**: tune how retrieval works. See [Configure RAG](/operational-guides/configure-rag).
-- **Customize a model**: train one on your own examples. See [Fine-tune a model](/operational-guides/fine-tune-a-model).
-- **Set up your own account**: profile, password, and the devices you're signed in on. See [Manage your own account](/operational-guides/manage-your-account).
+Your assistant needs two kinds of model: a **text-generation** model to write answers, and an **embedding** model to turn your content into something searchable.
 
+1. Go to **Settings** → **AI Model Registry** and select **New**.
+2. Pick how to add the model:
+   - **Choose an open source model** runs a model from Hugging Face on your own servers.
+   - **Add a proxy to a third-party model** uses a provider such as OpenAI, Gemini, or Anthropic with your API key. The key is stored in a [connector](/operational-guides/configure-connectors).
+3. Confirm that one text-generation model and one embedding model show as **Available**.
+
+See [Manage AI models in the registry](/operational-guides/ai-model-registry-features) for every option.
+
+### 2. Create a Knowledge
+
+1. Open the **Knowledge** tab and select **New** → **New knowledge**. Rational AI creates it with a default name and opens its settings, where you give it a clear name.
+2. On the **AI Search** tab, turn on **Allow AI search**, pick your **Embedding model**, and check the **Chunking type** (the default is **Recursive Chunker**).
+3. Select **Save**.
+
+Creating a Knowledge also creates a touchpoint named after it (for example *Sales FAQ - Touchpoint* for a Knowledge called *Sales FAQ*), with the tools to search it. See [Create a Knowledge](/operational-guides/create-knowledge).
+
+### 3. Add your data
+
+A new Knowledge is empty. Fill it in one of two ways:
+
+- **Upload files** into the Knowledge. They are split into chunks and embedded straight away. See [Add and manage content](/operational-guides/manage-knowledge-resources).
+- **Connect a source**, such as a shared drive, a website, or a database. Its files are processed when the source syncs, according to its sync mode (**Manual**, **Periodic** or **Automatic**). See [Integrate external data](/operational-guides/integrate-data).
+
+### 4. Chat with your assistant
+
+1. Open the **Knowledge** tab and select your Knowledge.
+2. Select **Chat**. The chat starts on the Knowledge's touchpoint.
+3. Ask a question you already know the answer to, and check that the reply matches your content.
+
+Your colleagues reach the same assistant from **Chat** by picking the Knowledge's touchpoint at the top of the page. To change its model, system prompt, or tools, open **Settings** → **Touchpoints**; see [Configure touchpoints](/operational-guides/configure-touchpoints).
+
+## Next steps
+
+- [Configure Graph RAG](/operational-guides/configure-rag): tune how the assistant searches your Knowledge.
+- [Work with conversations](/operational-guides/conversations): review what people ask your assistants.
+- [Monitor usage, cost, and audit logs](/operational-guides/governance): see who uses your models and what it costs (administrators).

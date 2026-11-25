@@ -2,104 +2,81 @@
 sidebar_position: 16
 sidebar_label: Manage extensions
 type: how-to
-audience: [builder, developer]
+audience: [admin, builder]
 ---
 
 # Manage extensions
 
-Extensions are how you give Rational AI new capabilities: tools your agents can call, skills, channels, sources and workflows, and the complete use cases that [Marketplace](/operational-guides/marketplace) solutions install. This guide walks through everything you do with extensions in the UI: where the packages you can install come from, installing one from the catalog or straight from a file, configuring it so it starts running, reading what each extension card tells you, and wiring up extensions that reach external services over the network.
+Extensions add capabilities to Rational AI: tools your agents can call, skills, channels, sources and workflows, and the complete use cases that [Marketplace](/operational-guides/marketplace) solutions install. Use this guide to install an extension from the catalog or from a file and configure it so it starts running. To keep an installed extension current, see [Update and roll back extensions](/operational-guides/extension-updates).
 
 :::note[What is an extension?]
-An extension is a bundle that adds capabilities to Rational AI. Many extensions provide one or more **MCP** servers; others are Marketplace solutions that set up a Knowledge base with its views and records, agents and BI dashboards. MCP (Model Context Protocol) is an open standard for connecting AI agents to external tools and data sources, so an MCP server is essentially a set of tools your agents can call.
-
-Two distinct steps put an extension to work. **Installing** a package adds it into your tenant. **Configuring** it is what actually starts it running. These steps are separate and explicit, so a package landing in your tenant never silently starts talking to anything.
+An extension is a package that adds capabilities to Rational AI. Many extensions provide one or more MCP servers. MCP (Model Context Protocol) is an open standard for connecting AI agents to tools and data, so an MCP server is a set of tools your agents can call. Other extensions are Marketplace solutions that set up a Knowledge with its views and records, agents and BI dashboards.
 :::
 
-:::note[Keeping an extension current]
-Once an extension is installed, [Update and roll back extensions](/operational-guides/extension-updates) covers keeping it current.
-:::
+Installing an extension and configuring it are separate steps. An installed extension starts running only once it is configured.
 
 ## Where extensions come from
 
-Your tenant doesn't resolve extensions from a single registry. It resolves them from several **sources**, much the way a Linux system resolves packages from several apt sources:
-
-- **The platform catalog**: the releases Rational AI publishes. Every tenant sees the same catalog.
-- **Your local packages**: anything you installed from a file, by drag-and-drop or through the API. This is your own tenant's shelf, the `dpkg -i` equivalent, and nobody else sees it.
-- **Remote sources**: third-party registries that can be attached for your organization. Whether any are attached, and which, is set up for you; from your side they contribute more packages to browse.
-
-Whatever the source, a **release** is one immutable combination of publisher, name, and version. Your installation points at exactly one release at a time.
-
-:::note[When the catalog and your own packages overlap]
-You can upload your own package of an extension the platform catalog also publishes (a patched build of something standard, for instance). There's no conflict to resolve up front, because overlap is settled **per version**:
-
-- For a version both offer, the **catalog's copy wins** the listing. Your copy stays resolvable and resurfaces if the shared release is ever withdrawn.
-- A version **only you** have is always listed, right alongside the catalog's versions.
-
-Packages you upload are attributed to your own tenant publisher automatically, so an overlap only happens when a manifest deliberately names a shared publisher.
-:::
+- **Rational AI catalogue**: the releases Rational AI publishes, the same for every workspace.
+- **Local**: packages you installed from a file. Only your workspace sees them.
+- **Remote sources**: third-party registries Rational AI can attach for your organization. Their packages appear alongside the others.
 
 ## Prerequisites
 
 Before you start, make sure you have:
 
 - **Administrative access:** an account with extension management privileges.
-- **The extension package (only if you're installing your own):** a `.tar.bz2`, `.zip`, `.mcpb` file, or a bare `manifest.json`. The format is detected automatically.
+- **The extension package (only if you're installing your own):** a `.tar.bz2`, `.zip` or `.mcpb` file, or a bare `manifest.json`.
 - **Any required configuration values:** for remote MCP servers reached over the network, the endpoint URL plus whatever authentication token or header the server expects.
 
 ## Read an extension card
 
-Every extension appears as a card in the **Installed** view of the **Extensions** page, and the card is your at-a-glance status check before you open anything. When an extension declares a version in its manifest, the version appears next to the extension name. The card also shows **Configuration needed** when the extension's server still needs parameters, **Update available** or **Review required** when a newer release exists, and a switch to turn the extension on or off.
+Every installed extension appears as a card in the **Installed** view of the **Extensions** page. The card shows the extension's version next to its name, and **Configuration needed** when the extension's server still needs parameters, **Update available** or **Review required** when a newer release exists, and a switch to turn the extension on or off.
 
 ## Install an extension from the catalog
 
 1. Go to **Settings** → **Extensions** and select **Install**.
-2. Browse the available extensions. Each is marked **Rational AI catalogue** or **Local** (a package uploaded to your tenant).
+2. Browse the available extensions. Each is marked **Rational AI catalogue** or **Local** (a package uploaded to your workspace).
 3. Select the extension you want, then **Configure extension**.
 4. If the extension runs an MCP server, fill in the **Set default configuration** form: API keys, connection strings, endpoints. Required values must be filled before you can continue.
 5. Select **Install extension**. The extension starts with the values you entered.
 
 An extension with no server to configure installs as soon as you select **Configure extension**.
 
-:::note[Already-installed extensions stay visible]
-Extensions you've already installed remain in the list, shown **disabled** with an **Already installed** tag. You can see what's in place at a glance, but you can't re-select or double-install it.
-:::
+Extensions you've already installed stay in the list with an **Already installed** tag, and can't be selected again.
 
 ## Install a package from a file
 
-Do this when you have a package of your own: something you built, or a build someone sent you. It becomes one of your tenant's **local packages**: installed for you, invisible to everyone else.
+Install from a file when you have a package of your own. It becomes a **Local** package that only your workspace sees.
 
 1. Go to **Settings** → **Extensions**.
 2. Select **Add private extension** and choose the file, or drag the package onto the page. While you drag, the page shows *"Drop to install an extension"*.
 
 You can also drop a package onto the list inside the **Install** dialog. The package is added and selected for you, ready to configure and install.
 
-:::note[Accepted files and conflicts]
-Accepted formats are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`; the format is detected automatically. Dropping anything else shows a warning toast and uploads nothing. Releases are immutable: use a new version for changed package contents. Installing a package again can reuse the existing release for the same publisher, name identifier and version; it does not replace its bytes. Uploading a duplicate through the version-creation API is refused.
-:::
+Dropping a file in any other format shows a warning and uploads nothing. To change a package's contents, give it a new version number: installing the same version again reuses the release already installed.
 
-Only an installation explicitly placed in development mode accepts file edits.
+## Edit an installed extension's files
+
+Selecting **Enable development mode** on an installed extension lets someone edit its files. Updates to that extension pause until development mode is turned off.
 
 ## Configure an extension so it starts running
 
-A package you install from a file is installed without any configuration. If it needs values you haven't supplied, it lands installed but not running, and its card shows **Configuration needed**. That's a valid resting state, not a failure: you can install now and set it up when you have the credentials.
-
-Saving the extension's first MCP-server configuration starts the server, discovers the tools it serves, and enables the extension, in one step.
+A package you install from a file is installed without any configuration. If it needs values, it stays installed but not running, and its card shows **Configuration needed**, so you can install it now and configure it when you have the credentials. Saving the first configuration starts the extension and lists its tools.
 
 1. Open the extension on **Settings** → **Extensions**.
 2. Open **Settings** from its options menu and fill in what the extension asks for: API keys, connection strings, endpoints.
 3. Save. The extension comes up enabled, and its tools appear.
 
-An extension whose parameters all carry defaults has nothing left to resolve, so it comes up configured and enabled the moment you install it, with no extra step.
+An extension whose parameters all have defaults starts as soon as you install it.
 
-:::note[Invalid configuration is rejected, not swallowed]
-If you save a configuration that's missing a required value, the save is refused with a clear validation error and the extension stays disabled and unconfigured. Nothing half-starts, and you can correct the value and save again.
-:::
+If a required value is missing, the save is refused and the extension stays disabled until you correct it and save again.
 
 An extension can hold **more than one** configuration of the same server (a second set of credentials, a second endpoint), and each discovers its own tools. The first configuration is the default one and can't be deleted while the extension is installed; deleting any of the extras leaves the extension enabled on the default.
 
 ## Pick a connector instead of typing a credential
 
-Some extensions don't ask you to paste an API key. Their manifest asks for a **connector** of a given type instead: a credential you already saved once in **Settings** → **Connectors** (see [Configure connectors](/operational-guides/configure-connectors)). The same key can then serve several extensions and configurations, and you rotate it in one place.
+Some extensions don't ask you to paste an API key. Their manifest asks for a **connector** of a given type instead: a credential you already saved once in **Settings** → **Connectors** (see [Configure connectors](/operational-guides/configure-connectors)). One connector can serve several extensions, and you rotate the key in one place.
 
 1. Create the connector in **Settings** → **Connectors**, if you haven't already.
 2. Open the extension's configuration on **Settings** → **Extensions**. Each connector parameter is a drop-down that lists only the connectors of the type the extension needs.
@@ -107,17 +84,15 @@ Some extensions don't ask you to paste an API key. Their manifest asks for a **c
 
 You make the same choice when you add or edit an MCP server configuration from a touchpoint's **Tools** tab: the connector field opens a searchable list. If it shows *"No connectors available"*, no connector of the required type exists yet; create one in **Settings** → **Connectors** and open the dialog again.
 
-:::note[Some connectors are filled in for you]
-An extension that needs to call Rational AI itself, such as the solutions installed from the [Marketplace](/operational-guides/marketplace), asks for the built-in Rational AI connector in a hidden field. The platform fills it in when the extension is first configured, so you never see that field.
-:::
+Extensions that call Rational AI itself, such as [Marketplace](/operational-guides/marketplace) solutions, get the built-in Rational AI connector filled in for them.
 
 ## Configure remote (HTTP) MCP servers
 
-Many extensions connect to MCP servers running on your own machine, spawned as a local process. Others reach servers across the network over HTTP, and a single extension can bundle both kinds. Remote servers are the ones that need a little setup, because Rational AI has to know where they live and how to authenticate.
+Some MCP servers run inside Rational AI (**Local**), others are reached over the network (**Remote**), and one extension can have both. A remote server needs its endpoint URL and, usually, an authentication value.
 
 ### Tell local and remote servers apart
 
-Open the extension's **details** page and find the **MCP servers** section. Each server is labeled: a remote server shows a **Remote** chip alongside its endpoint URL, while a local one shows a **Local** chip. The same view also lists the tools the extension provides, so you can see at a glance what your agents will be able to call.
+Open the extension's **details** page and find the **MCP servers** section. A remote server shows a **Remote** chip and its endpoint URL; a local one shows a **Local** chip. The same view lists the tools the extension provides.
 
 <img
   src={require('@site/static/img/screens/extension-mcp-tools.png').default}
@@ -128,13 +103,13 @@ Open the extension's **details** page and find the **MCP servers** section. Each
 
 ### Add authentication for a remote server
 
-For a remote server that requires authentication, enter the token or header value in the extension-configuration form. That value comes from your configuration and is never written into the manifest, so credentials stay out of the shared bundle. Headers that resolve to empty are dropped automatically, which means a public, no-auth server is never sent a blank header.
+For a remote server that requires authentication, enter the token in the extension's configuration form. The token is stored in your configuration, not in the package.
 
 :::note[Ready-made remote extensions]
-Rational AI ships ready-to-use remote MCP manifests for many popular connectors, including GitHub, Linear, Atlassian, monday, Airtable, Supabase, Snowflake, Sentry, PagerDuty, and Shopify. Each one only needs an endpoint URL and an authentication header from your configuration. There's also a generic **remote-mcp** extension for connecting any other remote MCP server: supply its URL and, if needed, an `Authorization` header.
+The catalog includes remote extensions for services such as GitHub, Linear, Atlassian, Snowflake and Sentry. Each needs only an endpoint URL and an authentication value. To connect any other remote MCP server, use the generic **remote-mcp** extension.
 :::
 
-## Related
+## Next steps
 
 - [Update and roll back extensions](/operational-guides/extension-updates): update policies, compatibility, and recovering from a bad update.
 - [Browse agent tools](/operational-guides/manage-tools): the catalog of tools your installed extensions provide.

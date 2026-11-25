@@ -59,12 +59,12 @@ Each self-hosted model has **Deploy settings**, read when it is deployed: what h
 
 - **Context Length**: the most tokens the model processes in one request. A longer context needs more memory.
 - **The number of GPUs**: listed first where the platform has GPUs. `0` runs the model on the CPU, much more slowly.
-- **The runner's settings**: such as the GPU memory budget, the tool-call and reasoning parsers, extra runner arguments and environment variables. The form lists the ones your hosting platform supports, with the rarely needed ones under **Advanced settings**.
+- **The runner's settings**: such as the GPU memory budget and the tool-call and reasoning parsers. The form lists the ones your hosting platform supports, with the rarely needed ones under **Advanced settings**.
 
-Each field shows **Default:** and the value this model gets when you leave it alone. Choose **Custom** to set your own value, or, for a flag, **Don't pass** to leave it out entirely. Defaults follow the model: on-premises, a model deploys the way its published vLLM recipe launches it on your hardware. Environment variables whose name looks like a secret (a token, key or password) show as *"Set (hidden)"* once saved.
+Each field shows **Default:** and the value this model gets when you leave it alone. Choose **Custom** to set your own value, or, for a flag, **Don't pass** to leave it out entirely. Defaults are chosen for each model and your hardware.
 
 :::note[Saved settings do not reach a running model on their own]
-Saving the deploy settings changes what *should* run, not what runs. The deployment shows **Settings not deployed** and lists the fields that changed until you deploy them, and when the model is running you are asked right after saving whether to deploy them now. This way nobody changes a model in production by editing a form.
+Saving the deploy settings changes what *should* run, not what runs. The deployment shows **Settings not deployed** and lists the fields that changed until you deploy them, and when the model is running you are asked right after saving whether to deploy them now.
 :::
 
 ## Deploy a model
@@ -142,19 +142,7 @@ A disabled model refuses every request at once, disappears from model pickers, s
 A model with billing history cannot be deleted, because that history stays attached to it. Disabling it keeps the records and stops its use.
 :::
 
-## Decide what each model call stores
-
-Every request through a model is logged in the [audit trail](/operational-guides/audit-trail). **Payload tracing** decides whether the content of those requests is stored too.
-
-1. Open the model and scroll to **Payload tracing**.
-2. For **Request payloads** (what was sent) and **Response payloads** (what the model answered), choose **Never**, **Only when the request fails**, **Only when the request succeeds** or **Always**.
-
-The choice is saved at once. Stored content is kept for the period set in [Data retention](/operational-guides/data-retention). When an audit entry says a payload was not recorded, it links to this section of the model.
-
-:::warning[Payloads can contain personal data]
-Prompts and answers carry whatever people typed and whatever documents were sent. Store them only as long as you need them to investigate problems, and prefer **Only when the request fails** over **Always**.
-:::
-
 ## Next steps
 
 * [Manage AI models in the registry](/operational-guides/ai-model-registry-features): capabilities, default models and approval.
+* [Set how long data is kept](/operational-guides/data-retention): decide whether each model stores prompts and answers, and for how long.

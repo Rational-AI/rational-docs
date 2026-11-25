@@ -1,41 +1,49 @@
 ---
 sidebar_position: 8
-sidebar_label: Export a Knowledge base
+sidebar_label: Export and import a Knowledge
 type: how-to
 audience: [builder]
 ---
 
-# Export a Knowledge base
+# Export and import a Knowledge
 
-You can export a Knowledge to a `.zip` archive that bundles its resources and configuration. This guide shows how to export a Knowledge from its detail page in **Settings** → **Knowledge**.
+Export a Knowledge to a `.zip` archive with its resources and configuration, then import the archive to recreate the Knowledge somewhere else. Use it to move a Knowledge from a test environment to production, to keep a backup, or to hand a ready-made Knowledge to another workspace.
 
-:::note[When to export]
-Exporting serializes a Knowledge into a single downloadable archive. Use it to move a Knowledge between environments (for example staging → production), to keep a backup, or to share a curated Knowledge with another tenant. To bring the archive back into Rational AI, see [Import a Knowledge](/operational-guides/import-knowledge).
-:::
+To bring spreadsheet rows into an existing Knowledge as records, see [Import records from Excel or CSV](/operational-guides/import-knowledge) instead.
 
 ## Prerequisites
 
-Before you start, make sure you have:
+- To export: **List** and **Read** on the **Knowledge** row of your role.
+- To import: **Create** on the **Knowledge** row. Without it, the **New** menu that holds **Import knowledge** doesn't appear.
 
-- **Read access to the Knowledge:** **List** and **Read** on the **Knowledge** row of your role are enough to find the Knowledge and use **Export**. See [Manage roles and users](/operational-guides/roles-and-users).
-- **An existing Knowledge:** the Knowledge you want to export must already exist (see [Create a Knowledge](/operational-guides/create-knowledge)).
+See [Manage roles and users](/operational-guides/roles-and-users).
 
 ## Export a Knowledge
 
 1. Go to **Settings** → **Knowledge** and open the Knowledge you want to export.
-2. Open the **kebab menu** (the three-dots icon) on the detail page.
-3. Select **Export**.
+2. Open the **⋮** menu beside the Knowledge's name and select **Export**.
 
-Rational AI queues an export job that serializes the Knowledge into a `.zip` archive on the server.
+While Rational AI prepares the archive, a toast reads *"Preparing export, the download will start automatically when it's ready…"*. Keep the page open: the archive downloads by itself and the **Export downloaded** toast appears. If the export fails, or takes longer than the 2 minutes the page waits, the **Error while exporting knowledge** toast appears instead.
 
-:::note[Export runs in the background]
-The export is an asynchronous job. Rational AI prepares the archive, checks the job until it is ready, and then downloads it automatically. You don't need to refresh the page or trigger the download yourself.
-:::
+## Import a Knowledge
 
-## Follow the export
+1. Go to **Settings** → **Knowledge**, or open the **Knowledge** tab. Both have the same **New** menu, also on an empty page.
+2. Select **New** → **Import knowledge**.
+3. Choose the `.zip` archive from your computer.
 
-A progress toast (*"Preparing export, the download will start automatically when it's ready…"*) appears while the job runs. As soon as the archive is ready it downloads automatically and the **Export downloaded** toast appears. If the job fails, or takes longer than the 2 minutes the page waits, the **Error while exporting knowledge** toast appears instead.
+When the import finishes, the **Knowledge imported** toast appears and Rational AI opens the new Knowledge's settings. If the archive is invalid or the upload fails, the **Error while importing knowledge** toast appears instead.
+
+<img
+  src={require('@site/static/img/screens/knowledge-settings.png').default}
+  alt="The Knowledge settings page, with the list of Knowledges on the left and the New menu used to import an archive"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+## Check the imported Knowledge
+
+The imported Knowledge keeps the resources and configuration captured in the archive, including its default view. Before you put it to use, review its **AI Search** and **Sources** settings and its touchpoint: values such as AI models can differ from one environment to another.
 
 ## Next steps
 
-- Bring the archive into another environment with [Import a Knowledge](/operational-guides/import-knowledge).
+- [Create a Knowledge](/operational-guides/create-knowledge)
+- [Configure Graph RAG](/operational-guides/configure-rag)

@@ -7,7 +7,7 @@ audience: [admin, builder]
 
 # Configure data sources
 
-A data source is where Rational AI goes to fetch content. Once you attach one to a [Knowledge](/operational-guides/create-knowledge) (the searchable collection of documents your AI answers from), a touchpoint or a Rational BI project, Rational AI can pull that content in and keep it up to date.
+A source defines which external files Rational AI syncs, and when. You attach it to a [Knowledge](/operational-guides/create-knowledge), a touchpoint, or a Rational BI project, and each Knowledge then processes the synced files in its own step. Some source types are built in, such as **HTTP**; others come from installed [extensions](/operational-guides/manage-extensions). To connect and sync a service end to end, see [Integrate external data](/operational-guides/integrate-data).
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
@@ -17,15 +17,7 @@ A data source is where Rational AI goes to fetch content. Once you attach one to
 
 *The **Sources** page. Sources give your AI access to external data such as cloud storage, databases and APIs.*
 
-This guide covers how a source decides when to sync, including the **Automatic** mode that syncs only when something changed, and the source types that need their own setup: extension-contributed sources such as **ArXiv Catchup**, the built-in **HTTP** source, a **RabbitMQ** queue, and the `robots.txt` behavior of the **Fetch** extension.
-
-:::note[What is a data source?]
-A data source defines where Rational AI pulls files from, and when. The source syncs on its own schedule; each Knowledge it is attached to then processes the synced files in a separate step, with its own **Data processing log**. Some sources are built in (such as HTTP). Others come from extensions: add-on packages that plug new capabilities into Rational AI. Installing an extension that declares a source provider makes a new source type available, each with its own configuration form. To connect and sync an external system end to end, see [Integrate data](/operational-guides/integrate-data).
-:::
-
 ## Prerequisites
-
-Before you start, make sure you have:
 
 - **The Knowledge module in your license:** **Sources** sits in the Knowledge section of **Settings** and is hidden without it.
 - **Rights on sources:** **Create**, **Update** or **Delete** on the **Sources** row of your role, for the changes you want to make. See [Manage roles and users](/operational-guides/roles-and-users).
@@ -33,8 +25,6 @@ Before you start, make sure you have:
 - **The relevant extension installed** when configuring an extension-contributed source (see **Settings** → **Extensions**).
 
 ## Choose when a source syncs
-
-A source that syncs too rarely leaves your AI answering from stale files; one that syncs too often re-reads data that hasn't changed. The sync mode sets the balance.
 
 1. Go to **Settings** → **Sources** and select the source.
 2. Open the **⋮** menu and select **Sync settings**.
@@ -54,13 +44,9 @@ A source that syncs too rarely leaves your AI answering from stale files; one th
 
 ### What happens when a sync keeps failing
 
-If a source's credentials are revoked or its server is down, a schedule would hit the same error over and over. Instead, after a failed sync, scheduled syncs wait before trying again: 2 minutes after the first failure, then twice as long after each new failure in a row, up to one hour. The first successful sync resets the wait.
+After a failed sync, scheduled syncs wait longer before each new try, up to one hour, until a sync succeeds. **Sync now** always runs, so use it once you've fixed the problem, for example after re-authenticating the [connector](/operational-guides/configure-connectors).
 
-**Sync now** always runs, whatever the wait. Use it once you have fixed the problem, for example after re-authenticating the [connector](/operational-guides/configure-connectors). A **Periodic** schedule slower than the current wait isn't affected.
-
-:::note[Sync now and edits run a full sync]
-An automatic source remembers how far its last completed sync got, so the next one only looks at what changed. Selecting **Sync now**, or changing the source's type, connector, root, paths, or configuration, clears that memory and runs a full sync.
-:::
+**Sync now** and any change to the source's type, connector, paths, or configuration run a full sync. Otherwise an **Automatic** source looks only at what changed.
 
 ### Process a Knowledge whenever its source changes
 
@@ -68,7 +54,7 @@ A source brings files in; each Knowledge connected to it decides when to process
 
 ## Configure an extension-contributed source (ArXiv Catchup)
 
-Use this when the content you want comes from a system that an extension knows how to talk to, rather than a plain web address. **ArXiv Catchup** is the first example: it lists the PDFs to pull from a chosen arXiv category and downloads them on each sync.
+Extensions can add source types of their own. **ArXiv Catchup**, for example, downloads the PDFs of new papers in an arXiv category on each sync.
 
 ### Install the extension
 
@@ -86,32 +72,20 @@ Go to **Settings** → **Extensions** and install the **ArXiv Catchup** extensio
 
 To sync the source automatically, open its **⋮** menu, select **Sync settings**, and choose **Periodic** with a **Sync schedule** (for example **Every day**). Otherwise select **Sync now** whenever you want the latest papers.
 
-:::note[Why the paper limit matters]
-arXiv rate-limits bulk access. The max-papers limit (default `500`, at most `5000`) caps how many papers each sync downloads, so leave it in place unless you have a specific reason to raise it.
-:::
+arXiv limits bulk downloads, so keep **Max papers** (at most `5000`) as low as you can.
 
 ## Configure an HTTP source
 
 Use the **HTTP** source when your content lives at one or more web addresses you can point Rational AI straight at.
 
-### Add the URLs
-
 1. Go to **Settings** → **Sources** and select **Add**.
-2. In the **Type** dropdown, select **HTTP**. The HTTP type shows a globe icon alongside the other types.
-3. Enter at least one **Url**. Each must be a valid `http://` or `https://` address.
+2. In **Type**, select **HTTP**.
+3. Enter at least one **Url**, starting with `http://` or `https://`.
 4. Select **Add**.
-
-### How validation works
-
-**Add** stays disabled until you provide at least one non-empty URL, and stays disabled if any URL is not a valid `http://` or `https://` address. When an address is invalid, the error *"Enter a valid URL starting with http:// or https://"* appears under that field so you can fix it first.
 
 ## Process files announced on a RabbitMQ queue
 
 Use a **RabbitMQ** source when another system announces documents to process on a message queue and expects the results back on another queue. Each message points to one file: Rational AI downloads it into the Knowledge, processes it, and publishes the result.
-
-:::note[What is a message queue?]
-A message queue, such as RabbitMQ, lets two systems exchange messages without calling each other directly: one system puts a message on a queue, and the other takes it off when it is ready. Here, your system puts on the queue a JSON message carrying the URL of a document, and Rational AI answers on a result queue.
-:::
 
 ### Prerequisites
 
@@ -130,9 +104,9 @@ A message queue, such as RabbitMQ, lets two systems exchange messages without ca
 | **Result queue** | Where results are published, for example `pod-processed`. Leave it empty to publish nothing. |
 | **Result exchange (optional)** | Leave empty for the default exchange; otherwise the result queue is used as the routing key. |
 | **File URL field** | The field of the message that holds the file's URL, for example `url` or `pod.downloadUrl`. |
-| **Message ID field (optional)** | The field that identifies the message, for example `requestId`. Empty uses the AMQP message ID. |
-| **Files in flight** | How many files may wait for a result at once (default `16`). New messages are taken only while fewer files are waiting, so a backlog stays in RabbitMQ. |
-| **Delete each file once its result is published** | Tick it to remove the file from the Knowledge after its result is sent. |
+| **Message ID field (optional)** | The field that identifies the message, for example `requestId`. |
+| **Files in flight** | How many files may wait for a result at once (default `16`). |
+| **Delete each file once its result is published** | Select it to remove the file from the Knowledge after its result is sent. |
 
 4. Select **Add**.
 5. Attach the source to the Knowledge and select **Sync now** to start consuming the queue. **Stop sync** stops it.
@@ -143,23 +117,13 @@ A RabbitMQ source has no schedule: once you select **Sync now**, it keeps consum
 
 ### What the result message contains
 
-For each document, once it is processed or has failed, the source publishes to the result queue the original message, the status and any error, the file, the resource attributes extracted from it, and the timestamps. The message ID is sent as the AMQP correlation ID, so your system can match each result to its request. A message that can't become a document is answered with an error instead.
+For each document, once it's processed or has failed, the result queue receives the original message, the status and any error, the file, the attributes extracted from it, and the timestamps. Use the message ID to match each result to its request. Your system may receive the same result twice, so make it ignore duplicates.
 
-Delivery is *at least once* in both directions: a message is acknowledged only after its file is safely stored, and a result that the broker refuses is retried. Make your consumer ignore a result it has already seen.
+## Let the Fetch extension ignore robots.txt
 
-## Make the Fetch extension ignore robots.txt
-
-By default the **Fetch** extension respects `robots.txt` on every call. `robots.txt` is a file websites publish to tell automated crawlers which pages they may visit. Respecting it is usually the right thing, but it can cause a direct, user-initiated fetch (for example, an API endpoint that `robots.txt` disallows) to be refused as if it were crawler traffic. You can make this behavior configurable.
-
-1. Go to **Settings** → **Extensions** and open the **Fetch** extension configuration.
-2. Select the **Ignore robots.txt** checkbox.
-3. Save the configuration.
-
-:::note[Reinstall to pick up the setting]
-The extension's config schema is stored at install time, so an existing **Fetch** install must be reinstalled before the **Ignore robots.txt** checkbox appears. With the checkbox cleared (the default), `robots.txt` is respected; with it on, the previously blocked fetch succeeds.
-:::
+The **Fetch** extension respects `robots.txt` by default. To let it fetch pages a site's `robots.txt` disallows, select **Ignore robots.txt** in the extension's configuration under **Settings** → **Extensions**.
 
 ## Next steps
 
-- [Integrate external data](/operational-guides/integrate-data)
-- [Configure a connector](/operational-guides/configure-connectors)
+- [Integrate external data](/operational-guides/integrate-data): connect Google Drive and sync it into a Knowledge.
+- [Configure a connector](/operational-guides/configure-connectors): the credentials a source uses.

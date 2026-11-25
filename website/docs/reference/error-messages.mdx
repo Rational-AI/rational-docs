@@ -19,6 +19,7 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"We couldn't sign you in"* | The sign-in failed for another reason. The page shows an **Error code**. | Try again. If it persists, give the error code to your administrator. |
 | *"The image is too large"* | The profile picture is over 5 MB. | Pick a smaller image. See [Edit your profile](/operational-guides/manage-your-account#edit-your-profile). |
 | *"The file must be an image"* | The file picked as profile picture isn't an image. | Pick an image file. |
+| *"Your session expired. Sign in again to continue."* | Your sign-in expired. | Sign in again. |
 | *"Your password is managed by your organisation's identity provider."* | Your account signs in through your organization's identity provider, so its password can't be changed in Rational AI. | Change the password with your identity provider. See [Manage your own account](/operational-guides/manage-your-account). |
 
 ## Chat
@@ -43,7 +44,7 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"Generation stopped: the tool “…” ran out of time on every attempt."* | The tool never answered within its time limit. | Give the tool more time. See [Set how long a tool may take](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take). |
 | *"This assistant cannot answer: it has been blocked by an administrator."* | An administrator blocked this AI application. | Ask an administrator. See [Govern AI applications](/operational-guides/govern-ai-applications). |
 | *"This assistant cannot answer: its model has been disabled by an administrator."* | The touchpoint's model is disabled in the registry. | Ask an administrator to enable it, or to pick another model. See [Enable or disable a model](/operational-guides/model-deployments#enable-or-disable-a-model). |
-| *"This assistant cannot answer: its model has not been approved for use."* | The workspace accepts only approved models, and this one isn't. | Ask an administrator to approve it. See [AI Model Registry features](/operational-guides/ai-model-registry-features). |
+| *"This assistant cannot answer: its model has not been approved for use."* | The workspace accepts only approved models, and this one isn't. | Ask an administrator to approve it. See [Require approval before a model answers](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers). |
 | *"This assistant cannot answer: its model is no longer approved for use."* | The model's approval was withdrawn. | Ask an administrator to approve it again or change the model. |
 | *"The response could not be completed."* | The answer failed for another reason. | Turn on **Advanced mode** to see the error, then regenerate. |
 | *"This conversation is as long as the assistant can follow."* | The touchpoint stops long chats instead of summarizing them. | Select **New conversation**. See [Keep going in a long conversation](/operational-guides/chat-experience#keep-going-in-a-long-conversation). |
@@ -65,7 +66,7 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"A collection with this name already exists"* | Collection names are unique in a Knowledge. | Pick another name. |
 | *"Another attribute already has this name"* | Attribute names are unique in a Knowledge. | Pick another name. |
 | *"You have already pinned 5 views: unpin one to pin another"* | A Knowledge pins at most five views. | Unpin a view first. |
-| *"Error while exporting knowledge"* | The export failed, or took longer than the two minutes the page waits. | Try again later. See [Export a Knowledge](/operational-guides/export-knowledge). |
+| *"Error while exporting knowledge"* | The export failed, or took longer than the two minutes the page waits. | Try again later. See [Export and import a Knowledge](/operational-guides/export-knowledge). |
 
 ## Embed widget
 
@@ -84,7 +85,12 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"Could not stop the sync"* | The running sync didn't stop. | Try again. |
 | *"Error while connecting the channel"* | The messaging service refused the channel's credentials. | Check the credentials. See [Microsoft Teams](/operational-guides/connect-teams#troubleshooting) or [Slack](/operational-guides/connect-slack#troubleshooting). |
 | *"Error while sending the test message"* | The test message didn't reach the channel. | Check that the channel shows **Connected** and its credentials are valid. See [Manage channels](/operational-guides/manage-channels). |
-| *"The workflow "…" is disabled and cannot be run. Enable it from the workflow settings to use it again."* | A run was requested for a disabled step. | Enable it in **Settings** → **Workflows**. See [Create a workflow](/operational-guides/create-workflow). |
+
+## Workflows
+
+| Message | What it means | What to do |
+|---|---|---|
+| *"The workflow "…" is disabled and cannot be run. Enable it from the workflow settings to use it again."* | A run was requested for a disabled workflow. | Enable it in **Settings** → **Workflows**. |
 
 ## Agents
 
@@ -101,8 +107,6 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"A task holds at most 30 files."* | The task already has 30 attachments. | Remove one first. |
 | *"Pick between 1 and 20 agents."* | A chat has 1 to 20 agents. | Change the selection. See [Chat with agents](/operational-guides/agent-chats). |
 | *"This link has expired or is no longer valid. Open the run in the app to decide."* | An approval link from an email is older than 24 hours, or the approval was already decided. | Open the run in **Agents** and decide there. |
-| *"Computer environments are not enabled on this server. Contact your administrator to configure the service."* | The installation has no computer service. | Ask your administrator. See [Agent computers](/operational-guides/agent-computers#troubleshooting). |
-| *"Computer service was not found. Ask your administrator to check this deployment."* | The computer service is down or not configured. | Ask your administrator, then select **Retry connection**. |
 | *"The Computer service did not respond in time."* | A computer is starting or under load. | Select **Retry connection** after a few seconds. |
 | *"You do not have permission to perform this action."* | Your role lacks the right for this action in Agents. | Ask an administrator for the right. See [Manage roles and users](/operational-guides/roles-and-users). |
 | *"Enter an amount above zero, or leave it empty for no limit."* | The agent's monthly budget is zero or negative. | Enter a positive amount, or clear the field. |
@@ -115,8 +119,8 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"This model has billing history, which stays associated with it, so it cannot be deleted. Disable it instead."* | Models with recorded costs can't be deleted. | Disable the model. |
 | *"This workspace's plan does not include hosting your own models on our GPUs."* | The plan has no hosted GPUs. | Use a connected provider, or contact Rational AI. See [Model deployments](/operational-guides/model-deployments). |
 | *"'…' is not deployed."* | The model has no running deployment. | Deploy or resume it. See [Stop, resume or warm up a model](/operational-guides/model-deployments#stop-resume-or-warm-up-a-model). |
-| *"'…' is warming up; retry shortly."* | The model was idle and is starting. Requests wait up to 120 seconds. | Retry after the time in the `Retry-After` header. Raise **Minimum replicas** to avoid the wait. |
-| *"'…' has not been approved, and this workspace only uses approved models."* | The workspace requires approval, and this model has none. | Ask an administrator to approve it. |
+| *"'…' is warming up; retry shortly."* | The model was idle and is starting. Requests wait up to 120 seconds. | Retry after a short wait. Raise **Minimum replicas** to avoid the wait. |
+| *"'…' has not been approved, and this workspace only uses approved models."* | The workspace requires approval, and this model has none. | Ask an administrator to approve it. See [Require approval before a model answers](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers). |
 | *"The application '…' has been blocked by an administrator."* | An administrator blocked the calling application. | Ask an administrator. See [Govern AI applications](/operational-guides/govern-ai-applications). |
 | *"A touchpoint with this name already exists. Please try again."* | Touchpoint names are unique. | Pick another name. |
 
@@ -127,7 +131,6 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"Pinned. Change the update policy to install updates."* | The extension's update policy keeps it at its version. | Change the update policy. See [Extension updates](/operational-guides/extension-updates). |
 | *"Exit development mode before updating this extension."* | The extension is in development mode. | Exit development mode, then update. |
 | *"The extension is already up to date."* | No newer release exists. | Nothing to do. |
-| *"The manifest exceeds the 2 MiB metadata limit."* | `manifest.json` is over 2 MiB. | Move large content out of the manifest. |
 | *"You already asked for this solution today"* | One request per solution per day reaches the administrators. | Ask again tomorrow. See [Ask the admins to install a solution](/operational-guides/marketplace#ask-the-admins-to-install-a-solution). |
 
 ## Rational BI and Gen
@@ -140,7 +143,6 @@ Messages are quoted as the English interface shows them. A **…** stands for a 
 | *"This generation is taking longer than expected. Refresh its status to check again."* | The image wasn't ready after 20 minutes. | Refresh its status later. |
 | *"The model returned … image(s) of the … requested."* | The model produced fewer images than asked. | Try again or choose another model. |
 | *"Reference image exceeds the maximum size of 10 MB."* | A reference image is over 10 MB. | Use a smaller image. |
-| *"Your session expired. Sign in again to continue."* | Your sign-in expired. | Sign in again. |
 | *"Fix the pipeline's checks to save."* | A social template step breaks a rule of the pipeline. | Fix the flagged step. See [Create social templates](/operational-guides/social-studio#create-social-templates). |
 
 ## License and backups

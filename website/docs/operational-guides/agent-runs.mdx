@@ -7,7 +7,7 @@ audience: [builder]
 
 # Follow runs and approve actions
 
-Every piece of work an agent does is a **run**: it starts, works through the job step by step on the agent's computer, and ends *Done*, *Failed*, *Cancelled*, *Timed out* or, for an event that did not pass the trigger's filter, *Skipped*. The run page shows the whole thing as it happens (what the agent said, each tool it called and what came back), and it is where you answer when the agent reaches a tool it must not use without you.
+Every piece of work an agent does is a **run**: it starts, works through the job step by step on the agent's computer, and ends **Done**, **Failed**, **Cancelled**, **Timed out** or, for an event that did not pass the trigger's filter, **Skipped**. The run page shows the whole thing as it happens (what the agent said, each tool it called and what came back), and it is where you answer when the agent reaches a tool it must not use without you.
 
 This guide follows **Quinn** pricing request for quotation RFQ-2026-0153: Quinn computes the offer on its own, then stops before writing the offer file because `write` is under **Ask me first**.
 
@@ -40,10 +40,10 @@ The header shows the agent, the run status and how it was started, the model, wh
 
 When the agent saves documents during the run, **What it produced** lists them, each with its version and **Open**.
 
-**Show computer** opens the agent's computer next to the run. The footer carries the run ID, the workflow ID, when it was created and finished, and the model.
+**Show computer** opens the agent's computer next to the run.
 
 :::note[Agents check their own work]
-Before a run can end as *Completed*, the agent verifies that the outcome really exists: the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends *Failed* with *"Completion could not be verified after three continuation attempts"*, followed by the reason, and its task goes into *To review*: read the activity, adjust the task or the instructions, and retry.
+Before a run can end as **Done**, the agent verifies that the outcome really exists: the file is there, the numbers add up, the record was saved. The activity shows these checks as *Verification* steps. When the agent cannot prove the result after several attempts, the run ends **Failed** with *"Completion could not be verified after three continuation attempts"*, followed by the reason, and its task goes into *To review*: read the activity, adjust the task or the instructions, and retry.
 :::
 
 ## Approve what the agent wants to do
@@ -77,7 +77,7 @@ Anyone who can use the agent can answer the runs they started. Answering a run s
 ## Steer, stop or retry
 
 - **Message the agent**: while a run is going, the box at the bottom (*Steer or reply to the agent…*) sends a message the agent reads at its next step. Use it to add a detail, correct the direction, or answer a question. Only the person who started the run can message it.
-- **Stop**: ends the run. The agent's computer confirms the stop; the run ends *Cancelled* and its task goes into *To review*.
+- **Stop**: ends the run. The agent's computer confirms the stop; the run ends **Cancelled** and its task goes into *To review*.
 - **Retry**: for a run that failed, was canceled or timed out. It starts a new run with the same goal; the old one stays in the history.
 - **Profile**: opens the agent's profile.
 
@@ -99,7 +99,7 @@ Filter by outcome with the chips at the top (**All**, **Done**, **Failed**, **Ca
 | **Running** | Working. |
 | **To approve** | Waiting for an approval or an answer. |
 | **Retrying** | A step failed and is being tried again. |
-| **Done** / **Completed** | Finished with a verified result. |
+| **Done** | Finished with a verified result. |
 | **Failed** | Ended with an error, or without a verified result. |
 | **Cancelled** | Stopped by someone. |
 | **Timed out** | Ran out of time. |

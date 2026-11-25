@@ -75,11 +75,9 @@ const sidebars: SidebarsConfig = {
 				"export-knowledge",
 				"manage-knowledge-resources",
 				"annotate-resources",
-				"sqlite-resource-database",
 				"configure-rag",
 				"knowledge-custom-views",
 				"embed-knowledge",
-				"graphify-code-graph",
 			]),
 			folder("Data sources & connectors", [
 				"integrate-data",
@@ -109,10 +107,6 @@ const sidebars: SidebarsConfig = {
 				"agent-chats",
 				"agent-computers",
 				"agent-skills",
-			]),
-			folder("Workflows", [
-				"create-workflow",
-				"create-processing-rule",
 			]),
 			folder("Rational BI", ["rational-bi"]),
 			folder("Rational Gen", [
@@ -153,7 +147,6 @@ const sidebars: SidebarsConfig = {
 				"data-retention",
 				"audit-trail",
 				"erase-personal-data",
-				"generated-image-provenance",
 			]),
 		]),
 
@@ -165,6 +158,7 @@ const sidebars: SidebarsConfig = {
 
 		// Settings screens, limits and error messages
 		section("Reference", [
+			"reference/glossary",
 			"reference/limits",
 			"reference/error-messages",
 			{
