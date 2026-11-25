@@ -198,6 +198,12 @@
 	width: 100%;
 }
 
+/* The search plugin collapses its input to an icon-sized box on small screens;
+   in the hero it must always fill the pill, or the placeholder reads "Sea". */
+.homeSearch .navbar__search .navbar__search-input {
+	width: 100% !important;
+}
+
 .homeSearch .navbar__search-input {
 	width: 100%;
 	height: 100%;

@@ -1,7 +1,11 @@
 /* Rounded corners for all tables */
 table {
 	border-radius: 8px;
-	overflow: hidden; /* Ensures corners are respected */
+	/* Scroll inside the table on narrow screens (Infima renders tables as
+	   blocks), instead of hiding the overflow and widening the whole page.
+	   The rounded corners still clip because this is a scroll container. */
+	overflow-x: auto;
+	max-width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
 	width: fit-content;

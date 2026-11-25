@@ -11,3 +11,17 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top {
 html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	display: none;
 }
+
+/* Docusaurus moves the light/dark toggle into the mobile drawer; keep it in the
+   bar next to the search, where people look for it. */
+@media (max-width: 996px) {
+	.navbar__items--right [class*="colorModeToggle"] {
+		display: block;
+	}
+	/* The search plugin pins its button to the corner on small screens, on top
+	   of the toggle: put it back in the flow so the two sit side by side. */
+	.navbar__items--right [class*="navbarSearchContainer"] {
+		position: static;
+		margin-left: 0.5rem;
+	}
+}
