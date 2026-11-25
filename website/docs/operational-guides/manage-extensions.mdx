@@ -15,8 +15,8 @@ An extension is a bundle that adds capabilities to Rational AI. Many extensions 
 Two distinct steps put an extension to work. **Installing** a package adds it into your tenant. **Configuring** it is what actually starts it running. These steps are separate and explicit, so a package landing in your tenant never silently starts talking to anything.
 :::
 
-:::note[Looking to build your own?]
-This page covers managing and installing existing extensions. To create one from scratch, including its manifest, see [Build an extension](/operational-guides/build-an-extension). Once an extension is installed, [Update and roll back extensions](/operational-guides/extension-updates) covers keeping it current.
+:::note[Keeping an extension current]
+Once an extension is installed, [Update and roll back extensions](/operational-guides/extension-updates) covers keeping it current.
 :::
 
 ## Where extensions come from
@@ -77,9 +77,7 @@ You can also drop a package onto the list inside the **Install** dialog. The pac
 Accepted formats are `.tar.bz2`, `.zip`, `.mcpb`, or a bare `manifest.json`; the format is detected automatically. Dropping anything else shows a warning toast and uploads nothing. Releases are immutable: use a new version for changed package contents. Installing a package again can reuse the existing release for the same publisher, name identifier and version; it does not replace its bytes. Uploading a duplicate through the version-creation API is refused.
 :::
 
-For development without publishing a release on every save, see
-[Develop an extension](/operational-guides/develop-an-extension). Only an
-installation explicitly placed in development mode accepts file edits.
+Only an installation explicitly placed in development mode accepts file edits.
 
 ## Configure an extension so it starts running
 
@@ -140,4 +138,3 @@ Rational AI ships ready-to-use remote MCP manifests for many popular connectors,
 
 - [Update and roll back extensions](/operational-guides/extension-updates): update policies, compatibility, and recovering from a bad update.
 - [Browse agent tools](/operational-guides/manage-tools): the catalog of tools your installed extensions provide.
-- [Build an extension](/operational-guides/build-an-extension): authoring a package and its manifest.

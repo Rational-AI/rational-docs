@@ -1,13 +1,13 @@
 ---
 sidebar_label: Quickstart for developers
-description: Get an API key, make your first call to the OpenAI-compatible gateway, use a touchpoint's tools from an MCP client, and find where to build an extension.
+description: Get an API key, make your first call to the OpenAI-compatible gateway, and use a touchpoint's tools from an MCP client.
 type: tutorial
 audience: [developer]
 ---
 
 # Quickstart for developers
 
-In 15 minutes you can call a Rational AI model from your own code, with the same OpenAI SDKs and tools you already use. This guide gets you a key, makes a first request, connects an MCP client to an assistant's tools, and points you to the guides for building extensions.
+In 15 minutes you can call a Rational AI model from your own code, with the same OpenAI SDKs and tools you already use. This guide gets you a key, makes a first request, and connects an MCP client to an assistant's tools.
 
 ## Prerequisites
 
@@ -79,16 +79,6 @@ Tools that need approval under the touchpoint's confirmation policy are marked a
 ## 4. Explore the Management API
 
 The workspace key also reaches the Management API under `/api/management/v0`, the same API the Control Room uses. Browse it in the Swagger UI at `/api/swagger/index.html` on your Control Room's address.
-
-For a worked example, [Deploy open-source models via API](/operational-guides/api/deploy-open-source-models) registers a model from Hugging Face, deploys it, and follows it until it is ready, all with `curl`.
-
-## 5. Build an extension
-
-An extension adds a capability to Rational AI without changing the platform: an MCP server whose tools assistants can call, a skill, a messaging channel, a source to sync Knowledge from, or a workflow step.
-
-- [Build an extension](/operational-guides/build-an-extension): the manifest, the kinds of provider, and how to package and install the result.
-- [Develop an extension](/operational-guides/develop-an-extension): edit the files of an installed extension through the API, the remote editor, or the Extensions CLI. Development mode needs an administrator account.
-- [Manage extensions](/operational-guides/manage-extensions): install a package and configure it so it starts running.
 
 ## Where to go next
 

@@ -31,6 +31,12 @@ const config: Config = {
 				redirects: [
 					{ from: "/operational-guides/agents", to: "/cr/Agents" },
 					{ from: "/operational-guides/install-and-update", to: "/operational-guides/on-premises-installation" },
+					{ from: "/operational-guides/build-an-extension", to: "/operational-guides/manage-extensions" },
+					{ from: "/operational-guides/develop-an-extension", to: "/operational-guides/manage-extensions" },
+					{ from: "/operational-guides/external-graphify-mcp", to: "/operational-guides/graphify-code-graph" },
+					{ from: "/operational-guides/api/deploy-open-source-models", to: "/operational-guides/model-deployments" },
+					{ from: "/operational-guides/personalize-user-details", to: "/operational-guides/conversations" },
+					{ from: "/operational-guides/workflow-rules", to: "/operational-guides/create-workflow" },
 				],
 			},
 		],
@@ -98,6 +104,20 @@ const config: Config = {
 					routeBasePath: "/", // Serve the docs at the site's root
 
 					sidebarPath: "./sidebars.ts",
+					// Hidden for now: too technical for the docs' current scope (what
+					// Rational AI does and how to use it). Remove a line to publish it again.
+					exclude: [
+						"**/_*.{js,jsx,ts,tsx,md,mdx}",
+						"**/_*/**",
+						"**/*.test.{js,jsx,ts,tsx}",
+						"**/__tests__/**",
+						"operational-guides/build-an-extension.mdx",
+						"operational-guides/develop-an-extension.mdx",
+						"operational-guides/external-graphify-mcp.mdx",
+						"operational-guides/api/deploy-open-source-models.mdx",
+						"operational-guides/personalize-user-details.mdx",
+						"operational-guides/workflow-rules.mdx",
+					],
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
 					editUrl:

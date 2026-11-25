@@ -46,8 +46,7 @@ automatic updates are skipped, and a manual update or an uninstall is refused
 until you leave development. Its saved update policy is unchanged. Leaving development blocks file edits and
 resumes that policy. The current files remain until a normal update or reinstall
 replaces them; there is no separate draft history. Download important changes
-before leaving development if an automatic update could overwrite them. See
-[Develop an extension](/operational-guides/develop-an-extension).
+before leaving development if an automatic update could overwrite them.
 
 ## How compatibility is decided
 
@@ -148,7 +147,7 @@ rationalai-cli repair reinstall-extension --tenant TENANT_SLUG --extension NAME_
 You must give exactly one tenant option and exactly one extension option, so a repair never covers more than you meant. For each matching installation, the command clears its directory and unpacks its current release again. It changes nothing in the database or in the extension registry: the version, configurations, tools and touchpoint bindings stay as they are. Anything it could not repair, such as an extension with no current release recorded, is listed at the end under *"WARNING: the repair could not fix everything"*.
 
 :::warning[A repair overwrites development edits]
-The command restores the release's files whether or not the installation is in [development mode](/operational-guides/develop-an-extension). Download or commit any files you edited in development before you run it.
+The command restores the release's files whether or not the installation is in development mode. Download or commit any files you edited in development before you run it.
 :::
 
 ## Withdrawn releases
@@ -179,5 +178,4 @@ Uninstalling removes the extension's runtime: the installation itself, its MCP s
 - [Manage extensions](/operational-guides/manage-extensions): installing extensions and where they come from.
 - [Browse agent tools](/operational-guides/manage-tools): the catalog of tools extensions provide.
 - [Configure touchpoints](/operational-guides/configure-touchpoints): granting tools to a specific agent.
-- [Build an extension](/operational-guides/build-an-extension): authoring a package and its manifest.
 - [Install solutions from the Marketplace](/operational-guides/marketplace): updating, restoring and resetting an installed solution.
