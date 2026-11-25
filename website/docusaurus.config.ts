@@ -30,7 +30,10 @@ const config: Config = {
 			{
 				redirects: [
 					{ from: "/operational-guides/agents", to: "/cr/Agents" },
-					{ from: "/operational-guides/install-and-update", to: "/operational-guides/on-premises-installation" },
+					{
+						from: "/operational-guides/install-and-update",
+						to: "/operational-guides/on-premises-installation",
+					},
 				],
 			},
 		],
