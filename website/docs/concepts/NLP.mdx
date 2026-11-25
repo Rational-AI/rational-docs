@@ -1,52 +1,22 @@
 ---
 sidebar_position: 15
-sidebar_label: Natural Language Processing
+sidebar_label: Natural language processing
+title: Natural language processing (NLP)
+description: What natural language processing is, how a computer turns text into something it can work with, and where it shows up in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
-
 # Natural language processing (NLP)
-Natural Language Processing (NLP) is a field of artificial intelligence that focuses on enabling computers to 
-understand, interpret, generate, and interact with human language, in both written and spoken form. 
-It bridges the gap between human communication and machine processing.
 
-Its objective is to:
-* understand the meaning and intent of text;
-* extract relevant information;
-* generate coherent and context-aware responses;
-* and enable natural human-computer interaction.
+**Natural language processing (NLP)** is the field of AI that deals with human language: understanding it, translating it, summarizing it, and writing it.
 
-Unlike traditional rule-based language systems, modern NLP relies primarily on **statistical and deep learning models** 
-trained on large text corpora to learn linguistic patterns, semantics, and context.
+Early NLP systems followed hand-written rules and handled one language and one task at a time. Modern NLP learns patterns from very large amounts of text, so one model can handle many tasks in many languages. [Large language models](/concepts/LLMs) are the current result of that work.
 
-#### Comparative view  
-| Aspect            | Traditional NLP            | Modern NLP           |  
-|:------------------|:---------------------------|:---------------------|  
-| Approach          | Rule-based / feature based | Neural / data-driven |  
-| Flexibility       | Low                        | High                 |
-| Scalability       | Limited                    | High                 |
-| Language support  | Language-specific development        | Multilingual models  |
-| Adaptability      | Low                        | High                 |
+## How a computer reads text
 
-#### How does it work?
-NLP models process language by transforming text into **numerical representations** (embeddings) 
-that capture **semantic** and **syntactic relationships**.
+A model can't work with words directly. It first splits text into [tokens](/concepts/Tokens), then turns them into numbers that capture meaning, so that "invoice" and "bill" end up close together. Those numbers are called [embeddings](/concepts/Embeddings-chunks-and-annotations).
 
-These representations are then **used** by machine learning models **to perform language-related tasks** such as classification, 
-generation, or retrieval.
+## In Rational AI
 
-Modern NLP systems are primarily based on transformer architectures, which use self-attention mechanisms to model long-range dependencies in text.
-
----
-
-## Connects to
-
-<ConnectsTo
-	items={[
-		{ label: "Generative AI", to: "/concepts/Generative-AI" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
-	]}
-/>
+NLP is behind most of what Rational AI does with text. [Chat](/cr/Chats) answers questions in plain language, a [Knowledge](/concepts/Knowledge) finds the passage that matches a question even when it uses different words, and [Conversations](/cr/Conversations) labels conversations with their topics and sentiment.

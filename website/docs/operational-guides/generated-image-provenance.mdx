@@ -1,17 +1,30 @@
 ---
 sidebar_position: 33
 sidebar_label: Generated image provenance
+title: AI-generated image label
+description: The metadata label that marks images made in Gen as AI-generated, and what it does not prove.
 type: concept
 audience: [admin]
 ---
 
-# How generated images declare they were made by AI
+# AI-generated image label
 
-Every image generated in Gen, including the ones a chat creates through Gen, carries a standard metadata label saying a model made it, along with the model's name. The label is written into PNG and JPEG files when they are saved, so it stays with the file after a download, an export or an API response. Search engines and social platforms read this label when they tag content as AI-generated. Images in other formats are stored without it.
+Every PNG or JPEG image that Gen generates, including the ones a chat creates through Gen, carries a metadata label that says a model made it. There is nothing to turn on or configure.
 
-The label states what the file is; it does not prove that nobody changed the file since, and anyone can remove it. It is not a signed C2PA provenance record, so it does not meet a requirement that asks for C2PA specifically.
+## What the label contains
 
-## Next steps
+The label is an XMP metadata packet written into the file before it is stored. It holds two values:
 
-- [Generate images with Gen](/operational-guides/gen-images): where generated images come from.
-- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): document what a model may be used for.
+- The IPTC digital source type `trainedAlgorithmicMedia`, the standard value for media created by a trained model. Search engines and social platforms read it when they tag content as AI-generated.
+- The identifier of the model that made the image, as the creator tool, when it is known.
+
+Because the label is inside the file, it stays with the image after a download, an export, or an API response. To check a file, open its metadata with a tool that reads XMP, such as ExifTool, and look for the digital source type. Images in other formats are stored without the label.
+
+## What the label does not prove
+
+The label states what the file is. It isn't signed, so it doesn't prove that nobody changed the file since, and anyone can remove it. It isn't a C2PA provenance record either, so it doesn't meet a requirement that asks for C2PA specifically.
+
+## Learn more
+
+- [Generate images with Gen](/operational-guides/gen-images)
+- [Manage AI models in the registry](/operational-guides/ai-model-registry-features)
