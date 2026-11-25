@@ -206,3 +206,12 @@ html[data-theme="light"] {
 .footer__bottom .margin-bottom--sm {
 	margin: 0 !important;
 }
+
+/* Footer on narrow screens: two columns (2 + 2) instead of one long stack */
+@media (max-width: 996px) {
+	.footer__links .footer__col {
+		flex: 0 0 50%;
+		max-width: 50%;
+		margin-bottom: 1.5rem;
+	}
+}
