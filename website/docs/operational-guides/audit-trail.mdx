@@ -7,85 +7,44 @@ audience: [admin]
 
 # Review the audit trail
 
-**Settings** → **Audit trail** answers the question an access review actually asks: *who opened this?* It records reads as well as changes, it cannot be edited once written, and it's the surface you bring to anyone auditing who reached what.
+**Settings** → **Audit trail** records who read or changed a record in Rational AI, such as who opened a conversation or who deleted a user. Entries can't be edited once written.
 
-:::warning[Audit trail is not the governance audit log]
-Two different things carry similar names. Keep them apart:
-
-- **Settings** → **Audit trail** (this page): one row per **access or change to a record**, such as who opened a conversation, who deleted a user, who changed a dashboard. It's about *people reaching data*.
-- **Governance** → **Audit log** ([Monitor usage and cost](/operational-guides/governance)): one row per **model request**, recording which model, how many tokens, what it cost, how fast. It's about *the AI doing work*.
-
-If the question is "who looked at this?", you want this page. If it's "what did the model do and what did it cost?", you want Governance.
-:::
+The audit trail is not the [Governance](/operational-guides/governance) **Audit log**, which has one row per model request with its model, tokens and cost.
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
-- **Administrative access:** the trail is admin-only, and deliberately so, because it records who reached what, which is itself sensitive.
+- **Administrative access:** the audit trail is restricted to administrators.
 
 ## Read the trail
 
-Go to **Settings** → **Audit trail**. Each entry carries five things:
+Go to **Settings** → **Audit trail**. Each entry shows:
 
 - **When** the action happened.
-- **Who** did it. An entry with no actor reads **System**. That means background work, not missing data.
-- **Action**: what was done. **Read** is a first-class action here, which is the whole point. It's the one nothing else in the platform records.
+- **Who** did it. An entry with no person reads **System**, for background work. The name is kept as it was, so it stays correct after the user is deleted.
+- **Action**: what was done.
 - **Resource**: what was acted on.
-- **Detail**: a one-line summary of the entry.
+- **Detail**: a one-line summary.
 
-The table is paged and sortable, **newest first** by default, because the question that brings anyone here is almost always what happened most recently. Filter by action to narrow it: **Read**, **Created**, **Updated**, **Deleted**, **Started**, **Cancelled**, **Approved**, or **Rejected**. Changing the filter resets you to the first page rather than stranding you on page four of two.
+The list shows the newest entries first. To narrow it, filter by action: **Read**, **Created**, **Updated**, **Deleted**, **Started**, **Cancelled**, **Approved**, or **Rejected**. Deletions are highlighted in color.
 
-:::note[Only deletions are colored]
-Reads are the bulk of the trail, so colouring them would turn the column into decoration. The color is reserved for the destructive action, which keeps it meaning something when you scan the page.
-:::
+A **Read** entry is written only when the access was allowed, so refused attempts don't appear as reads. Nothing in the product deletes audit entries: [data retention](/operational-guides/data-retention) periods don't apply to them.
 
-## Why entries can be trusted
+## What is recorded
 
-Entries are **append-only, enforced by the database itself**: an attempt to update a row is rejected outright, not merely disallowed by the application. That distinction is the point: a trail the application can rewrite is a log, not evidence, and *"we only ever insert"* is a claim a reviewer would otherwise have to take on faith.
+- **Reading a conversation.**
+- **Deleting a user**, including a user deleting their own account.
+- **Erasing a person's data**, recorded before anything is erased. See [Erase a person's data](/operational-guides/erase-personal-data).
+- **Governance decisions**: registering, changing and deleting a [governed application](/operational-guides/govern-ai-applications), with any change of status or risk tier; approving a model, an approval revoked by an edit, and every change to the model approval policy.
+- **Changes to [BI dashboards](/operational-guides/rational-bi) and [knowledge views](/operational-guides/knowledge-custom-views)**: every update and deletion, including changes made by the workspace assistant. The entry keeps the content before and after the change. A save that changes nothing records nothing.
+- **Touchpoint memory**: adding, editing, approving, discarding and deleting a shared memory, and a user asking the assistant to forget what it remembered about them.
+- **[Agents](/operational-guides/create-an-agent)**: creating, changing, pausing and deleting an agent; starting and cancelling its runs; approving or rejecting its tool calls; and the emails and messages a run sends.
 
-:::warning[The honest limit: entries can't be altered, but the database can still delete them]
-The database refuses updates, not deletions, so that entries can age out one day. Today nothing in the product deletes them: the [data retention policy](/operational-guides/data-retention) does not cover the audit trail, and there is no setting for it.
+Actions not in this list aren't recorded yet.
 
-So the guarantee is precise, and worth stating precisely when someone asks: **falsifying an entry is impossible; destroying one is not prevented by the database.**
-:::
+The list doesn't show the content before and after a change, because it can hold the very data the entry protects. To recover a previous version of a dashboard or a view, ask Rational AI. Each read of that content is itself recorded as a **Read** entry.
 
-Two further details matter when you're reading old entries:
+## Next steps
 
-- **The actor is recorded verbatim**, not looked up when you view the page. An entry still names the person correctly after that user has been deleted, which is exactly the moment someone goes looking.
-- **A refused access is not recorded as a read.** Entries are written *after* the access check passes, so the trail holds reads that actually happened rather than reads that were attempted.
-
-## What is recorded today
-
-Instrumentation is deliberately targeted rather than a blanket sweep of every endpoint. Recorded now:
-
-- **Reading a conversation**: the access review case, and the one no other part of the platform captured.
-- **Deleting a user**, including a user deleting their own account: written in the same transaction as the deletion, so there's no window in which one happened without the other.
-- **Erasing a person's data**: written *before* anything is destroyed, since afterwards there's nothing left to tie an identifier back to a person. See [Erase a person's data](/operational-guides/erase-personal-data).
-- **Governance decisions that gate traffic**: registering, changing, and deleting a [governed application](/operational-guides/govern-ai-applications), with a change of status or risk tier named in the entry; approving a model, and an approval revoked by an edit; and every change to the model approval policy.
-- **Changes to [BI dashboards](/operational-guides/rational-bi) and [knowledge views](/operational-guides/knowledge-custom-views)**: every update and every deletion, including filters generated or added to a dashboard and changes made by the workspace assistant. The entry keeps the previous content as its **before** value and the new content as its **after** value, so a dashboard that lost its widgets or a view whose code was overwritten can be recovered. A save that changes nothing records nothing.
-- **Touchpoint memory**: adding, editing, approving, discarding, and deleting a shared memory, and a user asking the assistant to forget what it remembered about them.
-- **[Agents](/operational-guides/create-an-agent)**: creating, changing, pausing, and deleting an agent; starting and cancelling its runs; approving or rejecting its tool calls; and the emails and messages a run sends.
-- **Reading an entry's before and after values**: see the next section.
-
-Expect this list to grow. An action you don't see here isn't being hidden; it isn't instrumented yet.
-
-:::note[Cached query results are left out of a dashboard snapshot]
-A dashboard widget caches the rows its query returned. The trail leaves those rows out of the before and after values: they come back from the query, and entries cannot be edited to remove them later.
-:::
-
-## Recover the before and after values of a change
-
-The list view never shows the **before** and **after** values. Those values can hold the very content the entry exists to protect, and a table anyone with access can scroll is the wrong place to spread it.
-
-An administrator can read them one entry at a time through the backend API, with `GET governance/v0/audit-entries/{id}` (see [API access](/operational-guides/api-access)). The response carries the entry with its before and after values, for example the previous layout of a dashboard or the previous code of a knowledge view.
-
-:::note[Reading a change is itself recorded]
-Every read of an entry's values writes a new **Read** entry to the trail. The person who looked at a deleted dashboard's content is as visible as the person who deleted it.
-:::
-
-## Related
-
-- [Set data retention](/operational-guides/data-retention): how long model calls and conversations are kept. Audit entries are not covered.
-- [Erase a person's data](/operational-guides/erase-personal-data): an erasure records itself here before it runs.
-- [Monitor usage and cost](/operational-guides/governance): the other, differently named log, with one row per model call.
+- [Set data retention](/operational-guides/data-retention): how long model calls and conversations are kept.
+- [Erase a person's data](/operational-guides/erase-personal-data): an erasure is recorded here before it runs.
+- [Monitor usage and cost](/operational-guides/governance): the **Audit log**, with one row per model request.

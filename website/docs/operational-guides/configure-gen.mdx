@@ -7,7 +7,7 @@ audience: [admin]
 
 # Configure Gen for your team
 
-Generated content is only useful if it looks like it came from your organization. Under **Settings** → **Gen**, an administrator decides once which models Gen uses, what a good default image looks like, which brand styles and templates people start from, and how the document assistants behave, so everyone else can describe what they want.
+Under **Settings** → **Gen**, an administrator decides once which models Gen uses, what a good default image looks like, which brand styles and templates people start from, and how the document assistants behave, so everyone else can describe what they want.
 
 :::note[Defaults, presets and templates]
 Gen settings work in layers. **Generation defaults** are what every new image starts from. A **style preset** is a reusable look (a style text, a negative prompt and reference images) that people can switch on in the editor. A **template** is a complete starting point for one kind of image: model, settings, prompt and brand style together. People pick a template; the template falls back on the defaults for anything it doesn't set.
@@ -30,9 +30,7 @@ Go to **Settings** and select **Gen**, in the **Capabilities** section. The page
 3. Decide whether to turn on **Let AI rewrite short prompts**: *"Expands one-liners into a fuller prompt before generating."* It applies to prompts of twelve words or fewer.
 4. Save.
 
-:::note[The rewrite trades control for quality]
-Most people type a few words, and most image models do far better with a full description. With the rewrite on, a text model fills in the composition, lighting and mood before the image model sees the prompt. People who want exact control can still get it by writing more than twelve words, which are always sent as written.
-:::
+With the rewrite on, a text model adds composition, lighting and mood to short prompts before the image model sees them. Prompts longer than twelve words are always sent as written.
 
 ## Create style presets
 
@@ -54,12 +52,11 @@ Use **Enable** or **Disable**, **Duplicate** and **Delete** on the template to m
 The tools offered in the image editor's **AI Tools** menu are set up under **AI tools**, with one tab per tool: **Expand**, **Remove background**, **Paint** and **Improve quality**. For each one, set:
 
 - **Model**: the image model that runs the tool.
-- **Background**: or leave it to the model.
 - **Prompt**: the instruction the tool sends with the image.
 - **Enabled**.
 
 :::note[A tool without a prompt isn't offered]
-A tool appears in the editor only when it has a prompt. That keeps people from running a tool that would send the model an image with no instruction about what to do with it.
+A tool appears in the editor only when it has a prompt.
 :::
 
 ## Configure Text, Slides and Canvas

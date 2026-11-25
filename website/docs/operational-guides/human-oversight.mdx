@@ -5,59 +5,31 @@ type: how-to
 audience: [admin]
 ---
 
-# Review flagged conversations and record the decision
+# Record oversight decisions
 
-Oversight rules flag conversations that a person should look at. Flagging is only half of it: what an auditor asks isn't *was this raised for review?* but **did somebody look, what did they conclude, and did they step in?** This guide covers recording that decision on the conversation, and why the record, not the flag, is the thing that survives.
-
-:::note[The flag asks the question, the decision answers it]
-A conversation carries a flag when your oversight rules decide it warrants human attention. The flag is a queue: it says *someone should look at this*.
-
-The **decision** is what a reviewer records once they have. It names the conclusion, who reached it, when, and optionally why. "The system flags cases for a human" is a claim; the decision is what makes it demonstrable.
-:::
+Human oversight rules flag the conversations a person should look at. When you have reviewed one, record your decision on the conversation, so there is a record of who looked, what they concluded, and whether they stepped in.
 
 ## Prerequisites
 
-Before you start, make sure you have:
+- **Administrator role:** only administrators can record a decision. Other roles with **Update** on **Conversations** see the review panel, but their decision is refused with *"The review could not be recorded"*.
+- **Human oversight rules:** set them in **Settings** → **Conversations** → **Human oversight** (see [Conversations settings](/cr/settings/conversations#human-oversight)). Without rules, nothing is flagged.
 
-- **Administrator role:** only administrators can record an oversight decision. Everyone who can open **Conversations** sees the **Needs review** flag. Roles with **Update** on **Conversations** also see the review panel, but their decision is refused with *"The review could not be recorded"*.
-- **Oversight rules already configured.** The rules that raise the flag live in **Settings** → **Conversations**; without them nothing is ever flagged, and this page has nothing to act on.
+## Find flagged conversations
 
-## Where the decision goes
-
-Flagged conversations are marked **Needs review** in the [Conversations](/operational-guides/conversations) list: a hand icon beside the title and a warning tint on the row. To see only these, open **Filters**, select **Needs review** under **Show only**, and select **Apply**.
-
-Open a flagged conversation. The review panel sits at the **end of the Details drawer**, beside the conversation itself, so you review the case where you read it. If the drawer is closed, a **Needs review** button in the conversation header opens it.
-
-The **rules** live in **Settings** → **Conversations**; the **decision** is recorded on the conversation.
+Flagged conversations show **Needs review** in the [Conversations](/operational-guides/conversations) list. To list only those, open **Filters**, select **Needs review** under **Show only**, and select **Apply**.
 
 ## Record a decision
 
-Read the conversation, optionally type a note in **Note (optional)**, then choose one of two outcomes:
+1. Open a flagged conversation. The review panel is at the end of the details drawer. If the drawer is closed, select **Needs review** in the conversation header.
+2. Read the conversation and, optionally, enter the reason for your decision in **Note (optional)**.
+3. Select the outcome:
+   - **Leave as it is**: you reviewed it and no action was needed.
+   - **I stepped in**: you reviewed it and intervened.
 
-| Outcome | What it means |
-|---------|---------------|
-| **Leave as it is** | You reviewed it and concluded no action was needed. |
-| **I stepped in** | You reviewed it and intervened. |
+The flag is resolved, and the panel collapses to one line with the outcome (*"Reviewed: left to stand"* or *"Reviewed: the operator stepped in"*), the time and the note. The conversation also keeps who recorded the decision. A recorded decision can't be undone.
 
-Both are decisions a reviewer took. Leaving a conversation to stand is a conclusion, not a non-event, which is why neither option reads as dismissing a notification.
+## Next steps
 
-The note is optional but is the only place the *reasoning* is captured. If the conclusion would puzzle someone reading it in six months, write the note.
-
-## Once decided, the record stays visible
-
-Recording a decision **resolves the flag**: the conversation leaves the queue of things waiting for a human, which is what you want, since it has now had one.
-
-The panel doesn't disappear, though. It collapses to a single line: what was concluded (*"Reviewed: left to stand"* or *"Reviewed: the operator stepped in"*), when, and the note. The conversation also keeps who recorded the decision.
-
-## You cannot un-review a conversation
-
-There's no option that returns a reviewed conversation to *awaiting review*. Pending is the **absence** of a review, not a conclusion someone can reach.
-
-Accepting it as a decision would hand a reviewer a way to un-review a case while leaving a timestamp behind saying they had looked, which is worse than never having recorded anything.
-
-## Related
-
-- [Conversations](/cr/Conversations): browsing and opening conversations.
-- [Review the audit trail](/operational-guides/audit-trail): who opened which conversation, as distinct from what they concluded about it.
+- [Review the audit trail](/operational-guides/audit-trail): who opened which conversation.
+- [Approve tool calls](/operational-guides/approve-tool-calls): approve an action before the AI takes it.
 - [Human in the loop](/concepts/Human-in-the-loop): the concept behind oversight.
-- [Approve tool calls](/operational-guides/approve-tool-calls): the other human checkpoint: approving an action *before* the AI takes it, rather than reviewing a conversation after the fact.

@@ -9,3 +9,22 @@
 	width: 1px;
 	/* left: 0; */
 }
+
+/* "On this page" (narrow screens): a small chevron like the sidebar's,
+   instead of Infima's large menu caret. Points down when closed, up when open. */
+[class*="tocCollapsibleButton"]::after {
+	width: 0.8rem;
+	height: 0.8rem;
+	background: var(--ifm-color-emphasis-600);
+	-webkit-mask:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 3.5 10.5 8 6 12.5'/%3E%3C/svg%3E")
+		center / 0.8rem 0.8rem no-repeat;
+	mask:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 3.5 10.5 8 6 12.5'/%3E%3C/svg%3E")
+		center / 0.8rem 0.8rem no-repeat;
+	transform: rotate(90deg);
+	transition: transform 0.18s ease;
+}
+[class*="tocCollapsibleExpanded"] [class*="tocCollapsibleButton"]::after {
+	transform: rotate(-90deg);
+}

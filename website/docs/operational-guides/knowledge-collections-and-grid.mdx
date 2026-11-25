@@ -7,11 +7,9 @@ audience: [builder]
 
 # Work with records in collections and grid views
 
-Plenty of what a team knows isn't a document: it's a list of customers, contracts, suppliers or incidents, each with a few fields that change every week. Keeping that list in a spreadsheet next to the AI means it is always out of date and the assistant can't see it. In Rational AI a [Knowledge](/operational-guides/create-knowledge) can hold those records directly: you group them into **collections**, edit them in a **grid** like a spreadsheet, save the filtered and grouped layouts your team needs as **views**, and see who changed what in each record's **History**.
+A [Knowledge](/operational-guides/create-knowledge) can hold records, such as customers, contracts, suppliers or incidents, next to its files, so the assistant answers from them too. Group records into **collections**, edit them in a **grid** like a spreadsheet, save the layouts your team needs as **views**, and see who changed what in each record's **History**.
 
-:::note[What are records, collections and grid views?]
-A **record** is a resource of the Knowledge described by its attributes (fields such as *Status*, *Amount* or *Renewal date*) rather than, or as well as, by a file. A **collection** is a named type of record inside one Knowledge, such as *Companies*, *Contacts* and *Opportunities*: each record belongs to at most one collection, and each collection shows its own attributes in its own order. A **grid view** is a saved way of looking at the records (which collection, which columns, which filters, groups, sorting and summaries) that everyone with access to the Knowledge can open.
-:::
+A record is described by its attributes, such as *Status*, *Amount* or *Renewal date*, rather than, or as well as, by a file. A collection is a type of record inside one Knowledge, such as *Companies* or *Contacts*, and each record belongs to at most one.
 
 ## Prerequisites
 
@@ -28,7 +26,7 @@ Before you start, make sure you have:
 
 The grid has the fixed columns **Name**, **Description**, **Category** and **Tags**, then one column per attribute, then **Relations** with the number of linked resources. A new page shows 25 records; use the pagination controls at the bottom for more.
 
-An empty Knowledge shows *"This Knowledge is empty"* with **Add manually**, **Import from Excel or CSV** and **Go to settings**. To bring in an existing spreadsheet, see [Import records from Excel or CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
+An empty Knowledge shows *"This Knowledge is empty"* with **Add manually**, **Import from Excel or CSV** and **Go to settings**. To bring in an existing spreadsheet, see [Import records from Excel or CSV](/operational-guides/import-knowledge).
 
 ## Organize records into collections
 
@@ -67,7 +65,7 @@ With update rights, the grid works like a spreadsheet.
 Each kind of attribute has its own editor: a date picker, a person picker with a **Me** shortcut, a link picker over the linked collection, and so on.
 
 :::note[A save writes everything or nothing]
-All pending edits are saved together, so a batch never lands halfway. If a value doesn't fit its attribute, the bar shows how many are invalid and **Save changes** stays disabled until you fix them. If someone else changed one of your rows after you started editing, nothing is saved and the **Rows changed since you started editing** dialog lets you **Reload rows** to see their current values; your edits to the other rows stay pending. **Discard changes** asks for confirmation before throwing your edits away, and leaving the page with pending edits asks first too.
+If a value doesn't fit its attribute, **Save changes** stays disabled until you fix it. If someone else changed one of your rows meanwhile, nothing is saved: select **Reload rows** in the dialog to see their values.
 :::
 
 Actions that write immediately, such as renaming an attribute, moving or deleting records, importing or deleting a collection, first ask you to save or discard the edits you have pending.
@@ -91,7 +89,7 @@ The toolbar has **Filter**, **Group by**, **Sort** and **Visible attributes**. E
 - **Filter:** select **Add condition** and build conditions such as *Status* **is any of** *Open*, or *Renewal date* **is within** *the next 30 days*. Combine them with **and** or **or**, and use **Add condition group** for one level of nested conditions. Operators follow the attribute kind (text, number, date, select, checkbox, link, person). On a person attribute, choose **Me**: everyone who opens the view then sees their own records.
 - **Sort:** add one or more levels, each **Ascending** or **Descending**. Besides the attributes you can sort, and filter, by **Last modified**, to see what moved recently.
 - **Group by:** up to three levels. Group headers show the value and a count; use **Collapse all** or **Expand all**.
-- **Visible attributes:** show or hide columns (**Name** always stays).
+- **Visible attributes:** show or hide columns (**Name** always stays). To reorder columns, drag a column header; your order is kept in this browser for each collection.
 - **Summaries:** the footer of each column has a **Summary** button: counts of empty, filled and unique values or their percentages for every column; **Sum**, **Average**, **Median**, **Min**, **Max**, **Range** and **Standard deviation** for numbers; **Earliest** and **Latest** for dates. Summaries also appear in group headers.
 
 A filter, group or summary on an attribute that was later deleted or changed type is ignored and marked as such, and dropped the next time the view is saved.
@@ -139,7 +137,7 @@ When the Knowledge has at least one collection, each row has a checkbox for user
    - **Delete**: deletes the selection after confirmation. Records are deleted with their links and history.
 
 :::warning[Deleting records also deletes their links and history]
-Deleted records cannot be restored from the grid. Before a large bulk delete, check the filter that defines your selection, or [export the Knowledge](/operational-guides/export-knowledge) first.
+Deleted records cannot be restored from the grid. Before a large bulk delete, check the filter that defines your selection, or [export the Knowledge](/operational-guides/export-knowledge#export-a-knowledge) first.
 :::
 
 ## Open a record

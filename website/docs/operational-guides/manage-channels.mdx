@@ -7,7 +7,7 @@ audience: [builder]
 
 # Manage channels
 
-A channel is a surface people reach an assistant through: a Telegram bot, a mailbox, a Microsoft Teams or Slack bot. This guide covers what every channel has in common: the types available, how a channel decides whether the assistant answers on its own, the connection lifecycle, the controls over who may write in and what they may send, and how replies are shaped for messaging apps. The per-type setup lives in its own guide.
+A channel connects a Telegram bot, a mailbox, or a Microsoft Teams or Slack bot to Rational AI, so a [touchpoint](/operational-guides/configure-touchpoints) can answer the people who write there. An Email channel can also start an agent of [Agents](/cr/Agents) when a new email arrives.
 
 <img
   src={require('@site/static/img/screens/channels-settings.png').default}
@@ -17,20 +17,14 @@ A channel is a surface people reach an assistant through: a Telegram bot, a mail
 
 *The **Channels** list: each channel, its type, who provides it, and its mode.*
 
-:::note[What is a channel?]
-A **channel** is the medium through which people reach a [touchpoint](/operational-guides/configure-touchpoints), the assistant that answers them. The channel carries no prompt, knowledge or tools: those belong to the touchpoint. It only changes *where* and *how* people talk to it. An Email channel can also start an agent of the [Agents](/cr/Agents) section when a new email arrives.
-
-Inbound messages become conversations you can read in [Conversations](/cr/Conversations), and replies go back out over the same channel in whatever form that surface expects.
-:::
+Messages that come in become conversations you can read in [Conversations](/cr/Conversations), and replies go back out over the same channel.
 
 ## Prerequisites
-
-Before you start, make sure you have:
 
 - **Permissions:** a role with **Create** and **Update** on **Channels** (see [Roles and users](/operational-guides/roles-and-users)).
 - **The credentials for the surface you're connecting.** For example a Telegram bot token, a mailbox login, or the app credentials of a Microsoft Teams or Slack bot. See the per-type guides below.
 
-## Channel types
+## Choose a channel type
 
 Two kinds of channel exist, and they behave differently once connected.
 
@@ -47,17 +41,16 @@ Two kinds of channel exist, and they behave differently once connected.
 
 The web chat and the OpenAI-compatible API are built-in channels of the platform. They aren't in the type list, so you can't create another one.
 
-Whichever kind you pick, the configuration form is generated from the provider's own schema, so the fields you're asked for are the ones that surface needs, and a value of the wrong type is rejected when you save rather than failing later at connection time.
-
 ## Create a channel
 
 1. Go to **Settings** → **Channels** and select **Add**.
 2. Choose the **Channel type**. The list has the native types and the channel providers of your installed extensions.
-3. Enter a **Name**. It must be unique across all channels. Matching is exact and case-sensitive, so `Support` and `support` are two different names. A duplicate is rejected with an error under the field.
+3. Enter a **Name**. It must be unique across all channels, and names are case-sensitive.
 4. Fill in the **Configuration** fields the type asks for.
-5. Set the **Reply mode** (see below).
+5. Set the **Reply mode** (see [Choose the mode](#choose-the-mode)).
 6. Optionally, enter a **Description**.
 7. Select **Save**.
+8. Open the touchpoint that should answer and, on its **Settings** tab, select this channel as its **Channel**. See [Configure touchpoints](/operational-guides/configure-touchpoints).
 
 :::note[The provider is fixed at creation]
 A channel's type and provider are chosen when you create it and can't be changed afterwards. Everything else (the name, the mode, the credentials, the policies) stays editable. If you need a different provider, create a new channel.
@@ -69,29 +62,22 @@ The **Reply mode** decides whether the assistant answers by itself or a person d
 
 | Mode | What happens to an incoming message |
 |------|-------------------------------------|
-| **Automatic** | The conversation is assigned to the assistant, which replies on its own. |
-| **Manual** | The conversation is ingested and assigned to an **operator**. Nothing is sent until a person replies. |
-| **Draft only** | Same routing as Manual today: assigned to an operator, nothing sent automatically. The **Number of drafts** field it shows has no effect yet. |
+| **Automatic** | The assistant replies on its own. |
+| **Manual** | The conversation is assigned to an operator. Nothing is sent until a person replies. |
 
-The practical split is **Automatic versus everything else**: only Automatic lets the assistant reply without a human. Manual and Draft only both ingest the message and put it in front of a person, so a channel in either mode never sends anything you didn't send yourself.
-
-Use Manual or Draft only when you want the conversation captured and visible but not answered: a mailbox you're still evaluating, or a surface where every outgoing message needs a human behind it.
+Use **Manual** when you want conversations captured and visible but answered by people, for example on a mailbox you're still evaluating.
 
 ## Connect, check, and disconnect
 
-Native channels report a real connection state, which you'll find under **Connection** in the channel's details drawer, along with **Connect**, **Reconnect**, **Disconnect** and **Edit configuration**.
+Native channels show their connection state under **Connection** in the channel's details drawer, along with **Connect**, **Reconnect**, **Disconnect** and **Edit configuration**.
 
-- **Connect** checks your credentials against the live service before the channel is considered usable. A wrong bot token or a rejected mailbox login fails here rather than silently swallowing messages later.
+- **Connect** checks your credentials with the service. A wrong bot token or a rejected mailbox login fails here.
 - **Status** reports what the connection is doing: connected, in error, or disconnected. Email adds a state for a mailbox still waiting for **Authorize mailbox access**, and one for a mailbox that no touchpoint uses and no agent is bound to.
 - **Disconnect** stops the channel and clears its connection state, but keeps its configuration so you can connect it again. An Email channel also drops its OAuth tokens.
 
 Editing a Telegram channel checks the bot token again and brings the bot in line with the new settings, so the old configuration doesn't stay live. **Reconnect** runs the connection check again for any type.
 
-:::note[Credentials are masked, and saving the mask is safe]
-Bot tokens, mailbox passwords and OAuth secrets are masked wherever the channel is read back; they never leave the platform in the clear once stored.
-
-That means you can edit any other field and save without retyping the secret: a masked value returned unchanged keeps what's already stored. You only need to enter a credential again when you want to replace it.
-:::
+Bot tokens, mailbox passwords and OAuth secrets are shown masked. You can edit other fields and save without retyping them; enter a credential only to replace it.
 
 ## Control who can write in
 
@@ -100,23 +86,19 @@ Once a native channel is connected, its details drawer has a **Reply filter**, s
 - **Allowed senders**: leave it empty and anyone who can reach the surface can start a conversation; fill it in and everyone else is ignored.
 - **Blocked senders**: always ignored, even when the allow-list would admit them.
 
-Messages from senders that aren't allowed are dropped silently rather than answered with a refusal. An Email channel also shows how many emails it ignored, and from whom, so a filter that's too strict is visible rather than mysterious.
+Messages from senders that aren't allowed are dropped without a reply. An Email channel also shows how many emails it ignored, and from whom.
 
 Telegram, Slack and Email also ignore other bots and automated mail, so two systems can't get into a reply loop with each other. The per-type guides describe exactly what each one screens out.
 
 ## Control what can be sent in
 
-Telegram and Email channels have attachment settings, and so do extension-provided channels whose provider declares them. Microsoft Teams and Slack channels have none: they pass on text only. Where the settings exist, off is a legitimate choice:
+Telegram and Email channels have attachment settings, and so do extension-provided channels whose provider declares them. Microsoft Teams and Slack channels pass on text only.
 
 - **Accept attachments**: whether files, photos and voice notes sent to this channel are accepted at all.
 - **Attachment types**: a comma-separated list of file extensions or MIME prefixes (for example `pdf, docx, image/`). Leave it empty to accept every type; anything not listed is rejected.
-- **Attachment size limit (MB)**: a per-attachment cap. The platform enforces a 25 MB ceiling regardless of what you set, so you can lower this but not raise it beyond that. Telegram bots can't download files over 20 MB, which is also that channel's default.
+- **Attachment size limit (MB)**: the largest file accepted. The ceiling is 25 MB. Telegram's default is 20 MB, the most a Telegram bot can download.
 
-Accepted files go through the same path as files attached in the chat: photos are passed to the model as vision input when the model supports it, documents have their text extracted, and voice notes are transcribed, so the assistant can read all three. Operators can open or download what arrived; see [Use the chat](/operational-guides/chat-experience).
-
-:::note[A voice note reaches the assistant as the user's own words]
-A voice note (a Telegram voice message, or an audio file on any channel that accepts attachments) is transcribed before the assistant answers, and the assistant reads the transcript as what the user said. The reply waits for the transcription to finish. If transcription fails, times out or finds only silence, the assistant is told so, and the message still reaches it rather than being dropped. A voice note still has to pass the channel's attachment settings: with **Accept attachments** off, or audio missing from **Attachment types**, it's refused like any other file.
-:::
+The assistant reads accepted files as it does files attached in the chat: it sees photos when the model supports images, reads the text of documents, and reads a voice note's transcript as what the user said. If a voice note can't be transcribed, the assistant is told so. Operators can open or download what arrived; see [Use the chat](/operational-guides/chat-experience).
 
 ## Shape how the assistant replies
 
@@ -124,20 +106,13 @@ People on messaging apps write several short messages in a row and expect short 
 
 ### Split replies into several short messages
 
-Turn on **Split replies** (off by default; offered by Microsoft Teams, Slack and by extension-provided channels that declare it) to deliver each reply as a few short messages instead of one long block.
+On Microsoft Teams, Slack, and some extension-provided channels, turn on **Split replies** to deliver each reply as a few short messages instead of one long block.
 
-- The reply is cut at blank lines into at most four messages; anything left over goes in the last one.
-- A code block or a list is never cut, an introductory line ending with a colon stays with its list, and very short fragments are joined to the next message.
-- The messages are sent with a short pause between them, about a second, longer for a longer message.
-- The assistant is told it's chatting on a messaging app, so it writes replies that split well.
-
-:::note[Only the delivery is split]
-The conversation still records the reply as one message, so it reads as a single answer in [Conversations](/cr/Conversations). Email is never split. If one of the messages can't be delivered after retries, the remaining ones aren't sent and the failure is logged; the ones already delivered aren't sent twice.
-:::
+The reply is cut at blank lines into at most four messages, sent a second or so apart. Code blocks and lists are never cut. [Conversations](/cr/Conversations) still shows the reply as one message.
 
 ### Wait until the sender pauses
 
-Without a delay, every incoming message starts its own answer, so a user who sends *"hi"*, then a question, then a voice note gets three replies talking over each other. A channel that offers **Reply delay (seconds)** can hold the reply instead. The setting is read by the platform for any channel, but it appears only in the form of [extension-provided channels](#channel-types) whose provider declares it; the native channels don't offer it.
+Without a delay, every incoming message starts its own answer, so a user who sends *"hi"*, then a question, then a voice note gets three replies talking over each other. Channels that offer **Reply delay (seconds)** can hold the reply instead. Only some [extension-provided channels](#choose-a-channel-type) offer it.
 
 | Setting | What it does |
 |---|---|
@@ -146,10 +121,9 @@ Without a delay, every incoming message starts its own answer, so a user who sen
 
 When the wait ends, the assistant answers once, with the whole burst of messages in context. The delay applies only in **Automatic** mode, and only to conversations that come in through a channel; the web chat always answers at once.
 
-## Related
+## Next steps
 
 - [Connect a Telegram bot](/operational-guides/connect-telegram): bot setup, groups, and commands.
 - [Connect a mailbox](/operational-guides/connect-email): IMAP, OAuth, and email threading.
-- [Configure touchpoints](/operational-guides/configure-touchpoints): what the assistant on the other side of the channel is.
-- [Channels](/concepts/Channels): the concept, and how channels relate to touchpoints.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): set up the assistant that answers on the channel.
 

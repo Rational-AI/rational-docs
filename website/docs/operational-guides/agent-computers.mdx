@@ -1,17 +1,15 @@
 ---
 sidebar_position: 40
-sidebar_label: Agent computers and tools
+sidebar_label: Agent computers
 type: how-to
 audience: [builder]
 ---
 
-# Agent computers and the tools library
+# Agent computers
 
-An agent does its work on a computer of its own: a Linux machine where it can run commands, write files, open a browser and pick up tomorrow where it left off today. This guide shows how to check and control those computers, and how to browse the **Library** of tools and skills you can give your agents.
+An agent does its work on a computer of its own: a Linux machine with a desktop and a browser, where it runs commands, writes files and picks up tomorrow where it left off today. This guide shows how to check and control those computers.
 
-:::note[What is an agent computer?]
-Each agent has a persistent workspace machine: Linux with a desktop, a terminal, Chromium, Node, Bun, Python, Git and the usual build tools. Its files live in `/home/agent/workspace` and survive between runs, as do the skills installed on it. The computer starts when a run needs it and stops after a period of inactivity; stopping it never deletes its files. It runs one job at a time: other runs of the same agent wait in a queue.
-:::
+Each agent's computer keeps its files and installed skills between runs. It starts when a run needs it and stops after a period of inactivity, without deleting anything. It runs one job at a time, so other runs of the same agent wait in a queue.
 
 ## Prerequisites
 
@@ -46,28 +44,13 @@ The same **Computer** panel is on every agent's page.
 ## Control a computer
 
 - **Start computer** starts it ahead of a run, so the first step does not wait.
-- **Show desktop** opens the computer's desktop inside the page, **Open desktop** in a new tab; the viewer has **Fit to window**, **Clipboard**, **Ctrl+Alt+Del**, **Full screen** and **Reconnect**. Watching the desktop while a run works is the quickest way to see what the agent is doing in its browser.
+- **Show desktop** opens the computer's desktop inside the page, **Open desktop** in a new tab. Watching the desktop while a run works is the quickest way to see what the agent is doing in its browser.
 - **Stop** shuts it down. Files stay.
 - **More computer actions** has **Install browser tools**, which installs a ready-made toolkit of browser automation and skills on the computer (**Reinstall browser tools** to update it), plus **Repair** and **Restart desktop**. Installing can take several minutes; the installed skills are listed under *N installed skills*. Restarting the desktop closes its open windows and keeps the files.
 
 :::warning[The desktop is the agent's, not yours]
 Whatever you do on the desktop happens on the agent's machine, in the middle of its work. Use it to watch, or to unblock something the agent asked you about (a sign-in page, a confirmation), not to work alongside it while a run is going. On the run page, **Take control** lets you use the desktop and **Hand back to the agent** returns it.
 :::
-
-## Browse the library
-
-**Agents** → **Library** lists everything an agent can be granted: *"Every tool your agents can be granted, grouped by extension."*
-
-<img
-  alt="The Library page with 26 tools from five extensions: C-Parts Desk, Graphify Query, Rational Knowledge RAG Query Server, Vega charts and RationalAI Widgets"
-  src={require('@site/static/img/screens/agents-library.png').default}
-  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
-/>
-
-- **Tools**: grouped by extension, with the count on the tab. Expand one to see its tools, with the name the agent will see; that is also the name **Ask me first** matches. **Search a tool…** filters them, **Read-only tools** keeps only those that do not change anything. A *Needs setup* badge means the extension still needs a connector before an agent can use it.
-- **Skills**: *"Every skill the installed extensions register for your agents"*, with **Search a skill…**. Touchpoints use skills from the same extensions; see [Build and run touchpoint skills](/operational-guides/agent-skills).
-
-Installing an extension does not give it to anyone. A tool runs only for an agent it was granted to on its profile, and only on the Knowledge bases that agent was granted. To add tools, install an extension ([Manage extensions](/operational-guides/manage-extensions)); to give them to an agent, select them under **Extensions & tools** in its profile ([Build an agent](./create-an-agent#extensions-and-tools)).
 
 ## Troubleshooting
 
@@ -77,3 +60,8 @@ Installing an extension does not give it to anyone. A tool runs only for an agen
 | *"The Computer service did not respond in time."* | A computer is starting or under load. **Retry connection** after a few seconds. |
 | Runs stay *Queued* | Another run of the same agent is using the computer. Check **Computers**; stop the open run if it is stuck. |
 | The desktop shows *Disconnected* | Select **Reconnect**. If it keeps disconnecting, open it in a new tab with **Open desktop**. |
+
+## Next steps
+
+- [Build an agent](./create-an-agent): choose the tools the agent uses on its computer.
+- [Follow runs and approve actions](./agent-runs): watch a run and take control of the desktop when the agent asks.

@@ -1,45 +1,17 @@
 ---
 sidebar_position: 33
 sidebar_label: Generated image provenance
-type: how-to
+type: concept
 audience: [admin]
 ---
 
 # How generated images declare they were made by AI
 
-Every image generated in Gen, including the images a chat creates through Gen, carries a machine-readable marker saying a model made it. The marker is embedded in the file itself, so it keeps saying so once the file has left the platform: in a download, an export, or a response from the API.
+Every image generated in Gen, including the ones a chat creates through Gen, carries a standard metadata label saying a model made it, along with the model's name. The label is written into PNG and JPEG files when they are saved, so it stays with the file after a download, an export or an API response. Search engines and social platforms read this label when they tag content as AI-generated. Images in other formats are stored without it.
 
-## What is embedded
+The label states what the file is; it does not prove that nobody changed the file since, and anyone can remove it. It is not a signed C2PA provenance record, so it does not meet a requirement that asks for C2PA specifically.
 
-Generated images carry an XMP packet containing the IPTC **`DigitalSourceType`** property, set to `trainedAlgorithmicMedia`.
+## Next steps
 
-That property is the interoperable way for a file to declare it was produced by a generative model. It's what search engines and platform ingest pipelines read when they label content as AI-generated, which is what makes it worth more than a note in a database:
-
-- A **database record** doesn't travel with the file. Download the image and every trace of where it came from is left behind.
-- A **visible watermark** doesn't survive a crop.
-- An **embedded marker** goes wherever the bytes go.
-
-## When it is applied
-
-The marker is written **before the image is stored**, not added on the way out. Every copy that subsequently leaves (a download, the gallery, an API response) carries it, because they're all serving an already-marked file.
-
-Marking on the way out would leave the stored object unmarked and make correctness depend on every future download path remembering to add it.
-
-Two practical consequences:
-
-- **Re-marking is harmless.** An image that already carries the marker isn't given a second one.
-- **Unrecognized formats pass through untouched.** PNG and JPEG are marked. Anything else is stored exactly as generated rather than risking a corrupted file. An unlabelled image is a smaller failure than a broken one, and you can't tell the difference after the fact.
-
-:::warning[A declaration, not a C2PA provenance manifest]
-The distinction matters if you're answering a question about provenance, because the two are often spoken of as though they were the same thing.
-
-The marker establishes **what the file is**: something a model generated. It does **not** establish that nobody has altered the file since, and anyone who wants to strip it can. It's metadata, not a seal.
-
-C2PA additionally binds the claim to a signing identity, so the assertion can be shown not to have been tampered with. That requires a certificate and a signing service, and Rational AI does not do it today. If a tender or a policy asks specifically for C2PA, this does not satisfy it.
-:::
-
-## Related
-
-- [Generate images with Gen](/operational-guides/gen-images): where most generated images come from.
-- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): documenting what a model may be used for and signing it off.
-- [Review the audit trail](/operational-guides/audit-trail): the record of who reached what inside the platform.
+- [Generate images with Gen](/operational-guides/gen-images): where generated images come from.
+- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): document what a model may be used for.

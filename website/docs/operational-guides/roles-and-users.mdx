@@ -15,7 +15,7 @@ A **role** is a named set of permissions. A **user** is an account that signs in
 ## Before you begin
 
 - An **Admin** account, or a role with the matching rows: **Users** to manage users, **Groups** for groups, **Roles** for roles. Admins bypass every permission check, so the role matrix doesn't apply to them.
-- Roles, users, and groups are under **Settings** → **Access**.
+- Roles, users, and groups are in the **Access** group of **Settings**.
 
 ## Configure a role
 
@@ -94,22 +94,12 @@ Groups don't carry permissions. What a user can do always comes from their roles
 
 ## Remove a user
 
-The row menu on the **Users** page has two ways to remove someone. Choose based on why the account is going:
+The row menu on the **Users** page has two ways to remove someone:
 
-| | **Delete user** | **Erase all data** |
-|---|---|---|
-| **Use it when** | Someone leaves the organization | Someone exercises their right to erasure |
-| **Their conversations** | Kept | Deleted |
-| **Their identifiers on recorded model calls** | Kept | Cleared |
-| **Can be undone** | No, but you can invite the same email again | No |
+- **Delete user**: for someone who leaves the organization. Their conversations are kept.
+- **Erase all data**: for someone who exercises a right to erasure. Their conversations are deleted too, permanently.
 
-Both options also remove the account from your identity provider, unless another workspace still uses the same sign-in. If the identity provider can't be reached, the request fails and nothing changes, so you can retry later. Neither option can remove the last administrator.
-
-Both options are recorded in the [audit trail](/operational-guides/audit-trail). Before you use it, read [Erase a person's data](/operational-guides/erase-personal-data) to see exactly what it removes.
-
-:::danger[Irreversible]
-**Erase all data** permanently deletes the person's conversations. You can't recover them.
-:::
+Both are recorded in the [audit trail](/operational-guides/audit-trail). For how they differ in detail, and how to erase someone's data, see [Erase a person's data](/operational-guides/erase-personal-data).
 
 Users can also disable or delete their own account. See [Manage your own account](/operational-guides/manage-your-account).
 

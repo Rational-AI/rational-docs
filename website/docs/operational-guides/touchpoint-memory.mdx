@@ -17,15 +17,15 @@ Memory is a short list of facts the assistant reads at the start of every conver
 
 Before you start, make sure you have:
 
-- **Permission to edit the touchpoint:** needed to switch memory on, to choose what happens with long conversations, and to curate shared memories.
+- **Permission to edit the touchpoint:** needed to turn memory on, to choose what happens with long conversations, and to curate shared memories.
 - **A touchpoint to configure:** see [Configure touchpoints](/operational-guides/configure-touchpoints).
 
-## Switch memory on
+## Turn memory on
 
 Both kinds of memory are off by default.
 
 1. Go to **Settings** → **Touchpoints**, open the touchpoint and select the **Memory** tab.
-2. Switch on **Personal memory**, **Shared memory**, or both.
+2. Turn on **Personal memory**, **Shared memory**, or both.
 3. If you turned on shared memory, choose under **New shared memories** what happens when the assistant learns something in a chat:
 
    | Option | When to use it |
@@ -36,7 +36,7 @@ Both kinds of memory are off by default.
 
 4. Save the touchpoint. The memories list appears once memory is on and saved.
 
-While memory is on, the assistant can add, update, and remove memories during a chat. Users see each change in the conversation (*"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Updated memory"*, *"Forgot"*), with **Undo** or **Withdraw** where it applies, and can switch memory off for a single chat.
+While memory is on, the assistant can add, update, and remove memories during a chat. Users see each change in the conversation (*"Remembered"*, *"Remembered for everyone"*, *"Proposed to the shared memory"*, *"Updated memory"*, *"Forgot"*), with **Undo** or **Withdraw** where it applies, and can turn memory off for a single chat.
 
 :::note[Memory is kept short on purpose]
 Each memory is one line of at most 280 characters. A person's memory holds 1,500 characters in all, and the shared memory 3,000. Memories that contain a link or a password, key or token are refused. When a store is full, a new memory is refused until the assistant (or an editor) replaces or removes an existing one.
@@ -71,7 +71,7 @@ A model can read only so much of a conversation at once. **Long conversations**,
 2. Save the touchpoint.
 
 :::note[When summarizing kicks in]
-Rational AI summarizes before a turn when the previous request filled more than 85% of the model's context window, or when the provider rejects a request as too long. The most recent messages, roughly a quarter of the window, are kept word for word. Only what the model reads is shortened: the full history stays in the chat and in [Conversations](/operational-guides/conversations).
+Rational AI summarizes when a conversation nears the most the model can read at once. The most recent messages are kept word for word. Only what the model reads is shortened: the full history stays in the chat and in [Conversations](/operational-guides/conversations).
 :::
 
 In the chat, a divider marks where the summary begins: *"The assistant now works from a summary of the messages above"*. With **Stop and ask to start a new conversation**, the composer is disabled and the chat offers **New conversation** instead; the old conversation stays in the user's history.

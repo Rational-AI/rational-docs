@@ -11,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Extensions
 
-Extensions add new capabilities to Rational AI. Depending on the one you install, an extension can give your agents new **tools** to use in a conversation (such as fetching a web page, querying a database or searching the web), **skills** they can draw on, a **channel** for users to message the assistant (like Telegram), a **source** your Knowledge bases sync files from, or a **workflow** that processes incoming files. The [Marketplace](/operational-guides/marketplace) solutions are extensions too: installing one can also create a Knowledge base with its views and records, agents, BI dashboards and a website widget. Use this section to install extensions from the catalog or from your own package files, enable or disable them, configure their settings and review what each one provides. To build your own, see [Build an extension](/operational-guides/build-an-extension); to keep the ones you have current, see [Update and roll back extensions](/operational-guides/extension-updates).
+Extensions add new capabilities to Rational AI. Depending on the one you install, an extension can give your agents new **tools** to use in a conversation (such as fetching a web page, querying a database or searching the web), **skills** they can draw on, a **channel** for users to message the assistant (like Telegram), a **source** your Knowledge bases sync files from, or a **workflow** that processes incoming files. The [Marketplace](/operational-guides/marketplace) solutions are extensions too: installing one can also create a Knowledge base with its views and records, agents, BI dashboards and a website widget. Use this section to install extensions from the catalog or from your own package files, enable or disable them, configure their settings and review what each one provides. To keep the ones you have current, see [Update and roll back extensions](/operational-guides/extension-updates).
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -39,29 +39,11 @@ The Extensions page has three views: **Installed**, **Updates** and **Browse**. 
 * **Search**: use the search box to filter extensions by name.
 * **Select**: select a card to open its details: an **Overview** of what it provides (each tool with a short description), **Release notes**, **Versions** and **Activity**.
 
-## Add an extension
+## Add and configure an extension
 
-Select **Install** to browse the extensions you can install. Each one is marked **Rational AI catalogue** (published by Rational AI) or **Local** (uploaded to this tenant), and extensions you already have are marked **Already installed**. Select one and then **Configure extension**:
+**Install** opens the extensions you can install, marked **Rational AI catalogue** or **Local**. **Add private extension** installs a package from a file. An extension that still needs values shows **Configuration needed**. For the steps, see [Manage extensions](/operational-guides/manage-extensions).
 
-1. If the extension runs an MCP server, the **Set default configuration** form opens. Fill in the values it needs, such as an API key.
-2. Select **Install extension**.
-
-An extension with no server to configure, such as one that only adds a source, installs as soon as you select **Configure extension**.
-
-To install your own package, select **Add private extension** and choose the file, or drag the file onto the Extensions page. A private extension is installed in this tenant only.
-
-## Configure an extension
-
-To change an installed extension's values later, select it and open **Settings** from the options menu. An extension installed from a file that still needs values shows **Configuration needed** and provides no tools until you save its settings.
-
-## Develop an installed extension
-
-Administrators see a **Development** tab on an installed extension. Use it to
-enable file editing for this installation, edit and **Save and apply** files,
-**Download installed extension** for local work, or disable development to
-return to normal package updates. The
-[development guide](/operational-guides/develop-an-extension) explains remote
-edits, Git recovery and resuming package updates when you leave development.
+Administrators see a **Development** tab on an installed extension, to edit its files. Updates pause while development mode is on.
 
 ## Enable or disable an extension
 
@@ -69,7 +51,7 @@ Use the switch on each extension card to turn it on or off. A disabled extension
 
 ## Manage an extension
 
-With an extension selected, the **Update policy** list sets how updates reach it: **Compatible updates automatically** applies compatible updates for you, **Notify me** (the default) lists them and applies nothing, and **Pinned** holds the extension on its exact version. When an update is available, an **Update** button appears next to the version; while the extension is pinned, it reads *"Pinned. Change the update policy to install updates."* instead.
+With an extension selected, **Update policy** sets how updates reach it: **Compatible updates automatically**, **Notify me** (the default) or **Pinned**. When an update is available, an **Update** button appears next to the version.
 
 The options menu (the three vertical dots) holds:
 
@@ -80,6 +62,6 @@ The options menu (the three vertical dots) holds:
 | **Update to latest version** | Move the extension to the newest release. Unavailable when it is already up to date. |
 | **Install a different version** | Pick another published release, older or newer. |
 | **Roll back** | Return to the last release that worked. Unavailable when there is none. |
-| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools keep working without them, and re-installing the same package later starts clean. |
+| **Uninstall** | Remove the extension, its MCP servers, its configurations and its tools. Touchpoints that used its tools keep working without them. |
 
-For what "compatible" actually means, what happens to your touchpoints when an update lands, and how to roll back, see [Update and roll back extensions](/operational-guides/extension-updates).
+For what a compatible update is and how to roll back, see [Update and roll back extensions](/operational-guides/extension-updates).

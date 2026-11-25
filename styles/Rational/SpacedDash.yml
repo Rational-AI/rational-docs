@@ -1,0 +1,9 @@
+# A spaced en dash used as a separator ("**Label** – text") is an em dash in
+# disguise (STYLE.md §4). Use a colon in label lists, otherwise a full stop,
+# comma or parentheses. Number and date ranges ("Oct 3 – Nov 2", 1–50) pass.
+extends: existence
+message: "No spaced en dash as a separator: use a colon, full stop, comma or parentheses (STYLE.md §4)."
+level: error
+nonword: true
+tokens:
+  - '[^\s\d]\s–\s'

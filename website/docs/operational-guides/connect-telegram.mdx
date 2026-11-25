@@ -7,14 +7,13 @@ audience: [builder]
 
 # Connect a Telegram bot
 
-A Telegram channel puts a touchpoint's assistant behind a bot: people message the bot, the assistant answers, and the whole exchange lands in [Conversations](/cr/Conversations) like any other. This guide covers connecting the bot, choosing how Telegram delivers messages to you, and the group behavior you'll want to get right before letting it loose in a busy chat.
+A Telegram channel lets people chat with a [touchpoint](/operational-guides/configure-touchpoints) through a Telegram bot. Each exchange appears in [Conversations](/cr/Conversations).
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
-- **A bot token from BotFather.** Message [@BotFather](https://t.me/BotFather) on Telegram, create a bot, and copy the token it gives you. That's the only credential you need.
+- **A bot token from BotFather.** Message [@BotFather](https://t.me/BotFather) on Telegram, create a bot, and copy the token it gives you.
 - **Permissions:** a role with **Create** and **Update** on **Channels**.
+- **A touchpoint to answer**, or the plan to create one.
 
 ## Connect the bot
 
@@ -22,83 +21,52 @@ Before you start, make sure you have:
 2. Choose **Telegram** as the **Channel type**.
 3. Enter a **Name** and paste the token into **Bot Token**.
 4. Choose the [reply mode](/operational-guides/manage-channels#choose-the-mode): **Automatic** if the assistant should answer on its own.
-5. Select **Save**.
+5. Leave **Transport** on **polling**, which needs no public address. Choose **webhook** only if Rational AI is reachable from the internet over HTTPS.
+6. Select **Save**. Rational AI checks the token with Telegram, and the channel isn't created if the check fails.
+7. Open the touchpoint that should answer and, on its **Settings** tab, select this channel as its **Channel**. The touchpoint must be enabled. If several enabled touchpoints use the channel, the one created first answers.
 
-The token is checked with Telegram when you save, and the channel isn't created if the check fails, so a bad paste fails immediately rather than producing a bot that silently never answers. Once connected, the channel's details drawer shows the bot's **@username** and a scannable `t.me` QR code, the quickest way to get people to the right bot.
-
-:::note[The default works on localhost]
-You don't need a public URL, a domain, or a tunnel. The default transport polls Telegram for new messages, which works behind a firewall and on a laptop, so the happy path is only a BotFather token.
-:::
-
-## Choose how messages arrive
-
-Telegram can deliver messages two ways, and the channel's **Transport** setting supports both.
-
-| Transport | When to use it |
-|-----------|----------------|
-| **polling** *(default)* | Anywhere. The platform asks Telegram for new messages, so it needs no public URL and works behind firewalls and on localhost. Its read position is stored on the channel, so a restart resumes where it left off instead of replaying or skipping. |
-| **webhook** | When you'd rather Telegram push to you. Requires this deployment to be reachable over public HTTPS; the address is registered with Telegram automatically. Each channel gets its own secret, and Telegram must present it on every call or the request is ignored. |
-
-Both transports feed the same pipeline, so everything below behaves identically whichever you pick.
+The channel's details show the bot's **@username** and a `t.me` QR code you can share with the people who should use the bot.
 
 ## What the assistant can receive
 
-Telegram messages arrive as more than plain text:
-
 - **Text and captions.**
-- **Photos** (the largest size available), **documents**, **video**, **audio**, **voice messages** and **video notes**, subject to the channel's **Accept attachments**, **Attachment types** and **Attachment size limit (MB)** settings (see [attachment policy](/operational-guides/manage-channels#control-what-can-be-sent-in)). The size limit defaults to 20 MB, the most a Telegram bot can download. Documents have their text extracted and voice messages are transcribed, so the assistant can read a PDF rather than only acknowledge it.
-- **Locations, contacts and polls**, rendered into text the assistant can work with.
+- **Photos, documents, video, audio, voice messages and video notes**, within the channel's [attachment settings](/operational-guides/manage-channels#control-what-can-be-sent-in). The size limit defaults to 20 MB, the most a Telegram bot can download. The assistant reads the text of documents and the transcript of voice messages.
+- **Locations, contacts and polls**, turned into text.
 
-:::note[An album is one message, not three]
-When someone sends three photos as an album, Telegram delivers them as three separate updates. The channel collapses them back into a single message, so the assistant takes one turn over the whole set instead of answering three times.
-:::
+Photos sent together as an album reach the assistant as one message, so it answers once.
 
 ## How conversations are grouped
 
-Each Telegram chat becomes its own conversation. In supergroups with topics enabled, **each forum topic gets its own conversation** too, so separate discussions stay separate.
+Each Telegram chat is its own conversation. In groups with topics, each topic is its own conversation too.
 
-Users have one command that affects this directly: **`/reset`** closes the current conversation, so their next message starts a fresh one with no history behind it. **`/start`** and **`/help`** reply with the text you enter in **Welcome message**. `/help` and `/reset` appear in Telegram's own command menu, registered automatically when the bot connects.
+Users can send these commands:
 
-## Behavior in group chats
+- **`/reset`** closes the current conversation, so the next message starts a fresh one.
+- **`/start`** and **`/help`** reply with the text you enter in **Welcome message**.
 
-Dropping a bot into a busy group goes badly if it answers everything. It doesn't:
+## Control replies in group chats
 
-- **It never replies to other bots**, so two bots can't talk each other into an infinite loop.
-- **In groups it answers only when addressed**: @mentioned, replied to, or sent a command aimed at this specific bot. Ordinary chatter between people is skipped silently, with no "I didn't understand that" noise.
-- **Commands aimed at a different bot are ignored**, which matters in groups running several.
+In groups, the bot answers only when it's @mentioned, replied to, or sent a command aimed at it. Other messages are skipped without a reply, and the bot never replies to other bots.
 
-If you genuinely want the bot to answer everything in a group, set **Group replies** to **always** instead of the default **mention (only when addressed)**. Think carefully before using it in a group with real traffic.
-
-Beyond that, **Rate limit (messages/minute per chat)** caps how many messages a single chat may send per minute (default 20; `0` turns the limit off), so one chat flooding the bot can't consume the whole channel's capacity. Messages over the limit are dropped without a reply.
+- To have it answer every message in a group, set **Group replies** to **always** instead of the default **mention**.
+- **Rate limit (messages/minute per chat)** caps how many messages one chat may send per minute. The default is 20; `0` turns the limit off. Messages over the limit get no reply.
 
 ## Give specific chats their own instructions
 
-You can pin extra instructions to individual chats in **Per-chat prompts**: one line per chat, with the chat id, a pipe, and the instructions (for example `-100987654321 | Answer in French.`). For a group, the chat id appears in the conversation name. Those instructions are added to the touchpoint's system prompt for that chat only.
-
-This is how one bot serves two audiences without two bots: the same assistant, with a different framing in the internal support group than in the public one.
+In **Per-chat prompts**, enter one line per chat: the chat ID, a pipe, and the instructions, for example `-100987654321 | Answer in French.` For a group, the chat ID appears in the conversation name. The instructions are added to the touchpoint's system prompt for that chat only, so one bot can answer an internal group and a public one differently.
 
 ## What replies look like
 
-Replies are rendered into the formatting Telegram supports: headings become bold, lists become bullets. If Telegram rejects the formatting, the message is sent as plain text rather than failing.
+Replies use the formatting Telegram supports: headings become bold and lists become bullets. A reply longer than Telegram's 4,096-character limit is split at paragraph breaks into several messages.
 
-Long answers are **split at Telegram's 4096-character limit on paragraph boundaries**, so a long reply arrives as several readable messages rather than one truncated one.
+- In groups, replies quote the message they answer.
+- A 👀 reaction shows the message was received and turns to ✅ once the answer is delivered.
+- The typing indicator shows while the assistant is writing.
 
-Some smaller touches worth knowing about, because people ask:
+The assistant can't send files, and each answer arrives complete rather than word by word.
 
-- **In groups, replies quote the message they answer**, so it's clear what the bot is responding to.
-- **A 👀 reaction appears when the message is received** and becomes ✅ once the answer is delivered.
-- **The typing indicator runs for the whole generation**, so a slow answer looks like work in progress rather than a dead bot.
+## Next steps
 
-## Current limits
-
-Two things are not supported yet, and are worth knowing before you promise them:
-
-- **The assistant cannot send files out.** Inbound attachments work; outbound ones aren't wired up.
-- **Answers arrive complete, not word by word.** There's no progressive editing of a message as the answer generates; the typing indicator covers the wait instead.
-
-## Related
-
-- [Manage channels](/operational-guides/manage-channels): modes, allowed senders, and attachment policy.
-- [Connect a mailbox](/operational-guides/connect-email): set up an Email channel.
-- [Conversations](/cr/Conversations): reading and taking over what arrives.
-
+- [Manage channels](/operational-guides/manage-channels): modes, allowed senders, and attachment settings.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): set up the assistant that answers on Telegram.
+- [Conversations](/cr/Conversations): read and take over what arrives.

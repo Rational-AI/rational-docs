@@ -7,26 +7,30 @@ audience: [builder]
 
 # Configure touchpoints
 
-A touchpoint is a configured assistant that people (or systems) talk to over a channel. It sets the assistant's system prompt and models, the knowledge it reads, the tools and skills it can use, its memory, and who may reach it. This guide walks through the touchpoint configuration panel and the **Tools** tab.
+A touchpoint is an assistant that answers people in conversations. It holds the system prompt, the models, the knowledge the assistant reads, the tools and skills it can use, and its memory. A [channel](/operational-guides/manage-channels) only carries the messages: the Chat, a Telegram bot, a mailbox, an API. Touchpoints are separate from the agents of [Agents](/cr/Agents).
 
-:::note[What is a touchpoint?]
-A touchpoint is an assistant that answers people in conversations. It is not an agent of the [Agents](/cr/Agents) section, and it is not the channel, which only carries the messages. You can create a touchpoint yourself, and some are created for you: creating a [Knowledge](/operational-guides/create-knowledge) also creates the Knowledge's touchpoint, and the **Default touchpoint** is the workspace assistant behind the [Chat](/cr/Chats). Its tools come from your installed MCP servers. MCP (Model Context Protocol) is the standard Rational uses to let an assistant call out to external capabilities like search or database queries.
-:::
+Some touchpoints are created for you: creating a [Knowledge](/operational-guides/create-knowledge) also creates the Knowledge's touchpoint, and the **Default touchpoint** is the workspace assistant behind the [Chat](/cr/Chats).
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
 - **Permission to manage touchpoints:** a role with **Update** on **Touchpoints**, plus **Create** to add one (see [Roles and users](/operational-guides/roles-and-users)). Adding, editing or removing a touchpoint's tools, and marking them **Sensitive**, needs the administrator role.
-- **A touchpoint to configure:** for example the touchpoint created with your Knowledge. To create a new one with **New**, you need at least one [channel](/operational-guides/manage-channels).
+- **At least one [channel](/operational-guides/manage-channels)** to create a touchpoint. **New** is unavailable while no channel exists.
 
-## Open a touchpoint
+## Create a touchpoint
+
+1. Go to **Settings** → **Touchpoints** and select **New**. With no touchpoints yet, the button is **Add new**.
+   Rational AI creates an enabled touchpoint named *New touchpoint* on your first channel and opens it.
+2. Replace the name at the top of the panel, and optionally enter a description.
+3. On the **Settings** tab, select the **Channel** people will reach the assistant through.
+4. On the **Models** tab, write the **System prompt** and check the models. A new touchpoint starts with your platform's default **Conversational model**, set under **Settings** → **AI Model Registry**.
+5. On the **Sources** tab, add the knowledge the assistant should read.
+6. Select **Save**.
+
+To start from an existing touchpoint instead, open it and select **Duplicate** in its menu.
+
+## Find your way around a touchpoint
 
 Go to **Settings** → **Touchpoints** and select the touchpoint you want to configure. It opens on its **Settings** tab.
-
-:::note[A new touchpoint inherits the platform's model]
-Create a touchpoint without naming a model and it takes your platform's default **Conversational model** (set under **Settings** → **AI Model Registry**) and adds it to its own list of models. The same applies to touchpoints created through the API. A model you choose explicitly is always kept. Changing the platform default affects only touchpoints created afterwards.
-:::
 
 A touchpoint's settings are spread over seven tabs:
 
@@ -35,12 +39,12 @@ A touchpoint's settings are spread over seven tabs:
 | **Settings** | Channel, **Allow anonymous access**, the chat features users get (**Canvas mode**, **Edit messages**, **Attachments**, **Regenerate response**) and, on API touchpoints, the [API key](/operational-guides/api-access#give-an-application-its-own-touchpoint-key) |
 | **Models** | System prompt, models, [reasoning, generation limits and response verification](/operational-guides/touchpoint-generation), title, sentiment and topic generation, and suggested questions |
 | **Sources** | The knowledge the assistant reads, and whether it [may change it](#let-the-assistant-change-a-knowledge) |
-| **Tools** | The MCP tools the assistant may call, when they need confirmation, and how long they may take |
+| **Tools** | The tools the assistant may call, when they need confirmation, and how long they may take |
 | **Skills** | The [skills](/operational-guides/agent-skills) the assistant can use |
 | **Memory** | [Memory and long conversations](/operational-guides/touchpoint-memory) |
 | **Test runs** | [Replays of past conversations](/operational-guides/test-touchpoint-changes) against a change |
 
-Changes are saved with **Save** at the bottom of the panel, and **Undo** discards them. Without **Update** on **Touchpoints**, the form is read-only and has no **Save**.
+Select **Save** at the bottom of the panel to keep your changes, or **Undo** to discard them. Without **Update** on **Touchpoints**, the form is read-only and has no **Save**.
 
 ## Edit the system prompt
 
@@ -80,135 +84,60 @@ Use this to decide whether someone must sign in before they can talk to the assi
 2. Turn it on to let people start a conversation without signing in, or leave it off to require sign-in.
 3. Save the touchpoint.
 
-:::note
-Turn on **Allow anonymous access** only for a touchpoint meant to be reached without sign-in, such as a public help assistant.
-:::
+Turn it on only for a touchpoint meant for the public, such as a help assistant on your website.
 
 ## Let the assistant change a knowledge
 
 By default an assistant only reads the knowledge attached to it. For an assistant whose job is to keep records up to date (logging a request, updating a customer, filing a document), you can let it write as well, one knowledge at a time.
 
 1. Open the touchpoint's **Sources** tab.
-2. On the knowledge you want the assistant to maintain, switch on **Can change records**.
+2. On the knowledge you want the assistant to maintain, turn on **Can change records**.
 3. Read the confirmation and select **Allow changes**.
 
-The change applies at once, without the touchpoint's **Save**. The assistant can then create and update records, move them between collections and create collections in that knowledge, but never delete anything. Each change it makes shows the assistant's name, and people working in the knowledge are told when records have been changed so they can reload. Switch **Can change records** off to take the right back; no confirmation is needed.
+The change applies at once, without the touchpoint's **Save**. The assistant can then create and update records, move them between collections and create collections in that knowledge, but never delete anything. Each change it makes shows the assistant's name, and people working in the knowledge are told when records have been changed so they can reload. Turn **Can change records** off to take the right back; no confirmation is needed.
 
 :::warning[Anyone who can use the assistant can ask for changes]
-The permission belongs to the assistant, not to the person chatting. Everyone who can reach the touchpoint can ask it to change records: people in the chat, applications calling its [API or MCP endpoint](/operational-guides/api-access) and, on a public touchpoint, anonymous visitors. Only someone who can edit the knowledge can switch this on, and it is off by default.
+The permission belongs to the assistant, not to the person chatting. Everyone who can reach the touchpoint can ask it to change records: people in the chat, applications calling its [API or MCP endpoint](/operational-guides/api-access) and, on a public touchpoint, anonymous visitors. Only someone who can edit the knowledge can turn this on, and it is off by default.
 :::
 
 The default touchpoint has no such switch: there, the assistant changes records only within the permissions of the person chatting.
 
-## Work with tools
+## Choose the tools the assistant can use
 
-The **Tools** tab is where you choose which capabilities the assistant can call. Tools are optional: a touchpoint can only offer tools that an installed MCP server exposes (for example the **Rational Knowledge - RAG Query Server** extension), so see [Manage extensions](/operational-guides/manage-extensions) if you need to install one. The tab groups the touchpoint's tools in a nested view:
+Tools let the assistant act beyond answering from its knowledge, for example searching a Knowledge or querying a database. They come from installed [extensions](/operational-guides/manage-extensions), and a touchpoint needs none.
 
-- One **card per MCP server**, with the number of its configurations.
-- Under each server, its configurations. A configuration is a named, reusable set of settings (parameters and sources) for that server.
-- Each configuration expands to show the tools added under it, listed as **alias · tool name · description**. A tool's menu has **Edit tool** and **Remove tool**.
+1. Open the touchpoint's **Tools** tab.
+2. Open **Add tool...** and select a tool. Tools are grouped by the extension that provides them.
+3. In the **Add tool** dialog, optionally change the **Alias** and **Description** the assistant sees.
+4. For each parameter, choose who sets it: **Auto** lets the assistant decide while it answers, **Manual** fixes a value you enter, and **Default** keeps the extension's value. A parameter that names a Knowledge shows a list of Knowledges to pick from.
+5. Select **Confirm**, then **Save** the touchpoint.
 
-A configuration that has no tools yet is marked **Unused**, and only then can you delete it from its menu.
-
-### Reading the two dropdowns
-
-Two pickers at the bottom of the tab add tools. Both group their options by MCP server, with the extension's icon.
-
-- **Add tool...** lists the tools under each server. For example, the **Rational Knowledge - RAG Query Server** extension appears as a **RAG MCP server** group with tools such as `rag_query_simple`, `get_resource` and `execute_query`.
-- **Add MCP server configuration...** offers **Add new configuration** first, then the existing configurations of each server.
+To change or take away a tool, use **Edit tool** or **Remove tool** in its menu.
 
 ## Decide when a tool needs confirmation
 
-Which of the assistant's tool calls a person has to approve first is set at the top of the **Tools** tab, under **When to ask for confirmation**: *"Before running a tool, the assistant can ask the user to confirm."*
+At the top of the **Tools** tab, **When to ask for confirmation** sets which tool calls a person must approve first.
 
-1. In the **Tools** tab, open the **When to ask for confirmation** dropdown.
+1. Open the **When to ask for confirmation** dropdown.
 2. Choose the policy for this touchpoint:
    - **Never: tools run without asking**
    - **Smart: only for sensitive tools (recommended)**. The default: read-only tools run straight through, sensitive ones wait.
    - **Always: ask before every tool**
 3. Save the touchpoint.
 
-Under **Smart**, what counts as sensitive is set per tool. Each tool row carries a **Sensitive** badge you can select to add or remove, whatever the current policy is. The change is saved at once, without the touchpoint's **Save**. Hovering the badge tells you where the current answer comes from: your own override (*"You marked this tool as sensitive."*) or the MCP server's declaration (*"Declared as sensitive by the MCP server."*, *"Not declared as sensitive by the MCP server."*).
+Under **Smart**, each tool row has a **Sensitive** badge. Select it to mark the tool sensitive or not on this touchpoint; the change applies at once. Until you do, the tool follows what its extension declares.
 
-When a gated call comes up, the chat pauses and shows an approval card above the composer; the tool runs only once the user approves it. A touchpoint registered as a high-risk application in [Governance](/operational-guides/governance) asks for confirmation on every tool call, whatever policy you choose, and the tab says so.
-
-:::note[The server's annotation is only a default]
-An MCP server declares its own tools read-only or destructive, and Rational AI follows that declaration until you say otherwise. Once you have selected a tool's **Sensitive** badge on this touchpoint, your choice is what counts, including after an extension update changes what the server declares.
-:::
+When a call needs approval, the chat pauses on an approval card until the user approves it (see [Approve tool calls](/operational-guides/approve-tool-calls)). A touchpoint registered as a high-risk application in [Governance](/operational-guides/governance) asks before every tool call, whatever policy you choose.
 
 ## Set how long a tool may take
 
-An MCP tool that never answers would otherwise leave the conversation waiting. Every tool call has a time limit: when it runs out, the call is reported to the assistant as failed and the conversation carries on.
+When a tool call runs out of time, the assistant is told the call failed and carries on.
 
-1. In the **Tools** tab, find **How long a tool may take**, above the MCP servers.
-2. Enter a limit in **seconds**, or leave it empty for the default of 120 seconds. The maximum is 600.
+1. In the **Tools** tab, find **How long a tool may take**.
+2. Enter a limit in seconds, or leave it empty for the default of 120 seconds. The maximum is 600.
 3. Save the touchpoint.
 
-The limit applies to every MCP server on the touchpoint. To give one slow server more time (or less), set **Tool call time limit** in that server's configuration dialog; leave it empty to follow the touchpoint's limit.
-
-:::note[A tool that keeps timing out stops the answer]
-One slow call is only a failed step. If the tool runs out of time on every attempt, the answer stops with *"Generation stopped: the tool "…" ran out of time on every attempt."* and a **Regenerate response** button. That's the moment to raise the limit for that server, or to look at why it is slow.
-:::
-
-## Add a single tool
-
-Reach for this when you want one specific capability with parameters tuned exactly how you like.
-
-1. In the **Tools** tab, open the **Add tool…** dropdown and select a tool from its MCP server group.
-2. In the **Add tool** dialog, optionally change the **Alias** and **Description** the assistant sees. If the server has more than one configuration, choose the **Configuration**.
-3. Set each parameter's mode with its **Auto** / **Manual** / **Default** dropdown. **Default** inherits the configuration's value, **Auto** lets the assistant decide at answer time, and **Manual** lets you fix the value yourself.
-4. To undo a change to a parameter, use the button next to its mode dropdown (*"Revert parameter to default."*). It is disabled while the parameter is already on **Default**.
-5. Select **Confirm**.
-
-### Fill a Manual parameter from the conversation
-
-A **Manual** parameter doesn't have to be a fixed literal. It can reference a value carried on the conversation, resolved at the moment the tool is called:
-
-- `${userStore.<key>}`: a value from the conversation's **user store**.
-- `${system.<key>}`: a value from its **system store**, which is set when the conversation is created.
-
-The two stores differ in who can write and read them. The system store is set on the server when the conversation is created, and no tool exposes it: prefer it for anything sensitive. The user store is written by the client and can be read back with the `get_user_context` tool. It is the only option for an integration that can't influence how the conversation is created, and a value placed there is only as protected as that client keeps it.
-
-:::warning[This is how you pass a value the model must not choose]
-A parameter set to **Manual** (or **Default**) is stripped from the tool schema the model is shown. The model never sees it, so it cannot set it, alter it, or be talked into changing it. The value is substituted after the model has decided to make the call.
-
-That makes it the right mechanism for the caller's identity, a tenant reference, or a capability issued by the host: anything where letting the model supply the value would be the vulnerability.
-
-Having the assistant read a value with a tool like `get_user_context` and pass it back as an argument routes that value through the model, which is the exposure Manual parameters exist to avoid. If a value matters for authorization, put it in a Manual parameter that reads the system store.
-:::
-
-## Bulk-add a configuration's tools
-
-When you trust a configuration's defaults and want everything it offers, add all of its tools in one action instead of picking them one by one. There are two entry points:
-
-- **Pick a configuration** in the **Add MCP server configuration…** picker to add all of its tools at once.
-- Select **Add tools** in a configuration's menu (the three vertical dots). It appears only while the configuration has tools you haven't added.
-
-Each tool is created with no parameter overrides, so it inherits the configuration and tool defaults. Any required field that has no default falls back to LLM **Auto**, exactly as if you had added the tool individually and left its defaults untouched.
-
-When the bulk-add finishes, a message confirms the result, for example *"Added 2 tools"*.
-
-:::note[What gets skipped]
-Tools already on the touchpoint are skipped. If a configuration has no tools, or all of them are already added, nothing is created and a message says so. If some tools fail, the message reports how many were added and how many failed, and the added ones are kept.
-:::
-
-## Add a new MCP server configuration
-
-Create a configuration when you want a named, reusable set of settings for a server, for example one configuration pointed at a specific data source, ready to drop tools into.
-
-1. In **Add MCP server configuration...**, select **Add new configuration**.
-2. In the **New MCP server configuration** dialog, choose the **MCP server**.
-3. Enter the **Configuration name**.
-4. Optionally set a **Tool call time limit** for this server.
-5. Fill in the collapsible **Params** and **Sources** sections, then select **Save**.
-
-## Point a tool at a specific Knowledge
-
-Some tools take a knowledge-reference parameter (`knowledgeId` / `knowledge_id`, or a list in `knowledgeIds` / `knowledge_ids`) to say which Knowledge they should act against. Rather than asking you to paste a raw ID, this parameter shows a **searchable knowledge dropdown**.
-
-1. In the **Add tool** dialog, find the knowledge-id parameter.
-2. Set its mode to **Manual** to choose the Knowledge yourself. **Auto** lets the assistant choose, and **Default** uses the configuration's value.
-3. Open the dropdown and filter by name to find the Knowledge you want. Knowledges are shown by name and stored by their ID.
+If a tool runs out of time on every attempt, the answer stops with *"Generation stopped: the tool "…" ran out of time on every attempt."* and a **Regenerate response** button. Raise the limit, or find out why the tool is slow.
 
 ## Next steps
 

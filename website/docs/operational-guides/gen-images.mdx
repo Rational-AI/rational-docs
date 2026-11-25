@@ -7,7 +7,7 @@ audience: [user]
 
 # Generate images with Gen
 
-A marketing team that needs a dozen on-brand visuals a week shouldn't have to re-explain the brand to an image model every time. **Gen** is Rational AI's area for generated content: you start from a **template** that already knows the brand's colors, fonts, style and preferred model, describe what you want in a sentence, and refine the result until it's right. Every attempt is kept, so you can step back to any of them.
+**Gen** is Rational AI's area for generated content. To make an image, you start from a **template** that already knows the brand's colors, fonts, style and preferred model, describe what you want in a sentence, and refine the result until it's right. Every attempt is kept, so you can step back to any of them.
 
 :::note[What is a Gen template?]
 A **template** is a saved starting point for a kind of image: the image model to use, its settings (aspect ratio, size, quality and so on), a generation prompt, and a brand style (colors, typography, reference images and a style prompt). Starting from a template means you only describe the subject; the template supplies everything that should be the same every time. Administrators manage templates under **Settings** → **Gen** (see [Configure Gen](/operational-guides/configure-gen)).
@@ -21,7 +21,7 @@ A **template** is a saved starting point for a kind of image: the image model to
 
 ## Open Gen
 
-Select the **Gen** tab in the top navigation. Gen has five tabs, each with its own gallery: **Photo & Video** for images, **Text**, **Slides** and **Canvas** for [documents](/operational-guides/gen-documents), and **Social** for [social posts](/operational-guides/social-studio). Despite its name, **Photo & Video** generates images only. The document and social tabs are available to administrators only, so other users can generate images and nothing else.
+Select the **Gen** tab in the top navigation. Gen has five tabs, each with its own gallery: **Photo & Video** for images, **Text**, **Slides** and **Canvas** for [documents](/operational-guides/gen-documents), and **Social** for [social posts](/operational-guides/social-studio). **Photo & Video** generates images only. The document and social tabs are available to administrators only, so other users can generate images and nothing else.
 
 The first time you open Gen, a guided tour walks you through the galleries and creates a throwaway image draft to show you the editor; it deletes the draft when it's done. Replay it at any time with the **Guide** button in the header.
 
@@ -51,9 +51,7 @@ The configuration panel next to the image has two views:
 
 Turn on **Use fixed seed** when you want to change one thing (the prompt, say) and keep everything else about the image the same: the same seed with the same settings produces a very similar picture.
 
-:::note[You only see settings the model supports]
-Image models differ in what they can be asked for: one offers five aspect ratios and a seed, another three sizes and a transparent background. Gen draws only the controls the selected model declares, so every option you see is one the model will honour. Switching to another model re-picks any value the new model can't draw. The model's capabilities, including how many reference images it accepts, are described in the [AI Model Registry](/operational-guides/ai-model-registry-features).
-:::
+Gen shows only the settings the selected model supports, and switching models re-picks any value the new model can't use. How many reference images a model accepts is set in the [AI Model Registry](/operational-guides/ai-model-registry-features).
 
 Changing the model in **Advanced** leaves the template behind: the editor then says the session no longer belongs to a template, and the brand settings you had stay as they were.
 
@@ -74,7 +72,7 @@ Administrators can also turn a session that works into something reusable: **Sav
 
 A failed generation says so in place of the image, with the reason, for example *"The model returned 1 image(s) of the 2 requested."*, or the error the provider sent back. When there's no specific reason you'll see *"Try again or choose another model."* If an earlier image is on screen, a newer failure appears as a banner above it, so you don't lose what you had.
 
-Two other messages are worth knowing:
+Other messages:
 
 - *"An image is already being generated. Wait for it to finish."* A session generates one image at a time.
 - *"This generation is taking longer than expected."* Select **Refresh status** to check again.
@@ -86,9 +84,11 @@ Back in **Photo & Video**, generations are grouped by date. From a card's menu y
 - **Filters** narrows the gallery to **Favorites only**, a **Folder**, or a **Period** (**Today**, **Last 7 days**, **Last 30 days**).
 - **Folders** lists your folders with how many images each holds; use **New folder** to add one, and a folder's menu to **Download**, **Rename** or **Delete** it.
 
-:::note[Every image is labeled as ai-generated]
-Each image Gen produces carries an embedded marker saying a model made it, which stays with the file after you download it. See [How generated images declare they were made by AI](/operational-guides/generated-image-provenance).
-:::
+## Images are marked as AI-generated
+
+Every image Gen produces, including the ones a chat creates through Gen, carries a standard metadata label saying a model made it, along with the model's name. The label is written into PNG and JPEG files when they are saved, so it stays with the file after you download or share it. Search engines and social platforms read this label when they tag content as AI-generated.
+
+The label states what the file is; it does not prove that nobody changed the file since, and anyone can remove it. It is not a signed C2PA provenance record, so it does not meet a requirement that asks for C2PA specifically.
 
 ## Next steps
 

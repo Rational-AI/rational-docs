@@ -7,7 +7,7 @@ audience: [user, builder]
 
 # Conversations
 
-The **Conversations** module is where staff review the conversations people have with your [touchpoints](./settings/touchpoints.mdx). Whenever someone talks to a touchpoint, the messages are captured here as a single conversation, with a title, topics and sentiment when those analyses are turned on. Use this module to monitor activity, review what your assistants are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
+**Conversations** is where staff review the conversations people have with your [touchpoints](./settings/touchpoints.mdx). Whenever someone talks to a touchpoint, the messages are captured here as a single conversation, with a title, topics and sentiment when those analyses are turned on. Use it to monitor activity, review what your assistants are saying, step into a live chat when a user needs a human, and audit individual messages down to the raw tool calls.
 
 The page appears for anyone whose role has access to **Conversations**. A role that grants every conversation shows them all; otherwise you see only your own. Taking over a conversation, starring, generating a summary, refreshing labels and recording an oversight decision are for administrators. Chats with the agents of the [Agents](./Agents.mdx) section aren't listed here: they stay in **Agents** → **Chats**.
 
@@ -19,8 +19,6 @@ Open the **Conversations** section from the top navigation bar of the Control Ro
 * **Filter** the table from the **Filters** panel, and **sort** it by the **Last message** column.
 * **Open a conversation** to read the full thread and take action.
 * **Select rows** with their checkboxes to run bulk **Actions**. Hold **Shift** and select a second checkbox to select every row in between.
-
-The selection survives sorting and filter changes, so the bulk **Delete** confirmation always states exactly how many conversations it removes.
 
 ## The conversations table
 
@@ -37,7 +35,7 @@ Each row summarizes a single conversation across the following columns:
 
 Rows that need human oversight are tinted in the warning color, so they stand out without a column of their own.
 
-The title, topics and sentiment shown here are produced by the automatic analyses you configure in [Conversations settings](./settings/conversations.mdx). Administrators can re‑run them with **Refresh labels**, which is useful after you change your topic list or models in settings.
+The title, topics and sentiment shown here are produced by the automatic analyses you configure in [Conversations settings](./settings/conversations.mdx). Administrators can re-run them with **Refresh labels** after changing the topic list or models in settings.
 
 ## Filter the table
 
@@ -56,7 +54,7 @@ Select any row (or choose **Open** from the row's **Actions** menu) to open the 
 The conversation header gives you several tools:
 
 * **Search** within the conversation.
-* **Star** to add the conversation to your favorites.
+* **Add to favourites** (the star icon) adds the conversation to your **Favourites**.
 * **Details** opens the details drawer (see [The details drawer](#the-details-drawer)).
 * **More conversation actions** holds **Advanced mode**, **Copy conversation ID** and **Delete conversation**. **Advanced mode** shows the technical detail behind each reply: tool calls and their responses, retrieval steps and any errors the assistant encountered. Use it to understand exactly what happened behind a reply.
 
@@ -76,13 +74,13 @@ While the assistant is in charge of a conversation, a bar replaces the message b
 
 While you hold the conversation, **Hand back to the AI** returns it to the assistant.
 
-For the full procedure, see [Take over an AI-managed conversation](/operational-guides/chat-experience#take-over-an-ai-managed-conversation).
+For the full procedure, see [Take over an AI-managed conversation](/operational-guides/conversations#take-over-an-ai-managed-conversation).
 
 ## Conversations flagged for human oversight
 
 When your oversight rules decide a conversation warrants human attention, it's marked **Needs review** in the table and a review panel appears at the end of the **Details** drawer. If the drawer is closed, a **Needs review** button in the conversation header opens it. The panel is where an administrator records what they concluded (**Leave as it is** or **I stepped in**) with an optional note.
 
-Recording a decision resolves the flag, so the conversation leaves the review queue. The panel stays, collapsed to a single line naming the conclusion, so the review is still visible afterwards rather than vanishing along with the flag.
+Recording a decision resolves the flag, so the conversation leaves the review queue. The panel stays, collapsed to a single line naming the conclusion.
 
 The rules that raise the flag are configured in [Conversations settings](./settings/conversations.mdx); the decision belongs on the conversation itself. For the full workflow, see [Record oversight decisions](/operational-guides/human-oversight).
 

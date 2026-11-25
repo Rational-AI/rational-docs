@@ -1,144 +1,71 @@
 ---
 sidebar_position: 17
-sidebar_label: Build touchpoint skills
+sidebar_label: Use skills in chat
 type: how-to
-audience: [builder, developer]
+audience: [user, builder]
 ---
 
-# Build and run touchpoint skills
+# Use skills in chat
 
-A skill is a reusable capability you hand to the AI: a folder of instructions and helper files the model can read and run on demand. Instead of explaining the same multi-step task every time, you package it once, and the model reaches for it whenever a conversation calls for it. This guide takes you from installing a skill to running one in chat, and optionally previewing the web pages a skill produces in Canvas.
+A skill is a packaged way of doing one kind of job, such as building a spreadsheet, writing a Word document or designing a web page. When you ask for that job in a chat, the assistant follows the skill's instructions and hands you the finished file. This guide shows how to use skills in **Chat** and in a Knowledge's chat, and how a builder makes them available.
 
-:::note[What is a skill?]
-A skill is a [Hermes-compatible](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) folder containing a `SKILL.md` manual (the instructions, written in plain Markdown with a short YAML header) plus any helper files it needs. Skills are shipped by [extensions](/operational-guides/manage-extensions) and attached to a [touchpoint](/operational-guides/configure-touchpoints), the assistant that answers a conversation. In chat, the model sees only each skill's name and description. It pulls the full manual, and runs any commands in an isolated sandbox, only when it decides the skill is the right fit.
-
-This guide covers skills on a touchpoint. The agents of the [Agents](/cr/Agents) section get skills from the same extensions, through **Agents** → **Library** (see [Browse the library](/operational-guides/agent-computers#browse-the-library)).
-:::
+Skills belong to a [touchpoint](/operational-guides/configure-touchpoints), the assistant that answers a conversation, so you see the skills of the touchpoint your chat runs on. They are separate from the skills of the agents in the [Agents](/cr/Agents) section, which are granted in **Agents** → **Library** (see [Build an agent](/operational-guides/create-an-agent#browse-the-library)).
 
 ## Prerequisites
 
-Before you start, make sure you have:
+- **To use skills:** a chat whose touchpoint has at least one skill.
+- **To add skills to a touchpoint:** a role with **Update** on **Touchpoints**. Skills come from [extensions](/operational-guides/manage-extensions), which an administrator installs.
 
-- **Permissions:** the admin role to install extensions, and a role with **Update** on **Touchpoints** to bind skills.
-- **The sandbox extension installed**: the **Agent Skills** extension (`agent-skills`), which provides the sandboxed `skill_exec` runtime (the safe, isolated environment where skill commands run). Its seven bundled skills are `docx`, `pptx`, `xlsx` and `pdf` for documents, `web-design` for [Canvas](#preview-web-pages-in-canvas) pages, and `humanizer` and `plan`.
-- **A skills-providing extension**: any extension that ships skills under `skills/<name>/SKILL.md`.
-- **A touchpoint**: an existing touchpoint to bind skills to (see **Settings** → **Touchpoints**).
+## Ask for a job
 
-## Install a skill-providing extension
-
-Skills arrive inside extensions, so getting a new skill means installing the extension that carries it.
-
-1. Go to **Settings** → **Extensions** and select **Browse**.
-2. Select the extension.
-3. Select **Install**. Each skill the extension ships becomes available to your touchpoints, and appears in the **Skills** tab's picker.
-
-Uninstalling the extension later removes its skills.
-
-:::note[The sandbox must be installed]
-The `skill_exec` runtime is provided by the **agent-skills** extension, and skills can only run if it's present. Install it first; its default sandbox configuration is created automatically on install.
-:::
-
-## Bind skills to a touchpoint
-
-Installing a skill makes it available; binding it to a touchpoint makes it usable. A skill only appears in chat once it's bound to the touchpoint that conversation runs against.
-
-1. Go to **Settings** → **Touchpoints** and open the touchpoint you want to use.
-2. Open the **Skills** tab (next to **Tools**). Its table lists the skills already enabled, with their **Skill**, **Description**, **Version** and **Extension**.
-3. In the **Add skill** picker, where skills are grouped by the extension that ships them, select the skills you want.
-4. To stop offering a skill later, select **Remove skill** in its row's menu. The touchpoint stops using it; the skill itself stays installed.
-
-:::note[Tools take precedence]
-If a touchpoint tool has the same name as one of the skill tools (`skill_view`, `skill_exec`), the touchpoint tool wins. Binding a skill has no per-binding configuration: you add or remove it.
-:::
-
-## Run a skill from chat
-
-Once a touchpoint has bound skills, you don't have to invoke them by name. You ask for what you want in plain language, and the model decides whether a skill fits and how to run it. When you already know which skill you want, you can [pick it yourself](#pick-a-skill-with-) with `/`.
-
-### How the model reaches a skill
-
-The model is given a short list of each bound skill's **name and description**, plus virtual tools it calls on its own:
-
-- **`skill_view`** reads the full `SKILL.md`, a helper file, or a directory listing, so the model loads the detail only when it needs it, not all at once.
-- **`skill_exec`** runs a command for the skill in an isolated, per-conversation workspace seeded with a copy of the skill folder, under a timeout. It returns the exit code, stdout/stderr, and the list of files produced. Files attached to the conversation are placed in the same workspace.
-- **`knowledge_file`**, offered only when the chat can reach a Knowledge, copies a file from the Knowledge into the skill's workspace.
-
-### Trigger a run
-
-1. Open a chat against your touchpoint.
-2. Ask for something a bound skill covers, for example "build a household budget spreadsheet."
-3. The model reads the manual via **`skill_view`**, then does the work via **`skill_exec`**. You don't name the skill or the tools; the model selects them.
+You don't have to name a skill. Ask for what you want in plain language, for example *"build a household budget spreadsheet"*, and the assistant decides whether one of the touchpoint's skills fits and runs it.
 
 ### Pick a skill with `/`
 
-Leaving the choice to the model works most of the time. When it doesn't, or when you know which skill the job needs, name the skill yourself.
+When you know which skill the job needs, choose it yourself.
 
-1. In an empty composer, type `/`. A **Skills** menu lists the skills enabled on the chat's touchpoint, each with its `/name`; when the composer is wide enough, the highlighted skill's description appears beside the list.
+1. In an empty composer, type `/`. A **Skills** menu lists the skills enabled on the chat's touchpoint, with a description of the highlighted one.
 2. Keep typing to filter by name, then pick a skill with a click, **Enter** or **Tab**. **Esc** closes the menu.
 3. The skill becomes a chip at the start of the message. Type your request after it and send.
 
 The same list is under **Skills** in the composer's **+** menu, which keeps any text you have already typed. To drop the skill before sending, select the chip's **✕**, or press **Backspace** in an empty composer.
 
-:::note[Picking a skill steers the model, it doesn't bypass it]
-The message goes out as `/<skill> <your request>`, and Rational AI tells the model that you chose that skill: read its instructions first and follow them. The model still does the work, so your request after the chip is what it acts on. If the menu says *"No skills are enabled for this chat"*, the touchpoint has no skills bound; users who can open **Settings** → **Extensions** find **Manage skills** in the **+** menu's **Skills** submenu.
-:::
+Picking a skill tells the assistant to follow that skill for this request; your text after the chip is still what it acts on. If the menu says *"No skills are enabled for this chat"*, the touchpoint has no skills yet.
 
 ### Follow what happened
 
-The run appears in the same collapsed line as the model's reasoning, above the answer (for example *"Thought for 12s, used skill xlsx, 4 steps"*). Open it to read the steps in plain words, in order: reading the skill instructions, writing and running the script, saving a file, and any attempt that failed and was retried. Identical steps are merged (*"twice"*, *"3 times"*), and a log toggle shows the raw output when you need it.
+The skill's work appears in the collapsed line above the answer, for example *"Thought for 12s, used skill xlsx, 4 steps"*. Open it to read the steps in plain words: reading the skill instructions, writing and running a script, saving a file, and any attempt that failed and was retried. Files the skill made along the way are listed under the working files, each with **Download**.
 
-Intermediate files the skill produced while working are listed in that timeline under **Working files**, each with a **Download** button; empty files are hidden unless you choose **Show all, including empty**.
-
-The file you asked for gets a card under the answer, with its type, name and size, and these actions:
+The file you asked for gets a card under the answer, with its type, name and size:
 
 - **Open** shows it in the [Canvas](#preview-web-pages-in-canvas) panel, for types that can be previewed.
 - **Download** saves it.
-- **Save to knowledge** files it into a [Knowledge](/operational-guides/create-knowledge), so it doesn't stay buried in the chat.
+- **Save to knowledge** files it into a [Knowledge](/operational-guides/create-knowledge).
 
-:::note[A failed run says so, and offers a way out]
-If the skill stops before producing its file, the answer shows *"No file was created."* instead of an empty card. From there you can open **Technical details**, **Retry**, or **Change model**, which is useful when a smaller model struggles to follow a long skill manual.
-:::
-
-### Create a PDF
-
-The `pdf` skill in **Agent Skills** builds PDF documents (letters, notices, reports, one-page summaries) with headings, paragraphs, tables and images, on A4 by default. Ask for *"a PDF"* or pick `/pdf`, and the skill checks the finished file (page count and opening text of each page) before handing it over.
-
-:::note[It creates PDFs; it doesn't edit them]
-The skill writes new documents. It has no steps for merging, splitting or filling in existing PDFs. If you'll want to edit the text afterwards, ask for a Word document (`docx`) instead.
-:::
-
-:::note[What a skill can run]
-The sandbox runs each command with `bash`, under a time limit of 120 seconds by default and 600 at most. It provides the core shell utilities, Python with preinstalled document libraries (python-pptx, python-docx, openpyxl, pypdf, pillow and reportlab), and Node.js. There is no package manager and nothing can be installed at run time, so a skill can only use what the sandbox already has.
-:::
+If the skill stops before producing its file, the answer says *"No file was created."* From there you can open **Technical details**, retry, or select **Change model**, which helps when a smaller model struggles with a long skill.
 
 ## Preview web pages in Canvas
 
-When a skill builds a self-contained web page, **Canvas** renders it live in a panel beside the conversation, so you see the result instead of only a downloadable file.
+When a skill builds a web page or an SVG image, **Canvas** shows it live in a panel beside the conversation.
 
-### Open Canvas for a request
+1. In the composer's **+** menu, select **Canvas** before sending. A **Canvas** chip appears in the composer.
+2. Ask for a web page or a design.
+3. When the page is ready, the Canvas panel opens on its own.
 
-1. In the composer's **+** menu, select **Canvas** before sending. A **Canvas** chip appears in the composer. While the answer is generated, the panel shows a loading spinner, so generation never looks frozen.
-2. Ask for a web page or UI. The **web-design** skill builds a single self-contained `index.html` (or an `image.svg`).
-3. On completion, the skill step shows an artifact **card** (icon, skill, size, **Open**) and the Canvas panel opens automatically.
+The assistant also uses Canvas for web and UI requests sent without the chip. The **Canvas** item appears only when the touchpoint has **Canvas mode** turned on.
 
-:::note[You can leave the toggle off]
-Auto-detect also works with **Canvas** off: the model is told to prefer a web-design skill for web and UI requests. Select **Canvas** when you want to be sure a request is treated as a Canvas page. The **Canvas** item appears only when the touchpoint has **Canvas mode** turned on.
-:::
+In the panel, switch between **Preview** and **Code**, move between versions with **Previous version** and **Next version**, and use **Fullscreen**, **Refresh**, **Copy**, **Download** and **Close**. Versions are saved in your browser. The preview runs only in the chat: someone reviewing the conversation in [Conversations](/operational-guides/conversations) sees no Canvas panel.
 
-### Work with the result
+## Add skills to a touchpoint
 
-In the Canvas panel you can:
+1. Make sure the extension that ships the skill is installed (**Settings** → **Extensions**). Uninstalling an extension removes its skills.
+2. Go to **Settings** → **Touchpoints** and open the touchpoint.
+3. Open the **Skills** tab. Its table lists the skills already enabled, with their **Skill**, **Description**, **Version** and **Extension**.
+4. In the **Add skill** picker, where skills are grouped by extension, select the skills you want.
 
-- Switch between **Code** and **Preview** (a sandboxed preview iframe and a read-only code view).
-- Move between snapshots with **Previous version** and **Next version**. Versions are saved in your browser, so they survive a page refresh.
-- Resize the panel, or use **Fullscreen**, **Refresh**, **Copy**, **Download** and **Close**. It also closes automatically when you switch chats.
-
-:::note[The preview runs only in the chat]
-The preview is sandboxed and opens only in the Canvas panel of **Chat** and of a Knowledge's chat. The staff [Conversations](/operational-guides/conversations) view has no Canvas panel, so a generated page doesn't run when someone reviews the conversation there.
-:::
-
+To stop offering a skill, select **Remove skill** in its row's menu. The skill stays installed for other touchpoints.
 
 ## Next steps
 
-- [Configure touchpoints](/operational-guides/configure-touchpoints): the other tabs of the touchpoint the skills are bound to.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): the other tabs of the touchpoint the skills belong to.
 - [Manage extensions](/operational-guides/manage-extensions): install, update and remove the extensions that ship skills.

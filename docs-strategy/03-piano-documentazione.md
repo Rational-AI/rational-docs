@@ -99,10 +99,11 @@ Aggiornata il 24/11/2026. Lo studio del codice di `rational-ai` ha mostrato che 
 |---|---|---|---|
 | **0 · Fondamenta** | ✅ PR #100 | `STYLE.md`, `CLAUDE.md`, template, Vale in CI, pulizia di file inutili, duplicati e stub | G1, G6, G7 |
 | **1 · Coerenza** | ✅ PR #102 | Terminologia, inglese US, percorsi UI, callout nativi, titoli, riempitivi e AI slop; `type:` e `audience:` nel front matter; Vale bloccante | G2–G5, G8 |
-| **2 · Struttura** | ✅ PR #103 | Sidebar per pubblico, i moduli in Get started, release notes mensili, troubleshooting hub, `llms.txt` e `.md`, data di aggiornamento; correzione di introduzioni e prerequisiti verificate sul codice; zero em dash; regola "studia il codice prima di scrivere" | G9–G11, G15, G16 |
+| **2 · Struttura** | ✅ PR #103 | Sidebar per pubblico, i moduli in Get started, troubleshooting hub (le release notes mensili sono state tolte il 25/11: per ora il team non le pubblica), `llms.txt` e `.md`, data di aggiornamento; correzione di introduzioni e prerequisiti verificate sul codice; zero em dash; regola "studia il codice prima di scrivere" | G9–G11, G15, G16 |
 | **3 · Accuratezza** | in corso | Corpo delle pagine verificato sul codice, home e footer allineati alla sidebar (footer chiaro, a quattro colonne), pagine mancanti per funzioni rilasciate (presentazioni di Apps, Gen e Marketplace; guide per Teams, Slack, WhatsApp; client MCP; estensione per browser) | parte di G19 |
 | **4 · Contenuti enterprise** | da fare, serve engineering | Sicurezza e architettura, identità e accesso, quickstart per ruolo, errori e limiti. Prima va deciso cosa si può dire pubblicamente su identità e API | G12–G14, G18 |
 | **5 · Crescita** | da fare | API reference generata (serve uno spec OpenAPI), galleria di casi d'uso, playbook di rollout, pagine dei connettori uniformi, decisione sull'italiano | G17, G19–G22 |
+| **6 · Screenshot** | da fare | (1) Analisi di dove uno screenshot aiuta davvero a capire, pagina per pagina, e solo lì. (2) Cattura con zoom sulla parte rilevante (un menu = ritaglio del menu, non la schermata intera); se la UI ha campi vuoti o elementi rotti si sistemano temporaneamente prima dello scatto e poi si ripristinano; cattura eseguita da agenti su Haiku 5.5. (3) Inserimento nelle pagine e consegna dell'elenco delle pagine per una revisione una a una. (4) La PR finale include immagini prima/dopo delle sezioni cambiate col nostro lavoro (sidebar, home, footer, pagine riscritte) | — |
 
 ## 6. Metriche (da misurare ogni mese)
 

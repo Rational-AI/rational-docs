@@ -10,14 +10,14 @@ audience: [builder]
 An agent is only as good as its profile. The instructions say what the job is and how to do it; the tools say what it can touch; **Ask me first** says where it must stop and wait for you. This guide walks through the profile field by field, using **Quinn**, a quotation analyst who prices requests for quotation and must never write an offer without a person looking at it first.
 
 :::note[The profile drives every run]
-Whatever starts the agent (a task, a chat message, a schedule or a webhook), the run starts from the profile: its instructions become the system prompt, its model answers, and it can use only the tools and Knowledge bases listed there. Changing the profile changes the next run, not the ones already going.
+Whatever starts the agent (a task, a chat message, a schedule or a webhook), the run starts from the profile: its instructions become the system prompt, its model answers, and it can use only the tools granted there and the Knowledge it gives access to. Changing the profile changes the next run, not the ones already going.
 :::
 
 ## Prerequisites
 
 - **Access to the Agents section**: see [Rational Agents](/cr/Agents#prerequisites).
 - **A text-generation model** in the [AI Model Registry](/operational-guides/ai-model-registry-features), or the platform Agents default.
-- **Optional: extensions with tools.** Tools from installed [extensions](/operational-guides/manage-extensions) can be granted to an agent; the [Library](./agent-computers#browse-the-library) lists them all.
+- **Optional: extensions with tools.** Tools from installed [extensions](/operational-guides/manage-extensions) can be granted to an agent; the [Library](#browse-the-library) lists them all.
 
 ## Create the profile
 
@@ -49,7 +49,7 @@ Agents verify their own work before they finish: a run that produced a file, a r
 
 **Knowledge access** lists the Knowledge bases you can use. Select the ones this agent may search, and turn on **Can change** on a base to let the agent also add, edit and delete its resources, views and files. Quinn gets *Customer quotes*, the base with the price list, the plant capabilities and the quoting manual.
 
-If you select none, the agent can search every Knowledge base you can use. Select at least one when you want to keep an agent inside a boundary. A run that works on a project's task or chat can also use that project's Knowledge (see [Group tasks in projects](./agent-tasks#group-tasks-in-projects)).
+If you select none, a run can search every Knowledge base that the person who started it can use. Select at least one to keep the agent inside a boundary. A run that works on a project's task or chat can also use that project's Knowledge (see [Group tasks in projects](./agent-tasks#group-tasks-in-projects)).
 
 ### Give it secrets
 
@@ -69,23 +69,13 @@ Under **Model**, keep **Platform default for agents** or choose a specific text-
 
 ### Built-in tools
 
-**Tools** are the file and shell tools the agent uses on its computer. Start from a preset and adjust:
+**Tools** are the file and shell tools the agent uses on its computer: `read`, `write` and `edit` for files, `grep`, `find` and `ls` to search and list them, and `bash` to run commands. Start from a preset and adjust:
 
 | Preset | Tools |
 |--------|-------|
 | **Coding** (the default) | `read`, `bash`, `edit`, `write` |
 | **Read-only** | `read`, `grep`, `find`, `ls` |
 | **All** | all seven |
-
-| Tool | What it does |
-|------|--------------|
-| `read` | Read a file (line ranges, images) |
-| `bash` | Run a shell command |
-| `edit` | Edit a file via find/replace |
-| `write` | Create or overwrite a file |
-| `grep` | Search file contents (regex) |
-| `find` | Find files by name or glob |
-| `ls` | List a directory |
 
 An amber dot marks the selected tools that write or execute (`bash`, `edit`, `write`). Knowledge access is independent of these tools: an agent with no built-in tools can still search the Knowledge it was given.
 
@@ -94,8 +84,6 @@ An amber dot marks the selected tools that write or execute (`bash`, `edit`, `wr
 **Extensions & tools** lists every tool from the installed extensions, grouped by extension, with a search box and a *granted* count. Select the tools this agent may call. A tool whose extension shows *Needs setup* (typically a missing connector) cannot be selected until that is fixed. A tool marked *Blocked by your admin* cannot be used, and one marked *Admin approval required* always asks first.
 
 When the agent has email or messaging tools, two more fields appear: **Sends from** picks the Email channel its emails go out from (the replies come back to it), and **Writes on** picks the Telegram or WhatsApp channel it writes to people on. Without a mailbox the agent only drafts emails; without a messaging channel it sends no messages.
-
-Tools reach the agent under the name shown in the catalog, `<extension>_<tool>`; the same name is what **Ask me first** matches.
 
 ### Ask me first
 
@@ -111,16 +99,14 @@ At the bottom of the panel, a summary puts the three levels side by side:
 An agent can do anything its tools allow, as often as it decides to, on everything in its Knowledge scope. Give it only the tools the job needs, and put every tool that sends, writes or deletes under **Ask me first** until you have seen enough runs to trust it. See [Approve what the agent wants to do](./agent-runs#approve-what-the-agent-wants-to-do).
 :::
 
-## Give it a face
-
-**Identity** is purely cosmetic: it shapes the generated avatar so each agent is recognizable at a glance. Choose a **Chassis** (Hally, Pico, Orbit, Robo), a **Colour** and a **Screen**, then move the four sliders: **Rigor** changes the eyes, **Autonomy** the antenna, **Verbosity** the mouth, **Creativity** the sheen of the casing. None of this changes behavior; the instructions do.
+**Identity** (chassis, color, sliders) only shapes the agent's avatar. It does not change how the agent behaves.
 
 ## Decide what starts it
 
 **Trigger & execution**: *"What starts a run, whether it runs in the cloud, and whether you can steer it mid-run."*
 
 - **Trigger**: **Manual** (the default, used by tasks, chats and **Run now**), **Schedule**, **API**, **Webhook**, **GitHub event**, **New email**, **New file** or **Record changed**. Every trigger except **Manual** is covered in [Schedule and trigger agents](./agent-routines).
-- **Where**: keep **Cloud**. Runs execute on the agent's computer in the Rational AI cloud.
+- **Where**: keep **Cloud**. Runs execute on the agent's computer, which the platform runs for you.
 - **Mode**: **Autonomous** agents work through the job on their own; **Interactive** agents are meant to be steered with messages while they work.
 
 A run has 20 minutes to finish. Interactive agents, and agents with at least one tool under **Ask me first**, get six hours, so a run can wait for a person without timing out.
@@ -153,6 +139,21 @@ From here:
   style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
 />
 
+## Browse the library
+
+**Agents** → **Library** lists every tool and skill you can grant to an agent.
+
+<img
+  alt="The Library page with 26 tools from five extensions: C-Parts Desk, Graphify Query, Rational Knowledge RAG Query Server, Vega charts and RationalAI Widgets"
+  src={require('@site/static/img/screens/agents-library.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+- **Tools**: grouped by extension. Expand one to see its tools under the names the agent sees, which are also the names **Ask me first** matches. **Search a tool…** filters them, and **Read-only tools** keeps only those that change nothing. A *Needs setup* badge means the extension still needs a connector.
+- **Skills**: the skills the installed extensions register for agents, with **Search a skill…**. These are not the skills people pick with `/` in Chat, which are set on a touchpoint (see [Use skills in chat](/operational-guides/agent-skills)).
+
+Installing an extension gives its tools to nobody. A tool runs only for an agent that has it under **Extensions & tools**, and only on the Knowledge that agent can reach. To add tools, [install an extension](/operational-guides/manage-extensions).
+
 ## Troubleshooting
 
 | Symptom | What to check |
@@ -160,5 +161,5 @@ From here:
 | **Run now** is grayed out | The profile has no instructions. Open **Edit** and write them. |
 | The run fails with *"No text-generation model is available — add one to the registry first."* | There is no text-generation model in the AI Model Registry. Add one, or connect a subscription. |
 | The run fails with *"The configured Agents default model is unavailable."* | The **Agents model** default points to a model that was removed or withdrawn. Pick another under **Default models**, or set a model on the agent. |
-| The agent says a tool is not available | The tool is not granted on the profile, or its extension needs setup. Check **Extensions & tools** in the profile and the badges in the [Library](./agent-computers#browse-the-library). |
+| The agent says a tool is not available | The tool is not granted on the profile, or its extension needs setup. Check **Extensions & tools** in the profile and the badges in the [Library](#browse-the-library). |
 | Saving fails on the name | Agent names are unique. Pick a different one. |

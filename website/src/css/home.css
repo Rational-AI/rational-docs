@@ -198,6 +198,12 @@
 	width: 100%;
 }
 
+/* The search plugin collapses its input to an icon-sized box on small screens;
+   in the hero it must always fill the pill, or the placeholder reads "Sea". */
+.homeSearch .navbar__search .navbar__search-input {
+	width: 100% !important;
+}
+
 .homeSearch .navbar__search-input {
 	width: 100%;
 	height: 100%;
@@ -278,12 +284,9 @@
 		box-shadow 0.2s ease;
 }
 
-a.homeCard:hover {
+.homeCard:hover {
 	border-color: var(--ifm-color-primary);
-	transform: translateY(-3px);
 	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-	text-decoration: none;
-	color: inherit;
 }
 
 .homeCard--disabled {
@@ -373,6 +376,15 @@ a.homeCard:hover {
 	color: var(--ifm-color-emphasis-800);
 }
 
+.homeCard__listItem:hover {
+	color: var(--ifm-color-primary);
+	text-decoration: none;
+}
+
+.homeCard__listItem:hover .homeCard__listIcon {
+	color: var(--ifm-color-primary);
+}
+
 .homeCard__listIcon {
 	flex: 0 0 auto;
 	color: var(--ifm-color-emphasis-500);
@@ -390,7 +402,7 @@ a.homeCard:hover {
 	text-underline-offset: 3px;
 }
 
-a.homeCard:hover .homeCard__cta {
+.homeCard__cta:hover {
 	gap: 6px;
 }
 

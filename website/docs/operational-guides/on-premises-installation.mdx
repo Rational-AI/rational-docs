@@ -1,0 +1,65 @@
+---
+title: Your on-premises installation
+sidebar_label: Your on-premises installation
+description: What Rational AI installs on your machine, how it updates itself every night, and what is left for your administrators to do.
+type: concept
+audience: [admin]
+---
+
+# Your on-premises installation
+
+An on-premises installation is Rational AI running on a machine in your network, an NVIDIA DGX Spark or an Ubuntu server, instead of on Rational AI's cloud. Rational AI installs the machine for you and keeps it up to date. Your administrators work in the Control Room, like on the cloud.
+
+## What you get
+
+The whole platform runs in containers on that one machine, and your data stays on it. Rational AI sets it up with:
+
+- **A public address** such as `https://control-room.<yourcompany>.rational.is`, with a trusted certificate. See [Reach an installation through the Rational AI Tunnel](./tunnel).
+- **The license**, already activated. See [License and activation](./license).
+- **The nightly update**, turned on.
+
+The installation starts **with no models**. A Knowledge needs an embedding model, and Chat needs a text-generation model, before they work. An administrator adds and deploys them in **Settings** → **AI Model Registry**, on the machine's own GPU. See [Run models on your own servers](./run-models-on-premise).
+
+## How it updates itself
+
+Every night at 03:00 the machine checks for a newer release of Rational AI and installs it. If there is none, nothing happens. Every update goes through the same steps:
+
+1. **Backup.** The application stops for a moment while a copy of all its data is taken. The machine keeps the three newest copies.
+2. **Checks before.** A set of checks runs on the release still installed.
+3. **Update.** The new release is downloaded and started.
+4. **Checks after.** The same checks run on the new release.
+5. **Rollback, if needed.** If the update fails, or a check that passed before now fails, the machine goes back to the previous release with the data from the backup taken in step 1.
+
+The checks come from your active extension packages: a package can ship tests that call its tools as specific users and expect the answers those users should get, without changing any data. A check that already failed before the update doesn't stop it, since the new release didn't cause it. With no package that ships checks, nothing runs and the update goes ahead.
+
+When an update fails or is rolled back, Rational AI is alerted straight away.
+
+:::note[Need the update at another time, or paused?]
+Ask Rational AI. The nightly update can be moved to a specific release or turned off, for example during an audit or a busy week.
+:::
+
+## What your administrators do
+
+| Task | Where |
+|------|-------|
+| Add and deploy models | **Settings** → **AI Model Registry**. See [Run models on your own servers](./run-models-on-premise). |
+| Set an off-site backup | **Settings** → **Backup**. See [Back up and restore](./backup-and-restore). |
+| Turn the tunnel on or off | **Settings** → **Tunnel**. See [Rational AI Tunnel](./tunnel). |
+| Check or renew the license | **Settings** → **Licence**. See [License and activation](./license). |
+| Add users and roles | See [Manage roles and users](./roles-and-users). |
+
+:::warning[Set an off-site backup as soon as the installation holds data you care about]
+The backups taken before each update stay on the same disk as the installation. They protect you from a bad update, not from a lost or broken machine.
+:::
+
+Anything that needs the machine's own shell (reinstalling, moving to a new domain, restoring onto a replacement machine) is done by Rational AI. Contact your Rational AI contact for it.
+
+## What the installation sends to Rational AI
+
+The machine reports its health once a minute and its license use once a day, and sends error reports. None of it carries your conversations, documents or user details. For the full list, see [What an installation sends to Rational AI](./data-sent-to-rational-ai).
+
+## Next steps
+
+- [Add your first models](./run-models-on-premise#add-your-first-models)
+- [Set up the off-site backup](./backup-and-restore)
+- [Start as an administrator](./quickstart-admin)

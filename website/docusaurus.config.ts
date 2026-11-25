@@ -28,7 +28,13 @@ const config: Config = {
 		[
 			"@docusaurus/plugin-client-redirects",
 			{
-				redirects: [{ from: "/operational-guides/agents", to: "/cr/Agents" }],
+				redirects: [
+					{ from: "/operational-guides/agents", to: "/cr/Agents" },
+					{
+						from: "/operational-guides/install-and-update",
+						to: "/operational-guides/on-premises-installation",
+					},
+				],
 			},
 		],
 		[
@@ -49,26 +55,6 @@ const config: Config = {
 					"cr/**",
 					"concepts/**",
 				],
-			},
-		],
-		[
-			// Release notes: a blog instance, so they get dates and RSS/Atom feeds
-			"@docusaurus/plugin-content-blog",
-			{
-				id: "release-notes",
-				path: "release-notes",
-				routeBasePath: "release-notes",
-				blogTitle: "Release notes",
-				blogDescription: "What changed in Rational AI, release by release.",
-				blogSidebarTitle: "All releases",
-				blogSidebarCount: "ALL",
-				showReadingTime: false,
-				onInlineAuthors: "ignore",
-				onUntruncatedBlogPosts: "ignore",
-				feedOptions: {
-					type: ["rss", "atom"],
-					title: "Rational AI release notes",
-				},
 			},
 		],
 	],
@@ -119,7 +105,6 @@ const config: Config = {
 					// Remove this to remove the "edit this page" links.
 					editUrl:
 						"https://github.com/Rational-AI/rational-docs/edit/main/website/",
-					showLastUpdateTime: true,
 				},
 				blog: false,
 				// blog: {
@@ -215,8 +200,8 @@ const config: Config = {
 				// 	position: "left",
 				// 	label: "Docs",
 				// },
-				// Navbar search hidden — search lives in the homepage hero.
-				// (Full-text search is still reachable via /search and Cmd/Ctrl+K.)
+				// The search box is injected by the local-search theme; navbar.css hides it
+				// only on the home page, where the hero has its own.
 				// {
 				// 	type: "search",
 				// 	position: "left",
@@ -245,7 +230,7 @@ const config: Config = {
 					items: [
 						{ label: "Quickstart", to: "/operational-guides/get-started" },
 						{ label: "The modules", to: "/cr/Chats" },
-						{ label: "Concepts", to: "/concepts/Generative-AI" },
+						{ label: "Concepts", to: "/concepts/Touchpoint" },
 					],
 				},
 				{
@@ -258,7 +243,7 @@ const config: Config = {
 						},
 						{
 							label: "Administration & security",
-							to: "/operational-guides/install-and-update",
+							to: "/operational-guides/on-premises-installation",
 						},
 						{ label: "Developers", to: "/operational-guides/api-access" },
 					],
@@ -267,11 +252,8 @@ const config: Config = {
 					title: "Help",
 					items: [
 						{ label: "Troubleshooting", to: "/troubleshooting" },
-						{ label: "Release notes", to: "/release-notes" },
-						{
-							label: "Release notes RSS",
-							href: "pathname:///release-notes/rss.xml",
-						},
+						{ label: "Error messages", to: "/reference/error-messages" },
+						{ label: "Limits and quotas", to: "/reference/limits" },
 					],
 				},
 				{

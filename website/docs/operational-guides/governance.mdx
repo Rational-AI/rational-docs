@@ -7,16 +7,17 @@ audience: [admin]
 
 # Monitor usage, cost, and audit logs
 
-Once your AI is in use, you'll want to know how much it's being used, what it's costing you, how fast it responds, and exactly what happened on any given request. The **Governance** area gives you all of that in one place, and it tells you first what needs your attention.
+Use the **Governance** module to see how much your AI is used, what it costs, how fast it responds, and what happened on any single request.
 
 :::note[What is governance?]
 Governance is a top-navigation area, open to administrators only, that reports on your AI's usage and holds the decisions about which applications may call your models. What each person may do is set by their [role](/operational-guides/roles-and-users), not here. Governance is part of every plan, not a license module like Knowledge or [BI](/operational-guides/rational-bi). It has five tabs: **Overview** for what needs attention and the headline figures, **Usage** for the charts over time, **Applications** for the inventory of what is calling your AI, **Audit log** for the request-by-request record, and **Costs** for the cost ledger.
 :::
 
-Before going further, two terms show up everywhere in this area:
+These terms appear throughout this module:
 
 - An **inference** is a single call to a model: one question in, one answer out.
-- A **token** is the small chunk of text that models read and write, and the unit they're billed by. A short sentence is a handful of tokens; a long document is thousands. (For more on the models behind these calls, see [LLMs](/concepts/LLMs).)
+- A **token** is the small chunk of text that models read and write, and the unit they're billed by. A short sentence is a handful of tokens; a long document is thousands.
+- The **proxy** is the single entry point every model request passes through, from chats, agents, touchpoints and direct API calls. Rational AI records each request there.
 
 ## Prerequisites
 
@@ -25,7 +26,7 @@ Before going further, two terms show up everywhere in this area:
 
 ## Start from the Overview
 
-Open **Governance**. You land on the **Overview** tab, which reads top to bottom: what needs action, then the headline figures, then the context behind them.
+Open **Governance**. The **Overview** tab opens first.
 
 1. If anything is wrong, a **Needs attention** panel sits at the top, collapsed to one line that counts the problems, for example *1 unregistered application · 412 unpriced requests*. Select **Show** to list them. Each problem has a button that takes you straight to the fix:
 
@@ -40,9 +41,7 @@ Open **Governance**. You land on the **Overview** tab, which reads top to bottom
 3. Beside the featured chart, check **Cost composition**, the costs recorded for the period by source with their total, and **Governance health**: **Cost coverage** (how much of your usage Rational AI can price), **Unpriced requests**, **Error rate**, and **Cache hit rate**.
 4. At the foot, **Top applications** lists the busiest applications by requests, with their status, environment, tokens, and cost. **View all** opens the **Applications** tab.
 
-:::note[Needs attention only appears when something is wrong]
-When every application is registered, every request is priced, and nothing is failing, the panel is not shown at all. An Overview that opens on the totals is a healthy one.
-:::
+The **Needs attention** panel appears only when something needs action.
 
 ## Follow trends on the Usage tab
 
@@ -61,24 +60,17 @@ Filters live in the **Filters** panel, which stays closed until you open it.
 2. Set the filters you need. The panel lists only the filters that change the open tab:
    - **Touchpoints**, **Models**, and **Applications**: up to four of each. They apply to **Overview**, **Usage**, and the request list in **Audit log**. **Touchpoints** and **Models** exclude each other, and **Models** and **Applications** are not available for conversational usage.
    - **Period**: *Last 24 hours*, *Last 7 days*, *Last 30 days* (the default), *Last 3 months*, *Last 6 months*, *Last year*, or *All*. It applies to every tab except **Costs**.
-3. Select **Apply**. Nothing reloads until you do, so you can change several filters and pay for a single refresh.
+3. Select **Apply**. Nothing reloads until you do.
 
 To start over, select **Clear**. It resets the filters of the open tab and leaves the others for the tabs that use them.
 
-These filters are how you turn a broad overview into a real answer. Want to know which touchpoint is driving spend? Set **Period** to the last 30 days and filter one touchpoint at a time while you watch the **Costs** chart on **Usage**. Suspect one model is slow? Filter to it and check **Average time to first token**.
+For example, to find which touchpoint drives spend, filter one touchpoint at a time and watch the **Costs** chart on **Usage**.
 
 ## Inspect individual requests in the audit log
 
-When you need to look past the averages at a single request, open the **Audit log** tab. It lists every model request made through the Rational AI proxy, newest first, within the current filters.
+The **Audit log** tab lists every model request made through the proxy, newest first, within the current filters.
 
-:::warning[Audit log is not the audit trail]
-Two similarly named surfaces answer different questions:
-
-- **Audit log** (this tab): one row per **model request**, with the model, tokens, cost, and speed. It's about *the AI doing work*.
-- **[Audit trail](/operational-guides/audit-trail)** (**Settings** → **Audit trail**): one row per **access or change to a record**, such as who opened a conversation or who changed a dashboard. It's about *people reaching data*.
-
-If someone asks you to evidence who looked at a record, this tab is not the answer. The audit trail is.
-:::
+The **Audit log** has one row per model request. Who opened or changed a record is in the [audit trail](/operational-guides/audit-trail) (**Settings** → **Audit trail**).
 
 1. Choose which requests to list with the switch at the top: **All**, **Errors** (requests that did not end with a success status, as the **Error rate** counts them), or **Unpriced** (requests without a complete cost, as **Unpriced requests** counts them).
 2. Read the columns:
@@ -87,33 +79,27 @@ If someone asks you to evidence who looked at a record, this tab is not the answ
    - **Application**: the [governed application](/operational-guides/govern-ai-applications) the request was attributed to, or **Direct** when it carried no application.
    - **Tokens**: the count in, then out (input → output).
    - **Costs**: what the request cost, in the reporting currency. Hover over it to see the original amount and the exchange rate used.
-   - **TTFT**: *time to first token*, how long until the first piece of the answer came back. This is what a user experiences as the wait before a response starts.
+   - **TTFT**: *time to first token*, how long until the first piece of the answer came back.
    - **E2E latency**: *end-to-end latency*, the total time from request to the full response.
    - **Speed**: generation speed in tokens per second.
    - **Finish**: why the response ended: **Completed**, **Truncated**, **Tool calls**, or **Filtered**.
-3. Select a column header to sort. Sorting by **Costs** surfaces your most expensive requests; sorting by **TTFT** or **E2E latency** brings the slowest ones to the top.
+3. Select a column header to sort.
 4. Select a row to open the request in a panel docked beside the list. The panel groups what was captured:
    - **Request**: the time, the status, and the operation (for example **Chat completion** or **Embedding**).
    - **Source**: the model, application, touchpoint, user, and session.
    - **Usage and cost**: tokens in and out, and the cost. A request with no price reads **Not priced**, with a shortcut to set the model's rate.
    - **Performance**: TTFT, E2E latency, and speed.
-   - **Request body** and **Response body**: the payloads, when the model's tracing recorded them. Otherwise the panel says the payload was not recorded and links to the model's tracing settings.
-
-:::note[Payloads are recorded only when tracing says so]
-A model records request and response payloads only when its tracing settings say so, and by default it never does. How long recorded payloads live is governed by [your retention policy](/operational-guides/data-retention).
-
-The values of credential headers are redacted before a request is written. The header *name* is kept, so you can still see that a request carried an `Authorization` header, but the token itself never reaches the database.
-:::
+   - **Request body** and **Response body**: the payloads, when the model's payload tracing recorded them. By default it doesn't; see [Decide what each model call stores](/operational-guides/data-retention#decide-what-each-model-call-stores).
 
 :::note[TTFT vs E2E latency]
-These two measure different kinds of "slow." A high **TTFT** means the model took a while to *start* answering, and the user stares at a blank screen. A high **E2E latency** with a low TTFT usually means a long answer that streamed steadily. When a touchpoint feels sluggish, check TTFT first.
+A high **TTFT** means the model took a while to start answering. A high **E2E latency** with a low TTFT usually means a long answer that streamed steadily. When a touchpoint feels slow, check TTFT first.
 :::
 
-The list keeps itself current: new requests appear as they are captured, without reloading the page. To take the record elsewhere, select **Export** to download every row that matches your current filters as a CSV. The button is disabled when the filters return nothing to export.
+New requests appear as they are captured, without reloading the page. To take the record elsewhere, select **Export** to download every row that matches your current filters as a CSV. The button is disabled when the filters return nothing to export.
 
 ### Review workflow runs
 
-Switch the **Audit log** from **Requests** to **Workflow runs** to see each run of your [workflows](/operational-guides/create-workflow) in the period, with **Started**, **Status**, **Workflow**, **Duration**, and **Failure**. Select a run to open its details in the docked panel, including the current step and the error code of a failed run.
+Switch the **Audit log** from **Requests** to **Workflow runs** to see each run of your workflows in the period, with **Started**, **Status**, **Workflow**, **Duration**, and **Failure**. Select a run to open its details in the docked panel, including the current step and the error code of a failed run.
 
 The top of this view shows the workflow runtime used this calendar month, against your limit or your plan's allowance. File ingestion, agents, and workflow runs all count toward these minutes. To cap them, enter a number in **Monthly limit, minutes** and select **Save limit**: once the limit is reached, new workflow runs stop. When the plan's minutes are used up, work keeps running at a lower priority.
 
@@ -122,10 +108,6 @@ The top of this view shows the workflow runtime used this calendar month, agains
 The **Costs** tab, titled **Cost ledger**, holds every rate, invoice, and asset that feeds the cost figures. It shows where your costs come from (**Infrastructure runtime**, **Facility and operations**, **Amortised assets**, and **Provider subscriptions**), and has a section for each kind of entry: **Rate history**, **Booked costs**, **Amortised assets**, and **Node pools**.
 
 All governance costs are shown in a single reporting currency, which you choose with **Reported in** at the top right of this tab. See [Govern AI applications](/operational-guides/govern-ai-applications#choose-the-reporting-currency) for how costs are converted.
-
-:::note[Old dashboard and audit log links still work]
-Governance used to open on a **Dashboard** tab next to an **Audit Log** tab. Bookmarks and shared links to those tabs still work: the Dashboard opens **Overview**, and the Audit Log opens the request list in **Audit log**.
-:::
 
 ## Next steps
 

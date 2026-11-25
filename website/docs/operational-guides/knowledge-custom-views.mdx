@@ -1,25 +1,18 @@
 ---
 sidebar_position: 14
-sidebar_label: Custom views
+sidebar_label: Views
 type: how-to
 audience: [builder]
 ---
 
-# Custom views
+# Set up the views of a Knowledge
 
-A [Knowledge](/operational-guides/create-knowledge) ships with two built-in ways to look at its records, the **Graph** and the **Grid**, but those are not the only shapes your data can take. You can save grid layouts and calendars, embed a dashboard, and build your own visualizations of the same records: a map, a card wall, a timeline, a form that asks the assistant. All of them appear in the views panel of the knowledge page, next to the built-ins. This guide covers finding and switching views, turning built-ins on and off, creating views, showing records on a calendar, writing or improving a view's code, and the messages a custom view can exchange with Rational AI.
-
-:::note[What is a view?]
-A view is one way of presenting a Knowledge's records. **Built-in views** (Graph and Grid) come with every Knowledge. **Saved views** keep a layout of a built-in: a [grid view](/operational-guides/knowledge-collections-and-grid#save-and-share-a-grid-view), a calendar, or a [graph view](/operational-guides/knowledge-graph#save-and-share-a-graph-view). **Custom views** are code you or the AI write: each is a small, self-contained page that receives the Knowledge's records and can ask Rational AI for more, save changes, open records or put a question to the assistant. Views belong to the Knowledge, so everyone who can open it sees them.
-:::
+Besides the built-in **Graph** and **Grid**, a [Knowledge](/operational-guides/create-knowledge) can show its records in saved grids, calendars, an embedded dashboard, and custom views written in code by you or the AI, such as a map, a card wall, or a timeline. Views belong to the Knowledge, so everyone who can open it sees them.
 
 ## Prerequisites
 
-Before you start, make sure you have:
-
-- **Update rights on the Knowledge:** creating and editing views needs **Update** on the **Knowledge** row of your role; **Read** is enough to use them. See [Manage roles and users](/operational-guides/roles-and-users).
-- **A Knowledge to work in:** open the **Knowledge** tab from the main navigation and select the **card** for the Knowledge you want to manage.
-- **A few records in the Knowledge:** a view is only as useful as the data it draws, so add some first. See [Collections and grid views](/operational-guides/knowledge-collections-and-grid) or [Manage knowledge resources](/operational-guides/manage-knowledge-resources).
+- **Update** on the **Knowledge** row of your role to create and edit views. **Read** is enough to use them. See [Manage roles and users](/operational-guides/roles-and-users).
+- Some records in the Knowledge. See [Collections and grid views](/operational-guides/knowledge-collections-and-grid) or [Add and manage content](/operational-guides/manage-knowledge-resources).
 
 ## Switch between views
 
@@ -27,7 +20,7 @@ On the knowledge page, the header shows a button with the current view's icon an
 
 1. Select the view button to open the views panel.
 2. Find a view under **Pinned**, **Default** (the built-in **Graph** and **Grid**) or **Views**, or type in the search box. Use the arrow keys and **Enter** to open one without the mouse.
-3. Select the star beside a view, or press **Shift+Enter**, to pin it. You can pin up to five views per Knowledge; pinned views appear as tabs under the header, in the order you drag them into, and follow you across devices.
+3. To keep a view as a tab under the header, select the star beside it. See [Pin the views you use most](/operational-guides/knowledge-collections-and-grid#pin-the-views-you-use-most).
 
 <img
   src={require('@site/static/img/screens/knowledge-views-dropdown.png').default}
@@ -37,31 +30,17 @@ On the knowledge page, the header shows a button with the current view's icon an
 
 *The view switcher, with **Files** kept separate.*
 
-Each view has an icon: a page for custom views, a table for grids, a calendar, a gauge for dashboards, a graph for graph views. When the AI writes or improves a view, it also picks an icon that matches what the view shows.
-
-### See the graph fullscreen
-
-A large graph is hard to read in a pane sharing the screen. The **Fullscreen** toggle is in the [graph toolbar](/operational-guides/knowledge-graph#open-the-graph), at the bottom left of the canvas, with the zoom controls. Select it again, or press **Escape**, to leave fullscreen; leaving the graph also exits it. The other views don't have a fullscreen mode.
-
-## Spot recently added Knowledges
-
-A Knowledge that has never been edited since it was created carries a **New** tag in the list, so a fresh import stands out among the ones you've already worked on.
-
-:::note[The tag goes away when you edit, not when time passes]
-**New** is shown while a Knowledge's last-updated time still matches its creation time, so it disappears the first time the Knowledge changes, however long that takes, and persists indefinitely on one nobody has touched.
-
-Read it as *untouched since import* rather than *created recently*.
-:::
-
 ## Manage views in settings
 
-Everything about views is configured on the **Views** tab of the Knowledge settings. Open the Knowledge, go to its settings, and select the **Views** tab. You'll see these sections:
+Open the Knowledge's settings and select the **Views** tab. It has these sections:
 
 - **Built-in views**: **Graph view** and **Grid view**, each with an on/off toggle.
 - **Custom views**: the views you have created, including saved grid and calendar views, each with an on/off toggle.
 - **Dashboard to embed**: a [Rational BI](/operational-guides/rational-bi) dashboard to show inside the Knowledge (**Select a dashboard**).
 
-Each row's menu has **Set as default view**, to choose the view the Knowledge opens on (marked **Default**), and **Preview**, to open it on the knowledge page. A view must be turned on to become the default.
+### Choose the view a Knowledge opens in
+
+Open the **⋮** menu of a view and select **Set as default view**. The view must be turned on, and it then shows a **Default** label. The choice applies to everyone who opens the Knowledge. If you turn off a built-in view that is the default, the other built-in view becomes the default, as long as it is on.
 
 <img
   src={require('@site/static/img/screens/knowledge-views-settings.png').default}
@@ -69,32 +48,25 @@ Each row's menu has **Set as default view**, to choose the view the Knowledge op
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The **Views** settings tab: built-in toggles above, custom views below.*
+*The **Views** settings tab, with the built-in and custom views.*
 
 ### Turn a built-in view on or off
 
-Hiding a built-in you never use keeps the views panel short.
-
-1. On the **Views** tab, find **Graph view** or **Grid view** under **Built-in views**.
-2. Use its **toggle** to enable or disable it. Disabled views disappear from the knowledge page immediately.
-
-:::note[The files view stays]
-Toggling the built-ins only affects the views panel. The **Files** button is fixed and is never part of the views list, so your input files are always one click away.
-:::
+Under **Built-in views**, turn **Graph view** or **Grid view** on or off. A view you turn off disappears from the knowledge page at once. The **Files** button isn't a view, so it always stays.
 
 ## Create a custom view
-
-A custom view starts from a name and an engine.
 
 1. On the **Views** tab, select **+** in the **Custom views** header.
 2. Give the view a **Name**.
 3. Choose an **Engine**:
-   - **Plain HTML + JavaScript**: one self-contained HTML document. The simplest option.
+   - **Plain HTML + JavaScript**: one self-contained HTML document.
    - **React (JSX)**: a React component named `View`, compiled for you in the browser.
    - **Web Component**: a custom element you host yourself, pointed at by a URL.
    - **BI dashboard**: one of your [Rational BI](/operational-guides/rational-bi) dashboards, shown read-only inside the Knowledge.
    - **Grid view**: a saved grid with no code; you set its columns and filters on the knowledge page. You can also create one from the grid with **Save as view**.
 4. Select **Create**. Code views open in the editor with a small starter template.
+
+A code view receives the Knowledge's records and can read more, save changes, open records, or ask the assistant, always with the permissions of the person looking at it.
 
 <img
   src={require('@site/static/img/screens/knowledge-view-create.png').default}
@@ -103,10 +75,6 @@ A custom view starts from a name and an engine.
 />
 
 *Creating a custom view: pick a name and an engine.*
-
-:::note[How a view receives its data]
-An HTML or React view receives a `rational:data` message with the **knowledge** (name and description), the first page of its **resources** (up to 50, with category, tags and attributes) and, if the code mentions it, the **graph** (nodes and edges). It is sent again whenever the data reloads. For more records, or for a filtered or grouped set, the view asks for them with the messages described in [Let a view talk to Rational AI](#let-a-view-talk-to-rational-ai). A web component receives the same data as a `data` property.
-:::
 
 ## Show records on a calendar
 
@@ -118,17 +86,15 @@ A calendar view places records on days and hours by one of their date attributes
 4. Choose the **Date** that places each record, and optionally an **End**, a **Colour** (a single select attribute whose options color the records) and **Solid when checked** (a checkbox, such as *Published*, that shows checked records solid and the others outlined).
 5. Select **Create**.
 
-The calendar switches between **Day**, **Week** and **Month**. With update rights you can drag a record to another day or time, stretch it to change its end, double-click it to tick its checkbox, or select an empty slot to add a record there. Select a record to edit or delete it. The color options appear as chips with their counts, to filter what the calendar shows.
+The calendar switches between **Day**, **Week**, and **Month**. With update rights you can drag a record to another day or time, stretch it to change its end, double-click it to tick its checkbox, or select an empty slot to add a record there. Select a record to edit or delete it. The color options appear as chips with their counts, to filter what the calendar shows.
 
-The gear above the calendar opens **Calendar settings**, where you can change the **Start** and **End** attributes, **Colour by** and **Solid when**, what a record is called (*"post"* and *"posts"* rather than *"event"*), which records it shows and whether it **Opens on** a day, week or month. Changes apply to everyone who opens the view.
+Select the gear (**Calendar settings**) to change the **Start** and **End** attributes, **Colour by** and **Solid when**, what a record is called (*"post"* and *"posts"* rather than *"event"*), which records it shows and whether it **Opens on** a day, week or month. Changes apply to everyone who opens the view.
 
 :::note[A calendar shows up to 1000 records at a time]
 If the span on screen holds more, the calendar says so: narrow the view's filter, or switch to a shorter span. Records with a date and no time show as all-day; records with a time and no end last an hour.
 :::
 
 ## Edit and save a view's code
-
-Expanding a custom view reveals its code editor and a save bar.
 
 1. On the **Views** tab, select a custom view's **chevron** to expand it.
 2. Edit the code in the **editor** (it has syntax highlighting and line numbers).
@@ -151,13 +117,11 @@ If you'd rather describe a view than write it, let the model draft the code for 
 3. Select **Improve view**. The model rewrites the code for the view's engine, using the Knowledge's real attributes, categories and sample records as context, and keeps everything your request doesn't touch.
 4. **Review** the code in the editor, then select **Save** to keep it. The AI never saves on its own.
 
-:::note[The AI uses your default model]
-**Improve with AI** calls the workspace's default conversational model. If no such model is configured, the action reports a clear error instead of failing silently: configure a model and try again.
-:::
+**Improve with AI** uses the workspace's default conversational model. If none is configured, the action shows an error.
 
-## Rename, preview, copy or delete a view
+## Rename, preview, copy, or delete a view
 
-Each custom view's **⋮** (kebab) menu holds the rest of its actions:
+Each custom view's **⋮** menu holds the rest of its actions:
 
 - **Rename**: change the view's name.
 - **Preview**: jump to the view rendered on the knowledge page.
@@ -166,7 +130,7 @@ Each custom view's **⋮** (kebab) menu holds the rest of its actions:
 
 ## Use a custom view
 
-Once a view is enabled it behaves exactly like a built-in: open it from the views panel and it renders in the main area, fed with the Knowledge's live records.
+Once a view is turned on, open it from the views panel like a built-in view. It draws the Knowledge's live records.
 
 <img
   src={require('@site/static/img/screens/knowledge-custom-view-runtime.png').default}
@@ -176,54 +140,9 @@ Once a view is enabled it behaves exactly like a built-in: open it from the view
 
 *A custom view running on the knowledge page, drawing the Knowledge's own records.*
 
-If the Knowledge has collections but they are still empty, the view shows *"Fill in the tables to see this view"* with a link to each collection, so whoever opens it knows where to add records or [import a spreadsheet](/operational-guides/import-knowledge#import-records-from-excel-or-csv). A collection can also use a custom view as the page of each of its records: see [Open a collection's records in a custom view](/operational-guides/knowledge-collections-and-grid#open-a-collections-records-in-a-custom-view).
+If the Knowledge has collections but they are still empty, the view shows *"Fill in the tables to see this view"* with a link to each collection, so whoever opens it knows where to add records or [import a spreadsheet](/operational-guides/import-knowledge). A collection can also use a custom view as the page of each of its records: see [Open a collection's records in a custom view](/operational-guides/knowledge-collections-and-grid#open-a-collections-records-in-a-custom-view).
 
-:::note[Where custom views run]
-HTML and React views run in a sandboxed frame, isolated from the rest of the app, so a view can load libraries it needs without affecting your session. The view follows the app's light or dark theme through a `data-theme` attribute on its root element. Web components are loaded directly and are meant for elements you host and trust.
-:::
-
-## Let a view talk to Rational AI
-
-An HTML or React view can do much more than draw the data it was given. It talks to the app with `window.parent.postMessage`, and the app answers with a message of its own. Add a `requestId` to a request and the answer carries the same one, so the view can tell replies apart. Every request runs with the permissions of the person looking at the view.
-
-### Read and save records
-
-| Request | What it does | Answer |
-| --- | --- | --- |
-| `rational:schema` | Describes the Knowledge's columns (with their kind, options and links), its collections, and whether the viewer can edit. | `rational:schema:result` |
-| `rational:resources:list` | Pages through records, optionally by text, categories and tags (up to 100 per page). | `rational:resources:result` |
-| `rational:resources:semantic-search` | Finds records by meaning rather than exact words. | `rational:resources:result` |
-| `rational:resources:query` | Runs a grid query (filters, sorting, groups, summaries, collection) on the server, as a grid view does. | `rational:resources:result` |
-| `rational:resources:save` | Creates and updates records in one all-or-nothing batch. | `rational:resources:result` |
-
-Errors come back as `rational:resources:error` (or `rational:schema:error`). A save from a viewer who can't update the Knowledge is refused with *"This view is read-only"*; a save on a record someone else changed meanwhile is refused with the IDs that changed, so the view can reload them.
-
-### Ask the assistant, the chat or a decision model
-
-| Request | What it does |
-| --- | --- |
-| `rational:assistant:ask` | Sends a question to the Knowledge's assistant and returns its reply to the view (`rational:assistant:result`), for example to summarize the records on screen. |
-| `rational:chat:ask` | Puts a question in the chat panel beside the view and opens it, so the user follows the answer there. It continues the open conversation; add `newChat: true` to start a new one. |
-| `rational:decision:ask` | Asks a decision model for a structured decision and returns it (`rational:decision:ask:result`). Without a model named in the request, it uses the **Decision model** chosen among the [default models](/operational-guides/ai-model-registry-features). |
-| `rational:tools:list`, `rational:tool:call` | Lists and calls the tools enabled on the Knowledge's assistant. |
-
-### Open records and other views
-
-| Request | What it does |
-| --- | --- |
-| `rational:resource:open` | Opens a record in a drawer beside the view, optionally on its **Details**, **Attributes** or **History** tab, scrolled to one attribute, or with a file shown next to it. |
-| `rational:record:details` | Opens a record's standard details. |
-| `rational:view:open` | Switches to another view of the Knowledge by name, optionally on one record. |
-
-The app also tells the view when to refresh: `rational:resources:changed` when a record was changed in the drawer beside it, and `rational:record:open` when the record the view should show changes.
-
-### Ask the user to confirm
-
-`rational:dialog:confirm` opens the app's own confirmation dialog, with a `message` and optionally a `header`, button labels and `severity: 'danger'` for a red button. The app answers `rational:dialog:confirm:opened` straight away, then `rational:dialog:confirm:result` with `confirmed: true` or `false`.
-
-:::note[A view can't pass itself off as the app]
-The dialog's title always starts with the view's name, texts are plain and kept short (title up to 120 characters, message up to 1000, buttons up to 40), and a view can't open a second dialog while one is showing or right after the user answered. Use it before actions the user should consciously approve, such as a bulk save.
-:::
+HTML and React views run in an isolated frame, so a view can load the libraries it needs without affecting your session. Web components load directly, so use them only for elements you host and trust.
 
 ## Next steps
 

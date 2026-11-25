@@ -1,0 +1,109 @@
+---
+sidebar_label: Quickstart for administrators
+description: Your first hour as the administrator of a new Rational AI workspace, from the first sign-in to models, people, governance, and retention.
+type: tutorial
+audience: [admin]
+---
+
+# Quickstart for administrators
+
+In about an hour you can take a new Rational AI workspace from empty to ready for your colleagues: models connected, people invited with the right access, rules for what AI applications may do, and a retention policy. Each section links to the full guide, so you can stop at any point and pick up later.
+
+Two sections apply only to an on-premises installation, one that runs on a machine in your network. On the managed cloud, Rational AI applies your plan and backs up your data, so you skip them.
+
+## Prerequisites
+
+- **An administrator account** on the workspace.
+- **For an on-premises installation:** the machine Rational AI installed for you (see [Your on-premises installation](/operational-guides/on-premises-installation)).
+- **For models from a provider:** the provider's API key, for example from OpenAI or Anthropic.
+
+## 1. Sign in and find Settings
+
+1. Open the address of your AI Control Room and sign in with your administrator account.
+2. Select **Settings**, the gear in the top header.
+
+The **Settings** sidebar groups everything this guide uses: **Models**, **Knowledge**, **Capabilities**, **Delivery**, **Governance**, and **Access**. Your own account is at the bottom of the sidebar: select your name, then **Profile settings**. See [Manage your own account](/operational-guides/manage-your-account).
+
+## 2. Activate the license (on-premises only)
+
+A fresh installation is not activated. Chat, Conversations, Governance, and models you connect with your own provider credentials work, but the modules in your plan (Knowledge, Rational BI, Agents, Gen) stay hidden, and the workspace has three seats. Activate before you invite anyone.
+
+1. Go to **Settings** → **Licence**, the last entry of the **Access** group.
+2. Enter your activation code and select **Activate**.
+3. Check the plan, the seats, and the modules the page lists. The top navigation gains the modules at once.
+
+A machine without internet access installs a license file instead. See [Activate the license of an on-premises installation](/operational-guides/license).
+
+## 3. Connect models
+
+Every assistant needs a text-generation model, and every Knowledge needs an embedding model. An on-premises installation starts with none.
+
+1. Go to **Settings** → **AI Model Registry** and select **New**.
+2. Add a model from a provider through a [connector](/operational-guides/configure-connectors), or, on your own servers, an open-source model you deploy on the machine's GPU (see [Run models on your own servers](/operational-guides/run-models-on-premise)).
+3. Repeat until you have at least one text-generation model and one embedding model.
+4. In the **Default models** panel, set the **Conversational model** and the **Embedding model**, then select **Save**.
+
+The defaults are fallbacks: a touchpoint or a Knowledge with a model of its own always uses that model. The panel has defaults for agents, image generation, and decisions too. See [Manage AI models in the registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type).
+
+## 4. Add people and decide what they can do
+
+Access in Rational AI comes from three things:
+
+- **Admin** is a flag, not a role. An administrator has every permission and bypasses the role matrix. Some areas are for administrators only, whatever the roles say: the **Governance** area, **Data retention**, **Audit trail**, **Backup**, the license page, and creating API keys.
+- A **role** is a set of permissions. For each feature row, such as **Knowledge** or **Touchpoints**, it grants actions (**List**, **Read**, **Create**, **Update**, **Delete**, **Use**, **Share**), each for **None**, **All**, **Own**, or **Selected IDs**. A user's permissions are the sum of their roles.
+- A **group** carries no permissions. It decides which items a role with the **Own** scope reaches: share a Knowledge with a group, and every member can use it as their own.
+
+Set up the roles first, so new users get the right access from their first sign-in:
+
+1. Go to **Settings** → **Roles**, select a role, and set the cells of the matrix. See [Configure a role](/operational-guides/roles-and-users#configure-a-role).
+2. Go to **Settings** → **Users** and select **Add**.
+3. Choose how to add people:
+   - **Invite users**: pick one or more roles in **Role**, enter the **Email addresses**, and select **Send invite**. Each address gets an invitation email, valid for 7 days.
+   - **Create user**: enter the name and email address, pick the **Role**, keep the **Temporary password**, and select **Create**. Share the password with the user yourself.
+4. Go to **Settings** → **Groups**, select **New**, and add the members of each team.
+
+In **Role**, **Admin** makes the user an administrator and **User** adds an account with no role. Every enabled user takes a seat of your license, and invitations are refused when no seat is left. Full details: [Manage roles and users](/operational-guides/roles-and-users).
+
+:::tip
+To check a role, create a test user with only that role and sign in as them. Every disabled **Settings** section is a permission the role doesn't have.
+:::
+
+## 5. Decide what AI applications may do
+
+Every call to a model passes through Rational AI, so you decide which applications and models are served before your colleagues build on them.
+
+1. **Register the applications.** Open **Governance**, select the **Applications** tab, and register each application with an owner, a **Status**, and a **Risk tier**. A **Blocked** application, or one with the **Unacceptable** tier, gets no answer. A **High** tier on a touchpoint makes every tool call wait for a person's approval. See [Govern AI applications](/operational-guides/govern-ai-applications).
+2. **Approve models.** In **Settings** → **AI Model Registry**, document and approve the models you allow, then turn on **Require approval** in the **Model approval** panel. From then on, a model nobody approved refuses every request. See [Require approval for models](/operational-guides/govern-ai-applications#require-approval-for-models).
+3. **Gate tool calls.** On each touchpoint's **Tools** tab, **When to ask for confirmation** decides which tool calls a user approves first. The default, **Smart: only for sensitive tools (recommended)**, asks only for tools that change something. See [Approve tool calls before they run](/operational-guides/approve-tool-calls).
+
+The **Governance** area also shows usage, cost, and a per-call audit log. See [Monitor usage, cost, and audit logs](/operational-guides/governance).
+
+## 6. Set how long data is kept
+
+Rational AI keeps model calls and conversations until you set a limit. Every period starts empty, and empty means keep forever.
+
+1. Go to **Settings** → **Data retention**.
+2. Enter a number of days for the periods you want: **Prompt and response bodies**, **Model call records**, and **Closed conversations**.
+3. Save, and come back after an hour: the page header shows **Last sweep** and how many records it removed.
+
+:::danger[Deletion is permanent]
+Records removed by a retention period cannot be recovered. Agree the periods with whoever owns data protection in your organization before you set them.
+:::
+
+Bodies cannot be kept longer than call records, and the page refuses that combination. See [Set how long data is kept](/operational-guides/data-retention).
+
+## 7. Check backups and updates (on-premises only)
+
+An on-premises installation updates itself every night and takes a local backup before each update. That local backup is on the same disk as the installation, so it does not survive a lost machine.
+
+1. Go to **Settings** → **Backup** and set a destination you own: a network share, an S3 bucket, or an FTP or SFTP server.
+2. Select **Test destination**, then **Back up now**, and check that the backup appears in the list.
+
+Restoring is done by Rational AI. See [Back up and restore an on-premises installation](/operational-guides/backup-and-restore) and [Your on-premises installation](/operational-guides/on-premises-installation).
+
+## Where to go next
+
+- **Build the first assistant**: a Knowledge with your content and a chat on top of it. See [Get started with Rational AI](/operational-guides/get-started).
+- **Reach your customers**: connect a touchpoint to Microsoft Teams, Slack, Telegram, or email. See [Manage channels](/operational-guides/manage-channels).
+- **Prove what happened**: governance decisions, deleted users, and who read a conversation are recorded. See [Review the audit trail](/operational-guides/audit-trail).
+- **Hand over to developers**: API keys and the OpenAI-compatible gateway. See [Quickstart for developers](/operational-guides/quickstart-developer).

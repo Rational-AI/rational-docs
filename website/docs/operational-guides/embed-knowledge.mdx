@@ -7,7 +7,7 @@ audience: [builder]
 
 # Embed a Knowledge
 
-A [Knowledge](/operational-guides/create-knowledge) doesn't have to live only inside the Control Room. With the **Embed** feature you can put a Knowledge on any web page as a self-contained widget: visitors browse its records, open the one they need and ask its assistant questions, right there on your site, without signing in. This guide covers configuring the widget on the **Embed** settings tab, choosing what it publishes and how it looks, capping what the public chat can cost, collecting visitor contacts and statistics, and adding the widget to a page or a WordPress site.
+The **Embed** feature puts a [Knowledge](/operational-guides/create-knowledge) on any web page as a self-contained widget. Visitors browse its records, open the one they need, and ask its assistant questions on your site, without signing in.
 
 :::note[What is the embed widget?]
 The embed widget is a public window onto one Knowledge. You decide what it shows (which views, in what order, whether visitors can search, filter or open a record, whether a chat is available) and Rational AI gives you a single `<script>` tag to paste into your site. The widget loads in an isolated frame and talks to your Knowledge through one **embed key**, so no Control Room sign-in is ever required of your visitors. Visitors can't edit your records, even in grids. They can add new ones through the contact form, which writes to the collection you choose, and what their chat costs counts against the **Monthly budget**.
@@ -157,7 +157,7 @@ For **HTML**, the code is a single tag:
 <script src="https://control-room.example.com/embed.js" data-embed="ek-…" data-lang="en" async></script>
 ```
 
-The widget appears exactly where the tag stands. `data-lang` sets the widget's language and starts as your own Control Room language; change it to match the page. Because `embed.js` is served by your Control Room, improvements to the loader reach pages that already carry the tag.
+The widget appears exactly where the tag stands. `data-lang` sets the widget's language and starts as your own Control Room language; change it to match the page.
 
 For **WordPress**, the code is a shortcode for the **Rational AI Observatory** plugin:
 

@@ -5,17 +5,13 @@ type: reference
 audience: [admin, builder]
 ---
 
-# Rational Agents
+# Agents
 
-The Chat answers a question and waits for the next one. An **agent** takes a job and carries it through: it reads, runs commands on its own computer, calls the tools you gave it, writes the result down and checks it before saying it is done. The **Agents** section of Control Room is where you build these agents, hand them work, watch them do it and step in when they need a decision.
+An **agent** takes a job and carries it through on its own: it reads, runs commands on its own computer, calls the tools you gave it, and writes the result. **Agents** is where administrators build these agents, hand them work, follow what they do and approve the actions that need a decision.
 
-This page is the map of the section. Each part has its own guide, linked below.
+<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of Agents" poster="/img/videos/agents.jpg" src="/videos/agents_eng.mp4" />
 
-<video className="doc-video" controls preload="metadata" aria-label="Walkthrough of the Agents section" poster="/img/videos/agents.jpg" src="/videos/agents_eng.mp4" />
-
-:::note[What is an agent?]
-An agent is a saved **profile**: a name, a set of instructions, a model from the [AI Model Registry](/operational-guides/ai-model-registry-features), the tools it may use, the Knowledge bases it may touch and what starts it. Every time it works, the agent opens a **run**: one piece of work, with its own log, its own result and, when needed, its own requests for your approval. Runs happen on the agent's **computer**, a persistent Linux workspace that keeps its files between runs.
-:::
+An agent is a saved profile: a name, instructions, a model from the [AI Model Registry](/operational-guides/ai-model-registry-features), the tools it may use, the Knowledges it may read and what starts it. Each piece of work it does is a **run**, with its own log, result, and approval requests. Runs happen on the agent's **computer**, a Linux workspace that keeps its files between runs.
 
 <img
   alt="The Agents team page with five agents: Quinn, Scout, Rev, Iris and Ada, each with role, description and granted tools"
@@ -37,10 +33,10 @@ The examples in these guides follow one small team at a fastener manufacturer:
 
 Before you start, make sure you have:
 
+- **A cloud installation.** Agents run on the Rational AI cloud. On-premises installations don't include them yet.
 - **The Agents module in your license.** The **Agents** tab appears in the top bar only when the license includes it; see [License and activation](/operational-guides/license).
-- **Administrative access.** Only administrators see the **Agents** tab today. The **Roles** page lists rows for agents, but no role can grant access to the section yet.
-- **A text-generation model** in the [AI Model Registry](/operational-guides/ai-model-registry-features). Agents without a model of their own use the platform **Agents model** default (see [Choose the model agents use](#choose-the-model-agents-use)).
-- **A cloud installation.** Agent runs and agent computers run on the Rational AI cloud; the on-premises bundle does not include them yet.
+- **Administrative access.** Only administrators see the **Agents** tab. The **Roles** page lists rows for agents, but no role can grant access to the section yet.
+- **A text-generation model** in the [AI Model Registry](/operational-guides/ai-model-registry-features). Agents without a model of their own use the **Agents model** default (see [Choose the model agents use](#choose-the-model-agents-use)).
 
 ## Find your way around
 
@@ -76,8 +72,11 @@ Every agent can pick its own model. Those that do not use the platform default, 
 1. Go to **Settings** → **AI Model Registry** and open **Default models**.
 2. Set **Agents model**: *"Used by agents without a model override."*
 
-**Settings** → **Agents** (under *Capabilities*) links to the same default through **Open Model Registry defaults →**. It also holds the **Secrets** agents can be granted, the **Pause scheduled agents nobody reads** setting, and the list of **Agent profiles** with their trigger, execution, mode and tools; **View and edit →** opens each one.
+**Settings** → **Agents** links to the same default through **Open Model Registry defaults →**. It also holds the **Secrets** agents can be granted, the **Pause scheduled agents nobody reads** setting, and the list of **Agent profiles**.
 
-:::note[A ChatGPT subscription can power the agents]
-If your organization has a ChatGPT workspace subscription, an administrator can connect it under **Settings** → **Connectors** → **ChatGPT subscription** (**Connect ChatGPT**, then enter the one-time code on OpenAI) and select **Sync models**. The subscription's models are registered in the AI Model Registry, where they can be chosen as the Agents default or on a single agent. Like every other model, their calls go through the platform gateway, so they are captured and governed the same way.
-:::
+## Next steps
+
+* [Build an agent](/operational-guides/create-an-agent): set up its instructions, model, tools, and what starts it.
+* [Delegate work with tasks](/operational-guides/agent-tasks): hand work to agents on the task board.
+* [Follow runs and approve actions](/operational-guides/agent-runs): watch a run and decide on the calls that ask first.
+* [Chat with agents](/operational-guides/agent-chats): talk to one agent or a group.

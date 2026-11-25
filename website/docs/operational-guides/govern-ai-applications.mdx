@@ -7,10 +7,10 @@ audience: [admin]
 
 # Govern AI applications and provider costs
 
-Once several teams start calling models through Rational AI, three questions get hard to answer: *which applications are actually using our AI*, *which of them should be allowed to*, and *what is each one really costing us*. The **Applications** tab answers the first, the governance settings you register enforce the second, and provider costs answer the third. This guide covers all three: taking inventory of the applications that reach your proxy, registering them with an owner, a status, and a risk tier that Rational AI enforces, requiring approval for models, and entering the pricing that turns raw token counts into costs.
+Use the **Governance** module to list the applications that call models through Rational AI, give each one an owner, a status and a risk tier that Rational AI enforces, and enter the provider prices that turn token counts into costs.
 
 :::note[What is a governed application?]
-An **application** is whatever calls Rational AI through the proxy: an internal copilot, a batch job, a customer-facing assistant. Each call carries an **application key**, and Rational AI records it. A [touchpoint](/operational-guides/configure-touchpoints) is an application too: its conversations use the touchpoint's id as their key. Keys nobody has registered appear as **Unregistered**: they are counted and costed, but nobody has claimed them yet. **Registering** a key attaches the governance metadata (display name, owner, business unit, status, environment, risk tier, tags), and the status and risk tier decide whether and how the application is served.
+An **application** is whatever calls models through Rational AI's proxy, the single entry point that every model request passes through: an internal copilot, a batch job, a customer-facing assistant. Each call carries an **application key**, and Rational AI records it. A [touchpoint](/operational-guides/configure-touchpoints) is an application too: its conversations use the touchpoint's id as their key. Keys nobody has registered appear as **Unregistered**: they are counted and costed, but nobody has claimed them yet. **Registering** a key attaches the governance metadata (display name, owner, business unit, status, environment, risk tier, tags), and the status and risk tier decide whether and how the application is served.
 :::
 
 ## Prerequisites
@@ -23,13 +23,13 @@ Before you start, make sure you have:
 
 ## Take inventory of your applications
 
-Open **Governance** and select the **Applications** tab. The page reads *Discovered from proxy traffic. Register them to assign ownership, risk, environment, and governance tags*, a reminder that nothing here was declared up front: Rational AI found it.
+Open **Governance** and select the **Applications** tab. The list is built from the requests Rational AI has seen, so it includes applications nobody declared.
 
 1. If any key has not been registered, a callout at the top says how many applications use models through the proxy without being governed. Select **Show unregistered** to list only those.
 2. Narrow the list with the status switch: **All**, **Approved**, **Pending review**, **Blocked**, or **Unregistered**. Each option shows its count.
 3. To find a specific application, type in the search box. It matches the name, key, owner, or a tag.
 
-Each row tells you one application's story:
+Each row shows:
 
 - **Application**: the display name, the raw key beneath it, and a **Touchpoint** badge when the key belongs to a touchpoint.
 - **Status**: **Pending review**, **Approved**, **Blocked**, or **Unregistered** for a key that was never claimed.
@@ -39,15 +39,14 @@ Each row tells you one application's story:
 The actions menu on each row offers **Edit** (or **Register** for an unregistered key), **See its requests**, which opens the **Audit log** filtered to that application, **Copy key**, and **Delete** for a registration.
 
 :::note[The inventory follows the period]
-The **Requests**, **Tokens**, and **Cost** columns cover the **Period** set in the Governance filters. Widen the period and the same application shows larger numbers; it is the same application either way.
-:::
+The **Requests**, **Tokens**, and **Cost** columns cover the **Period** set in the Governance filters. :::
 
 ## Register an application
 
 Register a key to turn an anonymous string in the inventory into something with an owner you can ask about it.
 
 1. On the **Applications** tab, select **Register application**, or select **Register** in the actions menu of an unregistered row, which fills in its key. The form opens in a panel docked beside the list.
-2. Fill in the **Application key**. It *must match the application tag sent to the Rational AI proxy*, character for character: this is the join between the registration and the traffic. For a touchpoint, the key is the touchpoint's id.
+2. Fill in the **Application key**. It *must match the application tag sent to the Rational AI proxy*, character for character. For a touchpoint, the key is the touchpoint's id.
 3. Add a **Display name**, and set the **Owner**: a team or a person.
 4. Optionally add a **Business unit**.
 5. Choose the **Status**: **Pending review** (the default), **Approved**, or **Blocked**.
@@ -61,7 +60,7 @@ To change any of this later, select **Edit** in the row's actions menu. The same
 
 ## Decide what each application may do
 
-The status and the risk tier are not labels: Rational AI checks them every time a model request is admitted, whether it comes from a chat, an agent, a touchpoint's API, or a direct call through the proxy.
+Rational AI checks the status and the risk tier on every model request, whether it comes from a chat, an agent, a touchpoint's API, or a direct call through the proxy.
 
 | Setting | What happens to new requests |
 |---|---|
@@ -75,58 +74,21 @@ The status and the risk tier are not labels: Rational AI checks them every time 
 A block applies to the next request. Requests and conversation turns already running finish, but nothing new is served until you change the status back. Before you block a touchpoint, make sure nobody depends on it right now.
 :::
 
-:::note[High risk is enforced on touchpoints only]
-Rational AI can put a person in front of a tool call only where it runs the tools itself, which is in a touchpoint's conversations. An application that calls models directly runs its own tools, so for it a **High** tier is a record of your assessment, not a control. See [Approve tool calls before they run](/operational-guides/approve-tool-calls) for what the approval looks like.
-:::
+Rational AI can hold a tool call for approval only where it runs the tools itself, in a touchpoint's conversations. An application that calls models directly runs its own tools, so for it a **High** tier is recorded only. See [Approve tool calls before they run](/operational-guides/approve-tool-calls).
 
-A refused request gets an HTTP 403 error whose body carries a `code`, so a caller can tell a governance decision from a provider failure. In the chat, the turn says why it was refused instead of showing a generic error.
-
-| Code | Reason |
-|---|---|
-| `application-blocked` | The application is registered as **Blocked**. |
-| `application-unacceptable-risk` | The application's risk tier is **Unacceptable**. |
-| `model-withdrawn` | The model's approval was withdrawn. |
-| `model-not-approved` | The model has not been approved and the workspace requires approval. |
-| `model-disabled` | An administrator disabled the model. |
+In the chat, a refused turn says why it was refused.
 
 Every registration, change, and deletion of an application is written to the [audit trail](/operational-guides/audit-trail), and a change of status or risk tier is named in the entry.
 
 ## Require approval for models
 
-Applications are one side of the decision; the models they use are the other. Each model has a governance record where an administrator documents it and approves it (see [Document and approve a model](/operational-guides/ai-model-registry-features#document-and-approve-a-model)). The model approval policy decides whether that approval is required.
+To make every model refuse requests until an administrator has approved it, turn on **Require approval** in **Settings** → **AI Model Registry**. See [Require approval before a model answers](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers).
 
-1. Go to **Settings** → **AI Model Registry**.
-2. In the **Model approval** section, read the current state. It names the models that have not been reviewed, each a link to its details.
-3. Turn on **Require approval**.
-4. Read the confirmation. It lists the models that have not been approved and will refuse every request (chats, agents, API calls, and knowledge processing that use them) until someone approves them.
-5. Select **Require approval** to confirm.
+## Attribute a request to an application
 
-| Model approval state | Approval not required (default) | Approval required |
-|---|---|---|
-| **Approved** | Answers | Answers |
-| **Not reviewed** | Answers | Refused |
-| **Withdrawn** | Refused | Refused |
-
-While approval is required, the model list shows an **Approval** column that turns red for a model that refuses requests, and model pickers offer only models that can answer, so nobody configures a model that would then be refused.
-
-:::warning[Editing an approved model can stop it]
-Editing a substantive field of an approved model's governance record revokes its approval. With **Require approval** on, that model then refuses every request until it is approved again. The model's details warn you before such a save.
-:::
-
-Approving a model, an approval revoked by an edit, and every change to the policy are written to the [audit trail](/operational-guides/audit-trail).
-
-## Tag a request with its application
-
-Rational AI attributes a request to an application in one of two ways, in this order:
-
-1. **The `X-RationalAI-Application` header** sent by the caller. The header always wins.
-2. **The proxy's default application key**, used when the caller sends no header. You set it on the third-party model in the [AI Model Registry](/operational-guides/ai-model-registry-features): the **Default application key** field (for example `claims-assistant`), described there as *used to attribute every request through this proxy when the caller does not send `X-RationalAI-Application`*.
-
-Set the default key on any proxy whose callers you don't control, and the traffic still lands under a name instead of under nothing. A request with neither shows as **Direct** in the **Audit log**.
+Rational AI attributes each request to the application key its caller sends. A touchpoint's conversations send the touchpoint's id. A request with no key shows as **Direct** in the **Audit log**.
 
 ## Export the inventory
-
-When someone outside Rational AI needs the list (a review meeting, a compliance pack, a spreadsheet), export it.
 
 1. On the **Applications** tab, select **Export**.
 2. A CSV is downloaded, named `governed-ai-applications-` plus today's date.
@@ -139,7 +101,7 @@ Token counts only become costs once Rational AI knows what your providers charge
 
 ### Model prices
 
-A model's price is not always "so much per million tokens", so the price editor covers the shapes providers actually bill in:
+The price editor covers these ways of billing:
 
 - The **currency** the provider charges in. Costs are converted into your reporting currency for display, and the original amount is kept.
 - **Token rates**, per 1M tokens: **Input**, **Output**, **Cached input**, **Cache write**, and **Reasoning**, each priced separately.
@@ -151,7 +113,7 @@ For providers that publish a catalog, prices can be imported instead of typed: a
 
 ### Provider subscriptions
 
-Some spend does not vary per call at all: a monthly API plan, a yearly enterprise token pool. Model it as a subscription on the provider's connector. **Provider subscriptions** on the **Overview** opens the subscriptions of the connector that serves the most models, in **Settings** → **Connectors**.
+For spend that does not vary per call, such as a monthly API plan or a yearly token pool, add a subscription on the provider's connector. **Provider subscriptions** on the **Overview** opens the subscriptions of the connector that serves the most models, in **Settings** → **Connectors**.
 
 1. Open the provider's connector in **Settings** → **Connectors** and, under **Provider pricing and subscriptions**, select **Add plan**.
 2. Enter a **Plan name**, the **Currency**, the **Recurring cost** and its **Billing period** (**Monthly** or **Yearly**), and the dates it **Starts** and (optionally) **Ends**.
@@ -168,12 +130,12 @@ Some spend does not vary per call at all: a monthly API plan, a yearly enterpris
 *The **Provider subscription** dialog: a recurring plan, what it includes, and what happens once you exceed it.*
 
 :::note[Leave overage empty when there isn't one]
-Each allowance resets at the start of the billing period. If the provider does not publish an overage rate, leave the field empty rather than guessing: an invented rate quietly turns into an invented cost on the Overview.
+Each allowance resets at the start of the billing period. If the provider does not publish an overage rate, leave the field empty.
 :::
 
 ## Choose the reporting currency
 
-Providers bill in different currencies, and adding dollars to euros gives a number nobody can use. Governance therefore reports every cost in a single currency, euros unless you choose another.
+Governance reports every cost in a single currency, euros unless you choose another.
 
 1. Open **Governance** and select the **Costs** tab.
 2. Select **Reported in** at the top right. The list shows the currencies there are exchange rates for, and the date of the latest rates.
@@ -189,12 +151,12 @@ A cost is never converted at a guessed rate. If there is no rate for its day, fo
 
 ## Check how complete your costs are
 
-Pricing is never finished all at once, so Governance tells you how much of it is done. The **Governance health** card on the **Overview** reports **Cost coverage** as a percentage and **Unpriced requests** as a count: requests that ran, that you paid for in the real world, and that Rational AI cannot cost because the model has no price. To see them, open the **Audit log** and select **Unpriced**. Fill in the prices and the coverage figure moves toward 100%, at which point the **Total costs** headline is worth quoting to a finance team.
+The **Governance health** card on the **Overview** reports **Cost coverage** as a percentage and **Unpriced requests** as a count: requests that Rational AI cannot cost because the model has no price. To see them, open the **Audit log** and select **Unpriced**, then fill in the missing prices.
 
-The same card also shows the **Error rate** and the **Cache hit rate** for the period, so a spike in spend can be read next to a spike in retries.
+The same card also shows the **Error rate** and the **Cache hit rate** for the period.
 
 ## Next steps
 
 - [Monitor usage, cost, and audit logs](/operational-guides/governance): follow the traffic of the applications you registered.
-- [Document and approve a model](/operational-guides/ai-model-registry-features#document-and-approve-a-model): the governance record that **Require approval** checks.
+- [Document and approve a model](/operational-guides/ai-model-registry-features#document-and-approve-a-model): the model approval that **Require approval** checks.
 - [Approve tool calls before they run](/operational-guides/approve-tool-calls): what a person sees when a **High** risk touchpoint waits for approval.

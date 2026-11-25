@@ -7,7 +7,7 @@ audience: [user]
 
 # Generate documents, slides and web pages
 
-A first draft of a proposal, a ten-slide deck for Monday's meeting, a one-page landing page: each of these starts as a conversation about what it should say. In Gen you have that conversation in a chat beside the document, and the assistant writes the file (a Word document, a PowerPoint deck or an HTML page), keeping every version so you can go back to an earlier one.
+In Gen's **Text**, **Slides** and **Canvas** areas you describe a document in a chat beside it, and the assistant writes the file (a Word document, a PowerPoint deck or an HTML page), keeping every version so you can go back to an earlier one.
 
 :::note[What is a document session?]
 Each document in Gen is a **session**: a chat with the assistant plus the files it has written. Every time the assistant writes the file, the result becomes a new **version** of the document. You keep talking (*"make the intro shorter"*, *"add a slide on pricing"*) and each answer produces the next version, while the earlier ones stay available.
@@ -17,7 +17,7 @@ Each document in Gen is a **session**: a chat with the assistant plus the files 
 
 - **The Gen module in your license.**
 - **Administrative access:** the **Text**, **Slides** and **Canvas** areas are available to administrators only; for other users they are grayed out.
-- **The output skills installed:** each area writes its files with an [agent skill](/operational-guides/agent-skills) (**docx** for Text, **pptx** for Slides, **web-design** for Canvas). If the skill is missing, creating a document fails with a message asking an administrator to install it.
+- **The output skills installed:** each area writes its files with a [skill](/operational-guides/agent-skills) (**docx** for Text, **pptx** for Slides, **web-design** for Canvas). If the skill is missing, creating a document fails with a message asking an administrator to install it.
 
 ## Choose the area
 
@@ -27,15 +27,17 @@ Each document in Gen is a **session**: a chat with the assistant plus the files 
 | **Slides** | PowerPoint presentations | Decks and one-off slides. |
 | **Canvas** | An HTML page or an SVG image | Landing pages, one-pagers, diagrams, mock-ups. |
 
+The Gen **Canvas** area keeps each page as a saved document with its versions. It is separate from the **Canvas** panel that opens beside a chat to preview a page a skill has built (see [Preview web pages in Canvas](/operational-guides/agent-skills#preview-web-pages-in-canvas)).
+
 ## Create a document
 
 1. Select the **Gen** tab, then **Text**, **Slides** or **Canvas**.
 2. Select the **Generate** tile and choose **Blank document**, or **From a template** to start from instructions an administrator has saved.
-3. The editor opens with the document on the left and the chat on the right. Until the first file exists it reads *"Ask for the document in the conversation. Every file the assistant writes shows up here as a new version."*
+3. The editor opens with the document next to the chat. Until the first file exists it reads *"Ask for the document in the conversation. Every file the assistant writes shows up here as a new version."*
 4. Describe what you need in the chat. Be concrete about the audience, the length and the structure.
 5. To ground the document in your own material, select **Add knowledge**, choose the files from a [Knowledge](/operational-guides/create-knowledge), and select **Confirm**.
 
-The assistant writes the file and it appears on the left. Keep asking for changes in the chat; each file it writes becomes a new version.
+The assistant writes the file and it appears in the editor. Keep asking for changes in the chat; each file it writes becomes a new version.
 
 ## Work with versions
 

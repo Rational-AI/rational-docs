@@ -66,7 +66,7 @@ Give a step a timeout when you want a safety cap on its run time, so a run that 
 1. Navigate to **Settings** → **Workflows** from the left sidebar.
 2. Under **Steps**, select the step you want to configure.
 3. Open the step's **three-dot menu** and select **Workflow Settings** (it sits between **Export (JSON)** and **Delete**).
-4. In the **Workflow Settings** dialog, enter the **Timeout (minutes)**. It must be a whole number of one minute or more (the field shows the placeholder `e.g. 30`).
+4. In the **Workflow Settings** dialog, enter the **Timeout (minutes)**. It must be a whole number of one minute or more (the field shows the placeholder `e.g. 30`). A step without a timeout of its own runs for up to 5 minutes per attempt.
 5. Optionally, clear **Count runtime toward the tenant quota** for maintenance or synchronization steps that should not consume the monthly allowance.
 6. Select **Save**.
 

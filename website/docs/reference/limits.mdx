@@ -1,0 +1,212 @@
+---
+title: Limits and quotas
+sidebar_label: Limits and quotas
+description: Every size, count and time limit you can run into in Rational AI, where it applies and whether you can change it.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+# Limits and quotas
+
+The limits below are enforced by Rational AI itself. A model or an external service (Telegram, Instagram, a mail server) can add its own on top. "Installation setting" means the value is part of the installation's configuration, not of the Control Room.
+
+## Chat and attachments
+
+See [Use the chat](/operational-guides/chat-experience) and [Memory and long chats](/operational-guides/touchpoint-memory).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Size of one attachment | 25 MB | Files attached to a chat message, and files arriving through any channel | No |
+| Text read from one attached document | 200,000 characters | Text extracted from an attachment and given to the model. For longer documents, add them to a Knowledge | No |
+| Pages read from one attached PDF | 200 | Text extraction from PDF attachments | No |
+| Context items | 10 | Files, documents, projects and connectors picked as context in the composer | No |
+| Size of a dictated recording | 25 MB | **Dictate a message** | No |
+| Tool calls in one answer | 40 | Chat answers, and touchpoint answers through the API | No |
+| Consecutive failures of the same tool | 5 | The answer stops after the fifth failure in a row | No |
+| Consecutive turns with failed tool calls | 3 | The answer stops after three turns in a row whose tool calls all failed | No |
+| Preview of a spreadsheet or document in Canvas | 25 MB | Read-only preview in the **Canvas** panel | No |
+| Office file edited in Canvas | 25 MB | Editing Word, Excel and PowerPoint files with the Office editor | Installation setting |
+| One memory | 280 characters | Personal and shared touchpoint memory | No |
+| Personal memory per person | 1,500 characters in all | Each person's memory on a touchpoint | No |
+| Shared memory | 3,000 characters in all | The memory shared by everyone on a touchpoint | No |
+
+## Knowledge and files
+
+See [Add and manage content](/operational-guides/manage-knowledge-resources), [Collections and the grid](/operational-guides/knowledge-collections-and-grid) and [Import a Knowledge](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Size of one uploaded file | Less than 2 TiB | Uploads to a Knowledge from the Control Room | No |
+| File preview | 25 MB | Preview of a resource in the Knowledge | No |
+| Spreadsheet import | 10 MB and 5,000 rows | **Import from Excel or CSV** (`.xlsx`, `.xls`, `.csv`, `.tsv`, `.txt`) | No |
+| Values that make a single select on import | 12 distinct values, each up to 100 characters | Columns that the import proposes as a single select | No |
+| Attribute name | 128 characters | Creating or renaming an attribute | No |
+| Attribute definition or formula | 16,384 characters | Attribute settings and formulas | No |
+| Collection name | 200 characters | Creating or renaming a collection | No |
+| Links in one link attribute | 500 per record | Link attributes | No |
+| Rows saved at once | 1,000 | **Save** in the grid, and bulk saves through the API | No |
+| Conditions in one filter | 100 | Grid filters and record queries | No |
+| Grouping levels | 3 | Grouping the grid | No |
+| Pinned views | 5 per Knowledge | The view switcher | No |
+| Records on a calendar | 1,000 at a time | Calendar views | No |
+| Nodes drawn in the graph | 2,000 by default | The graph view | Yes: **Aspect** → **Maximum nodes** (2,000, 5,000 or 10,000) |
+| Record history | 500 entries per record, kept for 24 months | A record's history | No |
+| Reminder name | 128 characters | Reminders | No |
+| Reminder offset | 366 days | **days before** or **days after** the reminder's date | No |
+| Wait for an export | 2 minutes | Exporting a Knowledge from **Settings** | No |
+
+## Custom views
+
+See [Set up the views of a Knowledge](/operational-guides/knowledge-custom-views).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Records a view receives when it opens | 50 | The view's first page of resources | No, page through the rest |
+| Records per page | 100 | Paging records from a view or an embedded view | No |
+| Confirmation dialog text | Title 120, message 1,000, buttons 40 characters | Dialogs a view opens | No |
+
+## Embed widget
+
+See [Embed a Knowledge](/operational-guides/embed-knowledge).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Messages per visitor per day | 20 by default | The widget's chat | Yes: **Messages per visitor per day**, empty for no limit |
+| Monthly chat budget | No cap by default | The widget's chat | Yes: **Monthly budget** |
+| Contact form submissions | 5 per visitor per hour | **Visitor contacts** | No |
+| Fields in a contact form | 12, each value up to 500 characters | **Visitor contacts** | No |
+| File a visitor uploads | 25 MB at most | Views that accept visitor uploads | The view can set a lower cap |
+| Visitor uploads | 10 per visitor per hour, 200 per widget per day | Views that accept visitor uploads | No |
+
+## Sources and sync
+
+See [Configure data sources](/operational-guides/configure-sources).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Wait after a failed scheduled sync | 2 minutes, doubling after each failure, up to 1 hour | Scheduled syncs | No. **Sync now** ignores the wait |
+| Sync history | Last 20 syncs | A source's processing log | No |
+| Files in flight | 16 by default, 1 to 256 | **RabbitMQ queue** sources | Yes: **Files in flight** |
+
+## Workflows
+
+See [Review workflow runs](/operational-guides/governance#review-workflow-runs).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Run time of a step | 5 minutes per attempt | Steps without a timeout of their own | Yes: **Workflow Settings** → **Timeout (minutes)** |
+| Attempts | 3 | A step that fails is retried | No |
+| Monthly workflow runtime | Your limit, or your plan's allowance | File ingestion, agents and workflow runs | Yes: **Monthly limit, minutes** |
+
+## Agents
+
+See [Create an agent](/operational-guides/create-an-agent), [Schedule and trigger agents](/operational-guides/agent-routines) and [Delegate work with tasks](/operational-guides/agent-tasks#create-a-task).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Run time | 20 minutes | Autonomous runs | No |
+| Run time with approvals | 6 hours | Interactive agents, and agents with a tool under **Ask me first** | No |
+| Agents in one chat | 1 to 20 | Agent chats | No |
+| Files on a task | 30, each up to 10 MB | Task attachments and pasted pictures | No |
+| Webhook request body | 256 KB | Runs started by the **Webhook** trigger | No |
+| **AI check** question | 500 characters | Event filters | No |
+| Secret value | 8 to 16,384 characters | **Settings** → **Agents** secrets | No |
+| Approval links in email | Valid for 24 hours | **Approve** and **Deny** links in approval emails | No |
+| Messages sent to a channel | 100 per run, each up to 4,096 characters | Agents that write to a channel | No |
+| Emails sent | 50 per run | Agents that send email | No |
+| Monthly spend | No limit by default | Model calls of one agent | Yes: the agent's monthly budget |
+
+## Touchpoints and tools
+
+See [Set how long a tool may take](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take), [Touchpoint skills](/operational-guides/agent-skills) and [Test touchpoint changes](/operational-guides/test-touchpoint-changes).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| One MCP tool call | 120 seconds by default | Every MCP server a touchpoint uses | Yes: 1 to 600 seconds, on the touchpoint or on one server |
+| Tool result given to the model | 64,000 characters | Longer results are cut before they reach the model | No |
+| Skill command time | 120 seconds by default, 600 at most | Each command a skill runs in the sandbox | Set per command, up to 600 seconds |
+| Conversations in a test run | 20 by default, 100 at most | **Test first** replays | Yes, up to 100 |
+
+## Extensions
+
+See [Manage extensions](/operational-guides/manage-extensions) and [Marketplace](/operational-guides/marketplace#ask-the-admins-to-install-a-solution).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Extension package | 1 GiB compressed, 2 GiB expanded | Installing a package | No |
+| Example records | 5,000 per provider, files up to 25 MB | Records an extension installs | No |
+| Install request message | 1,000 characters, one request per solution per day | **Ask the admins** in the Marketplace | No |
+
+## Models and deployments
+
+See [Model deployments](/operational-guides/model-deployments#decide-how-many-replicas-run), [Run models on-premises](/operational-guides/run-models-on-premise#run-models-on-a-dgx-spark) and [Fine-tune a model](/operational-guides/fine-tune-a-model).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Idle time before an on-demand model is released | 10 minutes | Deployments with **Minimum replicas** 0 | Yes: **Release after**. Default is an installation setting |
+| Wait for an idle model to start | 120 seconds at most | The request that wakes a model | Installation setting |
+| GPU memory for models on a DGX Spark | 80 GiB per node | GPU memory budgets of deployments | No |
+| Conversations or requests turned into a dataset | 20,000 | Datasets built from recorded traffic or from events | No |
+
+## API
+
+See [Access Rational AI via API](/operational-guides/api-access).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Records returned by one query | 1,000 | Record queries, and up to 1,000 IDs per query | No |
+| Semantic search query | 1,000 characters | Semantic record search | No |
+| Records per page of an embedded view | 100 | Embedded view queries | No |
+
+## Rational BI
+
+See [Build BI dashboards](/operational-guides/rational-bi).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Auto-refresh interval | **Off**, **30 seconds**, **1 minute**, **5 minutes** or **15 minutes** | Dashboards | Yes: **Auto-refresh** |
+| Filters suggested at once | 5 | **Refresh filters** | No, add more with **Add filter** |
+| Tableau export | 2,000,000 data cells across the exported widgets | **Export** → **Tableau** | No, export fewer dashboards |
+| Pins shown in the sidebar | 10, the rest under **More** | Pinned dashboards and reports | No |
+
+## Gen
+
+See [Generate images](/operational-guides/gen-images), [Gen documents](/operational-guides/gen-documents) and [Social Studio](/operational-guides/social-studio#publish-a-post).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Reference image | 10 MB | Images added to an image prompt | No |
+| Reference images per prompt | Set by the model | Shown as *"Accepts up to N reference images."* | No |
+| Wait for an image | 20 minutes | Gen stops checking a pending image after this | No |
+| Document version | 50 MB | Each saved version of a Gen document | No |
+| Picture in a social post | 8 MB | **Verify** and **Publish** | No |
+| Carousel pictures | 2 to 10 | Carousel posts | No |
+| Caption length | Instagram 2,200, LinkedIn 3,000 characters | **Verify** and **Publish** | No |
+| Hashtags and mentions | 30 hashtags, 20 mentions | Instagram posts | No |
+| Instagram verification | 23 hours | A verified post must be published within this time | No |
+
+## Channels
+
+See [Manage channels](/operational-guides/manage-channels#control-what-can-be-sent-in), [Telegram](/operational-guides/connect-telegram) and [Email](/operational-guides/connect-email).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Attachment size | 25 MB ceiling | Every channel with attachment settings | Lower it with **Attachment size limit (MB)** |
+| Telegram attachment size | 20 MB by default | Telegram channels | Lower it, not higher: Telegram bots can't download more |
+| Telegram rate limit | 20 messages per minute per chat | Telegram channels | Yes: **Rate limit (messages/minute per chat)**, `0` turns it off |
+| Email poll interval | 60 seconds by default, 5 at least | Email channels | Yes: **Poll interval (seconds)** |
+| Split replies | 4 messages at most | Channels with reply splitting on | No |
+
+## Account
+
+See [Manage your account](/operational-guides/manage-your-account).
+
+| Limit | Value | Where it applies | Can it be changed? |
+|---|---|---|---|
+| Profile picture | 5 MB | **Choose image** | No |
+| Password | At least 8 characters | **Change your password** | No |
+
+## Next steps
+
+- [Error messages](/reference/error-messages)
+- [Troubleshooting](/troubleshooting)

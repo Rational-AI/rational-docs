@@ -1,0 +1,60 @@
+---
+title: What an installation sends to Rational AI
+sidebar_label: Data sent to Rational AI
+description: Everything an on-premises installation sends to Rational AI on its own, for privacy and security reviews.
+type: reference
+audience: [admin]
+---
+
+# What an installation sends to Rational AI
+
+This page lists everything an [on-premises installation](./on-premises-installation) sends to Rational AI on its own. Use it for privacy and security reviews.
+
+## What is never sent
+
+None of these reports carries customer data: no conversations, messages, documents, knowledge content, files or user details. The health report carries counts, versions, states, and the names of the installation's own components (models, data sources, checks).
+
+## The minute check-in
+
+An installation connected to Rational AI checks in once a minute. The check-in is signed with the installation's own key and carries:
+
+- the installation's ID and installed release;
+- the tunnel's public key, the setting in **Settings** → **Tunnel**, and the machine's address in your network;
+- a **health report**:
+  - whether the application is healthy, and which of its services are not running;
+  - the name and state of each model the installation runs, and whether a GPU is present;
+  - disk and memory use as percentages, and free disk space;
+  - the license state;
+  - the **names** of the data sources whose last sync failed, with the time;
+  - the time of the newest local backup, and whether an off-site backup is set, with the outcome and time of its last run;
+- the summary of the hourly checks: how many passed and failed, and the **titles** of the failed ones;
+- the outcome of the last update (updated, rolled back, failed or nothing newer), the releases involved, and the titles of the checks that broke.
+
+Rational AI uses this report to see each installation as healthy, needing attention or down. When the machine is shut down or restarted, it sends one last check-in that says only that it is switching off, so Rational AI sees it as switched off rather than down.
+
+The answer to the check-in brings back the installation's public address, its certificate and the tunnel settings.
+
+## The daily license report
+
+Once a day, the application reports its installation ID, license ID and release; the number of tenants and the number of seats used in each; its uptime; and the operating system and architecture.
+
+## Error reports
+
+When the application hits an unexpected error, on the server or in a user's browser, it sends an error report to Rational AI's error tracker, where each customer has a space of its own. A report contains:
+
+- the error message and where in the code it happened;
+- the log lines that led up to it;
+- the release, and the address the installation is served at;
+- when a user was signed in, that user's internal ID.
+
+It doesn't include the user's name or email, or the content of requests. Expected failures (an expired session, a refused permission, a missing item) aren't reported.
+
+An error message is written by the code that failed and can quote a value it was handling. If error reports must stay in your network, ask Rational AI to send them to an error tracker of your own (GlitchTip or Sentry).
+
+## The update alert
+
+A failed or rolled-back update sends one event to the same error tracker, with the installation's address, the two releases and the titles of the checks that broke. Rational AI can send it to your own tracker instead, or turn it off.
+
+:::note[An installation on your own domain doesn't check in]
+An installation served on your own DNS name, without a connection to Rational AI, sends neither the minute check-in nor the daily license report. It still downloads new releases when it updates, and still sends error reports unless they go to your own tracker.
+:::

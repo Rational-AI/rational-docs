@@ -11,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Fine-tuning
 
-Fine-tuning lets you customize an AI model with your own data so it performs better on the tasks that matter to you. You pick a base model and a [training dataset](datasets.mdx), set a few training parameters, and launch a job that produces a tailored model. Use this section to start fine-tuning jobs and track the ones you've already run.
+Fine-tuning lets you customize an AI model with your own data so it performs better on the tasks that matter to you. You pick a base model and a [training dataset](datasets.mdx), set a few training parameters, and launch a job that produces a tailored model. 
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -34,7 +34,7 @@ Fine-tuning lets you customize an AI model with your own data so it performs bet
 
 ## Start a fine-tuning
 
-Select **New** to open the fine-tuning form. Select the base model and the training dataset, then personalize the job by entering the desired parameters:
+Select **New** to open the fine-tuning form:
 
 | Field | Description |
 |-------|-------------|
@@ -47,33 +47,13 @@ Select **New** to open the fine-tuning form. Select the base model and the train
 | **Epochs** | The number of times the training run passes over the full dataset. |
 | **LoRA parameters** → **Rank** | The adapter's capacity. Start with 16; increase for more varied tasks. |
 | **LoRA parameters** → **Alpha** | The adapter's scaling, usually equal to the rank. |
-| **LoRA parameters** → **Dropout** | Regularisation between 0 and 0.99. Start with 0; increase if the model overfits. |
+| **LoRA parameters** → **Dropout** | Regularization between 0 and 0.99. Start with 0; increase if the model overfits. |
 
-When you're ready, select **Launch** and confirm with **Start training**. The new fine-tuning then appears in the list, where you can follow its progress.
-
-:::tip
-If you're unsure about a parameter, hover the information icon next to the field for guidance, or start from the defaults and adjust based on results. See [Fine-tune a model](/operational-guides/fine-tune-a-model) for the reasoning behind each one.
-:::
-
-## Follow and manage a fine-tuning
-
-Select a fine-tuning to open its details: status (**Pending**, **Training**, **Completed**, **Failed** or **Cancelled**), progress, the **Learning curves** chart of training and evaluation loss, and the parameters it ran with. If the measurements fail to load, select **Reload measurements**.
-
-The **⋮** menus on the list and on the details offer:
-
-* **Edit details** – change the name and description.
-* **Start training** – start a fine-tuning that is still **Pending**, for example one whose start didn't go through.
-* **Re-run** – start a new fine-tuning from this one's settings, with different parameters.
-* **Cancel run** – stop a training job and release its GPUs; checkpoints are kept.
-* **Retry run** – restart a failed or cancelled job from its latest complete checkpoint.
-* **Download weights** – in the list's menu, once completed, download the trained adapter as a `.tar.gz`.
-* **Download training artifacts** – the captured inputs, checkpoints, configuration and full measurement history.
-* **Deploy** – a button on a completed fine-tuning's details, to make the model available in the [AI Model Registry](ai-model-registry.mdx).
-* **Delete** – remove a fine-tuning that is not training.
+Select **Launch** and confirm with **Start training**. For how to choose the parameters and follow, retry, deploy or download a fine-tuning, see [Fine-tune a model](/operational-guides/fine-tune-a-model).
 
 ## Browse fine-tunings
 
-The Fine-Tuning list shows every job with columns for **Name**, **Base model**, **Training dataset** and **Created at**. When no jobs exist yet, the page invites you to add one.
+The Fine-Tuning list shows every job with columns for **Name**, **Base model**, **Training dataset** and **Created at**.
 
-* **Search** – Use the search box to filter jobs by name.
-* **Sort** – Select the arrows next to any column header to sort the list by that column.
+* **Search**: use the search box to filter jobs by name.
+* **Sort**: select the arrows next to any column header to sort the list by that column.

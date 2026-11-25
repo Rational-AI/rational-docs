@@ -1,0 +1,87 @@
+---
+sidebar_label: Quickstart for developers
+description: Get an API key, make your first call to the OpenAI-compatible gateway, and use a touchpoint's tools from an MCP client.
+type: tutorial
+audience: [developer]
+---
+
+# Quickstart for developers
+
+In 15 minutes you can call a Rational AI model from your own code, with the same OpenAI SDKs and tools you already use. This guide gets you a key, makes a first request, and connects an MCP client to an assistant's tools.
+
+## Prerequisites
+
+- **An API key, or an administrator to create one.** Only an administrator can create a workspace key in **Settings** → **API Keys**.
+- **A text-generation model** in the **AI Model Registry**. See [Manage AI models in the registry](/operational-guides/ai-model-registry-features).
+- **cURL**, or the OpenAI SDK for Python or TypeScript.
+- **The address of your AI Control Room**, for example `https://control-room.<yourcompany>.rational.is`. Every API is served under `/api` on that address.
+
+## 1. Get an API key
+
+Rational AI has two kinds of key. Pick the narrower one that does the job.
+
+| Key | Where it comes from | What it reaches |
+|---|---|---|
+| **Workspace key** | **Settings** → **API Keys**, created by an administrator | The whole Rational AI API, with administrator rights |
+| **Touchpoint key** | The **API access** section of a touchpoint on the **API** channel | That one touchpoint's OpenAI-compatible API and MCP server, nothing else |
+
+:::danger[A workspace key is an administrator]
+A workspace key authenticates as an administrator, whoever created it. Anyone holding it can read and change everything an administrator can, across the whole API. Keep it in a secret store, never in source code, and give an application that talks to one assistant a touchpoint key instead.
+:::
+
+To create a workspace key:
+
+1. Go to **Settings** → **API Keys** and select **New**.
+2. Enter a **Name**, for example the name of the application that uses it, and select **Create**.
+3. Copy the key from the **Generate new secret key** dialog and select **Done**. The key is shown only this once.
+4. Store it in the `RATIONAL_AI_API_KEY` environment variable, or in your own secret store.
+
+If a key leaks, disable or delete it on the same page. To create a touchpoint key, see [Give an application its own touchpoint key](/operational-guides/api-access#give-an-application-its-own-touchpoint-key).
+
+## 2. Make your first call
+
+The model gateway is OpenAI-compatible. With a workspace key, its endpoints are under `/api/compat/v0/openai`.
+
+1. Go to **Settings** → **AI Model Registry** and open the model you want to call.
+2. Expand **Use via API** and copy the **cURL** snippet. It already holds the gateway address and the model's identifier.
+3. Run it. It looks like this:
+
+   ```bash
+   curl https://control-room.<yourcompany>.rational.is/api/compat/v0/openai/chat/completions \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $RATIONAL_AI_API_KEY" \
+     -d '{
+       "model": "<model-identifier>",
+       "messages": [
+         { "role": "user", "content": "Hello!" }
+       ]
+     }'
+   ```
+
+The answer is a standard OpenAI chat completion. The same section has **Python** and **TypeScript** snippets for the OpenAI SDK, and the gateway serves the Responses API at `/api/compat/v0/openai/responses` too. See [Choose between chat completions and responses](/operational-guides/api-access#choose-between-chat-completions-and-responses).
+
+A request refused by governance gets an HTTP 403 error with a `code`, such as `application-blocked` or `model-not-approved`, so your code can tell it from a provider failure. See [Decide what each application may do](/operational-guides/govern-ai-applications#decide-what-each-application-may-do).
+
+## 3. Use a touchpoint's tools from an MCP client
+
+A touchpoint is also served as an MCP server, so an IDE assistant, a desktop AI app, or another agent can use the tools configured on it.
+
+1. Go to **Settings** → **Touchpoints** and open a touchpoint whose **Channel** is **API**.
+2. On the **Settings** tab, copy the **Base URL** from the **API access** section, and generate a key there if the touchpoint has none.
+3. In your MCP client, add a server with these values:
+   - **URL:** the base URL with `/openai` replaced by `/mcp`, that is `https://<your-host>/api/compat/v0/touchpoints/{id}/mcp`.
+   - **Transport:** Streamable HTTP.
+   - **Authentication:** the touchpoint key, as `Authorization: Bearer <key>`.
+4. List the server's tools in your client. You see the touchpoint's enabled tools, and nothing else.
+
+Tools that need approval under the touchpoint's confirmation policy are marked as requiring approval, and it is your MCP client that asks its user. Connect only clients you trust to honor that mark. See [Use a touchpoint's tools from an MCP client](/operational-guides/api-access#use-a-touchpoints-tools-from-an-mcp-client).
+
+## 4. Explore the Management API
+
+The workspace key also reaches the Management API under `/api/management/v0`, the same API the Control Room uses. Browse it in the Swagger UI at `/api/swagger/index.html` on your Control Room's address.
+
+## Where to go next
+
+- **Shape the assistant behind a touchpoint key**: its system prompt, models, and tools. See [Configure touchpoints](/operational-guides/configure-touchpoints).
+- **Ask typed questions**: Decision models through the System One compatible API. See [Ask a Decision model](/operational-guides/api-access#ask-a-decision-model-through-the-system-one-compatible-api).
+- **See your calls**: usage, cost, and every request in the audit log. See [Monitor usage, cost, and audit logs](/operational-guides/governance).
