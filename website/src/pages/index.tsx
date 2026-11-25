@@ -127,13 +127,12 @@ const CATEGORIES: Category[] = [
 		icon: "🧭",
 		title: "Help",
 		description:
-			"Find the fix for a problem by its symptom or error message, check a limit, and see what changed in each release.",
+			"Find the fix for a problem by its symptom or error message, and check the limits you can run into.",
 		to: "/troubleshooting",
 		items: [
 			{ label: "Troubleshooting", to: "/troubleshooting" },
 			{ label: "Error messages", to: "/reference/error-messages" },
 			{ label: "Limits and quotas", to: "/reference/limits" },
-			{ label: "Release notes", to: "/release-notes" },
 		],
 	},
 ];

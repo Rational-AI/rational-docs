@@ -180,10 +180,7 @@ const sidebars: SidebarsConfig = {
 			},
 		]),
 
-		section("Help", [
-			"troubleshooting/index",
-			{ type: "link", label: "Release notes", href: "/release-notes" },
-		]),
+		section("Help", ["troubleshooting/index"]),
 	],
 };
 

@@ -44,7 +44,6 @@ Say what a feature does *not* do, what is irreversible, and what happens to data
 | Concept | Explanatory, one idea at a time, one analogy at most | "An embedding turns text into numbers so that similar meanings sit close together." |
 | Security, compliance, data | Serious and precise. No jokes, no softeners | "Audit events are retained for 365 days and cannot be edited." |
 | Errors, troubleshooting | Calm, symptom first, no blame | "If the sync stops at 0%, the connector can't reach the source. Check…" |
-| Release notes | Factual: what changed, who gets it, how to reach it | "Agents can now ask for approval before writing files. Turn it on in…" |
 
 ## 4. Rules
 

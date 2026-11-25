@@ -51,26 +51,6 @@ const config: Config = {
 				],
 			},
 		],
-		[
-			// Release notes: a blog instance, so they get dates and RSS/Atom feeds
-			"@docusaurus/plugin-content-blog",
-			{
-				id: "release-notes",
-				path: "release-notes",
-				routeBasePath: "release-notes",
-				blogTitle: "Release notes",
-				blogDescription: "What changed in Rational AI, release by release.",
-				blogSidebarTitle: "All releases",
-				blogSidebarCount: "ALL",
-				showReadingTime: false,
-				onInlineAuthors: "ignore",
-				onUntruncatedBlogPosts: "ignore",
-				feedOptions: {
-					type: ["rss", "atom"],
-					title: "Rational AI release notes",
-				},
-			},
-		],
 	],
 
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -267,11 +247,8 @@ const config: Config = {
 					title: "Help",
 					items: [
 						{ label: "Troubleshooting", to: "/troubleshooting" },
-						{ label: "Release notes", to: "/release-notes" },
-						{
-							label: "Release notes RSS",
-							href: "pathname:///release-notes/rss.xml",
-						},
+						{ label: "Error messages", to: "/reference/error-messages" },
+						{ label: "Limits and quotas", to: "/reference/limits" },
 					],
 				},
 				{
