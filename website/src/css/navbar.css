@@ -71,3 +71,12 @@ html[data-theme="light"] .navbar .navbar__search-input:focus {
 		display: none;
 	}
 }
+
+/* ⌘K keys in light mode: white keys with a hairline, like the field, not the
+   gray fill that reads as disabled. */
+html[data-theme="light"] .navbar [class*="searchHint_"] {
+	background-color: #ffffff;
+	border-color: var(--ifm-color-emphasis-300);
+	box-shadow: inset 0 -1px 0 var(--ifm-color-emphasis-300);
+	color: var(--ifm-color-emphasis-700);
+}
