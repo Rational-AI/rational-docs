@@ -11,7 +11,7 @@ import CrossIcon from '@site/static/img/cross.svg';
 
 # Connectors
 
-A connector stores the credentials and configuration needed to talk to an external provider, such as Google, AWS, OpenAI, Anthropic, Google Vertex AI, Microsoft SQL Server or RabbitMQ. Once a connector is set up, it can be reused across the platform: by [AI models](ai-model-registry.mdx) (to reach a provider's API), by [sources](sources.mdx) (to read your data) and by [tools](extensions.mdx). Use this section to add connectors and review where each one is used.
+A connector stores the credentials and configuration needed to talk to an external provider. Once a connector is set up, it can be reused across the platform: by [AI models](ai-model-registry.mdx) (to reach a provider's API), by [sources](sources.mdx) (to read your data) and by [tools](extensions.mdx). To set one up, see [Configure connectors](/operational-guides/configure-connectors).
 
 <div className="featureBox">
   <div className="featureBox__title">Who can use this feature</div>
@@ -48,26 +48,28 @@ The Connectors page lists every connector as a card, each showing its name and p
 
 The details panel shows the connector's description, its **Provider**, and how many times it is used. A usage breakdown reports how many **AI Models**, **Sources** and **Tools** rely on the connector, so you can see what would be affected before changing or removing it.
 
-A connector that AI models, sources or provider subscriptions still use can't be deleted. Provider subscriptions aren't counted in the usage breakdown, so check the connector's subscriptions too before you delete it.
+A connector that AI models, sources, provider subscriptions or extension configurations still use can't be deleted. Provider subscriptions aren't counted in the usage breakdown, so check the connector's **Provider pricing and subscriptions** section too before you delete it.
 
-## Add a connector
+## Fields by provider
 
-Select **Add** to open **Add a new connector**. Under **Browse connectors**, select a provider, then enter a **Name** and the credentials it asks for, such as an API key or service account details. The catalog is one list; the table groups its providers by use.
+Select **Add** to open **Add a new connector**, select a provider under **Browse connectors**, then fill in its fields. Every provider also asks for a **Name** and an optional **Description**. For the steps on the external service, see [Available providers](/operational-guides/configure-connectors#available-providers).
 
-| Use | Providers |
-|-------|-----------|
-| AI models | OpenAI, Anthropic, OpenRouter, Xference, MiniMax, OpenAI Compatible, Google Vertex AI |
-| Decisions | System One Compatible |
-| Data sources | Google, AWS, Azure, Google Service Account Key, Microsoft OneDrive, Git credentials, RabbitMQ |
-| Virtual databases | SQL database (PostgreSQL, MySQL, SQLite, SQL Server, Oracle or IBM i) |
-| Tools and extensions | Brave Search, Microsoft SQL Server |
-| Publishing | LinkedIn, Instagram, Facebook |
-
-Some providers ask for more than a key: **Google Vertex AI** takes a project ID and a single region and stores no credential, **Microsoft SQL Server** takes a host, database and read-only login with an optional **Encrypt the connection** switch, and **RabbitMQ** takes a broker host, user and optional file download token. See [Configure a connector](/operational-guides/configure-connectors#available-providers) for each one.
-
-:::warning
-Connectors hold sensitive credentials. Removing or editing a connector affects every AI model, source and tool that depends on it. Check the usage breakdown in the details panel before making changes.
-:::
+| Provider | Fields when you add it | Fixed after creation |
+|---|---|---|
+| **OpenAI**, **Anthropic**, **OpenRouter**, **Xference**, **MiniMax**, **Brave Search**, **Google Service Account Key** | **API Key** | |
+| **OpenAI Compatible** | **Base URL**, **API Key** | |
+| **System One Compatible** | **Base URL**, **API Key** (optional) | |
+| **Google Vertex AI** | **Project ID**, **Location** (one region). No key | |
+| **Google** | **Client ID**, **Client Secret**, then sign-in | |
+| **AWS** | **Access Key**, **Secret Key** | |
+| **Azure** | **Client ID**, **Client Secret** | |
+| **Microsoft OneDrive** | **Client ID**, **Client Secret**, **Authentication mode**, **Tenant ID** (application permissions only) | **Authentication mode** |
+| **LinkedIn**, **Instagram** | **App ID**, **App secret**, then sign-in | |
+| **Facebook** | **App ID**, **App secret**, **Configuration ID (optional)**, then sign-in | |
+| **Git credentials** | **Git host**, **Username**, **Access token** | |
+| **RabbitMQ** | **Host**, **Port**, **Use TLS**, **Virtual host**, **Username**, **Password**, **File download token** (optional) | **Port**, **Use TLS** |
+| **Microsoft SQL Server** | **Host**, **Port**, **Instance**, **Database**, **Username**, **Password**, **Encrypt the connection** | **Port** |
+| **SQL database** | **Engine**, then **File path** (SQLite, DuckDB) or **Host**, **Port**, **Database**, **Username**, **Password** | **Engine**, **Port**, **File path** |
 
 ## Manage a connector
 

@@ -1,0 +1,191 @@
+---
+title: Connect a model provider
+description: Connect OpenAI, Anthropic, OpenRouter, Xference, MiniMax, an OpenAI-compatible API or Google Vertex AI, and add their models to the AI Model Registry.
+type: how-to
+audience: [admin]
+---
+
+A model provider connector lets Rational AI call a hosted provider's models, which you then add to the [AI Model Registry](/operational-guides/ai-model-registry-features) for touchpoints, agents and the other features that use models.
+
+## Who can set it up
+
+- **To add the connector:** a role with **Create** on the **Connectors** row (see [Manage roles and users](/operational-guides/roles-and-users)).
+- **To add the provider's models:** an administrator with **Create** on the **AI Model Registry** row. The list of a provider's models is shown only to administrators.
+- **On the provider:** an account that can create API keys. For Google Vertex AI, someone who can grant roles on the Google Cloud project.
+
+## Choose a provider
+
+| Provider in Rational AI | Use it for | What you supply |
+|---|---|---|
+| **OpenAI** | OpenAI models | API key |
+| **Anthropic** | Anthropic's Claude models | API key |
+| **OpenRouter** | Models from many providers through one key | API key |
+| **Xference** | Hosted OpenAI-compatible models from Xference | API key |
+| **MiniMax** | Hosted OpenAI-compatible models from MiniMax | API key |
+| **OpenAI Compatible** | Any API that follows the OpenAI format: self-hosted models, proxies, other providers | Base URL and API key |
+| **Google Vertex AI** | Gemini models in one Google Cloud region | Project ID and location, no key |
+
+Each provider's section follows the same order: what you need on the provider, then the connector. After any of them, [add the provider's models](#add-the-providers-models).
+
+## Connect OpenAI
+
+### What you need
+
+An OpenAI API key, created in the OpenAI platform under **API keys**. Use a project key for a project that only Rational AI uses, so its usage and limits stay separate.
+
+If you create a restricted key, give it at least these permissions:
+
+| Permission | Why it's needed |
+|---|---|
+| **Models**: Read | Lists the models you can add to the AI Model Registry. |
+| **Model capabilities**: Write | Sends chat, embedding, and image requests. |
+
+{/* TODO(verify): whether Rational AI also calls OpenAI's Responses endpoint, which needs its own Write permission on a restricted key. */}
+
+### Set up
+
+1. In the OpenAI platform, create the API key and copy it. OpenAI shows it only once.
+2. In Rational AI, go to **Settings** → **Connectors** and select **Add**.
+3. Under **Browse connectors**, select **OpenAI**, then select **Add**.
+4. Enter a **Name**, an optional **Description**, and paste the key into **API Key**.
+5. Select **Add**.
+
+## Connect Anthropic
+
+### What you need
+
+An Anthropic API key, created in the Claude Console. Anthropic keys have no scopes, so create the key in an Anthropic workspace reserved for Rational AI and set that workspace's spend limit there.
+
+### Set up
+
+1. In the Claude Console, create the API key and copy it.
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Anthropic**, then select **Add**.
+3. Enter a **Name**, an optional **Description**, and paste the key into **API Key**.
+4. Select **Add**.
+
+## Connect OpenRouter
+
+### What you need
+
+An OpenRouter API key. OpenRouter lets you set a credit limit on each key, which caps what Rational AI can spend through it.
+
+### Set up
+
+1. In OpenRouter, create the API key and copy it.
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **OpenRouter**, then select **Add**.
+3. Enter a **Name**, an optional **Description**, and paste the key into **API Key**.
+4. Select **Add**.
+
+OpenRouter is the only provider whose prices Rational AI imports. When you add an OpenRouter model, its catalog pricing is filled in and kept in sync, and the connector's **Provider pricing and subscriptions** section has a **Sync model pricing** button to refresh it on demand.
+
+## Connect Xference
+
+### What you need
+
+The API key Xference gives you. The endpoint is preconfigured, so the key is all you enter.
+
+### Set up
+
+1. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Xference**, then select **Add**.
+2. Enter a **Name**, an optional **Description**, and paste the key into **API Key**.
+3. Select **Add**.
+
+## Connect MiniMax
+
+### What you need
+
+An API key from the MiniMax platform. The endpoint is preconfigured, so the key is all you enter.
+
+### Set up
+
+1. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **MiniMax**, then select **Add**.
+2. Enter a **Name**, an optional **Description**, and paste the key into **API Key**.
+3. Select **Add**.
+
+## Connect an OpenAI-compatible API
+
+### What you need
+
+- The **Base URL** of the API, including its version path, for example `https://api.example.com/v1`. Rational AI lists models by adding `/models` to it, so the URL must be the one that `/models` and `/chat/completions` sit under.
+- An API key for that endpoint. The field is required.
+
+The base URL is called from the Rational AI server, not from your browser. `localhost` in it means the Rational AI server itself.
+
+### Set up
+
+1. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **OpenAI Compatible**, then select **Add**.
+2. Enter a **Name** and an optional **Description**.
+3. Enter the **Base URL** and the **API Key**.
+4. Select **Add**.
+
+## Connect Google Vertex AI
+
+Use **Google Vertex AI** when Gemini requests must stay in one Google Cloud region, for example for data residency.
+
+### What you need
+
+The connector stores no key. Rational AI calls Vertex AI as the Google Cloud identity its installation runs as, so that identity needs access to your project.
+
+| Permission | Why it's needed |
+|---|---|
+| **Vertex AI User** (`roles/aiplatform.user`) on the project | Lists the Gemini models served in the region and sends chat requests. |
+
+{/* TODO(verify): where an administrator of an on-premises installation finds the Google Cloud identity Rational AI runs as. */}
+
+You also need the **Project ID** of the Google Cloud project and the single region to call, such as `europe-west8`.
+
+### Set up
+
+1. In the Google Cloud console, go to **IAM & Admin** → **IAM** for your project and grant the Rational AI identity the **Vertex AI User** role.
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Google Vertex AI**, then select **Add**.
+3. Enter a **Name** and an optional **Description**.
+4. Enter the **Project ID**, for example `my-project-123`.
+5. Enter the **Location**: one region, such as `europe-west8`. `global` and multi-regions such as `eu` or `us` are refused.
+6. Select **Add**.
+
+## Add the provider's models
+
+A connector on its own adds no model. Add each model you want in the AI Model Registry:
+
+1. Go to **Settings** → **AI Model Registry** and select **Add new**.
+2. Select **Add a proxy to a third-party model**, then **Next**.
+3. In **Provider**, select your connector by its name.
+4. In **Model**, select the model. The list comes from the provider.
+5. Check the **Name**, **Description**, **Model identifier** and **Capabilities**, which are filled in from the provider. The **Model identifier** must be unique: to add the same model twice, change it, or select **Generate unique id**.
+6. Select **Confirm**. The message *"Third-party model added"* confirms it.
+
+The model is then available wherever Rational AI offers a model, for example on a [touchpoint](/operational-guides/configure-touchpoints) or as a default model in the registry.
+
+## What it powers in Rational AI
+
+- **AI models:** every model you add with **Add a proxy to a third-party model** sends its requests through the connector. The connector's **AI Models** count shows how many.
+- **Decision models:** an OpenRouter connector also lists the decision models OpenRouter offers. See [Use decision models](/operational-guides/ai-model-registry-features#use-decision-models).
+- **Pricing:** for OpenRouter, the imported catalog prices of each model you add.
+
+Rotating a key in the connector updates every model that uses it.
+
+## Limits
+
+- A **Google Vertex AI** connector serves chat completions only. Embeddings, images, and other operations sent to its models are refused.
+- A **Google Vertex AI** connector offers only Gemini chat models served in its region. The list is refreshed at most once an hour, so a model Google has recently made available can take up to an hour to appear.
+- The **Location** of a Vertex AI connector is one region. It can't be `global` or a multi-region.
+- Xference and MiniMax always use their preconfigured endpoint. To reach another endpoint, use **OpenAI Compatible**.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| *"Could not list the provider models"* when you open **Model**, with *"… responded 401 Unauthorized"* | The API key is wrong, revoked, or lacks permission to list models. Enter a new key in the connector's **Configuration** and select **Save**. |
+| *"Could not list the provider models"* with *"Could not reach …/models"* | The **Base URL** of an OpenAI Compatible connector is wrong or can't be reached from the Rational AI server. Check the version path (`/v1`) and that `localhost` isn't meant as your own machine. |
+| *"Enter an absolute URL including the scheme, e.g. https://api.example.com/v1"* | The **Base URL** lacks `https://` or `http://`. |
+| *"Enter a single Google Cloud region, e.g. europe-west8 — not global or a multi-region such as eu"* | **Location** is `global`, a multi-region, or misspelled. Enter one region. |
+| *"Enter a Google Cloud project ID, e.g. my-project-123"* | **Project ID** has capitals, starts with a digit, or is the project number. Copy the ID from the Google Cloud console. |
+| *"Could not get a Google access token for this backend"* | The Rational AI installation has no Google Cloud identity it can use. See the Vertex AI section. |
+| A Vertex AI error that ends in *"responded 403 Forbidden"* | The Rational AI identity lacks **Vertex AI User** on the project, or the Vertex AI API isn't enabled in it. |
+| *"Model already exists"* | A model with this name or identifier is already registered. Change the **Model identifier** or select **Generate unique id**. |
+
+## Next steps
+
+- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): describe, approve, and set default models.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): pick the model an assistant answers with.
+- [Configure connectors](/operational-guides/configure-connectors): edit, check, or delete a connector.

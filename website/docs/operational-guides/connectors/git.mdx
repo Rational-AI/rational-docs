@@ -1,0 +1,71 @@
+---
+title: Connect a Git repository
+sidebar_label: Git
+description: Sync the files of a Git repository branch, tag, or commit into a Knowledge, with a Git credentials connector for private repositories.
+type: how-to
+audience: [admin]
+---
+
+A Git repository source syncs the files of one branch, tag, or commit into a [Knowledge](/operational-guides/create-knowledge). Public repositories need no connector; private ones need a Git credentials connector that holds a read-only access token.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add a connector, **Create** on the **Sources** row and **Use** on the **Connectors** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **On the Git host:** for a private repository, an account that can read it and create an access token.
+
+## What you need
+
+- The repository's HTTPS clone URL, for example `https://github.com/acme/handbook.git`. SSH URLs aren't supported.
+- For a private repository, an access token with read access to it:
+
+| Host | Token | Permission | Why it's needed |
+|---|---|---|---|
+| GitHub | Fine-grained personal access token, limited to the repositories you sync | **Contents**: Read-only | Clones and fetches the repository. GitHub adds **Metadata**: Read-only by itself. |
+| GitLab | Project access token, or personal access token | `read_repository` | Clones and fetches the repository. A project access token also needs at least the **Reporter** role. |
+
+Rational AI only reads the repository, so the token needs no write permission.
+
+## Set up
+
+1. Create the token on the Git host, limited to the repositories you want to sync, and copy it. Skip this step for a public repository.
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Git credentials**, then select **Add**.
+3. Enter a **Name** and the **Git host**, for example `github.com`. The host must be the same as the repository URL's host.
+4. Keep **Username** as `x-access-token` for GitHub. For GitLab, enter your GitLab username.
+5. Paste the token into **Access token** and select **Add**.
+6. Go to **Settings** → **Sources** and select **Add**. Enter a **Name**.
+7. In **Type**, find **Git repository** and select your connector under it, or **Public repository** for a public one.
+8. Enter the **Repository URL**. In **Branch, tag, or commit**, enter what to sync, or leave it empty for the default branch.
+9. Select **Include Git submodules** if the repository's submodules should be synced too.
+10. Select **Add**. Rational AI creates the source and runs its first sync.
+11. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*. Open the source's menu on that tab and select **Process now**.
+
+A new source syncs only when you select **Sync now**. To keep it current, see [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## What gets synced
+
+- **Every file of the latest commit** on the branch or tag you entered, or of the commit you entered. The `.git` folder and the history aren't synced.
+- **Submodules**, when **Include Git submodules** is selected.
+- **Changes**, according to the source's sync mode. Git sources support **Automatic**, **Periodic**, and **Manual**. With **Automatic**, Rational AI checks every two minutes which commit the branch or tag points to, and syncs only when it moved.
+
+Rational AI never pushes to the repository. Files deleted in a new commit leave the Knowledge too when the source's **On delete** setting is **Cascade delete**, the default.
+
+## Limits
+
+- A source syncs the whole repository. You can't pick folders, because the dialog has no file panel for Git sources.
+- A source pinned to a commit never changes, so **Automatic** never finds anything new for it.
+- The connector's token is offered only to its own host. A submodule hosted elsewhere must be public.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| *"Enter an HTTPS repository URL without embedded credentials."* | The URL uses SSH, plain HTTP, or contains a user name or token. Use the `https://` clone URL and put the token in the connector. |
+| *"The Git credentials connector host must match the repository host."* | The connector's **Git host** differs from the repository URL's host. Enter the same host, without `https://`. |
+| The first sync fails with an authentication error | The token expired, was revoked, or can't read this repository. Create a new token and enter it in the connector's **Configuration**. |
+| The source keeps old files after you changed the branch | The source syncs only on **Sync now** or on its schedule. Select **Sync now**. |
+
+## Next steps
+
+- [Configure data sources](/operational-guides/configure-sources): sync modes, failing syncs, and processing on change.
+- [Build a code graph with Graphify](/operational-guides/graphify-code-graph): map a synced code base.
+- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the synced files in a Knowledge.

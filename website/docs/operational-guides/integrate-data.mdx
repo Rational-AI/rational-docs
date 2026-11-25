@@ -1,68 +1,84 @@
 ---
-sidebar_position: 1
-sidebar_label: Integrate external data
+title: Connect Google Drive
+sidebar_label: Connect Google Drive
 slug: /operational-guides/integrate-data
+description: Sync folders and files from Google Drive into a Knowledge with a Google connector and a Google Drive source.
 type: how-to
-audience: [admin, builder]
+audience: [admin]
 ---
 
+The Google connector signs in to one Google account with read-only Drive access, so a Google Drive source can sync that account's folders and files into a [Knowledge](/operational-guides/create-knowledge).
 
-# Integrate external data
+## Who can set it up
 
-To make files from an external service searchable in a Knowledge, you connect three pieces: a [connector](/operational-guides/configure-connectors) that holds the credentials, a [source](/operational-guides/configure-sources) that says which files to sync, and the Knowledge that processes them. This page walks through the whole path with Google Drive. Other providers follow the same steps with their own credentials; see [Available providers](/operational-guides/configure-connectors#available-providers).
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, **Create** on the **Sources** row and **Use** on the **Connectors** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **In Google Cloud:** someone who can enable APIs and create OAuth clients in a Google Cloud project.
+- **In Google Drive:** the account that signs in when you authorize the connector. The source sees what that account sees.
 
-## Prerequisites
+## What you need
 
-- **Create** on the **Connectors** and **Sources** rows of your role. See [Manage roles and users](/operational-guides/roles-and-users).
-- **The Knowledge module in your license.** **Sources** is hidden without it.
-- **A [Knowledge](/operational-guides/create-knowledge)** to receive the files.
-- **A Google Cloud project** where you can create OAuth credentials.
+- A Google Cloud project that belongs to your Google Workspace organization, so the OAuth consent screen can be **Internal**.
+- The address you open Rational AI at, for example `https://ai.example.com`.
+- A Knowledge to receive the files.
 
-## Integrate Google Drive data
+The connector asks Google for one scope during sign-in:
 
-### 1. Create OAuth credentials in Google Cloud
+| Permission | Why it's needed |
+|---|---|
+| `https://www.googleapis.com/auth/drive.readonly` | Lists the folders and files the account can see, downloads them, and reads the Drive changes feed for **Automatic** syncs. It can't create, change, or delete anything in Drive. |
 
-1. In the [Google Cloud Console](https://console.cloud.google.com/), open your project and enable the **Google Drive API** under **APIs & Services** → **Library**.
-2. Under **APIs & Services** → **OAuth consent screen**, set up the consent screen. Choose **Internal** to limit sign-in to your Google Workspace.
-3. Under **APIs & Services** → **Credentials**, create an **OAuth client ID** of type **Web application**.
-4. In **Authorized redirect URIs**, add the address you open Rational AI at, followed by `/api/management/v0/oauth/callback`. For example, `https://ai.example.com/api/management/v0/oauth/callback`.
-5. Copy the **Client ID** and **Client Secret**.
+The Google connector only powers Google Drive sources. Its description in the connector gallery also names Gmail and Calendar, but it never asks for access to them. To let an assistant answer email in a Gmail mailbox, see [Connect a mailbox](/operational-guides/connect-email).
 
-### 2. Add the Google connector
+## Set up {#integrate-google-drive-data}
 
-1. In Rational AI, go to **Settings** → **Connectors** and select **Add**.
-2. Choose **Google**.
-3. Enter a **Name**, for example *Marketing Drive*, and paste the **Client ID** and **Client Secret**.
-4. Select **Add and authorize** and sign in with the Google account whose files you want to sync.
+1. In the [Google Cloud console](https://console.cloud.google.com/), open your project, go to **APIs & Services** → **Library**, and enable the **Google Drive API**.
+2. Go to **Google Auth Platform**. If it isn't configured yet, select **Get started**, enter an app name and a support email, and choose **Internal** as the **Audience**.
+3. In **Data Access**, select **Add or remove scopes**, add `https://www.googleapis.com/auth/drive.readonly`, and save.
+4. In **Clients**, create a client with the application type **Web application**. In **Authorized redirect URIs**, add your Rational AI address followed by `/api/management/v0/oauth/callback`, for example `https://ai.example.com/api/management/v0/oauth/callback`.
+5. Copy the **Client ID** and the **Client secret**.
+6. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Google**, then select **Add**.
+7. Enter a **Name**, for example *Marketing Drive*, and paste the **Client ID** and **Client Secret**.
+8. Select **Add and authorize** and sign in with the Google account whose files you want to sync. Google returns you to Rational AI once you allow access.
+9. Go to **Settings** → **Sources** and select **Add**.
+10. Enter a **Name**, for example *Marketing team Drive*. In **Type**, find **Google Drive** and select your connector under it.
+11. In the file panel, select the folders and files to sync. Use *Filter files and folders...* to narrow the tree.
+12. Select **Add**. Rational AI creates the source and runs its first sync.
+13. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*.
+14. Open the source's menu on that tab and select **Process now** to process the synced files.
 
-### 3. Add a Google Drive source
+A new source syncs only when you select **Sync now**. To keep it current, set its sync mode as described in [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
 
-1. Go to **Settings** → **Sources** and select **Add**.
-2. Enter a **Name**, for example *Marketing team Drive*.
-3. In **Type**, find **Google Drive** and select your connector under it.
-4. In the file panel, select the folders, shared drives, or files to sync. Use *"Filter files and folders..."* to narrow the tree. A selected folder is synced with everything inside it.
-5. Select **Add**. Rational AI creates the source and runs its first sync.
+## What gets synced
 
-### 4. Choose when the source syncs
+- **The folders and files you selected.** A selected folder includes everything inside it, also files added to it later.
+- **Google Docs, Sheets, and Slides** as `.docx`, `.xlsx`, and `.pptx` files, so the Knowledge can process them like any other document.
+- **Changes**, according to the source's sync mode. Google Drive sources support **Automatic**, **Periodic**, and **Manual**. With **Automatic**, Rational AI checks the account's Drive changes feed every two minutes and syncs only when something changed.
 
-After the first sync, a new source syncs only when you select **Sync now**. To keep it up to date, open the source's **⋮** menu, select **Sync settings**, and choose **Automatic** or **Periodic**. See [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
+The file panel lists the signed-in account's **My Drive**. Shared drives and files under **Shared with me** don't appear in it.
 
-### 5. Attach the source to a Knowledge
+{/* TODO(verify): shared drives and "Shared with me" are not listed, because the source sets no shared drive and no shared-with-me option. Confirm on a Workspace account. */}
 
-1. Go to **Settings** → **Knowledge**, open the Knowledge, and select the **Sources** tab.
-2. In **Add source...**, select the source. It's added at once.
-3. To process the synced files now, open the source's **⋮** menu and select **Process now**. To process changes whenever the source syncs, see [Process a Knowledge whenever its source changes](/operational-guides/configure-sources#process-a-knowledge-whenever-its-source-changes).
+Rational AI never writes to Drive. Files deleted from Drive leave the Knowledge too when the source's **On delete** setting is **Cascade delete**, the default.
+
+## Limits
+
+- One connector signs in to one Google account. To sync another account's files, add another connector.
+- The Drive changes feed covers the whole account, not only the source's folders. An edit elsewhere in the account starts a sync that finds nothing new.
+- The connector can't be authorized again once it holds a token. If the account's access is revoked, add a new connector and switch the source to it.
 
 ## Troubleshooting
 
 | Symptom | What to check |
 |---|---|
-| A red broken-link icon next to the connector | The sign-in failed or expired. Open the connector's menu, select **Complete authentication**, and sign in again. |
-| The file panel lists no folders | The selected connector can't reach the service. Fix its authentication on the **Connectors** page, then add the source again. |
-| Google shows a redirect URI error during sign-in | The **Authorized redirect URIs** entry must match the address you open Rational AI at exactly, followed by `/api/management/v0/oauth/callback`. |
+| A broken-link icon (**Missing authentication**) next to the connector | The Google sign-in wasn't completed, so the connector holds no token. Open the connector, select **Complete authentication** in its menu, and sign in. |
+| Google shows *redirect_uri_mismatch* during sign-in | The OAuth client's **Authorized redirect URIs** must contain your Rational AI address followed by `/api/management/v0/oauth/callback`, with the same scheme and host you use in the browser. |
+| Google shows *access blocked* or *app not verified* | The consent screen's audience is **External**. Set it to **Internal** in **Google Auth Platform** → **Audience**, or sign in with an account from your Workspace organization. |
+| The file panel shows *Connection failed* | The connector can't reach Drive. Check that the **Google Drive API** is enabled in the project and that the sign-in completed. |
+| The folder you want isn't in the file panel | It's in a shared drive or in **Shared with me**. Only **My Drive** is listed. |
+| Syncs fail after working for some days | The account's access was revoked, or the client secret was deleted in Google Cloud. Add a new Google connector, edit the source, select the new connector in **Type**, and select the folders again. |
 
 ## Next steps
 
-- [Configure connectors](/operational-guides/configure-connectors): every provider and what it needs.
-- [Configure data sources](/operational-guides/configure-sources): sync modes and other source types.
-- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the files in a Knowledge.
+- [Configure data sources](/operational-guides/configure-sources): sync modes, failing syncs, and processing on change.
+- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the synced files in a Knowledge.
+- [Connect OneDrive and SharePoint](/operational-guides/connectors/onedrive-sharepoint): sync Microsoft 365 files the same way.

@@ -7,7 +7,7 @@ audience: [admin, builder]
 
 # Configure data sources
 
-A source defines which external files Rational AI syncs, and when. You attach it to a [Knowledge](/operational-guides/create-knowledge), a touchpoint, or a Rational BI project, and each Knowledge then processes the synced files in its own step. Some source types are built in, such as **HTTP**; others come from installed [extensions](/operational-guides/manage-extensions). To connect and sync a service end to end, see [Integrate external data](/operational-guides/integrate-data).
+A source defines which external files Rational AI syncs, and when. You attach it to a [Knowledge](/operational-guides/create-knowledge), a touchpoint, or a Rational BI project, and each Knowledge then processes the synced files in its own step. Some source types are built in; others come from installed [extensions](/operational-guides/manage-extensions). Each built-in type has a setup page, listed in [Pick a source type](#pick-a-source-type).
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
@@ -24,6 +24,26 @@ A source defines which external files Rational AI syncs, and when. You attach it
 - **Somewhere to attach the source:** a Knowledge (see **Settings** → **Knowledge**), a touchpoint or a Rational BI project.
 - **The relevant extension installed** when configuring an extension-contributed source (see **Settings** → **Extensions**).
 
+## Pick a source type
+
+Each built-in type has a page with the credentials it needs on the external service and the steps to set it up.
+
+<span id="configure-an-http-source"></span>
+<span id="process-files-announced-on-a-rabbitmq-queue"></span>
+
+| Type in **Add new source** | Connector it needs | Setup page |
+|---|---|---|
+| **Google Drive** | **Google** | [Connect Google Drive](/operational-guides/integrate-data) |
+| **OneDrive** | **Microsoft OneDrive** | [Connect OneDrive and SharePoint](/operational-guides/connectors/onedrive-sharepoint) |
+| **Amazon S3** | **AWS** | [Connect Amazon S3](/operational-guides/connectors/amazon-s3) |
+| **Azure Blob Storage** | **Azure** | [Connect Azure Blob Storage](/operational-guides/connectors/azure-blob-storage) |
+| **Google Cloud Storage** | **Google Service Account Key** | No page yet |
+| **Git repository** | **Git credentials**, or none for a public repository | [Connect a Git repository](/operational-guides/connectors/git) |
+| **HTTP** | None | [Connect HTTP addresses](/operational-guides/connectors/http) |
+| **RabbitMQ queue** | **RabbitMQ** | [Connect RabbitMQ](/operational-guides/connectors/rabbitmq) |
+
+SQL databases aren't sources. To give Rational BI and agents access to a database, see [Connect a SQL database](/operational-guides/connectors/sql-databases).
+
 ## Choose when a source syncs
 
 1. Go to **Settings** → **Sources** and select the source.
@@ -36,10 +56,12 @@ A source defines which external files Rational AI syncs, and when. You attach it
 | **Periodic** | You want syncs at fixed times, for example every night or once a week. Set the **Sync schedule** that comes with it: **Every number of minutes** (1 to 59), **Every number of hours** (1 to 23), **Every hour**, **Every day**, **Weekly** or **Monthly**. |
 | **Manual** | You want to decide each time. The source syncs only when you select **Sync now**. |
 
-4. Choose the **On delete** behavior (**Cascade delete** or **Keep**), then select **Save**.
+4. Choose the **On delete** behavior, then select **Save**:
+   - **Cascade delete**, the default: a file deleted at the source is deleted from every Knowledge that imported it, with everything derived from it.
+   - **Keep**: files stay in the Knowledge after they're deleted at the source, which protects against accidental deletions.
 
 :::note[Automatic only appears for sources that can report changes]
-**Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, RabbitMQ queues, and extension sources can't do that without setup on your side, so they offer only **Periodic** and **Manual**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
+**Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, and extension sources, can't do that without setup on your side, so they offer only **Periodic** and **Manual**. A RabbitMQ queue has no schedule at all: it consumes its queue from **Sync now** until **Stop sync**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
 :::
 
 ### What happens when a sync keeps failing
@@ -74,56 +96,11 @@ To sync the source automatically, open its **⋮** menu, select **Sync settings*
 
 arXiv limits bulk downloads, so keep **Max papers** (at most `5000`) as low as you can.
 
-## Configure an HTTP source
-
-Use the **HTTP** source when your content lives at one or more web addresses you can point Rational AI straight at.
-
-1. Go to **Settings** → **Sources** and select **Add**.
-2. In **Type**, select **HTTP**.
-3. Enter at least one **Url**, starting with `http://` or `https://`.
-4. Select **Add**.
-
-## Process files announced on a RabbitMQ queue
-
-Use a **RabbitMQ** source when another system announces documents to process on a message queue and expects the results back on another queue. Each message points to one file: Rational AI downloads it into the Knowledge, processes it, and publishes the result.
-
-### Prerequisites
-
-- **A RabbitMQ connector** for the broker (see [Configure connectors](/operational-guides/configure-connectors#connect-a-rabbitmq-broker)).
-- **A Knowledge** to receive the files. The source records each file in the first Knowledge it is attached to.
-
-### Add the source
-
-1. Go to **Settings** → **Sources** and select **Add**.
-2. In **Type**, find **RabbitMQ queue** and pick your broker's connector under it.
-3. Fill in the queue settings:
-
-| Field | What to enter |
-|-------|---------------|
-| **Queue** | The queue to consume, for example `pod-uploaded`. Required. |
-| **Result queue** | Where results are published, for example `pod-processed`. Leave it empty to publish nothing. |
-| **Result exchange (optional)** | Leave empty for the default exchange; otherwise the result queue is used as the routing key. |
-| **File URL field** | The field of the message that holds the file's URL, for example `url` or `pod.downloadUrl`. |
-| **Message ID field (optional)** | The field that identifies the message, for example `requestId`. |
-| **Files in flight** | How many files may wait for a result at once (default `16`). |
-| **Delete each file once its result is published** | Select it to remove the file from the Knowledge after its result is sent. |
-
-4. Select **Add**.
-5. Attach the source to the Knowledge and select **Sync now** to start consuming the queue. **Stop sync** stops it.
-
-:::note[A started queue keeps running]
-A RabbitMQ source has no schedule: once you select **Sync now**, it keeps consuming the queue, also after a restart of the platform, until you select **Stop sync**. Its status shows whether the queue can be consumed.
-:::
-
-### What the result message contains
-
-For each document, once it's processed or has failed, the result queue receives the original message, the status and any error, the file, the attributes extracted from it, and the timestamps. Use the message ID to match each result to its request. Your system may receive the same result twice, so make it ignore duplicates.
-
 ## Let the Fetch extension ignore robots.txt
 
 The **Fetch** extension respects `robots.txt` by default. To let it fetch pages a site's `robots.txt` disallows, select **Ignore robots.txt** in the extension's configuration under **Settings** → **Extensions**.
 
 ## Next steps
 
-- [Integrate external data](/operational-guides/integrate-data): connect Google Drive and sync it into a Knowledge.
+- [Connect Google Drive](/operational-guides/integrate-data): set up a source end to end.
 - [Configure a connector](/operational-guides/configure-connectors): the credentials a source uses.

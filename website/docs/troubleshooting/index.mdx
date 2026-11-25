@@ -53,12 +53,92 @@ If your problem isn't listed, look the message up in [Error messages](/reference
 - A deployment is stuck in `provisioning` with `WaitingForCapacity`
 - A deployment `failed` with `OutOfMemory` or `Crashed`
 
-## Data sources
+## Connectors and data sources
 
-**[Integrate data from Google Drive](/operational-guides/integrate-data#troubleshooting)**
-- A red broken-link icon next to the connector
-- The file panel lists no folders
-- Google shows a redirect URI error during sign-in
+**[Google Drive](/operational-guides/integrate-data#troubleshooting)**
+- A broken-link icon (**Missing authentication**) next to the connector
+- Google shows *redirect_uri_mismatch* during sign-in
+- Google shows *access blocked* or *app not verified*
+- The file panel shows *Connection failed*
+- The folder you want isn't in the file panel
+- Syncs fail after working for some days
+
+**[Amazon S3](/operational-guides/connectors/amazon-s3#troubleshooting)**
+- The file panel stays on *No files to show yet*
+- The file panel shows *Connection failed*
+- The source syncs but some objects are missing
+- **Automatic** isn't offered in **Sync settings**
+
+**[Azure Blob Storage](/operational-guides/connectors/azure-blob-storage#troubleshooting)**
+- The file panel stays on *No files to show yet*
+- The first sync fails
+- The sync error mentions authorization or a 403 status
+- The sync error mentions the client secret
+
+**[OneDrive and SharePoint](/operational-guides/connectors/onedrive-sharepoint#troubleshooting)**
+- Microsoft shows *AADSTS50194* during sign-in
+- Microsoft shows a redirect URI error during sign-in
+- *"Tenant ID is required for application-permission connectors."*
+- The file panel stays on *No files to show yet*
+- The file panel shows *Connection failed*
+- A broken-link icon (**Missing authentication**) next to the connector
+
+**[Google Cloud Storage](/operational-guides/connectors/google-cloud#troubleshooting)**
+- Google Cloud refuses to create a key for the service account
+- The source fails with a permission error
+- The source fails to read the key
+- **Google Cloud Storage** isn't offered as a source type
+
+**[Git repositories](/operational-guides/connectors/git#troubleshooting)**
+- *"Enter an HTTPS repository URL without embedded credentials."*
+- *"The Git credentials connector host must match the repository host."*
+- The first sync fails with an authentication error
+- The source keeps old files after you changed the branch
+
+**[SQL databases](/operational-guides/connectors/sql-databases#troubleshooting)**
+- **Test connection** is unavailable
+- **Test connection** shows **Not connected**
+- **Read-only account** shows *No: the account can write to the database*
+- *"No SQL database connector yet: add one in the settings first."* in **New virtual database**
+- *"The host must be a host name or an IP address…"*
+
+**[HTTP addresses](/operational-guides/connectors/http#troubleshooting)**
+- *"Enter a valid URL starting with http:// or https://"*
+- *"Add at least one URL."*
+- The sync fails for one address
+- The Knowledge holds a login page instead of the file
+
+**[RabbitMQ](/operational-guides/connectors/rabbitmq#troubleshooting)**
+- *"The host must be a host name or an IP address, for example rabbitmq.example.com"*
+- *"Enter the queue to consume."*
+- *"Files can only be deleted after publishing when there is a result queue to publish to."*
+- The source shows a failed status
+- Messages stay in the queue
+- Results come back with *"The message has no 'url' field with the file URL."*
+
+**[Model providers](/operational-guides/connectors/model-providers#troubleshooting)**
+- *"Could not list the provider models"* when you open **Model**, with *"… responded 401 Unauthorized"*
+- *"Could not list the provider models"* with *"Could not reach …/models"*
+- *"Enter an absolute URL including the scheme, e.g. https://api.example.com/v1"*
+- *"Enter a single Google Cloud region, e.g. europe-west8 — not global or a multi-region such as eu"*
+- *"Enter a Google Cloud project ID, e.g. my-project-123"*
+- *"Could not get a Google access token for this backend"*
+- A Vertex AI error that ends in *"responded 403 Forbidden"*
+- *"Model already exists"*
+
+**[Brave Search](/operational-guides/connectors/brave-search#troubleshooting)**
+- The Brave Search extension card shows **Configuration needed**
+- *"No connectors available"* in the connector field
+- The assistant never searches the web
+- Search tool calls fail
+
+**[LinkedIn, Instagram and Facebook](/operational-guides/connectors/social-accounts#troubleshooting)**
+- The network shows a redirect URI error during sign-in
+- *"The login did not complete"*
+- *"This account manages no page the app can publish to"*
+- *"Could not connect this page: log in again"*
+- The connector shows **Login expired** or **Reconnect soon**
+- *"An error occurred while authenticating"* when you select **Add and authorize**
 
 ## Channels
 

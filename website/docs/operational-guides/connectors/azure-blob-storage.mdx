@@ -1,0 +1,76 @@
+---
+title: Connect Azure Blob Storage
+sidebar_label: Azure Blob Storage
+description: Sync blobs from an Azure Storage container into a Knowledge with an Azure connector and an Azure Blob Storage source.
+type: how-to
+audience: [admin]
+---
+
+The Azure connector holds the client ID and secret of a Microsoft Entra app, so an Azure Blob Storage source can read blobs from a storage container and sync them into a [Knowledge](/operational-guides/create-knowledge).
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, **Create** on the **Sources** row and **Use** on the **Connectors** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **In Microsoft Entra ID:** someone who can register applications and create client secrets.
+- **In Azure:** someone who can assign roles on the storage account, such as an **Owner** or a **User Access Administrator**.
+
+## What you need
+
+- The storage account and the container that hold the files.
+- Your Microsoft Entra **Directory (tenant) ID**.
+- An app registration for Rational AI with a client secret.
+- A Knowledge to receive the files.
+
+| Permission | Why it's needed |
+|---|---|
+| **Storage Blob Data Reader** on the container, or on the storage account | Lets the app list and download blobs. It grants no write access. |
+
+## Set up
+
+:::warning[Check with Rational AI before you rely on this source]
+The **Add new source** dialog has no field for the storage account name, and its file panel doesn't list Azure containers. Test the source on a small container first, and contact Rational AI support if the first sync fails.
+:::
+
+{/* TODO(verify): the source passes the client ID, secret, tenant and root, but no storage account name, and the file panel never loads for this type. Confirm that an Azure Blob Storage source can sync at all. */}
+
+1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), go to **App registrations** and select **New registration**. Name the app, keep **Accounts in this organizational directory only**, and register it. No redirect URI is needed.
+2. On the app's **Overview**, copy the **Application (client) ID** and the **Directory (tenant) ID**.
+3. In **Certificates & secrets**, create a client secret and copy its **Value**. Azure shows it only once.
+4. In the [Azure portal](https://portal.azure.com/), open the storage account, then the container. In **Access control (IAM)**, add a role assignment: **Storage Blob Data Reader**, assigned to the app you registered.
+5. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Azure**, then select **Add**.
+6. Enter a **Name**, paste the **Client ID** and the **Client Secret**, and select **Add**.
+7. Go to **Settings** → **Sources** and select **Add**.
+8. Enter a **Name**. In **Type**, find **Azure Blob Storage** and select your connector under it.
+9. In **Root**, enter the container, optionally followed by a folder path, for example `documents/contracts`. In **Tenant**, enter the **Directory (tenant) ID**.
+10. Select **Add**. Rational AI creates the source and runs its first sync.
+11. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*.
+12. Open the source's menu on that tab and select **Process now**.
+
+A new source syncs only when you select **Sync now**. To sync on a schedule, see [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## What gets synced
+
+- **The blobs under the root** you entered.
+- **Changes** on each sync. Azure Blob Storage sources support **Periodic** and **Manual** only: a container can't report changes without event notifications set up in your Azure subscription.
+
+Rational AI never writes to the container. Blobs deleted from it leave the Knowledge too when the source's **On delete** setting is **Cascade delete**, the default.
+
+## Limits
+
+- The dialog has no storage account field, and you can't pick folders in the file panel for this type.
+- One source reads one root. To sync several containers, add one source for each.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| The file panel stays on *No files to show yet* | The panel doesn't list Azure containers. Enter the **Root** instead. |
+| The first sync fails | Open the source, select the failed status to read the **Sync error**, and send it to Rational AI support with the storage account name. |
+| The sync error mentions authorization or a 403 status | The app has no **Storage Blob Data Reader** role on the container or storage account. Role assignments can take a few minutes to apply. |
+| The sync error mentions the client secret | The secret expired or was deleted. Create a new one in **Certificates & secrets** and enter it in the connector's **Configuration**. |
+
+## Next steps
+
+- [Configure data sources](/operational-guides/configure-sources): sync modes, failing syncs, and processing on change.
+- [Connect Amazon S3](/operational-guides/connectors/amazon-s3): sync objects from an S3 bucket.
+- [Connect OneDrive and SharePoint](/operational-guides/connectors/onedrive-sharepoint): sync Microsoft 365 files.

@@ -1,0 +1,91 @@
+---
+title: Connect a SQL database
+sidebar_label: SQL databases
+description: Give Rational BI, agents, and extensions read-only access to PostgreSQL, MySQL, SQLite, DuckDB, SQL Server, Oracle, or IBM i databases.
+type: how-to
+audience: [admin]
+---
+
+A SQL database connector holds the address and a read-only account of an external database, so a virtual database in a [Knowledge](/operational-guides/create-knowledge) can expose views over its tables to Rational BI and agents.
+
+## Choose the connector
+
+Rational AI has two database connectors. They aren't interchangeable: each feature accepts only its own type.
+
+| Connector | Engines | What uses it | Choose it when |
+|---|---|---|---|
+| **SQL database** | PostgreSQL, MySQL, SQLite, DuckDB, SQL Server, Oracle, IBM i (Db2) | Virtual databases in a Knowledge. Rational BI and agents query the views you define there. | You want curated views over one or more databases, optionally kept as a copy refreshed on a schedule. |
+| **Microsoft SQL Server** | SQL Server | Extensions, such as the **SQL Server** extension, which gives a touchpoint tools to list tables, describe them, and run a single `SELECT`. | An assistant should explore and query a SQL Server database on its own. |
+
+Neither is a source: the database isn't copied into the Knowledge as files.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector. A virtual database needs **Update** on the **Knowledge** row. The **SQL Server** extension needs permission to install extensions; see [Manage extensions](/operational-guides/manage-extensions). Roles are in [Manage roles and users](/operational-guides/roles-and-users).
+- **On the database:** a database administrator who can create a login and grant it read access.
+
+## What you need
+
+- The database's host name or IP address, port if it isn't the engine's default, and database name. For SQLite and DuckDB, the path of the database file on the machine that runs Rational AI instead.
+- A database account that can only read. Rational AI doesn't change data, and the account's permissions are what enforce it.
+
+| Engine | Permission | Why it's needed |
+|---|---|---|
+| PostgreSQL | `CONNECT` on the database, `USAGE` on the schemas, `SELECT` on the tables | Reads the tables your views or queries use. |
+| MySQL | `SELECT` on the database | Same. |
+| SQL Server | The `db_datareader` role, or `SELECT` on the schemas it needs, and no access to linked servers | Same. A linked server can map the login to a remote login with more rights. |
+| Oracle | `CREATE SESSION`, and `SELECT` on the tables | Same. |
+| IBM i (Db2) | `SELECT` on the tables in the libraries it needs | Same. |
+
+## Set up
+
+1. Create the read-only account on the database. For SQL Server:
+
+   ```sql
+   CREATE LOGIN rational_reader WITH PASSWORD = '<password>';
+   USE [<database>];
+   CREATE USER rational_reader FOR LOGIN rational_reader;
+   ALTER ROLE db_datareader ADD MEMBER rational_reader;
+   ```
+
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **SQL database** or **Microsoft SQL Server**, then select **Add**.
+3. Fill in the connection and select **Add**:
+   - **SQL database**: enter a **Name** and choose the **Engine**. For SQLite or DuckDB, enter the **File path**. For the other engines, enter the **Host**, the **Database**, the **Username**, and the **Password**, and leave **Port** empty for the engine's default.
+   - **Microsoft SQL Server**: enter a **Name**, the **Host**, the **Database**, the **Username**, and the **Password**. Leave **Port** empty for `1433`, and **Instance** empty for the default instance; otherwise enter them, for example `SQLEXPRESS`. Turn on **Encrypt the connection** to require encryption for the whole session.
+4. For a **SQL database** connector, open it and select **Test connection**. The result shows **Connected** with the **Server** version and whether it's a **Read-only account**, or **Not connected** with the reason. Select **Explore schema** to browse its tables.
+5. Use the connector:
+   - **SQL database**: open the Knowledge, select **Options** (or **Actions** in the grid view), then **New virtual database**. Enter a **Name**, select the connector under **Sources**, and select **Create**. Add views with **New view**, then select **Save**.
+   - **Microsoft SQL Server**: go to **Settings** → **Extensions**, install the **SQL Server** extension, and select the connector in **SQL Server connection**. Then add its tools to a touchpoint on the touchpoint's **Tools** tab.
+
+## What gets synced
+
+Nothing is synced. A SQL database connector is read when a view is queried or refreshed:
+
+- **Live** views read the database on every query.
+- **Copy, refreshed** views read it only at each refresh, on the interval you set, or when you select **Refresh now**. Queries read the copy in between.
+
+The **SQL Server** extension reads the database each time the assistant calls one of its tools.
+
+## Limits
+
+- The engine, the port, and a SQLite or DuckDB file path are set when you add a **SQL database** connector. To change them, add a new connector. You can edit the host, database, username, and password.
+- The port of a **Microsoft SQL Server** connector is set when you add it. You can edit the other fields.
+- With **Encrypt the connection** on, traffic to SQL Server is encrypted, but the server certificate isn't verified. With it off, encryption is still requested for the login.
+- The **SQL Server** extension runs one `SELECT` per call, returns at most 1,000 rows, and stops a query after 60 seconds. It refuses other statements by checking the query text, so the login's permissions remain the real protection.
+- A virtual database's name accepts letters, digits, underscores, and dashes, and can't be changed later.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| **Test connection** is unavailable | The connector has unsaved changes. Select **Save** first: the test uses what's stored. |
+| **Test connection** shows **Not connected** | The host, port, or credentials are wrong, or a firewall blocks Rational AI from the database. Read the reason under **Not connected**. |
+| **Read-only account** shows *No: the account can write to the database* | The account has write rights. Replace it with a read-only account and enter the new credentials in the connector's **Configuration**. |
+| *"No SQL database connector yet: add one in the settings first."* in **New virtual database** | No **SQL database** connector exists. A **Microsoft SQL Server** connector doesn't count. Add a **SQL database** connector. |
+| *"The host must be a host name or an IP address…"* | The host contains a scheme, a port, a path, or an instance. Enter the bare host, and put the port and instance in their own fields. |
+
+## Next steps
+
+- [Build BI dashboards](/operational-guides/rational-bi): query the views of a virtual database.
+- [Manage extensions](/operational-guides/manage-extensions): install and configure the **SQL Server** extension.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): add the extension's tools to an assistant.
