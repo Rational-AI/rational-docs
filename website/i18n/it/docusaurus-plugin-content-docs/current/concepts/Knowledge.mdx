@@ -1,0 +1,52 @@
+---
+sidebar_position: 4
+sidebar_label: Knowledge
+title: Knowledge
+description: Cos'è una Knowledge nel contesto dell'AI, in cosa si differenzia dalla conoscenza integrata di un modello e come funziona Knowledge in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Knowledge
+
+Nel contesto dell'AI, la **conoscenza** è l'insieme organizzato di informazioni specifiche di un dominio a cui un modello può attingere per rispondere alle domande, separato da ciò che ha assorbito durante l'[addestramento](/reference/glossary#training). È la differenza tra ciò che un modello sa in generale e ciò che la tua organizzazione sa in particolare.
+
+La conoscenza integrata di un modello linguistico è ampia ma fissa: si congela nel momento in cui termina l'addestramento e non conosce i tuoi prodotti, le tue policy o i tuoi dati. Una Knowledge colma questa lacuna con informazioni attuali e proprietarie che il modello può consultare al momento della risposta.
+
+## Conoscenza integrata e Knowledge a confronto {#builtin-knowledge-vs-a-knowledge-base}
+
+| | Conoscenza integrata del modello | Una Knowledge |
+| :-- | :-- | :-- |
+| **Fonte** | Dati di addestramento generali | I tuoi documenti e dati |
+| **Aggiornamento** | Fissato al momento dell'addestramento | Aggiornato ogni volta che aggiungi contenuti |
+| **Ambito** | Ampio e generico | Specifico per il tuo dominio |
+| **Tracciabilità** | Difficile da attribuire | Le risposte possono citare la fonte |
+
+È per questo che basare le risposte su una Knowledge, l'idea centrale dietro il [RAG](./RAG.mdx), produce risposte più accurate, più attuali e più affidabili.
+
+## Come la conoscenza diventa utilizzabile {#how-knowledge-becomes-usable}
+
+I documenti grezzi non sono cercabili direttamente da un modello. Per renderli utili, il contenuto viene suddiviso in [chunk, trasformato in embedding e arricchito con annotazioni](./Embeddings-chunks-and-annotations.mdx), poi archiviato in un [database vettoriale](/reference/glossary#vector-database), così i pezzi più pertinenti possono essere recuperati su richiesta. Si possono anche registrare le relazioni tra le risorse, ed è questo che rende possibile il retrieval basato su grafo.
+
+## Knowledge in Rational AI {#knowledge-in-rational-ai}
+
+Il modulo [Knowledge](../cr/Knowledge.mdx) è il punto in cui costruisci e mantieni queste informazioni: importi risorse, conservi i record in collezioni, li organizzi con tag, categorie e attributi, vedi come sono collegati in un grafo o in una griglia, e li prepari per il retrieval. Se la mantieni aggiornata tramite le [fonti](./Source-and-resources.mdx), diventa la base su cui ragionano i tuoi agenti.
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Modulo Knowledge](../cr/Knowledge.mdx): costruisci e mantieni la conoscenza della tua organizzazione.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Embedding, chunk e annotazioni", to: "/concepts/Embeddings-chunks-and-annotations" },
+		{ label: "Fonti e risorse", to: "/concepts/Source-and-resources" },
+	]}
+/>

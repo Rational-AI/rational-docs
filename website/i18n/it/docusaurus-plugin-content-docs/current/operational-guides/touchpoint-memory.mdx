@@ -1,0 +1,82 @@
+---
+sidebar_position: 18
+sidebar_label: Memoria e conversazioni lunghe
+type: how-to
+audience: [builder]
+---
+
+# Dai memoria a un touchpoint e gestisci le conversazioni lunghe
+
+In partenza, ogni conversazione inizia da zero: l'assistente non sa che questa persona preferisce risposte brevi, o che la tua azienda chiama i clienti «soci». Inoltre, una conversazione abbastanza lunga finisce per superare ciò che il modello può leggere in una volta. La scheda **Memoria** di un [touchpoint](/operational-guides/configure-touchpoints) gestisce entrambi i casi: ciò che l'assistente porta da una conversazione alla successiva, e cosa fa quando una singola conversazione diventa troppo lunga.
+
+:::note[Che cos'è la memoria del touchpoint?]
+La memoria è una breve lista di fatti che l'assistente legge all'inizio di ogni conversazione sul touchpoint. La **Memoria personale** riguarda una persona, e solo lei può aprirla. La **Memoria condivisa** riguarda tutto il resto (l'azienda, i suoi clienti, come si chiamano le cose) e vale per chiunque usi l'assistente. La memoria contiene solo fatti; il modo in cui si svolge un'attività appartiene a una [skill](/operational-guides/agent-skills).
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Permesso di modificare il touchpoint:** necessario per attivare la memoria, scegliere cosa succede con le conversazioni lunghe e curare i ricordi condivisi.
+- **Un touchpoint da configurare:** vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).
+
+## Attiva la memoria {#turn-memory-on}
+
+Entrambi i tipi di memoria sono disattivati per impostazione predefinita.
+
+1. Vai a **Impostazioni** → **Touchpoint**, apri il touchpoint e seleziona la scheda **Memoria**.
+2. Attiva **Memoria personale**, **Memoria condivisa**, oppure entrambe.
+3. Se hai attivato la memoria condivisa, scegli sotto **Nuovi ricordi condivisi** cosa succede quando l'assistente impara qualcosa in una chat:
+
+   | Opzione | Quando usarla |
+   |--------|----------------|
+   | **Aspetta l'approvazione di un editor** | Il predefinito. Niente arriva a tutti finché una persona con permessi di modifica non lo approva. |
+   | **Salva subito** | Un assistente interno e fidato, dove la velocità conta più della revisione. |
+   | **Solo aggiunti a mano** | Vuoi il pieno controllo: l'assistente legge la memoria condivisa ma non vi aggiunge mai nulla. |
+
+4. Salva il touchpoint. L'elenco dei ricordi compare quando la memoria è attiva e salvata.
+
+Mentre la memoria è attiva, l'assistente può aggiungere, aggiornare e rimuovere ricordi durante una chat. Gli utenti vedono ogni modifica nella conversazione (*"Ricordato"*, *"Ricordato per tutti"*, *"Proposto alla memoria condivisa"*, *"Ricordo aggiornato"*, *"Dimenticato"*), con **Annulla** o **Revoca** dove previsto, e possono disattivare la memoria per una singola chat.
+
+:::note[La memoria è tenuta breve di proposito]
+Ogni ricordo è una riga di al massimo 280 caratteri. La memoria di una persona contiene in tutto 1.500 caratteri, e quella condivisa 3.000. I ricordi che contengono un link o una password, una chiave o un token vengono rifiutati. Quando un archivio è pieno, un nuovo ricordo viene rifiutato finché l'assistente (o un editor) non sostituisce o rimuove uno esistente.
+:::
+
+## Cura i ricordi condivisi {#curate-shared-memories}
+
+La memoria condivisa parla a nome di tutti, quindi vale la pena che un editor la controlli.
+
+1. Nella scheda **Memoria**, controlla **In attesa di approvazione**. Ogni proposta mostra chi l'ha proposta e quando.
+2. Seleziona **Approva** per aggiungerla alla memoria condivisa, oppure **Scarta** per eliminarla. Il creatore del touchpoint riceve una notifica per le nuove proposte. Possono restare in attesa fino a 50 proposte; oltre, l'assistente smette di proporne di nuove.
+3. In **Ricordi**, filtra per **Tutti**, **Condivisi** o **Io**. Usa il menu di una riga per **Modifica** o **Elimina** una voce; eliminare un ricordo condiviso non si può annullare. Per scriverne uno tu, digitalo nel campo in fondo all'elenco (*"Aggiungi un ricordo condiviso"*, oppure, sotto **Io**, *"Aggiungi qualcosa che dovrebbe ricordare di te"*) e seleziona **Aggiungi**.
+
+Queste modifiche si applicano subito, senza attendere il **Salva** del touchpoint. Aggiungere, modificare, approvare, scartare ed eliminare ricordi condivisi viene registrato nella traccia di audit.
+
+:::note[Gli editor non vedono la memoria personale di nessuno]
+I ricordi personali di una persona sono solo suoi. Il filtro **Io** mostra solo i tuoi, contrassegnati come *"Tu · privato"*. I permessi di modifica sul touchpoint non aprono l'elenco di nessun altro, anche se chi controlla le conversazioni può comunque leggere le chat da cui provengono i ricordi.
+:::
+
+## Scegli cosa succede quando una conversazione diventa troppo lunga {#choose-what-happens-when-a-conversation-gets-too-long}
+
+Un modello può leggere solo una certa quantità di conversazione alla volta. **Conversazioni lunghe**, più in basso nella scheda **Memoria**, decide cosa succede quando una conversazione ci arriva.
+
+1. Apri il menu a tendina **Conversazioni lunghe** e scegli:
+
+   | Opzione | Quando usarla |
+   |--------|----------------|
+   | **Riassumi i messaggi più vecchi e continua (consigliato)** | Il predefinito. L'assistente conserva un riassunto della parte iniziale e gli ultimi messaggi per intero, e la conversazione prosegue. |
+   | **Riassumi, ma conserva parola per parola i risultati di alcuni tool** | Alcuni risultati degli strumenti non devono mai essere riformulati (una cartella clinica, una clausola contrattuale). Aggiungi quegli strumenti sotto **Conserva parola per parola**; i loro risultati vengono copiati nel riassunto esattamente come restituiti. |
+   | **Fermati e chiedi di iniziare una nuova conversazione** | Non si può riassumere nulla. All'utente viene detto che la conversazione è piena, e può iniziarne una nuova. |
+
+2. Salva il touchpoint.
+
+:::note[Quando interviene il riassunto]
+Rational AI riassume quando una conversazione si avvicina al massimo che il modello può leggere in una volta. I messaggi più recenti vengono conservati parola per parola. Viene accorciato solo ciò che il modello legge: la cronologia completa resta nella chat e in [Conversazioni](/operational-guides/conversations).
+:::
+
+Nella chat, un separatore indica dove inizia il riassunto: *"L'assistente ora lavora su un riassunto dei messaggi qui sopra"*. Con **Fermati e chiedi di iniziare una nuova conversazione**, il compositore è disattivato e la chat propone invece **Nuova conversazione**; la vecchia conversazione resta nella cronologia dell'utente.
+
+## Prossimi passi {#next-steps}
+
+- [Crea ed esegui le skill del touchpoint](/operational-guides/agent-skills): dove vanno le istruzioni su come svolgere un'attività.
+- [Gestisci le conversazioni](/operational-guides/conversations): leggi la cronologia completa di una conversazione riassunta.

@@ -1,0 +1,107 @@
+---
+sidebar_position: 20
+sidebar_label: Gestisci il tuo account
+type: how-to
+audience: [user]
+---
+
+# Gestisci il tuo account
+
+Non dovresti aver bisogno di un amministratore per correggere un errore di battitura nel tuo nome, cambiare la password o disconnettere un portatile che hai lasciato in ufficio. La finestra **Impostazioni account** permette a ogni utente di gestire il proprio profilo, la propria password e le sessioni di accesso, e la campanella delle notifiche tiene traccia di ciò che richiede la tua attenzione.
+
+:::note[Che cos'è una sessione?]
+Ogni volta che accedi da un browser, Rational AI registra una **sessione** per quel dispositivo: il browser e il sistema operativo, l'indirizzo IP da cui è partita, quando è iniziata e quando è stata usata l'ultima volta. Disconnettere una sessione termina l'accesso da quel dispositivo, così puoi vedere esattamente dove è aperto il tuo account e chiudere l'accesso a qualsiasi dispositivo di cui non ti fidi più.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Un account Rational AI:** ogni utente può fare tutto ciò che è in questa pagina; non serve l'accesso amministrativo.
+
+## Apri Impostazioni account {#open-account-settings}
+
+1. Vai su **Impostazioni**.
+2. Seleziona il chip del tuo utente (la tua foto, il nome e l'email) in fondo alla barra laterale sinistra.
+3. Scegli **Impostazioni profilo**.
+
+Si apre la finestra **Impostazioni account**. La sua navigazione ha due sezioni: **Generale**, per il profilo e la password, e **Account**, per le sessioni e l'account stesso.
+
+Lo stesso menu contiene anche **Cambia lingua**, che passa l'interfaccia tra inglese e italiano, e **Esci**, che disconnette solo questo browser.
+
+:::note[Su telefono il chip è nel cassetto delle impostazioni]
+Su uno schermo stretto la barra laterale delle Impostazioni si chiude in un cassetto. Seleziona **Impostazioni** per aprirlo: troverai il chip del tuo utente in fondo.
+:::
+
+## Modifica il tuo profilo {#edit-your-profile}
+
+1. In **Generale**, aggiorna i campi che vuoi cambiare:
+   - **Nome** e **Cognome** (entrambi obbligatori).
+   - **Come vuoi essere chiamato**: un soprannome facoltativo. Quando lo imposti, è il nome mostrato in tutta la piattaforma.
+2. Per cambiare la tua foto, seleziona **Scegli immagine** e scegli un file immagine di al massimo 5 MB. La foto viene salvata subito: vedrai *"Immagine aggiornata"*.
+3. Seleziona **Salva**. Il pulsante è attivo solo dopo che hai cambiato qualcosa e il modulo è valido.
+
+Il tuo indirizzo email è mostrato ma non si può modificare qui.
+
+## Cambia la password {#change-your-password}
+
+1. In **Generale**, seleziona **Modifica** accanto a **Password**.
+2. Inserisci la tua **Password attuale**.
+3. Inserisci la **Nuova password** due volte, in **Nuova password** e **Ripeti la nuova password**. Deve avere almeno 8 caratteri ed essere diversa da quella attuale.
+4. Seleziona **Salva**. Vedrai *"Password aggiornata"* e torni a **Generale**.
+
+Se la password attuale è sbagliata, o la nuova coincide con quella attuale, la finestra lo indica sotto il campo e non cambia nulla.
+
+:::note[Alcune password sono gestite dalla tua organizzazione]
+Se il tuo account accede tramite il provider di identità della tua organizzazione anziché con una password salvata in Rational AI, **Modifica** è disattivato e la finestra spiega: *"La tua password è gestita dall'identity provider della tua organizzazione."* Cambiala dove la tua organizzazione gestisce l'accesso.
+:::
+
+## Controlla e termina le sessioni {#review-and-end-your-sessions}
+
+Apri la sezione **Account**. La tabella **Sessioni attive** elenca ogni dispositivo connesso con il tuo account, dal più usato di recente:
+
+| Colonna | Cosa mostra |
+|---|---|
+| **Dispositivo** | Il browser e il sistema operativo, per esempio *"Chrome · macOS"*. Il dispositivo che stai usando ora riporta un badge **Corrente**. Passa il cursore per vedere la firma completa del browser. |
+| **Indirizzo IP** | Da dove si è connessa la sessione. |
+| **Creato il** | Quando hai effettuato l'accesso su quel dispositivo. |
+| **Ultimo accesso** | Quando il dispositivo ha usato l'ultima volta la sessione. |
+
+Per disconnettere un dispositivo, apri il suo menu **⋯**, seleziona **Disconnetti questo dispositivo** e conferma con **Disconnetti**. L'altro dispositivo viene disconnesso alla sua prossima richiesta; se scegli il dispositivo che stai usando, torni alla pagina di accesso.
+
+Per disconnetterti ovunque, seleziona **Esci** sulla riga **Esci da tutti i dispositivi** e conferma.
+
+:::warning[Esci da tutti i dispositivi include anche questo]
+Vengono terminate tutte le sessioni, compresa quella che stai usando, quindi dovrai accedere di nuovo subito. È la mossa giusta quando sospetti che la tua password sia trapelata: cambia prima la password, poi esci da tutti i dispositivi.
+:::
+
+## Disabilita o elimina il tuo account {#disable-or-delete-your-account}
+
+La sezione **Account** ha anche una riga **Elimina account** con due opzioni:
+
+| Opzione | Cosa succede |
+|---|---|
+| **Disabilita account** | Vieni disconnesso e non puoi accedere di nuovo finché un amministratore non riattiva l'account. I tuoi dati vengono conservati. |
+| **Elimina account** | Il tuo account e il tuo accesso a questo workspace vengono rimossi. Le conversazioni vengono conservate. Non si può annullare. |
+
+Nessuna delle due è possibile per l'ultimo amministratore del workspace, così un workspace non può mai chiudersi fuori da solo. Gli amministratori che rimuovono l'account di *qualcun altro* dovrebbero leggere [Rimuovi un utente](/operational-guides/roles-and-users#remove-a-user).
+
+## Tieni d'occhio le notifiche {#keep-up-with-notifications}
+
+La campanella nell'intestazione in alto mostra un badge con le tue notifiche non lette da agenti ed estensioni: esecuzioni di agenti riuscite o fallite, installazioni di estensioni, avvisi di budget, promemoria, assegnazioni, memorie in attesa di approvazione e richieste degli agenti che richiedono una tua azione.
+
+1. Seleziona la campanella per aprire **Notifiche**. Le richieste che attendono te, come un'approvazione, compaiono per prime sotto **Da gestire**. Gli altri elementi sono raggruppati per giorno.
+2. Usa **Tutte** e **Non lette** per filtrare l'elenco.
+3. Seleziona un elemento per andare a ciò a cui si riferisce. Gli elementi fuori da **Da gestire** vengono segnati come letti quando li apri; quelli dentro restano finché la richiesta non viene gestita.
+4. Seleziona **Segna come lette** in fondo all'elenco per segnare come letto tutto ciò che è fuori da **Da gestire**. **Annulla** resta disponibile per alcuni secondi dopo.
+
+## Lavora più in fretta nelle finestre di dialogo {#work-faster-in-dialogs}
+
+In ogni finestra di dialogo, **Cmd+Invio** su macOS o **Ctrl+Invio** su Windows e Linux esegue l'azione principale della finestra (**Salva**, **Crea**, **Lancia** e così via), anche mentre il cursore è ancora in un campo di testo. **Esc** chiude la finestra in primo piano.
+
+:::note[La scorciatoia funziona solo quando la scelta è univoca]
+Cmd/Ctrl+Invio non fa nulla finché il pulsante principale è disattivato, per esempio prima che un campo obbligatorio sia compilato, oppure quando una finestra offre più di un'azione principale. Se il pulsante principale di una conferma è un'azione distruttiva, la scorciatoia lo preme come qualsiasi altro, quindi leggi la finestra prima di premere.
+:::
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci ruoli e utenti](/operational-guides/roles-and-users): cosa un amministratore può cambiare sul tuo account.
+- [Rimuovi un utente](/operational-guides/roles-and-users#remove-a-user): come un amministratore elimina o cancella un account.

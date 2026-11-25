@@ -1,0 +1,60 @@
+---
+sidebar_position: 7
+sidebar_label: RAG
+description: Come un assistente risponde a partire dai tuoi dati, i due modi in cui cerca in una Knowledge e quando interroga invece un database.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Retrieval-augmented generation (RAG)
+
+**Retrieval-augmented generation (RAG)** è il modo in cui un assistente risponde a partire dai tuoi dati. Prima di scrivere una risposta, cerca nella tua [Knowledge](./Knowledge.mdx) i passaggi più pertinenti alla domanda, e poi scrive la risposta a partire da quelli. La risposta si basa sui tuoi contenuti, e l'assistente può mostrare quali fonti ha usato.
+
+Senza RAG, un modello può rispondere solo con ciò che ha appreso durante l'addestramento, che non sa nulla dei tuoi prodotti, delle tue policy o dei tuoi dati, e si ferma alla sua [data limite delle conoscenze](/reference/glossary#knowledge-cutoff).
+
+## Come funziona {#how-it-works}
+
+1. La domanda viene trasformata in un [embedding](./Embeddings-chunks-and-annotations.mdx), una rappresentazione numerica del suo significato.
+2. La Knowledge trova i passaggi il cui significato è più vicino a quello della domanda, anche quando usano parole diverse.
+3. I passaggi migliori che entrano nella [finestra di contesto](/reference/glossary#context-window) del modello vengono consegnati al modello stesso.
+4. Il modello scrive la risposta a partire da quei passaggi.
+
+## Due modi per cercare in una Knowledge {#two-ways-to-search-a-knowledge}
+
+Un assistente può cercare in una Knowledge in due modi. Entrambi sono [strumenti](/reference/glossary#tool) che attivi per un touchpoint.
+
+| | Simple RAG | Graph RAG |
+|---|---|---|
+| Cosa trova | I passaggi più vicini alla domanda per significato | Quei passaggi, più quelli collegati a essi nella Knowledge |
+| Ideale per | Domande specifiche la cui risposta si trova in un solo documento | Domande ampie in cui contano i collegamenti tra documenti: citazioni, riferimenti, prodotti correlati |
+| Velocità | Più veloce | Più lento |
+| Richiede | Documenti nella Knowledge | Relazioni tra le risorse della Knowledge |
+
+Ad esempio, alla domanda *"Quali sono gli effetti collaterali della metformina?"*, Simple RAG restituisce i documenti sulla metformina. Graph RAG porta con sé anche ciò a cui quei documenti sono collegati, come le interazioni tra farmaci o gli studi correlati.
+
+Usa Simple RAG come impostazione predefinita. Attiva Graph RAG quando la tua Knowledge contiene relazioni e i tuoi utenti fanno domande ampie. Vedi [Configura RAG](/operational-guides/configure-rag).
+
+## Quando l'assistente interroga un database {#when-the-assistant-queries-a-database-instead}
+
+Una Knowledge può contenere anche dati strutturati, come tabelle di record. Per le domande sui valori esatti, l'assistente ottiene risposte migliori interrogando questi dati piuttosto che cercando nel testo:
+
+- cercare qualcosa per ID o nome esatto;
+- contare, sommare o calcolare medie ("quanti ordini ci sono stati a marzo?");
+- filtrare per valori numerici ("prodotti sotto i 50 euro").
+
+Un assistente può fare entrambe le cose in una stessa risposta: cerca per trovare gli elementi giusti, poi interroga i dati per le cifre esatte. Attiva solo gli strumenti che corrispondono a ciò che contiene la tua Knowledge: gli strumenti database se contiene dati strutturati, gli strumenti di ricerca se contiene documenti.
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Embedding, chunk e annotazioni", to: "/concepts/Embeddings-chunks-and-annotations" },
+		{ label: "Allucinazioni", to: "/concepts/hallucinations" },
+		{ label: "Glossario", to: "/reference/glossary" },
+	]}
+/>

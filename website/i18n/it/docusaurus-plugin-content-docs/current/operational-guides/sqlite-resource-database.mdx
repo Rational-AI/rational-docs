@@ -1,0 +1,77 @@
+---
+sidebar_position: 13
+sidebar_label: Work with the SQLite database
+type: how-to
+audience: [builder]
+---
+
+# Work with a SQLite resource database
+
+When a resource is a SQLite file, Rational AI loads it into a knowledge database and renders it directly in the resource detail panel. This guide shows you how to browse, query and edit that database inline, instead of only downloading the file.
+
+:::note[What is a SQLite resource database?]
+A SQLite resource is a resource whose underlying file is a SQLite database. When such a resource is ingested, Rational AI loads it into a knowledge database named after the resource. The viewer then opens that database, so you can browse tables and views, run SQL, filter, sort and inline-edit the data without leaving the Control Room.
+:::
+
+## Prerequisites {#prerequisites}
+
+Before you start, make sure you have:
+
+- **A Knowledge** containing at least one **SQLite resource** (a resource whose file is recognized as SQLite by its extension or MIME type).
+- **Read** on the **Knowledge** row of your role, to open the Knowledge and its resources.
+- The resource fully ingested, so its knowledge database exists.
+
+## Open the viewer {#open-the-viewer}
+
+The viewer appears automatically when a resource is a database.
+
+1. Open the **Knowledge** tab and select the **card** for the Knowledge that holds your SQLite resource.
+2. In the **Grid**, select the open icon (**Open**) at the start of the resource's row.
+3. The resource viewer opens the database instead of a file preview.
+
+Only administrators can change the data. For everyone else the viewer shows **Read only**, and SQL statements run as read-only queries.
+
+:::note[No download required]
+For other resources the viewer shows the original file. A SQLite resource is loaded into a knowledge database, so you can explore the data in place.
+:::
+
+## Browse tables and views {#browse-tables-and-views}
+
+Each table, view or query you open becomes a tab in the viewer's tab bar.
+
+1. Select **+** (**Open table or query**) and pick a table or view from the list. Use **Search tables…** to narrow the list.
+2. Select a column header to sort by it.
+3. Select the filter icon in a column header (**Filter this column**) to add a filter row, enter a value, and select **Apply**. With more than one filter, select the button before them to switch how they combine (**AND** by default).
+
+The column type shows as a tooltip when you hover over the column header.
+
+## View a table or view schema {#view-a-table-or-view-schema}
+
+1. Open a table or view tab, then open the **+ Actions** menu.
+2. Select **View schema** to see the statement that defines the selected table or view.
+
+## Run SQL {#run-sql}
+
+1. Select **+** and then **New SQL query**, or select **New query** in the **+ Actions** menu.
+2. Enter a statement in the editor.
+3. Select **Run**, or press Cmd+Enter (Ctrl+Enter on Windows and Linux). The grid shows the result.
+
+If a query returns more rows than the server allows, only the first rows are shown and the tab is marked **truncated**. Add a `LIMIT` or `WHERE` clause to narrow the result. Administrators can also select **Save query as view** to store the query as a read-only SQL view.
+
+:::note[Identifiers with spaces]
+Identifier quoting accepts column and table names that contain spaces, for example `"Location HQ"`. Quote such identifiers in your SQL so they resolve correctly.
+:::
+
+## Edit data inline {#edit-data-inline}
+
+Editing needs an administrator account. Views are always read-only.
+
+1. In a table tab, double-click a **cell** and change its value.
+2. Select **Save changes** to write your edits to the knowledge database, or **Discard** to drop them.
+
+The **+ Actions** menu also holds **Add row**, **Delete selected**, **New table…** and **Drop table**, and the exports **Export CSV**, **Export JSON**, and **Export SQL inserts**.
+
+## Next steps {#next-steps}
+
+- [Manage knowledge resources](/operational-guides/manage-knowledge-resources)
+- [Work with records in collections and grid views](/operational-guides/knowledge-collections-and-grid)

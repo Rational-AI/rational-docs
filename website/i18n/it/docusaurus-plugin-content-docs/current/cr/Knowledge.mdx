@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+sidebar_label: Knowledge
+type: reference
+audience: [user, builder]
+---
+
+# Knowledge
+
+**Knowledge** è dove conservi e mantieni le informazioni da cui Rational AI risponde. Una Knowledge contiene risorse (file caricati e provenienti da fonti, come i cataloghi dei prodotti) e record (righe di attributi raggruppate in collezioni), e le mostra come grafo, come griglia e in viste salvate. I builder la usano per importare dati, collegare le risorse correlate e rendere i contenuti ricercabili per gli assistenti che rispondono da essa.
+
+Per aprire **Knowledge**, la tua licenza deve includere il modulo Knowledge e il tuo ruolo deve avere **Leggi** sulla riga **Knowledge**. Creare, modificare ed eliminare richiedono **Crea**, **Modifica** ed **Elimina** sulla stessa riga. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+<video className="doc-video" controls preload="metadata" aria-label="Video introduttivo su Knowledge" poster="/img/videos/knowledge.jpg" src="/videos/knowledge_eng.mp4" />
+
+## Trova una Knowledge {#find-a-knowledge}
+
+Seleziona **Knowledge** nella barra di navigazione in alto. Ogni scheda mostra il nome della Knowledge, i suoi tag, il numero di risorse e la data dell'ultimo aggiornamento. Usa la barra di ricerca per filtrare per nome e **Tag** per filtrare per tag.
+
+Per crearne una, seleziona **Nuovo** → **Nuova knowledge**. Viene creata con un nome predefinito e si aprono subito le sue impostazioni, così puoi darle un nome e una descrizione.
+
+## Cambia vista {#switch-views}
+
+All'interno di una Knowledge, l'intestazione mostra il nome, un pulsante delle viste con l'icona e il nome della vista corrente, e un pulsante **File** per i file di input. Apri il pannello delle viste per passare tra:
+
+* **Grafo**: una rete interattiva di risorse e delle loro relazioni. Usa **Filtri** per mostrare una sola collezione, filtrare per categorie, tag, relazioni o fonti, raggruppare i nodi per categoria, tag o attributo, e colorarli in base a un numero. Vedi [Esplora una Knowledge come grafo](/operational-guides/knowledge-graph).
+* **Griglia**: una tabella di record, con una scheda per collezione, celle modificabili, e filtri, raggruppamenti, ordinamenti e riepiloghi. Vedi [Collezioni e viste a griglia](/operational-guides/knowledge-collections-and-grid).
+* **Viste salvate e personalizzate**: viste a griglia, grafico e calendario salvate dal tuo team, dashboard e viste scritte in codice. Puoi fissarne fino a cinque come schede sotto l'intestazione. Vedi [Viste personalizzate](/operational-guides/knowledge-custom-views).
+
+## Chatta con una Knowledge {#chat-with-a-knowledge}
+
+La pagina di una Knowledge ha un pannello di chat sul lato (sugli schermi stretti, seleziona **Chat** per aprirlo). Seleziona **Nuova chat** per avviare una conversazione. La chat parte dal touchpoint della Knowledge e mostra solo le conversazioni avute con quel touchpoint. Ogni domanda che invii porta anche con sé i filtri che hai applicato (categorie, tag, relazioni) e i nodi selezionati nel grafo.
+
+Il pannello ha la stessa vista di conversazione della **Chat** (la scheda nella barra di navigazione in alto), con **Modalità avanzata**, **Skill**, Canvas e il livello di ragionamento. Non offre **Knowledge base**, **Ricerca web**, **Ricerca approfondita**, **Conversazione vocale**, l'elenco dei modelli né **Memoria**, che appartengono all'assistente del workspace in **Chat**. Vedi [Chat e le altre chat](/operational-guides/chat-experience#chat-and-the-other-chats).
+
+## Lavora con le risorse {#work-with-resources}
+
+Nella griglia, ogni riga è una risorsa o un record. Per vedere di più su un elemento:
+
+1. **Apri il pannello dei dettagli** con l'icona di apertura all'inizio della riga, oppure seleziona **Vedi dettagli** dal menu opzioni della riga. Il pannello contiene:
+
+   * **Scheda Dettagli:** descrizione, categoria, tag, file originale, ora dell'ultima sincronizzazione e il numero di relazioni in entrata e in uscita. Usa **Modifica** per aggiornare i metadati, oppure **Apri nel visualizzatore** per vedere il file originale.
+
+   * **Scheda Annotazioni:** controlla o aggiungi annotazioni, come entità nominate, sentiment o note personalizzate.
+
+   * **Scheda Attributi:** gli attributi del record, salvati man mano che li modifichi, e i record che vi si collegano sotto **Collegato da**.
+
+   * **Scheda Cronologia:** una timeline di chi ha cambiato che cosa nel record, con i valori prima e dopo la modifica.
+
+   * **Scheda Chunk:** i chunk creati durante l'acquisizione. Un chunk è un segmento del testo della risorsa che la ricerca restituisce al modello. Ogni scheda mostra il numero del chunk, la sua lunghezza, il suo testo e le sue parole chiave. Puoi modificare il testo e le parole chiave di un chunk, oppure eliminarlo. Seleziona dei chunk (o **Seleziona tutto**), poi scegli **Abilita selezionati**, **Disabilita selezionati** o **Elimina selezionati**.
+
+2. **Scarica o elimina:** nel menu opzioni della riga, usa **Scarica** per il file originale o, se il tuo ruolo può eliminare, **Elimina** per il record.
+
+3. **Esplora le relazioni:** la colonna **Relazioni** indica quante altre risorse sono collegate a questa. Seleziona il numero per vedere, aggiungere o rimuovere quelle relazioni senza lasciare la griglia.
+
+## Aggiungi nuove risorse {#add-new-resources}
+
+Per aggiungere file a una Knowledge:
+
+1. Seleziona **Aggiungi file** nel menu **Azioni** della griglia (oppure nel menu **Opzioni** delle altre viste).
+
+2. Trascina i file nella finestra **Aggiungi file**, oppure usa **Aggiungi una cartella** / **Aggiungi un file** per selezionare elementi dal tuo computer.
+
+3. Seleziona **Upload**. A meno che la Knowledge non abbia una regola di elaborazione, si apre **Revisione workflow**: scegli un workflow per ogni file, oppure lascia **Salta workflow**, seleziona **Aggiungi come risorsa** e poi **Conferma**. Al termine dell'elaborazione, le nuove risorse compaiono nella griglia e nel grafo. Tag e categorie si possono modificare nel pannello dei dettagli o direttamente nella griglia.
+
+Per aggiungere record invece dei file, scrivili nella griglia con **+ Nuova riga**, oppure importa un foglio di calcolo con **Importa da Excel o CSV** (vedi [Importa record da Excel o CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv)). Per essere avvisato prima delle date contenute nei record, imposta dei [promemoria](/operational-guides/knowledge-reminders).
+
+## Buone pratiche {#best-practices}
+
+* **Crea una Knowledge per dominio**, ad esempio una per i cataloghi dei prodotti e una per i documenti del supporto clienti.
+* **Controlla i chunk** dopo l'acquisizione. Se i segmenti non hanno senso, cambia il **Tipo di chunking** o le sue opzioni nelle impostazioni **Ricerca AI** della Knowledge.
+* **Collega le risorse correlate**, ad esempio un ordine di acquisto e la sua fattura, così l'assistente può seguire la relazione quando risponde.
+
+---
+
+## Vedi anche {#related-resources}
+
+* [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources): segui le elaborazioni, correggi i file falliti e pulisci le risorse.
+* [Configura Graph RAG](/operational-guides/configure-rag): regola il modo in cui un touchpoint cerca in una Knowledge e segue le sue relazioni.

@@ -1,0 +1,147 @@
+---
+sidebar_position: 38
+sidebar_label: Pianifica e attiva gli agenti
+type: how-to
+audience: [builder]
+---
+
+# Pianifica e attiva gli agenti
+
+Alcuni lavori devono partire senza che nessuno li chieda: il briefing del mattino alle otto, il report vendite ogni lunedì, una revisione ogni volta che si apre una pull request. Un'**automazione** è un agente avviato da qualcosa di diverso da te: una pianificazione, una chiamata da un altro sistema, un evento GitHub, una nuova email, un nuovo file della Knowledge o un record modificato. Questa guida spiega come configurare ciascuna modalità, come vedere cosa è in programma e come mettere in pausa un'automazione.
+
+:::note[Un'automazione è un agente con un'attivazione]
+Non c'è nulla da creare oltre all'agente: la sua **Attivazione** decide cosa lo avvia. Un'esecuzione pianificata o attivata da un evento è uguale a qualsiasi altra esecuzione (stesse istruzioni, stessi strumenti, stesse approvazioni) e compare in **Cronologia**, nella pagina dell'agente e nella scheda **Esecuzioni** dell'automazione.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Un agente con istruzioni**: vedi [Crea un agente](./create-an-agent). Scrivile per un'esecuzione che nessuno sta guardando, e indica dove va il risultato e cosa vuol dire "completato".
+- **Per GitHub:** diritti di amministratore sul repository, per aggiungere un webhook, e l'URL del webhook e il secret forniti dal tuo amministratore.
+- **Per le chiamate API:** una chiave API da **Impostazioni** → **Chiavi API** (vedi [Accedi a Rational AI tramite API](/operational-guides/api-access#create-an-api-key)).
+- **Per le nuove email:** un canale Email (vedi [Collega una casella email](/operational-guides/connect-email)).
+- **Per i nuovi file e i record modificati:** una Knowledge che l'agente può usare.
+
+## Visualizza le automazioni {#see-your-routines}
+
+Apri **Agenti** → **Automazioni**.
+
+<img
+  alt="La pagina Automazioni: cinque automazioni con la loro attivazione (due pianificazioni, due manuali, un evento GitHub), gli strumenti, l'ultima esecuzione e un pulsante Metti in pausa ciascuna"
+  src={require('@site/static/img/screens/agents-routines.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+La riga sotto il titolo conta le automazioni, quante sono attive e quante hanno fallito l'ultima esecuzione. Ogni agente è elencato con la sua attivazione, i suoi strumenti, l'esito dell'ultima esecuzione e l'azione **Metti in pausa**/**Riprendi**. Cerca con **Cerca automazioni…**, filtra per attivazione (**Attivazione: pianificata**, **Attivazione: evento**, **Attivazione: API**) e per stato (**Stato: attive**, **Stato: in pausa**, **Stato: ultima esecuzione fallita**), e ordina per **Eseguite di recente**, **Nome**, **Stato** o **Prima le fallite**. **Vista elenco** e **Vista griglia** cambiano il layout.
+
+Seleziona un'automazione per aprire il suo pannello: **Esegui ora** la avvia subito, **Modifica** apre il profilo, e le schede **Panoramica**, **Attivazione**, **Permessi** ed **Esecuzioni** mostrano cosa fa, cosa la avvia, a cosa può accedere e come è andata.
+
+**Nuova automazione** apre un nuovo profilo agente con l'attivazione già impostata su **Pianificazione**.
+
+## Pianifica l'esecuzione {#run-it-on-a-schedule}
+
+**Scout** scrive il briefing di mercato ogni giorno feriale alle 08:00, ora dell'Europa centrale.
+
+1. Apri il profilo dell'agente (**Modifica**), oppure crealo con **Nuova automazione**.
+2. In **Attivazione ed esecuzione**, imposta **Attivazione** su **Pianificazione**.
+3. In **Pianificazione**, lascia **Cron** e inserisci l'espressione: `0 8 * * 1-5`.
+4. Imposta il **Fuso orario**, per esempio `Europe/Rome`. Senza un fuso orario, la pianificazione usa UTC.
+5. Seleziona **Salva** (oppure **Crea agente** per un nuovo agente).
+
+<img
+  alt="La sezione Attivazione ed esecuzione di Scout: attivazione pianificata, Cron 0 8 * * 1-5, fuso orario Europe/Rome, cloud, autonomo"
+  src={require('@site/static/img/screens/agents-trigger-schedule.png').default}
+  style={{ maxWidth: '520px', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+L'espressione cron ha i consueti cinque campi (minuto, ora, giorno del mese, mese, giorno della settimana):
+
+| Espressione | Esecuzione |
+|-------------|------------|
+| `0 8 * * 1-5` | Alle 08:00, dal lunedì al venerdì |
+| `0 7 * * 1` | Alle 07:00 ogni lunedì |
+| `*/30 8-18 * * 1-5` | Ogni 30 minuti dalle 08:00 alle 18:30, nei giorni feriali |
+| `0 6 1 * *` | Alle 06:00 il primo giorno di ogni mese |
+
+Se un'esecuzione pianificata scatta mentre quella precedente è ancora in corso, non viene accodata sopra di essa. Quando l'agente non ha un modello proprio, all'avvio dell'esecuzione viene usato il modello predefinito degli Agenti della piattaforma.
+
+## Visualizza le prossime esecuzioni nel calendario {#see-whats-coming-in-the-calendar}
+
+**Agenti** → **Calendario** (anche la terza vista della pagina **Attività**) mostra le prossime esecuzioni pianificate in un calendario settimanale, accanto alle esecuzioni passate e alle approvazioni. Il calendario mostra sempre l'ora dell'Europa centrale (Roma), qualunque sia il fuso orario delle pianificazioni.
+
+<img
+  alt="Il calendario settimanale con il briefing delle 08:00 di Scout in ogni giorno feriale"
+  src={require('@site/static/img/screens/agents-calendar.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+**Filtro** restringe la vista per pianificazione (**Tutte**, **Ricorrenti**, **Una tantum**) e per stato (**Tutte**, **Attive**, **In pausa**, **Fermate dopo errori ripetuti**, **In attesa**). Un'automazione in pausa compare una sola volta, per tutto il giorno di oggi, come *In pausa, non verrà eseguita*. La legenda distingue automazioni, attività e approvazioni.
+
+## Avvia su un evento GitHub {#run-it-on-a-github-event}
+
+**Rev** esamina ogni pull request aperta su `acme/web-shop`. Ogni evento che GitHub invia avvia un'esecuzione il cui input è l'evento.
+
+### Configura l'agente {#configure-the-agent}
+
+1. Nel profilo, imposta **Attivazione** su **Evento GitHub**.
+2. **Repository**: `organisation/repository`, per esempio `acme/web-shop`. Le consegne da qualsiasi altro repository vengono ignorate.
+3. **Eventi**: un elenco di nomi di eventi GitHub separati da virgole, per esempio `pull_request` oppure `pull_request, push`. Scrivi `event.action` per far corrispondere una singola azione, per esempio `pull_request.opened`. Lascia il campo vuoto per accettare tutti gli eventi.
+4. Se vuoi, restringi ulteriormente con **Solo se** e **Controllo AI** (vedi [Filtra gli eventi prima dell'avvio](#filter-events-before-they-start-a-run)).
+5. Seleziona **Salva**.
+
+<img
+  alt="La sezione Attivazione ed esecuzione di Rev: attivazione githubEvent, repository acme/web-shop, eventi pull_request"
+  src={require('@site/static/img/screens/agents-trigger-github.png').default}
+  style={{ maxWidth: '520px', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+### Collega il repository {#connect-the-repository}
+
+Il repository deve avere un webhook che invia i suoi eventi a Rational AI, firmato con un secret che appartiene all'agente. La Control Room non mostra l'URL di destinazione né il secret: chiedili al tuo amministratore. Poi, nel repository, vai su **Settings** → **Webhooks** → **Add webhook**, incolla l'URL e il secret, imposta **Content type** su `application/json` e scegli gli eventi che hai elencato nell'agente.
+
+GitHub invia una consegna di prova quando salvi il webhook. Da quel momento, ogni evento corrispondente avvia un'esecuzione che compare in **Cronologia**, avviata da *Evento GitHub*. Gli eventi di agenti in pausa, o di agenti che hanno superato il budget mensile, non avviano alcuna esecuzione.
+
+## Avvia da un webhook {#start-it-from-a-webhook}
+
+Un'attivazione tramite webhook permette a un altro sistema (uno strumento per moduli, un avviso di monitoraggio, un'automazione CRM) di avviare un'esecuzione inviando una richiesta all'indirizzo dell'agente.
+
+1. Nel profilo, imposta **Attivazione** su **Webhook** e salva l'agente. Il suo **Indirizzo** compare in **Attivazione ed esecuzione**.
+2. Seleziona **Genera la chiave** e copia la chiave: non viene mostrata di nuovo. **Ruota la chiave** la sostituisce, e i sistemi che inviano ancora la vecchia chiave vengono rifiutati.
+3. Dai l'indirizzo e la chiave a chi configura l'altro sistema. Ogni richiesta deve includere la chiave.
+
+Ogni richiesta avvia un'esecuzione il cui input è ciò che il sistema ha inviato. Le richieste verso un agente in pausa o oltre il budget non avviano alcuna esecuzione, e **Controllo AI** può saltare quelle che non riguardano l'agente.
+
+## Avvia su una nuova email {#start-it-on-a-new-email}
+
+1. Nel profilo, imposta **Attivazione** su **Nuova email**.
+2. In **Casella**, scegli un canale Email.
+3. Se vuoi, imposta **Solo se** su **Da**, **Oggetto**, **Testo**, **Ha allegati** oppure **Nomi degli allegati**, e un **Controllo AI**.
+4. Seleziona **Salva**.
+
+Ogni email ricevuta dal canale avvia un'esecuzione con mittente, oggetto, testo e allegati.
+
+## Avvia su un nuovo file o un record modificato {#start-it-on-a-new-file-or-a-changed-record}
+
+Per **Nuovo file**, scegli la **Knowledge** e, se vuoi, una **Collezione** (**Tutti i file** per impostazione predefinita). Ogni file della Knowledge, o della collezione, che termina l'elaborazione avvia un'esecuzione con il file e i suoi record.
+
+Per **Record modificato**, scegli la **Knowledge**, facoltativamente una **Collezione** (**Tutti i record**), **Quando** (**Creato o aggiornato**, **Creato** oppure **Aggiornato**), i **Campi** la cui modifica conta, e un filtro **Solo se**. Ogni record creato o modificato avvia un'esecuzione entro un minuto, una sola esecuzione per record, indipendentemente da quanti salvataggi siano stati necessari. Le modifiche dell'agente stesso non lo avviano; lo fanno quelle degli altri agenti, quindi due agenti che scrivono i record l'uno dell'altro possono avviarsi a vicenda a turno.
+
+Quando l'**Accesso alla knowledge** dell'agente elenca Knowledge specifiche, la Knowledge dell'attivazione deve essere una di quelle.
+
+## Filtra gli eventi prima dell'avvio {#filter-events-before-they-start-a-run}
+
+Per **Evento GitHub** e **Nuova email**, **Solo se** mantiene solo gli eventi che corrispondono a un filtro. Per questi due e per **Webhook**, **Controllo AI** pone una domanda con risposta sì o no su ciascun evento, per esempio *"È un ordine di acquisto?"*, e avvia un'esecuzione solo se la risposta è sì con almeno la sicurezza che hai impostato (*% di sicurezza*).
+
+Un evento che non supera il filtro non avvia alcuna esecuzione e compare come *Saltata* in **Cronologia**. Il controllo AI usa il modello meno costoso del provider dell'agente e viene conteggiato nel budget dell'agente; quando il controllo stesso fallisce, l'evento avvia la sua esecuzione.
+
+## Avvia da un altro sistema {#start-it-from-another-system}
+
+Qualsiasi sistema con una chiave API di Rational AI può avviare un'esecuzione di qualsiasi agente, indipendentemente dalla sua attivazione, passandogli un obiettivo e dei dati di input. Vedi [Accedi a Rational AI tramite API](/operational-guides/api-access). Impostare l'attivazione dell'agente su **API** lo segna come guidato da API in **Automazioni**.
+
+## Metti in pausa un agente {#pause-an-agent}
+
+**Metti in pausa** (nella pagina dell'agente o nella sua riga in **Automazioni**) segna l'agente come *In pausa*: la sua pianificazione smette di scattare, le sue altre attivazioni non avviano più esecuzioni, e le sue prossime esecuzioni escono dal calendario. **Riprendi** lo riattiva.
+
+Un agente può anche essere messo in pausa per conto tuo:
+
+- *Budget raggiunto*: l'agente ha usato il suo **Budget mensile**. Aumenta o rimuovi il budget nella pagina dell'agente per riattivarlo.
+- *In pausa: non letto*: con **Metti in pausa gli agenti pianificati che nessuno legge** attivo in **Impostazioni** → **Agenti**, un agente pianificato viene messo in pausa quando nessuno ha aperto i suoi ultimi 10 risultati per almeno 14 giorni. Il suo proprietario riceve una notifica e può riprenderlo.

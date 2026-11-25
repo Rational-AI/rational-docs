@@ -1,0 +1,148 @@
+---
+sidebar_position: 15
+sidebar_label: Distribuisci modelli self-hosted
+type: how-to
+audience: [admin, builder]
+---
+
+# Distribuisci ed esegui modelli self-hosted
+
+Un modello che ospiti tu risponde solo finché è in esecuzione, e mentre è in esecuzione occupa una GPU o una buona parte della memoria di un server. Lo vuoi pronto quando le persone lo usano, fuori dai piedi quando non lo usano, e vuoi capire a colpo d'occhio se sta scaricando, avviandosi, funzionando o se è guasto. In Rational AI aggiungi un modello open source da Hugging Face, decidi quante copie ne girano e quando restituisce il proprio hardware, e segui ogni passaggio dal Registro modelli AI.
+
+:::note[Che cos'è un deployment?]
+Un modello self-hosted nel registro descrive *cosa* eseguire: i pesi (per esempio un repository di Hugging Face) e le sue **impostazioni di deploy**. Il suo **deployment** è la copia in esecuzione sulla tua piattaforma di hosting: sui tuoi server, in una [installazione on-premise](/operational-guides/run-models-on-premise), oppure sull'infrastruttura cloud di Rational AI. Un deployment ha una **fase**, che indica a che punto si trova nel suo ciclo di vita, e **repliche**, cioè le istanze in esecuzione del modello che rispondono alle richieste. Ogni modello ha al massimo un deployment.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, verifica di avere:
+
+- **Permessi:** **Crea** sulla riga **Registro modelli AI** del tuo ruolo per aggiungere e distribuire un modello, **Aggiorna** per cambiarne la scalabilità, **Elimina** per rimuovere il suo deployment.
+- **Hardware per il modello:** sui tuoi server, GPU o memoria sufficiente per il modello (vedi [Esegui i modelli sui tuoi server](/operational-guides/run-models-on-premise)); sul cloud di Rational AI, una [licenza](/operational-guides/license) che include i modelli self-hosted (elencata nella pagina **Licenza** come *Modelli self-hosted su questa macchina (enterprise)*). Senza di essa, il deployment viene rifiutato con il messaggio *"This workspace's plan does not include hosting your own models on our GPUs."*
+- **Un token Hugging Face, solo per i modelli con accesso limitato:** modelli come Llama o Gemma richiedono un tuo token sull'installazione. I modelli pubblici non ne richiedono alcuno.
+
+## Aggiungi un modello open source {#add-an-open-source-model}
+
+Il selettore dei modelli cerca su Hugging Face in tempo reale, così vedi il catalogo aggiornato invece di un elenco fisso.
+
+1. Vai su **Impostazioni** → **Registro modelli AI** e seleziona **Nuovo** (**Aggiungi** quando il registro è vuoto).
+2. Seleziona **Scegli un modello open source** (*"Installa un modello disponibile open source tramite Hugging Face"*) e seleziona **Avanti**.
+3. Cerca per nome oppure sfoglia. Restringi l'elenco con:
+
+   | Controllo | Cosa fa |
+   |---|---|
+   | Ordinamento | **Più pertinenti**, **Più scaricati** (il predefinito), **Più apprezzati** oppure **Aggiornati di recente** |
+   | **Formati** | I formati dei pesi da elencare: **Safetensors**, **GGUF**, **AWQ**. Vengono offerti solo i formati che la tua piattaforma di hosting può eseguire |
+   | **Selezione curata** | Solo i modelli che Rational AI ha selezionato e testato |
+   | **Solo modelli che entrano** | Esclude i modelli stimati troppo grandi per l'hardware |
+
+4. Seleziona un modello per leggerne la scheda a destra: editore, architettura, parametri, pesi, popolarità, ultimo aggiornamento e la sua scheda del modello su Hugging Face. Alcune icone accanto a ogni voce indicano un modello che accetta immagini, una selezione curata o un modello **Già registrato**.
+5. Seleziona **Conferma**. Il modello viene aggiunto al registro, ma non ancora distribuito.
+
+:::note[La stima di compatibilità è una regola pratica, non una prenotazione]
+Dove l'installazione può stimarla, un chip indica se un modello **Entra**, **Entra con FP8** (ci sta una volta quantizzato a 8 bit) oppure è **Troppo grande**, confrontando la sua dimensione con la memoria che gli verrebbe assegnata. Il chip non controlla se una GPU è libera in questo momento, quindi un modello che entra può comunque attendere che si liberi spazio quando lo distribuisci.
+:::
+
+### Carica un file del modello {#upload-a-model-file}
+
+Dove la tua piattaforma di hosting accetta pesi caricati, la stessa finestra offre anche **Installa il tuo modello personalizzato**:
+
+1. Scegli **Installa il tuo modello personalizzato** e seleziona **Avanti**.
+2. Scegli il file del modello (un file `.gguf`) e controlla il **Nome**, che viene preso dal nome del file.
+3. Seleziona **Conferma**. Il file viene caricato e il modello distribuito; un file grande può richiedere diversi minuti.
+
+L'opzione è nascosta quando la piattaforma di hosting non accetta caricamenti.
+
+## Rivedi le impostazioni di deploy {#review-the-deploy-settings}
+
+Ogni modello self-hosted ha **Impostazioni di deploy**, lette al momento del deployment: quale hardware riceve e come si avvia il suo runner. Aprile dal menu di riga del modello con **Modifica dettagli**.
+
+- **Lunghezza contesto**: il numero massimo di token che il modello elabora in una richiesta. Un contesto più lungo richiede più memoria.
+- **Il numero di GPU**: elencato per primo dove la piattaforma ha GPU. `0` esegue il modello sulla CPU, molto più lentamente.
+- **Le impostazioni del runner**: per esempio il budget di memoria GPU e i parser delle chiamate a strumenti e del ragionamento. Il modulo elenca quelle supportate dalla tua piattaforma di hosting, con quelle usate raramente sotto **Impostazioni avanzate**.
+
+Ogni campo mostra **Predefinito:** e il valore che il modello riceve se lo lasci invariato. Scegli **Custom** per impostare un valore tuo oppure, per un flag, **Non passare** per escluderlo del tutto. I default sono scelti per ogni modello e per il tuo hardware.
+
+:::note[Le impostazioni salvate non raggiungono da sole un modello in esecuzione]
+Salvare le impostazioni di deploy cambia ciò che *dovrebbe* girare, non ciò che gira. Il deployment mostra **Impostazioni non distribuite** ed elenca i campi modificati finché non le distribuisci. Quando il modello è in esecuzione, ti viene chiesto subito dopo il salvataggio se distribuirle ora.
+:::
+
+## Distribuisci un modello {#deploy-a-model}
+
+1. Apri il modello dal registro. Nella sezione **Distribuzione** compare il messaggio *"Il modello non è distribuito: le richieste falliscono finché non lo è."*
+2. Seleziona **Distribuisci** e conferma. Puoi anche usare **Distribuisci modello** nel menu di riga.
+3. Segui la fase nel chip accanto a **Distribuzione**. Una linea animata mostra cosa sta facendo la piattaforma, per esempio il download dell'immagine o dei pesi.
+
+Un primo deployment può richiedere diversi minuti: i pesi si scaricano una sola volta e restano in cache per gli avvii successivi.
+
+### Leggi la fase {#read-the-phase}
+
+| Fase | Cosa significa |
+|---|---|
+| **In preparazione** | Primo avvio di queste impostazioni: download, creazione, avvio |
+| **In avvio** | Riavvio dopo che il modello era già stato pronto |
+| **Pronto** | Almeno una replica risponde alle richieste |
+| **Inattivo** | Nessuna replica gira per risparmiare hardware; la richiesta successiva ne avvia una |
+| **In arresto** | Sta scendendo a zero repliche |
+| **Arrestato** | Nessuna replica gira, e le richieste non ne avviano una |
+| **Fallito** | Le impostazioni non possono essere eseguite; l'avviso spiega il motivo |
+| **In eliminazione** | Il deployment è in fase di rimozione |
+| **Non distribuito** | Il modello non ha ancora un deployment |
+
+La sezione mostra anche **Repliche** (*"1 di 1 pronte"*), **In questo stato dal** e **Ultima richiesta**. L'elenco dei modelli mostra la stessa fase nella colonna **Stato** e la aggiorna man mano che cambia.
+
+:::note[Un'attesa non è un errore]
+Un avviso sotto la fase spiega un ritardo senza cambiarla: *"In attesa che la piattaforma trovi spazio"*, *"L'avvio è molto più lento del solito"*, *"La piattaforma di hosting non è raggiungibile; nuovo tentativo in corso"*. Solo i problemi che un nuovo tentativo non può risolvere portano il deployment in **Fallito**: esaurimento della memoria, arresti anomali ripetuti, avvio troppo lento o nessuno spazio trovato in tempo dalla piattaforma. Un deployment fallito non viene ritentato e rilascia il proprio hardware. Correggi le impostazioni e seleziona **Distribuisci di nuovo**.
+:::
+
+## Decidi quante repliche girano {#decide-how-many-replicas-run}
+
+La scalabilità indica quanto hardware occupa il modello, e quando.
+
+1. Apri il modello e vai su **Distribuzione**.
+2. Imposta **Repliche minime**: le repliche tenute in esecuzione senza richieste.
+   - **0**: su richiesta. Il modello restituisce il proprio hardware quando è inattivo, e la richiesta successiva attende il suo avvio.
+   - **1 o più**: sempre attivo. Il modello risponde subito e conserva il proprio hardware.
+3. Con un minimo di 0, imposta **Rilascia dopo**: i minuti senza richieste prima che rilasci il proprio hardware. Lascialo vuoto per usare il valore predefinito dell'installazione, indicato nel campo (dieci minuti, salvo che la tua installazione lo abbia cambiato).
+4. Dove previsto, imposta **In esecuzione ora**: quante repliche girano in questo momento. `0` rilascia l'hardware fino alla richiesta successiva.
+5. Seleziona **Imposta scalabilità**. La modifica si applica subito, senza riavviare le repliche in esecuzione.
+
+**Repliche massime** compare solo dove la piattaforma di hosting scala un modello in base al carico. Altrove il massimo è quello consentito dalla piattaforma, e **In esecuzione ora** decide quante ne girano.
+
+| Opzione | Quando usarla |
+|---|---|
+| Minimo 0, **Rilascia dopo** breve | Modelli usati ogni tanto, su hardware condiviso con altri modelli |
+| Minimo 0, **Rilascia dopo** lungo | Modelli usati a raffiche, dove un avvio a freddo nel mezzo di una sessione darebbe fastidio |
+| Minimo 1 o più | Modelli su cui le persone contano tutto il giorno, o che impiegano molto ad avviarsi |
+
+:::note[La prima richiesta a un modello inattivo attende]
+Un modello inattivo si avvia quando arriva una richiesta, e quella richiesta attende fino a un paio di minuti. Se il modello impiega di più, la richiesta fallisce con un messaggio che indica che il modello si sta riscaldando, e quella successiva passa non appena il modello è pronto. Alza il minimo, o preriscalda il modello prima che le persone ne abbiano bisogno, quando quell'attesa conta.
+:::
+
+## Arresta, riprendi o preriscalda un modello {#stop-resume-or-warm-up-a-model}
+
+- **Arresta**: rilascia l'hardware e lo mantiene rilasciato: le richieste al modello falliscono finché non lo riprendi. Usalo da **Distribuzione** oppure da **Arresta modello** nel menu di riga.
+- **Riprendi**: *"risponde di nuovo alle richieste, e la prima lo avvia."* Anche **Riprendi modello** nel menu di riga.
+- **Preriscalda**: *"si avvia ora, così la prima richiesta non attende."* Offerto dove la piattaforma non avvia i modelli da sola.
+- **Riavvia**: distribuisce di nuovo le stesse impostazioni su un modello in esecuzione.
+- **Elimina distribuzione**: rimuove il deployment. Il modello resta nel registro e può essere distribuito di nuovo.
+
+## Abilita o disabilita un modello {#enable-or-disable-a-model}
+
+Disabilitare un modello è il modo più rapido per toglierlo dal servizio senza eliminarlo, per esempio mentre controlli un problema.
+
+1. Nel registro, apri il menu di riga del modello e seleziona **Disabilita**.
+2. Leggi la finestra. Elenca cosa usa ancora il modello (touchpoint, modelli predefiniti, Knowledge e impostazioni di generazione) e quali richieste falliranno, e propone di spostare quegli usi su un altro modello abilitato con lo stesso scopo.
+3. Scegli se fermare anche il suo deployment. Di default non viene fermato, così il modello può restare in esecuzione e rispondere non appena lo riabiliti.
+4. Conferma.
+
+Un modello disabilitato rifiuta subito ogni richiesta, scompare dai selettori dei modelli e mostra **Disabilitato** nella colonna **Stato**. I suoi dettagli dicono *"Le richieste vengono rifiutate e i selettori di modelli non lo propongono."* Una chat che lo usa segnala che la richiesta è stata rifiutata perché il suo modello è disabilitato. Per riattivarlo, seleziona **Abilita** nel menu di riga o nei dettagli. Abilitare lascia il deployment com'è, quindi riprendilo se era stato fermato.
+
+:::note[Disabilita un modello che non puoi eliminare]
+Un modello con uno storico di fatturazione non può essere eliminato, perché quello storico resta collegato a lui. Disabilitarlo mantiene i record e interrompe il suo utilizzo.
+:::
+
+## Prossimi passi {#next-steps}
+
+* [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features): capacità, modelli predefiniti e approvazione.
+* [Imposta per quanto tempo i dati vengono conservati](/operational-guides/data-retention): decidi se ogni modello memorizza prompt e risposte, e per quanto tempo.

@@ -1,0 +1,89 @@
+---
+title: Risoluzione dei problemi
+sidebar_label: Risoluzione dei problemi
+description: Trova la soluzione a un problema partendo dal sintomo, tra installazione, agenti, modelli, API e integrazioni.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+# Risoluzione dei problemi
+
+Trova il sintomo qui sotto e segui il link alla sua soluzione. Ogni guida ha una tabella **Risoluzione dei problemi** con la causa e cosa controllare.
+
+Se il problema non è elencato, cerca il messaggio in [Messaggi di errore](/reference/error-messages), oppure cerca il suo testo esatto nella documentazione. Per dimensioni, tempi e conteggi, vedi [Limiti e quote](/reference/limits).
+
+## Installazione e operazioni {#installation-and-operations}
+
+**[Backup e ripristino](/operational-guides/backup-and-restore#troubleshooting)**
+- **Prova destinazione** fallisce con *permission denied*
+- Un backup risulta *non riuscito*
+- Un componente è *skipped*, oppure l'elenco dei backup è vuoto
+
+**[Rational AI Tunnel](/operational-guides/tunnel#troubleshooting)**
+- L'endpoint non si risolve, oppure si risolve in un IP vecchio
+- Raggiungibile sulla rete locale ma non dall'esterno
+- Avviso del certificato nel browser
+- L'endpoint non compare mai
+
+**[Licenza](/operational-guides/license#troubleshooting)**
+- *The platform does not know this code*
+- *The license does not verify*, oppure è stata emessa per un'altra installazione
+- Un modulo resta nascosto dopo un'attivazione
+
+## Agenti {#agents}
+
+**[Crea un agente](/operational-guides/create-an-agent#troubleshooting)**
+- **Esegui ora** è disattivato
+- *"No text-generation model is available"* oppure *"The configured Agents default model is unavailable."*
+- L'agente segnala che uno strumento non è disponibile
+
+**[Esecuzioni degli agenti](/operational-guides/agent-runs#troubleshooting)**
+- L'esecuzione resta *In coda*
+- L'esecuzione termina *Fallita* con un messaggio di verifica, oppure *Tempo scaduto*
+- *Ferma* segnala che l'annullamento non è stato confermato
+
+**[Computer degli agenti](/operational-guides/agent-computers#troubleshooting)**
+- *"Il servizio Computer non è stato trovato"* oppure *"non ha risposto in tempo"*
+- Il desktop mostra *Disconnected*
+
+## Modelli e API {#models-and-the-api}
+
+**[Distribuisci modelli open source tramite API](/operational-guides/api/deploy-open-source-models#troubleshooting)**
+- `404` a ogni chiamata, oppure `409` alla creazione o al deployment
+- Un deployment è bloccato in `provisioning` con `WaitingForCapacity`
+- Un deployment finisce in `failed` con `OutOfMemory` o `Crashed`
+
+## Sorgenti dati {#data-sources}
+
+**[Integra dati da Google Drive](/operational-guides/integrate-data#troubleshooting)**
+- Un'icona rossa di link interrotto accanto al connettore
+- Il pannello dei file non mostra cartelle
+- Google mostra un errore di redirect URI durante l'accesso
+
+## Canali {#channels}
+
+**[Email](/operational-guides/connect-email#troubleshooting)**
+- Una casella che funzionava ha smesso di ricevere posta
+- **Collega** fallisce con una password per le app
+- La posta arriva ma non riceve una risposta automatica
+
+**[Microsoft Teams](/operational-guides/connect-teams#troubleshooting)**
+- **Errore durante la connessione del canale** dopo **Collega**
+- Il bot riceve messaggi ma non risponde mai
+- Non arriva nulla in Conversazioni
+
+**[Slack](/operational-guides/connect-slack#troubleshooting)**
+- **Errore durante la connessione del canale** dopo **Collega**
+- Slack non riesce a verificare il **Request URL**
+- Una menzione in un canale Slack non riceve risposta, oppure i messaggi arrivano ma nessuno risponde
+
+## Integrazioni {#integrations}
+
+**[Server MCP Graphify](/operational-guides/external-graphify-mcp#troubleshooting)**
+- Il server non riesce a raggiungere Rational AI, oppure l'autenticazione fallisce
+- `query_graph` non restituisce nulla
+- `uv` non riesce ad avviare il server
+
+**[Pannello dei dettagli utente](/operational-guides/personalize-user-details#troubleshooting)**
+- Si vede solo Basic info, oppure un widget è vuoto o non compare mai
+- Le tue modifiche sono sparite con l'aggiornamento successivo

@@ -1,0 +1,47 @@
+---
+sidebar_position: 11
+sidebar_label: Allucinazioni
+title: Allucinazioni
+description: Cosa sono le allucinazioni, perché i modelli le producono e come Rational AI le riduce.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+
+# Allucinazioni
+
+Un'**allucinazione** è una risposta che suona giusta ma è falsa, oppure non è supportata da alcuna fonte. Il modello non mente: scrive le parole più probabili per la domanda, e a volte le parole più probabili sono sbagliate.
+
+## Perché i modelli producono allucinazioni {#why-models-hallucinate}
+
+- **Predicono il testo, non verificano i fatti.** Un modello scrive ciò che di solito segue, e il risultato suona bene anche quando è sbagliato.
+- **La loro conoscenza è fissa.** Un modello sa solo ciò che era nei dati di addestramento, fino alla sua [data limite delle conoscenze](/reference/glossary#knowledge-cutoff), e nulla della tua organizzazione.
+- **Le domande vaghe lasciano lacune.** Quando una domanda non è chiara, il modello riempie le lacune con supposizioni plausibili.
+
+## Come si presentano {#what-they-look-like}
+
+| Tipo | Esempio |
+| :--- | :--- |
+| Fatti sbagliati | Una data, un nome o una cifra errati: "La Torre Eiffel fu costruita nel 1867" (fu nel 1889). |
+| Fonti inventate | Una citazione, un numero di policy o un link che non esistono. |
+| Domanda interpretata male | Una domanda su Python, il linguaggio, ha ricevuto una risposta sui pitoni, i serpenti. |
+| Cose inventate | Un prodotto, una persona o una regola che non sono mai esistiti. |
+
+## Come Rational AI le riduce {#how-rational-ai-reduces-them}
+
+- **Risposte dai tuoi dati.** Con [RAG](./RAG.mdx), un assistente cerca nella tua [Knowledge](./Knowledge.mdx) e risponde con i passaggi che trova, e Chat mostra le fonti usate.
+- **Verifica di una risposta.** **Verifica risposta** in Chat controlla una risposta rispetto alla Knowledge recuperata e segna le frasi che non riesce a supportare. Vedi [Verifica una risposta con la tua Knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+- **Istruzioni chiare.** Il [prompt di sistema](./System-prompt.mdx) di un touchpoint può chiedere all'assistente di dire quando non sa una risposta.
+- **Una persona nel processo.** Per le risposte che contano, fai in modo che qualcuno le riveda prima di usarle. Vedi [Supervisione umana (human-in-the-loop)](./Human-in-the-loop.mdx).
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "RAG", to: "/concepts/RAG" },
+	]}
+/>

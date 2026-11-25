@@ -1,0 +1,97 @@
+---
+sidebar_position: 18
+sidebar_label: Regola la generazione delle risposte
+type: how-to
+audience: [builder]
+---
+
+# Regola come un touchpoint genera le risposte
+
+Nella sua scheda **Modelli**, ogni [touchpoint](/operational-guides/configure-touchpoints) stabilisce quanto ragiona il suo modello, quanto può essere lunga una risposta, cosa succede quando il modello entra in un ciclo, e se gli utenti possono verificare una risposta rispetto alla tua Knowledge.
+
+:::note[Che cos'è il livello di ragionamento?]
+I modelli di ragionamento riflettono prima di rispondere, e la maggior parte ti permette di scegliere quanto a fondo: da **Disattivato** (risponde subito, dove il modello lo consente) passando per **Minimal**, **Basso**, **Medio** e **Alto**, fino a **XHigh** e **Max**. Un livello più alto aiuta sulle domande difficili, a costo di tempo e token. Ogni modello offre solo alcuni di questi livelli, e Rational AI mostra solo quelli supportati dal modello del touchpoint.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Permesso di modificare il touchpoint:** senza di esso il modulo del touchpoint è in sola lettura.
+- **Un modello predefinito sul touchpoint:** i livelli di ragionamento e il suggerimento sui token di output vengono letti da lui. Un modello che non dichiara la capacità di ragionamento non offre alcun livello.
+
+## Apri le impostazioni avanzate {#open-the-advanced-settings}
+
+1. Vai a **Impostazioni** → **Touchpoint** e apri il touchpoint.
+2. Apri la scheda **Modelli**.
+3. Sotto la tabella dei modelli, seleziona **Apri le impostazioni avanzate**. Compaiono la sezione **Limiti di generazione**, seguita dalle impostazioni di titolo, sentiment e argomenti.
+
+Ogni impostazione di questa pagina viene salvata con il pulsante **Salva** del touchpoint, e **Annulla** scarta le modifiche.
+
+## Imposta il livello di ragionamento predefinito {#set-the-default-reasoning-level}
+
+1. In **Limiti di generazione**, apri il menu a tendina **Reasoning**.
+2. Scegli uno dei livelli offerti dal modello predefinito, oppure svuota il campo per lasciarlo vuoto (*"Model default"*), così si applica il valore predefinito del modello.
+3. Salva il touchpoint.
+
+Il campo ti avvisa quando l'impostazione non farà ciò che ti aspetti:
+
+| Avviso | Cosa significa |
+|--------|---------------|
+| *"Il modello predefinito non dichiara la capacità di ragionamento: l'impostazione non verrebbe inviata."* | Il modello non ha livelli di ragionamento. Scegli un modello di ragionamento oppure lascia il campo vuoto. |
+| *"Il modello predefinito non offre "…"; verrà usato "…". Scegli uno dei suoi livelli per renderlo esplicito."* | Il livello salvato non è tra quelli di questo modello (per esempio dopo aver cambiato il modello predefinito). Si usa il livello immediatamente superiore, oppure quello inferiore più vicino. Scegli uno dei suoi livelli per rendere esplicita la scelta. |
+| *"Con un livello alto e un limite di output così basso il modello può esaurire i token ragionando e rispondere a vuoto. Alza il limite o abbassa il livello."* | **Alto**, **XHigh** o **Max** con **Numero massimo di token in output** sotto 4.096. Alza il limite o abbassa il livello. |
+
+## Lascia scegliere il livello per conversazione {#let-users-choose-the-level-per-conversation}
+
+Sotto **Reasoning**, l'interruttore **Lascia scegliere il livello per conversazione** decide se le persone che chattano possono cambiare il livello per la propria conversazione.
+
+- **Attivo** (il predefinito): il pulsante del modello nel compositore (*"Modello e ragionamento"*) mostra una riga **Ragionamento** con un pulsante per ogni livello offerto dal modello. La scelta vale solo per quella conversazione; selezionare di nuovo il livello evidenziato riporta al valore predefinito del touchpoint.
+- **Disattivato**: si applica sempre il livello che hai impostato, e gli utenti lo vedono come *"… impostato dall'assistente"*.
+
+:::note[I touchpoint anonimi possono partire con la scelta disattivata]
+Un touchpoint creato tramite API con l'accesso anonimo già attivo ha questo interruttore disattivato, così i visitatori anonimi non possono portare un assistente pubblico al livello più costoso. Un touchpoint creato con **Nuovo** parte con l'interruttore attivo, e attivare **Consenti accesso anonimo** in un secondo momento non lo cambia, quindi controlla questo interruttore prima di aprire un touchpoint al pubblico.
+:::
+
+## Limita la lunghezza di una risposta {#cap-the-length-of-an-answer}
+
+**Numero massimo di token in output** è il massimo che una singola risposta può generare su questo touchpoint, ragionamento incluso. Sostituisce il limite del modello, che viene mostrato come suggerimento (*"Limite del modello: … token"*).
+
+1. In **Limiti di generazione**, inserisci un numero (almeno 1) in **Numero massimo di token in output**, oppure lascia il campo vuoto per mantenere il limite del modello.
+2. Salva il touchpoint.
+
+## Ferma le risposte che si ripetono {#stop-answers-that-repeat-themselves}
+
+Ogni tanto un modello degenera e ripete le stesse parole, e continuerebbe fino a raggiungere il limite di token, lentamente e a tue spese. **Interrompi la generazione in caso di output ripetitivo** tronca una risposta di questo tipo. È attivo per impostazione predefinita. Disattivalo solo se le tue risposte contengono legittimamente lunghe sequenze di testo ripetuto.
+
+Quando interviene, la risposta termina con *"Generazione interrotta dopo … token: il modello continuava a ripetersi."* e con il pulsante **Rigenera risposta**.
+
+## Lascia che gli utenti verifichino le risposte rispetto alla tua Knowledge {#let-users-verify-answers-against-your-knowledge}
+
+La verifica della risposta controlla una risposta, frase per frase, rispetto al contenuto delle Knowledge recuperato per la conversazione, e segna ciò che non è supportato. **Verifica risposta** compare sulle risposte solo quando il touchpoint ha anche uno strumento attivo dell'estensione **Rational Knowledge - RAG Query Server**.
+
+1. Nella scheda **Modelli**, trova **Verifica della risposta**. È visibile sia che le impostazioni avanzate siano aperte sia che non lo siano.
+2. Attiva **Enable response verification**. È disattivata per impostazione predefinita.
+3. Facoltativamente, cambia il modo in cui le risposte vengono giudicate:
+   - **Verification method**: confronta ogni frase con i passaggi recuperati (il predefinito, e il più veloce), chiedi a un modello solo per i casi dubbi, oppure fai giudicare ogni frase a un modello. Gli ultimi due richiedono un **Verification model**.
+   - **Supported threshold**: quanto una frase deve essere vicina alla tua Knowledge per essere considerata supportata, da 0 a 1. Il valore predefinito è 0,75. Alzalo per essere più severo.
+4. Salva il touchpoint.
+
+La verifica viene eseguita solo quando un utente seleziona **Verifica risposta** su una risposta. Le frasi non supportate e smentite vengono poi segnate nel testo. Vedi [Verifica una risposta rispetto alla tua Knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+
+## Cosa vedono gli utenti quando la generazione si interrompe {#what-users-see-when-generation-stops-early}
+
+Quando una risposta termina prima del previsto, la chat spiega il motivo invece di lasciare una risposta a metà. La maggior parte di questi messaggi è accompagnata dal pulsante **Rigenera risposta**.
+
+| Messaggio | Causa | Cosa cambiare |
+|---------|-------|----------------|
+| *"Generazione interrotta dopo … token: il modello continuava a ripetersi."* | La protezione dalle ripetizioni ha fermato una risposta in loop. | Di solito nulla: rigenera. |
+| *"Generazione interrotta: il modello ha esaurito i token disponibili prima di scrivere una risposta."* | **Numero massimo di token in output** è esaurito, spesso durante il ragionamento. | Alza il limite o abbassa **Reasoning**. |
+| *"Generazione interrotta: il modello ha esaurito il tempo disponibile prima di scrivere una risposta."* | Il modello non ha terminato in tempo. | Abbassa **Reasoning**, oppure scegli un modello più veloce. |
+| *"Generazione interrotta: il modello ha restituito una risposta vuota."* | Il provider non ha restituito nulla. | Rigenera; se si ripete, controlla il modello nel [Registro modelli AI](/operational-guides/ai-model-registry-features). |
+| *"Generazione interrotta: il tool “…” ha esaurito il tempo a disposizione a ogni tentativo."* | Uno strumento ha continuato a superare il suo limite di tempo. | Alza il [limite di tempo dello strumento](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take), oppure correggi il server dello strumento. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): le altre impostazioni di un touchpoint.
+- [Testa una modifica al touchpoint](/operational-guides/test-touchpoint-changes): riproduci le conversazioni passate prima che una modifica al modello vada online.

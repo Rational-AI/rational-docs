@@ -1,0 +1,84 @@
+---
+sidebar_position: 5
+sidebar_label: Configura Graph RAG
+type: how-to
+audience: [builder]
+---
+
+# Configura Graph RAG
+
+Graph RAG è lo strumento di retrieval sul touchpoint di una Knowledge. Trova le risorse il cui significato corrisponde a una domanda, poi segue le relazioni tra di esse per recuperare risorse correlate che una ricerca basata solo sul significato non troverebbe. Lo regoli in tre punti: come vengono suddivisi i file in chunk, se i chunk ricevono parole chiave e le impostazioni dello strumento Graph RAG stesso.
+
+## Prerequisiti {#prerequisites}
+
+- Una Knowledge con **Abilita ricerca AI** attivo e un modello di embedding selezionato. Vedi [Crea una Knowledge](/operational-guides/create-knowledge#configure-ai-search).
+- **Modifica** sulla riga **Knowledge** del tuo ruolo, e **Modifica** sulla riga **Touchpoint** per regolare lo strumento. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+## Scegli il tipo di chunking {#choose-a-chunking-type}
+
+Il chunking divide ogni file in pezzi più piccoli prima dell'embedding, e la ricerca restituisce quei pezzi. Scegli il tipo nella scheda **Ricerca AI** della Knowledge. Il pulsante delle impostazioni accanto a **Tipo di chunking** apre le opzioni del chunker selezionato, come **Chunk size**.
+
+| Tipo | Scegli questo tipo quando |
+| :--- | :--- |
+| **Chunker ricorsivo** (predefinito) | I file sono lunghi e strutturati, come manuali, policy o report con titoli e paragrafi. Il chunker divide prima seguendo quella struttura, quindi un chunk contiene di solito una sezione. |
+| **Chunker semantico** | Gli argomenti cambiano senza titoli chiari, come trascrizioni o appunti di riunioni. Tiene insieme le frasi sullo stesso argomento. |
+| **Sentence Chunker** | Le risposte devono citare frasi intere, come FAQ o articoli brevi. Nessuna frase viene tagliata a metà. |
+| **Token Chunker** | Ogni chunk deve avere la stessa dimensione, indipendentemente dalla struttura del testo. |
+
+Chunking, embedding ed estrazione delle parole chiave vengono eseguiti solo sulle risorse di testo.
+
+## Aggiungi parole chiave ai chunk (facoltativo) {#add-keywords-to-chunks-optional}
+
+L'estrazione delle parole chiave associa a ogni chunk i termini più rappresentativi. Graph RAG li usa come segnale aggiuntivo quando ordina i risultati.
+
+1. Nella scheda **Ricerca AI**, attiva **Abilita estrazione parole chiave**.
+2. Scegli un **Metodo di estrazione parole chiave**:
+   - **Frequenza delle parole (basato su regole)**: sceglie le parole frequenti, senza richieste AI. Supporta inglese e italiano; con l'italiano i risultati possono contenere radici di parole.
+   - **Modello AI (LLM)**: il modello predefinito del touchpoint della Knowledge sceglie i termini, con una richiesta AI per chunk. Risultati migliori, ma più lenti. Puoi aggiungere un **Prompt di estrazione personalizzato (facoltativo)**, per esempio per concentrarti sui nomi dei prodotti.
+3. Imposta **Numero massimo di parole chiave per segmento di testo**, da 1 a 50.
+4. Seleziona **Salva**.
+
+L'estrazione viene eseguita quando i chunk vengono creati durante l'elaborazione. Salvare queste impostazioni non aggiorna le parole chiave già estratte.
+
+## Regola lo strumento Graph RAG {#tune-the-graph-rag-tool}
+
+Apri il touchpoint della Knowledge in **Impostazioni** → **Touchpoint**, apri lo strumento Graph RAG e modifica i suoi **Parametri**.
+
+### Impostazioni principali {#core-settings}
+
+- **Knowledge Ids:** le Knowledge in cui cerca questo strumento. Se lasci il campo vuoto, lo strumento cerca in tutte le Knowledge a cui l'utente può accedere, fino a un limite del server.
+- **Use Graph Expansion:** segue le relazioni tra le risorse. Predefinito: attivo. Disattivalo per una ricerca basata solo sul significato.
+- **Category Filter** e **Tag Filter:** restringono la ricerca alle risorse con queste categorie o tag. Lasciali vuoti per cercare in tutto.
+
+### Trova le risorse corrispondenti {#find-matching-resources}
+
+| Impostazione | Cosa fa |
+| :--- | :--- |
+| **Initial Search Limit** | Quanti risultati recuperare prima del filtro. Lascialo vuoto per lasciare che il server lo calcoli da **Max Rag Tokens**. Un valore più alto amplia il bacino di risultati, ma aumenta la latenza. |
+| **Semantic Threshold** (da 0.0 a 1.0, predefinito 0.5) | Somiglianza minima per mantenere un risultato. Abbassalo (0.3) per avere più risultati; alzalo (0.7) per risultati più precisi. |
+
+### Segui le relazioni {#follow-relations}
+
+| Impostazione | Cosa fa |
+| :--- | :--- |
+| **Graph Expansion Threshold** (da 0.0 a 1.0, predefinito 0.45) | Punteggio minimo perché una risorsa abbia le sue relazioni seguite, così le corrispondenze deboli non portano con sé elementi non pertinenti. |
+| **Relationship Types** | Quali relazioni seguire (per esempio "fa parte di" o "fa riferimento a"). Lascialo vuoto per seguirle tutte. |
+| **Max Graph Results** (minimo 1, predefinito 10) | Quante risorse correlate recuperare per ogni risorsa di partenza. |
+| **Use Tags** e **Tags List** | Segue anche le risorse che condividono dei tag (disattivato per impostazione predefinita). **Tags List** limita la ricerca ai tag che indichi. |
+
+### Ordina i risultati {#rank-the-results}
+
+Le risorse correlate vengono ordinate con una combinazione di significato e parole chiave condivise. Al modello arriva solo il testo che rientra in **Max Rag Tokens**.
+
+| Impostazione | Cosa fa |
+| :--- | :--- |
+| **Semantic Weight** / **Keyword Weight** (da 0.0 a 1.0, predefiniti 0.8 e 0.2) | Bilanciano il significato con i termini esatti. Fai in modo che la somma dei due valori resti 1.0. |
+| **Keyword Overlap Method** | Come vengono contate le parole chiave condivise. Il valore predefinito, `fuzzy`, tollera corrispondenze parziali e refusi. |
+| **Relevance Threshold** (da 0.0 a 1.0, predefinito 0.35) | Punteggio finale minimo perché una risorsa correlata venga mantenuta. |
+| **Max Rag Tokens** (minimo 1, predefinito 4000) | Quantità massima di testo recuperato passata al modello. Lascia spazio per i prompt e per la risposta. |
+
+## Prossimi passi {#next-steps}
+
+- [Retrieval-augmented generation](/concepts/RAG)
+- [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources)
+- [Esplora una Knowledge come grafo](/operational-guides/knowledge-graph)

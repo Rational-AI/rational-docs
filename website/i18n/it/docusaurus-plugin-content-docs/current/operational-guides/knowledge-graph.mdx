@@ -1,0 +1,98 @@
+---
+sidebar_position: 9
+sidebar_label: Grafo della Knowledge
+type: how-to
+audience: [builder]
+---
+
+# Esplora una Knowledge come grafo
+
+Una tabella mostra il contenuto di ogni record, ma non può mostrare come i record sono collegati tra loro, quali clienti condividono i fornitori, quali contratti si concentrano intorno a un unico provider, dove si trovano i valori più alti. La vista **Grafo** di una [Knowledge](/operational-guides/create-knowledge) disegna ogni risorsa come un nodo e ogni relazione come un arco, e ti permette di filtrare il grafo, raggrupparlo, colorarlo in base a un numero e salvare l'immagine come vista che il tuo team può riaprire.
+
+:::note[Che cos'è il grafo della Knowledge?]
+Il grafo è la vista integrata delle relazioni di una Knowledge. I **nodi** sono risorse e record; gli **archi** sono le relazioni tra di loro, che provengano dall'estrazione con AI, dai workflow o dagli [attributi di collegamento](/operational-guides/knowledge-attributes#link). I nodi possono essere raggruppati attorno a **hub** (uno per categoria, tag o valore di attributo) e colorati per categorie, per i tuoi gruppi di colore o per un numero.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, verifica di avere:
+
+- **Accesso in lettura alla Knowledge:** sufficiente per esplorare il grafo e aprire le viste grafo salvate.
+- **Permessi di modifica per salvare le viste:** salvare o eliminare una vista grafo richiede il permesso **Modifica** sulla Knowledge.
+- **La vista grafo attivata:** la **Vista grafo** integrata deve essere attiva nella scheda **Viste** delle impostazioni della Knowledge. Vedi [Viste personalizzate](/operational-guides/knowledge-custom-views#turn-a-built-in-view-on-or-off).
+
+## Apri il grafo {#open-the-graph}
+
+1. Apri la scheda **Knowledge** e seleziona la card della tua Knowledge.
+2. Nell'intestazione, apri il pannello delle viste e scegli **Grafo**, oppure una vista grafo salvata.
+
+Muoviti con la barra degli strumenti in basso a sinistra del grafo: **Aumenta zoom**, **Diminuisci**, **Centra**, **Schermo intero**, e un selettore di modalità per passare tra **Naviga** (trascina per spostarti) e **Seleziona** (trascina per selezionare i nodi).
+
+Uscire dal grafo chiude anche lo schermo intero.
+
+Premi **?** per l'elenco delle scorciatoie da tastiera:
+
+| Tasto | Azione |
+| --- | --- |
+| **V** / **S** | Modalità Naviga / modalità Seleziona |
+| **+** / **-** | Aumenta / riduci zoom |
+| **0** | Adatta l'intero grafo allo schermo |
+| **G** | Adatta alla selezione |
+| **Shift + clic** | Aggiungi un nodo alla selezione |
+| **Shift + trascinamento** | Seleziona più nodi con il lazo |
+| **Esc** | Cancella la selezione |
+
+Il grafo carica fino a 2.000 nodi per impostazione predefinita; portalo a 5.000 o 10.000 in **Aspetto** → **Numero massimo di nodi**. Su una Knowledge più grande indica quanti ne mostra; usa la casella di ricerca nell'intestazione per trovare gli altri.
+
+## Trova e seleziona risorse {#find-and-select-resources}
+
+Digita almeno due caratteri nella casella di ricerca dell'intestazione: i nodi corrispondenti vengono evidenziati, gli altri sbiadiscono, e accanto al grafo si apre un elenco di risultati. Seleziona un risultato per vederne i dettagli.
+
+Quando selezioni dei nodi, una barra mostra quanti ne sono selezionati. Con più di uno, seleziona **Vedi** per elencarli nel pannello **Selezione**, dove ogni nome apre il record; **Deseleziona tutti** cancella la selezione.
+
+## Filtra e raggruppa il grafo {#filter-and-cluster-the-graph}
+
+Seleziona **Filtri** nell'intestazione per aprire il pannello dei filtri. Fai le tue scelte, poi seleziona **Applica**; **Cancella** rimuove tutti i valori dei filtri.
+
+| Filtro | Cosa fa |
+| --- | --- |
+| **Collezione** | Mostra solo i record di una [collezione](/operational-guides/knowledge-collections-and-grid), come *Aziende*. Le opzioni di raggruppamento e colorazione offrono poi gli attributi di quella collezione. |
+| **Categorie**, **Tag** | Mostrano solo le risorse con le categorie o i tag scelti. |
+| **Relazioni** | Mostrano solo i tipi di relazione scelti. |
+| **Fonti** | Mostrano solo le risorse delle fonti scelte. |
+| **Raggruppa per** | Raggruppa i nodi attorno a hub: **Categoria** (predefinito), **Tag**, uno dei tuoi attributi, oppure **Nessun raggruppamento**. |
+
+Raggruppare per un attributo (selezione, collegamento, testo o casella di controllo) crea un hub per ogni valore, con i suoi nodi nel proprio colore: raggruppa i contratti per *Fornitore*, o le aziende per *Settore*, e i cluster si vedono a colpo d'occhio. I record senza valore per l'attributo restano fuori dai cluster.
+
+## Colora il grafo {#color-the-graph}
+
+La sezione **Gruppi** del pannello decide i colori.
+
+- **Colora per valore**: scegli un attributo numerico, come *Valore annuo*, per colorare i nodi dal giallo chiaro (valore più basso) al rosso scuro (più alto), con una legenda che mostra l'intervallo. I nodi senza un numero mantengono il loro colore abituale.
+- **Gruppi di colore**: seleziona **Nuovo gruppo** e scegli una regola (un **Nome** che contiene un testo, un **Tag** oppure una **Fonte**) e un colore. Trascina i gruppi per stabilire quale prevale quando un nodo corrisponde a più regole. I gruppi di colore si applicano subito.
+- **Usa colori predefiniti**: sospende i tuoi gruppi di colore, così ogni nodo mostra di nuovo il colore della sua categoria.
+
+## Adatta l'aspetto del grafo {#adjust-how-the-graph-looks}
+
+- **Aspetto**: attiva **Mostra solo le risorse filtrate**, **Mostra risorse nascoste**, **Mostra direzione delle relazioni** e **Mostra nodi orfani** (risorse senza relazioni), e imposta **Spessore linea** e **Dimensione nodi**.
+- **Forze del grafo**: su un grafo affollato, aumenta **Forza di repulsione** per allontanare i nodi. **Forza di centratura** e **Distanza delle relazioni** definiscono quanto è stretto il layout.
+
+Ogni sezione ha un pulsante per ripristinare i valori predefiniti. Aspetto e forze sono le tue preferenze di visualizzazione, ricordate nel tuo browser; non fanno parte di una vista salvata.
+
+## Salva e condividi una vista grafo {#save-and-share-a-graph-view}
+
+Quando il grafo mostra ciò che ti serve, salvalo così altri possono aprirlo con un clic.
+
+1. Nella sezione **Viste salvate** del pannello dei filtri, digita un **Nome della vista**.
+2. Seleziona **Salva vista**. Salvare con un nome già esistente sovrascrive quella vista.
+
+Una vista grafo salvata mantiene la collezione, il raggruppamento, il colore per valore, i filtri, i gruppi di colore e gli interruttori per i nodi nascosti, orfani e solo filtrati. È condivisa con chiunque possa aprire la Knowledge: compare in **Viste salvate** e nel pannello delle viste dell'intestazione con un'icona a grafo, dove chiunque può [fissarla](/operational-guides/knowledge-collections-and-grid#pin-the-views-you-use-most). Per rimuoverne una, seleziona la **×** accanto ad essa e conferma: la vista viene eliminata per tutti.
+
+:::note[Le viste grafo restano nella Control Room]
+Le viste grafo salvate non possono essere pubblicate nel [widget di incorporamento](/operational-guides/embed-knowledge). Le ultime impostazioni del grafo per ogni Knowledge vengono anche ricordate nel tuo browser, così il grafo si riapre come l'avevi lasciato.
+:::
+
+## Prossimi passi {#next-steps}
+
+- [Scegli il tipo di attributo giusto](/operational-guides/knowledge-attributes)
+- [Crea viste personalizzate](/operational-guides/knowledge-custom-views)

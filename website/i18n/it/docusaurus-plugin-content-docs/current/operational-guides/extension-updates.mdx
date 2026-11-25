@@ -1,0 +1,62 @@
+---
+sidebar_position: 17
+sidebar_label: Aggiorna le estensioni
+type: how-to
+audience: [admin, builder]
+---
+
+# Aggiorna e ripristina le estensioni
+
+Gli editori rilasciano nuove versioni delle loro estensioni con correzioni, nuovi strumenti o nuove impostazioni. Usa il criterio di aggiornamento per decidere quali aggiornamenti avvengono da soli, applica gli altri quando vuoi e torna all'ultima versione che funzionava.
+
+:::note[Che cos'è una release?]
+Una **release** è una versione del pacchetto di un'estensione. Una release, una volta pubblicata, non cambia mai: una correzione è sempre una nuova release. La tua installazione esegue una release alla volta, quindi la versione di ieri è ancora disponibile per tornare indietro.
+:::
+
+Una soluzione installata dal [Marketplace](/operational-guides/marketplace) è anch'essa un'estensione, ma si aggiorna dalla sua pagina, dove puoi vedere in anteprima che cosa cambia nella tua Knowledge. Vedi [Aggiorna una soluzione](/operational-guides/marketplace#update-a-solution).
+
+## Scegli un criterio di aggiornamento {#choose-an-update-policy}
+
+Apri l'estensione in **Impostazioni** → **Estensioni** e scegli il suo **Criterio di aggiornamento**.
+
+| Criterio | Cosa fa |
+|--------|--------------|
+| **Aggiornamenti compatibili automatici** | Gli aggiornamenti compatibili vengono applicati per te. Quelli non compatibili vengono elencati, ma mai applicati da soli. |
+| **Avvisami** *(predefinito)* | Gli aggiornamenti disponibili vengono elencati, e nulla viene applicato finché non lo applichi tu. |
+| **Bloccata** | L'estensione resta su questa versione. Anche un aggiornamento manuale viene rifiutato finché non cambi il criterio. |
+
+Gli aggiornamenti disponibili compaiono con ogni criterio. Mentre un'estensione è bloccata, il pulsante **Aggiorna** è sostituito da *"Bloccata. Cambia la politica di aggiornamento per installare gli aggiornamenti."* Puoi comunque ripristinare un'estensione bloccata.
+
+Gli aggiornamenti restano in pausa anche mentre un'estensione è in modalità sviluppo (vedi [Modifica i file di un'estensione installata](/operational-guides/manage-extensions#edit-an-installed-extensions-files)).
+
+## Aggiornamenti compatibili e non compatibili {#compatible-and-breaking-updates}
+
+Rational AI confronta ogni nuova release con la precedente. Una release è **compatibile** quando la configurazione salvata continua a funzionare con essa e nulla di ciò che usano i tuoi touchpoint è stato rimosso: nessuno strumento o server MCP eliminato, nessuna impostazione rinominata o con il tipo cambiato, e nessuna nuova impostazione obbligatoria senza un valore predefinito. Tutto il resto è **non compatibile**.
+
+## Applica un aggiornamento {#apply-an-update}
+
+1. Apri l'estensione e seleziona **Aggiorna** accanto alla sua versione, oppure **Aggiorna all'ultima versione** o **Installa una versione diversa** dal menu delle opzioni.
+2. Nella finestra scegli la **Versione** e leggi le **Note di rilascio**. Se la nuova release richiede valori di configurazione, compilali.
+3. Seleziona **Aggiorna**.
+
+Rational AI verifica l'aggiornamento prima di modificare qualsiasi cosa. Se un controllo fallisce, per esempio perché un touchpoint usa ancora uno strumento o una skill che la nuova release rimuove, non cambia nulla e la finestra spiega il motivo. **Forza aggiornamento** applica comunque l'aggiornamento e rimuove o disattiva ciò che non è più compatibile, incluso l'accesso dei touchpoint interessati agli strumenti rimossi. I controlli compaiono nella scheda **Attività** dell'estensione, contrassegnati **Revisione**.
+
+Se un aggiornamento fallisce, l'estensione continua a eseguire la release precedente e il fallimento viene registrato nella sua cronologia. Fornisci ciò che mancava ed esegui di nuovo l'aggiornamento.
+
+## Ripristina la versione precedente {#roll-back}
+
+Seleziona **Ripristina versione precedente** nel menu delle opzioni dell'estensione per tornare alla release contrassegnata **Ultima funzionante** nella sua scheda **Versioni**. Il ripristino è disponibile con ogni criterio, anche **Bloccata**.
+
+## Release ritirate {#withdrawn-releases}
+
+Rational AI può ritirare una release che ha introdotto un problema grave. Una release ritirata scompare dal catalogo e dagli aggiornamenti proposti a te, e non può più essere installata. Se la esegui già, continua a funzionare e resta nella cronologia delle versioni dell'estensione. Passa a una release più recente appena ne è disponibile una.
+
+## Disinstalla {#uninstall}
+
+Disinstallare rimuove l'estensione, i suoi server MCP, le sue configurazioni e i suoi strumenti. I touchpoint che usavano i suoi strumenti restano e continuano a funzionare senza di essi. Puoi installare di nuovo lo stesso pacchetto in seguito.
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci le estensioni](/operational-guides/manage-extensions): installare e configurare le estensioni.
+- [Sfoglia gli strumenti degli agenti](/operational-guides/manage-tools): gli strumenti forniti dalle estensioni.
+- [Installa soluzioni dal Marketplace](/operational-guides/marketplace): aggiornare, ripristinare e reimpostare una soluzione installata.

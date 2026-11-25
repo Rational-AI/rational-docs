@@ -1,0 +1,59 @@
+---
+sidebar_position: 2
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Fine-tuning
+
+Il fine-tuning ti permette di personalizzare un modello di AI con i tuoi dati, così funziona meglio sui compiti che ti interessano. Scegli un modello base e un [dataset di addestramento](datasets.mdx), imposti alcuni parametri di addestramento e avvii un job che produce un modello su misura. 
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Richiede il modulo Rational BI nella tua <a href="/operational-guides/license">licenza</a>. Senza di esso, <strong>Fine-Tuning</strong> compare comunque in <strong>Impostazioni</strong>, ma i fine-tuning vengono rifiutati
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      La riga <strong>Fine-Tuning</strong> del tuo ruolo decide chi può visualizzare, avviare e gestire i fine-tuning
+    </div>
+  </div>
+
+</div>
+
+## Avviare un fine-tuning {#start-a-fine-tuning}
+
+Seleziona **Nuovo** per aprire il modulo di fine-tuning:
+
+| Campo | Descrizione |
+|-------|-------------|
+| **Nome** | Un nome per identificare il job di fine-tuning e il modello che ne risulta. |
+| **Descrizione** | Note facoltative sullo scopo del job. |
+| **Modello base** | Il modello da sottoporre a fine-tuning, scelto dal tuo [Registro modelli AI](ai-model-registry.mdx). |
+| **Dataset** | Il [dataset di addestramento](datasets.mdx) dalle cui voci il modello impara. |
+| **Learning Rate** | Quanto grande è la correzione che il modello applica a ogni passo di addestramento. |
+| **Batch Size** | Il numero di esempi di addestramento elaborati insieme in un passo. |
+| **Epochs** | Il numero di volte in cui la sessione di addestramento passa sull'intero dataset. |
+| **Parametri LoRA** → **Rank** | La capacità dell'adattatore. Parti da 16; aumentala per compiti più vari. |
+| **Parametri LoRA** → **Alpha** | La scala dell'adattatore, di solito uguale al rank. |
+| **Parametri LoRA** → **Dropout** | Regolarizzazione tra 0 e 0,99. Parti da 0; aumentala se il modello va in overfitting. |
+
+Seleziona **Lancia** e conferma con **Avvia training**. Per sapere come scegliere i parametri e come seguire, riprovare, distribuire o scaricare un fine-tuning, vedi [Fai il fine-tuning di un modello](/operational-guides/fine-tune-a-model).
+
+## Sfogliare i fine-tuning {#browse-fine-tunings}
+
+L'elenco dei fine-tuning mostra ogni job con colonne per **Nome**, **Modello base**, **Dataset di training** e **Creato il**.
+
+* **Cerca**: usa la casella di ricerca per filtrare i job per nome.
+* **Ordina**: seleziona le frecce accanto a qualsiasi intestazione di colonna per ordinare l'elenco per quella colonna.

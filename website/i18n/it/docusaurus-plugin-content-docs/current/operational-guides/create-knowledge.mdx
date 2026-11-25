@@ -1,0 +1,76 @@
+---
+sidebar_position: 4
+sidebar_label: Crea una Knowledge
+type: how-to
+audience: [builder]
+---
+
+# Crea una Knowledge
+
+Una Knowledge contiene le informazioni della tua organizzazione: i file in cui la tua AI cerca quando risponde, e i record che il tuo team mantiene aggiornati. Segui questi passaggi per passare da una Knowledge vuota a una con cui puoi chattare.
+
+## Prerequisiti {#prerequisites}
+
+- **Il modulo Knowledge nella tua licenza.** Senza di esso, **Knowledge** non compare nella navigazione né in **Impostazioni**. Vedi [Licenza e attivazione](/operational-guides/license).
+- **Crea** sulla riga **Knowledge** del tuo ruolo, più **Modifica** per configurarla. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Modelli AI nel Registro modelli AI:** un modello **Text Generation** per la chat della Knowledge, e un modello **Embedding** se attivi **Abilita ricerca AI**. Vedi **Impostazioni** → **Registro modelli AI**.
+
+## Aggiungi una Knowledge {#add-a-knowledge}
+
+1. Apri la scheda **Knowledge** e seleziona **Nuovo** → **Nuova knowledge**. Rational AI crea la Knowledge con un nome predefinito e apre le sue impostazioni.
+2. Sostituisci il nome predefinito con un nome chiaro, per esempio `Data Marketing 2026`.
+3. Aggiungi una descrizione del contenuto e dello scopo. Compare su una riga sotto il nome, nella scheda della Knowledge.
+
+## Configura la ricerca AI {#configure-ai-search}
+
+La scheda **Ricerca AI** controlla come vengono preparati i file perché l'AI possa cercarli.
+
+1. Attiva **Abilita ricerca AI**.
+2. Seleziona un **Modello di embedding**. Trasforma ogni testo in numeri, così Rational AI può misurare quanto è vicino a una domanda.
+3. Scegli un **Tipo di chunking**, che decide come ogni file viene diviso in pezzi più piccoli prima dell'embedding. **Chunker ricorsivo** è selezionato per impostazione predefinita. Per sceglierne un altro, vedi [Scegli un tipo di chunking](/operational-guides/configure-rag#choose-a-chunking-type).
+4. Seleziona **Salva**.
+
+## Scegli come vengono elaborati i file {#choose-how-files-are-processed}
+
+Ogni file aggiunto a una Knowledge passa attraverso una pipeline prima che l'AI possa cercarlo. La scheda **Fonti** stabilisce quale, così caricamenti, sincronizzazioni delle fonti e richieste API trattano tutti i file allo stesso modo.
+
+1. Nelle impostazioni della Knowledge, seleziona la scheda **Fonti**.
+2. In **Workflow di default**, scegli la pipeline:
+   - **Pipeline classica** (l'opzione predefinita): ogni file viene instradato dalla **Regola di processing di default**.
+   - Un workflow: ogni file aggiunto a questa Knowledge passa attraverso di esso.
+3. In **Regola di processing di default**, scegli la regola che associa ogni tipo di file al suo passaggio di elaborazione.
+4. Seleziona **Salva**.
+
+La finestra di rielaborazione può comunque forzare una pipeline diversa per una singola esecuzione.
+
+## Configura il touchpoint della Knowledge {#set-up-the-knowledges-touchpoint}
+
+Creare una Knowledge crea anche un touchpoint con il suo nome (*Nome della Knowledge* - Touchpoint), con gli strumenti RAG in sola lettura, Graph RAG incluso, già collegati a questa Knowledge. Personalizzalo in **Impostazioni** → **Touchpoint**:
+
+- **Modello di default:** il modello che scrive le risposte.
+- **Prompt di sistema:** le istruzioni per quel modello.
+
+Il prompt predefinito dice al modello di chiamare prima lo strumento che descrive la struttura dei dati, poi gli strumenti che li recuperano, e di dire che non lo sa quando gli strumenti non trovano la risposta.
+
+## Avvia una chat con la tua Knowledge {#start-a-chat-with-your-knowledge}
+
+Puoi aprire una chat sulla Knowledge anche prima che abbia contenuti, e aggiungere dati man mano.
+
+1. Apri la scheda **Knowledge** e seleziona la scheda della Knowledge che hai creato.
+2. Nel pannello chat a lato, seleziona **Nuova chat** (l'icona **+** quando il pannello è chiuso).
+
+La chat viene eseguita sul touchpoint della Knowledge.
+
+## Aggiungi contenuti {#add-content}
+
+Una nuova Knowledge è vuota. Riempila in uno di questi modi:
+
+- **Carica file:** seleziona **Aggiungi file** nel menu **Opzioni** della Knowledge. Vedi [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources#upload-files).
+- **Sincronizza una fonte:** collega una cartella o un servizio e mantienila sincronizzata. Vedi [Integra dati esterni](/operational-guides/integrate-data).
+- **Importa un foglio di calcolo come record:** vedi [Importa record da Excel o CSV](/operational-guides/import-knowledge).
+
+## Prossimi passi {#next-steps}
+
+- [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources)
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)
+- [Configura Graph RAG](/operational-guides/configure-rag)

@@ -1,0 +1,61 @@
+---
+sidebar_position: 39
+sidebar_label: Chatta con gli agenti
+type: how-to
+audience: [builder]
+---
+
+# Chatta con gli agenti
+
+Non tutto è un'attività. A volte vuoi chiedere a Quinn come è stata calcolata una maggiorazione, far indagare Scout su una delle storie di stamattina, o mettere Quinn e Iris nella stessa chat per verificare un'offerta rispetto ai volumi della settimana scorsa. Le **Chat** sono conversazioni con un solo agente o con un gruppo, dove ogni messaggio che invii viene preso come lavoro e ogni risposta mantiene il contesto della conversazione.
+
+:::note[Un messaggio è un'esecuzione]
+Ogni messaggio che invii avvia un'esecuzione per ogni agente che nomina con `@Name`, oppure per ogni agente della chat quando non ne nomina nessuno o scrive `@everyone`, con la conversazione fino a quel punto come contesto. L'esecuzione agisce a tuo nome, con i tuoi permessi. La risposta compare nella chat; l'esecuzione dietro di essa, con tutta la sua attività, è a un clic (**Vedi esecuzione**) e resta in **Cronologia**. Le approvazioni funzionano come altrove: quando un agente raggiunge uno strumento sotto **Chiedimi prima**, la scheda di approvazione compare nella chat.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Almeno un agente con istruzioni**: vedi [Crea un agente](./create-an-agent).
+
+## Avvia una chat {#start-a-chat}
+
+1. Apri **Agenti** → **Chat** e seleziona **+** (*Nuova chat*).
+2. Scegli un agente per una **chat diretta**, oppure più agenti per una **chat di gruppo** (fino a 20). Il piè di pagina conferma quale: *1 agente · chat diretta* o *3 agenti · chat di gruppo*.
+3. Per un gruppo, inserisci un **Nome del gruppo**.
+4. Seleziona **Avvia chat**.
+
+## Parla con gli agenti {#talk-to-the-agents}
+
+Scrivi nel campo di composizione (*Scrivi a &lt;chat&gt;…*) e invia. Gli agenti rispondono nella conversazione.
+
+- **I messaggi mantengono il contesto della conversazione.** Non devi ripetere quello che è stato detto.
+- **Una sola esecuzione alla volta per agente.** Finché il computer di un agente è occupato, i nuovi messaggi attendono in ordine e vengono presi uno dopo l'altro.
+- **Indirizza un'esecuzione in corso.** In una chat diretta, seleziona **Indirizza l’esecuzione in corso al prossimo punto sicuro** per inviare il tuo messaggio all'interno dell'esecuzione già in corso, invece di metterne in coda una nuova.
+- **Segui il lavoro.** **Vedi esecuzione** apre l'esecuzione dietro una risposta. Se un'esecuzione non è stata completata, il messaggio mostra *Non riuscita*, *Tempo scaduto*, *Interrotta* o *Saltata* con **Vedi esecuzione**, **Usa di nuovo il messaggio** e **Dettagli tecnici**.
+- **Scorri indietro** con **Carica messaggi precedenti**; **Vai agli ultimi messaggi** ti riporta in basso.
+
+L'intestazione mostra chi è nella chat. **Ruolo** (chat diretta) o il pannello informazioni (**Informazioni su …**) elencano l'identificatore dell'agente, i partecipanti, le sue istruzioni, gli strumenti che può usare e le esecuzioni mostrate nella chat. In un gruppo, **Aggiungi agente** aggiunge un altro membro, e selezionando il nome del gruppo lo rinomini. **Aggiungi persone** condivide la chat con i colleghi che possono usare tutti i suoi agenti.
+
+## Tieni in ordine l'elenco {#keep-the-list-tidy}
+
+Fai clic destro su una chat, oppure usa il suo menu **Altre opzioni**:
+
+- **Fissa** / **Annulla fissaggio** mantiene una chat in cima.
+- **Sposta in una nuova sezione** raggruppa le chat sotto un'intestazione; seleziona il titolo di una sezione per rinominarla, e **+** accanto ad essa per avviare una chat in quella sezione.
+- **Segna come non letta**, **Duplica** (una copia con gli stessi agenti e la stessa cronologia, solo per te), **Copia ID conversazione**.
+- **Modifica profilo** apre il profilo dell'agente.
+- **Nascondi dalla barra laterale** nasconde una chat senza eliminarla; le chat nascoste sono elencate sotto **Chat nascoste**, dove **Ripristina** le riporta.
+- **Elimina** rimuove la chat per tutti i partecipanti. Gli agenti e le loro esecuzioni vengono conservati. Solo chi ha avviato la chat può rinominarla, aggiungere agenti o persone, o eliminarla; gli altri possono uscirne con **Esci**.
+
+:::note[Chi vede una chat]
+Una chat è visibile a chi l'ha avviata e alle persone aggiunte con **Aggiungi persone**. Chat fissate, sezioni, chat nascoste e segni di non lettura sono personali: ognuno ha i propri. Le esecuzioni avviate da una chat compaiono in **Cronologia** come ogni altra esecuzione, e solo chi ha avviato un'esecuzione può inviarle altri messaggi.
+:::
+
+## Quando usare una chat, un'attività o Esegui ora {#when-to-use-a-chat-a-task-or-run-now}
+
+| Vuoi… | Usa |
+|--------------|-----|
+| Fare una domanda, esplorare, rivedere una risposta | **Chat** |
+| Affidare un lavoro di cui controllerai il risultato, eventualmente a più agenti nel tempo | **Attività** ([Delega il lavoro con le attività](./agent-tasks)) |
+| Avviare ora un'esecuzione di un agente con un obiettivo preciso | **Esegui ora** nella pagina dell'agente ([Crea un agente](./create-an-agent#save-and-try-it)) |
+| Far succedere qualcosa senza che qualcuno lo chieda | Un trigger ([Pianifica e attiva gli agenti](./agent-routines)) |

@@ -1,0 +1,100 @@
+---
+sidebar_position: 4
+sidebar_label: Conversazioni
+type: reference
+audience: [user, builder]
+---
+
+# Conversazioni
+
+**Conversazioni** è la sezione in cui il personale esamina le conversazioni che le persone hanno con i tuoi [touchpoint](./settings/touchpoints.mdx). Ogni volta che qualcuno parla con un touchpoint, i messaggi vengono raccolti qui come un'unica conversazione, con un titolo, gli argomenti e il sentiment, quando queste analisi sono attive. Usala per monitorare l'attività, leggere che cosa dicono i tuoi assistenti, intervenire in una chat in corso quando un utente ha bisogno di una persona e controllare i singoli messaggi fino alle chiamate agli strumenti.
+
+La pagina compare per chiunque abbia un ruolo con accesso a **Conversazioni**. Un ruolo che concede l'accesso a tutte le conversazioni le mostra tutte; altrimenti vedi solo le tue. Prendere in carico una conversazione, aggiungerla ai preferiti, generare un riepilogo, ricalcolare le etichette e registrare una decisione di supervisione sono operazioni riservate agli amministratori. Le chat con gli agenti della sezione [Agenti](./Agents.mdx) non compaiono qui: restano in **Agenti** → **Chat**.
+
+## Naviga tra le conversazioni {#navigate-your-conversations}
+
+Apri la sezione **Conversazioni** dalla barra di navigazione in alto della Control Room. La pagina mostra una tabella paginata in cui ogni riga corrisponde a una conversazione. Da qui puoi:
+
+* **Cercare** tra le conversazioni con la casella di ricerca in alto nella pagina.
+* **Filtrare** la tabella dal pannello **Filtri** e **ordinarla** per la colonna **Ultimo messaggio**.
+* **Aprire una conversazione** per leggere l'intero thread e intervenire.
+* **Selezionare le righe** con le caselle di controllo per eseguire operazioni in blocco da **Azioni**. Tieni premuto **Shift** e seleziona una seconda casella per selezionare tutte le righe nel mezzo.
+
+## La tabella delle conversazioni {#the-conversations-table}
+
+Ogni riga riassume una singola conversazione nelle colonne seguenti:
+
+| Colonna                    | Descrizione |
+| :------------------------- | :---------- |
+| **Conversazione**          | Il titolo della conversazione e l'anteprima dell'ultimo messaggio. Le icone accanto al titolo segnalano una conversazione **Da supervisionare** o **Con un operatore**. |
+| **Utente e touchpoint**    | L'utente finale che ha partecipato alla conversazione e il [touchpoint](./settings/touchpoints.mdx) a cui appartiene. |
+| **Argomenti**              | Gli argomenti rilevati per la conversazione (ad esempio *Billing Request* o *Tech Support*). Una conversazione può avere più argomenti; i primi due sono mostrati come chip e gli altri dietro a un chip **+N**. Una conversazione senza argomenti mostra **Nessuno**. |
+| **Sentiment**              | Il tono emotivo stimato della conversazione, mostrato come un punto colorato con un'etichetta (ad esempio *Neutro*), oppure **Non disponibile** se non è stato rilevato alcun tono. |
+| **Stato**                  | Lo stato della conversazione, ad esempio **Aperta** o **Chiusa**. |
+| **Ultimo messaggio**       | La data e l'ora dell'ultimo messaggio. Per impostazione predefinita la tabella è ordinata su questa colonna, dal più recente. |
+
+Le righe che richiedono una supervisione umana sono evidenziate con il colore di avviso, così spiccano senza una colonna dedicata.
+
+Il titolo, gli argomenti e il sentiment mostrati qui sono prodotti dalle analisi automatiche che configuri nelle [impostazioni di Conversazioni](./settings/conversations.mdx). Gli amministratori possono rieseguirle con **Ricalcola etichette** dopo aver modificato l'elenco degli argomenti o i modelli nelle impostazioni.
+
+## Filtra la tabella {#filter-the-table}
+
+Seleziona **Filtri** accanto alla casella di ricerca per aprire il pannello dei filtri accanto alla tabella. Offre:
+
+* **Utente**, **Touchpoint** e **Argomenti**: seleziona uno o più valori. L'elenco **Utente** ha una propria casella di ricerca, così puoi trovare una persona tra tutti quelli che hanno mai chattato.
+* **Sentiment** e **Stato**: scegli un valore.
+* **Mostra solo**: limita la tabella alle **Preferite** o alle conversazioni contrassegnate come **Da supervisionare**.
+
+Scegli **Applica** per filtrare la tabella, oppure **Pulisci** per svuotare il pannello. Il pulsante **Filtri** mostra quanti filtri sono attivi, e i filtri applicati vengono mantenuti nell'indirizzo della pagina, così puoi salvare nei segnalibri o condividere una vista filtrata.
+
+## Apri una conversazione {#open-a-conversation}
+
+Seleziona una riga qualsiasi (oppure scegli **Apri** dal menu **Azioni** della riga) per aprire la conversazione. La tabella si riduce a un elenco stretto accanto al thread. Ogni risposta dell'assistente riporta chi ha risposto, e le risposte degli operatori hanno uno stile proprio, con uno stato di invio o di errore.
+
+L'intestazione della conversazione offre diversi strumenti:
+
+* **Cerca** all'interno della conversazione.
+* **Aggiungi ai preferiti** (l'icona a stella) aggiunge la conversazione alle tue **Preferite**.
+* **Dettagli** apre il pannello dei dettagli (vedi [Il pannello dei dettagli](#the-details-drawer)).
+* **Altre azioni sulla conversazione** contiene **Modalità avanzata**, **Copia ID conversazione** ed **Elimina conversazione**. **Modalità avanzata** mostra il dettaglio tecnico di ogni risposta: chiamate agli strumenti e relative risposte, passaggi di recupero e gli eventuali errori incontrati dall'assistente. Usala per capire esattamente che cosa è successo dietro una risposta.
+
+### Il pannello dei dettagli {#the-details-drawer}
+
+Il pannello **Dettagli** mostra in un solo punto i dati principali della conversazione: **Utente** (con un link a tutte le conversazioni di quell'utente), **Touchpoint**, **Stato**, **Sentiment**, **Avviata**, **Ultimo messaggio**, il numero di **Messaggi**, l'**ID** della conversazione, i suoi **Argomenti** (con il pulsante **Ricalcola etichette**) e, quando la generazione dei riepiloghi è attiva, un **Riepilogo**. I riepiloghi non vengono salvati, quindi il pannello mostra quelli generati durante la tua sessione e offre **Genera riepilogo** per crearne uno nuovo.
+
+Quando una conversazione è segnalata per la supervisione umana, il riquadro di revisione si trova in fondo a questo pannello.
+
+### La barra di presa in carico {#the-take-over-bar}
+
+Mentre l'assistente gestisce una conversazione, in fondo, al posto della casella dei messaggi, compare una barra. Indica chi tiene la conversazione (ad esempio *"L'AI gestisce questa conversazione"*, *"L'AI sta rispondendo all'utente"* o *"Un altro operatore sta gestendo questa conversazione"*) e offre:
+
+* **Prendi in carico**: passa la conversazione dall'assistente a te, così puoi rispondere direttamente quando un utente ha bisogno di un'attenzione personale. Se qualcun altro è arrivato prima, vedi *"Un altro operatore ha già preso in carico questa conversazione."*
+* **Interrompi generazione**: visibile mentre l'assistente sta rispondendo. Termina quella risposta senza prendere in carico la conversazione.
+* **Genera riepilogo**: visibile quando la generazione dei riepiloghi è attiva. Apre un riepilogo generato dall'AI della conversazione, utile per riassumere un thread lungo.
+
+Mentre tieni in carico la conversazione, **Restituisci all'AI** la riconsegna all'assistente.
+
+Per la procedura completa, vedi [Prendi in carico una conversazione gestita dall'AI](/operational-guides/conversations#take-over-an-ai-managed-conversation).
+
+## Conversazioni segnalate per la supervisione umana {#conversations-flagged-for-human-oversight}
+
+Quando le regole di supervisione stabiliscono che una conversazione richiede l'attenzione di una persona, nella tabella viene contrassegnata come **Da supervisionare** e in fondo al pannello **Dettagli** compare un riquadro di revisione. Se il pannello è chiuso, il pulsante **Da supervisionare** nell'intestazione della conversazione lo apre. Nel riquadro un amministratore registra le sue conclusioni (**Lascia com'è** oppure **Sono intervenuto**), con una nota facoltativa.
+
+Registrare una decisione risolve la segnalazione, e la conversazione esce dalla coda di revisione. Il riquadro resta, ridotto a una sola riga con la conclusione.
+
+Le regole che generano la segnalazione si configurano nelle [impostazioni di Conversazioni](./settings/conversations.mdx); la decisione va registrata sulla conversazione stessa. Per il flusso completo, vedi [Registra le decisioni di supervisione](/operational-guides/human-oversight).
+
+## Buone pratiche {#best-practices}
+
+* **Smista con i filtri**: combina i filtri **Sentiment** e **Stato**, oppure usa **Mostra solo** per le conversazioni da supervisionare, per far emergere quelle che potrebbero richiedere attenzione.
+* **Prendi in carico quando serve**: quando un assistente fatica o un utente chiede una persona, usa **Prendi in carico** invece di lasciare il thread bloccato. Se l'assistente è solo bloccato su una risposta che non finisce, basta **Interrompi generazione**.
+* **Mantieni aggiornate le etichette**: dopo aver modificato l'elenco degli argomenti o cambiato modello, seleziona le conversazioni interessate e usa **Ricalcola etichette**, così i report restano corretti.
+* **Analizza con la modalità avanzata**: quando una risposta sembra sbagliata, attiva **Modalità avanzata** per controllare le chiamate agli strumenti e gli errori che l'hanno generata, prima di modificare un prompt o un modello.
+
+---
+
+## Vedi anche {#related-resources}
+
+* [Impostazioni di Conversazioni](./settings/conversations.mdx): configura la generazione dei titoli, il rilevamento degli argomenti, l'analisi del sentiment, i riepiloghi e le regole di supervisione.
+* [Governance](./Governance.mdx): consulta le metriche aggregate e gli audit log dell'attività conversazionale.
+* [Knowledge](./Knowledge.mdx): gestisci le informazioni a cui i tuoi assistenti attingono durante le conversazioni.

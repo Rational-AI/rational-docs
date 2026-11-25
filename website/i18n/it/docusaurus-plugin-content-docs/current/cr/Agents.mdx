@@ -1,0 +1,82 @@
+---
+sidebar_position: 6
+sidebar_label: Agenti
+type: reference
+audience: [admin, builder]
+---
+
+# Agenti
+
+Un **agente** prende in carico un lavoro e lo porta a termine da solo: legge, esegue comandi sul proprio computer, chiama gli strumenti che gli hai assegnato e scrive il risultato. **Agenti** è il punto in cui gli amministratori creano questi agenti, affidano loro il lavoro, seguono cosa fanno e approvano le azioni che richiedono una decisione.
+
+<video className="doc-video" controls preload="metadata" aria-label="Video guida di Agenti" poster="/img/videos/agents.jpg" src="/videos/agents_eng.mp4" />
+
+Un agente è un profilo salvato: un nome, le istruzioni, un modello del [Registro modelli AI](/operational-guides/ai-model-registry-features), gli strumenti che può usare, le Knowledge che può leggere e ciò che lo avvia. Ogni lavoro che svolge è un'**esecuzione**, con il proprio log, il risultato e le richieste di approvazione. Le esecuzioni avvengono sul **computer** dell'agente, un workspace Linux che conserva i suoi file tra un'esecuzione e l'altra.
+
+<img
+  alt="La pagina Team degli agenti con cinque agenti: Quinn, Scout, Rev, Iris e Ada, ognuno con ruolo, descrizione e strumenti concessi"
+  src={require('@site/static/img/screens/agents-team.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+Gli esempi di queste guide seguono un piccolo team di un produttore di viteria:
+
+| Agente | Ruolo | Come viene avviato | Cosa fa |
+|--------|-------|--------------------|---------|
+| **Quinn** | Analista delle quotazioni | Attività nella bacheca | Calcola il prezzo delle richieste di quotazione e scrive il file dell'offerta, chiedendo prima di scrivere |
+| **Scout** | Osservatore di mercato | Ogni giorno feriale alle 08:00 | Legge le notizie tech del giorno e scrive un briefing di cinque notizie per le vendite |
+| **Rev** | Revisore dei rilasci | Una pull request su GitHub | Revisiona ogni pull request aperta sul repository dello shop online |
+| **Iris** | Analista dei report | Ogni lunedì alle 07:00 | Calcola i KPI delle vendite della settimana precedente e scrive il report settimanale |
+| **Ada** | Bibliotecaria della Knowledge | Su richiesta | Trova fogli obsoleti o duplicati nella Knowledge dei prodotti |
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Un'installazione cloud.** Gli agenti girano sul cloud di Rational AI. Le installazioni on-premise non li includono ancora.
+- **Il modulo Agenti nella tua licenza.** Il tab **Agenti** compare nella barra superiore solo se la licenza lo include. Vedi [Licenza e attivazione](/operational-guides/license).
+- **Accesso amministrativo.** Solo gli amministratori vedono il tab **Agenti**. La pagina **Ruoli** elenca le righe per gli agenti, ma nessun ruolo può ancora concedere l'accesso alla sezione.
+- **Un modello di generazione di testo** nel [Registro modelli AI](/operational-guides/ai-model-registry-features). Gli agenti senza un modello proprio usano il valore predefinito **Modello per gli agenti** (vedi [Scegli il modello che usano gli agenti](#choose-the-model-agents-use)).
+
+## Orientarsi {#find-your-way-around}
+
+Apri **Agenti** nella barra in alto. La barra laterale **Area di lavoro** è uguale in ogni pagina:
+
+| Voce della barra laterale | Cosa trovi | Guida |
+|---------------------------|------------|-------|
+| **Selettore del progetto** | Restringe l'intera sezione a un progetto. Accanto c'è **Gestisci i progetti**, che apre **Progetti**. | [Delega il lavoro con le attività](/operational-guides/agent-tasks) |
+| **Attività** | La bacheca del lavoro affidato agli agenti: *In coda*, *In corso*, *Da rivedere*, *Fatte*. Il badge conta le attività da rivedere più le esecuzioni in attesa di approvazione (*Da rivedere: X, da approvare: Y*). | [Delega il lavoro con le attività](/operational-guides/agent-tasks) |
+| **Progetti** | Raggruppa attività, chat e documenti correlati. Ogni progetto ha una propria Knowledge e un proprio revisore. | [Delega il lavoro con le attività](/operational-guides/agent-tasks) |
+| **Chat** | Conversazioni dirette e di gruppo con i tuoi agenti. | [Chatta con gli agenti](/operational-guides/agent-chats) |
+| **Automazioni** | Ogni agente con il proprio trigger, i propri strumenti e l'ultima esecuzione. Qui puoi metterli in pausa e riprenderli. | [Pianifica e attiva gli agenti](/operational-guides/agent-routines) |
+| **Cronologia** | Ogni esecuzione, dalla più recente, filtrabile per esito. | [Segui le esecuzioni e approva le azioni](/operational-guides/agent-runs) |
+| **Calendario** | Esecuzioni pianificate in arrivo, ed esecuzioni e approvazioni passate, con l'orario di Roma. | [Pianifica e attiva gli agenti](/operational-guides/agent-routines#see-whats-coming-in-the-calendar) |
+| **Team** | L'elenco: fino a cinque agenti con ciò che stanno facendo in questo momento. **Tutti gli agenti** apre la pagina **Team**. | [Crea un agente](/operational-guides/create-an-agent) |
+| **Computer** | La macchina di lavoro di ogni agente e la sua esecuzione aperta. | [Computer degli agenti e libreria degli strumenti](/operational-guides/agent-computers) |
+| **Libreria** | Ogni strumento e ogni skill che si possono assegnare a un agente. | [Computer degli agenti e libreria degli strumenti](/operational-guides/agent-computers) |
+
+Nell'elenco del Team, il pallino e la seconda riga indicano cosa sta facendo ciascun agente: *Inattivo*, *In coda*, *In corso*, *Da approvare*, *Nuovo tentativo*, *Ultima esecuzione fallita* o *Ultima esecuzione scaduta*, seguiti dall'attività su cui sta lavorando. Un agente che non può lavorare mostra invece *In pausa*, *In pausa: non letto*, *Budget raggiunto* o *Disattivato*.
+
+## Come si collegano le parti {#how-the-pieces-fit}
+
+1. **Crea l'agente** una volta: istruzioni, modello, strumenti, gli strumenti che devono chiedere conferma prima, accesso alle Knowledge e ciò che lo avvia.
+2. **Affidagli un lavoro** in uno dei tre modi: un'**attività** sulla bacheca, un messaggio in una **chat**, oppure un **trigger** (una pianificazione, una chiamata API, un webhook, un evento GitHub, una nuova email, un nuovo file della Knowledge o un record modificato) che lo avvia senza che nessuno apra la pagina.
+3. **Ogni lavoro è un'esecuzione.** Puoi seguirla in tempo reale, guidarla con un messaggio, interromperla o riprovarla.
+4. **Quando l'agente raggiunge uno strumento contrassegnato come "Chiedimi prima"**, l'esecuzione si mette in pausa e l'attività passa in *Da rivedere*, finché qualcuno non approva o rifiuta la chiamata.
+5. **Quando l'esecuzione termina**, la sua risposta viene pubblicata sull'attività. L'attività passa a *Fatte* (oppure a *Da rivedere* se qualcosa è andato storto), e l'esecuzione resta in **Cronologia**.
+
+## Scegli il modello che usano gli agenti {#choose-the-model-agents-use}
+
+Ogni agente può scegliere un proprio modello. Quelli che non ne scelgono uno usano il modello predefinito della piattaforma, impostato una sola volta per tutti:
+
+1. Vai su **Impostazioni** → **Registro modelli AI** e apri **Modelli predefiniti**.
+2. Imposta **Modello per gli agenti**: *"Usato dagli agenti senza un modello specifico."*
+
+**Impostazioni** → **Agenti** rimanda allo stesso valore predefinito tramite **Apri i modelli predefiniti del Registro →**. Contiene anche i **Segreti** che si possono assegnare agli agenti, l'impostazione **Metti in pausa gli agenti pianificati che nessuno legge** e l'elenco dei **Profili degli agenti**.
+
+## Prossimi passi {#next-steps}
+
+* [Crea un agente](/operational-guides/create-an-agent): configura istruzioni, modello, strumenti e ciò che lo avvia.
+* [Delega il lavoro con le attività](/operational-guides/agent-tasks): affida lavoro agli agenti dalla bacheca delle attività.
+* [Segui le esecuzioni e approva le azioni](/operational-guides/agent-runs): osserva un'esecuzione e decidi sulle chiamate che chiedono conferma.
+* [Chatta con gli agenti](/operational-guides/agent-chats): parla con un agente o con un gruppo.

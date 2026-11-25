@@ -1,0 +1,96 @@
+---
+sidebar_position: 41
+sidebar_label: Genera immagini
+type: how-to
+audience: [user]
+---
+
+# Genera immagini con Gen
+
+**Gen** è l'area di Rational AI per i contenuti generati. Per creare un'immagine parti da un **template** che conosce già i colori, i font, lo stile e il modello preferito del brand, descrivi ciò che vuoi in una frase e perfezioni il risultato finché non va bene. Ogni tentativo viene conservato, così puoi tornare a uno qualsiasi di essi.
+
+:::note[Che cos'è un template di Gen?]
+Un **template** è un punto di partenza salvato per un tipo di immagine: il modello di immagini da usare, le sue impostazioni (proporzioni, dimensione, qualità e così via), un prompt di generazione e uno stile di brand (colori, tipografia, immagini di riferimento e un prompt di stile). Partire da un template significa descrivere solo il soggetto; il template fornisce tutto ciò che deve restare uguale ogni volta. Gli amministratori gestiscono i template in **Impostazioni** → **Gen** (vedi [Configura Gen](/operational-guides/configure-gen)).
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Il modulo Gen nella tua licenza:** la scheda **Gen** compare solo quando la [licenza](/operational-guides/license) del workspace lo include.
+- **Un modello di immagini:** almeno un modello di generazione di immagini nel [Registro modelli AI](/operational-guides/ai-model-registry-features), e la generazione di immagini impostata in **Impostazioni** → **Gen** → **Impostazioni predefinite del prompt**.
+- **Un account Rational AI:** chiunque può generare immagini. Gli utenti che non sono amministratori vedono solo le sessioni di immagini che hanno avviato.
+
+## Apri Gen {#open-gen}
+
+Seleziona la scheda **Gen** nella navigazione in alto. Gen ha cinque schede, ciascuna con la sua galleria: **Foto e video** per le immagini, **Testo**, **Slide** e **Canvas** per i [documenti](/operational-guides/gen-documents), e **Social** per i [post social](/operational-guides/social-studio). **Foto e video** genera solo immagini. Le schede dei documenti e dei social sono disponibili solo agli amministratori, quindi gli altri utenti possono generare immagini e nient'altro.
+
+La prima volta che apri Gen, un tour guidato ti accompagna tra le gallerie e crea una bozza di immagine usa e getta per mostrarti l'editor; la elimina al termine. Puoi riavviarlo in qualsiasi momento con il pulsante **Guida** nell'intestazione.
+
+## Genera un'immagine {#generate-an-image}
+
+1. In **Foto e video**, seleziona la tessera **Genera**.
+2. Scegli **Da un template** e selezionane uno, oppure scegli **Nuova immagine** per partire dalle impostazioni predefinite di generazione della piattaforma.
+3. L'editor si apre. Descrivi ciò che vuoi nel campo in basso, dove compare *"Descrivi cosa vuoi generare..."*, e premi **Invio**.
+4. Attendi il risultato. L'editor mostra la fase raggiunta (*"Preparazione dell'immagine"*, *"Generazione dell'immagine"*, *"Completamento dell'immagine"*, *"Salvataggio dell'immagine"*), e puoi lasciare la pagina e tornare: la generazione prosegue senza di te.
+
+Quando una generazione produce più immagini, sfogliale con **Immagine precedente** e **Immagine successiva**.
+
+:::note[I prompt brevi possono essere espansi per te]
+Se un amministratore ha attivato **Lascia che l'AI riscriva i prompt brevi**, un prompt di dodici parole o meno viene espanso in una descrizione più completa da un modello di testo prima che il modello di immagini lo riceva. *"Un gatto su un divano"* diventa un prompt che descrive anche illuminazione, composizione e atmosfera. I prompt più lunghi vengono inviati come li hai scritti, e se la riscrittura fallisce per qualsiasi motivo viene usato il tuo prompt originale.
+:::
+
+## Regola le impostazioni {#adjust-the-settings}
+
+Il campo di composizione mostra il modello e un riepilogo delle impostazioni principali, per esempio *"16:9 / 2K / 2 images"*. Seleziona il riepilogo per cambiare **Proporzioni** e **Numero di output**, oppure **Vedi tutte le impostazioni del prompt** per il resto.
+
+Il pannello di configurazione accanto all'immagine ha due viste:
+
+| Vista | Cosa puoi cambiare | Quando usarla |
+|---|---|---|
+| La vista del template (predefinita mentre sei su un template) | **Proporzioni**, **Numero di output** e **Stile** (uno dei preset di stile). Tutto il resto impostato dal template è elencato, in sola lettura, sotto *"Cosa usa questo template"*. | Uso quotidiano: il brand resta coerente. |
+| **Avanzate** | Tutto: il modello, **Proporzioni**, **Dimensione**, **Qualità**, **Numero di output**, **Prompt negativo**, **Guidance scale**, **Step**, **Intensità di denoise**, **Sampler**, **Formato di output**, **Compressione**, **Sfondo**, e **Usa un seed fisso** con il suo **Seed**. | Quando il template non basta. Seleziona **Avanzate** per cambiare vista, e **Torna al template** per tornare indietro. |
+
+Attiva **Usa un seed fisso** quando vuoi cambiare una sola cosa (il prompt, per esempio) e mantenere uguale tutto il resto dell'immagine: lo stesso seed con le stesse impostazioni produce un'immagine molto simile.
+
+Gen mostra solo le impostazioni supportate dal modello selezionato, e cambiando modello, i valori che il nuovo modello non supporta vengono scelti di nuovo. Quante immagini di riferimento accetta un modello è impostato nel [Registro modelli AI](/operational-guides/ai-model-registry-features).
+
+Cambiando il modello in **Avanzate** la sessione si stacca dal template: l'editor segnala che la sessione non appartiene più a un template, e le impostazioni del brand che avevi restano invariate.
+
+### Aggiungi immagini di riferimento {#add-reference-images}
+
+Le immagini di riferimento orientano il risultato: uno scatto di prodotto da inserire in una scena, una foto di cui seguire lo stile. Usa gli slot di riferimento nel campo di composizione e scegli **Carica immagine**. Il pannello indica quante ne accetta il modello (*"Accetta fino a N immagini di riferimento."*) e contrassegna ciascuna come *"Inviata con il prompt"*, *"Disattivata"* o *"Oltre quanto accetta questo modello"*.
+
+## Perfeziona il risultato {#refine-the-result}
+
+- **Annulla** e **Ripeti**, nell'intestazione dell'editor, tornano indietro e avanti tra le modifiche alle impostazioni fatte in questa sessione. Il tooltip indica il passo. Non annullano una generazione: ogni immagine generata resta nella cronologia.
+- Gli **Strumenti AI** eseguono uno strumento sull'immagine attuale e avviano una nuova generazione a partire da essa: **Rigenera**, **Varianti** (**Vicine** o **Lontane**), **Espandi**, **Rimuovi sfondo**, **Dipingi** e **Migliora qualità**. Uno strumento compare solo dopo che un amministratore lo ha configurato.
+- **Cronologia delle generazioni**, nella colonna accanto all'immagine, elenca ogni generazione della sessione. **Vedi la genealogia completa** apre un diagramma di come le immagini discendono l'una dall'altra attraverso le immagini di riferimento usate.
+- **Azioni** contiene **Imposta come copertina** (l'immagine mostrata sulla scheda della galleria), **Usa come immagine di riferimento**, **Scarica** ed **Elimina**.
+
+Gli amministratori possono anche trasformare una sessione che funziona in qualcosa di riutilizzabile: **Salva come template** nel gruppo **Template** e **Salva come preset** nel gruppo **Preset di stile** della vista **Avanzate**.
+
+## Quando una generazione fallisce {#when-a-generation-fails}
+
+Una generazione fallita lo dichiara al posto dell'immagine, con il motivo, per esempio *"The model returned 1 image(s) of the 2 requested."*, oppure con l'errore che il provider ha restituito. Quando non c'è un motivo specifico vedi *"Riprova oppure scegli un altro modello."* Se un'immagine precedente è sullo schermo, un fallimento più recente compare come banner sopra di essa, così non perdi ciò che avevi.
+
+Altri messaggi:
+
+- *"È già in corso una generazione. Attendi che termini."* Una sessione genera un'immagine alla volta.
+- *"La generazione sta impiegando più tempo del previsto."* Seleziona **Aggiorna stato** per controllare di nuovo.
+
+## Organizza la galleria {#organize-the-gallery}
+
+In **Foto e video**, le generazioni sono raggruppate per data. Dal menu di una scheda puoi usare **Preferito**, **Scarica**, **Aggiungi a cartella** o **Elimina**. Eliminare rimuove la sessione con tutta la sua cronologia di generazioni, e non si può annullare. Seleziona più schede per agire su di esse insieme da **Azioni**.
+
+- **Filtri** restringe la galleria a **Solo preferiti**, a una **Cartella** o a un **Periodo** (**Oggi**, **Ultimi 7 giorni**, **Ultimi 30 giorni**).
+- **Cartelle** elenca le tue cartelle con quante immagini contiene ciascuna; usa **Nuova cartella** per aggiungerne una, e il menu di una cartella con le voci **Scarica**, **Rinomina** ed **Elimina**.
+
+## Le immagini sono contrassegnate come generate dall'AI {#images-are-marked-as-ai-generated}
+
+Ogni immagine prodotta da Gen, incluse quelle che una chat crea tramite Gen, contiene un'etichetta di metadati standard che indica che un modello l'ha creata, insieme al nome del modello. L'etichetta viene scritta nei file PNG e JPEG al salvataggio, quindi resta con il file dopo che lo scarichi o lo condividi. I motori di ricerca e le piattaforme social leggono questa etichetta quando classificano i contenuti come generati dall'AI.
+
+L'etichetta indica che cos'è il file; non dimostra che nessuno lo abbia modificato da allora, e chiunque può rimuoverla. Non è un record di provenienza C2PA firmato, quindi non soddisfa un requisito che richiede specificamente C2PA.
+
+## Prossimi passi {#next-steps}
+
+* [Configura Gen](/operational-guides/configure-gen): imposta template, preset di stile e strumenti AI.
+* [Genera documenti, slide e pagine web](/operational-guides/gen-documents): le altre schede di Gen, per gli amministratori.

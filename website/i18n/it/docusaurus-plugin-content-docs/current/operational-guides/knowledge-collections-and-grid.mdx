@@ -1,0 +1,178 @@
+---
+sidebar_position: 6
+sidebar_label: Collezioni e viste griglia
+type: how-to
+audience: [builder]
+---
+
+# Lavora con i record in collezioni e viste griglia
+
+Una [Knowledge](/operational-guides/create-knowledge) può contenere record, come clienti, contratti, fornitori o incidenti, accanto ai suoi file, così l'assistente risponde basandosi anche su di essi. Raggruppa i record in **collezioni**, modificali in una **griglia** come un foglio di calcolo, salva le disposizioni che il tuo team usa più spesso come **viste** e controlla chi ha cambiato cosa nella **Cronologia** di ogni record.
+
+Un record è descritto dai suoi attributi, come *Stato*, *Importo* o *Data di rinnovo*, invece che (o oltre che) da un file. Una collezione è un tipo di record all'interno di una Knowledge, come *Aziende* o *Contatti*, e ogni record appartiene al massimo a una collezione.
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, verifica di avere:
+
+- **Accesso alla Knowledge:** l'accesso in lettura è sufficiente per sfogliare i record, modificare una vista per te e fissare le viste.
+- **Permessi di modifica per apportare cambiamenti:** creare collezioni, modificare i record e salvare le viste richiedono il permesso **Modifica** sulla Knowledge; eliminare i record richiede il permesso **Elimina**. Senza questi permessi la griglia è di sola lettura. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Attributi:** la griglia mostra una colonna per attributo. Puoi aggiungerli dalla griglia stessa; per i tipi disponibili, vedi [Tipi di attributo](/operational-guides/knowledge-attributes).
+
+## Apri la griglia {#open-the-grid}
+
+1. Apri la scheda **Knowledge** e seleziona la card della tua Knowledge.
+2. Nell'intestazione, apri il pannello delle viste (il pulsante con l'icona e il nome della vista corrente) e scegli **Griglia**.
+
+La griglia ha le colonne fisse **Nome**, **Descrizione**, **Categoria** e **Tag**, poi una colonna per attributo, poi **Relazioni** con il numero di risorse collegate. Ogni pagina mostra 25 record; usa i controlli di paginazione in basso per vederne altri.
+
+Una Knowledge vuota mostra *"Questa Knowledge è vuota"* con **Aggiungi manualmente**, **Importa da Excel o CSV** e **Vai alle impostazioni**. Per importare un foglio di calcolo esistente, vedi [Importa record da Excel o CSV](/operational-guides/import-knowledge).
+
+## Organizza i record in collezioni {#organize-records-into-collections}
+
+Le collezioni si creano e si gestiscono dalla griglia; non esiste una pagina delle impostazioni separata per loro.
+
+1. Seleziona **+ Nuova collezione** a destra della barra degli strumenti (oppure, quando esistono già delle collezioni, il **+** alla fine della barra delle schede, *"Nuova collezione"*).
+2. Inserisci un **Nome della collezione** (unico nella Knowledge) e seleziona **Crea**.
+
+Appena esiste una collezione, sopra la griglia compare una barra delle schede: **Tutte le risorse** con il conteggio totale, poi una scheda per ogni collezione con il proprio conteggio. Entrambi i conteggi seguono la ricerca e il filtro correnti. Trascina le schede per riordinarle. Su **Tutte le risorse** compare una colonna extra **Collezione** che indica dove appartiene ogni record; puoi filtrare e raggruppare per questa colonna.
+
+Per spostare i record in una collezione, usa **Sposta in collezione** nel menu **⋯** di una riga, oppure seleziona più righe e usa l'azione multipla (vedi [Seleziona record su più pagine](#select-records-across-pages)).
+
+La scheda attiva ha un menu **⋮** con:
+
+| Opzione | Cosa fa |
+| --- | --- |
+| **Rinomina** | Cambia il nome della collezione. |
+| **Attributi** | Sceglie quali attributi della Knowledge mostra la collezione, e in che ordine (trascina per riordinarli). |
+| **Mostra nella cronologia** | Mostra i record di questa collezione nella **Cronologia** dei record a cui sono collegati, collocati in base a uno dei loro attributi data. Utile per riunioni, chiamate o fatture che devono comparire nella cronologia di un cliente. |
+| **Apri i record con** | Apre i record di questa collezione in una delle tue viste personalizzate invece che nel pannello standard. Vedi [Apri i record di una collezione in una vista personalizzata](#open-a-collections-records-in-a-custom-view). |
+| **Elimina** | Elimina la collezione. |
+
+:::note[Eliminare una collezione non elimina i suoi record]
+Eliminare una collezione non elimina ciò che contiene: i suoi record restano nella Knowledge, senza collezione, sotto **Tutte le risorse**. Con la collezione vengono eliminati i promemoria impostati su di essa e le viste griglia che mostravano solo quella collezione.
+:::
+
+## Modifica i record nella griglia {#edit-records-in-the-grid}
+
+Con i permessi di modifica, la griglia funziona come un foglio di calcolo.
+
+1. Inizia a modificare una cella con doppio clic, premendo **Invio** o **F2**, oppure digitando. Premi la **barra spaziatrice** per spuntare una casella.
+2. Spostati con i tasti freccia, **Tab**, **Home** e **End**; **Delete** o **Backspace** svuota una cella, **Esc** annulla la modifica.
+3. Aggiungi un record con **+ Nuova riga** in fondo, oppure premi **Shift+Invio** per inserire una riga sotto quella corrente. Una nuova riga è contrassegnata come **Nuova** finché non viene salvata.
+4. Le modifiche non vengono scritte mentre digiti: le celle modificate restano evidenziate e una barra in basso ne conta il numero (*"3 modifiche non salvate"*). Seleziona **Salva modifiche**, oppure premi **Ctrl+S** (**Cmd+S** su macOS), per scriverle tutte insieme.
+
+Ogni tipo di attributo ha un proprio editor: un selettore di data, un selettore di persona con la scorciatoia **Io**, un selettore di collegamento sulla collezione collegata, e così via.
+
+Le azioni che scrivono subito, come rinominare un attributo, spostare o eliminare record, importare o eliminare una collezione, ti chiedono prima di salvare o scartare le modifiche in sospeso.
+
+:::note[Un salvataggio scrive tutto o niente]
+Se un valore non rispetta il suo attributo, **Salva modifiche** resta disattivato finché non lo correggi. Se nel frattempo qualcun altro ha modificato una tua riga, non viene salvato niente: seleziona **Ricarica righe** nella finestra per vedere i suoi valori.
+:::
+
+### Crea categorie, tag e opzioni da una cella {#create-categories-tags-and-options-from-a-cell}
+
+Non devi preparare ogni opzione nelle impostazioni prima. In una cella **Categoria**, **Tag** o di selezione, digita *"Cerca o crea…"*: se il nome non esiste ancora, viene creato sul momento con il prossimo colore libero e compare come chip colorato in ogni record. La nuova opzione viene salvata subito nella Knowledge; il valore della cella attende ancora **Salva modifiche**.
+
+### Modifica le relazioni {#edit-relations}
+
+La cella **Relazioni** mostra quante risorse sono collegate al record. Selezionala per aprire l'elenco di quelle relazioni, dove puoi aggiungerle o rimuoverle senza uscire dalla griglia. Per collegamenti tipizzati tra collezioni, usa invece un attributo **Collegamento**; vedi [Tipi di attributo](/operational-guides/knowledge-attributes#link).
+
+### Segui un'aggregazione fino ai suoi record {#follow-a-rollup-to-its-records}
+
+Seleziona una cella di una colonna **Aggregazione** (*"Mostra questi record"*) per vedere cosa conta. Quando l'aggregazione somma i record che puntano *a* questo (tutte le opportunità di un'azienda, per dire), la griglia passa alla loro collezione, filtrata su quei record. Quando segue il collegamento proprio del record, si apre il record collegato.
+
+## Trova i record: filtra, ordina, raggruppa e riassumi {#find-records-filter-sort-group-and-summarize}
+
+La barra degli strumenti ha **Filtra**, **Raggruppa per**, **Ordina** e **Attributi visibili**. Ognuno viene eseguito sul server, quindi copre tutti i record della Knowledge, non solo la pagina sullo schermo.
+
+- **Filtra:** seleziona **Aggiungi condizione** e costruisci condizioni come *Stato* **è uno tra** *Aperto*, oppure *Data di rinnovo* **è compreso in** *i prossimi 30 giorni*. Combinale con **e** o **o**, e usa **Aggiungi gruppo di condizioni** per un livello di condizioni annidate. Gli operatori dipendono dal tipo di attributo (testo, numero, data, selezione, casella di controllo, collegamento, persona). Su un attributo persona, scegli **Io**: chiunque apra la vista vedrà così i propri record.
+- **Ordina:** aggiungi uno o più livelli, ciascuno **Crescente** o **Decrescente**. Oltre agli attributi, puoi ordinare e filtrare anche per **Ultima modifica**, per vedere cosa si è mosso di recente.
+- **Raggruppa per:** fino a tre livelli. Le intestazioni dei gruppi mostrano il valore e un conteggio; usa **Comprimi tutti** o **Espandi tutti**.
+- **Attributi visibili:** mostra o nascondi le colonne (**Nome** resta sempre visibile). Per riordinare le colonne, trascina l'intestazione di una colonna; il tuo ordine viene mantenuto in questo browser per ogni collezione.
+- **Riepiloghi:** il piè di pagina di ogni colonna ha un pulsante **Riepilogo**: conteggi di valori vuoti, compilati e unici, o le loro percentuali, per ogni colonna; **Somma**, **Media**, **Mediana**, **Minimo**, **Massimo**, **Intervallo** e **Deviazione standard** per i numeri; **Meno recente** e **Più recente** per le date. I riepiloghi compaiono anche nelle intestazioni dei gruppi.
+
+Un filtro, un raggruppamento o un riepilogo su un attributo eliminato in seguito, o cambiato di tipo, viene ignorato e segnalato come tale, e rimosso al successivo salvataggio della vista.
+
+## Salva e condividi una vista griglia {#save-and-share-a-grid-view}
+
+La disposizione che crei vive nell'indirizzo della pagina, quindi puoi già inviarla come link. Per darle un nome che tutti ritrovino, salvala come vista.
+
+1. Nella **Griglia**, seleziona **Salva come vista**.
+2. Inserisci un **Nome**.
+3. In **Collezione**, mantieni *"Tutte le risorse, con le schede delle collezioni"* oppure scegline una; la vista mostrerà poi solo quella collezione, senza schede.
+4. In **Mostra come**, mantieni **Vista griglia** (oppure scegli **Calendario** per un calendario di un attributo data; vedi [Viste personalizzate](/operational-guides/knowledge-custom-views#show-records-on-a-calendar)).
+5. Seleziona **Crea**.
+
+:::note[Le viste salvate appartengono alla Knowledge, non a te]
+Una vista griglia è condivisa: chiunque possa aprire la Knowledge la vede nel pannello delle viste, e solo chi ha i permessi di modifica può salvarne una. Per tenere una disposizione per te, non salvarla: usa **Copia link** invece, oppure [fissa](#pin-the-views-you-use-most) le viste condivise che ti servono.
+:::
+
+Quando cambi i filtri, le colonne o il raggruppamento di una vista salvata, l'intestazione mostra **Vista modificata** con:
+
+- **Copia link**: copia un link esattamente a ciò che vedi, senza salvarlo. Chiunque può usarlo.
+- **Scarta**: torna alla disposizione salvata.
+- **Salva come nuova vista** e **Salva**: per chi ha i permessi di modifica. Se nel frattempo qualcun altro ha salvato la vista, viene ricaricata invece di essere sovrascritta.
+
+Le viste griglia salvate compaiono anche nella scheda **Viste** delle impostazioni della Knowledge, dove puoi rinominarle, disattivarle, eliminarle o scegliere **Imposta come vista predefinita**.
+
+## Fissa le viste che usi di più {#pin-the-views-you-use-most}
+
+Il pannello delle viste elenca ogni vista sotto **Fissate**, **Predefinite** e **Viste**, con una casella di ricerca. Seleziona la stella accanto a una vista, o premi **Shift+Invio** su di essa, per fissarla.
+
+- Puoi fissare fino a **5** viste per Knowledge. Quando ne hai cinque, rimuovine una per fissarne un'altra.
+- Le viste fissate compaiono come schede tra l'intestazione e la vista. Trascinale, oppure premi **Alt+freccia sinistra** / **Alt+freccia destra**, per riordinarle.
+- I fissaggi sono personali e ti seguono su tutti i dispositivi; fissare richiede solo l'accesso in lettura. Anche **Grafo** e **Griglia** integrate si possono fissare.
+
+Ogni vista mostra un'icona nel pannello e sulla sua scheda. Le viste generate con AI ricevono un'icona scelta in base al loro contenuto; le altre usano l'icona del loro tipo (una tabella per le griglie, un calendario per i calendari, una pagina per le viste personalizzate).
+
+## Seleziona record su più pagine {#select-records-across-pages}
+
+Quando la Knowledge ha almeno una collezione, ogni riga ha una casella di controllo per gli utenti con i permessi di modifica.
+
+1. Spunta le righe una per una, oppure la casella nell'intestazione per selezionare l'intera pagina.
+2. Per andare oltre la pagina, usa **Seleziona tutte le N risorse**: la selezione ora copre ogni record che corrisponde alla collezione, alla ricerca e al filtro correnti.
+3. Scegli un'azione multipla:
+   - **Sposta in collezione**: sposta la selezione in una collezione, o in **Nessuna collezione**.
+   - **Elimina**: elimina la selezione dopo la conferma. I record vengono eliminati insieme ai loro collegamenti e alla loro cronologia.
+
+:::warning[Eliminare record elimina anche i loro collegamenti e la cronologia]
+I record eliminati non possono essere ripristinati dalla griglia. Prima di un'eliminazione multipla di grandi dimensioni, controlla il filtro che definisce la tua selezione, oppure [esporta la Knowledge](/operational-guides/export-knowledge#export-a-knowledge) prima.
+:::
+
+## Apri un record {#open-a-record}
+
+Seleziona l'icona di apertura all'inizio di una riga, oppure **Vedi dettagli** nel suo menu **⋯**. Un record si apre in un pannello sulla destra; un file o una risorsa di database si apre nel visualizzatore.
+
+Il pannello ha le schede **Dettagli**, **Attributi** e **Cronologia**, più **Annotazioni** e **Chunk** quando la risorsa li possiede. Nella scheda **Attributi**, prima compaiono gli attributi della collezione, e gli attributi esterni alla collezione che contengono un valore compaiono sotto **Altri**. **Collegato da** elenca i record che puntano a questo.
+
+:::note[Il pannello salva man mano]
+A differenza della griglia, la scheda **Attributi** salva ogni campo appena lo modifichi e mostra **Salvato**. Se il record ha anche modifiche in sospeso nella griglia, il pannello te lo segnala, con **Scarta** e **Salva modifiche**.
+:::
+
+### Leggi la cronologia di un record {#read-a-records-history}
+
+La scheda **Cronologia** è una timeline del record, dalla più recente, raggruppata per giorno. Ogni voce indica chi ha fatto la modifica (una persona, un assistente, un agente o il sistema), come (*tramite importazione*, *tramite pacchetto*, *tramite tool dell'agente*) e cosa è cambiato, con il valore prima e dopo. Più salvataggi dello stesso utente entro cinque minuti vengono mostrati come una sola voce. I record di collezioni impostate su **Mostra nella cronologia** compaiono come schede collegate alla loro data.
+
+La cronologia viene conservata per 24 mesi, fino alle ultime 500 voci per record.
+
+### Apri i record di una collezione in una vista personalizzata {#open-a-collections-records-in-a-custom-view}
+
+Un tipo di record a volte merita una pagina propria: un riepilogo di contratto, un profilo cliente. Per usare una delle tue [viste personalizzate](/operational-guides/knowledge-custom-views) come pagina dei record di una collezione:
+
+1. Sulla scheda della collezione, apri il menu **⋮** e scegli **Apri i record con**.
+2. Scegli una vista HTML, JSX o Web Component (oppure **Scheda standard** per tornare al pannello).
+
+Da quel momento, ogni record di quella collezione si apre in quella vista: dalla griglia, dai chip dei collegamenti o dall'elenco dei record modificati. Se la vista viene poi eliminata o disattivata, i record tornano ad aprirsi nel pannello.
+
+## Vedi cosa è cambiato mentre lavoravi {#see-what-changed-while-you-were-working}
+
+Assistenti, agenti e colleghi possono modificare i record mentre hai aperta la griglia. La griglia controlla ogni 30 secondi e, quando qualcosa è cambiato, mostra *"N record sono stati modificati da un assistente, un agente o un'altra persona."* con **Ricarica**. Seleziona il messaggio per vedere l'elenco dei record modificati più di recente, con chi li ha cambiati, e apri quello che ti interessa. Ricaricare mantiene le modifiche non salvate; una riga cambiata nel frattempo chiede conferma prima che la tua modifica la sovrascriva.
+
+Le righe modificate per ultime da un assistente mostrano anche una piccola icona a forma di scintilla accanto al nome.
+
+## Prossimi passi {#next-steps}
+
+- Aggiungi i [tipi di attributo](/operational-guides/knowledge-attributes) giusti (collegamenti, formule, aggregazioni, persone).
+- Imposta dei [promemoria](/operational-guides/knowledge-reminders) sulle date.
+- [Pubblica una vista griglia](/operational-guides/embed-knowledge) sul tuo sito web.

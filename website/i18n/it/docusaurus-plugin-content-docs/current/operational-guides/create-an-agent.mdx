@@ -1,0 +1,165 @@
+---
+sidebar_position: 35
+sidebar_label: Crea un agente
+type: how-to
+audience: [builder]
+---
+
+# Crea un agente
+
+Un agente vale quanto il suo profilo. Le istruzioni dicono in cosa consiste il lavoro e come svolgerlo; gli strumenti dicono su cosa può intervenire; **Chiedimi prima** indica dove deve fermarsi e aspettare te. Questa guida illustra il profilo campo per campo, usando **Quinn**, un analista delle quotazioni che prezza le richieste di offerta (RFQ) e non deve mai scrivere un'offerta senza che una persona la controlli prima.
+
+:::note[Il profilo guida ogni esecuzione]
+Qualunque cosa avvii l'agente (un'attività, un messaggio in chat, una pianificazione o un webhook), l'esecuzione parte dal profilo: le sue istruzioni diventano il prompt di sistema, il suo modello risponde e può usare solo gli strumenti concessi lì e la Knowledge a cui dà accesso. Cambiare il profilo modifica la prossima esecuzione, non quelle già in corso.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Accesso alla sezione Agenti**: vedi [Rational Agents](/cr/Agents#prerequisites).
+- **Un modello di generazione di testo** nel [Registro modelli AI](/operational-guides/ai-model-registry-features), oppure il default della piattaforma per gli agenti.
+- **Facoltativo: estensioni con strumenti.** Gli strumenti delle [estensioni](/operational-guides/manage-extensions) installate possono essere concessi a un agente; la [Libreria](#browse-the-library) li elenca tutti.
+
+## Crea il profilo {#create-the-profile}
+
+1. In **Agenti**, seleziona **Tutti gli agenti** sotto *Team* nella barra laterale per aprire la pagina **Team**, poi seleziona **Nuovo agente**.
+2. Si apre il pannello **Nuovo agente**. Inserisci il **Nome** (obbligatorio) e, se vuoi, un ruolo (*Ruolo (facoltativo)*). Il ruolo compare sotto il nome in ogni punto in cui appare l'agente.
+
+<img
+  alt="Il pannello Nuovo agente con il nome, il riquadro Bozza con l'AI, la descrizione in una riga e l'elenco Accesso alla knowledge"
+  src={require('@site/static/img/screens/agents-new-agent.png').default}
+  style={{ maxWidth: '520px', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+### Fai creare la bozza a un modello {#let-a-model-draft-it}
+
+Sotto **Bozza con l'AI**, descrivi il lavoro in una frase e seleziona **Crea una bozza con l'AI**. Un modello compila il nome, la descrizione, le istruzioni, l'attivazione, gli strumenti e quali strumenti chiedono prima; per una pianificazione propone anche l'espressione cron e il fuso orario. Tutto ciò che scrive resta modificabile, quindi trattalo come una prima bozza. Se il modello non riesce a produrre una bozza utilizzabile, compare il messaggio *"Impossibile creare la bozza di questo agente. Compilalo a mano."*
+
+Per Quinn, una buona frase è: *"Quota le richieste di offerta in arrivo dal nostro listino, segnala ciò che non possiamo produrre internamente e scrivi il file dell'offerta, ma chiedimi prima di scriverlo."*
+
+### Descrivi l'agente {#describe-it}
+
+- **Cosa fa**: una riga mostrata sulla scheda dell'agente, per esempio *"Trasforma le richieste di offerta in arrivo in offerte prezzate e verificate."*
+- **Istruzioni**: *"Il prompt di sistema di ogni esecuzione. I file di contesto vengono comunque aggiunti durante l'esecuzione."* È qui che si definisce il lavoro. Spiega cosa riceve l'agente, cosa deve produrre e in che forma, cosa non deve mai fare e come deve riferire. Le istruzioni di Quinn dicono, tra l'altro, *"Non inventare mai prezzi o codici. Scrivi l'offerta come file Markdown offers/&lt;codice RFQ&gt;.md … Scrivi sempre in inglese."*
+
+:::note[Scrivi istruzioni per un risultato verificabile]
+Gli agenti verificano il proprio lavoro prima di finire: un'esecuzione che ha prodotto un file, un record o una risposta precisa può essere controllata, una vaga no. *"Scrivi l'offerta come offers/RFQ-….md, con una riga per ciascuna voce"* dà all'agente, e a te, un modo per sapere che ha finito. Un agente senza istruzioni può essere salvato ma non avviato: **Esegui ora** e **Crea e avvia** restano disattivati finché non le aggiungi.
+:::
+
+### Dai accesso alla Knowledge {#give-it-access-to-knowledge}
+
+**Accesso alla knowledge** elenca le Knowledge che puoi usare. Seleziona quelle che questo agente può cercare, e attiva **Può modificare** su una Knowledge per permettere all'agente anche di aggiungerne, modificarne ed eliminarne risorse, viste e file. Quinn riceve *Customer quotes*, la Knowledge con il listino, le capacità produttive dello stabilimento e il manuale delle quotazioni.
+
+Se non ne selezioni nessuna, un'esecuzione può cercare in tutte le Knowledge che può usare la persona che l'ha avviata. Selezionane almeno una per mantenere l'agente entro un perimetro. Un'esecuzione che lavora sull'attività o sulla chat di un progetto può usare anche la Knowledge di quel progetto (vedi [Raggruppa le attività nei progetti](./agent-tasks#group-tasks-in-projects)).
+
+### Dai accesso ai segreti {#give-it-secrets}
+
+**Segreti** elenca i valori che un amministratore ha aggiunto in **Impostazioni** → **Agenti**, come un token API. Seleziona quelli che i comandi di questo agente possono leggere come variabili d'ambiente: l'agente vede i loro nomi, mai i valori. Chiunque possa modificare l'agente o inviargli prompt può fargli usare o inviare i suoi segreti, quindi concedi solo ciò che serve al lavoro.
+
+### Scegli il modello {#pick-the-model}
+
+In **Modello**, mantieni **Modello predefinito della piattaforma per gli agenti** oppure scegli un modello di generazione di testo specifico. Ogni modello passa dal gateway della piattaforma, quindi le sue chiamate vengono registrate e governate come le altre.
+
+## Scegli gli strumenti {#choose-the-tools}
+
+<img
+  alt="La sezione Chiedimi prima con lo strumento di scrittura selezionato, e il catalogo Estensioni e strumenti sotto"
+  src={require('@site/static/img/screens/agents-profile-tools.png').default}
+  style={{ maxWidth: '520px', width: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+### Strumenti integrati {#built-in-tools}
+
+**Strumenti** sono gli strumenti di file e shell che l'agente usa sul suo computer: `read`, `write` ed `edit` per i file, `grep`, `find` e `ls` per cercarli ed elencarli, e `bash` per eseguire comandi. Parti da un preset e modificalo:
+
+| Preset | Strumenti |
+|--------|-----------|
+| **Sviluppo** (il predefinito) | `read`, `bash`, `edit`, `write` |
+| **Sola lettura** | `read`, `grep`, `find`, `ls` |
+| **Tutti** | tutti e sette |
+
+Un punto ambra indica gli strumenti selezionati che scrivono o eseguono (`bash`, `edit`, `write`). L'accesso alla Knowledge è indipendente da questi strumenti: un agente senza strumenti integrati può comunque cercare nella Knowledge che gli è stata data.
+
+### Estensioni e strumenti {#extensions-and-tools}
+
+**Estensioni e strumenti** elenca ogni strumento delle estensioni installate, raggruppato per estensione, con un campo di ricerca e un conteggio degli strumenti concessi (*Concessi*). Seleziona gli strumenti che questo agente può richiamare. Uno strumento la cui estensione mostra *Da configurare* (di solito per un connettore mancante) non può essere selezionato finché il problema non è risolto. Uno strumento contrassegnato come *Bloccato dall'amministratore* non può essere usato, e uno contrassegnato con *Serve l'approvazione dell'amministratore* chiede sempre prima.
+
+Quando l'agente ha strumenti per email o messaggistica, compaiono altri due campi: **Invia da** sceglie il canale Email da cui partono le sue email (le risposte tornano lì), e **Scrive su** sceglie il canale Telegram o WhatsApp su cui scrive alle persone. Senza una casella di posta, l'agente si limita a scrivere bozze di email; senza un canale di messaggistica, non invia messaggi.
+
+### Chiedimi prima {#ask-me-first}
+
+**Chiedimi prima** (*"Questi strumenti mettono in pausa l'esecuzione e attendono la tua approvazione a ogni chiamata."*) elenca ogni strumento che hai concesso, integrato o di un'estensione. Seleziona quelli che devono attendere una persona. Quinn ha `read` e `write`, e `write` è spuntato: Quinn può leggere e calcolare liberamente, ma ogni file che vuole scrivere ti viene mostrato prima.
+
+In fondo al pannello, un riepilogo mette a confronto i tre livelli:
+
+- **In autonomia**: gli strumenti che vengono eseguiti senza chiedere.
+- **Ti chiede prima**: gli strumenti che hai spuntato.
+- **Mai**: tutto ciò che è fuori dagli strumenti sopra.
+
+:::warning[Concedi il minimo, fai approvare ciò che apporta modifiche]
+Un agente può fare tutto ciò che i suoi strumenti consentono, tutte le volte che decide di farlo, su tutto ciò che è nel perimetro della sua Knowledge. Concedi solo gli strumenti che il lavoro richiede, e metti ogni strumento che invia, scrive o elimina sotto **Chiedimi prima** finché non hai visto abbastanza esecuzioni da fidartene. Vedi [Approva ciò che l'agente vuole fare](./agent-runs#approve-what-the-agent-wants-to-do).
+:::
+
+**Identità** (forma, colore, cursori) serve solo a definire l'avatar dell'agente. Non cambia il suo comportamento.
+
+## Decidi cosa lo avvia {#decide-what-starts-it}
+
+**Attivazione ed esecuzione**: *"Cosa avvia un'esecuzione, se gira nel cloud e se puoi guidarla mentre lavora."*
+
+- **Attivazione**: **Manuale** (il predefinito, usato da attività, chat ed **Esegui ora**), **Pianificazione**, **API**, **Webhook**, **Evento GitHub**, **Nuova email**, **Nuovo file** o **Record modificato**. Ogni attivazione tranne **Manuale** è trattata in [Pianifica e attiva gli agenti](./agent-routines).
+- **Dove**: lascia **Cloud**. Le esecuzioni girano sul computer dell'agente, che la piattaforma gestisce per te.
+- **Modalità**: gli agenti in modalità **Autonoma** lavorano sul compito da soli; gli agenti in modalità **Interattiva** sono pensati per essere guidati con messaggi mentre lavorano.
+
+Un'esecuzione ha 20 minuti per finire. Gli agenti interattivi, e quelli con almeno uno strumento sotto **Chiedimi prima**, ricevono sei ore, così un'esecuzione può attendere una persona senza andare in timeout.
+
+## Salva e prova {#save-and-try-it}
+
+- **Crea agente** salva l'agente. Compare nella pagina **Team** e nell'elenco della barra laterale.
+- **Crea e avvia** lo salva e avvia subito un'esecuzione. Quando modifichi un agente, gli stessi pulsanti diventano **Salva** e **Salva e avvia**.
+
+Apri l'agente dalla pagina Team per vedere il suo profilo a colpo d'occhio: il modello, l'attivazione, la modalità, il suo computer, gli strumenti e la Knowledge, le istruzioni, la spesa di questo mese e l'elenco delle sue esecuzioni.
+
+<img
+  alt="La pagina del profilo di Quinn con Modifica, Esegui ora e Metti in pausa, il riepilogo di modello e attivazione, il computer in esecuzione e il prompt di sistema"
+  src={require('@site/static/img/screens/agents-profile.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+Da qui:
+
+- **Esegui ora** apre **Esegui &lt;name&gt;**. Scrivi l'**Obiettivo di questa esecuzione** (*"Descrivi un risultato concreto"*) e seleziona **Avvia esecuzione**. Le istruzioni dell'agente restano valide; l'obiettivo è ciò che questa esecuzione deve consegnare. Per una domanda rapida, usa invece una [chat](./agent-chats).
+- **Modifica** riapre il pannello del profilo. **Elimina** è in fondo a quel pannello; chiede una conferma, e le esecuzioni passate dell'agente vengono conservate per l'audit.
+- **Metti in pausa** blocca le attivazioni dell'agente, che quindi non avviano nuove esecuzioni; vedi [Metti in pausa un agente](./agent-routines#pause-an-agent).
+- **Altre azioni** contiene **Duplica** ed **Esporta** (un file JSON che **Importa** nella pagina **Team** trasforma di nuovo in un agente).
+- **Budget mensile** limita il costo delle chiamate al modello dell'agente ogni mese. All'80% il proprietario riceve un avviso; una volta esaurito il budget, le nuove esecuzioni vengono rifiutate finché non lo alzi o non lo rimuovi.
+- **Esecuzioni** elenca tutte le esecuzioni di questo agente, con **Annulla** per quelle ancora in corso e **Riprova** per l'ultima esecuzione fallita o scaduta.
+
+<img
+  alt="La finestra Esegui Iris con l'obiettivo dell'esecuzione e il pulsante Avvia esecuzione"
+  src={require('@site/static/img/screens/agents-run-now.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+## Sfoglia la libreria {#browse-the-library}
+
+**Agenti** → **Libreria** elenca ogni strumento e skill che puoi concedere a un agente.
+
+<img
+  alt="La pagina Libreria con 26 strumenti da cinque estensioni: C-Parts Desk, Graphify Query, Rational Knowledge RAG Query Server, Vega charts e RationalAI Widgets"
+  src={require('@site/static/img/screens/agents-library.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+- **Strumenti**: raggruppati per estensione. Espandine una per vedere i suoi strumenti con i nomi che vede l'agente, che sono anche i nomi con cui corrisponde **Chiedimi prima**. **Cerca uno strumento…** li filtra, e **Solo strumenti in sola lettura** mantiene solo quelli che non modificano nulla. Un badge *Da configurare* indica che l'estensione richiede ancora un connettore.
+- **Skill**: le skill che le estensioni installate registrano per gli agenti, con **Cerca una skill…**. Non sono le skill che si scelgono con `/` in Chat, impostate su un touchpoint (vedi [Usa le skill in chat](/operational-guides/agent-skills)).
+
+Installare un'estensione non dà i suoi strumenti a nessuno. Uno strumento viene eseguito solo per un agente che lo ha sotto **Estensioni e strumenti**, e solo sulla Knowledge a cui quell'agente può accedere. Per aggiungere strumenti, [installa un'estensione](/operational-guides/manage-extensions).
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---------|------------------|
+| **Esegui ora** è disattivato | Il profilo non ha istruzioni. Apri **Modifica** e scrivile. |
+| L'esecuzione fallisce con *"No text-generation model is available — add one to the registry first."* | Nel Registro modelli AI non c'è un modello di generazione di testo. Aggiungine uno, oppure collega un abbonamento. |
+| L'esecuzione fallisce con *"The configured Agents default model is unavailable."* | Il **Modello per gli agenti** predefinito punta a un modello che è stato rimosso o ritirato. Scegline un altro in **Modelli predefiniti**, oppure imposta un modello sull'agente. |
+| L'agente dice che uno strumento non è disponibile | Lo strumento non è concesso nel profilo, oppure la sua estensione richiede una configurazione. Controlla **Estensioni e strumenti** nel profilo e i badge nella [Libreria](#browse-the-library). |
+| Il salvataggio fallisce sul nome | I nomi degli agenti sono univoci. Scegline un altro. |

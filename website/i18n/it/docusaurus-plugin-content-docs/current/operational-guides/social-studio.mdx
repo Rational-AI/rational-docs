@@ -1,0 +1,76 @@
+---
+sidebar_position: 44
+sidebar_label: Social studio
+type: how-to
+audience: [user]
+---
+
+# Crea e pubblica post social
+
+Un buon post social è composto da più elementi che devono essere coerenti tra loro: un aggancio, una didascalia, una serie di hashtag, una o più immagini con delle parole sopra, ciascuna con dimensioni e limiti diversi per ogni rete. Il **Social studio** in Gen crea un post passo dopo passo a partire da un template, lo mostra come lo mostrerà la rete, lo controlla rispetto ai limiti della rete e lo pubblica sulla tua pagina LinkedIn, Instagram o Facebook.
+
+:::note[Che cos'è un template social?]
+Un **template social** è una ricetta per un tipo di post in un formato: un carosello Instagram, un post LinkedIn, una Storia. È una **pipeline** di step: step di testo (una storyline, una didascalia, gli hashtag) che l'assistente scrive, e step di immagini (una copertina, le slide) che Gen disegna. Ogni step sa da quali step precedenti prende i dati, quindi le slide seguono la storyline e la didascalia segue le slide.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Il modulo Gen nella tua licenza.**
+- **Accesso amministrativo:** l'area **Social** è disponibile solo agli amministratori.
+- **Un template social:** vedi [Crea template social](#create-social-templates).
+- **Per pubblicare:** un connettore **LinkedIn**, **Instagram** o **Facebook** per la pagina su cui pubblichi (vedi [Configura un connettore](/operational-guides/configure-connectors)). Senza connettore puoi comunque creare i post e scaricarli.
+
+## Scegli un formato {#choose-a-format}
+
+| Formato | Pubblicabile da Rational AI |
+|---|---|
+| **Post Instagram**, **Carosello Instagram** e **Storia** | Sì, tramite un connettore Instagram. |
+| **LinkedIn** | Sì, su una pagina aziendale, tramite un connettore LinkedIn. |
+| **Facebook** | Sì, su una pagina, tramite un connettore Facebook. |
+| **X** | Solo download. |
+
+## Crea un post {#build-a-post}
+
+1. Seleziona la scheda **Gen**, poi **Social**.
+2. Seleziona il riquadro **Genera**, scegli un formato e seleziona uno dei suoi template.
+3. Il compositore si apre con gli step del template elencati come lista di controllo. Inizia dal **Brief**: di cosa parla il post, per chi è, cosa deve dire assolutamente. È facoltativo, ma ogni step parte da lui.
+4. Lavora sugli step. Ciascuno mostra il suo stato (**In attesa**, **In generazione**, **Pronto**, **Da aggiornare**, **Non riuscita** oppure **Scritto a mano**):
+   - **Gli step di testo** girano nella chat del post e tornano come candidati: scegli quello che preferisci, oppure scrivi il tuo.
+   - **Gli step di immagini** disegnano con la pipeline immagini di Gen. Seleziona **Genera**, oppure **Rigenera** per un altro tentativo. Su un carosello, **Genera tutte** disegna le slide una dopo l'altra.
+5. Controlla l'anteprima, che mostra il post come lo mostra la rete. Modifica il testo direttamente nell'anteprima, trascina il testo sovrapposto su un'immagine, oppure cambiane colore e font.
+
+:::note[Modificare uno step iniziale segna come da aggiornare quelli successivi]
+Poiché gli step si basano l'uno sull'altro, modificare la storyline dopo che le slide sono state disegnate segna come **Da aggiornare** gli step che ne dipendono, così vedi cosa rigenerare.
+:::
+
+Quando tutti gli step sono completati, il post è **Pronto**. Seleziona **Scarica** in qualsiasi momento per ottenere uno zip con ogni slide, renderizzata con le sue parole, più la didascalia. Usalo per i formati che pubblichi a mano, oppure per condividerlo in revisione.
+
+## Pubblica un post {#publish-a-post}
+
+La pubblicazione richiede due passaggi: prima verifichi, poi vai online.
+
+1. Nel compositore, scegli la pagina da **Scegli una pagina…**. Se il template indica una pagina sotto **Pubblica su**, è già selezionata.
+2. Seleziona **Verifica**. Rational AI carica il post sulla pagina *senza pubblicarlo*, così la rete rifiuta adesso tutto ciò che rifiuterebbe alla pubblicazione: troppe o troppo poche immagini nel carosello (tra 2 e 10), un'immagine oltre 8 MB, una didascalia troppo lunga, oppure più di 30 hashtag o 20 menzioni su Instagram. Il post diventa **Verificato**.
+3. Seleziona **Pubblica** e conferma. Il post va online sulla pagina come verificato, e **Vedi il post** ti porta lì.
+
+:::warning[Un post pubblicato non si può ritirare da qui]
+Una volta pubblicato, il post può essere modificato o rimosso solo sulla rete stessa. Se cambi qualcosa dopo la verifica, devi selezionare **Verifica di nuovo** prima di poter pubblicare, e una verifica Instagram scade dopo 23 ore. Se l'accesso del connettore è scaduto, Rational AI ti chiede di ricollegarlo in **Impostazioni** → **Connettori**.
+:::
+
+## Crea template social {#create-social-templates}
+
+1. Vai a **Impostazioni** → **Gen** e apri la scheda **Social**.
+2. Seleziona **Nuovo** e scegli il formato a cui è destinato il template.
+3. In **Generale**, compila **Nome**, **Descrizione** e **Prompt**, scegli il **Modello immagine** e, se vuoi, una pagina predefinita sotto **Pubblica su**. Decidi se il template viene proposto quando le persone creano un post.
+4. In **Pipeline**, costruisci gli step con **Aggiungi uno step**. Per ciascuno imposta il **Tipo** (testo o immagine), il **Nome** e le **Istruzioni**, da quali step precedenti **Prende da**, se **Chiede all'utente** un input e, per gli step di immagini, le **Proporzioni**. Imposta quanti **Candidati** propone uno step di testo e quante **Slide** ha un carosello.
+5. In **Stile**, imposta il brand kit che usano le immagini.
+6. Salva.
+
+:::note[La pipeline viene controllata in base al formato]
+I **Controlli** accanto alla pipeline fanno rispettare ciò che il formato richiede. Un carosello, per esempio, richiede uno step di storyline e uno step di slide. Finché non superi tutti i controlli, il salvataggio è bloccato con il messaggio *"Risolvi i controlli della pipeline per salvare."*
+:::
+
+## Prossimi passi {#next-steps}
+
+* [Configura un connettore](/operational-guides/configure-connectors): collega la pagina LinkedIn, Instagram o Facebook su cui pubblichi.
+* [Configura Gen](/operational-guides/configure-gen): imposta i modelli di immagini e gli stili che usano i post.

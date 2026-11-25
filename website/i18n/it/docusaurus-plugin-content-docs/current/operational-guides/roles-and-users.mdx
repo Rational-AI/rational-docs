@@ -1,0 +1,110 @@
+---
+sidebar_position: 19
+sidebar_label: Gestisci ruoli e utenti
+description: Imposta cosa può fare ogni ruolo, crea gli account utente, condividi l'accesso tramite i gruppi e rimuovi gli utenti.
+type: how-to
+audience: [admin]
+---
+
+# Gestisci ruoli e utenti
+
+I ruoli decidono cosa possono fare le persone in Rational AI. Questa guida spiega come impostare i permessi di un ruolo, creare utenti, organizzarli in gruppi e rimuoverli.
+
+Un **ruolo** è un insieme con nome di permessi. Un **utente** è un account con cui si accede a Rational AI. Un utente può avere più ruoli oppure nessuno, e i suoi permessi sono la combinazione dei suoi ruoli. **Admin** non è un ruolo: è un flag che concede all'utente tutti i permessi.
+
+## Prima di iniziare {#before-you-begin}
+
+- Un account **Admin**, oppure un ruolo con le righe corrispondenti: **Utenti** per gestire gli utenti, **Gruppi** per i gruppi, **Ruoli** per i ruoli. Gli admin ignorano ogni controllo dei permessi, quindi la matrice dei ruoli non si applica a loro.
+- Ruoli, utenti e gruppi si trovano nel gruppo **Accesso** di **Impostazioni**.
+
+## Configura un ruolo {#configure-a-role}
+
+1. Vai a **Impostazioni** → **Ruoli**.
+2. Seleziona il ruolo che vuoi modificare.
+3. Nella matrice, trova la riga della funzionalità e seleziona la cella dell'azione: **Elenco**, **Leggi**, **Crea**, **Aggiorna**, **Elimina**, **Usa** o **Condividi**.
+4. Scegli fino a dove arriva il permesso:
+
+   | Valore | Il ruolo può agire su… |
+   |---|---|
+   | **Nessuno** | nulla |
+   | **Tutti** | ogni elemento di quella funzionalità |
+   | **Propri** | gli elementi creati dall'utente e quelli condivisi con lui o con uno dei suoi gruppi |
+   | **ID selezionati** | solo gli elementi che scegli dall'elenco |
+
+   La colonna **Crea** offre solo **Nessuno** e **Tutti**.
+
+<img
+  src={require('@site/static/img/screens/roles-settings.png').default}
+  alt="La pagina Ruoli e permessi: l'elenco dei ruoli e la matrice dei permessi del ruolo selezionato, con una colonna per ogni azione"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+Ogni cella modifica un solo permesso. Controlla l'intera riga di una funzionalità: **Leggi** senza **Elenco**, per esempio, permette di aprire un elemento ma non di trovarlo.
+
+### Concedi l'accesso a Rational BI {#grant-access-to-rational-bi}
+
+[Rational BI](/operational-guides/rational-bi) usa quattro righe della matrice:
+
+| Riga | Controlla |
+|---|---|
+| **Progetti BI** | L'elenco dei progetti, e l'apertura, la creazione e l'eliminazione dei progetti |
+| **Dashboard** | Le dashboard dentro un progetto |
+| **Report** | I report generati dalle dashboard |
+| **Default BI** | La configurazione dell'intero workspace, in **Impostazioni** → **Rational BI** → **Default BI** |
+
+Per consentire a un ruolo di creare contenuti BI, concedi insieme **Crea** e **Aggiorna** su **Progetti BI**, **Dashboard** e **Report**. Con i soli **Progetti BI**, le persone possono aprire un progetto ma lo trovano vuoto. Lascia **Default BI** agli admin, perché ogni progetto lo eredita.
+
+### Cosa vedono le persone senza un permesso {#what-people-see-without-a-permission}
+
+L'interfaccia nasconde ciò che un ruolo non può fare:
+
+- Le sezioni di **Impostazioni** a cui il ruolo non ha accesso restano nella barra laterale, ma sono disattivate, con il suggerimento "Non hai accesso a questa sezione".
+- Senza il permesso di creare, aggiornare o eliminare, non compaiono il pulsante **Nuovo**, le voci del menu di riga e il pulsante **Salva** corrispondenti, e i moduli si aprono in sola lettura.
+- Aprire il link a una pagina che il ruolo non può leggere mostra "Accesso negato".
+
+Le sezioni che la licenza non include, come **Rational BI**, **Knowledge** o **Gen**, sono nascoste a tutti, qualunque sia il loro ruolo.
+
+:::tip
+Per verificare un ruolo, crea un utente di prova con solo quel ruolo e accedi con il suo account. Ogni sezione di **Impostazioni** disattivata è un permesso che il ruolo non ha.
+:::
+
+## Crea un utente {#create-a-user}
+
+1. Vai a **Impostazioni** → **Utenti** e seleziona **Aggiungi** → **Crea utente**.
+2. In **Crea nuovo utente**, inserisci **Nome**, **Cognome**, **Indirizzo email** e **Conferma indirizzo email**.
+3. In **Ruolo**, seleziona uno o più ruoli. Seleziona **Admin** per rendere l'utente un amministratore, oppure **Utente** per un account senza ruolo.
+4. Conserva la **Password temporanea** generata, oppure inserisci una password tua. Seleziona **Copia** per copiarla e condividerla con l'utente.
+5. Lascia selezionato **Richiedi cambio password al primo accesso**, così l'utente imposta la propria password al primo accesso. Se lo deselezioni, la password che hai impostato resta valida finché l'utente non la cambia.
+6. Seleziona **Crea**.
+
+## Condividi l'accesso tramite i gruppi {#share-access-through-groups}
+
+I gruppi non portano permessi. Ciò che un utente può fare dipende sempre dai suoi ruoli. I gruppi decidono **quali elementi** un utente raggiunge quando il suo ruolo ha l'ambito **Propri**. Se condividi una Knowledge, un touchpoint o un altro elemento con un gruppo, ogni membro può usarlo come se fosse suo.
+
+1. Vai a **Impostazioni** → **Gruppi** e seleziona **Nuovo**.
+2. Inserisci un **Nome** e una **Descrizione**.
+3. Nella tabella degli utenti, seleziona i membri. Attiva **Solo membri** per mostrare solo gli utenti già presenti nel gruppo.
+4. Seleziona **Salva**.
+
+<img
+  src={require('@site/static/img/screens/groups-list.png').default}
+  alt="La pagina Gruppi con l'elenco di ogni gruppo, con nome, descrizione e numero di utenti"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+## Rimuovi un utente {#remove-a-user}
+
+Il menu di riga della pagina **Utenti** offre due modi per rimuovere una persona:
+
+- **Elimina utente**: per chi lascia l'organizzazione. Le sue conversazioni vengono conservate.
+- **Cancella tutti i dati**: per chi esercita il diritto alla cancellazione. Anche le sue conversazioni vengono eliminate, in modo definitivo.
+
+Entrambe le operazioni vengono registrate nella [traccia di audit](/operational-guides/audit-trail). Per capire in dettaglio come si differenziano, e come cancellare i dati di una persona, vedi [Cancella i dati di una persona](/operational-guides/erase-personal-data).
+
+Gli utenti possono anche disattivare o eliminare il proprio account. Vedi [Gestisci il tuo account](/operational-guides/manage-your-account).
+
+## Prossimi passi {#next-steps}
+
+- [Controlla cosa possono fare le applicazioni AI](/operational-guides/govern-ai-applications)
+- [Controlla l'attività nella traccia di audit](/operational-guides/audit-trail)
+- [Cancella i dati di una persona](/operational-guides/erase-personal-data)

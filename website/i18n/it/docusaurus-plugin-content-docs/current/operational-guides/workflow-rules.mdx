@@ -1,0 +1,78 @@
+---
+sidebar_position: 22
+sidebar_label: Manage workflow rules
+type: how-to
+audience: [builder]
+---
+
+# Import, export, and time out workflow rules
+
+Once you've built a few [workflows](/operational-guides/create-workflow) and [processing rules](/operational-guides/create-processing-rule), you'll want to reuse them. Rather than rebuilding a rule by hand in every environment, Rational AI lets you save its definition to a file, load it somewhere else, and cap how long a workflow is allowed to run. This guide covers all three: exporting a rule, importing one or many from JSON, and setting an execution timeout.
+
+<img
+  src={require('@site/static/img/screens/workflows-settings.png').default}
+  alt="Settings Workflows tab"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+***Settings** → **Workflows**: the **Workflows** and **Processing rules** tabs, with the selected workflow’s script on the right.*
+
+:::note[What is a rule definition?]
+This page covers the two kinds of Python script on **Settings** → **Workflows**: **steps**, which transform data, and processing rules, which pick the step that processes each file. Rational AI can save either as a portable JSON file (a plain-text format that travels cleanly between environments) or as its Python code. Exporting writes one of these files; importing reads a JSON file back in as a draft. A step can also carry an execution timeout, so a run that takes too long is stopped instead of hanging indefinitely. Workflows built as graphs have no export, import or timeout menu.
+:::
+
+## Prerequisites {#prerequisites}
+
+Before you start, make sure you have:
+
+- Rights on the **Workflows** row of your role: **Create** to import, **Update** to set a timeout. See [Manage roles and users](/operational-guides/roles-and-users).
+- At least one step or processing rule already created (needed for export and timeout).
+- A JSON definition file on hand, if you intend to import.
+
+## Export a rule {#export-a-rule}
+
+Export a rule when you want to copy it into another environment, hand it to a teammate, or look at exactly how it works under the hood. You can save it as a portable JSON definition or as the runnable Python code behind it.
+
+1. Navigate to **Settings** → **Workflows** from the left sidebar.
+2. Select the step or processing rule you want to export from the list.
+3. Open the rule's **three-dot menu**.
+4. Choose the format you need:
+   - **Export (JSON)** downloads the rule's portable JSON definition.
+   - **Download** downloads the rule's underlying Python script.
+
+:::note[JSON for moving, Python for reading]
+Reach for **JSON** when the goal is to move a rule into another environment via import, because it's the only format the importer accepts. The Python file from **Download** is for inspecting or running the rule's logic locally; you can't import it back in.
+:::
+
+## Import rules from JSON {#import-rules-from-json}
+
+Import when you're bringing in a rule someone exported elsewhere, instead of building it from scratch. You can load several at once.
+
+1. Navigate to **Settings** → **Workflows** from the left sidebar.
+2. For a step, on the **Workflows** tab, select the **+** button next to the **Steps** heading. For a processing rule, on the **Processing rules** tab, select **New**.
+3. Choose **Import JSON** rather than **From scratch**.
+4. Select one or more JSON definition files.
+
+Each imported definition lands in the list as an unsaved draft. Review each one, then save the ones you want to keep. Nothing is persisted until you do.
+
+:::note[Drafts, not live rules]
+Importing never overwrites or activates anything on its own. Even when you import a batch of definitions in a single action, they all arrive as drafts and stay inert until you explicitly save each one.
+:::
+
+## Set a workflow execution timeout {#set-a-workflow-execution-timeout}
+
+Give a step a timeout when you want a safety cap on its run time, so a run that gets stuck is stopped automatically instead of hanging.
+
+1. Navigate to **Settings** → **Workflows** from the left sidebar.
+2. Under **Steps**, select the step you want to configure.
+3. Open the step's **three-dot menu** and select **Workflow Settings** (it sits between **Export (JSON)** and **Delete**).
+4. In the **Workflow Settings** dialog, enter the **Timeout (minutes)**. It must be a whole number of one minute or more (the field shows the placeholder `e.g. 30`). A step without a timeout of its own runs for up to 5 minutes per attempt.
+5. Optionally, clear **Count runtime toward the tenant quota** for maintenance or synchronization steps that should not consume the monthly allowance.
+6. Select **Save**.
+
+The timeout is stored on the step and applied to every future run.
+
+## Next steps {#next-steps}
+
+- [Create a workflow](/operational-guides/create-workflow)
+- [Create a processing rule](/operational-guides/create-processing-rule)

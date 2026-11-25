@@ -1,0 +1,128 @@
+---
+sidebar_position: 20
+sidebar_label: Gestisci i canali
+type: how-to
+audience: [builder]
+---
+
+# Gestisci i canali
+
+Un canale collega un bot Telegram, una casella di posta o un bot di Microsoft Teams o Slack a Rational AI, così che un [touchpoint](/operational-guides/configure-touchpoints) possa rispondere alle persone che gli scrivono lì. Un canale Email può anche avviare un agente di [Agenti](/cr/Agents) quando arriva una nuova email.
+
+<img
+  src={require('@site/static/img/screens/channels-settings.png').default}
+  alt="Elenco dei canali in Impostazioni"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*L'elenco **Canali**: ogni canale, il suo tipo, chi lo fornisce e la sua modalità.*
+
+I messaggi in arrivo diventano conversazioni che puoi leggere in [Conversazioni](/cr/Conversations), e le risposte tornano indietro sullo stesso canale.
+
+## Prerequisiti {#prerequisites}
+
+- **Permessi:** un ruolo con **Crea** e **Aggiorna** sulla riga **Canali** (vedi [Ruoli e utenti](/operational-guides/roles-and-users)).
+- **Le credenziali del servizio che stai collegando.** Per esempio un token di bot Telegram, le credenziali di una casella di posta o le credenziali dell'app di un bot di Microsoft Teams o Slack. Vedi le guide per tipo qui sotto.
+
+## Scegli un tipo di canale {#choose-a-channel-type}
+
+Esistono due tipi di canale, e si comportano in modo diverso una volta collegati.
+
+I **canali nativi** sono integrati nella piattaforma, con una gestione della connessione, una segnalazione dello stato e un supporto dei messaggi propri:
+
+| Tipo | Configurazione |
+|------|-------|
+| **Telegram** | [Collega un bot Telegram](/operational-guides/connect-telegram) |
+| **Email** | [Collega una casella email](/operational-guides/connect-email) |
+| **Microsoft Teams** | [Collega un bot di Microsoft Teams](/operational-guides/connect-teams) |
+| **Slack** | [Collega un'app Slack](/operational-guides/connect-slack) |
+
+I **canali forniti dalle estensioni** arrivano da un'[estensione](/operational-guides/manage-extensions) che dichiara un provider di canale, per esempio **WhatsApp (OpenWA)**, che collega un numero WhatsApp tramite un server OpenWA self-hosted. Sono gestiti dall'estensione e non dalla piattaforma, quindi le funzioni supportate dipendono dall'estensione.
+
+La chat web e l'API compatibile con OpenAI sono canali integrati della piattaforma. Non compaiono nell'elenco dei tipi, quindi non puoi crearne un altro.
+
+## Crea un canale {#create-a-channel}
+
+1. Vai su **Impostazioni** → **Canali** e seleziona **Aggiungi**.
+2. Scegli il **Tipo di canale**. L'elenco contiene i tipi nativi e i provider di canale delle estensioni installate.
+3. Inserisci un **Nome**. Deve essere unico tra tutti i canali, e i nomi fanno distinzione tra maiuscole e minuscole.
+4. Compila i campi di **Configurazione** richiesti dal tipo.
+5. Imposta la **Modalità di risposta** (vedi [Scegli la modalità](#choose-the-mode)).
+6. Facoltativo: inserisci una **Descrizione**.
+7. Seleziona **Salva**.
+8. Apri il touchpoint che deve rispondere e, nella sua scheda **Impostazioni**, seleziona questo canale come **Canale**. Vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).
+
+:::note[Il provider è fisso alla creazione]
+Il tipo e il provider di un canale si scelgono quando lo crei e non si possono cambiare in seguito. Tutto il resto (il nome, la modalità, le credenziali, le policy) resta modificabile. Se ti serve un provider diverso, crea un nuovo canale.
+:::
+
+## Scegli la modalità {#choose-the-mode}
+
+La **Modalità di risposta** decide se a rispondere è l'assistente da solo o una persona.
+
+| Modalità | Cosa succede a un messaggio in arrivo |
+|------|-------------------------------------|
+| **Automatico** | L'assistente risponde da solo. |
+| **Manuale** | La conversazione viene assegnata a un operatore. Non viene inviato nulla finché una persona non risponde. |
+
+Usa **Manuale** quando vuoi che le conversazioni siano raccolte e visibili, ma a rispondere siano le persone, per esempio su una casella di posta che stai ancora valutando.
+
+## Collega, verifica e disconnetti {#connect-check-and-disconnect}
+
+I canali nativi mostrano il loro stato di connessione in **Connessione**, nel pannello dei dettagli del canale, insieme a **Collega**, **Ricollega**, **Disconnetti** e **Modifica configurazione**.
+
+- **Collega** verifica le tue credenziali presso il servizio. Un token del bot sbagliato o un accesso alla casella rifiutato fallisce qui.
+- **Stato** indica cosa sta facendo la connessione: connessa, in errore o disconnessa. Email aggiunge uno stato per una casella che attende ancora **Autorizza l'accesso alla casella**, e uno per una casella che nessun touchpoint usa e a cui nessun agente è collegato.
+- **Disconnetti** ferma il canale e azzera lo stato di connessione, ma mantiene la configurazione così puoi collegarlo di nuovo. Un canale Email elimina anche i suoi token OAuth.
+
+Modificare un canale Telegram verifica di nuovo il token del bot e allinea il bot alle nuove impostazioni, così la configurazione precedente non resta attiva. **Ricollega** esegue di nuovo la verifica della connessione per qualsiasi tipo.
+
+I token dei bot, le password delle caselle e i segreti OAuth sono mostrati mascherati. Puoi modificare gli altri campi e salvare senza riscriverli; inserisci una credenziale solo per sostituirla.
+
+## Controlla chi può scrivere {#control-who-can-write-in}
+
+Quando un canale nativo è collegato, il suo pannello dei dettagli ha un **Filtro di risposta**, da salvare con **Salva filtro di risposta**. Le stesse liste compaiono nel modulo del canale come **Mittenti ammessi** e **Mittenti bloccati**.
+
+- **Mittenti ammessi**: se lo lasci vuoto, chiunque possa raggiungere il servizio può avviare una conversazione; se lo compili, tutti gli altri vengono ignorati.
+- **Mittenti bloccati**: vengono sempre ignorati, anche quando la lista degli ammessi li includerebbe.
+
+I messaggi di mittenti non ammessi vengono scartati senza risposta. Un canale Email mostra anche quante email ha ignorato e da chi arrivavano.
+
+Telegram, Slack ed Email ignorano anche altri bot e la posta automatica, così due sistemi non possono entrare in un ciclo di risposte tra loro. Le guide per tipo descrivono esattamente cosa filtra ciascuno.
+
+## Controlla cosa può essere inviato {#control-what-can-be-sent-in}
+
+I canali Telegram ed Email hanno impostazioni per gli allegati, e così i canali forniti dalle estensioni che le dichiarano. I canali Microsoft Teams e Slack trasmettono solo testo.
+
+- **Accetta allegati**: indica se file, foto e note vocali inviati a questo canale vengono accettati.
+- **Tipi di allegato**: un elenco separato da virgole di estensioni di file o prefissi MIME (per esempio `pdf, docx, image/`). Lascialo vuoto per accettare ogni tipo; tutto ciò che non è nell'elenco viene rifiutato.
+- **Limite dimensione allegati (MB)**: il file più grande accettato. Il limite massimo è 25 MB. Il valore predefinito di Telegram è 20 MB, la dimensione massima che un bot Telegram può scaricare.
+
+L'assistente legge i file accettati come fa con i file allegati nella chat: vede le foto quando il modello supporta le immagini, legge il testo dei documenti e legge la trascrizione di una nota vocale come ciò che l'utente ha detto. Se una nota vocale non può essere trascritta, l'assistente ne viene informato. Gli operatori possono aprire o scaricare ciò che è arrivato; vedi [Usa la chat](/operational-guides/chat-experience).
+
+## Scegli come risponde l'assistente {#shape-how-the-assistant-replies}
+
+Le persone sulle app di messaggistica scrivono più messaggi brevi di seguito e si aspettano risposte brevi. Due impostazioni adattano l'assistente a questo, sui canali il cui modulo le offre.
+
+### Dividi le risposte in più messaggi brevi {#split-replies-into-several-short-messages}
+
+Su Microsoft Teams, Slack e alcuni canali forniti dalle estensioni, attiva **Dividi le risposte** per consegnare ogni risposta come pochi messaggi brevi invece che come un unico blocco lungo.
+
+La risposta viene tagliata nelle righe vuote in al massimo quattro messaggi, inviati a circa un secondo di distanza. Blocchi di codice ed elenchi non vengono mai tagliati. [Conversazioni](/cr/Conversations) mostra comunque la risposta come un unico messaggio.
+
+### Attendi che il mittente smetta di scrivere {#wait-until-the-sender-pauses}
+
+Senza un ritardo, ogni messaggio in arrivo avvia una risposta propria, quindi un utente che invia "ciao", poi una domanda, poi una nota vocale riceve tre risposte che si sovrappongono. I canali che offrono **Reply delay (seconds)** possono invece trattenere la risposta. Solo alcuni [canali forniti dalle estensioni](#choose-a-channel-type) lo offrono.
+
+| Impostazione | Cosa fa |
+|---|---|
+| **Reply delay (seconds)** | Quanto tempo l'assistente aspetta dopo un messaggio prima di rispondere. Ogni nuovo messaggio fa ripartire l'attesa. `0` risponde subito a ogni messaggio. |
+| **Longest reply wait (seconds)** | Per quanto tempo al massimo l'assistente trattiene la risposta, contando dal primo messaggio senza risposta, così un utente che continua a scrivere riceve comunque una risposta. Il valore predefinito è 90. |
+
+Quando l'attesa finisce, l'assistente risponde una volta sola, con tutto il gruppo di messaggi nel contesto. Il ritardo si applica solo in modalità **Automatico** e solo alle conversazioni che arrivano da un canale; la chat web risponde sempre subito.
+
+## Prossimi passi {#next-steps}
+
+- [Collega un bot Telegram](/operational-guides/connect-telegram): configurazione del bot, gruppi e comandi.
+- [Collega una casella email](/operational-guides/connect-email): IMAP, OAuth e threading delle email.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): configura l'assistente che risponde sul canale.

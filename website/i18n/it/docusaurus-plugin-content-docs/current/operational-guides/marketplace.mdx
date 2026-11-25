@@ -1,0 +1,152 @@
+---
+sidebar_position: 5
+sidebar_label: Marketplace
+type: how-to
+audience: [admin, builder]
+---
+
+# Installa soluzioni dal Marketplace
+
+Il **Marketplace** offre soluzioni pronte per compiti comuni, come un CRM, una due diligence data room o un registro AI Act. Ne scegli una, decidi dove vanno i suoi contenuti, e Rational AI la configura in un solo passaggio. In seguito puoi aggiornarla, tornare a una versione precedente o rimuoverla, senza perdere i record che hai aggiunto.
+
+:::note[Che cos'è una soluzione?]
+Una **soluzione** è un'[estensione](/operational-guides/manage-extensions) pubblicata da Rational AI che configura un caso d'uso completo. A seconda della soluzione, installarla crea una Knowledge con le sue collezioni, i suoi attributi e le sue viste salvate, record di esempio, promemoria, workflow di elaborazione, strumenti e skill per l'assistente, dashboard BI, un widget per il sito o una fonte dati che si sincronizza in base a una pianificazione. Alcune soluzioni installano anche agenti automatici. Prima di installare una soluzione, vedi l'elenco di ciò che installa.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Un account con accesso effettuato:** chiunque può sfogliare il Marketplace e leggere le pagine delle soluzioni.
+- **Permesso di installare estensioni:** installare richiede **Crea** sulla riga **Estensioni** del tuo ruolo. Senza, vedi **Chiedi a un amministratore** al posto di **Installa** (vedi [Chiedi agli amministratori di installare una soluzione](#ask-the-admins-to-install-a-solution)).
+- **Permesso di aggiornare la Knowledge di destinazione:** solo se installi una soluzione in una Knowledge già esistente. Il tuo ruolo deve avere **Aggiorna** su di essa nella riga **Knowledge**.
+
+## Trova una soluzione {#find-a-solution}
+
+1. Seleziona **Marketplace** nella navigazione in alto.
+2. Restringi l'elenco in uno di questi modi:
+   - Scrivi nella casella di ricerca. La ricerca copre nomi, slogan, descrizioni, settori, casi d'uso e funzioni.
+   - Seleziona una tessera in **Sfoglia per caso d'uso**.
+   - Usa il pannello laterale: **Tutte le soluzioni**, **Nuove e aggiornate** (pubblicate o aggiornate negli ultimi 30 giorni), **Installate**, oppure un valore sotto **Per settore**, **Per caso d'uso** o **Include**.
+3. Ordina i risultati con **Più recenti**, **Aggiornate di recente**, **Nome dalla A alla Z** o **Prima le installate**. Per ricominciare, seleziona **Rimuovi tutti**.
+
+I filtri elencano solo i valori che almeno una soluzione ha, ciascuno con il suo conteggio:
+
+| Filtro | Valori |
+|--------|--------|
+| **Per settore** | Manifattura, Pubblica amministrazione, Retail e moda, Cultura e archivi, Difesa e intelligence, Energia e servizi di rete, Sanità, Finanza e assicurazioni, Servizi professionali |
+| **Per caso d'uso** | Conformità, Elaborazione documenti, Supply chain, Vendite e ricerca clienti, Assistenza clienti, Risorse umane, Business intelligence, Contratti e fornitori, Sviluppo prodotto, Pianificazione della produzione, Monitoraggio impianti, Bandi e finanziamenti, Gare d'appalto, Marketing e social, e altri |
+| **Include** | Viste interattive, Dashboard BI, Workflow, Skill, Widget per il sito, Agenti e promemoria |
+
+Quando Rational AI mette in evidenza una soluzione, compare in cima alla pagina con il link **Scopri la soluzione**.
+
+Ogni scheda mostra il nome della soluzione, lo slogan e ciò che porta (per esempio *"8 viste · 3 agenti"*), e uno stato quando la soluzione è già nel tuo workspace: **Installata**, **Aggiornamento disponibile**, **Configurazione 2 di 5** o **Installazione in corso**. Il catalogo viene mostrato nella lingua dell'interfaccia quando la soluzione è tradotta.
+
+## Leggi la pagina della soluzione {#read-the-solution-page}
+
+Seleziona una scheda per aprire la sua pagina. Prima di installare, ti dice esattamente cosa ottieni:
+
+- **Viste:** screenshot delle viste salvate della soluzione. Seleziona **Anteprima viste** per andarci.
+- **Panoramica:** come funziona la soluzione passo per passo, le collezioni che crea e le domande che puoi fare all'assistente.
+- **Cosa installa:** la Knowledge, gli agenti con ciò che li attiva, i promemoria, i workflow, gli strumenti, le dashboard BI e il widget del sito.
+- **Permessi:** cosa possono modificare gli agenti o l'assistente della soluzione, per esempio *"L'assistente può modificare i record in Opportunities."*, e da quale fonte esterna legge.
+- **Configurazione dopo l'installazione:** i passi che diventano la tua lista di controllo una volta installata la soluzione.
+- **Versioni:** ogni versione pubblicata con la sua data e le note di rilascio.
+
+## Installa una soluzione {#install-a-solution}
+
+1. Sulla scheda o nella pagina della soluzione, seleziona **Installa**. Per installare una release precedente, apri la freccia accanto a **Installa** e seleziona **Installa un'altra versione**.
+2. In **Knowledge**, scegli dove vanno i contenuti della soluzione:
+   - **+ Nuova knowledge** crea una nuova Knowledge. Inserisci il suo **Nome della knowledge**; se il nome è già in uso, la finestra ne suggerisce uno libero.
+   - Una Knowledge esistente riceve la soluzione.
+3. Imposta le opzioni:
+
+   | Opzione | Quando usarla |
+   |--------|----------------|
+   | **Lingua dei contenuti** | Scegli **Italiano** o **English** per le collezioni, le viste, gli agenti e gli esempi. È proposta solo quando la soluzione è tradotta, e gli aggiornamenti mantengono la lingua scelta. |
+   | **Includi i dati di esempio** | Lascialo attivo per avere record con il tag *example*, così ogni vista ha qualcosa da mostrare mentre provi la soluzione. Disattivalo per partire vuoto. |
+   | **Avvia gli agenti dopo la configurazione** | Compare solo per le soluzioni con agenti. Se è disattivata, gli agenti vengono creati in pausa. |
+   | **Invia e-mail da** | Compare solo quando un agente può inviare e-mail: la casella da cui invia. Il valore predefinito, *"Nessuna, gli agenti preparano solo bozze"*, non invia nulla. |
+   | **Responsabile di esempi e promemoria** | La persona proprietaria dei record di esempio, che riceve i loro promemoria. Per impostazione predefinita sei tu; in seguito puoi riassegnare i record in blocco. |
+
+4. Controlla **Questa soluzione potrà**, che elenca cosa la soluzione può modificare o leggere.
+5. Seleziona **Installa la soluzione**. Se uno dei suoi strumenti richiede impostazioni, come una chiave API, seleziona **Continua** e compila prima il modulo **Impostazioni**.
+
+La finestra mostra ogni passo mentre viene eseguito. Puoi chiuderla: l'installazione prosegue e la scheda mostra a che punto è. Al termine, seleziona **Apri** per andare alla Knowledge.
+
+:::note[Una Knowledge esistente mantiene i suoi contenuti]
+Quando installi in una Knowledge esistente, restano i suoi documenti, record, attributi e nome. La soluzione aggiunge le sue collezioni, viste, promemoria e agenti, e la sua regola di elaborazione e le istruzioni dell'assistente sostituiscono quelle che la Knowledge aveva.
+:::
+
+Se l'installazione fallisce, viene annullato tutto ciò che aveva creato, così puoi selezionare **Riprova** senza pulire prima. Una soluzione che legge da una fonte esterna offre anche **Installa senza fonte**, per quando a fallire è la fonte.
+
+
+## Chiedi agli amministratori di installare una soluzione {#ask-the-admins-to-install-a-solution}
+
+Se non puoi installare estensioni, chiedilo a chi può farlo:
+
+1. Sulla scheda o nella pagina della soluzione, seleziona **Chiedi a un amministratore**.
+2. Facoltativo: scrivi in **Messaggio (facoltativo)** a cosa ti servirebbe la soluzione.
+3. Seleziona **Invia richiesta**.
+
+Ogni amministratore riceve una notifica nell'app con il tuo nome, il tuo messaggio e un link alla pagina della soluzione. Puoi chiedere una volta al giorno per ogni soluzione; una seconda richiesta nello stesso giorno riceve la risposta *"Hai già chiesto questa soluzione oggi"*.
+
+## Segui la configurazione e lo stato di una soluzione {#follow-the-setup-and-status-of-a-solution}
+
+Apri una soluzione installata dal filtro **Installate** o dalla sua scheda. La sua pagina diventa la pagina di stato della soluzione:
+
+- **Configurazione:** la lista di controllo di **Configurazione dopo l'installazione**, con i passi già completati. Seleziona **Continua la configurazione** per completarla. Le spunte vengono salvate con la soluzione installata.
+- **Componenti:** le fonti, gli agenti, i promemoria e le viste della soluzione, ciascuno con il suo stato, per esempio **Attive**, **Sincronizzazione fallita**, **Ultima esecuzione fallita**, **In pausa** o **Mancano i responsabili** (record per cui nessuno riceve notifiche). Ogni problema viene con la sua azione (**Riprova**, **Vedi il log**, **Riprendi** o **Assegna**). Una vista che hai eliminato compare come **Rimossa**, e un aggiornamento non la ripristina.
+- **Panoramica** e **Versioni:** lo stesso contenuto di prima dell'installazione.
+
+Il menu **Altre azioni** contiene **Cerca aggiornamenti**, **Cronologia delle versioni**, **Ricomincia la configurazione**, che segna come non completato ogni passo di configurazione senza toccare alcun dato, **Metti in pausa tutti gli agenti** e **Disinstalla…**. Per aprire i contenuti della soluzione, seleziona **Apri** seguito dal nome della Knowledge.
+
+## Aggiorna una soluzione {#update-a-solution}
+
+Quando viene pubblicata una nuova versione, la pagina mostra *"È disponibile la versione …"*. Gli aggiornamenti non toccano mai i tuoi record.
+
+1. Seleziona **Rivedi aggiornamento**. La finestra elenca le note di rilascio e ogni componente che l'aggiornamento aggiunge, modifica o rimuove: viste, collezioni, promemoria, agenti, strumenti e dashboard.
+2. Controlla **Hai modificato N componenti**: per ogni componente che hai modificato tu, l'aggiornamento mantiene la tua versione.
+3. Se hai modificato una collezione e l'aggiornamento le aggiunge delle colonne, ogni collezione del genere ha una casella, selezionata per impostazione predefinita. Deselezionala per mantenere quella collezione così com'è, senza le nuove colonne.
+4. Seleziona **Aggiorna la soluzione**.
+
+:::note[Un aggiornamento mantiene la lingua dei contenuti]
+Una soluzione resta nella lingua in cui l'hai installata. Se una nuova versione non è disponibile in quella lingua, la finestra lo dice e l'aggiornamento non si può applicare.
+:::
+
+Come vengono rilevati gli aggiornamenti compatibili per l'estensione dietro una soluzione, e cosa fa un aggiornamento a strumenti e touchpoint, è descritto in [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates).
+
+## Ripristina una versione precedente {#restore-an-older-version}
+
+Se una nuova versione non ti va bene, torna indietro:
+
+1. Apri la scheda **Versioni** e seleziona **Ripristina questa versione** sulla versione che vuoi.
+2. Leggi la finestra: ciò che la versione installata ha aggiunto e quella precedente non ha viene rimosso dalla soluzione. I tuoi record non vengono toccati, e i componenti che hai modificato mantengono la tua versione.
+3. Seleziona **Ripristina versione**.
+
+## Disinstalla una soluzione {#uninstall-a-solution}
+
+1. In **Altre azioni**, seleziona **Disinstalla…**.
+2. Leggi quali agenti e promemoria della soluzione la finestra indica come rimossi, poi scegli cosa succede ai contenuti:
+
+   | Opzione | Quando usarla |
+   |--------|----------------|
+   | **Mantieni la knowledge e i suoi record** *(predefinita)* | Vuoi continuare a lavorare con i dati. La Knowledge resta con le sue viste e i suoi record. |
+   | **Elimina anche la knowledge** | Non ti servono più i dati. La finestra indica quanti record verranno eliminati, tra esempi e record tuoi. Scrivi il nome della Knowledge per confermare. |
+
+3. Seleziona **Disinstalla la soluzione**, oppure **Disinstalla ed elimina**.
+
+:::warning[L'eliminazione della Knowledge non si può annullare]
+**Elimina anche la knowledge** elimina i record e i documenti delle Knowledge create dall'installazione. Una Knowledge che esisteva prima che installassi la soluzione non viene mai eliminata: viene conservata e scollegata dalla soluzione.
+:::
+
+Una Knowledge conservata viene scollegata dalla soluzione. Se in seguito installi di nuovo la stessa soluzione, la riprende.
+
+## Cosa c'è nel catalogo {#whats-in-the-catalog}
+
+Le soluzioni coprono registri di conformità, elaborazione dei documenti, vendite e assistenza clienti, acquisti e supply chain, produzione e manutenzione, qualità, risorse umane e finanza. Tra gli esempi: **CRM**, **Due diligence data room**, **AI Act register**, **NIS2 compliance**, **Public tenders**, **Plant maintenance** e **Privacy and GDPR**.
+
+Rational AI pubblica nuove soluzioni nel tempo, quindi il Marketplace nella tua Control Room è l'elenco aggiornato. La pagina di ogni soluzione dice cosa installa.
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci le estensioni](/operational-guides/manage-extensions): le estensioni dietro ciascuna soluzione.
+- [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates): politiche di aggiornamento e compatibilità.

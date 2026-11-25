@@ -1,0 +1,75 @@
+---
+sidebar_position: 22
+sidebar_label: Collega una casella email
+type: how-to
+audience: [builder]
+---
+
+# Collega una casella email
+
+Un canale Email collega una casella di posta a Rational AI. La posta in arrivo diventa conversazioni, e le risposte escono come email nello stesso thread.
+
+Un [touchpoint](/operational-guides/configure-touchpoints) il cui canale è questa casella risponde alla posta. Anche un agente della sezione [Agenti](/cr/Agents) può essere collegato alla casella, così che una nuova email lo avvii. Una casella che nessun touchpoint usa e a cui nessun agente è collegato non viene letta.
+
+## Prerequisiti {#prerequisites}
+
+- **Una casella con accesso IMAP e SMTP**, e i suoi indirizzi del server.
+- **Credenziali**: una app password, oppure un account Gmail o Microsoft 365 che puoi autorizzare.
+- **Permessi:** un ruolo con **Crea** e **Modifica** sulla riga **Canali**.
+
+## Collega la casella {#connect-the-mailbox}
+
+1. Vai in **Impostazioni** → **Canali** e seleziona **Aggiungi**.
+2. Scegli **Email** come **Tipo di canale**.
+3. Inserisci un **Nome** e compila **Host IMAP**, **Host SMTP** e **Indirizzo email**. Le porte sono impostate di default a 993 per IMAP e 587 per SMTP, e la **Sicurezza del trasporto** a `auto`, che sceglie la modalità TLS in base alla porta.
+4. Scegli il metodo di **Autenticazione** e inserisci le credenziali (vedi [Scegli come autenticarti](#choose-how-to-authenticate)).
+5. Scegli la [modalità di risposta](/operational-guides/manage-channels#choose-the-mode). **Manuale** è un inizio sicuro: la posta viene messa davanti a una persona, e non viene inviato nulla finché qualcuno non risponde.
+6. Seleziona **Salva**.
+7. Nei dettagli del canale, seleziona **Connetti**. Con una app password, questo verifica sia il login IMAP sia quello SMTP. Con OAuth, seleziona **Autorizza l'accesso alla casella** e completa la schermata di consenso del tuo provider.
+8. Apri il touchpoint che deve rispondere e, nella sua scheda **Impostazioni**, seleziona questo canale come **Canale**. Il touchpoint deve essere attivo.
+
+## Scegli come autenticarti {#choose-how-to-authenticate}
+
+| **Autenticazione** | Usala per |
+|--------|-----------|
+| **app password** *(predefinita)* | Qualsiasi casella IMAP e SMTP. Inseriscila in **Password**. |
+| **OAuth (Google)** oppure **OAuth (Microsoft 365)** | Gmail e Microsoft 365, dove le app password sono spesso disattivate dalle policy. Inserisci il **OAuth Client ID** e il **OAuth Client Secret** della tua applicazione OAuth. |
+
+## Come la posta diventa conversazioni {#how-mail-becomes-conversations}
+
+Ogni thread di email è una conversazione, quindi due thread dalla stessa persona sono due conversazioni, come nel tuo client di posta.
+
+Rational AI legge la posta non letta ogni 60 secondi per impostazione predefinita (**Intervallo di lettura (secondi)**) e segna un messaggio come letto quando è entrato in una conversazione. La posta solo HTML viene ridotta a testo semplice.
+
+Le risposte vengono inviate con l'oggetto `Re:` e con le intestazioni che le mantengono dentro il thread esistente nel client di posta del destinatario. Se il tuo server di posta non è raggiungibile, la risposta viene inviata di nuovo più tardi.
+
+## Filtra la posta automatica e non verificata {#filter-automated-and-unverified-mail}
+
+Il canale ignora la posta che potrebbe avviare un ciclo di risposte:
+
+- La posta contrassegnata come inviata automaticamente, o come posta in blocco, lista o spam.
+- Le risposte di assenza e altra posta che chiede di non ricevere risposte automatiche.
+- La posta dagli indirizzi **no-reply**, **mailer-daemon** e **postmaster**.
+- La posta dall'indirizzo stesso del canale.
+
+I tuoi [mittenti consentiti e bloccati](/operational-guides/manage-channels#control-who-can-write-in) si applicano in aggiunta. Su una casella **Automatico**, compila **Mittenti consentiti**: le caselle ricevono molta più posta non richiesta delle app di chat.
+
+**Solo mittenti verificati** è attivo per impostazione predefinita. La posta che non supera i controlli del mittente (DMARC, DKIM o SPF) viene conservata perché una persona la legga, ma non avvia un agente e non riceve una risposta automatica. La posta tra colleghi sullo stesso Microsoft 365 o Google Workspace può essere considerata non verificata. Il controllo richiede un server di posta che registri questi esiti, come fanno Gmail e Microsoft 365.
+
+## Allegati {#attachments}
+
+Gli allegati seguono le [impostazioni degli allegati](/operational-guides/manage-channels#control-what-can-be-sent-in) del canale. **Limite dimensione allegati (MB)** è 25 MB per impostazione predefinita. L'assistente legge il testo di un documento accettato prima di rispondere. Gli operatori possono aprire o scaricare ciò che è arrivato dalla conversazione; vedi [Usa la chat](/operational-guides/chat-experience).
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Una casella che funzionava ha smesso di ricevere posta | Lo **Stato** del canale. Un'autorizzazione OAuth può scadere o essere revocata. Seleziona **Disconnetti**, poi **Connetti**, e completa di nuovo **Autorizza l'accesso alla casella**. Non devi inserire di nuovo il client ID o il secret. |
+| **Connetti** fallisce con una app password | Devono funzionare sia il login IMAP sia quello SMTP. Controlla gli host, le porte, l'**Indirizzo email** e la **Password**. |
+| La posta arriva ma non riceve una risposta automatica | Che la **Modalità di risposta** sia **Automatico**, che un touchpoint attivo usi il canale, e se **Solo mittenti verificati** ha trattenuto la posta che non ha superato i controlli del mittente. |
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci i canali](/operational-guides/manage-channels): modalità, mittenti ammessi e impostazioni degli allegati.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): imposta l'assistente che risponde alla posta.
+- [Conversazioni](/cr/Conversations): leggi e rispondi a ciò che arriva.

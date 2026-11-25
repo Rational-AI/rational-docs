@@ -1,0 +1,160 @@
+---
+title: Messaggi di errore
+sidebar_label: Messaggi di errore
+description: I messaggi di errore mostrati da Rational AI, il loro significato e cosa fare.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+# Messaggi di errore
+
+I messaggi sono riportati come li mostra la Control Room in italiano. Quelli che il prodotto mostra solo in inglese restano in inglese. Un **…** indica un nome o un numero che cambia di caso in caso. Per i problemi senza messaggio, vedi [Risoluzione dei problemi](/troubleshooting).
+
+## Accesso e account {#sign-in-and-account}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Il tuo account non è ancora attivo"* | Il tuo account è disattivato, oppure è in attesa dell'approvazione di un amministratore. | Chiedi al tuo amministratore di attivarlo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users). |
+| *"Usa il link di invito"* | Il tuo indirizzo email è già registrato in questo workspace, e hai effettuato l'accesso in un altro modo. | Apri il link di invito dalla tua email, oppure accedi con l'account a cui appartiene. |
+| *"Impossibile effettuare l'accesso"* | L'accesso non è riuscito per un altro motivo. La pagina mostra un **Codice errore**. | Riprova. Se il problema persiste, comunica il codice errore al tuo amministratore. |
+| *"L'immagine è troppo grande"* | La foto del profilo supera 5 MB. | Scegli un'immagine più piccola. Vedi [Modifica il tuo profilo](/operational-guides/manage-your-account#edit-your-profile). |
+| *"Il file deve essere un'immagine"* | Il file scelto come foto del profilo non è un'immagine. | Scegli un file immagine. |
+| *"La sessione è scaduta. Accedi di nuovo per continuare."* | La tua sessione è scaduta. | Accedi di nuovo. |
+| *"La tua password è gestita dall'identity provider della tua organizzazione."* | Il tuo account accede tramite il provider di identità della tua organizzazione, quindi la password non si può cambiare in Rational AI. | Cambia la password con il tuo provider di identità. Vedi [Gestisci il tuo account](/operational-guides/manage-your-account). |
+
+## Chat {#chat}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Tipo di file non supportato. Allega un'immagine, un PDF o un documento di testo."* | Il tipo di file non può essere allegato. I file Office sono accettati solo come `.docx`, `.xlsx` e `.pptx`. | Converti il file, oppure allega un tipo supportato. Vedi [Allega file a un messaggio](/operational-guides/chat-experience#attach-files-to-a-message). |
+| *"Attachment exceeds the maximum size of 25 MB."* | Il file è più grande di quanto può essere un allegato. | Aggiungi i documenti grandi a una Knowledge. Vedi [Limiti e quote](/reference/limits#chat-and-attachments). |
+| *"Attachments are disabled for this touchpoint."* | Il touchpoint non accetta allegati. | Chiedi al proprietario del touchpoint di consentirli. |
+| *"You can select up to 10 context items. Remove one before adding another."* | Il messaggio ha già 10 elementi di contesto. | Rimuovine prima uno. |
+| *"Impossibile caricare l’assistente predefinito."* | L'assistente del workspace non può avviarsi, di solito perché non c'è un modello conversazionale predefinito attivo. | Scegli un altro touchpoint, oppure chiedi a un amministratore di impostare il modello predefinito. Vedi [Funzionalità del registro modelli AI](/operational-guides/ai-model-registry-features). |
+| *"Impossibile accedere al microfono. Controlla le autorizzazioni del browser per questo sito."* | Il browser ha bloccato il microfono. | Consenti il microfono per il sito nelle impostazioni del browser. Vedi [Detta un messaggio](/operational-guides/chat-experience#dictate-a-message). |
+| *"Impossibile trascrivere la registrazione. Riprova."* | Non è stato possibile trasformare la registrazione in testo. | Detta di nuovo. Le registrazioni sono limitate a 25 MB. |
+| *"Risposta troncata: il modello ha raggiunto il limite di output."* | La risposta ha raggiunto la lunghezza massima consentita. | Chiedi all'assistente di continuare, oppure aumenta il limite di output. Vedi [Quando una risposta si interrompe](/operational-guides/chat-experience#when-an-answer-stops-early). |
+| *"Risposta troncata: la generazione ha superato il tempo massimo."* | La risposta ha impiegato più tempo del consentito. | Rigenera, oppure chiedi una risposta più breve. |
+| *"Generazione interrotta: il modello ha esaurito i token disponibili prima di scrivere una risposta."* | Il modello ha esaurito tutto il limite di output con il ragionamento, prima di scrivere una risposta. | Abbassa il livello di ragionamento oppure aumenta il limite di output. Vedi [Impostazioni di generazione](/operational-guides/touchpoint-generation). |
+| *"Generazione interrotta: il modello ha esaurito il tempo disponibile prima di scrivere una risposta."* | Il modello ha raggiunto il tempo limite prima di rispondere. | Rigenera, oppure abbassa il livello di ragionamento. |
+| *"Generazione interrotta: il modello ha restituito una risposta vuota."* | Il modello ha risposto senza contenuto. | Seleziona **Rigenera risposta**. |
+| *"Generazione interrotta dopo … token: il modello continuava a ripetersi."* | Il modello era bloccato in un ciclo. | Seleziona **Rigenera risposta**, oppure riformula la richiesta. |
+| *"Generazione interrotta dopo aver raggiunto il limite di 40 chiamate ai tool. Rigenera la risposta o dividi la richiesta in passaggi più piccoli."* | La risposta ha usato 40 chiamate di strumento, il massimo consentito per una singola risposta. | Dividi la richiesta in passaggi più piccoli. |
+| *"Generazione interrotta perché il tool “…” non è riuscito per … volte consecutive. Controlla il passaggio fallito qui sopra prima di riprovare."* | Lo stesso strumento è fallito cinque volte di seguito. | Apri il passaggio non riuscito nella risposta per capire il motivo. Controlla la configurazione dello strumento. |
+| *"Generazione interrotta: il tool “…” ha esaurito il tempo a disposizione a ogni tentativo."* | Lo strumento non ha mai risposto entro il tempo limite. | Concedi più tempo allo strumento. Vedi [Imposta quanto tempo può richiedere uno strumento](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take). |
+| *"Questo assistente non può rispondere: è stato bloccato da un amministratore."* | Un amministratore ha bloccato questa applicazione AI. | Chiedi a un amministratore. Vedi [Governa le applicazioni AI](/operational-guides/govern-ai-applications). |
+| *"Questo assistente non può rispondere: il suo modello è stato disattivato da un amministratore."* | Il modello del touchpoint è disattivato nel registro. | Chiedi a un amministratore di attivarlo, oppure di sceglierne un altro. Vedi [Abilita o disabilita un modello](/operational-guides/model-deployments#enable-or-disable-a-model). |
+| *"Questo assistente non può rispondere: il suo modello non è stato approvato per l'uso."* | Il workspace accetta solo modelli approvati, e questo non lo è. | Chiedi a un amministratore di approvarlo. Vedi [Richiedi l'approvazione prima che un modello risponda](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers). |
+| *"Questo assistente non può rispondere: il suo modello non è più approvato per l'uso."* | L'approvazione del modello è stata revocata. | Chiedi a un amministratore di approvarlo di nuovo, oppure di cambiare modello. |
+| *"Non è stato possibile completare la risposta."* | La risposta non è riuscita per un altro motivo. | Attiva **Modalità avanzata** per vedere l'errore, poi rigenera. |
+| *"Questa conversazione è lunga quanto l'assistente riesce a seguire."* | Il touchpoint interrompe le chat lunghe invece di riassumerle. | Seleziona **Nuova conversazione**. Vedi [Continua una conversazione lunga](/operational-guides/chat-experience#keep-going-in-a-long-conversation). |
+| *"Impossibile mostrare l’anteprima. Puoi scaricare il file dalla barra in alto."* | Il file non può essere mostrato in **Canvas**, per esempio perché supera 25 MB. | Scaricalo. |
+| *"Non è stato possibile salvare la modifica"* | La scelta del modello o della Knowledge non si può cambiare su questo touchpoint. | Cambia il modello solo nelle tue chat con l'assistente del workspace. Vedi [Usa la chat](/operational-guides/chat-experience#choose-the-model-and-reasoning-level). |
+| *"Impossibile inviare il feedback. Riprova"* | La valutazione non è stata salvata. | Valuta di nuovo la risposta. |
+
+## Knowledge {#knowledge}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Il file supera i 10 MB"* | Il foglio di calcolo è troppo grande per essere importato. | Dividilo in file più piccoli. Vedi [Importa record da Excel o CSV](/operational-guides/import-knowledge#import-records-from-excel-or-csv). |
+| *"Il foglio ha più di 5000 righe: dividilo in file più piccoli"* | Un'importazione contiene al massimo 5.000 righe. | Dividi il foglio. |
+| *"Scegli un file .xlsx, .xls, .csv, .tsv o .txt"* | L'importazione non legge questo tipo di file. | Salva il foglio in uno di questi formati. |
+| *"Non è stato possibile leggere il file"* | Il file è danneggiato o non è un vero foglio di calcolo. | Aprilo e salvalo di nuovo in un'applicazione per fogli di calcolo. |
+| *"… ha troppi valori, o troppo lunghi, per una selezione singola: rendila testo"* | La colonna ha troppi valori distinti per una selezione singola. | Importa la colonna come testo. |
+| *"Nessuno che può leggere la knowledge si chiama …"* | Una colonna di tipo persona indica qualcuno senza accesso alla Knowledge. | Correggi il nome, oppure prima dai l'accesso alla persona. |
+| *"Nulla è stato salvato: correggi i valori non validi per il loro attributo"* | Almeno una cella modificata contiene un valore che il suo attributo non accetta. | Correggi le celle segnalate come non valide, poi salva. Vedi [Modifica i record nella griglia](/operational-guides/knowledge-collections-and-grid#edit-records-in-the-grid). |
+| *"Esiste già una collezione con questo nome"* | I nomi delle collezioni sono unici in una Knowledge. | Scegli un altro nome. |
+| *"Un altro attributo ha già questo nome"* | I nomi degli attributi sono unici in una Knowledge. | Scegli un altro nome. |
+| *"Hai già 5 viste fissate: togline una per fissarne un'altra"* | Una Knowledge può fissare al massimo cinque viste. | Rimuovi il fissaggio di una vista prima di fissarne un'altra. |
+| *"Errore durante l'esportazione della knowledge"* | L'esportazione è fallita, oppure ha superato i due minuti di attesa della pagina. | Riprova più tardi. Vedi [Esporta e importa una Knowledge](/operational-guides/export-knowledge). |
+
+## Widget di incorporamento {#embed-widget}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Hai raggiunto il limite di messaggi di oggi. Torna domani per fare altre domande."* | Il visitatore ha esaurito **Messaggi per visitatore al giorno**. | Aumenta o rimuovi il limite. Vedi [Configura la chat](/operational-guides/embed-knowledge#set-up-the-chat). |
+| *"La chat è in pausa per questo mese. Puoi continuare a consultare i contenuti."* | Il widget ha raggiunto il **Budget mensile**. | Aumenta o rimuovi il budget. |
+| *"Hai già inviato i tuoi dati più volte. Riprova più tardi."* | Un visitatore può inviare il modulo di contatto al massimo cinque volte all'ora. | Aspetta un'ora. |
+| *"Questo widget non è disponibile"* | La pagina usa una chiave di incorporamento che è stata ruotata oppure è errata. | Copia lo snippet aggiornato dalla scheda **Incorpora** della Knowledge. Vedi [Incorpora una Knowledge](/operational-guides/embed-knowledge). |
+
+## Fonti e canali {#sources-and-channels}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Inserisci un URL valido che inizi con http:// o https://"* | L'URL di una fonte HTTP non è corretto. | Correggi l'indirizzo. Vedi [Configura una fonte HTTP](/operational-guides/configure-sources#configure-an-http-source). |
+| *"Impossibile interrompere la sincronizzazione"* | La sincronizzazione in corso non si è fermata. | Riprova. |
+| *"Errore durante la connessione del canale"* | Il servizio di messaggistica ha rifiutato le credenziali del canale. | Controlla le credenziali. Vedi [Microsoft Teams](/operational-guides/connect-teams#troubleshooting) o [Slack](/operational-guides/connect-slack#troubleshooting). |
+| *"Errore durante l'invio del messaggio di prova"* | Il messaggio di prova non è arrivato al canale. | Controlla che il canale mostri **Collegato** e che le credenziali siano valide. Vedi [Gestisci i canali](/operational-guides/manage-channels). |
+
+## Workflow {#workflows}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"The workflow "…" is disabled and cannot be run. Enable it from the workflow settings to use it again."* | È stata richiesta un'esecuzione di un workflow disattivato. | Attivalo in **Impostazioni** → **Workflow**. |
+
+## Agenti {#agents}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"No text-generation model is available — add one to the registry first."* | Nel registro modelli AI non c'è un modello di generazione di testo. | Aggiungine uno, oppure collega un abbonamento. Vedi [Crea un agente](/operational-guides/create-an-agent#troubleshooting). |
+| *"The configured Agents default model is unavailable."* | Il modello predefinito per gli agenti è stato rimosso o ritirato. | Scegline un altro in **Modelli predefiniti**, oppure imposta un modello sull'agente. |
+| *"Impossibile creare la bozza di questo agente. Compilalo a mano."* | **Bozza con l'AI** non è riuscito. | Scrivi tu il profilo. |
+| *"Impossibile avviare l'agente assegnato. Controlla permessi, modello e disponibilità dei flussi, poi riprova."* | L'agente assegnato all'attività non è riuscito ad avviare un'esecuzione. | Controlla il modello e i permessi dell'agente. Vedi [Avvia e sposta le attività](/operational-guides/agent-tasks#start-and-move-tasks). |
+| *"Completion could not be verified after three continuation attempts: …"* | L'agente non è riuscito a dimostrare il risultato. L'esecuzione termina come **Fallita**. | Rendi verificabile l'obiettivo e riprova. Vedi [Esecuzioni degli agenti](/operational-guides/agent-runs#troubleshooting). |
+| *"L'agente si è fermato dopo troppi tentativi di ripresa."* | L'esecuzione continuava a fallire e si è arresa. | Leggi l'attività dell'esecuzione, correggi la causa, poi riprova. |
+| *"Cancellation was not confirmed by the runtime. The task may still be active; check its computer and retry cancellation."* | Il computer non ha confermato l'arresto in tempo. | Attendi qualche secondo, controlla lo stato e ferma di nuovo, se serve. |
+| *"Un file può pesare al massimo 10 MB."* | Un allegato dell'attività supera 10 MB. | Allega un file più piccolo. |
+| *"A task holds at most 30 files."* | L'attività ha già 30 allegati. | Rimuovine prima uno. |
+| *"Pick between 1 and 20 agents."* | Una chat contiene da 1 a 20 agenti. | Cambia la selezione. Vedi [Chatta con gli agenti](/operational-guides/agent-chats). |
+| *"Questo link è scaduto o non è più valido. Apri l'esecuzione nell'app per decidere."* | Un link di approvazione nell'email ha più di 24 ore, oppure l'approvazione è già stata decisa. | Apri l'esecuzione in **Agenti** e decidi lì. |
+| *"Il servizio Computer non ha risposto in tempo. Riprova la connessione."* | Un computer si sta avviando oppure è sotto carico. | Seleziona **Riprova la connessione** dopo qualche secondo. |
+| *"Non hai il permesso di eseguire questa azione."* | Il tuo ruolo non ha il diritto per questa azione in Agenti. | Chiedi a un amministratore il diritto. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users). |
+| *"Inserisci un importo maggiore di zero, oppure lascia vuoto per nessun limite."* | Il budget mensile dell'agente è zero o negativo. | Inserisci un importo positivo, oppure svuota il campo. |
+
+## Modelli e API {#models-and-the-api}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Modello già esistente"* | Un altro modello ha lo stesso nome o lo stesso identificatore. | Cambia l'identificatore o il nome. Vedi [Registro modelli AI](/cr/settings/ai-model-registry). |
+| *"Questo modello ha uno storico di fatturazione, che resta associato a esso, quindi non può essere eliminato. Disattivalo invece."* | I modelli con costi registrati non si possono eliminare. | Disattiva il modello. |
+| *"This workspace's plan does not include hosting your own models on our GPUs."* | Il piano non include GPU ospitate. | Usa un provider collegato, oppure contatta Rational AI. Vedi [Deployment dei modelli](/operational-guides/model-deployments). |
+| *"'…' is not deployed."* | Il modello non ha un deployment in esecuzione. | Esegui il deployment o riprendi il modello. Vedi [Arresta, riprendi o preriscalda un modello](/operational-guides/model-deployments#stop-resume-or-warm-up-a-model). |
+| *"'…' is warming up; retry shortly."* | Il modello era inattivo e si sta avviando. Le richieste attendono fino a 120 secondi. | Riprova dopo una breve attesa. Aumenta **Repliche minime** per evitare l'attesa. |
+| *"'…' has not been approved, and this workspace only uses approved models."* | Il workspace richiede l'approvazione, e questo modello non ce l'ha. | Chiedi a un amministratore di approvarlo. Vedi [Richiedi l'approvazione prima che un modello risponda](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers). |
+| *"The application '…' has been blocked by an administrator."* | Un amministratore ha bloccato l'applicazione che effettua la chiamata. | Chiedi a un amministratore. Vedi [Governa le applicazioni AI](/operational-guides/govern-ai-applications). |
+| *"Esiste già un touchpoint con questo nome. Riprova."* | I nomi dei touchpoint sono unici. | Scegli un altro nome. |
+
+## Estensioni e Marketplace {#extensions-and-marketplace}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Bloccata. Cambia la politica di aggiornamento per installare gli aggiornamenti."* | La politica di aggiornamento mantiene l'estensione sulla sua versione. | Cambia la politica di aggiornamento. Vedi [Aggiornamenti delle estensioni](/operational-guides/extension-updates). |
+| *"Exit development mode before updating this extension."* | L'estensione è in modalità sviluppo. | Esci dalla modalità sviluppo, poi aggiorna. |
+| *"L'estensione è già aggiornata."* | Non esiste una release più recente. | Non c'è nulla da fare. |
+| *"Hai già chiesto questa soluzione oggi"* | Una richiesta per soluzione al giorno arriva agli amministratori. | Chiedi di nuovo domani. Vedi [Chiedi agli amministratori di installare una soluzione](/operational-guides/marketplace#ask-the-admins-to-install-a-solution). |
+
+## Rational BI e Gen {#rational-bi-and-gen}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"Il workbook si apre in Tableau Desktop, ma questo server non può creare gli estratti richiesti da Tableau Public."* | L'esportazione funziona solo con Tableau Desktop su questa installazione. | Apri la cartella di lavoro in Tableau Desktop. Vedi [Esporta una dashboard](/operational-guides/rational-bi#export-a-dashboard). |
+| *"La generazione di immagini non è ancora configurata"* | Per Gen non è configurato alcun modello di immagini. | Configuralo nelle impostazioni di Gen. Vedi [Configura Gen](/operational-guides/configure-gen). |
+| *"È già in corso una generazione. Attendi che termini."* | Una sessione genera un'immagine alla volta. | Attendi l'immagine in corso. Vedi [Quando una generazione non riesce](/operational-guides/gen-images#when-a-generation-fails). |
+| *"La generazione sta impiegando più tempo del previsto. Aggiorna lo stato per ricontrollare."* | L'immagine non era pronta dopo 20 minuti. | Aggiorna lo stato più tardi. |
+| *"The model returned … image(s) of the … requested."* | Il modello ha prodotto meno immagini di quelle richieste. | Riprova, oppure scegli un altro modello. |
+| *"Reference image exceeds the maximum size of 10 MB."* | Un'immagine di riferimento supera 10 MB. | Usa un'immagine più piccola. |
+| *"Risolvi i controlli della pipeline per salvare."* | Un passaggio del template social viola una regola della pipeline. | Correggi il passaggio segnalato. Vedi [Crea template social](/operational-guides/social-studio#create-social-templates). |
+
+## Licenza e backup {#license-and-backups}
+
+| Messaggio | Significato | Cosa fare |
+|---|---|---|
+| *"The platform does not know this code."* | Il codice è scritto male, è già stato usato in un'altra installazione, è stato revocato o è scaduto. | Controlla il codice come è stampato. Vedi [Licenza](/operational-guides/license#troubleshooting). |
+| *"The licence does not verify: it is not a Rational AI licence, or it was altered."* | Il file di licenza incollato è incompleto, proviene da un'altra piattaforma, oppure è stato modificato. | Incolla di nuovo l'intero file di licenza, esattamente come lo hai ricevuto. Vedi [Licenza](/operational-guides/license#troubleshooting). |
+| *"This licence was issued for another installation."* | Il file di licenza è legato a un'altra attivazione. | Chiedi a Rational AI un file di licenza per questa installazione. Vedi [Licenza](/operational-guides/license#troubleshooting). |
+| *"Impossibile scrivere sulla destinazione"* | **Prova destinazione** non è riuscito a scrivere nella destinazione del backup. | Controlla che l'utente possa scrivere nella condivisione o nella cartella. Vedi [Backup e ripristino](/operational-guides/backup-and-restore#troubleshooting). |
+
+## Prossimi passi {#next-steps}
+
+- [Limiti e quote](/reference/limits)
+- [Risoluzione dei problemi](/troubleshooting)

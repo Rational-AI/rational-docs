@@ -1,0 +1,46 @@
+---
+sidebar_position: 12
+sidebar_label: Human-in-the-loop
+title: Human-in-the-loop (supervisione umana)
+description: Cosa significa human-in-the-loop, perché l'output del modello richiede supervisione umana e dove si colloca in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+
+# Human-in-the-loop
+
+**Human-in-the-loop** è un modo di lavorare in cui l'AI propone e una persona approva prima che accada qualcosa di rilevante. Invece di lasciare che il modello agisca da solo, una persona resta nel percorso decisionale, controllando, correggendo o approvando il suo output.
+
+Il motivo sta nella natura stessa del modello. L'output è [non deterministico](/reference/glossary#non-determinism), può essere sbagliato con grande sicurezza (un'[allucinazione](/concepts/hallucinations)) e può tendere a dirti ciò che vuoi sentire ([compiacenza](/reference/glossary#sycophancy)). Una persona nel processo è il controllo che intercetta i casi che il grounding e la revisione automatici non intercettano.
+
+:::note[Una manopola, non un interruttore]
+Human-in-the-loop non è tutto o niente. La quantità giusta di supervisione dipende dalla posta in gioco: le attività a basso rischio e reversibili possono richiederne poca o nessuna, mentre le decisioni costose, pubbliche o difficili da annullare richiedono che una persona le approvi ogni volta.
+:::
+
+## Quando mantenere la supervisione umana {#when-to-keep-a-human-in-the-loop}
+
+* **Posta in gioco alta:** output costosi, rivolti al pubblico o difficili da annullare.
+* **Confidenza bassa:** risposte su fatti recenti o in rapido cambiamento, o su argomenti vicini alla [data limite delle conoscenze](/reference/glossary#knowledge-cutoff) del modello.
+* **Giudizio delicato:** decisioni che richiedono responsabilità o competenze di dominio che un modello non può fornire.
+
+## Human-in-the-loop in Rational AI {#human-in-the-loop-in-rational-ai}
+
+Basare le risposte sulla tua [Knowledge](/concepts/Knowledge) tramite [RAG](/concepts/RAG) limita quanto l'output può allontanarsi dai fatti. Oltre a questo, una persona può intervenire in diversi punti:
+
+* **Chiamate agli strumenti in chat:** ogni [touchpoint](/concepts/Touchpoint) decide quando l'assistente chiede all'utente di confermare uno strumento prima di eseguirlo: mai, solo per gli strumenti sensibili o sempre. Vedi [Approva le chiamate agli strumenti prima che vengano eseguite](/operational-guides/approve-tool-calls).
+* **Azioni degli agenti:** gli strumenti contrassegnati con **Chiedimi prima** nel profilo di un agente sospendono l'esecuzione finché qualcuno non approva o rifiuta la chiamata. Vedi [Segui le esecuzioni e approva le azioni](/operational-guides/agent-runs#approve-what-the-agent-wants-to-do).
+* **Conversazioni:** il personale può esaminare ogni conversazione dei touchpoint in **Conversazioni** e prenderne il controllo, il che sospende le risposte dell'AI. Le regole di supervisione umana segnalano le conversazioni che richiedono una persona. Vedi [Esamina le conversazioni segnalate](/operational-guides/human-oversight).
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Allucinazioni", to: "/concepts/hallucinations" },
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+	]}
+/>

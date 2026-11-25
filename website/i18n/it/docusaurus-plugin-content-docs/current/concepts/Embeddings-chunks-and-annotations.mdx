@@ -1,0 +1,50 @@
+---
+sidebar_position: 6
+sidebar_label: Embedding, chunk e annotazioni
+title: Embedding, chunk e annotazioni
+description: Cosa sono chunk, embedding e annotazioni, come trasformano i documenti in conoscenza recuperabile e come compaiono in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Embedding, chunk e annotazioni
+
+Prima che un modello possa usare i tuoi documenti, devono essere suddivisi e tradotti in una forma che il modello sa cercare. **Chunk**, **embedding** e **annotazioni** sono i tre elementi di questa preparazione. Insieme trasformano un insieme di file in conoscenza recuperabile.
+
+## Chunk {#chunks}
+
+Un **chunk** è un piccolo segmento di un documento, un paragrafo o un passaggio, non l'intero file. I documenti vengono suddivisi in chunk perché il retrieval funziona meglio su porzioni mirate: un singolo chunk può corrispondere con precisione a una domanda e rientra senza problemi nella [finestra di contesto](/reference/glossary#context-window) del modello.
+
+La dimensione del chunk è un equilibrio. Se è troppo grande, un chunk mescola più idee e perde pertinenza; se è troppo piccolo, perde il contesto necessario per avere senso. Una buona suddivisione mantiene ogni segmento significativo da solo.
+
+## Embedding {#embeddings}
+
+Un **embedding** è una rappresentazione numerica del significato. Un [modello di embedding](/reference/glossary#model) trasforma ogni chunk in un elenco di numeri (un vettore), posizionato in modo che i testi con un significato simile stiano vicini, anche quando usano parole diverse.
+
+È così che funziona la **ricerca semantica**: il sistema confronta il significato invece di cercare parole chiave corrispondenti. Una domanda sui "ritardi nelle spedizioni" può recuperare un chunk sulle "consegne in ritardo", perché i loro embedding sono vicini. Questi vettori sono conservati in un [database vettoriale](/reference/glossary#vector-database) per una ricerca rapida.
+
+## Annotazioni {#annotations}
+
+Le **annotazioni** sono metadati aggiuntivi, definiti dall'utente o dalla macchina, collegati a una risorsa o a un chunk, come entità nominate, sentiment, argomenti o note personalizzate. Arricchiscono il contenuto grezzo con una struttura, rendono più facile filtrare, organizzare e recuperare i contenuti, e offrono al modello segnali utili oltre al testo semplice.
+
+## In Rational AI {#in-rational-ai}
+
+Quando aggiungi una risorsa a una [Knowledge](../cr/Knowledge.mdx), la piattaforma la suddivide in chunk, genera gli embedding e ti permette di controllarne i risultati. Nei dettagli di una risorsa puoi esaminare i suoi **chunk** (con il conteggio dei token e le anteprime) e aggiungere **annotazioni**, mentre gli embedding lavorano dietro le quinte per alimentare il [retrieval](./RAG.mdx).
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Knowledge](../cr/Knowledge.mdx): esamina chunk e annotazioni di ogni risorsa.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "RAG", to: "/concepts/RAG" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+	]}
+/>

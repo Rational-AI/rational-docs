@@ -1,0 +1,86 @@
+---
+sidebar_position: 32
+sidebar_label: Tunnel
+type: how-to
+audience: [admin]
+---
+
+# Raggiungi un'installazione on-premise attraverso il Tunnel Rational AI
+
+Un'installazione on-premise di Rational AI gira su una macchina dentro la tua rete ed è raggiungibile solo da quella rete. **Impostazioni** → **Tunnel** le assegna un endpoint pubblico sotto `rational.is` (`https://control-room.<yourcompany>.rational.is`), con un certificato considerato attendibile dal browser, e ti permette di scegliere come arriva il traffico: tramite il **Tunnel Rational AI**, che funziona dietro qualsiasi router senza nulla da configurare, oppure **direttamente**, che è più veloce e richiede un paio di regole di port forwarding sul router.
+
+:::note[Solo on-premise]
+La pagina Tunnel esiste solo sulle installazioni collegate a Rational AI. Sul cloud gestito la piattaforma si occupa per te di indirizzi e certificati, e la pagina non viene mostrata.
+:::
+
+<img
+  alt="La pagina Tunnel nelle Impostazioni, con l'endpoint dell'installazione e l'interruttore del tunnel attivo"
+  src={require('@site/static/img/screens/tunnel-settings.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+## Come funziona {#how-it-works}
+
+| Elemento | Cosa fa |
+|-------|--------------|
+| **Endpoint** | La tua installazione si chiama `<yourcompany>.rational.is`; l'applicazione risponde su `control-room.<yourcompany>.rational.is`. Rational AI gestisce i record DNS. |
+| **Certificato** | Emesso da Rational AI per il nome e i suoi sottodomini (Let's Encrypt, rinnovato automaticamente). I browser lo considerano attendibile da subito: non c'è nulla da installare su nessun client. |
+| **Tunnel** | Con il tunnel attivo, il tuo endpoint punta a `vpn.rational.is`, che inoltra ogni connessione, ancora cifrata, attraverso un tunnel privato verso la tua macchina. Rational AI legge solo il nome che il browser ha richiesto; non vede mai il contenuto. |
+| **Diretta** | Con il tunnel disattivato, il tuo endpoint punta al tuo IP pubblico e il router inoltra le porte sotto indicate verso la macchina. |
+| **Licenza** | Il check-in usa l'identità che l'installazione riceve quando la sua licenza viene attivata, quindi nulla raggiunge l'endpoint prima dell'attivazione. Lo stato della licenza si trova in **Impostazioni** → **Licenza**. |
+
+La macchina effettua il check-in con Rational AI ogni minuto. È in quel momento che una modifica dell'impostazione del tunnel diventa effettiva, viene installato un certificato rinnovato e viene seguito un IP pubblico cambiato. [Cosa invia un'installazione a Rational AI](./data-sent-to-rational-ai) elenca ciò che contiene il check-in.
+
+## Prerequisiti {#prerequisites}
+
+- **Accesso amministrativo.** La pagina è riservata agli admin.
+- **Un'installazione collegata a Rational AI.** Rational AI la collega, attiva la licenza e imposta il suo sottodominio (`acme` la chiama `acme.rational.is`) quando installa la macchina. Un'installazione servita su un dominio proprio non mostra la pagina.
+- **Accesso a internet in uscita dalla macchina** verso `control-room.rational.is` (HTTPS) e, per il tunnel, verso `vpn.rational.is` sulla porta UDP 51820. Per il tunnel non serve nessuna regola in entrata.
+
+## Scegli il percorso di connessione {#choose-the-connection-path}
+
+Apri **Impostazioni** → **Tunnel**. La sezione **Endpoint** mostra l'endpoint pubblico dell'installazione con un pulsante di copia, l'orario dell'ultimo check-in e la scadenza del certificato.
+
+### Tunnel Rational AI (predefinito) {#rational-ai-tunnel-the-default}
+
+Lascia attivo **Tunnel Rational AI** e seleziona **Salva** se hai cambiato qualcosa. Entro un minuto l'endpoint risolve su `vpn.rational.is` e l'installazione è raggiungibile da ovunque.
+
+Scegli il tunnel quando:
+
+- non puoi, o preferisci non, modificare la configurazione del router;
+- la macchina si trova dietro un CGNAT (carrier-grade NAT), un router 4G/5G o una rete che non controlli.
+
+Il costo è la latenza: ogni byte fa un giro completo attraverso il tunnel, quindi pagine e generazioni risultano un po' più lente che sulla rete locale. Per gli utenti sulla rete locale non cambia nulla in nessuna delle due modalità: l'applicazione è sempre raggiungibile allo stesso endpoint anche dall'interno.
+
+### Connessione diretta {#direct-connection}
+
+Disattiva **Tunnel Rational AI**. La pagina mostra una casella **Configura il router** con le regole da aggiungere:
+
+| Porta esterna | Protocollo | Inoltra a |
+|---------------|----------|------------|
+| 443 | TCP | `<the machine's LAN address>:443` |
+| 80 | TCP | `<the machine's LAN address>:80` |
+
+La pagina elenca anche l'indirizzo LAN della macchina (**Questa macchina**) e **Il tuo IP pubblico**. Aggiungi le due regole sul router (la funzione si chiama di solito *port forwarding*, *NAT* o *virtual server*), poi seleziona **Salva**. Entro un minuto l'endpoint risolve sul tuo IP pubblico; se il provider lo cambia, l'installazione se ne accorge al check-in successivo e l'endpoint lo segue.
+
+:::warning[Una connessione diretta richiede un IP pubblico raggiungibile]
+Se il provider ti mette dietro un indirizzo condiviso (CGNAT, comune su connessioni mobili e alcune fibre), le porte inoltrate non ti raggiungono mai, e l'installazione diventa irraggiungibile dall'esterno non appena il tunnel è disattivato. In caso di dubbio, tieni attivo il tunnel, oppure chiedi prima al provider un IP pubblico. Riattivare il tunnel ripristina l'accesso entro un minuto.
+:::
+
+La porta 80 serve solo a reindirizzare i browser verso HTTPS; inoltrarla è comodo, ma non obbligatorio.
+
+## Verifica che funzioni {#check-that-it-works}
+
+- **Dall'esterno della tua rete** (il modo più rapido è un telefono senza Wi-Fi), apri l'endpoint mostrato nella pagina. La pagina di accesso dovrebbe caricarsi con un certificato valido e senza avvisi.
+- Nella pagina, **Ultima sincronizzazione** dovrebbe risalire a uno o due minuti fa al massimo. Un orario più vecchio significa che la macchina non riesce a raggiungere `control-room.rational.is`: controlla il suo accesso a internet.
+- **Certificato** dovrebbe indicare *Valida fino al* con una data tra qualche settimana o qualche mese. Subito dopo l'installazione indica *non ancora emesso*, ed è normale: il certificato compare entro un paio di minuti.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---------|---------------|
+| L'endpoint non si risolve, oppure si risolve su un IP vecchio | Le modifiche DNS richiedono fino a un minuto per essere applicate e qualche minuto in più per propagarsi al resolver. **Ultima sincronizzazione** nella pagina conferma che l'installazione ha segnalato la modifica. |
+| Raggiungibile in rete locale, non dall'esterno, tunnel attivo | Il tunnel richiede UDP 51820 in uscita verso `vpn.rational.is`. Un firewall che lo blocca impedisce al traffico di raggiungere la macchina. |
+| Raggiungibile in rete locale, non dall'esterno, tunnel disattivato | Le regole del router (443 e 80, TCP, verso l'indirizzo LAN mostrato) e l'IP pubblico: vedi l'avviso sopra sugli indirizzi condivisi. |
+| Avviso del certificato nel browser | Il certificato non è ancora stato emesso, oppure la macchina non ha effettuato il check-in dopo il rinnovo. Attendi un paio di minuti. |
+| L'endpoint non compare mai, **Ultima sincronizzazione** resta su *mai* | L'installazione non ha ancora un'identità sulla piattaforma: attiva la licenza (**Impostazioni** → **Licenza**), poi attendi un minuto. Se resta su *mai*, contatta Rational AI. |

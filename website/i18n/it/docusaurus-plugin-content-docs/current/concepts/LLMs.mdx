@@ -1,0 +1,44 @@
+---
+sidebar_position: 16
+sidebar_label: Large Language Models
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Large language models (LLMs)
+Large Language Models (LLMs) are a class of advanced artificial intelligence systems designed to understand, generate, and reason over natural language at scale.
+
+They are based primarily on deep neural networks (most commonly transformer architectures) and are trained on massive volumes of text data to learn linguistic patterns, semantic relationships, and contextual dependencies. 
+
+LLMs are the evolution of Natural Language Processing and Generative AI into general-purpose language systems capable of performing a wide range of cognitive tasks.
+
+LLMs are distinguished by:
+* Very large model size (billions to trillions of parameters)
+* Training on diverse, large-scale text datasets
+* Ability to perform multiple tasks without reprogramming
+* Natural languages the primary interface
+
+#### Comparative view {#comparative-view}
+| Aspect        | Traditional NLP models | Modern LLMs            |  
+|:--------------|:-----------------------|:-----------------------|  
+| Model size    | Thousands to millions  | Billions+              |  
+| Training data | Task specific          | Web-scale multi-domain |
+| Task handling | One model per task     | Multi-task             |
+| Adaptability  | Limited                | High                   |
+| Interaction   | Structured inputs      | Natural language       |
+
+---
+
+## Connects to {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Generative AI", to: "/concepts/Generative-AI" },
+		{ label: "Natural Language Processing", to: "/concepts/NLP" },
+		{ label: "Model architecture", to: "/concepts/Model-architecture" },
+		{ label: "Context window", to: "/concepts/Context-window" },
+		{ label: "Tokens", to: "/concepts/Tokens" },
+	]}
+/>

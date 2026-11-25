@@ -1,0 +1,91 @@
+---
+sidebar_position: 27
+sidebar_label: Configura l'elaborazione delle conversazioni
+type: how-to
+audience: [builder]
+---
+
+# Configura l'elaborazione delle conversazioni
+
+Rational AI può assegnare a ogni conversazione un titolo, etichettarne gli argomenti, stimare lo stato d'animo dell'utente e riassumerla per un amministratore. Sono i titoli, i chip degli argomenti, i badge di sentiment e i riepiloghi che vedi in [Conversazioni](/operational-guides/conversations) e in [Chat](/operational-guides/chat-experience).
+
+Le impostazioni di questa pagina sono i default della piattaforma. Un [touchpoint](/operational-guides/configure-touchpoints) può sostituire la generazione del titolo, il rilevamento degli argomenti e l'analisi del sentiment nella sua scheda **Modelli**.
+
+## Prerequisiti {#prerequisites}
+
+- **Ruolo amministratore:** la pagina si apre per ogni ruolo con accesso a **Conversazioni**, e i ruoli con **Modifica** su di essa vedono **Salva**, ma solo gli amministratori possono salvare le modifiche (vedi [Ruoli e utenti](/operational-guides/roles-and-users)).
+- **Modelli AI configurati:** almeno un modello attivo nel [Registro modelli AI](/operational-guides/ai-model-registry-features), così hai qualcosa da assegnare a ogni attività qui sotto.
+
+Apri **Impostazioni** → **Conversazioni** per iniziare. Ogni attività ha un pannello dedicato, descritto di seguito.
+
+<img
+  src={require('@site/static/img/screens/conversation-processing.png').default}
+  alt="Impostazioni di elaborazione delle conversazioni"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Impostazioni → Conversazioni: generazione del titolo, rilevamento degli argomenti, analisi del sentiment e generazione del riepilogo, ciascuna attivata separatamente con il proprio modello.*
+
+Ogni attività si attiva separatamente, e nessuna rallenta la risposta che vede l'utente. Di solito basta un [modello](/reference/glossary#large-language-model-llm) piccolo ed economico per ciascuna.
+
+## Scegli il modello per ogni attività {#choose-the-model-for-each-task}
+
+Ogni attività ha un proprio selettore del modello. Puoi scegliere un modello specifico oppure una delle due opzioni predefinite, che seguono la configurazione quando questa cambia:
+
+| Opzione | Quando usarla |
+|---|---|
+| **Modello predefinito della piattaforma** | Un solo modello per tutte le conversazioni: il **Modello conversazionale** impostato tra i [modelli predefiniti della piattaforma](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type). |
+| **Modello predefinito del touchpoint** | Ogni conversazione è elaborata dal modello del proprio [touchpoint](/operational-guides/configure-touchpoints). Un selettore vuoto significa la stessa cosa. |
+| Un modello specifico | Vuoi un modello piccolo e dedicato a questa attività, qualunque modello usi il touchpoint. |
+
+Con un'opzione predefinita, l'attività viene eseguita solo se quella opzione punta a un modello. Se non è impostato un **Modello conversazionale** della piattaforma, oppure se un touchpoint non ha un modello proprio, l'attività viene saltata per quelle conversazioni.
+
+Il modello che scrive le risposte lette dagli utenti è il **Modello conversazionale** della piattaforma nel [Registro modelli AI](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), a meno che un touchpoint non ne scelga uno proprio.
+
+## Generazione del titolo {#title-generation}
+
+La generazione del titolo assegna un nome a ogni conversazione, così puoi ritrovarla in seguito.
+
+1. Attiva **Abilita generazione del titolo**.
+2. Scegli un **Modello di generazione del titolo**.
+3. Imposta **Frequenza di calcolo**: ogni quanti messaggi viene prodotto un titolo, come **Ogni** *N* **messaggi**, contando i messaggi dell'utente. Il primo messaggio riceve sempre un titolo, e un numero più alto significa aggiornarlo meno spesso. Un titolo scritto a mano non viene mai sostituito.
+4. Imposta **Numero di messaggi da considerare**: quanti dei messaggi più recenti il modello legge quando scrive il titolo.
+5. Lascia il **Prompt template di generazione del titolo** predefinito, oppure modificalo.
+
+## Rilevamento degli argomenti {#topic-detection}
+
+Il rilevamento degli argomenti assegna a ogni conversazione fino a tre argomenti da un elenco che definisci tu, così puoi filtrare le conversazioni e vedere su cosa chiedono più spesso le persone.
+
+1. Attiva **Abilita rilevamento argomenti**.
+2. Scegli un **Modello di rilevamento argomenti**.
+3. Imposta **Frequenza di calcolo** e **Numero di messaggi da considerare**, esattamente come per la generazione del titolo.
+4. Costruisci il tuo **Elenco argomenti**. Sono le etichette tra cui il modello può scegliere, per esempio *Order Status*, *Billing Request* e *Tech Support*. Rimuovi un argomento con la sua **×** e aggiungine uno nuovo con **Nuovo**.
+5. Lascia il **Prompt di rilevamento degli argomenti** così com'è, oppure modificalo. Istruisce il modello a restituire solo etichette presenti nel tuo elenco, scritte esattamente come compaiono lì.
+
+## Analisi del sentiment {#sentiment-analysis}
+
+L'analisi del sentiment stima come si sente l'utente durante la conversazione, e la mostra con un badge di sentiment accanto alla conversazione.
+
+1. Attiva **Abilita analisi del sentiment**.
+2. Scegli un **Modello di analisi del sentiment**.
+3. Imposta **Frequenza di calcolo** e **Numero di messaggi da considerare**.
+4. Se serve, modifica l'**Elenco sentimenti**: ogni sentiment ha un'etichetta e un colore, che è il modo in cui appare nell'elenco di **Conversazioni**.
+
+## Generazione del riepilogo {#summary-generation}
+
+La generazione del riepilogo permette a un amministratore di leggere un riassunto strutturato di una conversazione prima di prenderla in carico. I riepiloghi usano sempre queste impostazioni: i touchpoint non possono sostituirle.
+
+1. Attiva **Abilita generazione del riepilogo**.
+2. Scegli un **Modello di generazione del riepilogo**. I modelli con ragionamento non sono consigliati per questa attività.
+3. Imposta **Numero di messaggi da considerare** (`0` significa l'intera conversazione).
+
+Il campo [prompt](/reference/glossary#prompt) di ogni attività ha un valore predefinito, e **Ripristina predefinito** lo ripristina. Modifica un prompt solo se i risultati non sono quelli che vuoi.
+
+## Salva le modifiche {#save-your-changes}
+
+Seleziona **Salva** per applicare le scelte, oppure **Annulla** per scartarle. Le attività attivate vengono eseguite sui nuovi messaggi da quel momento, con il modello che hai scelto o con l'opzione predefinita che seguono.
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci le conversazioni](/operational-guides/conversations): vedi titoli, argomenti e sentiment nell'elenco.
+- [Registra le decisioni di supervisione](/operational-guides/human-oversight): rivedi le conversazioni segnalate dalle tue regole di supervisione.

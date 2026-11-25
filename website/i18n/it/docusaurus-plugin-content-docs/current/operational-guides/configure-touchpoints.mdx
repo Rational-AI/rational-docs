@@ -1,0 +1,146 @@
+---
+sidebar_position: 18
+sidebar_label: Configura i touchpoint
+type: how-to
+audience: [builder]
+---
+
+# Configura i touchpoint
+
+Un touchpoint è un assistente che risponde alle persone nelle conversazioni. Contiene il prompt di sistema, i modelli, la Knowledge che l'assistente legge, gli strumenti e le skill che può usare, e la sua memoria. Un [canale](/operational-guides/manage-channels) trasporta solo i messaggi: la Chat, un bot Telegram, una casella email o un'API. I touchpoint sono separati dagli agenti della sezione [Agenti](/cr/Agents).
+
+Alcuni touchpoint vengono creati per te: creare una [Knowledge](/operational-guides/create-knowledge) crea anche il touchpoint della Knowledge, e il **Touchpoint predefinito** è l'assistente del workspace dietro la [Chat](/cr/Chats).
+
+## Prerequisiti {#prerequisites}
+
+- **Permesso di gestire i touchpoint:** un ruolo con **Modifica** sulla riga **Touchpoint**, più **Crea** per aggiungerne uno (vedi [Ruoli e utenti](/operational-guides/roles-and-users)). Aggiungere, modificare o rimuovere gli strumenti di un touchpoint, e contrassegnarli come **Sensibile**, richiede il ruolo di amministratore.
+- **Almeno un [canale](/operational-guides/manage-channels)** per creare un touchpoint. **Nuovo** non è disponibile finché non esiste nessun canale.
+
+## Crea un touchpoint {#create-a-touchpoint}
+
+1. Vai in **Impostazioni** → **Touchpoint** e seleziona **Nuovo**. Se non ci sono ancora touchpoint, il pulsante si chiama **Aggiungi**.
+   Rational AI crea un touchpoint attivo chiamato *New touchpoint* sul tuo primo canale e lo apre.
+2. Sostituisci il nome in cima al pannello e, se vuoi, inserisci una descrizione.
+3. Nella scheda **Impostazioni**, seleziona il **Canale** con cui le persone raggiungeranno l'assistente.
+4. Nella scheda **Modelli**, scrivi il **Prompt di sistema** e controlla i modelli. Un nuovo touchpoint parte con il **Modello conversazionale** predefinito della piattaforma, impostato in **Impostazioni** → **Registro modelli AI**.
+5. Nella scheda **Fonti**, aggiungi la knowledge che l'assistente deve leggere.
+6. Seleziona **Salva**.
+
+Per partire da un touchpoint esistente, aprilo e seleziona **Duplica** nel suo menu.
+
+## Orientati in un touchpoint {#find-your-way-around-a-touchpoint}
+
+Vai in **Impostazioni** → **Touchpoint** e seleziona il touchpoint da configurare. Si apre sulla sua scheda **Impostazioni**.
+
+Le impostazioni di un touchpoint sono distribuite su sette schede:
+
+| Scheda | Cosa imposti qui |
+|-----|--------------------|
+| **Impostazioni** | Canale, **Consenti accesso anonimo**, le funzioni di chat disponibili per gli utenti (**Modalità Canvas**, **Modifica messaggi**, **Allegati**, **Rigenera risposta**) e, sui touchpoint API, la [chiave API](/operational-guides/api-access#give-an-application-its-own-touchpoint-key) |
+| **Modelli** | Prompt di sistema, modelli, [ragionamento, limiti di generazione e verifica della risposta](/operational-guides/touchpoint-generation), generazione di titolo, sentiment e argomenti, e domande suggerite |
+| **Fonti** | La knowledge che l'assistente legge, e se [può modificarla](#let-the-assistant-change-a-knowledge) |
+| **Strumenti** | Gli strumenti che l'assistente può chiamare, quando richiedono conferma e quanto tempo possono impiegare |
+| **Skill** | Le [skill](/operational-guides/agent-skills) che l'assistente può usare |
+| **Memoria** | [Memoria e conversazioni lunghe](/operational-guides/touchpoint-memory) |
+| **Test** | [Riproduzioni di conversazioni passate](/operational-guides/test-touchpoint-changes) rispetto a una modifica |
+
+Seleziona **Salva** in fondo al pannello per conservare le modifiche, oppure **Annulla** per scartarle. Senza **Modifica** sulla riga **Touchpoint**, il modulo è in sola lettura e non ha **Salva**.
+
+## Modifica il prompt di sistema {#edit-the-system-prompt}
+
+Il **Prompt di sistema**, in cima alla scheda **Modelli**, è l'istruzione permanente che l'assistente segue su questo touchpoint. Accanto al campo ci sono due pulsanti:
+
+- **Mostra modifiche non salvate** passa il campo in una vista di confronto in sola lettura, che mette a confronto ciò che è salvato con ciò che hai scritto. È disattivato finché non cambia nulla.
+- **Espandi l'editor** dà al prompt un'area di modifica molto più alta e nasconde gli altri campi della scheda mentre lavori.
+
+:::note[Prova una modifica al prompt prima che vada in produzione]
+Quando cambi il prompt o i modelli di un touchpoint con almeno cinque conversazioni passate da riprodurre, **Salva** ti propone di riprodurre prima la modifica su di esse, così puoi vedere cosa cambia prima che lo vedano i tuoi utenti. Vedi [Testa una modifica al touchpoint](/operational-guides/test-touchpoint-changes).
+:::
+
+### Cambia il prompt dell'assistente del workspace {#change-the-workspace-assistants-prompt}
+
+L'assistente con cui le persone parlano nella [Chat](/cr/Chats) principale è anch'esso un touchpoint: il **touchpoint predefinito**, chiamato *Rational AI*. Puoi riscriverne le istruzioni come per qualsiasi altro, per esempio per dargli il tono o le regole della tua azienda.
+
+1. Vai in **Impostazioni** → **Touchpoint** e seleziona **Touchpoint predefinito** in cima alla lista. Si apre sulla scheda **Modelli**.
+2. Modifica il **Prompt di sistema** e salva. Le modifiche si applicano dal messaggio successivo, sia nelle chat esistenti sia in quelle nuove.
+3. Per tornare alle istruzioni originali di Rational AI, seleziona **Ripristina predefinito**, poi **Salva**.
+
+:::note[Il prompt è tuo, ma permessi e strumenti no]
+Riscrivere il prompt cambia il modo in cui l'assistente parla e su cosa si concentra. Quali Knowledge può raggiungere ogni persona e quali strumenti sono disponibili restano gestiti da Rational AI: sul touchpoint predefinito ogni utente ottiene automaticamente tutte le Knowledge attive che è autorizzato a leggere. Un prompt vuoto torna al valore predefinito integrato. Il touchpoint predefinito non può essere eliminato.
+:::
+
+## Controlla chi può raggiungere il touchpoint {#control-who-can-reach-the-touchpoint}
+
+Usa questa impostazione per decidere se una persona deve accedere prima di poter parlare con l'assistente. Per impostazione predefinita, deve farlo.
+
+<img
+  src={require('@site/static/img/screens/touchpoint-anonymous.png').default}
+  alt="L'interruttore Consenti accesso anonimo su un touchpoint"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+*L'interruttore Consenti accesso anonimo nel pannello di configurazione del touchpoint.*
+
+1. Nella scheda **Impostazioni**, trova **Consenti accesso anonimo**.
+2. Attivalo per permettere a chiunque di iniziare una conversazione senza accedere, oppure lascialo disattivato per richiedere l'accesso.
+3. Salva il touchpoint.
+
+Attivalo solo per un touchpoint pensato per il pubblico, come un assistente di aiuto sul tuo sito web.
+
+## Consenti all'assistente di modificare una Knowledge {#let-the-assistant-change-a-knowledge}
+
+Per impostazione predefinita un assistente legge soltanto la Knowledge collegata. Per un assistente il cui compito è tenere aggiornati dei record (registrare una richiesta, aggiornare un cliente, archiviare un documento), puoi permettergli di scrivere anche, una Knowledge alla volta.
+
+1. Apri la scheda **Fonti** del touchpoint.
+2. Sulla Knowledge che l'assistente deve gestire, attiva **Può modificare i record**.
+3. Leggi la conferma e seleziona **Consenti modifiche**.
+
+La modifica si applica subito, senza il **Salva** del touchpoint. L'assistente può poi creare e aggiornare record, spostarli tra le collezioni e creare collezioni in quella Knowledge, ma non può mai eliminare nulla. Ogni modifica che fa mostra il nome dell'assistente, e le persone che lavorano nella Knowledge vengono avvisate quando i record cambiano, così possono ricaricare la pagina. Disattiva **Può modificare i record** per revocare il permesso; non serve alcuna conferma.
+
+:::warning[Chiunque possa usare l'assistente può chiedere modifiche]
+Il permesso appartiene all'assistente, non alla persona che chatta. Chiunque possa raggiungere il touchpoint può chiedergli di modificare i record: le persone in chat, le applicazioni che chiamano il suo [endpoint API o MCP](/operational-guides/api-access) e, su un touchpoint pubblico, i visitatori anonimi. Solo chi può modificare la Knowledge può attivarlo, ed è disattivato per impostazione predefinita.
+:::
+
+Il touchpoint predefinito non ha questo interruttore: lì l'assistente modifica i record solo entro i permessi della persona che chatta.
+
+## Scegli gli strumenti che l'assistente può usare {#choose-the-tools-the-assistant-can-use}
+
+Gli strumenti permettono all'assistente di agire oltre a rispondere con la sua knowledge, per esempio cercando in una Knowledge o interrogando un database. Arrivano dalle [estensioni](/operational-guides/manage-extensions) installate, e un touchpoint non ne ha bisogno.
+
+1. Apri la scheda **Strumenti** del touchpoint.
+2. Apri **Aggiungi tool...** e seleziona uno strumento. Gli strumenti sono raggruppati per l'estensione che li fornisce.
+3. Nella finestra **Aggiungi tool**, se vuoi, modifica l'**Alias** e la **Descrizione** che l'assistente vede.
+4. Per ogni parametro, scegli chi lo imposta: **Auto** lascia decidere all'assistente mentre risponde, **Manuale** fissa un valore che inserisci tu, e **Predefinito** mantiene il valore dell'estensione. Un parametro che indica una Knowledge mostra un elenco di Knowledge tra cui scegliere.
+5. Seleziona **Conferma**, poi **Salva** il touchpoint.
+
+Per cambiare o rimuovere uno strumento, usa **Modifica il tool** o **Rimuovi tool** nel suo menu.
+
+## Decidi quando uno strumento richiede conferma {#decide-when-a-tool-needs-confirmation}
+
+In cima alla scheda **Strumenti**, **Quando chiedere conferma** stabilisce quali chiamate agli strumenti una persona deve approvare prima.
+
+1. Apri il menu a tendina **Quando chiedere conferma**.
+2. Scegli la politica per questo touchpoint:
+   - **Mai: i tool vengono eseguiti senza chiedere**
+   - **Smart: solo per i tool sensibili (consigliato)**. È il valore predefinito: gli strumenti di sola lettura vengono eseguiti direttamente, quelli sensibili attendono.
+   - **Sempre: chiedi prima di ogni tool**
+3. Salva il touchpoint.
+
+Con **Smart**, ogni riga di strumento ha un badge **Sensibile**. Selezionalo per contrassegnare lo strumento come sensibile o no su questo touchpoint; la modifica si applica subito. Finché non lo fai, lo strumento segue ciò che dichiara la sua estensione.
+
+Quando una chiamata richiede approvazione, la chat si mette in pausa su una scheda di approvazione finché l'utente non la approva (vedi [Approva le chiamate agli strumenti](/operational-guides/approve-tool-calls)). Un touchpoint registrato come applicazione ad alto rischio in [Governance](/operational-guides/governance) chiede conferma prima di ogni chiamata a uno strumento, qualunque politica tu scelga.
+
+## Imposta quanto tempo può impiegare uno strumento {#set-how-long-a-tool-may-take}
+
+Quando una chiamata a uno strumento supera il tempo limite, l'assistente riceve la notizia che la chiamata è fallita e prosegue.
+
+1. Nella scheda **Strumenti**, trova **Quanto tempo può impiegare un tool**.
+2. Inserisci un limite in secondi, oppure lascia il campo vuoto per il valore predefinito di 120 secondi. Il massimo è 600.
+3. Salva il touchpoint.
+
+Se uno strumento supera il tempo limite a ogni tentativo, la risposta si ferma con il messaggio *"Generazione interrotta: il tool “…” ha esaurito il tempo a disposizione a ogni tentativo."* e un pulsante **Rigenera risposta**. Aumenta il limite, oppure scopri perché lo strumento è lento.
+
+## Prossimi passi {#next-steps}
+
+- [Regola la generazione delle risposte](/operational-guides/touchpoint-generation): ragionamento, limiti di output e verifica della risposta.
+- [Approva le chiamate agli strumenti](/operational-guides/approve-tool-calls): cosa vedono gli utenti quando una chiamata richiede conferma.
+- [Testa una modifica al touchpoint](/operational-guides/test-touchpoint-changes): riproduci conversazioni passate prima che una modifica vada in produzione.

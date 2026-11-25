@@ -1,0 +1,10 @@
+{
+	"title": {
+		"message": "Rational AI",
+		"description": "The title in the navbar"
+	},
+	"logo.alt": {
+		"message": "Rational AI",
+		"description": "The alt text of navbar logo"
+	}
+}

@@ -1,0 +1,220 @@
+---
+sidebar_position: 1
+sidebar_label: Deploy open-source models via API
+type: how-to
+audience: [developer]
+---
+
+
+# Deploy open-source models via API
+
+Adding a model by hand in **Settings** → **AI Model Registry** is fine once. When you set up several installations, or rebuild one from a script, you want the same result from the Management API. This guide registers an open-source model from Hugging Face, deploys it, follows it until it is ready, and then changes its scale or stops it, all with `curl`.
+
+:::note[What is a model deployment?]
+A self-hosted model is two things. The **model** is the registry record: its name, the weights it runs (its *artifact*, such as a Hugging Face repository) and its *deploy parameters*. The **deployment** is the running copy of those weights on your hosting platform, with its *replicas* (the running instances of the model) and its *phase* (Provisioning, Ready, Idle, Stopped…). A model has at most one deployment, and you manage it as a sub-resource of the model: `/models/{id}/deployment`.
+:::
+
+The whole flow is four calls:
+
+```
+POST  /management/v0/models                    -> creates the model, returns its id and deployRevision
+POST  /management/v0/models/{id}/deployment    -> deploys that revision
+GET   /management/v0/models/{id}/deployment    -> phase, replicas, reason
+PATCH /management/v0/models/{id}/deployment    -> changes the scale, or stops it
+```
+
+The Management API is served under `/api` on the address of your Control Room, for example `https://control-room.[your-domain]/api`. You can browse it in the Swagger UI at `/api/swagger/index.html` on the same address (group `backend-management-v0`).
+
+:::note[The deploy, pause and cancel endpoints are gone]
+Earlier releases deployed with `POST /models/{id}/deploy` and controlled a deployment with `/pause` and `/cancel` routes that took a deployment name. Those routes, the `register` route and the sampling fields of the deploy body no longer exist. Every deployment action now goes through `/models/{id}/deployment`, always addressed by the model's id. Scripts written for the old routes need to move to the calls below.
+:::
+
+## Prerequisites {#prerequisites}
+
+Before you begin, make sure you have:
+
+- **A workspace API key or a signed-in session** on the Control Room. A workspace key from **Settings** → **API Keys** acts as an administrator; a session needs **Create** on the **AI Model Registry** row of its role to register and deploy, and **Update** to change the scale. The examples send it as `Authorization: Bearer $TOKEN`; from an authenticated browser session you can drop that header.
+- **The Hugging Face repository** of the model, for example `Qwen/Qwen3-8B`. Check that it exists on [huggingface.co](https://huggingface.co): the API stores the name as you send it.
+- **Hardware for it.** On your own servers, the GPUs or memory the model needs (see [Run models on your own servers](/operational-guides/run-models-on-premise)); on Rational AI's cloud, a [license](/operational-guides/license) that includes self-hosted models. Without it, a deploy request is refused with *"This workspace's plan does not include hosting your own models on our GPUs."*
+
+## Step 1: Check what your hosting can deploy {#step-1-check-what-your-hosting-can-deploy}
+
+Every installation has one hosting platform for its models. Ask it what it accepts before you create anything:
+
+```bash
+curl -s "https://control-room.[your-domain]/api/management/v0/models/hosting" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+The answer lists the hosting targets (one today) with their `provider` and `capabilities`:
+
+| Capability | What it tells you |
+|---|---|
+| `artifactSources` | Where weights may come from: `huggingFace`, `registry` (an Ollama tag), `upload` |
+| `huggingFaceFormats` | The Hugging Face weight formats it loads, such as `base` (safetensors) and `awq` |
+| `uploadFormats` | The file formats it accepts as an upload, such as `gguf`; empty when it accepts none |
+| `maxReplicas` | The most replicas a deployment can have |
+| `scaleToZero`, `scalesOnDemand` | Whether an idle deployment can release its hardware, and whether the platform does that by itself |
+| `deployParameters` | A JSON Schema of the provider parameters it honours |
+
+`defaultIdleTimeoutSeconds` is how long an on-demand deployment waits without requests before it releases its hardware, when it doesn't set its own timeout.
+
+## Step 2: Create the model {#step-2-create-the-model}
+
+`POST /management/v0/models` creates a model. A self-hosted model uses the `rationalAI` discriminator and names its weights in `artifact`:
+
+```bash
+curl -s -X POST "https://control-room.[your-domain]/api/management/v0/models" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "discriminator": "rationalAI",
+    "name": "Qwen3 8B",
+    "purpose": "textGeneration",
+    "publisher": "Qwen",
+    "type": "base",
+    "artifact": { "source": "huggingFace", "repository": "Qwen/Qwen3-8B" },
+    "deployParameters": { "contextLength": 32768 }
+  }'
+```
+
+**Success:** `201 Created` with the model, including its `id` and its `deployRevision`. Save both.
+
+| Field | Notes |
+|---|---|
+| `discriminator` | `rationalAI` for a model Rational AI deploys; `thirdParty` for a model served by a provider through a connector |
+| `name` | How people see the model. Must be unique |
+| `modelIdentifier` | Optional: what API callers send as `model`. Must be unique |
+| `purpose` | `textGeneration`, `embedding`, `reranking`, `imageGeneration` or `decision` |
+| `artifact.source` | `huggingFace` (with `repository`, and optionally `revision` and `file`), `registry` (with `reference`) or `upload` (with `format`) |
+| `type` | The weight format: `base` (safetensors), `awq`, `gguf` |
+| `deployParameters` | `contextLength`, `gpuCount` (`0` runs on the CPU) and `providerParameters`, the keys the hosting's schema declares |
+
+The request is refused when the artifact is one your hosting cannot deploy, and with `409 Conflict` when another model already has the name or identifier.
+
+:::note[Creating a model never deploys it]
+A model can exist without a deployment, and editing it with `PATCH /models/{id}` only changes what *should* run. Nothing reaches the hosting platform until you deploy, which is what lets you prepare settings and confirm them separately.
+:::
+
+### Upload weights instead {#upload-weights-instead}
+
+Where `uploadFormats` is not empty, you can create the model with `"artifact": { "source": "upload", "format": "gguf" }` and then stream the file:
+
+```bash
+curl -s -X PUT "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/artifact" \
+  -H "Content-Type: application/octet-stream" \
+  -H "Authorization: Bearer $TOKEN" \
+  --data-binary @my-model.gguf
+```
+
+The upload is accepted only once per model. The model cannot be deployed until it completes.
+
+## Step 3: Deploy the model {#step-3-deploy-the-model}
+
+`POST /management/v0/models/{id}/deployment` applies the model's current deploy parameters. It carries the `revision` you are confirming, which must equal the model's `deployRevision`, and optionally a scale:
+
+```bash
+curl -s -X POST "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{ "revision": 1, "scale": { "min": 0, "max": 1 } }'
+```
+
+**Success:** `201 Created`. The same call rolls out new deploy parameters to an existing deployment, or restarts it when nothing changed.
+
+:::note[A 409 means the settings changed under you]
+If someone edited the model after you read it, its `deployRevision` moved on and the deploy is refused with `409 Conflict`. Read the model again, check what changed, and deploy the new revision. This guarantees that a deployment runs exactly the settings someone confirmed.
+:::
+
+### Choose a scale {#choose-a-scale}
+
+The `scale` object sets how many replicas the deployment may run:
+
+| Scale | Behavior |
+|---|---|
+| `min = max = n` | Always `n` replicas. `0`–`0` is a stopped deployment |
+| `min = 0`, `max ≥ 1` | On demand: it releases its hardware after `idleTimeout` without requests and starts again on the next one |
+| `min ≥ 1` | Always keeps `min` replicas running |
+
+`idleTimeout` is a duration such as `"00:15:00"`; leave it out to use the installation's default (`defaultIdleTimeoutSeconds`, ten minutes unless your installation changed it). Each hosting platform clamps the range to what it supports, reported as `maxReplicas`.
+
+## Step 4: Follow the deployment {#step-4-follow-the-deployment}
+
+```bash
+curl -s "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+The answer has the `deployment` itself, plus `outOfDate` and `changedFields`, which say whether the model's settings changed since it was deployed. The deployment carries:
+
+- `phase`: where it is in its lifecycle (table below).
+- `readyReplicas` and `desiredReplicas`: how many replicas answer, out of how many it should run.
+- `reason` and `message`: why it waits or why it failed, for example `WaitingForCapacity`, `SlowStart`, `OutOfMemory`, `Crashed`.
+- `progress`: what the platform is doing right now, such as pulling an image.
+- `lastTransitionAt` and `lastUsedAt`: when it entered its phase, and when it last served a request.
+
+| Phase | Meaning |
+|---|---|
+| `provisioning` | First start of these settings: downloading weights and images, creating resources |
+| `starting` | A deployment that was ready before is starting again |
+| `ready` | At least one replica answers requests |
+| `idle` | No replica runs; the next request starts one |
+| `stopping` | Going down to zero replicas |
+| `stopped` | No replica runs, and requests do not start one |
+| `failed` | The settings cannot run; `reason` and `message` say why. It stays failed until you deploy again |
+| `deleting` | The deployment is being removed |
+
+A first deployment can take several minutes while the weights download. Temporary problems, such as the platform being unreachable or waiting for a free GPU, show up in `reason` without changing the phase.
+
+## Change the scale or stop a deployment {#change-the-scale-or-stop-a-deployment}
+
+`PATCH /management/v0/models/{id}/deployment` changes the scale immediately, without restarting running replicas. `replicas` optionally says how many to run now, within the new range:
+
+```bash
+# Stop it: No replicas, and requests do not wake it
+curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{ "scale": { "min": 0, "max": 0 } }'
+
+# Resume it on demand, and start one replica now so the first request does not wait
+curl -s -X PATCH "https://control-room.[your-domain]/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{ "scale": { "min": 0, "max": 1 }, "replicas": 1 }'
+```
+
+`"replicas": 0` releases the hardware of an on-demand deployment until the next request. A hosting platform that scales on demand by itself (`scalesOnDemand`) refuses `replicas`.
+
+## Endpoint reference {#endpoint-reference}
+
+| Action | Endpoint |
+|---|---|
+| List models | `GET /management/v0/models` (filters: `query`, `purpose`, `usable`, `hosting`, `phase`) |
+| Read a model | `GET /management/v0/models/{id}` |
+| Create a model | `POST /management/v0/models` |
+| Upload weights | `PUT /management/v0/models/{id}/artifact` |
+| Edit a model (never deploys) | `PATCH /management/v0/models/{id}` |
+| Preview the default of each deploy parameter | `POST /management/v0/models/{id}/deploy-defaults` |
+| Hosting and its capabilities | `GET /management/v0/models/hosting` |
+| Read the deployment | `GET /management/v0/models/{id}/deployment` |
+| Deploy, roll out or restart | `POST /management/v0/models/{id}/deployment` |
+| Change the scale, stop or resume | `PATCH /management/v0/models/{id}/deployment` |
+| Delete the deployment | `DELETE /management/v0/models/{id}/deployment` |
+| Probe a ready model (never deploys) | `POST /management/v0/models/{id}/test` |
+| Move a model's uses to another model | `POST /management/v0/models/{id}/replace` |
+| Delete a model | `DELETE /management/v0/models/{id}` |
+| Search installable models | `GET /management/v0/supported` |
+
+`PATCH /models/{id}` with `"enabled": false` disables a model: its requests are refused at once and model pickers stop offering it, while its deployment is left as it is.
+
+## Troubleshooting {#troubleshooting}
+
+- **`404` on every call**: check the address. Calls go to `/api/management/v0/...` on the Control Room's own host.
+- **`409` on create**: another model has that name or identifier; list the models and reuse it, or choose another name.
+- **`409` on deploy**: the `revision` you sent is stale; read the model and deploy its current `deployRevision`.
+- **Stuck in `provisioning` with `WaitingForCapacity`**: no GPU or node has room for it. Free one, or give the deployment fewer GPUs.
+- **`failed` with `OutOfMemory` or `Crashed`**: the `message` carries the runner's own error. Lower the context length or the GPU memory budget, or pick a smaller or quantized model, then deploy again.
+
+## Next steps {#next-steps}
+
+* [Deploy and run self-hosted models](/operational-guides/model-deployments): the same tasks in the Control Room.
+* [Access Rational AI via API](/operational-guides/api-access): call the deployed model through the OpenAI-compatible API.

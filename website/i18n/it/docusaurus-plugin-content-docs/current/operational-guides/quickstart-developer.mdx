@@ -1,0 +1,87 @@
+---
+sidebar_label: Guida rapida per sviluppatori
+description: Ottieni una chiave API, fai la prima chiamata al gateway compatibile con OpenAI e usa gli strumenti di un touchpoint da un client MCP.
+type: tutorial
+audience: [developer]
+---
+
+# Guida rapida per sviluppatori
+
+In 15 minuti puoi chiamare un modello di Rational AI dal tuo codice, con gli stessi SDK e strumenti OpenAI che già usi. Questa guida ti fa ottenere una chiave, fare una prima richiesta e collegare un client MCP agli strumenti di un assistente.
+
+## Prerequisiti {#prerequisites}
+
+- **Una chiave API, oppure un amministratore che la crei.** Solo un amministratore può creare una chiave del workspace in **Impostazioni** → **Chiavi API**.
+- **Un modello per la generazione di testo** nel **Registro modelli AI**. Vedi [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features).
+- **cURL**, oppure l'SDK OpenAI per Python o TypeScript.
+- **L'indirizzo della tua AI Control Room**, per esempio `https://control-room.<yourcompany>.rational.is`. Ogni API è servita sotto `/api` su quell'indirizzo.
+
+## 1. Ottieni una chiave API {#1-get-an-api-key}
+
+Rational AI ha due tipi di chiave. Scegli quella più ristretta che fa il lavoro.
+
+| Chiave | Da dove arriva | Cosa raggiunge |
+|---|---|---|
+| **Chiave del workspace** | **Impostazioni** → **Chiavi API**, creata da un amministratore | L'intera API di Rational AI, con diritti di amministratore |
+| **Chiave del touchpoint** | La sezione **Accesso API** di un touchpoint sul canale **API** | L'API compatibile con OpenAI e il server MCP di quel solo touchpoint, nient'altro |
+
+:::danger[Una chiave del workspace è un amministratore]
+Una chiave del workspace autentica come amministratore, indipendentemente da chi l'ha creata. Chi la possiede può leggere e modificare tutto ciò che può fare un amministratore, in tutta l'API. Conservala in un gestore di segreti, mai nel codice sorgente, e dai a un'applicazione che parla con un solo assistente una chiave del touchpoint.
+:::
+
+Per creare una chiave del workspace:
+
+1. Vai su **Impostazioni** → **Chiavi API** e seleziona **Nuovo**.
+2. Inserisci un **Nome**, per esempio il nome dell'applicazione che la usa, e seleziona **Crea**.
+3. Copia la chiave dalla finestra **Genera nuova chiave segreta** e seleziona **Fine**. La chiave viene mostrata una sola volta.
+4. Salvala nella variabile d'ambiente `RATIONAL_AI_API_KEY`, oppure nel tuo gestore di segreti.
+
+Se una chiave viene esposta, disabilitala o eliminala nella stessa pagina. Per creare una chiave del touchpoint, vedi [Dai a un'applicazione la sua chiave del touchpoint](/operational-guides/api-access#give-an-application-its-own-touchpoint-key).
+
+## 2. Fai la prima chiamata {#2-make-your-first-call}
+
+Il gateway dei modelli è compatibile con OpenAI. Con una chiave del workspace, i suoi endpoint si trovano sotto `/api/compat/v0/openai`.
+
+1. Vai su **Impostazioni** → **Registro modelli AI** e apri il modello che vuoi chiamare.
+2. Espandi **Usa via API** e copia lo snippet **cURL**. Contiene già l'indirizzo del gateway e l'identificatore del modello.
+3. Eseguilo. Ha questo aspetto:
+
+   ```bash
+   curl https://control-room.<yourcompany>.rational.is/api/compat/v0/openai/chat/completions \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $RATIONAL_AI_API_KEY" \
+     -d '{
+       "model": "<model-identifier>",
+       "messages": [
+         { "role": "user", "content": "Hello!" }
+       ]
+     }'
+   ```
+
+La risposta è una normale chat completion di OpenAI. La stessa sezione include snippet **Python** e **TypeScript** per l'SDK OpenAI, e il gateway serve anche la Responses API su `/api/compat/v0/openai/responses`. Vedi [Scegli tra chat completions e responses](/operational-guides/api-access#choose-between-chat-completions-and-responses).
+
+Una richiesta rifiutata dalla governance riceve un errore HTTP 403 con un `code`, come `application-blocked` o `model-not-approved`, così il tuo codice può distinguerlo da un errore del provider. Vedi [Decidi cosa può fare ogni applicazione](/operational-guides/govern-ai-applications#decide-what-each-application-may-do).
+
+## 3. Usa gli strumenti di un touchpoint da un client MCP {#3-use-a-touchpoints-tools-from-an-mcp-client}
+
+Un touchpoint è servito anche come server MCP, così un assistente IDE, un'app AI desktop o un altro agente possono usare gli strumenti configurati su di esso.
+
+1. Vai su **Impostazioni** → **Touchpoint** e apri un touchpoint il cui **Canale** è **API**.
+2. Nella scheda **Impostazioni**, copia il **Base URL** dalla sezione **Accesso API**, e genera lì una chiave se il touchpoint non ne ha una.
+3. Nel tuo client MCP, aggiungi un server con questi valori:
+   - **URL:** il base URL con `/openai` sostituito da `/mcp`, cioè `https://<your-host>/api/compat/v0/touchpoints/{id}/mcp`.
+   - **Trasporto:** Streamable HTTP.
+   - **Autenticazione:** la chiave del touchpoint, come `Authorization: Bearer <key>`.
+4. Elenca gli strumenti del server nel tuo client. Vedi gli strumenti abilitati del touchpoint, e nient'altro.
+
+Gli strumenti che richiedono approvazione secondo la politica di conferma del touchpoint sono contrassegnati come tali, e a chiedere l'approvazione all'utente è il tuo client MCP. Collega solo client di cui ti fidi perché rispettino quel contrassegno. Vedi [Usa gli strumenti di un touchpoint da un client MCP](/operational-guides/api-access#use-a-touchpoints-tools-from-an-mcp-client).
+
+## 4. Esplora la Management API {#4-explore-the-management-api}
+
+La chiave del workspace raggiunge anche la Management API sotto `/api/management/v0`, la stessa API che usa la Control Room. Puoi sfogliarla nella Swagger UI all'indirizzo `/api/swagger/index.html` dell'indirizzo della tua Control Room.
+
+## Dove andare dopo {#where-to-go-next}
+
+- **Definisci l'assistente dietro una chiave del touchpoint**: il suo prompt di sistema, i modelli e gli strumenti. Vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).
+- **Fai domande tipizzate**: modelli Decision tramite l'API compatibile con System One. Vedi [Interroga un modello Decision](/operational-guides/api-access#ask-a-decision-model-through-the-system-one-compatible-api).
+- **Controlla le tue chiamate**: utilizzo, costi e ogni richiesta nel log di audit. Vedi [Monitora utilizzo, costi e audit log](/operational-guides/governance).

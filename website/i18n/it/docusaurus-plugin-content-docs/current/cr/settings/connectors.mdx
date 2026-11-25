@@ -1,0 +1,81 @@
+---
+sidebar_position: 6
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Connettori
+
+Un connettore conserva le credenziali e la configurazione necessarie per comunicare con un provider esterno, come Google, AWS, OpenAI, Anthropic, Google Vertex AI, Microsoft SQL Server o RabbitMQ. Una volta configurato, un connettore può essere riutilizzato in tutta la piattaforma: dai [modelli AI](ai-model-registry.mdx) (per raggiungere le API di un provider), dalle [fonti](sources.mdx) (per leggere i tuoi dati) e dagli [strumenti](extensions.mdx). Usa questa sezione per aggiungere connettori e vedere dove viene usato ciascuno.
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Disponibile con <a href="/pricing">qualsiasi piano</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Chiunque abbia <span className="featureBox__pill">Crea</span>
+      o <span className="featureBox__pill">Modifica</span> sulla riga <strong>Connettori</strong> può aggiungere e gestire i connettori
+    </div>
+  </div>
+
+</div>
+
+## Sfoglia i connettori {#browse-connectors}
+
+<img
+  src={require('/img/screens/connectors.png').default}
+  style={{
+    border: '1px solid #e4e4e7',
+    borderRadius: '10px',
+  }}
+  alt="La pagina Connettori con l'elenco dei connettori e il pannello dei dettagli con provider, servizi e ripartizione dell'utilizzo"
+/>
+
+La pagina Connettori elenca ogni connettore come una scheda, con il suo nome e l'icona del provider. Usa la casella di **ricerca** per filtrare per nome, e seleziona una scheda per aprirne i dettagli.
+
+Il pannello dei dettagli mostra la descrizione del connettore, il suo **Provider** e quante volte viene usato. Una ripartizione dell'utilizzo indica quanti **Modelli AI**, **Sources** e **Tools** dipendono dal connettore, così puoi vedere che cosa sarebbe interessato prima di modificarlo o rimuoverlo.
+
+Un connettore ancora usato da modelli AI, fonti o abbonamenti dei provider non può essere eliminato. Gli abbonamenti dei provider non sono contati nella ripartizione dell'utilizzo, quindi controlla anche gli abbonamenti del connettore prima di eliminarlo.
+
+## Aggiungi un connettore {#add-a-connector}
+
+Seleziona **Aggiungi** per aprire **Aggiungi un nuovo connettore**. In **Sfoglia connettori**, seleziona un provider, poi inserisci un **Nome** e le credenziali richieste, come una chiave API o i dati di un account di servizio. Il catalogo è un unico elenco; la tabella raggruppa i provider per uso.
+
+| Uso | Provider |
+|-------|-----------|
+| Modelli AI | OpenAI, Anthropic, OpenRouter, Xference, MiniMax, OpenAI Compatible, Google Vertex AI |
+| Decisioni | System One Compatible |
+| Fonti dati | Google, AWS, Azure, Google Service Account Key, Microsoft OneDrive, Git credentials, RabbitMQ |
+| Database virtuali | Database SQL (PostgreSQL, MySQL, SQLite, SQL Server, Oracle o IBM i) |
+| Strumenti ed estensioni | Brave Search, Microsoft SQL Server |
+| Pubblicazione | LinkedIn, Instagram, Facebook |
+
+Alcuni provider chiedono più di una chiave: **Google Vertex AI** richiede un ID progetto e una sola regione e non salva alcuna credenziale, **Microsoft SQL Server** richiede un host, un database e un accesso di sola lettura con l'interruttore facoltativo **Cifra la connessione**, e **RabbitMQ** richiede un host del broker, un utente e un token facoltativo per il download dei file. Vedi [Configura un connettore](/operational-guides/configure-connectors#available-providers) per ciascuno di essi.
+
+:::warning
+I connettori contengono credenziali sensibili. Rimuovere o modificare un connettore influisce su ogni modello AI, fonte e strumento che ne dipende. Controlla la ripartizione dell'utilizzo nel pannello dei dettagli prima di apportare modifiche.
+:::
+
+## Gestisci un connettore {#manage-a-connector}
+
+Per modificare un connettore, cambia i campi in **Configurazione** nel pannello dei dettagli e seleziona **Salva**, oppure **Annulla** per scartare le modifiche. I campi segreti non vengono mai mostrati: inserisci un nuovo valore solo per sostituire quello salvato. Per un connettore **Database SQL**, **Prova connessione** ed **Esplora schema** verificano le impostazioni salvate.
+
+Apri il menu opzioni (i tre puntini verticali) nel pannello dei dettagli per:
+
+| Azione | Descrizione |
+|--------|-------------|
+| **Completa l'autenticazione** | Termina l'accesso per un connettore che lo richiede ancora (visibile solo in questo caso). |
+| **Elimina** | Rimuove il connettore dalla piattaforma. |

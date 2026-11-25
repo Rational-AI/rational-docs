@@ -1,0 +1,49 @@
+---
+sidebar_position: 8
+sidebar_label: Esporta e importa una Knowledge
+type: how-to
+audience: [builder]
+---
+
+# Esporta e importa una Knowledge
+
+Esporta una Knowledge in un archivio `.zip` con le sue risorse e la sua configurazione, poi importa l'archivio per ricreare la Knowledge altrove. Usa l'esportazione per spostare una Knowledge da un ambiente di test alla produzione, per fare un backup o per consegnare una Knowledge già pronta a un altro workspace.
+
+Per portare righe di un foglio di calcolo in una Knowledge esistente come record, vedi invece [Importa record da Excel o CSV](/operational-guides/import-knowledge).
+
+## Prerequisiti {#prerequisites}
+
+- Per esportare: **Lista** e **Leggi** sulla riga **Knowledge** del tuo ruolo.
+- Per importare: **Crea** sulla riga **Knowledge**. Senza, il menu **Nuovo**, che contiene **Importa knowledge**, non compare.
+
+Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+## Esporta una Knowledge {#export-a-knowledge}
+
+1. Vai in **Impostazioni** → **Knowledge** e apri la Knowledge da esportare.
+2. Apri il menu **⋮** accanto al nome della Knowledge e seleziona **Esporta**.
+
+Mentre Rational AI prepara l'archivio, un avviso dice *"Preparazione dell'esportazione, il download partirà automaticamente quando è pronto…"*. Tieni aperta la pagina: l'archivio si scarica da solo e compare l'avviso **Esportazione scaricata**. Se l'esportazione fallisce, oppure supera i 2 minuti di attesa della pagina, compare invece l'avviso **Errore durante l'esportazione della knowledge**.
+
+## Importa una Knowledge {#import-a-knowledge}
+
+1. Vai in **Impostazioni** → **Knowledge**, oppure apri la scheda **Knowledge**. Entrambe hanno lo stesso menu **Nuovo**, presente anche in una pagina vuota.
+2. Seleziona **Nuovo** → **Importa knowledge**.
+3. Scegli l'archivio `.zip` dal tuo computer.
+
+Quando l'importazione termina, compare l'avviso **Knowledge importata** e Rational AI apre le impostazioni della nuova Knowledge. Se l'archivio non è valido o il caricamento fallisce, compare invece l'avviso **Errore durante l'importazione della knowledge**.
+
+<img
+  src={require('@site/static/img/screens/knowledge-settings.png').default}
+  alt="La pagina delle impostazioni della Knowledge, con l'elenco delle Knowledge a sinistra e il menu Nuovo usato per importare un archivio"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+## Verifica la Knowledge importata {#check-the-imported-knowledge}
+
+La Knowledge importata mantiene le risorse e la configurazione contenute nell'archivio, inclusa la sua vista predefinita. Prima di usarla, controlla le impostazioni **Ricerca AI** e **Fonti** e il suo touchpoint: valori come i modelli AI possono differire da un ambiente all'altro.
+
+## Prossimi passi {#next-steps}
+
+- [Crea una Knowledge](/operational-guides/create-knowledge)
+- [Configura Graph RAG](/operational-guides/configure-rag)

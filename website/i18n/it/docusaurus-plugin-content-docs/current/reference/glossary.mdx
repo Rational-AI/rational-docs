@@ -1,0 +1,212 @@
+---
+title: Glossario
+sidebar_label: Glossario
+description: Definizioni brevi dei termini usati in Rational AI e in questa documentazione, da agente a workspace.
+type: reference
+audience: [user, builder, admin, developer]
+toc_max_heading_level: 2
+---
+
+# Glossario
+
+I termini usati in Rational AI e in questa documentazione, in ordine alfabetico. Quando un termine ha una pagina dedicata, la definizione rimanda a quella pagina.
+
+## A {#a}
+
+### Agente {#agent}
+
+In **Agenti**, un lavoratore AI che svolge un incarico sul proprio computer, avviato a mano, su una pianificazione o da un evento. Ogni lavoro che svolge è un'[esecuzione](#run). Un agente non è un [touchpoint](#touchpoint): un agente svolge lavoro, un touchpoint risponde alle persone. Vedi [Agenti](/cr/Agents).
+
+### Registro modelli AI {#ai-model-registry}
+
+Il catalogo di tutti i modelli che il tuo workspace può usare, in **Impostazioni** → **Registro modelli AI**: modelli di un provider come OpenAI o Anthropic, raggiunti tramite un [connettore](#connector), e modelli che la tua installazione esegue da sé. Vedi [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features).
+
+### Annotazione {#annotation}
+
+Una nota o un'evidenziazione che una persona aggiunge a un documento in una [Knowledge](#knowledge). Vedi [Annota le risorse](/operational-guides/annotate-resources).
+
+## C {#c}
+
+### Canale {#channel}
+
+Il punto in cui le persone raggiungono un assistente: la chat web, un bot Telegram, una casella di posta, un bot di Microsoft Teams o Slack, oppure l'API. Un canale cambia dove le persone parlano con l'assistente, non ciò che l'assistente sa. Vedi [Canali](/concepts/Channels).
+
+### Chunk {#chunk}
+
+Un breve passaggio di un documento, per esempio un paragrafo. Una [Knowledge](#knowledge) divide ogni documento in chunk, così l'assistente può trovare il passaggio che risponde a una domanda. Vedi [Chunk, embedding e annotazioni](/concepts/Embeddings-chunks-and-annotations).
+
+### Connettore {#connector}
+
+Le credenziali salvate per un servizio esterno, come un account di archiviazione cloud o un provider di modelli. Configuri un connettore una volta, e ogni funzione che richiede quel servizio lo usa. Vedi [Connettori](/concepts/Connectors).
+
+### Finestra di contesto {#context-window}
+
+Il testo massimo che un modello può considerare in una sola richiesta, misurato in [token](#token). Comprende il [prompt di sistema](#system-prompt), i passaggi recuperati da una Knowledge, la conversazione finora e la risposta. Il modello non vede ciò che non ci sta.
+
+### Control Room {#control-room}
+
+L'app web di Rational AI, dove chatti, gestisci la Knowledge, rivedi le conversazioni e cambi le impostazioni.
+
+## D {#d}
+
+### Dataset {#dataset}
+
+Una raccolta di esempi usata per [fare il fine-tuning](#fine-tuning) di un modello, gestita in **Impostazioni** → **Dataset**. Vedi [Fai il fine-tuning di un modello](/operational-guides/fine-tune-a-model).
+
+## E {#e}
+
+### Embedding {#embedding}
+
+Un elenco di numeri che rappresenta il significato di un [chunk](#chunk). Passaggi con un significato simile ottengono embedding simili, ed è così che una Knowledge trova il passaggio giusto anche quando la domanda usa parole diverse. Un **modello di embedding** li calcola. Vedi [Chunk, embedding e annotazioni](/concepts/Embeddings-chunks-and-annotations).
+
+### Estensione {#extension}
+
+Un pacchetto installato nel tuo workspace che aggiunge una funzionalità: [strumenti](#tool) per gli assistenti, [skill](#skill), un [canale](#channel), una [fonte](#source) o un passaggio di elaborazione. Vedi [Gestisci le estensioni](/operational-guides/manage-extensions).
+
+## F {#f}
+
+### Fine-tuning {#fine-tuning}
+
+Addestrare ulteriormente un modello esistente con i tuoi esempi, così impara uno stile, un formato o un compito. Vedi [Fine-tuning](/concepts/Finetuning).
+
+## G {#g}
+
+### AI generativa {#generative-ai}
+
+AI che produce nuovi contenuti, come testo o immagini, in risposta a una richiesta. Ogni modello con cui chatti in Rational AI è generativo.
+
+## H {#h}
+
+### Allucinazione {#hallucination}
+
+Una risposta che suona giusta ma è falsa, oppure non è supportata dalle fonti. Vedi [Allucinazioni](/concepts/hallucinations).
+
+### Human-in-the-loop (supervisione umana) {#human-in-the-loop}
+
+Un modo di lavorare in cui una persona rivede o approva ciò che l'AI produce prima che abbia effetto. Vedi [Human-in-the-loop](/concepts/Human-in-the-loop).
+
+## I {#i}
+
+### Inferenza {#inference}
+
+Eseguire un modello per ottenere una risposta. Ogni richiesta è un'inferenza, e non cambia il modello. Utilizzo e costo in **Governance** si contano per inferenza e per [token](#token).
+
+## K {#k}
+
+### Knowledge {#knowledge}
+
+In Rational AI, un archivio dei tuoi contenuti (file, record e fonti sincronizzate) in cui gli assistenti cercano, così rispondono a partire dai tuoi dati. Vedi [Knowledge](/concepts/Knowledge) e il [modulo Knowledge](/cr/Knowledge).
+
+### Data limite delle conoscenze (knowledge cutoff) {#knowledge-cutoff}
+
+La data in cui finiscono i dati di addestramento di un modello. Il modello non sa nulla dopo quella data, a meno che l'informazione non sia in una [Knowledge](#knowledge) o nella conversazione.
+
+## L {#l}
+
+### Large language model (LLM) {#large-language-model-llm}
+
+Un modello addestrato su grandi quantità di testo per leggere e scrivere in linguaggio naturale. Chat e touchpoint ne usano uno per scrivere le risposte.
+
+## M {#m}
+
+### Server MCP {#mcp-server}
+
+Un servizio che dà agli assistenti degli [strumenti](#tool) tramite il Model Context Protocol, uno standard aperto. In Rational AI, la maggior parte degli strumenti arriva da server MCP installati come [estensioni](#extension).
+
+### Modello {#model}
+
+L'AI che legge una richiesta e produce la risposta. Rational AI usa modelli di **generazione di testo** per scrivere le risposte e modelli di **embedding** per rendere i contenuti ricercabili. Vedi [Registro modelli AI](#ai-model-registry).
+
+### Deployment del modello {#model-deployment}
+
+Un modello che la tua installazione esegue sul proprio hardware invece di chiamare un provider. Vedi [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments).
+
+## N {#n}
+
+### Natural language processing (NLP) {#natural-language-processing-nlp}
+
+Il campo dell'AI che si occupa del linguaggio umano: comprenderlo, tradurlo, riassumerlo e scriverlo.
+
+### Non determinismo {#non-determinism}
+
+La stessa domanda può ottenere risposte diverse, perché un modello sceglie ogni parola con un certo grado di casualità. Ancorare le risposte a una [Knowledge](#knowledge) le mantiene coerenti dove conta.
+
+## P {#p}
+
+### Prompt {#prompt}
+
+Il messaggio o l'istruzione che invii a un modello. Vedi anche [prompt di sistema](#system-prompt).
+
+### Proxy {#proxy}
+
+Il gateway attraverso cui passano le richieste ai modelli in Rational AI. Registra ogni richiesta, così **Governance** può mostrare utilizzo, costo e log di audit. Vedi [Monitora utilizzo, costi e audit log](/operational-guides/governance).
+
+## R {#r}
+
+### RAG (retrieval-augmented generation) {#rag-retrieval-augmented-generation}
+
+Il modo in cui un assistente risponde a partire dai tuoi dati: prima recupera i passaggi più pertinenti da una [Knowledge](#knowledge), poi scrive la risposta a partire da essi. Vedi [RAG](/concepts/RAG).
+
+### Risorsa {#resource}
+
+Un elemento di una [Knowledge](#knowledge), come un documento, un foglio di calcolo, un'immagine o un record. Le risorse arrivano da caricamenti oppure da una [fonte](#source). Vedi [Fonti e risorse](/concepts/Source-and-resources).
+
+### RLHF (reinforcement learning from human feedback) {#rlhf-reinforcement-learning-from-human-feedback}
+
+Una tecnica di addestramento in cui le persone valutano le risposte di un modello, e il modello impara a preferire quelle valutate meglio. I creatori dei modelli la usano prima del rilascio.
+
+### Esecuzione {#run}
+
+Una singola esecuzione del lavoro di un [agente](#agent), con i suoi passaggi, il suo risultato e il suo costo. Vedi [Segui e gestisci le esecuzioni degli agenti](/operational-guides/agent-runs).
+
+## S {#s}
+
+### Skill {#skill}
+
+Un insieme confezionato di istruzioni, a volte con file, che un assistente segue per un tipo specifico di lavoro. Touchpoint e agenti hanno ciascuno le proprie skill. Vedi [Skill](/operational-guides/agent-skills).
+
+### Fonte {#source}
+
+Una connessione a un sistema esterno, come un bucket cloud o un'unità condivisa, che mantiene una [Knowledge](#knowledge) sincronizzata con esso. Vedi [Fonti e risorse](/concepts/Source-and-resources).
+
+### AI sovrana (Sovereign AI) {#sovereign-ai}
+
+Mantenere il controllo dei tuoi dati, dei tuoi modelli e del luogo in cui girano. Vedi [AI sovrana](/concepts/Sovereign-AI).
+
+### Compiacenza (sycophancy) {#sycophancy}
+
+La tendenza di un modello a darti ragione o a dirti ciò che vuoi sentire, anche quando sbaglia.
+
+### Prompt di sistema {#system-prompt}
+
+Le istruzioni permanenti che un [touchpoint](#touchpoint) dà al proprio modello prima di ogni conversazione: il suo ruolo, il tono e le regole. Vedi [Prompt di sistema](/concepts/System-prompt).
+
+## T {#t}
+
+### Token {#token}
+
+L'unità di testo che un modello legge e scrive. Un token corrisponde a circa quattro caratteri in inglese, quindi 1.000 token equivalgono a circa 750 parole. Limiti, costo e velocità si misurano in token.
+
+### Strumento {#tool}
+
+Un'azione che un assistente o un agente può compiere, come cercare in una Knowledge o leggere una pagina web. Vedi [Gestisci gli strumenti](/operational-guides/manage-tools).
+
+### Touchpoint {#touchpoint}
+
+Un assistente configurato con cui le persone parlano. Combina un modello, un [prompt di sistema](#system-prompt), la Knowledge e gli strumenti che può usare, e il [canale](#channel) su cui risponde. Vedi [Touchpoint](/concepts/Touchpoint).
+
+### Addestramento {#training}
+
+Costruire un modello a partire dai dati. I creatori dei modelli lo addestrano prima che tu lo usi; il [fine-tuning](#fine-tuning) prosegue l'addestramento con i tuoi esempi.
+
+## V {#v}
+
+### Database vettoriale {#vector-database}
+
+Il database che memorizza gli [embedding](#embedding) e trova quelli più vicini per significato a una domanda. Rational AI lo gestisce per te, quindi non lo gestisci mai direttamente.
+
+## W {#w}
+
+### Workspace {#workspace}
+
+Lo spazio della tua organizzazione in Rational AI, con i suoi utenti, la Knowledge, i touchpoint e le impostazioni.

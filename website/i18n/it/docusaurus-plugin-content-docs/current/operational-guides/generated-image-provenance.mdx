@@ -1,0 +1,17 @@
+---
+sidebar_position: 33
+sidebar_label: Generated image provenance
+type: concept
+audience: [admin]
+---
+
+# How generated images declare they were made by AI
+
+Every image generated in Gen, including the ones a chat creates through Gen, carries a standard metadata label saying a model made it, along with the model's name. The label is written into PNG and JPEG files when they are saved, so it stays with the file after a download, an export or an API response. Search engines and social platforms read this label when they tag content as AI-generated. Images in other formats are stored without it.
+
+The label states what the file is; it does not prove that nobody changed the file since, and anyone can remove it. It is not a signed C2PA provenance record, so it does not meet a requirement that asks for C2PA specifically.
+
+## Next steps {#next-steps}
+
+- [Generate images with Gen](/operational-guides/gen-images): where generated images come from.
+- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): document what a model may be used for.

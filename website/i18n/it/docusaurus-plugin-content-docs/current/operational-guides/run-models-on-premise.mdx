@@ -1,0 +1,55 @@
+---
+sidebar_position: 16
+sidebar_label: Esegui i modelli sui tuoi server
+type: how-to
+audience: [admin, builder]
+---
+
+# Esegui i modelli sui tuoi server
+
+Un'installazione on-premise esegue i propri modelli AI sulle tue macchine, quindi prompt e documenti non ne escono mai. Scegli e distribuisci ogni modello da **Impostazioni** → **Registro modelli AI**, come nel cloud.
+
+## Prerequisiti {#prerequisites}
+
+- **Un'installazione on-premise**, con accesso amministrativo alla Control Room.
+- **Hardware per i modelli:** una GPU NVIDIA per una buona velocità, oppure memoria sufficiente per eseguire modelli piccoli sulla CPU.
+- **Un token Hugging Face, solo per i modelli con accesso limitato:** modelli come Llama o Gemma richiedono un token dell'organizzazione, che Rational AI imposta sull'installazione. I modelli pubblici (per esempio `BAAI/bge-m3`) non ne richiedono nessuno.
+
+## Aggiungi i primi modelli {#add-your-first-models}
+
+Una nuova installazione parte con **nessun modello**: né un modello di embedding né un modello di chat. Finché non ne aggiungi, una Knowledge non può indicizzare documenti e le chat non possono rispondere.
+
+1. Vai a **Impostazioni** → **Registro modelli AI** e seleziona **Aggiungi** → **Scegli un modello open source**.
+2. Aggiungi per primo un **modello di embedding**, per esempio `BAAI/bge-m3`, e distribuiscilo.
+3. Aggiungi un **modello di generazione di testo** adatto al tuo hardware, e distribuiscilo.
+4. Nel pannello **Modelli predefiniti** della stessa pagina, imposta il **Modello di embedding** e il **Modello conversazionale** sui modelli che hai aggiunto.
+
+Ogni deployment scarica prima i pesi, poi si avvia. La sezione **Distribuzione** del modello segue l'avanzamento fino a **Pronto**. Per distribuire, scalare e fermare i modelli, vedi [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments).
+
+Se ogni risposta di un nuovo modello di chat fallisce, controlla il parser delle chiamate agli strumenti e il parser del ragionamento nelle sue **Impostazioni di deploy**. Rational AI li imposta in base alla famiglia del modello, e le chat ne hanno bisogno perché danno al modello gli strumenti.
+
+## Capisci GPU e memoria {#understand-gpus-and-memory}
+
+- **Con una GPU NVIDIA**, un modello di generazione di testo riceve una GPU, salvo diversa indicazione nelle sue impostazioni di deploy.
+- **Senza GPU**, i modelli girano sulla CPU. Funziona, ma molto più lentamente, quindi riserva i deployment su CPU ai modelli di embedding e ai piccoli modelli di chat.
+
+Puoi cambiare il numero di GPU nelle impostazioni di deploy di un modello; `0` lo fa girare sulla CPU.
+
+Ogni modello riserva una quota della memoria della sua GPU, definita dal suo **GPU memory budget**: una percentuale (`85%`), una dimensione (`24GiB`) o entrambe (`100% - 1.5GiB`). Quando più modelli condividono una GPU, assegna a ciascuno un proprio budget, così che possano stare insieme.
+
+I pesi di un modello vengono scaricati una sola volta e restano disponibili dopo i riavvii. I [backup](/operational-guides/backup-and-restore) escludono i pesi, perché possono essere scaricati di nuovo.
+
+## Esegui i modelli su un DGX Spark {#run-models-on-a-dgx-spark}
+
+Un NVIDIA DGX Spark condivide un unico pool di memoria tra la sua GPU e il resto del sistema. L'installazione lo riconosce e lascia 80 GiB di quella memoria ai modelli, tenendo il resto per Rational AI. Il budget di memoria GPU di un modello conta su quegli 80 GiB, quindi `50%` significa 40 GiB.
+
+Se i budget dei modelli che distribuisci superano complessivamente 80 GiB, non partono tutti. Dimensiona i budget in modo che i modelli che vuoi attivi insieme possano stare insieme.
+
+## Aggiungi altre macchine {#add-more-machines}
+
+Se una macchina non ha abbastanza GPU per tutti i modelli di cui hai bisogno, Rational AI può aggiungere macchine che eseguono solo modelli. Continui a distribuire da **Impostazioni** → **Registro modelli AI**, e ogni modello gira dove c'è spazio.
+
+## Prossimi passi {#next-steps}
+
+- [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments): impostazioni di deploy, repliche e arresto di un modello.
+- [Esegui il backup e il ripristino](/operational-guides/backup-and-restore) dell'installazione.

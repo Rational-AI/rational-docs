@@ -1,0 +1,132 @@
+---
+sidebar_position: 31
+sidebar_label: Backup e ripristino
+type: how-to
+audience: [admin]
+---
+
+# Esegui backup e ripristino di un'installazione on-premise
+
+**Impostazioni** → **Backup** copia tutti i dati di un'installazione on-premise di Rational AI su una destinazione di tua proprietà (una condivisione di rete, un bucket S3, o un server FTP o SFTP), ogni giorno oppure su richiesta.
+
+:::note[Solo on-premise]
+La pagina Backup è attiva per impostazione predefinita su ogni [installazione on-premise](./on-premises-installation): richiede solo una destinazione. Nel cloud gestito la piattaforma esegue il backup dei dati per te e la pagina non viene mostrata.
+:::
+
+Ogni aggiornamento esegue prima anche un backup locale, così una release problematica può essere annullata. Quel backup resta sul disco dell'installazione, quindi non ti protegge da una macchina o da un disco persi. Configura il backup da questa pagina su ogni installazione che contiene dati importanti.
+
+<img
+  alt="La pagina Backup nelle impostazioni, con una destinazione su condivisione di rete, una pianificazione giornaliera e un backup in elenco"
+  src={require('@site/static/img/screens/backup-settings.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+## Cosa contiene un backup {#what-a-backup-contains}
+
+Un backup include:
+
+- I dati applicativi del workspace: conversazioni, Knowledge, utenti, impostazioni e credenziali memorizzate
+- L'indice di ricerca dietro le tue Knowledge
+- Allegati, file sorgente sincronizzati e pacchetti delle estensioni
+- Le estensioni installate
+- I database di Rational BI e della Knowledge
+
+Ogni esecuzione crea una cartella con il nome del suo orario di inizio UTC (`2026-09-09T02-30-00Z`). Il backup contiene le credenziali memorizzate, quindi mantieni la destinazione privata quanto l'installazione stessa.
+
+I pesi dei modelli eseguiti dall'installazione non vengono inclusi nel backup: vengono scaricati di nuovo dopo un ripristino. Anche le sessioni non vengono salvate, quindi dopo un ripristino tutti devono accedere di nuovo.
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Accesso amministrativo.** La pagina è riservata agli amministratori.
+- **Una destinazione con spazio sufficiente** per una copia completa dei dati e dei file dell'installazione.
+
+## Imposta la destinazione {#set-the-destination}
+
+Vai su **Impostazioni** → **Backup** e scegli il **Tipo** di destinazione. I campi cambiano in base al tipo:
+
+| Tipo | Campi | Percorso |
+|------|-------|----------|
+| **Condivisione di rete (SMB / Samba)** | Host, porta (445), utente, password, dominio | Condivisione e cartella, per esempio `backups/rational` |
+| **Bucket S3** | Endpoint, provider (`Other` per un NAS o MinIO, `AWS` per Amazon), regione, access key ID, secret access key | Bucket e prefisso, per esempio `my-bucket/rational` |
+| **Server FTP** | Host, porta (21), utente, password | Cartella |
+| **Server SFTP** | Host, porta (22), utente, password | Cartella |
+
+**Cartella locale (mount NFS)** serve per una cartella che Rational AI ha montato per te sull'installazione. Chiedi al proprietario della destinazione un account che possa scrivere solo nella cartella del backup.
+
+La cartella viene creata al primo utilizzo. Seleziona **Prova destinazione** prima di salvare: scrive ed elimina un piccolo file per verificare le credenziali, il percorso e il permesso di scrittura. Un errore mostra il motivo, per esempio una password sbagliata, una condivisione in sola lettura o un host non raggiungibile.
+
+:::warning[Preferisci SFTP o S3 a FTP]
+FTP normale invia la password e i dati senza cifratura. Quando lo stesso server offre SFTP, usa quello.
+:::
+
+Password e chiavi di accesso sono memorizzate cifrate. Quando torni nella pagina mostrano `********`: lasciali così per mantenere il valore salvato, oppure digita un nuovo valore per sostituirlo.
+
+## Pianificazione {#schedule}
+
+**Backup giornaliero** esegue un backup ogni giorno all'**Ora del giorno** indicata, nel fuso orario del tuo browser al momento del salvataggio. Un'esecuzione ancora in corso quando ne scatta un'altra non viene interrotta; la successiva viene saltata.
+
+Scegli un orario tranquillo, lontano dalle 03:00, quando l'installazione si aggiorna da sola. Una Knowledge che cambia durante il backup può risultare incoerente al ripristino.
+
+## Conservazione {#retention}
+
+Dopo ogni esecuzione riuscita la destinazione viene ripulita. In **Conserva** scegli quanta cronologia mantenere:
+
+| Opzione | Mantiene |
+|---------|----------|
+| **Gli ultimi 7 backup** | I sette più recenti, qualunque sia la loro età |
+| **Un mese, un backup al giorno** | I sette più recenti, e uno al giorno per 31 giorni |
+| **Tre mesi: giornalieri per una settimana, poi settimanali** | I sette più recenti, e uno a settimana per 13 settimane |
+| **Un anno: giornalieri per una settimana, settimanali per due mesi, poi mensili** | I sette più recenti, uno a settimana per 9 settimane, e uno al mese per 12 mesi |
+| **Tutto, non cancellare mai** | Ogni backup |
+
+Una policy impostata da Rational AI che non corrisponde a nessuna di queste viene mostrata come **Personalizzata**. Allegati e file sono conservati in un'unica copia condivisa da tutti i backup, che non viene mai ripulita: quindi i file eliminati da Rational AI restano nella destinazione.
+
+Seleziona **Salva**. La riga **Prossimo backup pianificato** sotto **Ultimo backup** conferma che la pianificazione è registrata.
+
+## Esegui subito un backup e verifica {#back-up-now-and-check-it-happened}
+
+**Esegui backup ora** avvia subito un backup. Mentre è in corso, la pagina mostra ogni componente man mano che viene acquisito; quando termina, *Ultimo backup* mostra l'ora, l'esito, la dimensione e il nome della cartella, e il backup compare in **Backup nella destinazione**.
+
+Un'esecuzione fallita mostra l'errore al posto della dimensione. Un backup che fallisce a metà viene rimosso dalla destinazione, quindi ciò che è elencato lì è completo e ripristinabile.
+
+Controlla di tanto in tanto che:
+
+- **Ultimo backup** continui ad aggiornarsi e riporti *completato*.
+- **Backup nella destinazione** elenchi i tuoi backup. L'elenco viene letto dalla destinazione ogni volta che la pagina si carica.
+
+## Ripristino {#restore}
+
+Il ripristino sostituisce i dati attuali con un backup e richiede che l'applicazione sia ferma, quindi lo esegue Rational AI per te. Per richiederne uno, invia a Rational AI il nome del backup che vuoi, così come è elencato in **Backup nella destinazione** (per esempio `2026-09-30T01-30-00Z`).
+
+:::danger[Un ripristino sovrascrive tutto]
+Tutti i dati, i file e le estensioni vengono sostituiti con il contenuto del backup. Qualsiasi cosa creata dopo l'esecuzione di quel backup va persa. In caso di dubbi, esegui prima un nuovo backup.
+:::
+
+Un ripristino richiede le impostazioni della destinazione, password compresa. Concorda con Rational AI come fargliele avere quando configuri la destinazione, non il giorno in cui ti serve un ripristino. **Copia comando di ripristino** su un backup qualsiasi copia quelle impostazioni, con i segreti mascherati come `********`.
+
+Dopo un ripristino:
+
+- Tutti vengono disconnessi: le sessioni non fanno parte del backup.
+- Controlla una conversazione recente, una Knowledge e un'estensione. Le estensioni possono richiedere un momento al primo utilizzo, mentre i loro pacchetti vengono scaricati di nuovo.
+- Un backup si può ripristinare solo nella release che l'ha creato, o in una più recente.
+- Su una macchina sostitutiva, **Impostazioni** → **Licenza** potrebbe chiederti di attivare di nuovo la licenza.
+
+### Prova il ripristino {#rehearse-it}
+
+Chiedi a Rational AI di ripristinare un backup in un'installazione di riserva: una volta dopo aver configurato la destinazione, e di nuovo dopo gli aggiornamenti principali. È l'unico modo per sapere che la destinazione è davvero utilizzabile.
+
+## Limiti {#limits}
+
+- **I backup non sono cifrati.** Proteggili con il controllo degli accessi della destinazione e la cifratura del disco.
+- **Non incluso nel backup:** i segreti propri dell'installazione, i suoi certificati e la sua connessione a Rational AI. Una macchina sostitutiva non può leggere i backup senza quei segreti.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---------|------------------|
+| **Prova destinazione** fallisce con *permission denied* | La condivisione o la cartella è in sola lettura per l'utente indicato. |
+| Un backup mostra *non riuscito* | L'errore mostrato al posto della dimensione. Se non indica la destinazione, contatta Rational AI. |
+| Un componente è *skipped* | L'installazione non è configurata per il backup di quel componente. Contatta Rational AI. |
+| L'elenco dei backup è vuoto anche se le esecuzioni sono completate | Il percorso della destinazione è stato cambiato dopo quelle esecuzioni: l'elenco legge il percorso attuale. |

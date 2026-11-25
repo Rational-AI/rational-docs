@@ -1,0 +1,91 @@
+---
+sidebar_position: 4
+sidebar_label: Governance
+type: reference
+audience: [admin]
+---
+
+# Governance
+
+L'area **Governance** della Control Room mostra come viene usata la tua AI e quanto costa, e contiene le decisioni che controllano quali applicazioni possono chiamare i tuoi modelli. Seleziona **Governance** nella barra di navigazione in alto per aprirla. L'area è riservata agli amministratori.
+
+Questa pagina è un riferimento per la struttura dell'area. Per le attività passo passo, vedi [Monitora utilizzo, costi e audit log](/operational-guides/governance) e [Governa le applicazioni AI](/operational-guides/govern-ai-applications).
+
+## Schede {#tabs}
+
+L'area ha cinque schede. Ognuna si apre con un'intestazione che indica il periodo di riferimento, ad esempio *dal 3 ottobre al 2 novembre*.
+
+| Scheda | Cosa mostra |
+|---|---|
+| **Panoramica** | Un riepilogo **Da verificare**, i totali principali (guidati da **Costi totali**), un grafico in evidenza, **Composizione dei costi**, **Stato della governance** e le **Applicazioni principali** per richieste. |
+| **Utilizzo** | Grafici nel tempo, raggruppati per argomento. Un interruttore seleziona il traffico **API** o **Conversazioni**. |
+| **Applicazioni** | L'inventario delle applicazioni che hanno chiamato i tuoi modelli tramite Rational AI o che sono state registrate a mano, con stato, livello di rischio, proprietario, ambiente, tag e utilizzo. |
+| **Audit log** | Una riga per ogni richiesta inviata ai tuoi modelli tramite Rational AI. Un interruttore in alto mostra invece le **Esecuzioni dei workflow**. |
+| **Costi** | Quanto costa far funzionare la tua AI, dai prezzi dei modelli all'hardware, più la valuta **Importi in**. |
+
+## Panoramica {#overview}
+
+* **Da verificare** compare solo quando qualcosa richiede un intervento. È ridotto a una sola riga che conta i problemi. Seleziona **Mostra** per elencarli, ciascuno con un pulsante che ti porta alla correzione:
+  * applicazioni non ancora governate (**Registra app**),
+  * richieste senza prezzo (**Imposta i prezzi**),
+  * un tasso di errore abbastanza alto da essere segnalato (**Vedi richieste**),
+  * esecuzioni dei workflow fallite o scadute (**Vedi esecuzioni**).
+* **Costi totali**, **Inferenze totali**, **Token in ingresso totali** e **Token in uscita totali** riassumono il periodo. I costi sono mostrati nella valuta di riferimento.
+* **Composizione dei costi** elenca i costi registrati nel periodo per fonte, con il totale. **Apri il registro dei costi** apre la scheda **Costi**.
+* **Stato della governance** mostra **Copertura dei costi**, **Richieste senza prezzo**, **Tasso di errore** e **Tasso di cache hit**.
+* **Applicazioni principali** elenca le applicazioni più attive per richieste. **Vedi tutte** apre la scheda **Applicazioni**.
+* **Abbonamenti dei provider**, in alto a destra, apre gli abbonamenti dei tuoi connettori in **Impostazioni** → **Connettori**.
+
+## Utilizzo {#usage}
+
+La scheda **Utilizzo** contiene tutti i grafici. Scegli il tipo di traffico in alto:
+
+| Tipo | Gruppi di grafici |
+|---|---|
+| **API** | **Volume** (token e inferenze), **Velocità** (token al secondo, tempo al primo token) ed **Economia unitaria** (costi, costo per inferenza, costo per modello). |
+| **Conversazioni** | **Engagement** (utenti attivi, conversazioni attive, messaggi degli utenti) e **Qualità** (argomenti e sentiment). |
+
+## Applicazioni {#applications}
+
+L'inventario ha un interruttore di stato (**Tutte**, **Approvate**, **In attesa di revisione**, **Bloccate**, **Non registrate**, ciascuna con il proprio conteggio) e una casella di ricerca che corrisponde a nome, chiave, proprietario o tag. Ogni riga ha un menu azioni: **Modifica** oppure **Registra**, **Vedi le sue richieste**, **Copia la chiave** ed **Elimina**. **Registra applicazione** e **Modifica** aprono l'applicazione in un pannello affiancato all'elenco.
+
+Un'applicazione **Bloccata** e un'applicazione con il livello di rischio **Inaccettabile** vengono rifiutate. Vedi [Governa le applicazioni AI](/operational-guides/govern-ai-applications) per sapere che cosa fa ogni impostazione.
+
+## Audit log {#audit-log}
+
+L'elenco delle richieste ha un interruttore per l'esito: **Tutte**, **Errori** o **Senza prezzo**. Le colonne sono:
+
+| Colonna | Descrizione |
+|---|---|
+| **Data e ora** | Quando è stata fatta la richiesta. |
+| **Modello** | Il modello che l'ha gestita. |
+| **Applicazione** | L'applicazione a cui è stata attribuita la richiesta, oppure **Diretta** se non ne aveva una. |
+| **Token** | Token in ingresso → token in uscita. |
+| **Costi** | Il costo della richiesta, nella valuta di riferimento. |
+| **TTFT** | Tempo al primo token. |
+| **Latenza E2E** | Tempo totale dalla richiesta alla risposta completa. |
+| **Velocità** | Velocità di generazione in token al secondo. |
+| **Concluso** | Come si è chiusa la risposta: **Completata**, **Troncata**, **Chiamata strumenti** o **Filtrata**. |
+
+Seleziona una riga per aprire la richiesta in un pannello affiancato all'elenco. Il pannello mostra lo stato e l'operazione, l'origine (modello, applicazione, touchpoint, utente, sessione), utilizzo e costo, prestazioni e, quando il tracciamento del modello li ha registrati, il corpo della richiesta e della risposta.
+
+**Esecuzioni dei workflow** elenca ogni esecuzione con **Avviata**, **Stato**, **Workflow**, **Durata** ed **Errore**.
+
+**Esporta** scarica in CSV le righe che corrispondono ai filtri correnti.
+
+## Costi {#costs}
+
+La scheda **Costi**, intitolata **Registro dei costi**, serve a registrare quanto costa far funzionare la tua AI, dai prezzi dei modelli all'hardware, così che Governance possa riportare i costi totali. Mostra da dove provengono i costi (**Runtime infrastrutturale**, **Struttura e gestione**, **Cespiti ammortizzati**, **Abbonamenti dei provider**), con **Costi totali** e **Copertura dei costi**, e ha quattro sezioni: **Storico delle tariffe**, **Costi registrati**, **Cespiti ammortizzati** e **Pool di nodi**. **Importi in**, in alto a destra, imposta la valuta in cui vengono mostrati tutti i costi di governance.
+
+## Filtri {#filters}
+
+Seleziona **Filtri** nella barra degli strumenti per aprire il pannello **Filtri**. Il pannello elenca solo i filtri che si applicano alla scheda aperta:
+
+| Filtro | Schede | Opzioni |
+|---|---|---|
+| **Touchpoint** | Panoramica, Utilizzo, Audit log | Fino a quattro touchpoint. Non disponibile mentre è selezionato un modello. |
+| **Modelli** | Panoramica, Utilizzo, Audit log | Fino a quattro modelli. Non disponibile mentre è selezionato un touchpoint, né per l'utilizzo conversazionale. |
+| **Applicazioni** | Panoramica, Utilizzo, Audit log | Fino a quattro applicazioni. Non disponibile per l'utilizzo conversazionale. |
+| **Periodo** | Tutte le schede tranne Costi | *Ultime 24 ore*, *Ultimi 7 giorni*, *Ultimi 30 giorni* (predefinito), *Ultimi 3 mesi*, *Ultimi 6 mesi*, *Ultimo anno*, *Sempre*. |
+
+Le modifiche hanno effetto solo quando selezioni **Applica**. **Pulisci** reimposta i filtri della scheda aperta. Il pulsante **Filtri** mostra quanti filtri sono attivi.

@@ -1,0 +1,379 @@
+---
+sidebar_position: 9
+sidebar_label: Usa Chat
+type: how-to
+audience: [user]
+---
+
+# Usa Chat
+
+**Chat**, la scheda su cui si apre la Control Room, è dove tu e i tuoi colleghi parlate con Rational AI: per impostazione predefinita con l'**assistente del workspace**, oppure con qualsiasi touchpoint che puoi usare.
+
+:::note[A chi è rivolta Chat]
+Chat è pensata per le persone della tua organizzazione che accedono alla Control Room. Ogni utente che ha effettuato l'accesso può aprirla: non richiede un modulo di licenza né un permesso specifico. I tuoi clienti non vedono mai questa pagina. Raggiungono un [touchpoint](/operational-guides/configure-touchpoints) attraverso i suoi canali (un widget sul sito, Telegram, email e così via), e il personale esamina quelle conversazioni in [Conversazioni](/operational-guides/conversations).
+
+Ogni chat è collegata a un touchpoint, che decide il modello, la knowledge e le opzioni disponibili. L'assistente del workspace è il touchpoint che Rational AI crea per ogni workspace: nel selettore compare come **Rational Chat**.
+:::
+
+## Chat e le altre chat {#chat-and-the-other-chats}
+
+In Rational AI diverse parti hanno una chat. Questa guida riguarda solo **Chat**. Una Knowledge ha un proprio pannello **Chat** nella sua pagina, un progetto BI ha una chat AI accanto alle dashboard, [Conversazioni](/operational-guides/conversations) è dove il personale esamina e prende in carico le conversazioni che i touchpoint hanno con i tuoi utenti, e gli Agenti hanno chat proprie.
+
+Chat e la chat dentro una Knowledge usano la stessa vista della conversazione, quindi risposte, fonti, versioni, Canvas ed esportazione funzionano allo stesso modo. Si differenziano così:
+
+| | Chat | Chat dentro una Knowledge |
+|---|---|---|
+| **Dove** | La scheda **Chat** | **Chat** nella pagina di una Knowledge |
+| **Chi può aprirla** | Ogni utente che ha effettuato l'accesso | Le persone che possono aprire quella Knowledge (richiede il modulo Knowledge nella tua licenza) |
+| **Touchpoint** | L'assistente del workspace (**Rational Chat**) per impostazione predefinita, oppure qualsiasi touchpoint attivo che puoi usare | Il touchpoint della Knowledge |
+| **Elenco delle chat** | Le tue chat, raggruppate per giorno. Gli amministratori e i ruoli che possono vedere tutte le conversazioni vedono ogni chat del workspace | Solo le chat con il touchpoint della Knowledge |
+| **Contesto inviato con ogni messaggio** | Quello che aggiungi nel composer | I filtri attuali della Knowledge (categorie, tag, relazioni) e i nodi selezionati nel grafo |
+| **Opzioni del composer** | Allegati, Canvas, **Modalità avanzata**, **Skill** e il livello di ragionamento, più **Knowledge base**, **Ricerca web**, **Ricerca approfondita**, **Conversazione vocale**, l'elenco dei modelli e **Memoria** | Allegati, Canvas, **Modalità avanzata**, **Skill** e il livello di ragionamento. Nessuna **Knowledge base**, **Ricerca web**, **Ricerca approfondita**, **Conversazione vocale**, elenco dei modelli o **Memoria** |
+
+Per chattare con una sola Knowledge e inviare i filtri e la selezione attuali con ogni domanda, usa il suo pannello. Vedi [Avvia una chat con la tua Knowledge](/operational-guides/create-knowledge#start-a-chat-with-your-knowledge).
+
+## Prerequisiti {#prerequisites}
+
+- **Un account della Control Room.** Chiunque acceda può aprire **Chat** e avviare una chat.
+- **Per continuare a scrivere in una chat:** un ruolo con **Modifica** su **Conversazioni**. Senza, puoi avviare una chat ma non inviare altri messaggi, dettare, valutare, rigenerare, modificare o creare rami.
+- **Un assistente del workspace funzionante.** Richiede un modello conversazionale predefinito attivo nel [Registro modelli AI](/operational-guides/ai-model-registry-features). Se non riesce ad avviarsi, la pagina mostra *"Impossibile caricare l’assistente predefinito."* e puoi comunque scegliere un altro touchpoint.
+- **Per gli allegati:** immagini, PDF, testo, Markdown, CSV, JSON, o file Word, Excel e PowerPoint in formato `.docx`, `.xlsx` e `.pptx`.
+
+## Avvia una nuova chat {#start-a-new-chat}
+
+La pagina Chat si apre sull'assistente del workspace, pronta per una nuova chat.
+
+1. Seleziona **Nuova chat**. Parte sempre dall'assistente del workspace.
+2. Per parlare con un altro touchpoint, seleziona il nome dell'assistente in alto nella pagina e scegline uno. **Rational Chat** (l'assistente del workspace) compare per primo, seguito dai touchpoint attivi che puoi usare, in ordine alfabetico.
+3. Sopra il composer compare un saluto con il tuo nome, per esempio *"Buonasera, Alex"* o *"Cosa hai in mente?"*. Cambia in base all'ora del giorno.
+4. Scrivi la domanda. Se il touchpoint propone domande suggerite, sotto il composer ne compaiono fino a tre: selezionandone una la inserisci nella casella del messaggio, e la invii.
+
+Non viene creato nulla finché non invii il primo messaggio.
+
+<img
+  src={require('@site/static/img/screens/chat-greeting.png').default}
+  alt="Una nuova chat che si apre con un saluto personalizzato e legato all'ora del giorno"
+  style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Una nuova chat si apre con un saluto in base all'ora del giorno.*
+
+## Componi la richiesta nel composer {#shape-your-request-in-the-composer}
+
+Tutto ciò che cambia il modo in cui una richiesta viene gestita si trova nel composer, un'unica casella di messaggio condivisa dalla schermata della nuova chat e da ogni conversazione. Il pulsante **+** (*"Apri menu strumenti"*) apre le opzioni; ogni opzione attivata compare come chip nel composer, e il suo **✕** la disattiva di nuovo.
+
+| Opzione | Cosa fa |
+|--------|--------------|
+| **Aggiungi file e foto** | Allega file al messaggio. Vedi [Allega file a un messaggio](#attach-files-to-a-message). |
+| **Allega pagina** | Allega la pagina web acquisita dall'estensione del browser di Rational AI. Compare solo quando ce n'è una. |
+| **Knowledge base** | Scegli in quali knowledge cerca l'assistente, oppure vedi quali può usare. Vedi [Scegli la knowledge da cercare](#choose-the-knowledge-to-search). |
+| **Ricerca web** | Fa cercare all'assistente informazioni sul web per questa richiesta. Funziona solo con l'assistente del workspace. |
+| **Ricerca approfondita** | Fa analizzare all'assistente una domanda in profondità, su molte fonti. Funziona solo con l'assistente del workspace, e solo quando la sua **Modalità Canvas** è attiva. |
+| **Canvas** | Genera una pagina web o un design nel pannello [Canvas](/operational-guides/agent-skills#preview-web-pages-in-canvas) accanto alla chat. Viene offerta quando la **Modalità Canvas** del touchpoint è attiva. |
+| **Conversazione vocale** | Parli con l'assistente a voce alta: ti ascolta, risponde e legge la risposta. Nella schermata della nuova chat è offerta solo per l'assistente del workspace. |
+| **Modalità avanzata** | Mostra i dettagli tecnici alla base di ogni risposta. Vedi [Segui come è stata costruita una risposta](#follow-how-an-answer-was-built). |
+| **Memoria** | In una nuova chat con un touchpoint che conserva la [memoria](/operational-guides/touchpoint-memory), la avvia con la memoria disattivata (il chip riporta **Memoria disattivata**). |
+| **Skill** | Scegli una skill per questa richiesta. È la stessa lista che ottieni digitando `/`. |
+| **Strumenti** | In una nuova chat, vedi quali strumenti può usare l'assistente. |
+
+Le opzioni che il touchpoint non offre non compaiono. Mentre una risposta è in generazione, il pulsante di invio diventa **Interrompi generazione**; il testo scritto fino a quel momento viene conservato, con *"Generazione interrotta prima che la risposta fosse completata."* e **Rigenera risposta** sotto.
+
+### Scegli il modello e il livello di ragionamento {#choose-the-model-and-reasoning-level}
+
+Il pulsante accanto al pulsante di invio (*"Modello e ragionamento"*) mostra il modello e il livello di ragionamento in uso, per esempio *gpt-5, Medium*. Selezionalo per cambiarli.
+
+1. In **Modello**, scegli un altro modello. Usa **Cerca modelli** per trovarne uno. Selezionando di nuovo il modello attuale torni a quello predefinito. Il nuovo modello risponde dal tuo messaggio successivo.
+2. In **Ragionamento**, scegli quanto a fondo il modello ragiona prima di rispondere: **Disattivato**, **Minimal**, **Basso**, **Medio**, **Alto**, **XHigh** o **Max**. Vengono mostrati solo i livelli supportati dal modello. Selezionando di nuovo il livello evidenziato torni al valore predefinito del touchpoint.
+
+:::note[Il touchpoint decide cosa puoi cambiare]
+Puoi scegliere il modello solo nelle tue chat con l'assistente del workspace. In altre chat l'elenco può comparire, ma la modifica viene rifiutata con *"Non è stato possibile salvare la modifica"*. Il livello di ragionamento può essere cambiato su qualsiasi touchpoint il cui proprietario lo consente; altrimenti il popover mostra il livello come *"… impostato dall'assistente"*. In entrambi i casi la scelta vale solo per questa conversazione. Vedi [Regola la generazione delle risposte](/operational-guides/touchpoint-generation).
+:::
+
+### Scegli la knowledge da cercare {#choose-the-knowledge-to-search}
+
+Nelle tue chat con l'assistente del workspace decidi in quali delle tue Knowledge cerca una richiesta.
+
+1. Apri **+** → **Knowledge base**.
+2. Seleziona le Knowledge da usare; **Cerca knowledge base** filtra un elenco lungo, e il contatore indica quante ne sono selezionate.
+3. Per tornare a cercare in tutto ciò che puoi leggere, seleziona **Usa tutte**.
+
+Il chip mostra il nome della Knowledge, oppure quante ne sono selezionate. La selezione non dà mai accesso a nulla che non puoi già leggere.
+
+Gli altri touchpoint cercano nella knowledge con cui sono stati configurati. Nella schermata della nuova chat, **Knowledge base** la mostra in sola lettura come **Knowledge disponibili**. In una chat esistente con un altro touchpoint il selettore compare comunque, ma la modifica viene rifiutata con *"Non è stato possibile salvare la modifica"*.
+
+### Scegli una skill con `/` {#pick-a-skill-with-}
+
+Digita `/` in un composer vuoto per vedere l'elenco delle skill attive sul touchpoint, continua a digitare per filtrarlo e premi **Invio** per sceglierne una. La skill diventa un chip all'inizio del tuo messaggio, e l'assistente riceve l'istruzione di seguirla per questa richiesta. Vedi [Scegli una skill con `/`](/operational-guides/agent-skills#pick-a-skill-with-).
+
+## Invia e metti in coda i messaggi {#send-and-queue-messages}
+
+Non devi aspettare che una risposta finisca prima di mettere in fila il tuo prossimo pensiero.
+
+1. Scrivi il messaggio nel composer e invialo.
+2. Mentre l'assistente sta ancora generando la risposta, un secondo messaggio non può essere inviato in parallelo. Viene invece **messo in coda** e mostrato come chip sotto **In coda**, sopra la casella di scrittura.
+3. I messaggi in coda vengono inviati **automaticamente e in ordine** non appena il turno precedente è completato.
+4. Per annullare un invio in attesa, passa sopra il chip e seleziona la **✕** (*"Rimuovi dalla coda"*). Passando il mouse compare anche il suggerimento **"Messaggio in attesa di essere inviato"**.
+
+I messaggi in coda vengono conservati se ricarichi la pagina o passi a un'altra chat.
+
+## Allega file a un messaggio {#attach-files-to-a-message}
+
+Allega immagini e documenti a un messaggio, così l'assistente può usarli direttamente nella risposta.
+
+1. Apri **+** → **Aggiungi file e foto**, oppure trascina i file nel composer. Sono accettati file immagine, PDF, testo, Markdown, CSV e JSON, oltre ai file Word, Excel e PowerPoint in formato `.docx`, `.xlsx` e `.pptx` (non i formati più vecchi `.doc`, `.xls` e `.ppt`). Ogni file può arrivare fino a 25 MB; vedi [Limiti e quote](/reference/limits#chat-and-attachments).
+2. Durante il caricamento, nel composer compare una scheda per ciascun allegato; il pulsante di invio attende che tutti i caricamenti siano terminati.
+3. Invia il messaggio. Gli allegati compaiono sopra il tuo messaggio nella cronologia.
+
+L'assistente vede le immagini quando il modello le supporta, e legge il testo dei documenti.
+
+:::note[Il touchpoint decide se i file sono consentiti]
+**Aggiungi file e foto** compare solo quando il touchpoint consente gli allegati. Un file di un altro tipo viene rifiutato con *"Tipo di file non supportato. Allega un'immagine, un PDF o un documento di testo."*
+:::
+
+### Apri un allegato {#open-an-attachment}
+
+L'allegato di un messaggio è un pulsante: selezionalo per ottenere il file stesso, non solo il suo nome. Si apre in una nuova scheda del browser, dove il browser mostra l'anteprima di ciò che può (PDF, immagini, testo) e scarica il resto.
+
+Questo conta soprattutto per i file di cui non hai mai avuto una copia locale. Quando una conversazione arriva da un [canale](/operational-guides/manage-channels) (un documento inviato via [canale email](/operational-guides/connect-email), un PDF mandato a un [bot Telegram](/operational-guides/connect-telegram)), l'allegato è l'unico modo per arrivare a ciò che ha inviato il mittente.
+
+:::note[I corpus grandi vanno in una Knowledge]
+L'estrazione dei documenti è limitata da soglie di dimensione, pagine e caratteri. Per documenti grandi o numerosi su cui vuoi che l'assistente faccia ricerche, conservali in una [Knowledge](/operational-guides/create-knowledge). Rational AI indicizza quel contenuto per risposte basate sul recupero di informazioni ([RAG](/concepts/RAG)), in cui l'assistente cerca i passaggi rilevanti al momento della risposta invece di leggere interi file in linea.
+:::
+
+## Segui come è stata costruita una risposta {#follow-how-an-answer-was-built}
+
+Mentre l'assistente lavora, una riga sopra la risposta riporta *"Rational AI sta pensando..."* con un riepilogo in tempo reale di ciò che sta facendo. Quando ha finito, tutto ciò che ha fatto prima di rispondere (ragionamento, ricerche nella knowledge, ricerche web, strumenti ed esecuzioni di skill) viene raccolto in quell'unica riga, per esempio *"Ragionato per 8s"* o *"Ragionato per 12s, usata la skill xlsx, 4 passaggi"*. Selezionala per leggere i passaggi in ordine.
+
+- Una **ricerca nella knowledge** riporta *"Cercato in 2 knowledge base e letto 5 documenti"*.
+- Uno **strumento** riporta *"Usato …"* con il nome dello strumento.
+- Un'**esecuzione di una skill** elenca i suoi passaggi in parole semplici; vedi [Segui cosa è successo](/operational-guides/agent-skills#follow-what-happened).
+- Un'esecuzione interrotta a metà ha come titolo *"…, fermata al passaggio …"*.
+
+### Vedi i dettagli tecnici con la modalità avanzata {#see-the-technical-detail-with-advanced-mode}
+
+Attiva **+** → **Modalità avanzata** quando devi capire una risposta o individuarne i problemi. I passaggi mostrano allora i dettagli tecnici, incluse le tre fasi di ogni ricerca nella knowledge:
+
+| Fase | Cosa succede |
+|-------|--------------|
+| **Recupero iniziale** | Trova i documenti più simili alla domanda con la ricerca semantica. |
+| **Espansione del grafo** | Aggiunge documenti collegati seguendo il grafo della knowledge a partire da quei risultati. |
+| **Selezione finale** | Ordina tutto per rilevanza e tiene ciò che entra nella finestra di contesto del modello. |
+
+Quando una risposta fallisce, la modalità avanzata mostra anche l'errore grezzo al posto di *"Non è stato possibile completare la risposta."*
+
+:::note[Solo gli amministratori vedono cosa ha ricevuto e restituito uno strumento]
+Per tutti gli altri, le chiamate agli strumenti mantengono il nome ma perdono argomenti e output grezzo: in chat, in modalità avanzata e nella chat esportata. Gli argomenti degli strumenti possono contenere identificativi interni o dati che chi chatta non dovrebbe vedere. I widget mostrati dalla chat e gli strumenti eseguiti nel browser non sono interessati.
+:::
+
+## Vedi le fonti di una risposta {#see-the-sources-behind-an-answer}
+
+Quando una risposta ha usato la tua knowledge o il web, sotto di essa compare una pillola delle fonti, che indica quante risorse della knowledge e quante pagine web sono state date al modello.
+
+1. Seleziona la pillola. Il pannello **Fonti** si apre accanto alla chat (sopra di essa, su una finestra stretta).
+2. In **Risorse interne**, ogni voce mostra la Knowledge, la risorsa e un estratto; selezionala per aprire la risorsa nella sua Knowledge.
+3. In **Web**, ogni voce mostra il sito, il titolo e lo snippet; selezionala per aprire la pagina.
+
+Seleziona di nuovo la pillola, oppure **Chiudi**, per nascondere il pannello.
+
+## Lavora con le risposte: azioni e rami {#work-with-answers-actions-and-branches}
+
+Oltre a leggere una risposta, puoi rigenerarla, riformulare la tua domanda, creare un ramo in una nuova chat e confrontare versioni diverse.
+
+Sotto ogni messaggio dell'AI ci sono **Copia**, la coppia pollice in su / pollice in giù per il feedback, **Rigenera risposta**, la pillola delle fonti e le frecce **‹ ›** con un contatore di versioni (per esempio **1/2**) quando esistono alternative. Il menu **⋯** mostra quale modello ha generato la risposta e aggiunge **Leggi ad alta voce**, **Verifica risposta** e **Crea un ramo in una nuova chat**.
+
+:::note[Alcune azioni dipendono dal touchpoint]
+Rigenerare, modificare e verificare sono attivati touchpoint per touchpoint. Inviare altri messaggi, valutare, rigenerare, modificare e creare rami richiedono **Modifica** su **Conversazioni**. Un'azione non disponibile non compare.
+:::
+
+### Genera una risposta alternativa {#generate-an-alternative-answer}
+
+Usa questa funzione quando una risposta va bene ma vuoi vedere come l'assistente la formulerebbe in modo diverso.
+
+1. Su un messaggio dell'AI, seleziona **Rigenera risposta**.
+2. Viene aggiunta una nuova versione e il contatore si aggiorna (per esempio **2/2**). La chat passa automaticamente alla versione più recente.
+3. Usa le frecce **‹ ›** (**Versione precedente**, **Versione successiva**) per spostarti tra le versioni. Se torni a una versione più vecchia e la rigeneri di nuovo, resti sulla versione che stavi guardando.
+
+### Modifica il messaggio per creare un ramo {#edit-your-message-to-branch}
+
+Usa questa funzione quando vuoi riformulare una domanda ed esplorare un'altra linea di conversazione senza perdere l'originale.
+
+1. Su uno dei tuoi messaggi, seleziona **Modifica**.
+2. Si apre una casella di modifica in linea con il suggerimento *"Saving creates a new version of this conversation."*
+3. Modifica il testo e seleziona **Salva** (oppure premi Invio).
+4. Viene creata una nuova versione e l'assistente risponde a quella. Gli allegati del messaggio originale vengono riportati nella nuova versione, quindi restano dopo la modifica.
+
+### Crea un ramo in una nuova chat {#branch-into-a-new-chat}
+
+Le versioni tengono le alternative dentro una stessa chat. Quando vuoi portare una conversazione da un'altra parte (provare un approccio diverso, passare una copia a te stesso per un altro compito), crea un ramo in una chat tutta sua.
+
+1. Su un messaggio dell'AI completato, apri **⋯** → **Crea un ramo in una nuova chat**.
+2. Si apre una nuova chat con lo stesso titolo e touchpoint, che contiene la conversazione fino a quella risposta compresa (solo le versioni che stavi guardando, non le alternative).
+3. Prosegui da lì. La chat originale non viene modificata.
+
+:::note[I file restano nella chat originale]
+La nuova chat mantiene la scelta del modello e delle Knowledge, ma gli allegati e i file generati restano nella chat originale, e così anche impostazioni come il livello di ragionamento o la memoria disattivata.
+:::
+
+### Valuta una risposta {#rate-an-answer}
+
+Fai sapere ai proprietari del touchpoint se una risposta è stata utile. I due pulsanti pollice nella riga delle azioni aprono una breve finestra di dialogo invece di registrare un voto silenzioso, così una valutazione arriva sempre con il motivo.
+
+1. Su un messaggio dell'AI, seleziona **pollice in su** (*Fornisci un feedback positivo*) oppure **pollice in giù** (*Fornisci un feedback negativo*).
+2. Per un feedback negativo, seleziona tutti i motivi che si applicano in **Aggiungi dettagli**: **Confusionario**, **Falso**, **Offensivo**, **Inutile** oppure **Altro**.
+3. Aggiungi una nota facoltativa: *"Cosa ti è piaciuto di questa risposta?"* per un feedback positivo, *"Cosa non ti è piaciuto di questa risposta?"* per uno negativo.
+4. Seleziona **Invia**. Un messaggio **Grazie per il tuo feedback** lo conferma, e il pollice che hai scelto passa alla sua icona piena, così vedi a colpo d'occhio quali messaggi hai valutato.
+
+:::note[Annullare non invia nulla]
+Chiudere la finestra con **Annulla**, con la **✕** o con il tasto Esc non invia nulla. Aprire la finestra da sola non registra alcuna valutazione. Solo **Invia** la trasmette, e se l'invio fallisce ricevi un avviso (*"Impossibile inviare il feedback. Riprova"*) invece di credere che sia andato a buon fine.
+:::
+
+## Quando una risposta si interrompe presto {#when-an-answer-stops-early}
+
+Una risposta che finisce prima del dovuto spiega il motivo in una striscia sotto il testo, e la maggior parte delle strisce ha un pulsante **Rigenera risposta**.
+
+| Messaggio | Cosa è successo |
+|---------|---------------|
+| *"Generazione interrotta prima che la risposta fosse completata."* | Hai selezionato **Interrompi generazione**. La risposta parziale viene conservata. |
+| *"Risposta troncata: il modello ha raggiunto il limite di output."* | La risposta ha raggiunto la lunghezza massima. |
+| *"Risposta troncata: la generazione ha superato il tempo massimo."* | La risposta ha richiesto troppo tempo ed è stata interrotta. |
+| *"Generazione interrotta: il modello ha esaurito i token disponibili prima di scrivere una risposta."* | Il modello ha speso tutto il suo budget a ragionare. |
+| *"Generazione interrotta dopo … token: il modello continuava a ripetersi."* | Il modello ha iniziato a ripetersi ed è stato fermato. |
+| *"Generazione interrotta: il tool “…” ha esaurito il tempo a disposizione a ogni tentativo."* | Uno strumento non ha mai risposto in tempo. |
+| *"Generazione interrotta perché il tool “…” non è riuscito per … volte consecutive."* | Uno strumento ha continuato a fallire; controlla il passaggio non riuscito nella timeline prima di riprovare. |
+| *"Questo assistente non può rispondere: …"* | Un amministratore ha bloccato l'assistente o il suo modello. Non c'è nulla da rigenerare. |
+| *"Non è stato possibile completare la risposta."* | Qualsiasi altro errore. Seleziona **Riprova**. |
+
+Se lo stesso messaggio continua a ripresentarsi, il proprietario del touchpoint può modificarne i limiti. Vedi [Regola la generazione delle risposte](/operational-guides/touchpoint-generation#what-users-see-when-generation-stops-early).
+
+## Verifica una risposta con la tua knowledge {#check-an-answer-against-your-knowledge}
+
+Sui touchpoint con la verifica della risposta attiva e lo strumento di ricerca nella knowledge abilitato, puoi controllare una risposta frase per frase rispetto ai documenti della knowledge recuperati per la conversazione.
+
+1. Su un messaggio dell'AI, apri **⋯** → **Verifica risposta**. Mentre il controllo è in corso compare **Verifica in corso**.
+2. Ogni frase controllata della risposta viene evidenziata: **verde** per **Supportata**, **giallo** per **Non supportata**, **rosso** per **Smentita**.
+3. Passa il mouse su una frase evidenziata per vederne lo stato.
+4. Seleziona una frase evidenziata per aprire **Verifica della risposta**. Le frasi sono raggruppate sotto **Da controllare** (smentite e non supportate) e **Supportate**. Per la frase selezionata, **Fonti** elenca gli estratti con cui è stata confrontata, ciascuno con la sua Knowledge e un'etichetta **corrispondenza alta**, **corrispondenza media** oppure **corrispondenza bassa**.
+
+Seleziona di nuovo **Verifica risposta** per nascondere le evidenziazioni. Se nella risposta non c'è nulla da controllare, la riga delle azioni mostra **Nessuna frase verificabile**. Se il controllo fallisce, seleziona **Verifica non riuscita, riprova**.
+
+:::note[Non supportato non vuol dire sbagliato]
+La verifica misura quanto la risposta è vicina agli estratti delle Knowledge consultate, non se è vera. Tratta una frase non supportata o smentita come un invito a guardare meglio, soprattutto per ciò che la risposta ha preso dalla conoscenza generale invece che dai tuoi documenti.
+:::
+
+## Lavora con i file creati dall'assistente {#work-with-the-files-the-assistant-creates}
+
+I documenti che l'assistente scrive per te (un report Word da una skill, una pagina costruita in Canvas) si aprono nel pannello **Canvas** accanto alla chat. Seleziona il nome del file in alto nel pannello per aprire il suo menu:
+
+| Azione | Cosa fa |
+|--------|--------------|
+| **Scarica come Word / Excel / PowerPoint** (oppure **Scarica**) | Salva il file. |
+| **Scarica come PDF** | Converte un file Office in PDF. Disponibile quando l'editor Office è installato. |
+| **Rinomina** | Rinomina un documento creato nella conversazione. |
+| **Apri in una nuova scheda** | Apre un file Office nella sua scheda del browser. |
+| **Salva nella knowledge** | Aggiunge una copia del file a una knowledge. |
+| **Cambia file** | Passa a un altro file della conversazione, creato o allegato. |
+| **Elimina** | Elimina un documento creato nella conversazione, con le sue versioni precedenti. Non si può annullare. |
+
+Le frecce **‹ ›** nell'intestazione del pannello spostano tra le versioni del file.
+
+### Salva un file in una knowledge {#save-a-file-to-a-knowledge}
+
+Un file importante non deve restare sepolto in una chat.
+
+1. Seleziona **Salva nella knowledge** nel menu del file, oppure sulla scheda del file sotto la risposta.
+2. Scegli la knowledge (usa **Cerca knowledge** se ne hai molte). Il file viene salvato non appena lo selezioni.
+3. Un avviso *"Salvato in …"* lo conferma, con **Apri nella knowledge**.
+
+Una copia viene aggiunta alla knowledge ed elaborata come qualsiasi caricamento; il file resta anche nella conversazione. **Salva nella knowledge** compare solo se puoi modificare almeno una knowledge.
+
+### Modifica i documenti Office {#edit-office-documents}
+
+Quando l'editor Office è disponibile nella tua installazione, i file Word, Excel e PowerPoint si aprono per la modifica direttamente nel pannello Canvas.
+
+- La barra degli strumenti offre **Allineamento**, **Elenchi**, **Inserisci** (**Tabella**, **Collegamento**, **Interruzione di pagina**, **Intestazione e piè di pagina**), **Commento** e **Altri strumenti** per i colori del testo e gli stili dei titoli. Su un pannello stretto, più controlli passano in **Altri strumenti**.
+- Il menu della modalità in alto a destra passa tra **Modifica**, **Suggerimenti** (le modifiche vengono tracciate per la revisione) e **Visualizzazione**.
+- *"Ultimo salvataggio alle …"* nel menu del file indica quando le tue modifiche sono state salvate.
+
+:::note[Senza l'editor hai comunque un'anteprima]
+Se l'editor Office non è installato, i file Word ed Excel mostrano un'anteprima in sola lettura e gli altri formati offrono il download. Senza il permesso di aggiornare le conversazioni, il documento si apre in sola lettura, con un pulsante **Scarica**.
+:::
+
+## Ascolta e detta {#listen-and-dictate}
+
+La chat può leggere le risposte ad alta voce e ricevere messaggi a voce invece di farti scrivere.
+
+### Leggi una risposta ad alta voce {#read-an-answer-aloud}
+
+Ogni messaggio dell'assistente ha **Leggi ad alta voce** nel suo menu **⋯**. Selezionalo e la risposta viene letta, con un equalizzatore visibile durante la riproduzione.
+
+Il Markdown viene rimosso prima della lettura, quindi i blocchi di codice e i target dei link non vengono pronunciati carattere per carattere.
+
+:::note[La voce segue la risposta, non l'interfaccia]
+Una risposta in italiano viene letta in italiano anche se usi Rational AI in inglese. Viene letta la lingua del testo, non la lingua dell'interfaccia.
+
+:::
+
+### Detta un messaggio {#dictate-a-message}
+
+Premi il pulsante **mic** nel composer, oppure tieni premuto **Ctrl+Shift+D**. Il composer diventa una barra di registrazione con una forma d'onda in tempo reale e tre azioni: scarta, interrompi e invia.
+
+- **Interrompi** inserisce la trascrizione nella casella del messaggio, così puoi correggerla prima di inviarla.
+- **Invia** la spedisce subito.
+
+La dettatura funziona in entrambi i composer: in una conversazione esistente e nella schermata della nuova chat, dove la trascrizione avvia la chat esattamente come un testo digitato.
+
+### Imposta la lingua audio {#set-the-audio-language}
+
+La freccia accanto al pulsante mic apre **Lingua audio**, con tre opzioni: **Rileva automaticamente** (predefinita), **Italiano** oppure **Inglese**. La tua scelta viene ricordata e vale sia per la dettatura sia per la lettura ad alta voce.
+
+Con **Rileva automaticamente**, ogni registrazione viene riconosciuta mentre viene trascritta, e la lingua di una risposta viene riconosciuta dalla risposta stessa, ricadendo sulle tue impostazioni di lingua solo quando un messaggio è troppo breve per essere identificato.
+
+Scegliere **Italiano** o **Inglese** in modo esplicito salta la fase di riconoscimento, quindi la trascrizione è più rapida. Se detti sempre nella stessa lingua, fissala.
+
+In una chat esistente, la dettatura richiede lo stesso permesso **Modifica** su **Conversazioni** della scrittura.
+
+## Continua una conversazione lunga {#keep-going-in-a-long-conversation}
+
+Un modello può leggere solo una certa quantità di conversazione alla volta. Quando una chat diventa così lunga, l'assistente di solito continua da un riepilogo dei messaggi precedenti, e un separatore segna il punto: *"L'assistente ora lavora su un riassunto dei messaggi qui sopra"*. Tutto ciò che sta sopra è ancora nella tua cronologia; l'assistente lo legge in forma condensata.
+
+Alcuni touchpoint si fermano invece: la chat dice *"Questa conversazione è lunga quanto l'assistente riesce a seguire."* e propone **Nuova conversazione**. È il proprietario del touchpoint a scegliere quale comportamento. Vedi [Memoria e chat lunghe](/operational-guides/touchpoint-memory#choose-what-happens-when-a-conversation-gets-too-long).
+
+## Trova, rinomina ed esporta le chat {#find-rename-and-export-your-chats}
+
+L'elenco delle chat mostra le tue chat. Gli amministratori e i ruoli che possono vedere tutte le conversazioni (come il ruolo predefinito **Manager**) vedono ogni chat del workspace, comprese le conversazioni che i touchpoint hanno con i tuoi clienti. Le chat sono raggruppate per il giorno in cui sono iniziate: **Oggi**, **Ieri**, **Ultimi 7 giorni** e **Meno recenti**. Le chat senza messaggi non sono elencate. Usa la casella di ricerca per trovarne una in base al contenuto. Un puntino accanto a una chat indica se **Serve la tua approvazione**, se è **In corso**, se è **Fermata per un errore** oppure se è **Completata, da leggere**.
+
+Il menu **⋯** di ogni chat nell'elenco contiene **Rinomina chat** ed **Elimina**. Seleziona il titolo della chat in alto nella pagina per altre opzioni: **Rinomina**, **Copia link alla chat**, **Esporta chat**, **Memoria** ed **Elimina**. **Copia link alla chat** copia un link che possono aprire solo le persone che possono già leggere la chat.
+
+:::note[Rinominare e l'interruttore Memoria sono riservati agli amministratori]
+Solo gli amministratori possono salvare **Rinomina**, **Genera con AI** e l'interruttore **Memoria**. Per gli altri utenti la modifica viene rifiutata.
+:::
+
+### Rinomina una chat {#rename-a-chat}
+
+Dai a una chat un titolo chiaro, così potrai ritrovarla più tardi. Scrivilo tu oppure lascia che sia l'assistente a dargli un nome.
+
+1. Seleziona **Rinomina chat** nel menu **⋯** della chat nell'elenco, oppure **Rinomina** nel menu del titolo.
+2. Modifica il titolo, oppure seleziona il pulsante con la scintilla (*"Genera con AI"*) accanto al campo. Il titolo generato sostituisce il testo e il campo viene contrassegnato come generato dall'AI.
+3. Seleziona **Salva**.
+
+<img
+  src={require('@site/static/img/screens/chat-rename-ai.png').default}
+  alt="La finestra di dialogo Rinomina chat con il pulsante a scintilla per rigenerare il titolo con l'AI"
+  style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*La finestra di dialogo **Rinomina chat**. Il pulsante a scintilla a destra del campo rigenera il titolo con l'AI.*
+
+### Esporta una chat {#export-a-chat}
+
+Seleziona il titolo della chat, poi **Esporta chat**. Viene scaricato un file JSON con il nome della chat, con i dettagli della chat e ogni evento al suo interno (messaggi, versioni e passaggi), pronto per l'archiviazione o per essere elaborato con i tuoi strumenti.
+
+:::note[Un'esportazione mostra ciò che puoi vedere]
+L'esportazione applica le stesse regole della chat: a meno che tu non sia un amministratore, le chiamate agli strumenti compaiono senza argomenti né output grezzo.
+:::
+
+## Prossimi passi {#next-steps}
+
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): stabilisci cosa può fare ogni assistente nella chat.
+- [Scegli una skill con `/`](/operational-guides/agent-skills#pick-a-skill-with-): usa le skill nelle tue richieste.
+- [Gestisci le conversazioni](/operational-guides/conversations): esamina le conversazioni che i touchpoint hanno con i tuoi utenti.

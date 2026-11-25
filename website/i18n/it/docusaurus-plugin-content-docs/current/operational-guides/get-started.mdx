@@ -1,0 +1,79 @@
+---
+sidebar_position: 0
+sidebar_label: Avvio rapido
+type: tutorial
+audience: [user, builder]
+---
+
+# Inizia con Rational AI
+
+Rational AI è una piattaforma AI che gira sui tuoi server. Tu e i tuoi colleghi la usate dall'AI Control Room, un'app web in cui chattate con assistenti AI, cercate nei documenti dell'azienda e create dashboard. Questa pagina ti porta a una prima risposta, poi mostra a un builder come configurare un assistente che risponde con i tuoi contenuti.
+
+## Inizia a chattare {#start-chatting}
+
+Ogni utente che ha effettuato l'accesso può usare **Chat**, che è la pagina su cui si apre la Control Room.
+
+1. Accedi alla Control Room.
+2. Scrivi una domanda nella casella dei messaggi e inviala. La risposta arriva da **Rational Chat**, l'assistente del workspace.
+3. Per parlare con un altro assistente, seleziona il nome dell'assistente in cima alla pagina e scegli uno dei touchpoint che puoi usare.
+
+<img
+  src={require('@site/static/img/screens/chat-greeting.png').default}
+  alt="La chat di Rational AI, pronta per una domanda"
+  style={{ width: '100%', maxWidth: '720px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+Allegati, fonti, ricerca web e le altre funzioni della chat sono descritti in [Usa Chat](/operational-guides/chat-experience). La Control Room funziona anche su telefono e tablet.
+
+## Crea un assistente con i tuoi contenuti {#build-an-assistant-on-your-own-content}
+
+I builder configurano gli assistenti con cui chattano tutti gli altri. Un assistente risponde con i tuoi contenuti tramite RAG (retrieval-augmented generation): trova i passaggi più pertinenti nei tuoi documenti e scrive la risposta a partire da quelli. Vedi [RAG](/concepts/RAG) per una breve introduzione.
+
+Lavori con quattro elementi, in quest'ordine. Un **modello** genera il testo, e lo aggiungi nel [Registro modelli AI](/operational-guides/ai-model-registry-features). Una **Knowledge** contiene i tuoi contenuti e le regole per cercarli. Un **touchpoint** combina un modello, una Knowledge e gli strumenti in un assistente, e un [canale](/operational-guides/manage-channels) rende un touchpoint disponibile ai tuoi clienti fuori dalla Control Room.
+
+### Prerequisiti {#prerequisites}
+
+- **Il modulo Knowledge nella tua licenza.** Senza di esso, la scheda **Knowledge** non compare.
+- **Un account amministratore, oppure un ruolo con Crea** sulle righe **Registro modelli AI** e **Knowledge**. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Dei contenuti da caricare**: documenti, una FAQ, un foglio di calcolo, qualsiasi contenuto testuale.
+
+### 1. Collega un modello {#1-connect-a-model}
+
+Il tuo assistente ha bisogno di due tipi di modello: un modello di **generazione di testo** per scrivere le risposte, e un modello di **embedding** per trasformare i tuoi contenuti in qualcosa di ricercabile.
+
+1. Vai su **Impostazioni** → **Registro modelli AI** e seleziona **Nuovo**.
+2. Scegli come aggiungere il modello:
+   - **Scegli un modello open source** esegue un modello di Hugging Face sui tuoi server.
+   - **Aggiungi un proxy a un modello di terze parti** usa un provider come OpenAI, Gemini o Anthropic con la tua chiave API. La chiave viene memorizzata in un [connettore](/operational-guides/configure-connectors).
+3. Verifica che un modello di generazione di testo e un modello di embedding risultino **Disponibile**.
+
+Vedi [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features) per tutte le opzioni.
+
+### 2. Crea una Knowledge {#2-create-a-knowledge}
+
+1. Apri la scheda **Knowledge** e seleziona **Nuova** → **Nuova knowledge**. Rational AI la crea con un nome predefinito e apre le sue impostazioni, dove le dai un nome chiaro.
+2. Nella scheda **Ricerca AI**, attiva **Abilita ricerca AI**, scegli il **Modello di embedding** e controlla il **Tipo di chunking** (il valore predefinito è **Chunker ricorsivo**).
+3. Seleziona **Salva**.
+
+Creare una Knowledge crea anche un touchpoint con il suo nome (per esempio *Sales FAQ - Touchpoint* per una Knowledge chiamata *Sales FAQ*), con gli strumenti per effettuare ricerche al suo interno. Vedi [Crea una Knowledge](/operational-guides/create-knowledge).
+
+### 3. Aggiungi i tuoi dati {#3-add-your-data}
+
+Una nuova Knowledge è vuota. Riempila in uno dei due modi:
+
+- **Carica file** nella Knowledge. Vengono divisi in chunk e subito sottoposti a embedding. Vedi [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources).
+- **Collega una fonte**, come un drive condiviso, un sito web o un database. I suoi file vengono elaborati quando la fonte si sincronizza, secondo la sua modalità di sincronizzazione (**Manuale**, **Periodica** o **Automatico**). Vedi [Integra dati esterni](/operational-guides/integrate-data).
+
+### 4. Chatta con il tuo assistente {#4-chat-with-your-assistant}
+
+1. Apri la scheda **Knowledge** e seleziona la tua Knowledge.
+2. Seleziona **Chat**. La chat parte dal touchpoint della Knowledge.
+3. Fai una domanda di cui conosci già la risposta e verifica che la risposta corrisponda ai tuoi contenuti.
+
+I tuoi colleghi raggiungono lo stesso assistente da **Chat**, scegliendo il touchpoint della Knowledge in cima alla pagina. Per cambiarne il modello, il prompt di sistema o gli strumenti, apri **Impostazioni** → **Touchpoint**; vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).
+
+## Prossimi passi {#next-steps}
+
+- [Configura Graph RAG](/operational-guides/configure-rag): regola il modo in cui l'assistente cerca nella tua Knowledge.
+- [Lavora con le conversazioni](/operational-guides/conversations): esamina cosa chiedono le persone ai tuoi assistenti.
+- [Monitora utilizzo, costi e audit log](/operational-guides/governance): vedi chi usa i tuoi modelli e quanto costano (per amministratori).

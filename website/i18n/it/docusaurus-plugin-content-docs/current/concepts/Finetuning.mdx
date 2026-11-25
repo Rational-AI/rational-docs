@@ -1,0 +1,55 @@
+---
+sidebar_position: 10
+sidebar_label: Fine-tuning
+title: Fine-tuning
+description: Cos'è il fine-tuning, quando usarlo invece del retrieval o del prompting, gli approcci principali e come funziona il fine-tuning in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Fine-tuning
+
+Il **fine-tuning** prende un modello già addestrato su dati generali e ampi e ne continua l'[addestramento](/reference/glossary#training) su un dataset più piccolo e mirato. Il risultato è un modello che conserva le capacità generali ma svolge in modo sensibilmente migliore il tuo compito specifico, il tuo dominio o il tuo stile.
+
+L'analogia è quella di assumere un professionista esperto e dargli qualche settimana di formazione su come funziona la tua azienda. Conosce già il suo mestiere; tu adatti quella competenza alle tue esigenze specifiche.
+
+## Quando fare il fine-tuning {#when-to-fine-tune}
+
+Il fine-tuning è uno dei diversi modi per rendere un modello più utile, e non è sempre quello giusto:
+
+* Il **prompting** cambia le istruzioni che dai al modello. È rapido ed economico, e spesso basta.
+* Il **[retrieval (RAG)](./RAG.mdx)** fornisce al modello i fatti giusti al momento della risposta. È la scelta migliore quando la conoscenza manca o cambia.
+* Il **fine-tuning** cambia il modello stesso. È la scelta migliore quando ti servono un formato, un tono o un comportamento coerenti, oppure prestazioni elevate su un compito specializzato che prompting e retrieval non riescono a garantire in modo affidabile.
+
+Una regola pratica: ricorri al retrieval quando al modello manca la **conoscenza**, e al fine-tuning quando gli manca una **skill o un comportamento**.
+
+## Di cosa hai bisogno {#what-you-need}
+
+Un'attività di fine-tuning richiede in genere:
+
+* Un **modello base** da cui partire.
+* Un [dataset di addestramento](/reference/glossary#dataset) di esempi di alta qualità in un formato coerente.
+* Alcuni **parametri di addestramento** che controllano come viene eseguita l'attività.
+
+Qualità e coerenza del dataset contano molto più delle sue dimensioni. Un insieme piccolo e pulito di esempi di solito batte uno grande e rumoroso.
+
+## Fine-tuning in Rational AI {#fine-tuning-in-rational-ai}
+
+La piattaforma offre una sezione dedicata, [Fine-Tuning](../cr/settings/finetuning.mdx), in cui scegli un modello base e un [dataset](../cr/settings/datasets.mdx), imposti i parametri e avvii un'attività. L'attività addestra un piccolo adattatore LoRA sopra il modello base, invece di riscriverlo per intero. Al termine, seleziona **Distribuisci** per rendere disponibile il modello personalizzato nel [Registro modelli AI](../cr/settings/ai-model-registry.mdx), pronto all'uso come qualsiasi altro modello.
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Impostazioni di Fine-Tuning](../cr/settings/finetuning.mdx): avvia e monitora le attività di fine-tuning.
+* [Dataset](../cr/settings/datasets.mdx): costruisci i dati di addestramento di cui un'attività ha bisogno.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+	]}
+/>

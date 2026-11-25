@@ -1,0 +1,65 @@
+---
+title: La tua installazione on-premise
+sidebar_label: La tua installazione on-premise
+description: Cosa Rational AI installa sulla tua macchina, come si aggiorna da sola ogni notte e cosa resta da fare ai tuoi amministratori.
+type: concept
+audience: [admin]
+---
+
+# La tua installazione on-premise
+
+Un'installazione on-premise è Rational AI in esecuzione su una macchina della tua rete, un NVIDIA DGX Spark o un server Ubuntu, invece che sul cloud di Rational AI. Rational AI installa la macchina per te e la mantiene aggiornata. I tuoi amministratori lavorano nella Control Room, come sul cloud.
+
+## Cosa ottieni {#what-you-get}
+
+L'intera piattaforma gira in container su quella macchina, e i tuoi dati restano lì. Rational AI la configura con:
+
+- **Un indirizzo pubblico**, per esempio `https://control-room.<yourcompany>.rational.is`, con un certificato attendibile. Vedi [Raggiungi un'installazione tramite il Rational AI Tunnel](./tunnel).
+- **La licenza**, già attivata. Vedi [Licenza e attivazione](./license).
+- **L'aggiornamento notturno**, attivo.
+
+L'installazione parte **senza modelli**. Una Knowledge richiede un modello di embedding, e Chat richiede un modello per la generazione di testo, prima di funzionare. Un amministratore li aggiunge e li distribuisce in **Impostazioni** → **Registro modelli AI**, sulla GPU della macchina. Vedi [Esegui i modelli sui tuoi server](./run-models-on-premise).
+
+## Come si aggiorna da sola {#how-it-updates-itself}
+
+Ogni notte alle 03:00 la macchina controlla se esiste una release più recente di Rational AI e la installa. Se non c'è, non succede nulla. Ogni aggiornamento segue gli stessi passaggi:
+
+1. **Backup.** L'applicazione si ferma per un momento mentre viene fatta una copia di tutti i suoi dati. La macchina conserva le tre copie più recenti.
+2. **Controlli prima.** Viene eseguito un insieme di controlli sulla release installata.
+3. **Aggiornamento.** La nuova release viene scaricata e avviata.
+4. **Controlli dopo.** Gli stessi controlli vengono eseguiti sulla nuova release.
+5. **Ripristino, se necessario.** Se l'aggiornamento fallisce, oppure un controllo che prima passava ora fallisce, la macchina torna alla release precedente con i dati del backup fatto al passaggio 1.
+
+I controlli arrivano dai tuoi pacchetti di estensioni attivi. Un pacchetto può includere test che chiamano i suoi strumenti come utenti specifici e si aspettano le risposte che quegli utenti dovrebbero ottenere, senza modificare alcun dato. Un controllo già fallito prima dell'aggiornamento non lo blocca, perché la nuova release non ne è la causa. Senza pacchetti che includano controlli, non viene eseguito nulla e l'aggiornamento procede.
+
+Quando un aggiornamento fallisce o viene ripristinato, Rational AI riceve subito una segnalazione.
+
+:::note[Ti serve l'aggiornamento in un altro momento, o in pausa?]
+Chiedilo a Rational AI. L'aggiornamento notturno può essere spostato su una release specifica oppure disattivato, per esempio durante un audit o in un periodo di lavoro intenso.
+:::
+
+## Cosa fanno i tuoi amministratori {#what-your-administrators-do}
+
+| Attività | Dove |
+|------|-------|
+| Aggiungere e distribuire modelli | **Impostazioni** → **Registro modelli AI**. Vedi [Esegui i modelli sui tuoi server](./run-models-on-premise). |
+| Impostare un backup fuori sede | **Impostazioni** → **Backup**. Vedi [Backup e ripristino](./backup-and-restore). |
+| Attivare o disattivare il tunnel | **Impostazioni** → **Tunnel**. Vedi [Rational AI Tunnel](./tunnel). |
+| Controllare o rinnovare la licenza | **Impostazioni** → **Licenza**. Vedi [Licenza e attivazione](./license). |
+| Aggiungere utenti e ruoli | Vedi [Gestisci ruoli e utenti](./roles-and-users). |
+
+:::warning[Imposta un backup fuori sede appena l'installazione contiene dati che ti interessano]
+I backup fatti prima di ogni aggiornamento restano sullo stesso disco dell'installazione. Ti proteggono da un aggiornamento sbagliato, non da una macchina persa o guasta.
+:::
+
+Tutto ciò che richiede la shell della macchina (reinstallazione, cambio di dominio, ripristino su una macchina sostitutiva) viene fatto da Rational AI. Per questo contatta il tuo referente Rational AI.
+
+## Cosa invia l'installazione a Rational AI {#what-the-installation-sends-to-rational-ai}
+
+La macchina segnala il proprio stato di salute ogni minuto e l'uso della licenza una volta al giorno, e invia le segnalazioni di errore. Nulla di questo contiene le tue conversazioni, i tuoi documenti o i dati degli utenti. Per l'elenco completo, vedi [Cosa invia un'installazione a Rational AI](./data-sent-to-rational-ai).
+
+## Prossimi passi {#next-steps}
+
+- [Aggiungi i primi modelli](./run-models-on-premise#add-your-first-models)
+- [Imposta il backup fuori sede](./backup-and-restore)
+- [Inizia come amministratore](./quickstart-admin)

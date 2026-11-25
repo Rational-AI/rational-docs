@@ -1,0 +1,110 @@
+---
+sidebar_position: 1
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Registro modelli AI
+
+È il catalogo centrale dei modelli AI che puoi usare in Rational AI. Aggiungi un modello una sola volta e lo usi ovunque: chat, touchpoint, Knowledge e workflow. Il registro controlla anche quali modelli sono disponibili, esegue quelli che ospiti tu e registra quanto costa ciascuno e chi lo ha approvato. Aprilo da **Impostazioni** → **Registro modelli AI**.
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Non richiede un modulo di licenza
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      La riga <strong>Registro modelli AI</strong> del tuo ruolo stabilisce chi può aggiungere e distribuire i modelli (<strong>Crea</strong>), modificarli e scalarli (<strong>Modifica</strong>) ed eliminarli (<strong>Elimina</strong>)
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <CrossIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Sul cloud di Rational AI, distribuire un modello qualsiasi sulle GPU di Rational AI richiede una licenza che includa i modelli self-hosted (la pagina <strong>Licenza</strong> lo elenca come <em>Modelli self-hosted su questa macchina (enterprise)</em>). Sui tuoi server non c'è questo limite
+    </div>
+  </div>
+
+</div>
+
+## Aggiungi modelli {#add-models}
+
+Seleziona **Nuovo** (**Aggiungi** quando il registro è vuoto) per aggiungere uno dei tre tipi di modello.
+
+<img
+  src={require('/img/screens/cr>settings>ai-model-registry>add.png').default}
+  style={{
+    border: '1px solid #e4e4e7',
+    borderRadius: '10px',
+  }}
+  alt="Aggiungi un nuovo modello AI"
+/>
+
+### Scegli un modello open source {#choose-an-open-source-model}
+
+* Seleziona **Scegli un modello open source**. L'elenco viene cercato in tempo reale su Hugging Face.
+* Ordina per **Più pertinenti**, **Più scaricati**, **Più apprezzati** o **Aggiornati di recente**, e filtra per **Formati**, **Selezione curata** o **Solo modelli che entrano**. Vengono proposti solo i formati che la tua piattaforma di hosting può eseguire.
+* Seleziona un modello per leggerne la scheda: editore, architettura, parametri, pesi e la sua model card su Hugging Face.
+* Seleziona **Conferma**. Il modello viene aggiunto; distribuiscilo dalla sua sezione **Distribuzione**.
+
+Per l'intero flusso, vedi [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments).
+
+### Installa il tuo modello personalizzato {#install-your-own-fine-tuned-model}
+
+Mostrato solo dove la piattaforma di hosting accetta il caricamento dei pesi.
+
+* Scegli **Installa il tuo modello personalizzato**.
+* Scegli il file del modello (`.gguf`) e controlla il **Nome**.
+* Seleziona **Conferma**. Il file viene caricato e il modello distribuito.
+
+### Aggiungi un proxy a un modello di terze parti {#add-a-proxy-to-a-third-party-model}
+
+* Scegli **Aggiungi un proxy a un modello di terze parti** (*"Connetti a OpenAi, Gemini, Claude, Perplexity e altri con la tua chiave API"*).
+* Scegli il connettore e il modello del provider, e assegna un nome.
+* Seleziona **Conferma**.
+
+---
+
+## Gestisci i modelli {#manage-models}
+
+Il menu di ogni riga offre:
+
+| Azione | Cosa fa |
+|---|---|
+| **Vedi dettagli** | Apre il pannello del modello: panoramica, deployment, tracciamento del payload, governance, utilizzo |
+| **Modifica dettagli** | Nome, identificativo del modello, descrizione, capacità, livelli di ragionamento, impostazioni di deployment, valori predefiniti di inferenza e monitoraggio dei costi |
+| **Testa modello** | Invia una richiesta di prova a un modello pronto; non ne avvia mai il deployment |
+| **Distribuisci modello**, **Arresta modello**, **Riprendi modello** | Gestiscono il deployment di un modello self-hosted |
+| **Disabilita** / **Abilita** | Tolgono subito un modello dal servizio, oppure lo riportano in servizio |
+| **Elimina** | Rimuove il modello, proponendo di spostarne prima gli usi su un altro modello |
+
+La colonna **Stato** mostra la fase di deployment di un modello self-hosted (ad esempio **Pronto**, **Inattivo**, **Arrestato**, **Fallito**) e **Disabilitato** per un modello disattivato. Un modello con uno storico di fatturazione non può essere eliminato: disabilitalo.
+
+Per capacità, capacità per le immagini, modelli predefiniti e approvazione, vedi [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features).
+
+## Monitoraggio dei costi {#cost-metering}
+
+### Attiva il monitoraggio dei costi {#enable-cost-metering}
+
+In **Modifica dettagli**, **Monitoraggio dei costi** attiva o disattiva il tracciamento dei costi per il modello.
+
+* Attivo: la spesa del modello viene riportata nel modulo Governance.
+* Disattivo: il modello continua a funzionare, ma Rational AI non ne tiene traccia dei costi.
+
+### Componenti di prezzo {#pricing-components}
+
+Con il monitoraggio dei costi attivo, aggiungi ogni **componente di prezzo** che si applica, nella **Valuta** scelta, ad esempio **Costo per richiesta**, **Costo per milione di token di input** o **Costo per milione di token di output**. I componenti coprono anche immagini, ricerche web e token di cache, di scrittura in cache e di ragionamento. I campi vuoti sono considerati sconosciuti, non gratuiti. I modelli di terze parti possono mostrare **Prezzi del catalogo del provider**, sincronizzati dal provider.
+
+Per i modelli self-hosted, **Fatturazione dell'infrastruttura** aggiunge il costo dell'hardware: **Nessun costo di infrastruttura**, **Solo mentre un deployment è attivo** oppure **Capacità riservata (continua)**, con una **Tariffa dell'infrastruttura** oraria, al minuto o al secondo.

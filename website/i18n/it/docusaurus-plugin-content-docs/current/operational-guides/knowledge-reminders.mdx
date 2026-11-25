@@ -1,0 +1,74 @@
+---
+sidebar_position: 8
+sidebar_label: Promemoria
+type: how-to
+audience: [builder]
+---
+
+# Ricevi un promemoria prima di una data nei tuoi record
+
+I contratti scadono, le certificazioni decadono, le fatture arrivano a scadenza, e la data è lì, in una colonna che nessuno guarda finché non è troppo tardi. Rational AI può controllare per te gli attributi data di una [Knowledge](/operational-guides/knowledge-collections-and-grid): imposti un promemoria una volta, ad esempio *30 giorni prima di Data di rinnovo*, e ogni record corrispondente avvisa le persone giuste, nella Control Room e facoltativamente per email, quando arriva il suo giorno.
+
+:::note[Che cos'è un promemoria?]
+Un **promemoria** è una regola su un attributo data o data e ora di una Knowledge: *quando* avvisare (tanti giorni o ore prima o dopo la data, oppure il giorno stesso), *chi* avvisare (utenti, ruoli o le persone che ogni record indica) e, facoltativamente, *quali record* (una scheda della collezione e un filtro). Rational AI controlla ogni promemoria durante la giornata e invia una notifica per record, al giorno, a ogni destinatario.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, verifica di avere:
+
+- **Permessi di modifica sulla Knowledge:** creare, modificare ed eliminare promemoria richiede il permesso **Modifica** sulla Knowledge.
+- **Un attributo data:** un attributo **Data** o **Data e ora** con valori nei tuoi record. Gli attributi calcolati (formule, aggregazioni, campi collegati) non possono avere un promemoria. Vedi [Tipi di attributo](/operational-guides/knowledge-attributes).
+- **Email, se la vuoi:** i promemoria via email richiedono che l'amministratore abbia configurato la posta in uscita della piattaforma; senza, i promemoria vengono consegnati solo nella Control Room.
+
+## Crea un promemoria {#create-a-reminder}
+
+1. Apri la **Griglia** della Knowledge e, se il promemoria riguarda solo alcuni record, seleziona la loro scheda di collezione e imposta un filtro (ad esempio *Stato* **è** *Attivo*).
+2. Apri il menu della colonna data e scegli **Ricordamelo…**. (Puoi anche selezionare **Promemoria** nella barra degli strumenti, poi **Nuovo promemoria**.)
+3. Dai al promemoria un **Nome**. È la prima cosa che leggono i destinatari, quindi fai in modo che dica cosa scade, come *Rinnovo contratto*.
+4. In **Ricorda**, imposta quando avvisare: un numero e **giorni prima di**, **il giorno di** oppure **giorni dopo** la data. Su un attributo data e ora puoi scegliere anche **ore prima** o **ore dopo**. Il valore predefinito è 7 giorni prima; lo scarto può arrivare fino a 366 giorni.
+5. Lascia spuntato **Solo le risorse mostrate dalla griglia: questa scheda e il suo filtro** per limitare il promemoria ai record selezionati al passo 1, oppure deselezionalo per coprire ogni record della Knowledge.
+6. In **Avvisa**, scegli almeno un destinatario:
+   - **Utenti**: persone specifiche. Tu sei selezionato per impostazione predefinita.
+   - **Ruoli**: chiunque abbia il ruolo nel momento in cui il promemoria scatta.
+   - **Le persone indicate dal record**: per ogni record, gli utenti indicati in uno dei suoi attributi persona, mostrati come *"Account manager del record"*. Disponibile quando la Knowledge ha [attributi persona](/operational-guides/knowledge-attributes#person).
+7. Spunta **Invia anche per email** se i destinatari devono ricevere anche un'email.
+8. Controlla l'anteprima in fondo: elenca quanti promemoria partiranno nei prossimi 30 giorni, e i primi record con le loro date.
+9. Seleziona **Salva**.
+
+:::note[Vengono avvisate solo le persone che possono leggere la Knowledge]
+I destinatari vengono determinati quando il promemoria scatta, non quando lo salvi: un ruolo include chiunque lo detenga quel giorno, e le persone di un record sono quelle che il record indica quel giorno. Chi non può leggere la Knowledge in quel momento viene saltato, quindi un promemoria non mostra mai un record a qualcuno che non è autorizzato a vederlo.
+:::
+
+## Scopri quando partono i promemoria {#know-when-reminders-fire}
+
+| Attributo | Quando parte la notifica |
+| --- | --- |
+| **Data** | Il giorno di scadenza, dalle **8:00** nel fuso orario del browser in cui è stato creato il promemoria. Le date già passate non vengono inviate: un nuovo promemoria non avvisa mai di date nel passato. |
+| **Data e ora** | Entro circa un quarto d'ora dall'orario di scadenza. Se la piattaforma non era disponibile in quel momento, il promemoria parte comunque fino a un giorno dopo, ma non oltre. |
+
+Ogni persona viene avvisata una sola volta per record e giorno di scadenza, indipendentemente da quante volte gira il controllo. Se il filtro di un promemoria usa **Io**, si intende la persona che ha creato il promemoria.
+
+## Leggi le tue notifiche {#read-your-notifications}
+
+I promemoria arrivano nella campanella **Notifiche** dell'intestazione della Control Room, con un conteggio di non letti. Ognuno si legge come *"Contract renewal: Acme Ltd (Renewal date 2026-12-01)"*; selezionalo per aprire il record. Usa le schede **Tutte** e **Non lette** per filtrare l'elenco, e **Segna come lette** per segnare le notifiche come lette.
+
+Con **Invia anche per email**, ogni destinatario riceve anche un'email per esecuzione, con oggetto *"[Reminder] Contract renewal"*, che elenca i suoi record con un link a ciascuno. Le persone senza un indirizzo email nel proprio account ricevono solo la notifica nell'app.
+
+La campanella avvisa anche le persone quando vengono indicate in un attributo persona (*"Ti è stato assegnato «…»"*), anche una sola volta per importazione quando un'[importazione](/operational-guides/import-knowledge) assegna loro più record.
+
+## Gestisci i promemoria {#manage-reminders}
+
+Seleziona **Promemoria** nella barra degli strumenti della griglia per vedere ogni promemoria della Knowledge, con un riepilogo come *"30 giorni prima di Renewal date · Sales, Account manager del record"*.
+
+- Seleziona **Modifica** per cambiare un promemoria. Per sospenderlo senza perderlo, deseleziona **Attivo**: nell'elenco comparirà come *in pausa*.
+- Seleziona **Elimina** per rimuoverlo. Le notifiche che ha già inviato restano dove sono.
+
+:::note[Le rinomine vengono seguite, le eliminazioni no]
+Se rinomini l'attributo data, o un attributo persona che il promemoria avvisa, il promemoria segue il nuovo nome. Se elimini l'attributo, o lo cambi in un tipo che non è data, il promemoria resta nell'elenco ma smette di inviare: controllalo dopo aver riorganizzato gli attributi. Eliminare una collezione elimina i promemoria impostati su di essa.
+:::
+
+## Prossimi passi {#next-steps}
+
+- [Scegli il tipo di attributo giusto](/operational-guides/knowledge-attributes)
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)

@@ -1,0 +1,212 @@
+---
+title: Limiti e quote
+sidebar_label: Limiti e quote
+description: Tutti i limiti di dimensione, numero e tempo che puoi incontrare in Rational AI, dove si applicano e se puoi modificarli.
+type: reference
+audience: [user, builder, admin, developer]
+---
+
+# Limiti e quote
+
+I limiti qui sotto sono imposti da Rational AI stesso. Un modello o un servizio esterno (Telegram, Instagram, un server di posta) può aggiungerne di propri. "Impostazione dell'installazione" indica che il valore fa parte della configurazione dell'installazione, non della Control Room.
+
+## Chat e allegati {#chat-and-attachments}
+
+Vedi [Usa la chat](/operational-guides/chat-experience) e [Memoria e chat lunghe](/operational-guides/touchpoint-memory).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Dimensione di un allegato | 25 MB | File allegati a un messaggio di chat, e file che arrivano da qualsiasi canale | No |
+| Testo letto da un documento allegato | 200.000 caratteri | Testo estratto da un allegato e dato al modello. Per documenti più lunghi, aggiungili a una Knowledge | No |
+| Pagine lette da un PDF allegato | 200 | Estrazione del testo dagli allegati PDF | No |
+| Elementi di contesto | 10 | File, documenti, progetti e connettori scelti come contesto nel campo di scrittura del messaggio | No |
+| Dimensione di una registrazione dettata | 25 MB | **Detta un messaggio** | No |
+| Chiamate di strumento in una risposta | 40 | Risposte della chat, e risposte dei touchpoint tramite API | No |
+| Errori consecutivi dello stesso strumento | 5 | La risposta si interrompe dopo il quinto errore di fila | No |
+| Turni consecutivi con chiamate di strumento fallite | 3 | La risposta si interrompe dopo tre turni di fila in cui tutte le chiamate di strumento sono fallite | No |
+| Anteprima di un foglio di calcolo o documento in Canvas | 25 MB | Anteprima in sola lettura nel pannello **Canvas** | No |
+| File Office modificato in Canvas | 25 MB | Modifica di file Word, Excel e PowerPoint con l'editor Office | Impostazione dell'installazione |
+| Un ricordo | 280 caratteri | Memoria personale e condivisa del touchpoint | No |
+| Memoria personale per persona | 1.500 caratteri in totale | La memoria di ciascuna persona su un touchpoint | No |
+| Memoria condivisa | 3.000 caratteri in totale | La memoria condivisa da tutti su un touchpoint | No |
+
+## Knowledge e file {#knowledge-and-files}
+
+Vedi [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources), [Collezioni e griglia](/operational-guides/knowledge-collections-and-grid) e [Importa una Knowledge](/operational-guides/import-knowledge#import-records-from-excel-or-csv).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Dimensione di un file caricato | Meno di 2 TiB | Caricamenti in una Knowledge dalla Control Room | No |
+| Anteprima di un file | 25 MB | Anteprima di una risorsa nella Knowledge | No |
+| Importazione di fogli di calcolo | 10 MB e 5.000 righe | **Importa da Excel o CSV** (`.xlsx`, `.xls`, `.csv`, `.tsv`, `.txt`) | No |
+| Valori che rendono una selezione singola in importazione | 12 valori distinti, ciascuno fino a 100 caratteri | Colonne che l'importazione propone come selezione singola | No |
+| Nome di un attributo | 128 caratteri | Creazione o rinomina di un attributo | No |
+| Definizione o formula di un attributo | 16.384 caratteri | Impostazioni e formule degli attributi | No |
+| Nome di una collezione | 200 caratteri | Creazione o rinomina di una collezione | No |
+| Link in un attributo di tipo link | 500 per record | Attributi di tipo link | No |
+| Righe salvate insieme | 1.000 | **Salva** nella griglia, e salvataggi in blocco tramite API | No |
+| Condizioni in un filtro | 100 | Filtri della griglia e query sui record | No |
+| Livelli di raggruppamento | 3 | Raggruppamento della griglia | No |
+| Viste fissate | 5 per Knowledge | Il selettore delle viste | No |
+| Record in un calendario | 1.000 alla volta | Viste calendario | No |
+| Nodi disegnati nel grafo | 2.000 per impostazione predefinita | La vista grafo | Sì: **Aspetto** → **Numero massimo di nodi** (2.000, 5.000 o 10.000) |
+| Cronologia di un record | 500 voci per record, conservate per 24 mesi | La cronologia di un record | No |
+| Nome di un promemoria | 128 caratteri | Promemoria | No |
+| Anticipo di un promemoria | 366 giorni | **giorni prima di** o **giorni dopo** la data del promemoria | No |
+| Attesa per un'esportazione | 2 minuti | Esportazione di una Knowledge da **Impostazioni** | No |
+
+## Viste personalizzate {#custom-views}
+
+Vedi [Configura le viste di una Knowledge](/operational-guides/knowledge-custom-views).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Record che una vista riceve all'apertura | 50 | La prima pagina di risorse della vista | No, scorri le altre pagine |
+| Record per pagina | 100 | Paginazione dei record da una vista o da una vista incorporata | No |
+| Testo della finestra di conferma | Titolo 120, messaggio 1.000, pulsanti 40 caratteri | Finestre di dialogo che una vista apre | No |
+
+## Widget di incorporamento {#embed-widget}
+
+Vedi [Incorpora una Knowledge](/operational-guides/embed-knowledge).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Messaggi per visitatore al giorno | 20 per impostazione predefinita | La chat del widget | Sì: **Messaggi per visitatore al giorno**, vuoto per nessun limite |
+| Budget mensile della chat | Nessun tetto per impostazione predefinita | La chat del widget | Sì: **Budget mensile** |
+| Invii del modulo di contatto | 5 per visitatore all'ora | **Contatti dei visitatori** | No |
+| Campi di un modulo di contatto | 12, ciascuno con un valore fino a 500 caratteri | **Contatti dei visitatori** | No |
+| File caricato da un visitatore | 25 MB al massimo | Viste che accettano caricamenti dei visitatori | La vista può impostare un limite più basso |
+| Caricamenti dei visitatori | 10 per visitatore all'ora, 200 per widget al giorno | Viste che accettano caricamenti dei visitatori | No |
+
+## Fonti e sincronizzazione {#sources-and-sync}
+
+Vedi [Configura le fonti dei dati](/operational-guides/configure-sources).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Attesa dopo una sincronizzazione programmata fallita | 2 minuti, raddoppia a ogni errore, fino a 1 ora | Sincronizzazioni programmate | No. **Sincronizza ora** ignora l'attesa |
+| Cronologia delle sincronizzazioni | Ultime 20 sincronizzazioni | Il registro di elaborazione di una fonte | No |
+| File in elaborazione | 16 per impostazione predefinita, da 1 a 256 | Fonti **RabbitMQ queue** | Sì: **File in elaborazione** |
+
+## Workflow {#workflows}
+
+Vedi [Rivedi le esecuzioni dei workflow](/operational-guides/governance#review-workflow-runs).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Tempo di esecuzione di un passaggio | 5 minuti per tentativo | Passaggi senza un timeout proprio | Sì: **Impostazioni workflow** → **Timeout (minuti)** |
+| Tentativi | 3 | Un passaggio che fallisce viene ritentato | No |
+| Tempo mensile di esecuzione dei workflow | Il tuo limite, oppure la quota del tuo piano | Ingestione dei file, agenti ed esecuzioni dei workflow | Sì: **Limite mensile, minuti** |
+
+## Agenti {#agents}
+
+Vedi [Crea un agente](/operational-guides/create-an-agent), [Pianifica e attiva gli agenti](/operational-guides/agent-routines) e [Delega il lavoro con le attività](/operational-guides/agent-tasks#create-a-task).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Tempo di esecuzione | 20 minuti | Esecuzioni autonome | No |
+| Tempo di esecuzione con approvazioni | 6 ore | Agenti interattivi, e agenti con uno strumento in **Chiedimi prima** | No |
+| Agenti in una chat | Da 1 a 20 | Chat con agenti | No |
+| File su un'attività | 30, ciascuno fino a 10 MB | Allegati delle attività e immagini incollate | No |
+| Corpo della richiesta webhook | 256 KB | Esecuzioni avviate dal trigger **Webhook** | No |
+| Domanda di **Controllo AI** | 500 caratteri | Filtri degli eventi | No |
+| Valore di un segreto | Da 8 a 16.384 caratteri | Segreti in **Impostazioni** → **Agenti** | No |
+| Link di approvazione nelle email | Validi per 24 ore | Link **Approva** e **Deny** nelle email di approvazione | No |
+| Messaggi inviati a un canale | 100 per esecuzione, ciascuno fino a 4.096 caratteri | Agenti che scrivono su un canale | No |
+| Email inviate | 50 per esecuzione | Agenti che inviano email | No |
+| Spesa mensile | Nessun limite per impostazione predefinita | Chiamate al modello di un agente | Sì: il budget mensile dell'agente |
+
+## Touchpoint e strumenti {#touchpoints-and-tools}
+
+Vedi [Imposta quanto tempo può richiedere uno strumento](/operational-guides/configure-touchpoints#set-how-long-a-tool-may-take), [Skill dei touchpoint](/operational-guides/agent-skills) e [Testa le modifiche ai touchpoint](/operational-guides/test-touchpoint-changes).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Una chiamata a uno strumento MCP | 120 secondi per impostazione predefinita | Ogni server MCP usato da un touchpoint | Sì: da 1 a 600 secondi, sul touchpoint o su un singolo server |
+| Risultato dello strumento dato al modello | 64.000 caratteri | I risultati più lunghi vengono tagliati prima di arrivare al modello | No |
+| Tempo di un comando di skill | 120 secondi per impostazione predefinita, 600 al massimo | Ogni comando che una skill esegue nella sandbox | Impostabile per comando, fino a 600 secondi |
+| Conversazioni in un test | 20 per impostazione predefinita, 100 al massimo | Riproduzioni di **Prova prima** | Sì, fino a 100 |
+
+## Estensioni {#extensions}
+
+Vedi [Gestisci le estensioni](/operational-guides/manage-extensions) e [Marketplace](/operational-guides/marketplace#ask-the-admins-to-install-a-solution).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Pacchetto di estensione | 1 GiB compresso, 2 GiB espanso | Installazione di un pacchetto | No |
+| Record di esempio | 5.000 per provider, file fino a 25 MB | Record che un'estensione installa | No |
+| Messaggio di richiesta di installazione | 1.000 caratteri, una richiesta per soluzione al giorno | **Ask the admins** nel Marketplace | No |
+
+## Modelli e deployment {#models-and-deployments}
+
+Vedi [Deployment dei modelli](/operational-guides/model-deployments#decide-how-many-replicas-run), [Esegui i modelli on-premise](/operational-guides/run-models-on-premise#run-models-on-a-dgx-spark) e [Fai il fine-tuning di un modello](/operational-guides/fine-tune-a-model).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Tempo di inattività prima che un modello on-demand venga rilasciato | 10 minuti | Deployment con **Repliche minime** 0 | Sì: **Rilascia dopo**. Il valore predefinito è un'impostazione dell'installazione |
+| Attesa per l'avvio di un modello inattivo | 120 secondi al massimo | La richiesta che risveglia un modello | Impostazione dell'installazione |
+| Memoria GPU per i modelli su un DGX Spark | 80 GiB per nodo | Budget di memoria GPU dei deployment | No |
+| Conversazioni o richieste trasformate in un dataset | 20.000 | Dataset costruiti dal traffico registrato o dagli eventi | No |
+
+## API {#api}
+
+Vedi [Accedi a Rational AI tramite API](/operational-guides/api-access).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Record restituiti da una query | 1.000 | Query sui record, e fino a 1.000 ID per query | No |
+| Query di ricerca semantica | 1.000 caratteri | Ricerca semantica dei record | No |
+| Record per pagina di una vista incorporata | 100 | Query sulle viste incorporate | No |
+
+## Rational BI {#rational-bi}
+
+Vedi [Crea dashboard BI](/operational-guides/rational-bi).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Intervallo di aggiornamento automatico | **Disattivato**, **30 secondi**, **1 minuto**, **5 minuti** o **15 minuti** | Dashboard | Sì: **Aggiornamento** |
+| Filtri suggeriti in una volta | 5 | **Aggiorna filtri** | No, aggiungine altri con **Aggiungi filtro** |
+| Esportazione Tableau | 2.000.000 di celle dati tra i widget esportati | **Esporta** → **Tableau** | No, esporta meno dashboard |
+| Fissati mostrati nella barra laterale | 10, gli altri sotto **Altre** | Dashboard e report fissati | No |
+
+## Gen {#gen}
+
+Vedi [Genera immagini](/operational-guides/gen-images), [Documenti Gen](/operational-guides/gen-documents) e [Social Studio](/operational-guides/social-studio#publish-a-post).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Immagine di riferimento | 10 MB | Immagini aggiunte a un prompt per immagini | No |
+| Immagini di riferimento per prompt | Stabilito dal modello | Mostrato come *"Accetta fino a N immagini di riferimento."* | No |
+| Attesa per un'immagine | 20 minuti | Dopo questo tempo Gen smette di controllare un'immagine in attesa | No |
+| Versione di un documento | 50 MB | Ogni versione salvata di un documento Gen | No |
+| Immagine in un post social | 8 MB | **Verifica** e **Pubblica** | No |
+| Immagini del carosello | Da 2 a 10 | Post a carosello | No |
+| Lunghezza della didascalia | Instagram 2.200, LinkedIn 3.000 caratteri | **Verifica** e **Pubblica** | No |
+| Hashtag e menzioni | 30 hashtag, 20 menzioni | Post di Instagram | No |
+| Verifica su Instagram | 23 ore | Un post verificato deve essere pubblicato entro questo tempo | No |
+
+## Canali {#channels}
+
+Vedi [Gestisci i canali](/operational-guides/manage-channels#control-what-can-be-sent-in), [Telegram](/operational-guides/connect-telegram) e [Email](/operational-guides/connect-email).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Dimensione degli allegati | Tetto di 25 MB | Ogni canale con impostazioni degli allegati | Abbassalo con **Limite dimensione allegati (MB)** |
+| Dimensione degli allegati su Telegram | 20 MB per impostazione predefinita | Canali Telegram | Abbassalo, non alzarlo: i bot Telegram non possono scaricarne di più |
+| Limite di frequenza su Telegram | 20 messaggi al minuto per chat | Canali Telegram | Sì: **Limite messaggi (al minuto per chat)**, `0` lo disattiva |
+| Intervallo di lettura dell'email | 60 secondi per impostazione predefinita, minimo 5 | Canali email | Sì: **Intervallo di lettura (secondi)** |
+| Risposte suddivise | Al massimo 4 messaggi | Canali con la suddivisione delle risposte attiva | No |
+
+## Account {#account}
+
+Vedi [Gestisci il tuo account](/operational-guides/manage-your-account).
+
+| Limite | Valore | Dove si applica | Si può modificare? |
+|---|---|---|---|
+| Foto del profilo | 5 MB | **Scegli immagine** | No |
+| Password | Almeno 8 caratteri | **Change your password** | No |
+
+## Prossimi passi {#next-steps}
+
+- [Messaggi di errore](/reference/error-messages)
+- [Risoluzione dei problemi](/troubleshooting)

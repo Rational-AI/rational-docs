@@ -1,0 +1,114 @@
+---
+sidebar_position: 36
+sidebar_label: Delega il lavoro con le attività
+type: how-to
+audience: [builder]
+---
+
+# Delega il lavoro con le attività
+
+Un'attività è un lavoro che affidi a uno o più agenti e di cui vuoi vedere il completamento: *"Prepara l'offerta per RFQ-2026-0153"*, *"Report vendite settimanale per la settimana 39"*. La bacheca **Attività** mostra ogni attività in una delle quattro colonne, le sposta da sola mentre gli agenti lavorano e porta in primo piano quelle che richiedono il tuo intervento. Questa guida descrive la bacheca, l'attività in sé e i progetti che raggruppano le attività.
+
+:::note[Attività ed esecuzioni]
+L'attività è il **cosa**; un'esecuzione è un tentativo di svolgerla. Avviare un'attività apre un'esecuzione con il suo primo assegnatario, e l'avanzamento dell'esecuzione guida l'attività: mentre l'esecuzione lavora, l'attività è *In corso*; quando serve un'approvazione o l'esecuzione fallisce, l'attività passa in *Da rivedere*; quando si completa, l'attività va in *Fatte* (oppure resta in *Da rivedere* se il suo progetto ha un revisore), e la risposta finale dell'agente viene pubblicata sull'attività come commento.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Almeno un agente**: vedi [Crea un agente](./create-an-agent). Un'attività richiede almeno un agente assegnato.
+
+## Leggi la bacheca {#read-the-board}
+
+Apri **Agenti** → **Attività**.
+
+<img
+  alt="La bacheca Attività: tre attività in coda, due in corso, una completata, con i tag dei progetti, i contatori delle sottoattività e gli avatar degli assegnatari"
+  src={require('@site/static/img/screens/agents-tasks-board.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+| Colonna | Significato |
+|---------|-------------|
+| **In coda** | In attesa di essere avviata. Le nuove attività finiscono qui. |
+| **In corso** | Un'esecuzione è in corso. La scheda mostra cosa sta facendo l'agente (*L'agente sta lavorando*, *In attesa di avvio*) e il suo avanzamento. |
+| **Da rivedere** | L'agente attende la tua approvazione (*In attesa della tua approvazione*), oppure l'esecuzione è terminata senza un risultato verificato e la scheda ne spiega il motivo. |
+| **Fatte** | Completata. La risposta dell'agente si trova nei commenti dell'attività. |
+
+Ogni scheda mostra il nome dell'attività, il suo progetto, le sottoattività completate sul totale, il numero di commenti e gli avatar dei suoi agenti. La riga sotto il titolo conta le attività (*N attività. Segui l'avanzamento e rivedi i risultati.*). Il contatore accanto a **Attività** nella barra laterale conta le attività da rivedere più le esecuzioni in attesa di approvazione, contate una sola volta ciascuna.
+
+Per restringere la bacheca, digita in **Filtra attività…** oppure apri **Filtri**: **Aggiornate** (**Oggi**, **Ultimi 7 giorni**, **Ultimi 30 giorni**, **Sempre**) e **Assegnatario** (**Tutti** oppure un agente). Il selettore dei progetti nella barra laterale la limita a un solo progetto. **Elenco** mostra le stesse attività in una tabella che puoi raggruppare (per stato, progetto o assegnatario), ordinare e filtrare per scadenza; **Calendario** apre la vista pianificazione descritta in [Pianifica e attiva gli agenti](./agent-routines#see-whats-coming-in-the-calendar).
+
+## Crea un'attività {#create-a-task}
+
+1. Seleziona **Nuova attività**.
+2. In **Cosa c'è da fare**, scrivi il titolo nella prima riga e i dettagli nelle righe successive. Inserisci tutto ciò che serve all'agente per consegnare un risultato verificabile: l'input, l'output atteso, i vincoli. Puoi allegare file (fino a 10 MB ciascuno) oppure incollare immagini nel testo.
+3. Scegli un **Progetto**, oppure lascia **Nessun progetto**.
+4. In **Assegna a**, scegli l'agente responsabile dell'attività. Per aggiungere altri agenti, seleziona **Aggiungi collaboratori**.
+5. Seleziona **Avvia subito con &lt;agent&gt;** per avviarla subito; altrimenti l'attività attende in *In coda*.
+6. Seleziona **Crea attività**.
+
+<img
+  alt="La finestra Nuova attività con una descrizione di due righe, il selettore del progetto, Quinn selezionato come assegnatario e la casella Avvia subito"
+  src={require('@site/static/img/screens/agents-new-task.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+Per un'attività rapida, usa **Aggiungi un'attività** in qualsiasi colonna: digita *Cosa c'è da fare?*, scegli un agente e seleziona **Aggiungi**.
+
+Le attività ricevono una chiave breve (`RA-1`, `RA-2`, …) che non cambia mai. Anche gli agenti possono aprire attività da soli, per esempio un agente bibliotecario che crea un'attività per ogni foglio obsoleto che trova; queste finiscono in *In coda*.
+
+## Avvia e sposta le attività {#start-and-move-tasks}
+
+- **Trascina una scheda** in un'altra colonna, oppure riordinala all'interno della sua colonna. Trascinare un'attività in *In corso* avvia un'esecuzione con il suo primo assegnatario.
+- Nell'attività, seleziona **Avvia con &lt;agent&gt;**, oppure scegli una colonna da **Sposta in…**.
+
+Se l'agente non può essere avviato (nessun modello, permessi mancanti), l'attività passa in *Da rivedere* con *"Impossibile avviare l'agente assegnato. Controlla permessi, modello e disponibilità dei flussi, poi riprova."*
+
+## Lavora dentro un'attività {#work-inside-a-task}
+
+Seleziona una scheda per aprirla.
+
+<img
+  alt="L'attività RA-5 aperta in Da rivedere: la descrizione della richiesta di offerta con le righe del cliente e il listino prezzi, le sottoattività, i commenti e l'azione Apri l'esecuzione in corso"
+  src={require('@site/static/img/screens/agents-task-detail.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+- **Descrizione**: ciò che hai scritto quando l'hai creata.
+- **Sottoattività**: una checklist con una barra di avanzamento; digita in **Aggiungi una sottoattività…** e seleziona le sottoattività man mano che vengono completate.
+- **Commenti**: la conversazione sull'attività. Quando un'esecuzione si completa, la risposta finale dell'agente viene pubblicata qui. Rispondi all'agente per proseguire il lavoro, oppure menziona un agente con `@` per metterlo al lavoro.
+- **Documenti**: i documenti Word prodotti dagli agenti per questa attività, con la loro versione, lo stato di revisione (*Rivisto dall'agente*, *Revisione dell'agente non aggiornata*, *Non rivisto dall'agente*) e l'approvazione (*Approvato*, *Non approvato*). Seleziona il nome di un documento per modificarlo nel browser e salvarlo con **Salva**. Puoi anche usare **Scarica**, aprire la **Cronologia versioni** o approvare la versione corrente con **Approva v&lt;n&gt;**. Se un documento non si apre in modifica, chiedi a Rational AI di abilitare la modifica nel browser per la tua installazione.
+- **Progetto**: sposta l'attività in un altro progetto, oppure lasciala in *Nessun progetto*.
+- **Azioni**: **Apri l'esecuzione in corso** mentre un'esecuzione è in corso (vedi [Segui le esecuzioni e approva le azioni](./agent-runs)), **Approva** quando un'attività completata attende la revisione, **Avvia con &lt;agent&gt;** altrimenti, **Sposta in…** ed **Elimina attività**.
+
+Quando un'esecuzione fallisce, l'attività mostra **Cosa serve da te**, con **Riprova** e **Rispondi**.
+
+:::danger[L'eliminazione di un'attività è irreversibile]
+**Elimina attività** chiede una conferma, poi rimuove l'attività con le sue sottoattività e i suoi commenti.
+:::
+
+## Raggruppa le attività nei progetti {#group-tasks-in-projects}
+
+Un progetto raccoglie attività, chat e documenti correlati, e può indicare la Knowledge a cui si riferiscono. Aprilo da **Gestisci i progetti** accanto al selettore dei progetti, oppure vai su **Agenti** → **Progetti**.
+
+<img
+  alt="La pagina Progetti con due progetti, Market intelligence e Customer quotes, il secondo collegato alla sua Knowledge"
+  src={require('@site/static/img/screens/agents-projects.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+1. Seleziona **Nuovo progetto**. Assegnagli un **Nome**, una **Descrizione** e, se vuoi, una **Knowledge**.
+2. Scegli un **Revisore**, oppure lascia **Nessuna revisione: le attività finite vanno in Fatte**. Con un revisore, un'attività che un agente completa resta in *Da rivedere* finché una persona non la approva.
+3. Seleziona **Crea progetto**.
+
+Ogni scheda mostra quante attività sono completate e aperte, quante sono da rivedere, la Knowledge collegata e il revisore. **Impostazioni progetto** contiene **Cambia Knowledge…** e **Cambia passaggio di revisione…**, e **Apri attività** apre la bacheca filtrata su quel progetto. Selezionare un progetto nel selettore della barra laterale fa lo stesso per l'intera sezione.
+
+I progetti degli agenti sono separati dai [progetti di Rational BI](/operational-guides/rational-bi).
+
+:::note[La Knowledge di un progetto raggiunge i suoi agenti]
+Un'esecuzione che lavora su un'attività o una chat di un progetto viene informata della Knowledge del progetto e può consultarla e modificarla, anche quando l'**Accesso alla knowledge** dell'agente non la elenca. La persona che ha avviato l'esecuzione deve poter usare quella Knowledge. Tutto il resto che l'agente può toccare si imposta nel suo profilo.
+:::
+
+## Chi vede un'attività {#who-sees-a-task}
+
+Un'attività è visibile a chiunque possa vedere almeno uno degli agenti assegnati.

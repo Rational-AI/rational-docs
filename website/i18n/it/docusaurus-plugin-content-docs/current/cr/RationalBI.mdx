@@ -1,0 +1,102 @@
+---
+sidebar_position: 5
+sidebar_label: BI
+type: reference
+audience: [user, builder]
+---
+
+# BI
+
+**BI** è dove crei dashboard e report scritti a partire dai dati già presenti in Rational AI. Descrivi i grafici che ti servono e Rational AI costruisce la dashboard, oppure la imposti a mano. Le dashboard possono aggiornarsi mentre sono aperte, e i report trasformano una o più dashboard in un riepilogo da inviare.
+
+<video className="doc-video" controls preload="metadata" aria-label="Video introduttivo su BI" poster="/img/videos/rational_bi.jpg" src="/videos/rational_bi_eng.mp4" />
+
+Il tuo lavoro è organizzato in **progetti**. Un progetto copre un'area di reporting o un pubblico, ad esempio *Sales Reporting*, e stabilisce quali fonti dati e Knowledge possono interrogare le sue dashboard e quali modelli generano i suoi grafici e report. All'interno di un progetto conservi **dashboard** (griglie di grafici, titoli, testi e divisori) e **report** (riepiloghi scritti generati da una o più dashboard).
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Il modulo BI nella licenza.** La scheda **BI** compare nella barra in alto solo quando la [licenza](/operational-guides/license) lo include.
+- **Il permesso di usare BI.** Un amministratore lo concede al tuo ruolo in **Impostazioni** → **Ruoli**. Per aprire la pagina **BI**, il tuo ruolo deve avere la riga **Progetti BI** più **Dashboard** o **Report**. Per creare dashboard e report, servono **Crea** e **Modifica** su **Progetti BI**, **Dashboard** e **Report**; vedi [Concedi l'accesso a Rational BI](/operational-guides/roles-and-users#grant-access-to-rational-bi).
+- **Dati da rappresentare.** Una dashboard può interrogare solo ciò che il suo progetto può raggiungere: una [fonte dati](/operational-guides/configure-sources) o una [Knowledge](/operational-guides/create-knowledge).
+- **Un modello** nel [Registro modelli AI](/operational-guides/ai-model-registry-features) che il progetto usa per generare grafici e report.
+
+## Orientarsi {#find-your-way-around}
+
+Apri BI selezionando **BI** nella barra di navigazione in alto. La prima cosa che vedi è l'elenco dei tuoi progetti. **Impostazioni** → **Rational BI** serve a configurare i progetti, non a costruire le dashboard.
+
+| Dove | Cosa trovi |
+|-------|---------------------|
+| **BI** → elenco dei progetti | Ogni progetto che puoi vedere. **Nuovo** ti porta a **Impostazioni** → **Rational BI** per crearne uno. |
+| Progetto → **Dashboard** | Le dashboard del progetto. **Nuova dashboard** (oppure **+** accanto a **Recenti**) ne avvia una, con l'AI oppure a mano. |
+| Progetto → **Report** | I riepiloghi scritti. **+** accanto a **Report** ne genera uno nuovo. |
+| Dashboard → **Chat** | Il pannello AI per aggiungere o modificare grafici in una dashboard esistente. |
+| Dashboard → **Filtri** | I filtri della dashboard: elenchi di valori o intervalli di date che restringono ogni grafico che li usa. |
+| Dashboard → **Azioni** | **Modifica**, **Aggiornamento**, **Layout automatico** (sposta i widget per chiudere gli spazi vuoti), **Scarica** ed **Elimina**. |
+| **Impostazioni** → **Rational BI** → progetto | **Impostazioni** (nome e descrizione), **Sorgenti** (che cosa può interrogare), **Modelli** (che cosa genera i suoi grafici e report), **Strumenti** (che cosa può usare la sua chat AI) e, solo per gli amministratori, **Accesso** (chi vede ogni tabella o vista). |
+| **Impostazioni** → **Rational BI** → **Default BI** | Il **Modello chat**, il **Prompt del modello** e gli **Strumenti predefiniti** con cui partono i nuovi progetti, e il **Prompt per la creazione di un report** usato per ogni report. Modificarli richiede il permesso **Default BI**. |
+
+## Come si incastrano i pezzi {#how-the-pieces-fit}
+
+1. **Crea un progetto** per un'area di reporting e collegalo alle sue fonti e Knowledge.
+2. **Genera una dashboard** con l'AI a partire da una descrizione, poi perfezionala in **Chat** o a mano.
+3. **Configura ogni grafico**: il tipo, i dati che interroga, i colori e la legenda.
+4. **Mantienila aggiornata** con un intervallo di aggiornamento automatico, così una dashboard aperta mostra i nuovi numeri senza doverla rigenerare.
+5. **Scrivi un report** a partire da una o più dashboard quando devi spiegare che cosa significano i numeri.
+6. **Mostra la dashboard dove lavora la gente**, all'interno di una Knowledge come vista personalizzata.
+
+## Dashboard {#dashboards}
+
+Di solito avvii una dashboard con l'AI e poi la perfezioni:
+
+* **Generala con l'AI:** in un progetto, seleziona **Nuova dashboard** → **Genera con AI** e descrivi la dashboard che vuoi con parole semplici. Rational AI la costruisce per te. Più tardi, apri **Chat** sulla dashboard per aggiungere o modificare grafici.
+* **Impostala a mano:** seleziona **Azioni** → **Modifica**, poi trascina i widget nella griglia e ridimensionali con la maniglia nell'angolo. La scheda **Sezioni** della barra laterale aggiunge struttura:
+
+| Widget | A cosa serve |
+|--------|----------------|
+| **Titolo** | Un'intestazione da **Heading 1** a **Heading 4**, così una dashboard lunga si legge per sezioni. |
+| **Testo libero** | Un paragrafo di spiegazione accanto ai numeri. |
+| **Scheda KPI** | Un numero principale con la sua etichetta. Si basa su una query, quindi si aggiorna come un grafico. |
+| **Grafici** | Un grafico. |
+| **Tabelle** | I dati alla base di uno dei grafici della dashboard, mostrati come tabella. |
+| **Divisore** | Una linea orizzontale tra sezioni. |
+| **Spaziatore** | Spazio vuoto di un'altezza che scegli, per separare blocchi senza una linea. |
+
+La scheda **Impostazioni** della barra laterale contiene ciò che vale per l'intera dashboard, come i **Colori Globali**.
+
+### Grafici {#charts}
+
+Seleziona un grafico per aprire le **Impostazioni grafico**:
+
+| Impostazione | Cosa controlla |
+|---------|------------------|
+| **Tipo grafico** | A barre, a linee, ad area, a dispersione, a torta, ad anello, radar o **Geographic map**. |
+| **Sorgente dati**, **Query SQL** e **Tabelle disponibili** | Che cosa interroga il grafico. |
+| **Colori** e **Posizione legenda** | Il suo aspetto. |
+| **Avanzato (Spec)** | La specifica del grafico sottostante, per tutto ciò che i controlli non espongono. |
+
+:::note[Mappe geografiche]
+Una **Geographic map** colora ogni regione in base al suo valore. Oggi sono disponibili due mappe: **US states** e **Italian regions**. Non devi caricare alcun file di mappa: se i tuoi dati hanno una colonna con nomi di stati o regioni, Rational AI li riconosce e disegna la mappa giusta. Puoi anche chiederne una in chat, ad esempio *"vendite per regione su una mappa dell'Italia"*.
+:::
+
+## Mantieni aggiornati i numeri {#keep-the-numbers-current}
+
+Una dashboard salvata mostra i dati acquisiti quando sono stati generati i suoi grafici. Seleziona **Azioni** → **Aggiornamento** e scegli un intervallo: **Disattivato** (predefinito), **30 secondi**, **1 minuto**, **5 minuti** o **15 minuti**. Mentre la dashboard è aperta, Rational AI riesegue la query salvata di ogni grafico a quell'intervallo e aggiorna i risultati sul posto.
+
+:::note[Aggiornare non significa rigenerare]
+Nessun modello interviene in un aggiornamento, quindi non genera chiamate ai modelli. Se un aggiornamento non riesce, la dashboard mantiene gli ultimi dati validi senza interrompere chi la sta guardando.
+:::
+
+## Report {#reports}
+
+Una dashboard risponde a "che aspetto hanno i numeri"; un report risponde a "che cosa dobbiamo ricavarne". In un progetto, seleziona **+** accanto a **Report**, scegli una o più dashboard, descrivi che cosa deve coprire il report e seleziona **Genera con AI**. Controlla la bozza e seleziona **Crea** per salvarla. Poi usa la **Chat** del report per chiedere un'enfasi diversa, un riepilogo più breve o una sezione in più, oppure **Modifica** per riorganizzarlo. Il menu **Azioni** contiene **Aggiorna i dati**, **Duplica**, **Layout automatico**, **Scarica** (PDF, CSV o Excel) ed **Elimina**.
+
+---
+
+## Vedi anche {#related-resources}
+
+* [Crea dashboard BI](/operational-guides/rational-bi): la guida passo passo a progetti, dashboard, aggiornamento automatico e report.
+* [Viste personalizzate](/operational-guides/knowledge-custom-views): mostra una dashboard all'interno di una Knowledge.
+* [Configura le fonti dei dati](/operational-guides/configure-sources): collega i dati che le tue dashboard interrogano.
+* [Gestisci ruoli e utenti](/operational-guides/roles-and-users#grant-access-to-rational-bi): controlla chi può usare progetti, dashboard e report BI.

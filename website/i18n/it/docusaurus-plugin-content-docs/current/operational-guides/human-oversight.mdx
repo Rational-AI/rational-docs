@@ -1,0 +1,35 @@
+---
+sidebar_position: 32
+sidebar_label: Registra le decisioni di supervisione
+type: how-to
+audience: [admin]
+---
+
+# Registra le decisioni di supervisione
+
+Le regole di supervisione umana segnalano le conversazioni che una persona dovrebbe esaminare. Quando hai esaminato una conversazione, registra la tua decisione nella conversazione, così resta traccia di chi l'ha esaminata, di cosa ha concluso e se è intervenuta.
+
+## Prerequisiti {#prerequisites}
+
+- **Ruolo amministratore:** solo gli amministratori possono registrare una decisione. Gli altri ruoli con **Modifica** su **Conversazioni** vedono il pannello di revisione, ma la loro decisione viene rifiutata con *"Non è stato possibile registrare la revisione"*.
+- **Regole di supervisione umana:** impostale in **Impostazioni** → **Conversazioni** → **Supervisione umana** (vedi [Impostazioni delle conversazioni](/cr/settings/conversations#human-oversight)). Senza regole, non viene segnalato nulla.
+
+## Trova le conversazioni segnalate {#find-flagged-conversations}
+
+Le conversazioni segnalate mostrano **Da supervisionare** nell'elenco [Conversazioni](/operational-guides/conversations). Per elencare solo quelle, apri **Filtri**, seleziona **Da supervisionare** sotto **Mostra solo** e seleziona **Applica**.
+
+## Registra una decisione {#record-a-decision}
+
+1. Apri una conversazione segnalata. Il pannello di revisione si trova in fondo al cassetto dei dettagli. Se il cassetto è chiuso, seleziona **Da supervisionare** nell'intestazione della conversazione.
+2. Leggi la conversazione e, facoltativamente, inserisci il motivo della tua decisione in **Nota (facoltativa)**.
+3. Seleziona l'esito:
+   - **Lascia com'è**: l'hai esaminata e non serviva alcuna azione.
+   - **Sono intervenuto**: l'hai esaminata e sei intervenuto.
+
+La segnalazione viene risolta, e il pannello si riduce a una riga con l'esito (*"Revisionata: lasciata com'era"* o *"Revisionata: l'operatore è intervenuto"*), l'ora e la nota. La conversazione registra anche chi ha preso la decisione. Una decisione registrata non si può annullare.
+
+## Prossimi passi {#next-steps}
+
+- [Consulta la traccia di audit](/operational-guides/audit-trail): chi ha aperto quale conversazione.
+- [Approva le chiamate agli strumenti](/operational-guides/approve-tool-calls): approva un'azione prima che l'AI la esegua.
+- [Human-in-the-loop](/concepts/Human-in-the-loop): il concetto alla base della supervisione.

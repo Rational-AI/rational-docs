@@ -1,0 +1,42 @@
+---
+sidebar_position: 3
+sidebar_label: Prompt di sistema
+title: Prompt di sistema
+description: Cos'è un prompt di sistema, in cosa si differenzia da un prompt utente e come definisce il comportamento di un touchpoint in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+
+# Prompt di sistema
+
+Un **prompt di sistema** è l'istruzione permanente data a un modello prima di ogni richiesta. Definisce il ruolo, il tono, i limiti e le regole dell'assistente prima che un utente abbia scritto qualsiasi cosa, e resta valido per tutta l'interazione. Mentre il [prompt](/reference/glossary#prompt) dell'utente è la domanda del momento, il prompt di sistema è il brief a cui l'agente si attiene sempre.
+
+Un modo utile per vederlo: il prompt utente è ciò che chiedi, il prompt di sistema stabilisce a chi lo chiedi. Lo stesso modello può comportarsi come un assistente di supporto formale, un analista conciso o un assistente cordiale, solo cambiando il suo prompt di sistema.
+
+:::note[Sempre presente, raramente visibile]
+Il prompt di sistema viene inviato a ogni richiesta e condivide la [finestra di contesto](/reference/glossary#context-window) con tutto il resto, ma l'utente finale non lo vede. Si imposta una sola volta, nella configurazione, invece di essere riscritto per ogni messaggio.
+:::
+
+## Cosa copre di solito un prompt di sistema {#what-a-system-prompt-typically-covers}
+
+* **Ruolo e scopo:** a cosa serve l'assistente e a chi si rivolge.
+* **Tono e stile:** come deve parlare.
+* **Limiti:** cosa deve rifiutare, evitare o inoltrare.
+* **Come usare la sua conoscenza e i suoi strumenti:** quando recuperare, citare o compiere un'azione.
+
+## Il prompt di sistema in Rational AI {#the-system-prompt-in-rational-ai}
+
+Il prompt di sistema è uno degli ingredienti che un [touchpoint](/concepts/Touchpoint) riunisce insieme al suo modello, alla Knowledge e agli strumenti. È ciò che trasforma un [modello](/reference/glossary#model) generico in un agente pensato per un solo compito. Cambiarlo modifica il comportamento di quel touchpoint senza influire sugli altri.
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+	]}
+/>

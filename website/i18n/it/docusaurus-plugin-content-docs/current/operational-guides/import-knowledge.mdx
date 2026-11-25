@@ -1,0 +1,46 @@
+---
+sidebar_position: 7
+sidebar_label: Importa record da un foglio di calcolo
+type: how-to
+audience: [builder]
+---
+
+# Importa record da Excel o CSV
+
+Trasforma ogni riga di un file Excel o CSV, come un elenco di clienti, un registro dei contratti o un inventario degli asset, in un record di una Knowledge. L'importazione crea nel frattempo gli attributi e la collezione di cui ha bisogno. Per spostare invece un'intera Knowledge tra ambienti, vedi [Esporta e importa una Knowledge](/operational-guides/export-knowledge).
+
+## Prerequisiti {#prerequisites}
+
+- **Modifica** sulla riga **Knowledge** del tuo ruolo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Un file in formato `.xlsx`, `.xls`, `.csv`, `.tsv` o `.txt`, fino a 10 MB e 5.000 righe, la cui prima riga contiene i nomi delle colonne.
+
+## Importa il file {#import-records-from-excel-or-csv}
+
+1. Apri la **Griglia** della Knowledge (vedi [Collezioni e viste a griglia](/operational-guides/knowledge-collections-and-grid)) e seleziona **Importa da Excel o CSV** nella barra degli strumenti. Una Knowledge vuota mostra lo stesso pulsante al centro della pagina.
+2. Trascina il file nella finestra, oppure seleziona l'area di trascinamento per sceglierlo. Il file viene letto nel browser; i separatori CSV (virgola, punto e virgola o tabulazione) e le codifiche vengono rilevati automaticamente.
+3. Se la cartella di lavoro ha più fogli, scegli il **Foglio**.
+4. Sotto **Importa in**, scegli una collezione, **Nessuna collezione**, oppure **Nuova collezione** con il relativo nome. La collezione aperta nella griglia è già selezionata.
+5. Per ogni **Colonna nel file**, controlla **Importa come**: **Nome** (la colonna che dà il nome ai record), un attributo esistente, **Nuovo attributo** con il **Tipo** con cui crearlo, oppure **Non importare**. Rational AI propone un'associazione basata su intestazioni e valori di esempio: una colonna con il nome di un attributo viene associata a quello, mentre le altre diventano nuovi attributi del tipo suggerito dai loro valori.
+6. Quando numeri o date sono ambigui, scegli il **Separatore decimale** (*1.234,5* o *1,234.5*) oppure l'**Ordine della data** (prima il giorno o prima il mese).
+7. Seleziona **Anteprima**. L'anteprima mostra le prime 100 righe, con i valori che non corrispondono al proprio attributo evidenziati in rosso. Se alcune righe hanno valori non validi, scegli **Salta le righe con valori non validi** oppure **Importale, lasciando vuoti i valori non validi**.
+8. Seleziona **Importa N risorse**.
+
+Al termine dell'importazione, un messaggio conferma quante risorse sono state importate, e la griglia passa alla collezione che le ha ricevute. Nella **Cronologia** di ogni record i valori sono indicati come scritti *tramite importazione*.
+
+Ogni riga crea un nuovo record: l'importazione non aggiorna un record esistente con lo stesso nome. Per aggiornare dati importati in precedenza, modificali nella griglia oppure elimina prima i vecchi record. Se un'importazione si interrompe a metà, la finestra indica quanti record sono stati creati e propone **Importa le restanti N**, che prosegue senza creare duplicati.
+
+## Compila persone e collegamenti usando il nome {#fill-people-and-links-by-name}
+
+Le colonne che vanno negli [attributi di tipo Persona e Collegamento](/operational-guides/knowledge-attributes) vengono abbinate per nome, quindi il foglio di calcolo non richiede ID.
+
+- **Le persone** vengono abbinate agli utenti che possono leggere la Knowledge, in base al nome mostrato nella griglia (senza distinguere maiuscole e minuscole). Un nome che non corrisponde a nessuno viene segnalato nell'anteprima come valore non valido.
+- **I collegamenti** vengono abbinati ai record della collezione collegata in base al nome. Un nome senza corrispondenza diventa un nuovo record in quella collezione, e l'anteprima lo elenca sotto *"Non ancora in …, quindi l'import li crea lì"*.
+- Per inserire più persone o record in una cella, separali con un **punto e virgola**. Le virgole sono consentite nei nomi.
+
+Ogni persona indicata nell'importazione riceve un'unica notifica, *"Ti sono stati assegnati N record in «…»"*, invece di una per record.
+
+## Prossimi passi {#next-steps}
+
+- [Scegli il tipo di attributo giusto](/operational-guides/knowledge-attributes)
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)
+- [Ricevi un promemoria prima di una data nei tuoi record](/operational-guides/knowledge-reminders)

@@ -1,0 +1,97 @@
+---
+sidebar_position: 5
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Fonti
+
+Una fonte è una connessione a un sistema esterno che fornisce dati a Rational AI, per esempio un bucket Amazon S3 o una cartella Google Drive. Le fonti mantengono i tuoi contenuti sincronizzati (a ogni modifica, secondo una pianificazione o su richiesta), così il modulo [Knowledge](../Knowledge.mdx), i touchpoint e i progetti Rational BI a cui sono collegate lavorano con materiale aggiornato. Usa questa sezione per aggiungere fonti, configurare la frequenza di sincronizzazione e controllare l'esito di ogni sincronizzazione.
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Disponibile quando la tua <a href="/operational-guides/license">licenza</a> include il modulo Knowledge
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Chiunque abbia nel proprio ruolo <span className="featureBox__pill">Crea</span>
+      o <span className="featureBox__pill">Modifica</span> sulla riga <strong>Fonti</strong> può aggiungere e gestire le fonti
+    </div>
+  </div>
+
+</div>
+
+## Sfogliare le fonti {#browse-sources}
+
+La pagina Fonti elenca ogni fonte configurata come scheda con il nome e l'icona del provider. Usa la casella di **ricerca** per filtrare le fonti per nome, e seleziona una scheda per aprirne i dettagli.
+
+Il pannello dei dettagli mostra:
+
+* **Descrizione**: una nota modificabile che descrive la fonte.
+* **Provider**: il provider sottostante (per esempio AWS o Google Drive).
+* **Modalità di sincronizzazione**: come viene avviata la sincronizzazione: *Automatico*, *Periodica* o *Manuale*.
+* **Programmazione**: quando la fonte si sincronizza (per esempio *Ogni ora al minuto 30*).
+* **Prossima sincronizzazione**: data e ora della sincronizzazione successiva. Non viene mostrata per una fonte *Automatico*, il cui controllo di modifiche ogni due minuti non è una sincronizzazione.
+* **Stato**: lo stato di sincronizzazione corrente (per esempio *Synced*).
+* **Ultima sincronizzazione** ed **Esito**: quando è stata eseguita l'ultima sincronizzazione e come si è conclusa. Il menu delle opzioni apre la cronologia completa (**Log di elaborazione**).
+
+Dopo aver modificato campi come la descrizione, usa **Salva** per applicare le modifiche oppure **Annulla** per scartarle.
+
+## Aggiungere una fonte {#add-a-source}
+
+Seleziona **Aggiungi** e compila la finestra **Aggiungi nuova fonte**:
+
+| Campo | Descrizione |
+|-------|-------------|
+| **Nome** | Un nome per identificare la fonte. |
+| **Descrizione** | Note facoltative sulla fonte. |
+| **Tipo** | Il tipo di fonte e, per i tipi che lo richiedono, il [connettore](connectors.mdx) che contiene le credenziali usate per accedervi, scelti in un unico campo: ogni tipo elenca i suoi connettori sotto di sé. I tipi includono Amazon S3, Azure Blob Storage, Google Cloud Storage, Google Drive, OneDrive, HTTP, repository Git, coda RabbitMQ e le fonti fornite dalle estensioni. Un tipo di cui non esiste ancora un connettore non compare nell'elenco. |
+
+Scegliendo un tipo compaiono le opzioni specifiche del tipo in **Impostazioni avanzate** (per esempio il **Bucket** per una fonte Amazon S3). Per i tipi in cui scegli i file, un pannello dei file elenca le cartelle e i file che il connettore può raggiungere: filtrali, seleziona quelli da sincronizzare o usa **Seleziona tutto**, e trascina il separatore per ridimensionare il pannello. Seleziona **Aggiungi** per creare la fonte.
+
+## Impostazioni di sincronizzazione {#synchronization-settings}
+
+Ogni fonte ha le proprie impostazioni di sincronizzazione, aperte con **Impostazioni di sincronizzazione** nel menu delle opzioni. Controllano quando la fonte si sincronizza e cosa succede al contenuto derivato quando gli elementi vengono rimossi all'origine.
+
+<img
+  src={require('/img/screens/sync-settings.png').default}
+  style={{
+    border: '1px solid #e4e4e7',
+    borderRadius: '10px',
+  }}
+  alt="La pagina Fonti con la finestra Impostazioni di sincronizzazione aperta, che mostra modalità di sincronizzazione, pianificazione e comportamento in caso di eliminazione"
+/>
+
+| Impostazione | Descrizione |
+|---------|-------------|
+| **Modalità di sincronizzazione** | Come viene avviata la sincronizzazione. **Automatico** controlla la fonte ogni due minuti e sincronizza solo quando è cambiato qualcosa (solo per fonti Git, Google Drive, OneDrive e HTTP). **Periodica** sincronizza secondo la pianificazione qui sotto. **Manuale** sincronizza solo quando selezioni **Sincronizza ora**. |
+| **Periodicità di sincronizzazione** | Ogni quanto si sincronizza la fonte: **Ogni numero di minuti** (da 1 a 59), **Ogni numero di ore** (da 1 a 23), **Una volta all'ora**, **Una volta al giorno**, **Settimanale** o **Mensile**, con il minuto, l'orario o il giorno della settimana, quando pertinente. |
+| **Prima di essere eliminata** | Cosa succede alla Knowledge quando un elemento viene rimosso dalla fonte: **Elimina a cascata** mantiene la Knowledge strettamente allineata alla fonte, eliminando anche i file derivati, mentre **Conserva la fonte** trattiene quei file per evitare la perdita di dati da eliminazioni accidentali. |
+
+## Gestire una fonte {#manage-a-source}
+
+Apri il menu delle opzioni (i tre punti verticali) nel pannello dei dettagli per:
+
+| Azione | Descrizione |
+|--------|-------------|
+| **Sincronizza ora** | Esegui subito una sincronizzazione, indipendentemente dalla pianificazione o dall'attesa prima di riprovare. Per una coda RabbitMQ, avvia la lettura della coda; **Interrompi sincronizzazione** la ferma. |
+| **Impostazioni di sincronizzazione** | Cambia la modalità di sincronizzazione, la pianificazione e il comportamento in caso di eliminazione. |
+| **Log di elaborazione** | Apri il **Log di elaborazione dati**: l'attività di sincronizzazione in tempo reale e la cronologia delle esecuzioni recenti. |
+| **Modifica** | Aggiorna il nome, la descrizione, il connettore o le impostazioni avanzate della fonte. |
+| **Elimina** | Rimuovi la fonte dalla piattaforma. I file importati da essa in una Knowledge vengono eliminati insieme a lei. |
+
+:::note
+Dopo una sincronizzazione non riuscita, le sincronizzazioni pianificate attendono prima di riprovare: 2 minuti, raddoppiati a ogni fallimento consecutivo fino a un'ora, e azzerati dalla prima sincronizzazione riuscita. **Sincronizza ora** viene sempre eseguita subito. Vedi [Configura le fonti dei dati](/operational-guides/configure-sources#what-happens-when-a-sync-keeps-failing).
+:::

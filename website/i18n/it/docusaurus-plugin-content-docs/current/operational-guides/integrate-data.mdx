@@ -1,0 +1,68 @@
+---
+sidebar_position: 1
+sidebar_label: Integra dati esterni
+slug: /operational-guides/integrate-data
+type: how-to
+audience: [admin, builder]
+---
+
+
+# Integra dati esterni
+
+Per rendere ricercabili in una Knowledge i file di un servizio esterno, colleghi tre elementi: un [connettore](/operational-guides/configure-connectors) che contiene le credenziali, una [fonte](/operational-guides/configure-sources) che indica quali file sincronizzare, e la Knowledge che li elabora. Questa pagina descrive l'intero percorso con Google Drive. Gli altri provider seguono gli stessi passaggi con le proprie credenziali; vedi [Provider disponibili](/operational-guides/configure-connectors#available-providers).
+
+## Prerequisiti {#prerequisites}
+
+- **Crea** sulle righe **Connettori** e **Fonti** del tuo ruolo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Il modulo Knowledge nella tua licenza.** Senza di esso **Fonti** è nascosto.
+- **Una [Knowledge](/operational-guides/create-knowledge)** che riceva i file.
+- **Un progetto Google Cloud** in cui puoi creare credenziali OAuth.
+
+## Integra i dati di Google Drive {#integrate-google-drive-data}
+
+### 1. Crea le credenziali OAuth in Google Cloud {#1-create-oauth-credentials-in-google-cloud}
+
+1. Nella [Google Cloud Console](https://console.cloud.google.com/), apri il tuo progetto e attiva la **Google Drive API** in **APIs & Services** → **Library**.
+2. In **APIs & Services** → **OAuth consent screen**, configura la schermata di consenso. Scegli **Internal** per limitare l'accesso al tuo Google Workspace.
+3. In **APIs & Services** → **Credentials**, crea un **OAuth client ID** di tipo **Web application**.
+4. In **Authorized redirect URIs**, aggiungi l'indirizzo con cui apri Rational AI, seguito da `/api/management/v0/oauth/callback`. Ad esempio, `https://ai.example.com/api/management/v0/oauth/callback`.
+5. Copia il **Client ID** e il **Client Secret**.
+
+### 2. Aggiungi il connettore Google {#2-add-the-google-connector}
+
+1. In Rational AI, vai su **Impostazioni** → **Connettori** e seleziona **Aggiungi**.
+2. Scegli **Google**.
+3. Inserisci un **Nome**, ad esempio *Marketing Drive*, e incolla il **Client ID** e il **Client Secret**.
+4. Seleziona **Aggiungi e autorizza** e accedi con l'account Google di cui vuoi sincronizzare i file.
+
+### 3. Aggiungi una fonte Google Drive {#3-add-a-google-drive-source}
+
+1. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
+2. Inserisci un **Nome**, ad esempio *Marketing team Drive*.
+3. In **Tipo**, trova **Google Drive** e seleziona il connettore sotto di esso.
+4. Nel pannello dei file, seleziona le cartelle, i drive condivisi o i file da sincronizzare. Usa *"Filtra file e cartelle..."* per restringere l'albero. Una cartella selezionata viene sincronizzata con tutto ciò che contiene.
+5. Seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+
+### 4. Scegli quando la fonte si sincronizza {#4-choose-when-the-source-syncs}
+
+Dopo la prima sincronizzazione, una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per tenerla aggiornata, apri il menu **⋮** della fonte, seleziona **Impostazioni di sincronizzazione** e scegli **Automatico** o **Periodica**. Vedi [Scegli quando una fonte si sincronizza](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+### 5. Collega la fonte a una Knowledge {#5-attach-the-source-to-a-knowledge}
+
+1. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge e seleziona la scheda **Fonti**.
+2. In **Aggiungi fonte...**, seleziona la fonte. Viene aggiunta subito.
+3. Per elaborare subito i file sincronizzati, apri il menu **⋮** della fonte e seleziona **Processa ora**. Per elaborare le modifiche a ogni sincronizzazione della fonte, vedi [Elabora una Knowledge ogni volta che cambia la sua fonte](/operational-guides/configure-sources#process-a-knowledge-whenever-its-source-changes).
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Un'icona rossa di link interrotto accanto al connettore | L'accesso non è riuscito o è scaduto. Apri il menu del connettore, seleziona **Completa l'autenticazione** e accedi di nuovo. |
+| Il pannello dei file non elenca alcuna cartella | Il connettore selezionato non riesce a raggiungere il servizio. Correggi la sua autenticazione nella pagina **Connettori**, poi aggiungi di nuovo la fonte. |
+| Google mostra un errore di redirect URI durante l'accesso | La voce **Authorized redirect URIs** deve corrispondere esattamente all'indirizzo con cui apri Rational AI, seguito da `/api/management/v0/oauth/callback`. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura i connettori](/operational-guides/configure-connectors): ogni provider e ciò che richiede.
+- [Configura le fonti dei dati](/operational-guides/configure-sources): modalità di sincronizzazione e altri tipi di fonte.
+- [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources): lavora con i file di una Knowledge.

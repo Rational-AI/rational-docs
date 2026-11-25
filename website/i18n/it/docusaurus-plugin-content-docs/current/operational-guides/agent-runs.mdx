@@ -1,0 +1,116 @@
+---
+sidebar_position: 37
+sidebar_label: Segui le esecuzioni e approva le azioni
+type: how-to
+audience: [builder]
+---
+
+# Segui le esecuzioni e approva le azioni
+
+Ogni lavoro svolto da un agente è un'**esecuzione**: parte, svolge il lavoro passo dopo passo sul computer dell'agente e termina come **Completata**, **Fallita**, **Annullata**, **Tempo scaduto** oppure, per un evento che non ha superato il filtro dell'attivazione, **Saltata**. La pagina dell'esecuzione mostra tutto mentre accade (cosa ha detto l'agente, ogni strumento che ha chiamato e cosa ha restituito), ed è il punto in cui rispondi quando l'agente arriva a uno strumento che non può usare senza di te.
+
+Questa guida segue la richiesta di preventivo RFQ-2026-0153 di **Quinn**: Quinn calcola l'offerta da solo, poi si ferma prima di scrivere il file dell'offerta, perché `write` è in **Chiedimi prima**.
+
+## Prerequisiti {#prerequisites}
+
+- **Un agente e un'esecuzione**: avviane uno da un'attività, da una chat, con **Esegui ora** nella pagina dell'agente, o da un'attivazione. Vedi [Delega il lavoro con le attività](./agent-tasks) e [Crea un agente](./create-an-agent).
+
+## Apri un'esecuzione {#open-a-run}
+
+- Da un'attività: **Apri l'esecuzione in corso** nel pannello dell'attività.
+- Dalla pagina dell'agente: seleziona un'esecuzione nel suo elenco **Esecuzioni**.
+- Da **Cronologia** o **Automazioni**: seleziona la riga.
+- Da una chat: **Vedi esecuzione** su un messaggio.
+
+## Leggi la pagina dell'esecuzione {#read-the-run-page}
+
+<img
+  alt="L'esecuzione completata di Iris per il report vendite della settimana 39: l'obiettivo, l'attività compressa con 29 chiamate di strumenti e il risultato verificato"
+  src={require('@site/static/img/screens/agents-run-completed.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+L'intestazione mostra l'agente, lo stato dell'esecuzione e come è stata avviata, il modello, dove è stata eseguita e da quanto tempo è in corso. Più in basso, **Conversazione e attività** racconta l'esecuzione in ordine:
+
+- **L'obiettivo** che hai dato, come primo messaggio.
+- **L'attività**, compressa in una sola riga (*"Mostra attività · 29 passaggi · rational_verify_completion"*), con il numero di passaggi e l'ultimo. Mentre l'esecuzione procede, la riga mostra *"In corso: &lt;passaggio&gt;"*, seguita dal riepilogo del passaggio. Espandila per vedere ogni passaggio: i comandi eseguiti, i file letti, la Knowledge consultata; espandi un passaggio per vedere i suoi argomenti e il suo risultato.
+- **I messaggi dell'agente**, tra i blocchi di attività. L'ultimo è la risposta; per un'attività viene anche pubblicato come commento.
+- **Schede di approvazione**, quando l'agente attende te.
+- **Collegamenti alle esecuzioni delegate**, quando l'agente ha affidato una parte del lavoro a un altro agente.
+
+Quando l'agente salva dei documenti durante l'esecuzione, **Cosa ha prodotto** li elenca, ciascuno con la sua versione e **Apri**.
+
+**Mostra computer** apre il computer dell'agente accanto all'esecuzione.
+
+:::note[Gli agenti verificano il proprio lavoro]
+Prima che un'esecuzione possa terminare come **Completata**, l'agente verifica che il risultato esista davvero: il file c'è, i numeri tornano, il record è stato salvato. L'attività mostra questi controlli come passaggi *Verification*. Quando l'agente non riesce a dimostrare il risultato dopo diversi tentativi, l'esecuzione termina **Fallita** con il messaggio *"Completion could not be verified after three continuation attempts"*, seguito dal motivo, e la sua attività passa in *Da rivedere*: controlla che cosa ha fatto l'agente, correggi l'attività o le istruzioni, e riprova.
+:::
+
+## Approva ciò che l'agente vuole fare {#approve-what-the-agent-wants-to-do}
+
+Quando l'agente chiama uno strumento che è in **Chiedimi prima** nel suo profilo, l'esecuzione si mette in pausa:
+
+- lo stato dell'esecuzione diventa **Da approvare**;
+- la sua attività passa in *Da rivedere* con *In attesa della tua approvazione*;
+- il contatore accanto a **Attività** nella barra laterale la conta;
+- una scheda di approvazione compare nell'esecuzione e nella chat, se l'esecuzione è partita da una chat.
+
+<img
+  alt="L'esecuzione di Quinn in attesa di approvazione: la scheda dice L'agente chiede la tua approvazione, Approve write?, con il percorso e il contenuto del file dell'offerta, e i pulsanti Rifiuta e Approva"
+  src={require('@site/static/img/screens/agents-approval.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+La scheda dice *"L'agente chiede la tua approvazione"*, indica lo strumento (**Approve write?**) e mostra gli argomenti esatti della chiamata. In questo caso il percorso `offers/RFQ-2026-0153.md` e il contenuto che Quinn vuole scrivere, prezzi di riga inclusi. Leggili come leggeresti la bozza di un collega:
+
+- **Approva** esegue lo strumento con esattamente quegli argomenti e l'agente prosegue.
+- Se cambi prima gli argomenti, il pulsante diventa **Approva con le modifiche**: lo strumento viene eseguito con la tua versione.
+- **Approva e non chiedere più** approva la chiamata e toglie lo strumento da **Chiedimi prima** per le chiamate successive.
+- **Rifiuta** dice all'agente di no; l'agente prosegue senza quella chiamata e può spiegare, provare un'altra strada o chiederti qualcosa.
+
+In ogni caso l'esecuzione torna *In corso*. L'agente può anche fermarsi per farti una domanda di sua iniziativa: la scheda dice allora *"L'agente ti fa una domanda"* e mostra la sua domanda al posto del nome di uno strumento.
+
+:::note[Chi può rispondere]
+Chiunque possa usare l'agente può rispondere alle esecuzioni che ha avviato. Rispondere a un'esecuzione avviata da qualcun altro, o selezionare **Approva e non chiedere più**, richiede il permesso di modificare l'agente. Un agente in attesa resta in attesa: le esecuzioni di agenti con strumenti in **Chiedimi prima** hanno fino a sei ore prima di scadere.
+:::
+
+## Guida, ferma o riprova {#steer-stop-or-retry}
+
+- **Scrivi all'agente**: mentre un'esecuzione è in corso, la casella in basso (*Indirizza o rispondi all'agente…*) invia un messaggio che l'agente legge al passaggio successivo. Usala per aggiungere un dettaglio, correggere la direzione o rispondere a una domanda. Solo chi ha avviato l'esecuzione può scrivergli.
+- **Ferma**: termina l'esecuzione. Il computer dell'agente conferma l'arresto; l'esecuzione termina **Annullata** e la sua attività passa in *Da rivedere*.
+- **Riprova**: per un'esecuzione fallita, annullata o scaduta. Avvia una nuova esecuzione con lo stesso obiettivo; quella vecchia resta nella cronologia.
+- **Profilo**: apre il profilo dell'agente.
+
+## Consulta la Cronologia {#look-back-in-history}
+
+**Agenti** → **Cronologia** elenca ogni esecuzione, dalla più recente: quando è partita, l'obiettivo, l'agente, come è stata avviata, il modello e l'esito.
+
+<img
+  alt="La pagina Cronologia con sei esecuzioni: tre Completate, due Annullate e una Fallita, ciascuna con agente, attivazione e modello"
+  src={require('@site/static/img/screens/agents-history.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+Filtra per esito con i chip in alto (**Tutte**, **Completata**, **Fallita**, **Annullata**, e qualsiasi altro esito presente) e apri una riga per vedere l'esecuzione. La Cronologia mostra le ultime 200 esecuzioni.
+
+| Stato | Significato |
+|-------|-------------|
+| **In coda** | In attesa del computer dell'agente; le esecuzioni dello stesso agente partono una alla volta. |
+| **In corso** | L'agente sta lavorando. |
+| **Da approvare** | In attesa di un'approvazione o di una risposta. |
+| **Nuovo tentativo** | Un passaggio è fallito e viene ripetuto. |
+| **Completata** | Terminata con un risultato verificato. |
+| **Fallita** | Terminata con un errore, o senza un risultato verificato. |
+| **Annullata** | Interrotta da qualcuno. |
+| **Tempo scaduto** | Ha esaurito il tempo a disposizione. |
+| **Saltata** | Un evento che non ha superato il filtro dell'attivazione o il **Controllo AI**, quindi l'agente non ci ha lavorato. |
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---------|------------------|
+| L'esecuzione resta *In coda* | Il computer dell'agente è occupato con un'altra esecuzione dello stesso agente, oppure si sta avviando. Controllalo in **Computer**. |
+| L'esecuzione termina *Fallita* con un messaggio di verifica | L'agente non è riuscito a dimostrare il risultato. Rendi l'obiettivo verificabile (un file, un record, una risposta precisa) e riprova. |
+| L'esecuzione termina con *Tempo scaduto* | Il lavoro non stava nel tempo dell'esecuzione. Dividilo in attività più piccole, oppure metti in **Chiedimi prima** le approvazioni che servono, così l'esecuzione ottiene il limite più lungo. |
+| *Ferma* mostra *"Cancellation was not confirmed by the runtime…"* | Il computer non ha confermato in tempo. Attendi qualche secondo e controlla di nuovo lo stato. |
+| Non c'è la casella **Scrivi all'agente** | L'esecuzione non è più attiva, oppure l'ha avviata qualcun altro. |

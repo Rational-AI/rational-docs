@@ -1,0 +1,54 @@
+---
+sidebar_position: 1
+sidebar_label: Touchpoint
+title: Touchpoint
+description: Cos'è un touchpoint, cosa riunisce e come i touchpoint trasformano un modello in un assistente pensato per un compito in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Touchpoint
+
+Un **touchpoint** è un assistente configurato con cui le persone parlano, per esempio uno dedicato a un prodotto specifico o a un flusso di assistenza clienti. È l'unità che trasforma un modello generico in un assistente pensato per un solo compito. Non è un agente della sezione [Agenti](../cr/Agents.mdx): gli agenti svolgono lavori nelle esecuzioni, mentre un touchpoint risponde alle persone nelle conversazioni.
+
+Un modello è generico, un touchpoint è specifico. Lo stesso modello sottostante può alimentare molti touchpoint, ciascuno con la propria personalità, la propria Knowledge e le proprie regole, allo stesso modo in cui un solo motore può muovere veicoli molto diversi.
+
+## Cosa riunisce un touchpoint {#what-a-touchpoint-binds-together}
+
+Un touchpoint raccoglie diversi ingredienti in un'unica configurazione:
+
+* **Un [canale](./Channels.mdx):** come e dove gli utenti raggiungono l'assistente. Il canale trasporta solo i messaggi.
+* **Un modello e un prompt di sistema:** il [modello](/reference/glossary#model) che genera le risposte e le istruzioni che ne modellano il comportamento.
+* **Knowledge:** le [Knowledge](./Knowledge.mdx) a cui l'assistente può attingere.
+* **Strumenti e skill:** le azioni che può compiere, come il recupero semantico o le interrogazioni di database, e le skill che può usare.
+* **Memoria:** ciò che porta da una conversazione alla successiva.
+
+Poiché tutto questo vive in un unico punto, ogni touchpoint può essere adattato con precisione al suo caso d'uso e modificato senza influire sugli altri.
+
+## Perché i touchpoint sono importanti {#why-touchpoints-matter}
+
+I touchpoint ti permettono di decidere con precisione cosa sa un assistente, come parla e cosa può fare. Rendono inoltre misurabile ogni interazione: ogni conversazione avuta tramite un touchpoint può essere rivista, e il suo utilizzo tracciato.
+
+## I touchpoint in Rational AI {#touchpoints-in-rational-ai}
+
+Li crei e li personalizzi nelle impostazioni [Touchpoint](../cr/settings/touchpoints.mdx). Una volta configurato, un touchpoint è ciò che selezioni in [Chat](../cr/Chats.mdx), che si apre sull'assistente del workspace (anch'esso un touchpoint). Le conversazioni prodotte da un touchpoint compaiono in [Conversazioni](../cr/Conversations.mdx) e vengono misurate in [Governance](../cr/Governance.mdx).
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Impostazioni Touchpoint](../cr/settings/touchpoints.mdx): crea e configura i tuoi touchpoint.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Canali", to: "/concepts/Channels" },
+		{ label: "Connettori", to: "/concepts/Connectors" },
+		{ label: "Prompt di sistema", to: "/concepts/System-prompt" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+	]}
+/>

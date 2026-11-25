@@ -1,0 +1,70 @@
+{
+	"link.title.Get started": {
+		"message": "Inizia",
+		"description": "The title of the footer links column with title=Get started in the footer"
+	},
+	"link.title.Guides": {
+		"message": "Guide",
+		"description": "The title of the footer links column with title=Guides in the footer"
+	},
+	"link.title.Help": {
+		"message": "Aiuto",
+		"description": "The title of the footer links column with title=Help in the footer"
+	},
+	"link.title.Rational AI": {
+		"message": "Rational AI",
+		"description": "The title of the footer links column with title=Rational AI in the footer"
+	},
+	"link.item.label.Quickstart": {
+		"message": "Guida rapida",
+		"description": "The label of footer link with label=Quickstart linking to /operational-guides/get-started"
+	},
+	"link.item.label.The modules": {
+		"message": "I moduli",
+		"description": "The label of footer link with label=The modules linking to /cr/Chats"
+	},
+	"link.item.label.Concepts": {
+		"message": "Concetti",
+		"description": "The label of footer link with label=Concepts linking to /concepts/Touchpoint"
+	},
+	"link.item.label.Use Chat": {
+		"message": "Usare Chat",
+		"description": "The label of footer link with label=Use Chat linking to /operational-guides/chat-experience"
+	},
+	"link.item.label.Create a Knowledge": {
+		"message": "Crea una Knowledge",
+		"description": "The label of footer link with label=Create a Knowledge linking to /operational-guides/create-knowledge"
+	},
+	"link.item.label.Administration & security": {
+		"message": "Amministrazione e sicurezza",
+		"description": "The label of footer link with label=Administration & security linking to /operational-guides/on-premises-installation"
+	},
+	"link.item.label.Developers": {
+		"message": "Sviluppatori",
+		"description": "The label of footer link with label=Developers linking to /operational-guides/api-access"
+	},
+	"link.item.label.Troubleshooting": {
+		"message": "Risoluzione dei problemi",
+		"description": "The label of footer link with label=Troubleshooting linking to /troubleshooting"
+	},
+	"link.item.label.Error messages": {
+		"message": "Messaggi di errore",
+		"description": "The label of footer link with label=Error messages linking to /reference/error-messages"
+	},
+	"link.item.label.Limits and quotas": {
+		"message": "Limiti e quote",
+		"description": "The label of footer link with label=Limits and quotas linking to /reference/limits"
+	},
+	"link.item.label.Website": {
+		"message": "Sito web",
+		"description": "The label of footer link with label=Website linking to https://rational.is"
+	},
+	"link.item.label.Docs on GitHub": {
+		"message": "Documentazione su GitHub",
+		"description": "The label of footer link with label=Docs on GitHub linking to https://github.com/Rational-AI/rational-docs"
+	},
+	"logo.alt": {
+		"message": "Rational AI",
+		"description": "The alt text of footer logo"
+	}
+}
