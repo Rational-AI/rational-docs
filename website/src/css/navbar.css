@@ -39,16 +39,19 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
 .navbar-sidebar [class*="colorModeToggle"] {
 	display: none;
 }
-/* Drawer header: only the logo mark, so the theme toggle gets room and is easy to tap.
-   Crop the wordmark to its square mark (both themes use the same layout). */
-.navbar-sidebar__brand .navbar__title {
-	display: none;
-}
-.navbar-sidebar__brand .navbar__logo img {
-	width: 24px;
-	height: 24px;
-	object-fit: cover;
-	object-position: left;
+/* Drawer header on phones: only the logo mark, so the theme toggle gets room and is
+   easy to tap. Crop the wordmark to its square mark (both themes use the same layout).
+   Wider drawers (tablets) keep the full "Rational AI DOCS". */
+@media (max-width: 576px) {
+	.navbar-sidebar__brand .navbar__title {
+		display: none;
+	}
+	.navbar-sidebar__brand .navbar__logo img {
+		width: 24px;
+		height: 24px;
+		object-fit: cover;
+		object-position: left;
+	}
 }
 .navbar-sidebar__brand {
 	padding-left: 20px;
