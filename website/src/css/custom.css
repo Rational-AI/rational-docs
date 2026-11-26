@@ -230,3 +230,12 @@ html.plugin-pages .navbar__toggle {
 .navbar__link.navbar-locale::after {
 	display: none;
 }
+/* The icon's right margin only spaced it from the label, now hidden */
+.navbar__link.navbar-locale svg {
+	margin-right: 0;
+}
+
+/* The search plugin's input otherwise falls back to the browser default (Arial) */
+.navbar__search-input {
+	font-family: inherit;
+}

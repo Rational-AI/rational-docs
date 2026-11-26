@@ -215,6 +215,8 @@
 	color: #ffffff;
 	font-size: 1.05rem;
 	font-weight: 500;
+	/* line-height 1 keeps the text on the icon's centre line */
+	line-height: 1;
 }
 
 .homeSearch .navbar__search-input::placeholder {

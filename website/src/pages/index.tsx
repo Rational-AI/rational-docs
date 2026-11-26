@@ -322,10 +322,12 @@ function Hero() {
 							Support &amp; documentation
 						</Translate>
 					</h1>
+					{/* TODO: when the docs get an AI chat, bring back "or chat with our AI"
+					    here and in i18n/it/code.json ("o chatta con la nostra AI"). */}
 					<p className="homeHero__subtitle">
 						<Translate id="home.hero.subtitle">
-							Stuck on something or getting started? Browse our documentation or
-							chat with our AI to find help.
+							Stuck on something or getting started? Search the documentation to
+							find help.
 						</Translate>
 					</p>
 					{/* Reuse the offline-search SearchBar so typing previews matching
