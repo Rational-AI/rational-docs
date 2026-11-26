@@ -27,6 +27,12 @@ html[data-theme="light"] nav.theme-layout-navbar.navbar.navbar--fixed-top {
 	background-color: color-mix(in srgb, var(--color-canvas) 90%, transparent);
 	backdrop-filter: blur(8px);
 }
+/* backdrop-filter makes the navbar the containing block of the fixed mobile
+   drawer, which then only got the navbar's height. Drop it while the drawer is open. */
+html[data-theme="light"]
+nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
+	backdrop-filter: none;
+}
 
 /* The theme switch lives in the footer: hide the one Docusaurus puts in the bar and drawer */
 .navbar [class*="colorModeToggle"],
