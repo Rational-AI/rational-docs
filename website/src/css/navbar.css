@@ -55,7 +55,12 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
 	margin-right: auto;
 }
 .navbar-sidebar__brand > .navbar-sidebar__close {
-	margin-left: 0;
+	margin-left: 1.5rem;
+}
+/* Docusaurus draws the X at 21px, which looks bigger than the 24px sun */
+.navbar-sidebar__close svg {
+	width: 16px;
+	height: 16px;
 }
 /* Search floats at the bottom of the page instead */
 .navbar [class*="navbarSearchContainer"] {
