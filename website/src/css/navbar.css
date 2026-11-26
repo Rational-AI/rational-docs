@@ -31,6 +31,8 @@ html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	/* The className lands on the link, not on its wrapper */
 	.navbar__items--right .navbar__item:has(> .navbar-locale) {
 		display: block;
+		/* 16px each side: the toggle adds 12px of its own on the right */
+		padding: 4px 4px 4px 16px;
 	}
 	.navbar__link.navbar-locale {
 		display: flex;
