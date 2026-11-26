@@ -2,40 +2,24 @@
 sidebar_position: 29
 sidebar_label: Sycophancy
 title: Sycophancy
-description: Why models tend to tell you what you want to hear, how it differs from hallucination, and how to guard against it in Rational AI.
+description: Why models tend to tell you what you want to hear, how to ask so they don't, and what helps in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
-
-
 # Sycophancy
 
-**Sycophancy** is the tendency of a model to produce confidently agreeable answers, telling you what you seem to want to hear rather than what is most accurate. A sycophantic model may back down from a correct answer when challenged, validate a flawed assumption in your question, or praise a poor idea.
+**Sycophancy** is a model's tendency to agree with you or tell you what you want to hear, even when it's wrong. A sycophantic model backs down from a correct answer when you push back, accepts a false premise in your question, or praises a weak plan.
 
-The cause lies in how models are aligned. During [reinforcement learning from human feedback](/concepts/RLHF), models are trained to favour responses that people rated highly, and people tend to rate agreeable, flattering answers more highly than blunt ones. The model learns that agreement is rewarded.
+It comes from training. In [RLHF](/concepts/RLHF), people rate answers, and they tend to rate agreeable answers higher than blunt ones, so the model learns that agreeing pays. It often comes with [hallucinations](/concepts/hallucinations): a leading question can push a model to accept a wrong premise and then invent support for it.
 
-:::note[Sycophancy vs hallucination]
-A [hallucination](/concepts/hallucinations) is a confidently wrong statement of fact. Sycophancy is a confidently *agreeable* response shaped by what the user appears to want. The two often appear together: a leading question can nudge a model into agreeing with, and then fabricating support for, an incorrect premise.
-:::
+## How to ask
 
-## How to guard against it
+- **Ask neutrally.** "Is this plan correct?" invites a yes. "What are the weak points of this plan?" invites a review.
+- **Ask for the case against.** Request risks and counterarguments, not only confirmation.
+- **Keep your hoped-for answer out of the question.** "Our supplier is reliable, right?" already contains the answer.
 
-* **Ask neutrally:** avoid loading the question with the answer you expect. "Is this approach correct?" invites agreement; "What are the weaknesses of this approach?" invites scrutiny.
-* **Ask for the case against:** explicitly request counterarguments or risks, not only confirmation.
-* **Ground the answer:** anchoring responses in retrieved [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) gives the model verified material to lean on instead of your phrasing.
-* **Keep a human in the loop:** for decisions that matter, a [human-in-the-loop](/concepts/Human-in-the-loop) review catches agreeable but wrong answers.
+## In Rational AI
 
----
-
-## Connects to
-
-<ConnectsTo
-	items={[
-		{ label: "Hallucinations", to: "/concepts/hallucinations" },
-		{ label: "RLHF", to: "/concepts/RLHF" },
-		{ label: "Human-in-the-loop", to: "/concepts/Human-in-the-loop" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-	]}
-/>
+- An assistant that answers from your [Knowledge](/concepts/Knowledge) has sources to stand on, not only your wording. **Verify response** in Chat checks an answer against them. See [Check an answer against your knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+- For decisions that matter, have a person review the answer. See [Human-in-the-loop](/concepts/Human-in-the-loop).

@@ -1,47 +1,24 @@
 ---
 sidebar_position: 19
 sidebar_label: RLHF
-title: Reinforcement Learning from Human Feedback (RLHF)
-description: What RLHF is, why it is used to align models with human preferences, how the process works, and how it relates to fine-tuning.
+title: Reinforcement learning from human feedback (RLHF)
+description: How model makers use people's ratings to teach a model which answers are helpful, and the side effect it can leave.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
-
 # Reinforcement learning from human feedback (RLHF)
 
-**Reinforcement Learning from Human Feedback (RLHF)** is a technique for aligning a model's behavior with human preferences. Instead of teaching the model only what is correct, RLHF teaches it what people find **helpful, safe and well‑expressed**.
-
-A model trained purely to predict the next word is fluent, but it has no sense of which of several plausible answers is actually the most useful or appropriate. RLHF adds that sense by learning directly from human judgement.
-
-## Why it is needed
-
-Two answers can both be grammatically perfect and factually plausible while differing hugely in quality: one is clear, honest and on‑topic; the other is evasive, verbose or subtly unsafe. The training data alone doesn't reliably capture this difference. Human feedback does.
+**Reinforcement learning from human feedback (RLHF)** is a training step that teaches a model which answers people prefer. A model trained only on text writes fluently, but it can't tell a clear and honest answer from an evasive or rambling one. RLHF adds that judgment.
 
 ## How it works
 
-RLHF usually proceeds in three steps:
+1. People compare two or more answers to the same question and pick the better one.
+2. Those choices train a second model that predicts how much people would like an answer.
+3. The language model is trained further to write answers that the second model scores highly.
 
-1. **Collect human preferences:** people compare model responses to the same prompt and indicate which they prefer.
-2. **Train a reward model:** those comparisons are used to train a separate model that predicts how much a human would like a given response.
-3. **Optimize the main model:** the language model is then refined to produce responses that score highly with the reward model, while staying close to its original abilities.
+People tend to rate agreeable answers highly, so a model trained this way can learn to tell you what you want to hear. See [Sycophancy](/concepts/Sycophancy).
 
-The outcome is a model that is capable and **aligned**: more helpful, more honest and less likely to produce harmful or off‑topic output.
+## In Rational AI
 
-## Where RLHF fits
-
-RLHF is a specialised stage of [model training](./Model-training.mdx), applied after pre‑training and ordinary [fine-tuning](./Finetuning.mdx). It is what turns a raw language model into the kind of assistant you can put in front of users. The instruction‑tuned models you select in Rational AI have typically already been through this alignment, which is why they follow [prompts](./Prompts.mdx) and stay on task.
-
----
-
-## Connects to
-
-<ConnectsTo
-	items={[
-		{ label: "Model training", to: "/concepts/Model-training" },
-		{ label: "Fine-tuning", to: "/concepts/Finetuning" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-		{ label: "Sycophancy", to: "/concepts/Sycophancy" },
-	]}
-/>
+RLHF happens at the model maker, before a model is released. The chat models you use in Rational AI have usually been through it, which is why they follow instructions. Fine-tuning in Rational AI works differently: it trains a model on example conversations from a dataset. See [Fine-tuning](/concepts/Finetuning).

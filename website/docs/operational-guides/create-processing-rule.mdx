@@ -1,70 +1,54 @@
 ---
 sidebar_position: 3
 sidebar_label: Create a processing rule
+title: Create a processing rule
+description: Write a processing rule that picks the step for each file a Knowledge receives in the classic pipeline.
 type: how-to
 audience: [builder]
 ---
 
-
 # Create a processing rule
-This guide explains how to create, configure, and manage processing rules in the AI Control Room. 
 
+A processing rule is a Python script that picks which [step](/operational-guides/create-workflow) processes each file a Knowledge receives. It decides from the file's name, type, content, source or any other condition you can write in code. The rule only routes the file, and the step it picks does the work.
 
-:::note[Glossary]
-What is a **processing rule**?  
-A processing rule is a Python script that picks which step processes each file, based on document type, content, source or any custom rule. It routes files and doesn't transform them: the step it picks does the work.
-A Knowledge uses its processing rule when its **Default workflow** is the **Classic pipeline**. Set the **Default processing rule** on the Knowledge's **Sources** tab, and override it for one attached source if needed.
-:::
+A Knowledge uses processing rules when its **Default workflow** is the **Classic pipeline**. If the Knowledge runs a workflow graph instead, the graph decides what happens to each file and the rule isn't used.
 
-To manage processing rules, open the **Settings** area and navigate to **Workflows** from the left sidebar. 
-Then switch to the **Processing rules** tab.
+## Before you begin
 
-## Understanding the interface
-The **Processing rules** tab follows the same structure as the **Workflows** tab and has two main areas.
+- Role: **Create** and **Update** on the **Workflows** row of your role. See [Manage roles and users](/operational-guides/roles-and-users).
+- The steps the rule routes to. Each must exist and be switched on. See [Create a workflow](/operational-guides/create-workflow).
 
 <img
   src={require('@site/static/img/screens/processing-rules.png').default}
-  alt="Dashboard interface displaying the Workflow page."
-  style={{ 
-    width: '100%', 
-    maxHeight: '100%', 
+  alt="The Processing rules tab with the list of rules on the left and the selected rule's Python code on the right"
+  style={{
+    width: '100%',
+    maxHeight: '100%',
     objectFit: 'contain',
     border: '1px solid #E4E4E7',
     borderRadius: '6px',
     boxSizing: 'border-box',
     }}
-/> 
+/>
 
-### Rules list
-The list shows all processing rules that have been created, by name, with a search box. Processing rules have no enable switch: a rule runs when a Knowledge or one of its sources uses it.
+## Create the rule
 
-### Rule editor
-When you select a rule, its editor opens.
+1. Go to **Settings** → **Workflows** and select the **Processing rules** tab.
+2. Select **New**, then **From scratch**. On an empty page, select **Add new**. **Import JSON** loads a rule exported from another environment instead.
+3. Replace *Untitled processing rule* with a name, for example `Route by file type`.
+4. Write the rule's code in the editor. The next section has an example.
+5. Select **Save**.
 
-The editor includes:
-* The rule name.
-* The rule's Python code.
-* **Save** and **Undo** for your changes.
-* A **⋮** menu with **Open in Lab**, **Download** (the `.py` file), **Export (JSON)** and **Delete**. Deleting a rule keeps the workflow runs that used it.
+Processing rules have no switch: a rule runs whenever a Knowledge or one of its sources uses it. The rule's **⋮** menu holds **Download** (the `.py` file), **Export (JSON)**, and **Delete**. Deleting a rule keeps the runs that used it.
 
-## Creating your first processing rule
-If you're a new user, the page shows *"No processing rules"*. Create your first rule in a few steps:
-* Select **New** (or **Add new** on the empty page), then **From scratch**. **Import JSON** loads a rule exported elsewhere.
-* Replace *Untitled processing rule* with a clear and descriptive **name**: for example `MyProcessingRule`.
-* Define the **rule logic** in the code editor.
-* Select **Save**.
+## Write the rule code
 
-To put the rule to work, select it as the **Default processing rule** on a Knowledge's **Sources** tab, or as the **Processing rule** in a source's **Data processing settings**.
-
-## Processing rule logic
-
-A processing rule allows to devise which workflow to apply to the Knowledge documents.
-Being code, you can develop arbitrarily complex conditions to decide which workflow applies to your document, for example:
+The rule returns the name of the step to run, exactly as it appears in the **Steps** list. This rule sends PDF files to one step, Word files to another, and skips everything else:
 
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12,<3.13"
+# requires-python = ">=3.12"
 # dependencies = [
 #     "rational-client",
 # ]
@@ -75,37 +59,36 @@ from rational_client.utils import run
 
 
 def router(resource: File, options: dict):
-    """Routes the resource to the correct workflow based on file extension."""
-    filename = resource.name
-    if not filename:
-        return None
+    name = (resource.name or "").lower()
 
-    # Main switch
-    if filename == "orders.json":
-        workflow = "Workflow Orders"
-    elif filename == "products.json":
-        workflow = "Workflow Products"
-    elif filename == "orgchart.json":
-        workflow = "Workflow Orgchart"
-    elif filename == "stores.json":
-        workflow = "Workflow Stores"
-    elif filename.endswith(".pdf"):
-        workflow = "Workflow PDF"
-    elif filename.endswith(".doc") or filename.endswith(".docx"):
-        workflow = "Workflow Docling"
-    elif filename.endswith(".urls"):
-        workflow = "Workflow Urls"
-    else:
-        workflow = None
+    if name.endswith(".pdf"):
+        return "PDF extraction"
+    if name.endswith((".doc", ".docx")):
+        return "Word extraction"
+    return None
 
-    return workflow
 
 run(router)
 ```
 
-As for the workflows, the entrypoint is the `run` function which triggers the processing rule business logic, the `router` function.
-Basically, here we decide the workflow to apply, based on some characteristics of the Knowledge document, for example, its filename.
+- `run(router)` calls `router` with the file and the rule's options.
+- Return a step name to run that step on the file. The step must exist and be switched on.
+- Return `None` to leave the file without a step. Nothing is extracted from it.
+- To also pass options to the step, return a dictionary instead: `{"workflow": "PDF extraction", "options": {...}}`.
+
+## Use the rule in a Knowledge
+
+1. Go to **Settings** → **Knowledge**, open the Knowledge, and select the **Sources** tab.
+2. Leave **Default workflow** set to **Classic pipeline**.
+3. In **Default processing rule**, select your rule.
+4. Select **Save**.
+
+To route one attached source differently, open that source's **⋮** menu, select **Data processing settings**, and pick its **Processing rule**. A source's own rule takes precedence over the Knowledge's default.
+
+The rule runs on files added after you save. To apply it to the files already in the Knowledge, select **Reprocess knowledge** in the Knowledge's **Options** menu. See [Add and manage content in a Knowledge](/operational-guides/manage-knowledge-resources).
 
 ## Next steps
 
-- [Create a workflow](/operational-guides/create-workflow)
+- [Create a workflow](/operational-guides/create-workflow) to write the steps a rule routes to.
+- [Import, export, and set timeouts](/operational-guides/workflow-rules) to move rules between environments.
+- [Workflows and processing rules](/concepts/Workflows-and-processing-rules) for how rules, steps, and workflows fit together.

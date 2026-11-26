@@ -5,7 +5,8 @@ import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 
 const guide = readFileSync(new URL('../website/docs/operational-guides/build-an-extension.mdx', import.meta.url), 'utf8');
-const example = guide.match(/```sh\n([\s\S]*?)\n```/)[1];
+const [, indent, block] = guide.match(/^( *)```sh\n([\s\S]*?)\n\1```/m);
+const example = block.replace(new RegExp(`^${indent}`, 'gm'), '');
 const tmp = mkdtempSync(join(tmpdir(), 'documented-extension-'));
 try {
   const source = join(tmp, 'stable source');

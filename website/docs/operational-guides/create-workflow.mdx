@@ -1,82 +1,55 @@
 ---
 sidebar_position: 2
 sidebar_label: Create a workflow
+title: Create a workflow
+description: Write a step, connect steps into a workflow, and make the workflow the default for a Knowledge.
 type: how-to
 audience: [builder]
 ---
 
 # Create a workflow
 
-Workflows automate data transformation in Rational AI. This guide covers creating, configuring, and testing the Python steps that convert raw data into AI-ready knowledge.
+Workflows decide what happens to each file added to a Knowledge: which text is extracted, which resources are created, and what gets chunked and embedded for search. This guide shows how to write a step, connect steps into a workflow, and make that workflow the default for a Knowledge.
 
+**Settings** → **Workflows** holds two kinds of object:
 
-:::note[What is a workflow?]
-Workflows process the files a Knowledge receives: they extract key information, augment it, identify connections between data points, and store the results in the Knowledge for your AI to use. **Settings** → **Workflows** holds two kinds. A **workflow** is a pipeline whose nodes you connect on a graph, and a Knowledge can run it as its **Default workflow**. A **step** is a single Python script, edited and test-run in the browser; workflows call steps as nodes, and the **Classic pipeline** runs the step a [processing rule](/operational-guides/create-processing-rule) picks for each file.
-:::
+- A **step** is one Python script. It receives a file and its options, does the work, and can return text for the Knowledge to chunk and embed.
+- A **workflow** is a graph that connects steps, control-flow nodes and built-in operations. A Knowledge runs it on every file when it is the Knowledge's **Default workflow**.
 
-## Prerequisites
+A Knowledge that keeps the **Classic pipeline** as its default runs no graph: its [processing rule](/operational-guides/create-processing-rule) picks one step for each file. See [Workflows and processing rules](/concepts/Workflows-and-processing-rules) for how the pieces fit.
 
-Before creating workflows, ensure you have:
-- **Create** and **Update** on the **Workflows** row of your role. See [Manage roles and users](/operational-guides/roles-and-users).
-- A Knowledge to run them on, to see their results.
+## Before you begin
 
-## Access the workflow interface
-
-Navigate to **Settings** → **Workflows** from the left sidebar. This is the central workspace for creating and managing workflows and processing rules.
+- Role: **Create** and **Update** on the **Workflows** row of your role. See [Manage roles and users](/operational-guides/roles-and-users).
+- A [Knowledge](/operational-guides/create-knowledge) with a few files, to test the step and run the workflow on.
 
 <img
   src={require('@site/static/img/screens/workflows.png').default}
-  alt="Workflow management interface showing the workflow list and editor"
-  style={{ 
-    width: '100%', 
-    maxHeight: '100%', 
+  alt="The Workflows tab with the Workflows, Steps, Control flow and Builtins lists on the left and the selected step's code editor on the right"
+  style={{
+    width: '100%',
+    maxHeight: '100%',
     objectFit: 'contain',
     border: '1px solid #E4E4E7',
     borderRadius: '6px',
     boxSizing: 'border-box',
     }}
-/> 
+/>
 
-### Workflow list
-The **Workflows** tab lists everything created in your environment, in four groups:
-* **Workflows**: the pipelines a Knowledge can run, each with an enable switch. Select **+** (*"Add workflow"*) to create one.
-* **Steps**: the Python scripts, like the one on this page, that a workflow or a [processing rule](/operational-guides/create-processing-rule) calls. Select **+** (*"Add step"*), then **From scratch** or **Import JSON**.
-* **Control flow** and **Builtins**: the ready-made nodes a workflow can use. Select one to read its usage and parameters.
+## Create a step
 
-The **Processing rules** tab next to **Workflows** holds the [processing rules](/operational-guides/create-processing-rule).
+1. Go to **Settings** → **Workflows**.
+2. Next to **Steps**, select **+**, then **From scratch**. On an empty page, select **Add new**. **Import JSON** loads a step exported from another environment instead.
+3. Replace *New workflow* with a name that says what the step does, for example `Markdown to resource`. Processing rules and workflows call the step by this name.
+4. Optionally, enter a description.
+5. Write the step's code in the editor. The next section has an example.
+6. Select **Save**.
 
-### Workflow editor
-A new workflow is created as *Untitled workflow*, switched off. Selecting it opens its code, written with the workflow builder, next to a **Graph** canvas that draws it. On the canvas you can drag nodes to arrange them, drag ports to connect them, and press **Del** to remove them. Select **Save** to keep your changes, or **Undo** to drop them. Switch the workflow on in the list when it is ready.
+A new step is switched on. Only switched-on steps can run and appear where you pick a step.
 
-## Creating your first step
-If you're a new user, the page may initially be empty. Create your first step in a few steps:
+### Write the step code
 
-* Select **+** next to **Steps** (or **Add new** on the empty page), then **From scratch**.
-* Replace *Untitled workflow* with a clear and descriptive **name**: for example `PDF processing step`.
-* Optionally, add a short **description** explaining its purpose. This is _strongly_ recommended for long-term maintainability.
-* Write the code in the editor and select **Save**.
-
-The step's **⋮** menu holds **Workflow Settings** (**Timeout (minutes)**), **Export (JSON)**, **Download** (the `.py` file), **Open in Lab** and **Delete**.
-
-### Capabilities
-
-Under the description, the **Capabilities** field (*"Select capabilities"*) tags a step with the kinds of content it pulls out of a document, such as **Images**, **Tables**, or **Annotations**. The tags don't change what the step does; they describe it, so the platform can surface the right step in the right place.
-
-- **Choose any number.** A step can carry no capabilities, exactly one, or several.
-- **Saved with the step.** Your selection is saved when you select **Save**.
-
-:::note[The capability list can grow]
-Rational AI loads the list of capabilities from the platform, so new kinds can appear without an update to the interface.
-:::
-
-**Capability tags also filter where you pick a step.** When the context requires a capability (for example choosing a workflow from the **Image** tool settings, or running **Auto-annotate images**), the list shows only the steps that carry the matching tag, so you can't select one that can't do the job. Where no specific capability is required, every step is listed.
-
-### Workflow logic
-
-Let's create a simple, yet effective, workflow that takes as input a lorem-ipsum markdown file, creates a Rational Resource associated with it
-and performs chunking and embedding automatically, to allow semantic retrieval in a RAG scenario.
-
-The workflow business logic is defined as below:
+This step reads a text file, creates a resource for it in the file's Knowledge, and returns the text so the Knowledge chunks and embeds it:
 
 ```python
 #!/usr/bin/env -S uv run --script
@@ -85,89 +58,73 @@ The workflow business logic is defined as below:
 # dependencies = [
 #     "rational-client",
 # ]
-#
 # ///
 
-from rational_client.core import (
-    Knowledge,
-    File,
-)
+from rational_client.core import File, Knowledge
 from rational_client.utils import run
 
 
 def process(document: File, options: dict):
-    # Read document content (bytes)
-    content = document.get_data()
+    text = document.get_data().decode("utf-8")
 
-    # Convert to string (assumes content is textual)
-    text = content.decode("utf-8")
-    
-    # Get the Knowledge instance this document belongs to
     knowledge = Knowledge(document.knowledge_id)
-
-    # Create a new Rational Resource in the Knowledge Base
-    new_resource = knowledge.create_resource(
+    resource = knowledge.create_resource(
         name=document.name,
-        category="document_category",
-        tags=["some", "tags"],
+        category="Document",
         file_id=document.id,
     )
 
-    # Return the content for chunking and embedding (optional)
-    return {str(new_resource.resource_id): text}
+    # Resource ID -> text to chunk and embed
+    return {str(resource.resource_id): text}
 
 
 run(process)
 ```
 
-Let's break it down:
-- the workflow starts with a header that declares the script dependencies (in the PEP 723 format), so you can use any package, not only an allowlisted set.
-- at the bottom we can find the workflow entrypoint, the `run(process)` function, which is an utility function to invoke the `process` function defined
-- the workflow business logic is specified in the `process` function: it takes as input the document over which the workflow is applied, and some options that might be used to store values later used in the workflow code
-- the workflow typically might invoke operation on Rational AI through the `rational-client` package, such as retrieving a Knowledge handle, that is, `knowledge = Knowledge(document.knowledge_id)`
-- the workflow might return a dictionary specifying the Rational Resources created and their textual content, that is, text/markdown, to be automatically chunked and embedded according to the Knowledge settings
+- The header lists the packages the step needs. Add any package your code imports to `dependencies`.
+- `run(process)` calls `process` with the file being processed and the step's options.
+- The `rational-client` package gives the step access to the Knowledge, for example to create resources.
+- The returned dictionary maps each resource ID to its Markdown or plain text. Rational AI chunks and embeds that text with the Knowledge's settings. Return nothing if the step creates no searchable text.
 
-### Test a step in the browser
+### Tag the step's capabilities
 
-Select **Test run** in the step's editor. Under **Input (JSON)**, provide the step's input: `"file_id"` is loaded as the document, and any other keys are passed as options. Use `{}` for a step that takes no input. Select **Run** to see the **Output**. Save the step before you run it.
+**Capabilities** (*Select capabilities*) records the kinds of annotation the step produces, such as images or tables. The tags appear next to the step's name wherever you pick a step, for example when you set up auto-annotation. They describe the step and don't change what it does.
 
-### Testing your workflow locally
+### Test the step
 
-It is also convenient to perform workflow development on your local machine, before using them into Rational AI.
-This is possible and encouraged, as it allows to use your favorite IDE and debugging tools.
+1. Save the step. A step that was never saved can't run.
+2. Select **Test run** (the play icon).
+3. In **Input (JSON)**, enter the input. `"file_id"` is loaded as the document, and any other key is passed as an option. Use `{}` for a step that takes no input.
+4. Select **Run**.
 
-Local runs need Python and the [`uv` package manager](https://docs.astral.sh/uv/). To run your workflow locally, make it executable and pass a properly formatted input as argument to it.
+**Output** shows the result and how long the run took. If the run fails, it shows the **Error** and the **Traceback / STDERR**.
 
-Let's suppose to call the above-defined workflow as `lorem-ipsum-wf.py`. We can make it executable by running the command:
-```
-chmod +x lorem-ipsum-wf.py
-```
-Then, we need to prepare a Json file as input, let's call it `workflow_input.json`. This file needs to have this structure:
-```json
-{
-    "knowledge_id": "<YOUR KNOWLEDGE ID>",
-    "path": "<YOUR DOCUMENT FILEPATH>",
-    "options": {}
-}
-```
+The step's **⋮** menu also holds **Download** (the `.py` file), **Export (JSON)**, **Workflow Settings**, and **Delete**. See [Import, export, and set timeouts](/operational-guides/workflow-rules).
 
-Once configured, we can pass the `workflow_input.json` file as input to our workflow, as:
-```
-./lorem-ipsum-wf.py workflow_input.json
-```
-to test our workflow locally.
+## Connect steps into a workflow
+
+1. In **Settings** → **Workflows**, select **+** next to **Workflows** (**Add workflow**). Rational AI creates *Untitled workflow*, switched off, and opens it.
+2. Build the graph in one of two ways:
+   - On the **Graph** canvas, drag steps from **Steps**, and nodes from **Control flow** and **Builtins**, onto the canvas. Drag from one port to another to connect two nodes. Press **Del** to remove the selected node or connection.
+   - In the code editor, write the graph with the workflow builder, starting from `f = Flow()`. Select a node under **Control flow** or **Builtins** to see its **Usage**, **Parameters**, **Inputs**, and **Outputs**.
+3. Select **Save**. Rational AI compiles the code and redraws the graph. If the code doesn't compile, the error shows in a message and nothing is saved.
+4. In the list, turn on the workflow's switch.
+
+A Knowledge can select a workflow only while it is switched on.
 
 ## Make a workflow the default for a Knowledge
 
-A workflow only runs when something asks for it. To have every file of a Knowledge go through it, make it that Knowledge's default.
-
 1. Go to **Settings** → **Knowledge** and open the Knowledge.
 2. Select the **Sources** tab.
-3. In **Default workflow**, pick your workflow. The list shows the active workflows that belong to this Knowledge and the ones shared at tenant level. **Classic pipeline** routes each file with the **Default processing rule** instead.
+3. In **Default workflow**, select your workflow. The list shows the switched-on workflows that belong to this Knowledge or to the whole workspace. **Classic pipeline** routes each file with the **Default processing rule** instead.
 4. Select **Save**.
 
-From now on, the workflow runs on every file added to the Knowledge: uploads in the Control Room, files brought in by a source sync, and reprocess requests made through the API without a workflow.
+The workflow now runs on every file added to the Knowledge: uploads in the Control Room, files brought in by a source sync, and reprocessing requests that don't name another workflow. When you reprocess a Knowledge from the Control Room, you can still pick a different **Workflow** for that run.
 
-:::note[Force the classic pipeline for one run]
-Setting a default doesn't lock you in. When you reprocess a Knowledge from the Control Room you can still choose a different pipeline for that run, and an API client can force the classic pipeline by sending `workflowId` as `null`. Leaving `workflowId` out uses the Knowledge's default.
-:::
+Deleting a workflow leaves every Knowledge that used it as the default without one.
+
+## Next steps
+
+- [Create a processing rule](/operational-guides/create-processing-rule) to pick a step for each file in the classic pipeline.
+- [Import, export, and set timeouts](/operational-guides/workflow-rules) to move steps between environments and cap their run time.
+- [Add and manage content in a Knowledge](/operational-guides/manage-knowledge-resources) to follow the processing of each file.

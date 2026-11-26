@@ -2,54 +2,25 @@
 sidebar_position: 22
 sidebar_label: Context window
 title: Context window
-description: What a context window is, why it is limited, how tokens are counted, and how it shapes retrieval, conversations and prompts in Rational AI.
+description: What a model's context window is, why the limit matters, and how Rational AI keeps knowledge and long chats within it.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
-
-
 # Context window
 
-The **context window** is the maximum amount of text a model can consider at one time. It covers everything the model reads and writes for a single request: the system instructions, the knowledge retrieved for it, the conversation so far, the user's latest question and the reply it generates. Anything that doesn't fit in the window is invisible to the model.
+The **context window** is the most text a model can take into account in one request, measured in [tokens](/concepts/Tokens). It holds the [system prompt](/concepts/System-prompt), the passages retrieved from a Knowledge, the conversation so far, your question, and the reply. The model doesn't see anything that doesn't fit.
 
-Think of it as the model's short‑term memory, or the size of its desk. A larger desk lets you spread out more documents and work with all of them at once; a smaller one forces you to put some away. The model is not "forgetting", it never sees what is left off the desk.
-
-## Tokens, not words
-
-Context windows are measured in **tokens**, not words or characters. A token is a chunk of text, often a word or part of a word. As a rough guide, one token is about four characters of English, so 1,000 tokens is roughly 750 words. The window size (for example, 8K, 32K or 128K tokens) is a property of the model, and it is shared between the input and the output: a very long prompt leaves less room for a long answer.
+Each model has its own window size, and the reply shares it with everything you send. A very long input leaves less room for the answer.
 
 ## Why the limit matters
 
-Working within the context window is a constant trade‑off:
+- **More text isn't better**: filling the window with loosely related material can bury the passage that answers the question.
+- **Long conversations run out of room**: the earliest messages eventually no longer fit.
+- **Cost and speed**: the model processes every token in the window on every request.
 
-* **Relevance over volume:** sending more text is not always better. Filling the window with loosely related material can bury the parts that actually matter and degrade the answer.
-* **Long conversations drift:** once a chat grows past the window, the earliest messages fall out of view, so the model may lose track of something said much earlier.
-* **Cost and latency:** more tokens in the window means more computation, so larger contexts are slower and more expensive to run.
+## In Rational AI
 
-## The context window in Rational AI
-
-The platform is designed to make the most of whatever window a model has:
-
-* In a [RAG](./RAG.mdx) system, retrieval selects only the most relevant resources from your [Knowledge](../cr/Knowledge.mdx) and fits them into the window as context, rather than handing the model everything. Splitting documents into [embeddings and chunks](./RAG.mdx) is what makes this selection possible.
-* In [Conversations settings](../cr/settings/conversations.mdx), analyses such as title generation and topic detection let you set how many recent **messages to analyze**, keeping each request within a sensible context.
-* Choosing a [model](./Model-architecture.mdx) with a larger window lets a touchpoint reason over more knowledge or a longer conversation at once, at the cost of more tokens per request.
-
-:::note[Bigger is not always better]
-A large context window is useful, but a focused, well‑retrieved context usually produces better answers than stuffing the window full. Quality of context beats quantity.
-:::
-
----
-
-## Connects to
-
-<ConnectsTo
-	items={[
-		{ label: "Tokens", to: "/concepts/Tokens" },
-		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
-	]}
-/>
+- A Knowledge doesn't send whole documents to the model. It splits them into [chunks and embeddings](/concepts/Embeddings-chunks-and-annotations), and [RAG](/concepts/RAG) sends only the passages that best match the question.
+- When a chat gets too long, the assistant usually carries on from a summary of the earlier messages. Some touchpoints stop instead and offer **New conversation**. See [Keep going in a long conversation](/operational-guides/chat-experience#keep-going-in-a-long-conversation).
+- A model's page in **Settings** → **AI Model Registry** shows its **Context length**.
