@@ -1,0 +1,88 @@
+---
+title: Connect OneDrive and SharePoint
+sidebar_label: OneDrive and SharePoint
+description: Sync a OneDrive or a SharePoint document library into a Knowledge with a Microsoft OneDrive connector and a OneDrive source.
+type: how-to
+audience: [admin]
+---
+
+The Microsoft OneDrive connector holds a Microsoft Entra app's credentials, so a OneDrive source can sync one drive, a user's OneDrive or a SharePoint document library, into a [Knowledge](/operational-guides/create-knowledge).
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, **Create** on the **Sources** row and **Use** on the **Connectors** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **In Microsoft Entra ID:** someone who can register applications. With application permissions, granting admin consent also needs a **Privileged Role Administrator** or a **Global Administrator**.
+
+## What you need
+
+Choose how the connector signs in. You pick the **Authentication mode** when you add the connector and can't change it later.
+
+| Authentication mode | Reads files as | Use it when |
+|---|---|---|
+| **User sign-in (delegated OAuth)** | The account that signs in. The source sees what that account can open. | You sync a personal OneDrive, or the drives one account can reach. |
+| **Application permissions (client credentials)** | The app itself, with no user. | You sync SharePoint libraries or business drives without tying the source to a person's account. Works with work and school accounts only. |
+
+The app needs these Microsoft Graph permissions:
+
+| Permission | Why it's needed |
+|---|---|
+| `Files.Read.All` (delegated or application) | Lists and downloads the files in the drive. |
+| `Sites.Read.All` (delegated or application) | Reads SharePoint sites and their document libraries. |
+| `offline_access` (delegated only) | Lets Rational AI refresh the sign-in without asking the user again. |
+
+You also need the drive's **Drive ID** and **Drive type**, which you look up in step 9, and a Knowledge to receive the files.
+
+## Set up
+
+1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), go to **App registrations** and select **New registration**.
+2. Choose the supported account types. For **User sign-in**, choose a multitenant option, because Rational AI signs users in through Microsoft's common endpoint: **Accounts in any organizational directory**, plus personal Microsoft accounts if you sync a personal OneDrive. For **Application permissions**, **Accounts in this organizational directory only** is enough.
+3. For **User sign-in** only, add a **Web** redirect URI: your Rational AI address followed by `/api/management/v0/oauth/callback`, for example `https://ai.example.com/api/management/v0/oauth/callback`.
+4. Register the app. On its **Overview**, copy the **Application (client) ID** and, for **Application permissions**, the **Directory (tenant) ID**.
+5. In **Certificates & secrets**, create a client secret and copy its **Value**. Entra shows it only once.
+6. In **API permissions**, select **Add a permission** → **Microsoft Graph** and add `Files.Read.All` and `Sites.Read.All`: as **Delegated permissions** plus `offline_access` for **User sign-in**, or as **Application permissions**. For application permissions, select **Grant admin consent**.
+7. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Microsoft OneDrive**, then select **Add**.
+8. Enter a **Name**, paste the **Client ID** and the **Client Secret**, and choose the **Authentication mode**:
+   - **User sign-in (delegated OAuth)**: select **Add and authorize** and sign in with the account whose files you want to sync.
+   - **Application permissions (client credentials)**: enter the **Tenant ID**, then select **Add**.
+9. Look up the drive in [Graph Explorer](https://developer.microsoft.com/graph/graph-explorer), signed in to your organization:
+   - For your own OneDrive, run `GET https://graph.microsoft.com/v1.0/me/drive`.
+   - For a SharePoint library, run `GET https://graph.microsoft.com/v1.0/sites/contoso.sharepoint.com:/sites/Marketing` to get the site's `id`, then `GET https://graph.microsoft.com/v1.0/sites/{site-id}/drives` to list its libraries.
+
+   Copy the drive's `id` and its `driveType`: `personal`, `business`, or `documentLibrary`.
+10. Go to **Settings** → **Sources** and select **Add**. Enter a **Name**. In **Type**, find **OneDrive** and select your connector under it.
+11. Enter the **Drive ID** and the **Drive type**. Leave **Site ID** empty: the **Drive ID** alone picks the drive, also for a SharePoint library. To browse from a folder instead of the drive's top level, enter it in **Root folder (optional)**.
+12. In the file panel, select the folders and files to sync, then select **Add**. Rational AI creates the source and runs its first sync.
+13. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*. Open the source's menu on that tab and select **Process now**.
+
+A new source syncs only when you select **Sync now**. To keep it current, see [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## What gets synced
+
+- **The folders and files you selected** in one drive. A selected folder includes everything inside it, also files added to it later.
+- **Changes**, according to the source's sync mode. OneDrive sources support **Automatic**, **Periodic**, and **Manual**. With **Automatic**, Rational AI checks the drive's change feed every two minutes and syncs only when something changed.
+
+Rational AI never writes to the drive. Files deleted from the drive leave the Knowledge too when the source's **On delete** setting is **Cascade delete**, the default.
+
+## Limits
+
+- One source reads one drive. To sync several libraries, add one source per drive. One connector can serve all of them.
+- The file panel loads only after you enter both the **Drive ID** and the **Drive type**.
+- **Application permissions** with `Files.Read.All` and `Sites.Read.All` let the app read every drive and site in your organization, not only the ones you sync.
+- A **User sign-in** connector can't be authorized again once it holds a token. If the account's access is revoked, add a new connector and switch the source to it.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| Microsoft shows *AADSTS50194* during sign-in | The app is single-tenant. For **User sign-in**, change its supported account types to a multitenant option in **Authentication**. |
+| Microsoft shows a redirect URI error during sign-in | The app's **Web** redirect URI must be your Rational AI address followed by `/api/management/v0/oauth/callback`, exactly as you open it in the browser. |
+| *"Tenant ID is required for application-permission connectors."* | You chose **Application permissions** without a **Tenant ID**. Enter the **Directory (tenant) ID**. |
+| The file panel stays on *No files to show yet* | The **Drive ID** or the **Drive type** is empty. Enter both. |
+| The file panel shows *Connection failed* | The **Drive ID** or **Drive type** is wrong, the permissions are missing, or admin consent wasn't granted. Check them in Graph Explorer and in **API permissions**. |
+| A broken-link icon (**Missing authentication**) next to the connector | A **User sign-in** connector whose sign-in wasn't completed. Open it and select **Complete authentication** in its menu. |
+
+## Next steps
+
+- [Configure data sources](/operational-guides/configure-sources): sync modes, failing syncs, and processing on change.
+- [Connect Google Drive](/operational-guides/integrate-data): sync Google Drive folders the same way.
+- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the synced files in a Knowledge.

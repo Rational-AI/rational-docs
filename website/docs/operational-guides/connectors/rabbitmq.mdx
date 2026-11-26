@@ -1,0 +1,91 @@
+---
+title: Connect RabbitMQ
+sidebar_label: RabbitMQ
+description: Process files that another system announces on a RabbitMQ queue, and publish each result to a result queue.
+type: how-to
+audience: [admin]
+---
+
+The RabbitMQ connector holds a broker's address and user, so a RabbitMQ queue source can take file announcements from a queue, process each file in a [Knowledge](/operational-guides/create-knowledge), and publish the result to another queue.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, **Create** on the **Sources** row and **Use** on the **Connectors** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **On the broker:** the broker's administrator, who creates the user and the queues.
+
+## What you need
+
+- The broker's host, port, and virtual host, and whether it requires TLS.
+- The queue that announces files, for example `pod-uploaded`, and the queue for results, for example `pod-processed`. Rational AI doesn't create queues, so both must exist.
+- Messages that are JSON objects with a field holding each file's `http://` or `https://` URL.
+- If the file URLs need authentication, a token Rational AI can send as a Bearer token.
+- A Knowledge to receive the files.
+
+Give the Rational AI user only these permissions on its virtual host:
+
+| Permission | Why it's needed |
+|---|---|
+| **Read** on the announcement queue | Takes messages from the queue. |
+| **Write** on the exchange that results go to, `amq.default` for the default exchange | Publishes each result. Not needed if you leave **Result queue** empty. |
+| No **Configure** permission | Rational AI never declares or deletes queues or exchanges. |
+
+## Set up
+
+1. On the broker, create a user for Rational AI and set its permissions on the virtual host. For example, with `rabbitmqctl`: `rabbitmqctl set_permissions -p / rational "" "^amq\.default$" "^pod-uploaded$"`.
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **RabbitMQ**, then select **Add**.
+3. Enter a **Name** and the **Host**, for example `rabbitmq.example.com`. Enter the **Port** only if it isn't `5672`, or `5671` with TLS, and turn on **Use TLS** if the broker requires it.
+4. Enter the **Virtual host** (default `/`), the **Username**, and the **Password**.
+5. Optionally, enter a **File download token**. Rational AI sends it as a Bearer token when it downloads the files the messages point to.
+6. Select **Add**.
+7. Go to **Settings** → **Sources** and select **Add**. Enter a **Name**. In **Type**, find **RabbitMQ queue** and select your connector under it.
+8. Fill in the queue settings:
+
+   | Field | What to enter |
+   |---|---|
+   | **Queue** | The queue to consume. Required. |
+   | **Result queue** | Where results are published. Leave it empty to publish nothing. |
+   | **Result exchange (optional)** | Leave it empty for the default exchange. Otherwise results go to this exchange with the result queue as the routing key. |
+   | **File URL field** | The message field that holds the file's URL, for example `url` (the default) or `pod.downloadUrl`. |
+   | **Message ID field (optional)** | The field that identifies the message, for example `requestId`. Empty uses the message ID set on the broker. |
+   | **Files in flight** | How many files may wait for a result at once, from 1 to 256. Default `16`. |
+   | **Delete each file once its result is published** | Removes the file from the Knowledge after its result is sent. Needs a **Result queue**. |
+
+9. Select **Add**.
+10. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*.
+11. In **Settings** → **Sources**, open the source and select **Sync now** to start consuming the queue.
+
+## What gets synced
+
+Each message announces one file. Rational AI downloads it into the Knowledge with the message saved next to it, processes it, and publishes a result. The result message contains:
+
+- `messageId`, and the original message as `request`
+- `status`, `processed` or `error`, and the `error` text when there is one
+- `file`, with the file's ID, name, and Knowledge ID
+- `attributes`, the attributes extracted from the file
+- `receivedAt`, `processedAt`, and `publishedAt` timestamps
+
+A started source keeps consuming the queue, also after a restart of the platform, until you select **Stop sync**. It has no sync schedule and no **Automatic** or **Periodic** mode. Rational AI takes new messages only while fewer than **Files in flight** files wait for a result, so a backlog stays in the queue.
+
+## Limits
+
+- The source writes every file to the first Knowledge it was attached to. Until it's attached, messages wait in the queue.
+- Delivery is at least once in both directions. Your system may receive the same result twice, so match results by `messageId` and ignore duplicates.
+- A message that isn't a JSON object or has no valid URL is answered with an `error` result. So is a file whose server refuses the download, or still fails after three attempts on a server error or a network error.
+- The **Port** and **Use TLS** are set when you add the connector. To change them, add a new connector. You can edit the host, virtual host, username, password, and token.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| *"The host must be a host name or an IP address, for example rabbitmq.example.com"* | Remove the scheme, port, or path from **Host**. The port has its own field. |
+| *"Enter the queue to consume."* | **Queue** is empty. Enter the name of an existing queue. |
+| *"Files can only be deleted after publishing when there is a result queue to publish to."* | Enter a **Result queue**, or clear **Delete each file once its result is published**. |
+| The source shows a failed status | The queue can't be consumed. Select the status to read the reason: wrong credentials, a missing queue, missing **Read** permission, or a TLS mismatch. Rational AI retries with a growing delay. |
+| Messages stay in the queue | The source isn't attached to a Knowledge, or it was never started. Attach it, then select **Sync now**. |
+| Results come back with *"The message has no 'url' field with the file URL."* | The **File URL field** doesn't match your messages. Enter the field's dotted path, for example `pod.downloadUrl`. |
+
+## Next steps
+
+- [Create a processing rule](/operational-guides/create-processing-rule): choose which workflow extracts the attributes returned in each result.
+- [Configure data sources](/operational-guides/configure-sources): source settings common to every type.
+- [Connect HTTP addresses](/operational-guides/connectors/http): sync files from fixed web addresses instead.

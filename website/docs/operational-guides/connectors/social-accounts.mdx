@@ -1,0 +1,93 @@
+---
+title: Connect LinkedIn, Instagram and Facebook
+description: Connect a LinkedIn company page, an Instagram business or creator account, or a Facebook page through your own app, so Social studio can publish to it.
+type: how-to
+audience: [admin]
+---
+
+The **LinkedIn**, **Instagram** and **Facebook** connectors let [Social studio](/operational-guides/social-studio) publish posts to one company page, business account or page, through a developer app that your organization owns.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, and **Update** to connect or reconnect it (see [Manage roles and users](/operational-guides/roles-and-users)). People who publish from Social studio need **Use** on the connector.
+- **On the network:** a developer who can create an app for your organization, and, to sign in, an account that administers the page you publish to.
+
+## What you need
+
+Each connector is one page or account. To publish to several, add one connector for each. They can share the same app, because the redirect URL is the same for every connector of your workspace.
+
+### LinkedIn
+
+- A LinkedIn app in the LinkedIn developer portal, associated with your company page, with the **Community Management API** product approved by LinkedIn.
+- A LinkedIn member who is an approved administrator of the company page.
+
+| Scope | Why it's needed |
+|---|---|
+| `r_organization_social` | Reads the company page's posts. |
+| `w_organization_social` | Publishes posts and images as the company page. |
+| `rw_organization_admin` | Lists the company pages the member administers, with their names and logos, so you can choose one. |
+
+### Instagram
+
+- A Business app in Meta for Developers with the Instagram product set up as **API setup with Instagram login**.
+- An Instagram business or creator account.
+
+| Scope | Why it's needed |
+|---|---|
+| `instagram_business_basic` | Reads the account's name, username, and picture. |
+| `instagram_business_content_publish` | Publishes posts, carousels, and stories. |
+
+### Facebook
+
+- A Business app in Meta for Developers with **Facebook Login for Business**. A configuration for it is optional.
+- A Facebook account that manages the page.
+
+| Permission | Why it's needed |
+|---|---|
+| `pages_show_list` | Lists the pages the account manages, so you can choose one. |
+| `pages_manage_posts` | Publishes posts to the page. |
+| `pages_read_engagement` | Reads the page's content and metadata. |
+
+If you enter a **Configuration ID**, the sign-in asks for the permissions of that Facebook Login for Business configuration instead. Include the three permissions in it.
+
+## Set up
+
+1. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **LinkedIn**, **Instagram** or **Facebook**, then select **Add**.
+2. Under **Redirect URL to add to the app**, select **Copy**.
+3. On the network's developer portal, create the app as described in [What you need](#what-you-need) and add the copied URL to its allowed redirect URLs. It must match to the character.
+4. Copy the app's ID and secret. For Instagram, use the Instagram app ID and secret, not the Meta app's.
+5. Back in Rational AI, enter a **Name** (for example the page's name), an optional **Description**, and paste the **App ID** and **App secret**. For Facebook, also enter the **Configuration ID (optional)** if you created one.
+6. Select **Add and authorize** and sign in on the network with the account that administers the page.
+7. If the account manages several pages, Rational AI shows *"Your login manages several pages: choose the one this connector publishes as."* Select the page.
+
+The connector's **Publishes as** shows the page and **Connected**. If you leave the sign-in before it finishes, the connector stays *"Not connected yet: log in to choose the page to publish as."* Select **Connect** to sign in again.
+
+## What it powers in Rational AI
+
+- **Social studio publishing:** Social studio verifies and publishes posts through the connector of the post's network: Instagram posts, carousels, and stories, LinkedIn posts to the company page, and Facebook posts to the page. Without a connector you can still build posts and download them.
+- **Reconnection notices:** the connector shows **Reconnect soon** in the 14 days before a sign-in runs out. Once it has expired, Social studio asks you to reconnect it in **Settings** → **Connectors** before it can publish.
+
+## Limits
+
+- **LinkedIn:** the sign-in lasts until LinkedIn's refresh token runs out, about a year. Then select **Reconnect**.
+- **Instagram:** the sign-in lasts 60 days. Rational AI renews it when you verify or publish a post in its last week; otherwise select **Reconnect** when it expires.
+- **Facebook:** a page's sign-in doesn't expire. Rational AI lists at most 100 pages from one sign-in.
+- Instagram downloads each picture from your Rational AI address, so that address must be reachable from the internet to publish to Instagram.
+- A connector publishes as one page or account. Changing the page means signing in again with **Reconnect**.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| The network shows a redirect URI error during sign-in | The redirect URL in the app doesn't match. Copy it again from **Redirect URL to add to the app** and paste it unchanged. |
+| *"The login did not complete"* | Read the reason under the message. The app ID or secret may be wrong, the person may have declined, or, for LinkedIn, the app may lack the Community Management API. |
+| *"This account manages no page the app can publish to"* | Sign in with an administrator of the company page, or check that the app has the permissions in [What you need](#what-you-need). |
+| *"Could not connect this page: log in again"* | The page list is out of date. Select **Reconnect** and sign in again. |
+| The connector shows **Login expired** or **Reconnect soon** | Select **Reconnect** on the connector and sign in with the same account. |
+| *"An error occurred while authenticating"* when you select **Add and authorize** | The connector was saved, but the sign-in couldn't start. Open the connector and select **Connect**. |
+
+## Next steps
+
+- [Social studio](/operational-guides/social-studio): build, verify, and publish a post.
+- [Configure connectors](/operational-guides/configure-connectors): edit, check, or delete a connector.
+- [Manage roles and users](/operational-guides/roles-and-users): give people **Use** on the connector so they can publish.

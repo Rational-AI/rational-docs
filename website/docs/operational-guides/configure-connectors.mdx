@@ -5,11 +5,11 @@ type: how-to
 audience: [admin, builder]
 ---
 
-# Configure a connector
+# Configure connectors
 
-A connector stores the credentials Rational AI uses to reach an external provider, such as an API key or an OAuth sign-in. One connector can back several things at once: [AI models](/operational-guides/ai-model-registry-features), [data sources](/operational-guides/configure-sources), and tools.
+A connector stores the credentials Rational AI uses to reach an external service, such as an API key, a database login or an OAuth sign-in. You set it up once in **Settings** → **Connectors**, and every [AI model](/operational-guides/ai-model-registry-features), [source](/operational-guides/configure-sources) and tool that needs that service uses it. Rotating a key in the connector updates all of them.
 
-Connectors are at **Settings** → **Connectors**. Adding or changing one needs **Create** or **Update** on the **Connectors** row of your role; no license module is required. See [Manage roles and users](/operational-guides/roles-and-users).
+Adding a connector needs **Create** on the **Connectors** row of your role, editing it needs **Update**, and deleting it needs **Delete**. No license module is required. See [Manage roles and users](/operational-guides/roles-and-users).
 
 <img
   src={require('@site/static/img/screens/connectors-list.png').default}
@@ -17,14 +17,16 @@ Connectors are at **Settings** → **Connectors**. Adding or changing one needs 
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The **Connectors** page: each connector, its provider, and what it powers (models, sources, tools).*
+*The **Connectors** page: each connector, its provider, and what it powers.*
 
 ## Add a connector
 
-1. Go to **Settings** → **Connectors** and select **Add**. This opens **Add a new connector**.
-2. Under **Browse connectors**, choose a **provider**. Each option has a one-line description to help you pick (see [Available providers](#available-providers)).
-3. Enter a **Name** and, optionally, a **Description**, then enter the provider's credentials, usually an API key from the provider's own dashboard.
-4. Select **Add**. For providers that sign in with OAuth, such as Google, the button reads **Add and authorize** and opens the provider's sign-in.
+Each provider has its own page with what to prepare on the external service and the fields to fill in. The steps in Rational AI are the same for all of them:
+
+1. Go to **Settings** → **Connectors** and select **Add**. With no connectors yet, the button reads **Add new**.
+2. Under **Browse connectors**, select the provider, then select **Add**. See [Available providers](#available-providers).
+3. Enter a **Name**, an optional **Description**, and the credentials the provider asks for.
+4. Select **Add**. For providers that sign in with OAuth (Google, Microsoft OneDrive with user sign-in, LinkedIn, Instagram, and Facebook), the button reads **Add and authorize** and opens the provider's sign-in.
 
 <img
   src={require('@site/static/img/screens/connectors-add.png').default}
@@ -34,110 +36,58 @@ Connectors are at **Settings** → **Connectors**. Adding or changing one needs 
 
 *Adding a connector: choose a provider from the gallery.*
 
-If your provider isn't listed by name but offers an OpenAI-style API, choose **OpenAI Compatible** and enter its base URL and key.
+A connector on its own does nothing. Afterward, use it where it belongs: add models in the AI Model Registry, add a source, select it in an extension's configuration, or publish from Social studio. Each provider page ends with that step.
 
-## Available providers
+## Available providers {#available-providers}
 
-| Provider | What it connects | What you supply |
-|----------|------------------|-----------------|
-| **Google** | A Google account, for Drive, Gmail and Calendar. | OAuth client ID and secret, then sign in (see [Integrate external data](/operational-guides/integrate-data)). |
-| **AWS** | An AWS account, for Amazon S3 sources. | **Access Key** and **Secret Key** (see [Get AWS keys](#get-aws-keys-for-amazon-s3)). |
-| **OpenAI** | OpenAI models. | API key. |
-| **Anthropic** | Anthropic's Claude models. | API key. |
-| **OpenRouter** | Models from many providers through one key. | API key. |
-| **Xference** | Hosted OpenAI-compatible models from Xference. | API key. |
-| **MiniMax** | Hosted OpenAI-compatible models from MiniMax. | API key. |
-| **OpenAI Compatible** | Any API that follows the OpenAI format: self-hosted models, proxies, other providers. | Base URL and API key. |
-| **Google Vertex AI** | Gemini models on Vertex AI, pinned to one Google Cloud region. | Project ID and location. No key. |
-| **Brave Search** | Web, news, image, video and local search. | API key. |
-| **Google Service Account Key** | Google Cloud services such as Storage and BigQuery. | Service account key. |
-| **Azure** | An Azure account, for Azure Blob Storage sources. | Client credentials. |
-| **Microsoft OneDrive** | OneDrive and SharePoint files, for OneDrive sources. | Client ID and secret, with user sign-in or application permissions. |
-| **LinkedIn**, **Instagram**, **Facebook** | A company page or business account to publish Social studio posts to. | Your own app's ID and secret, then sign in. |
-| **Git credentials** | Private Git repositories, for Git sources. | Host and an HTTPS token. Public repositories need no connector. |
-| **RabbitMQ** | A message broker whose queues announce files to process. | Host, user and password. |
-| **SQL database** | A PostgreSQL, MySQL, SQLite, SQL Server, Oracle or IBM i database that virtual databases read. | Connection details and an account that can only read. |
-| **Microsoft SQL Server** | A SQL Server database that extensions read. | Host, database, and a read-only login. |
+| Provider in Rational AI | What it connects | Set up |
+|---|---|---|
+| **Google** | Google Drive, for Drive sources | [Connect Google Drive](/operational-guides/integrate-data) |
+| **AWS** | Amazon S3 buckets, for S3 sources | [Connect Amazon S3](/operational-guides/connectors/amazon-s3) |
+| **OpenAI**, **Anthropic**, **OpenRouter**, **Xference**, **MiniMax**, **OpenAI Compatible**, **Google Vertex AI** | Hosted AI models for the AI Model Registry | [Connect a model provider](/operational-guides/connectors/model-providers) |
+| **System One Compatible** | A decision API whose decision models the AI Model Registry lists | [Use decision models](/operational-guides/ai-model-registry-features#use-decision-models) |
+| **Brave Search** | Web, news, image, video, and local search, for the Brave Search extension | [Connect Brave Search](/operational-guides/connectors/brave-search) |
+| **Google Service Account Key** | Google Cloud Storage buckets, for Google Cloud Storage sources | [Connect Google Cloud Storage](/operational-guides/connectors/google-cloud) |
+| **Azure** | Azure Blob Storage containers, for Azure Blob Storage sources | [Connect Azure Blob Storage](/operational-guides/connectors/azure-blob-storage) |
+| **Microsoft OneDrive** | OneDrive and SharePoint files, for OneDrive sources | [Connect OneDrive and SharePoint](/operational-guides/connectors/onedrive-sharepoint) |
+| **LinkedIn**, **Instagram**, **Facebook** | A page or business account that Social studio publishes to | [Connect LinkedIn, Instagram and Facebook](/operational-guides/connectors/social-accounts) |
+| **Git credentials** | Private Git repositories, for Git sources | [Connect Git repositories](/operational-guides/connectors/git) |
+| **SQL database**, **Microsoft SQL Server** | A database that virtual databases or extensions read | [Connect SQL databases](/operational-guides/connectors/sql-databases) |
+| **RabbitMQ** | A broker whose queues announce files to process, for RabbitMQ queue sources | [Connect RabbitMQ](/operational-guides/connectors/rabbitmq) |
 
-The providers below need more than a key. Their steps follow.
+If your model provider isn't listed but offers an OpenAI-style API, use **OpenAI Compatible**.
 
-### Get AWS keys for Amazon S3
+## Edit a connector
 
-The **AWS** connector needs the access key of an IAM user that can read the buckets you want to sync.
+1. Go to **Settings** → **Connectors** and select the connector.
+2. Change its name, its description, or the fields under **Configuration**.
+3. Select **Save**, or **Undo** to discard your changes.
 
-1. In the AWS Management Console, go to **IAM** → **Users** and create a user.
-2. Under **Permissions options**, select **Attach policies directly** and attach `AmazonS3ReadOnlyAccess`, or a policy limited to the buckets you sync.
-3. Open the user and, under **Security credentials**, create an access key for an application running outside AWS.
-4. Copy the **Access key** and **Secret access key**. AWS shows the secret only once.
-5. In **Add a new connector**, choose **AWS**, paste the two keys into **Access Key** and **Secret Key**, and select **Add**.
+Secret fields, such as keys, secrets, passwords and tokens, are never shown. Leave one blank to keep the stored value, or enter a new value to replace it.
 
-### Connect Gemini models on Vertex AI
+A few settings are fixed when the connector is created: the authentication mode of a Microsoft OneDrive connector, the port and TLS of a RabbitMQ connector, the port of a Microsoft SQL Server connector, and the engine, port and file path of a SQL database connector. To change them, create a new connector and move what uses the old one.
 
-Use **Google Vertex AI** when your Gemini traffic must stay in one Google Cloud region, for example for data residency. The connector stores no credential: Rational AI calls Vertex AI as the Google Cloud identity its installation runs as.
-
-{/* TODO(verify): where an admin finds the Google Cloud identity of an on-premises installation. */}
-
-1. In Google Cloud, grant that identity the **Vertex AI User** role on your project.
-2. In **Add a new connector**, choose **Google Vertex AI**.
-3. Enter the **Project ID** (for example `my-project-123`) and the **Location**: a single region such as `europe-west8`.
-4. Select **Add**, then add the models you need in the [AI Model Registry](/operational-guides/ai-model-registry-features). The list offers the Gemini chat models served in that region.
-
-:::note[One region, never global]
-**Location** refuses `global` and multi-regions such as `eu` or `us`: pinning a single region is what the connector is for. Only chat completions are sent to Vertex AI.
-:::
-
-### Connect a Microsoft SQL Server database
-
-Use **Microsoft SQL Server** to let extensions give models read-only access to a database's tables, for example with the **SQL Server** extension, which lists tables, describes them, and runs a single `SELECT`.
-
-1. In **Add a new connector**, choose **Microsoft SQL Server**.
-2. Enter the **Host** (a name or IP address, such as `sql01.example.local`), and the **Database**.
-3. Leave **Port** empty for the default `1433`, and **Instance** empty for the default instance; otherwise enter them (for example `SQLEXPRESS`).
-4. Enter the **Username** and **Password** of a SQL Server login with read-only permissions on the database.
-5. Turn on **Encrypt the connection** to require encryption for the whole session.
-6. Select **Add**.
-
-:::warning[Use a login that can only read]
-The extension refuses anything but a single `SELECT`, but that is a text check, not a guarantee. The login's permissions are the real protection: give it the `db_datareader` role, or `SELECT` on the schemas it needs, and no access to linked servers.
-:::
-
-With **Encrypt the connection** on, traffic is encrypted, but the server certificate isn't verified. With it off, encryption is still requested for the login.
-
-### Connect a RabbitMQ broker
-
-Use **RabbitMQ** when another system announces documents to process on a queue. The connector holds the broker; a [RabbitMQ queue source](/operational-guides/configure-sources#process-files-announced-on-a-rabbitmq-queue) picks the queue.
-
-1. In **Add a new connector**, choose **RabbitMQ**.
-2. Enter the **Host** (for example `rabbitmq.example.com`) and, if not the default, the **Port** (`5672`, or `5671` with TLS). Turn on **Use TLS** if the broker requires it.
-3. Enter the **Virtual host** (default `/`), and the **Username** and **Password** that the broker's owner created for Rational AI.
-4. *(Optional)* Enter a **File download token**: it is sent as a Bearer token when downloading the files the messages point to.
-5. Select **Add**.
-
-:::note[Port and TLS are set once]
-After creation you can edit the host, virtual host, username, password, and token, but not the port or TLS. To change those, create a new connector.
-:::
-
-### Connect a social account for publishing
-
-The **LinkedIn**, **Instagram**, and **Facebook** connectors let Social studio publish posts through your own developer app.
-
-1. Create the app on the provider's developer portal, as the dialog describes: a LinkedIn app with the Community Management API for a company page, or a Meta Business app with Instagram login or Facebook Login for Business.
-2. In **Add a new connector**, choose the network and copy the **Redirect URL to add to the app** into your app's settings.
-3. Enter a **Name**, and your app's ID and secret. For Facebook, also enter the configuration ID if you created one.
-4. Select **Add and authorize** and sign in with an account that administers the page or account you want to publish to.
+When a connector that signs in with OAuth still needs its sign-in, it shows **Missing authentication**. Open the options menu (the three vertical dots) and select **Complete authentication**.
 
 ## See what a connector powers
 
-Before you edit or remove a connector, check what depends on it. Select it in the list and look at its **AI Models**, **Sources**, and **Tools** counts, and its **Used N times** counter:
+Select a connector to see what depends on it before you change or delete it. **Used N times** adds up three counts:
 
-- **AI Models**: a connector is what a model proxy points to. When you add a third-party model in the [AI Model Registry](/operational-guides/ai-model-registry-features) using **Add a proxy to a third-party model**, you select the connector that reaches the provider.
-- **Sources**: some [Sources](/operational-guides/configure-sources) use a connector to reach the external system that holds your data.
-- **Tools**: some tools (such as a web search tool backed by Brave Search) rely on a connector for access.
+- **AI Models**: models added from the connector in the [AI Model Registry](/operational-guides/ai-model-registry-features).
+- **Sources**: [sources](/operational-guides/configure-sources) that sync through the connector.
+- **Tools**: tools of installed [extensions](/operational-guides/manage-extensions) whose configuration selects the connector.
 
-Deleting is refused while AI models, sources or provider subscriptions still use the connector, and subscriptions aren't part of the counts, so check them too.
+The connector's **Provider pricing and subscriptions** section lists the plans you track for it with **Add plan**. Plans aren't part of the counts, but they do keep a connector from being deleted.
+
+## Delete a connector
+
+1. Select the connector, open the options menu (the three vertical dots), and select **Delete**.
+2. Confirm with **Delete connector**.
+
+Deleting is refused while models, sources, provider plans or extension configurations still use the connector, and built-in connectors can't be deleted. Remove or move those first. A deleted connector can't be restored.
 
 ## Next steps
 
-- Add a third-party model that uses your new connector in the [AI Model Registry](/operational-guides/ai-model-registry-features).
-- [Integrate external data](/operational-guides/integrate-data): connect Google Drive and sync it into a Knowledge.
-- [Configure data sources](/operational-guides/configure-sources): choose when a source syncs.
+- [Connect a model provider](/operational-guides/connectors/model-providers): add the models your assistants answer with.
+- [Connect Google Drive](/operational-guides/integrate-data): connect Google Drive and sync it into a Knowledge.
+- [Configure data sources](/operational-guides/configure-sources): choose what a source syncs and when.
