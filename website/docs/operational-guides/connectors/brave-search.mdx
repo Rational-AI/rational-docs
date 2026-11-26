@@ -1,0 +1,56 @@
+---
+title: Connect Brave Search
+description: Store a Brave Search API key so the Brave Search extension can give touchpoints web, news, image, video, and local search.
+type: how-to
+audience: [admin]
+---
+
+The Brave Search connector holds the Brave Search API key that the **Brave Search** extension uses to give your assistants web, news, image, video, and local search.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector (see [Manage roles and users](/operational-guides/roles-and-users)), and permission to install extensions. Adding the extension's tools to a touchpoint needs the administrator role.
+- **On Brave:** an account on the Brave Search API with a plan and an API key.
+
+## What you need
+
+- A Brave Search API key, created in the Brave Search API dashboard. The key has no scopes: what it can call depends on your Brave Search API plan.
+- The **Brave Search** extension, which you install from the catalog in step 4.
+
+## Set up
+
+1. In the Brave Search API dashboard, create an API key and copy it.
+2. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Brave Search**, then select **Add**.
+3. Enter a **Name**, an optional **Description**, and paste the key into **API Key**. Select **Add**.
+4. Go to **Settings** → **Extensions**, select **Install**, select **Brave Search**, then **Configure extension**.
+5. In **BRAVE API KEY**, select the connector you created, then select **Install extension**. The extension starts and its tools appear in **Settings** → **Tools**.
+6. Open the touchpoint that should search the web, go to its **Tools** tab, open **Add tool...**, and add the Brave Search tools you want. See [Choose the tools the assistant can use](/operational-guides/configure-touchpoints#choose-the-tools-the-assistant-can-use).
+
+If the extension is already installed, open its configuration in **Settings** → **Extensions** and select the connector there instead of steps 4 and 5.
+
+## What it powers in Rational AI
+
+- **The Brave Search extension:** its six tools run searches through the Brave Search API with the connector's key. The connector's **Tools** count shows how many tools use the key.
+- **Touchpoints:** an assistant can search only after you add the extension's tools on its **Tools** tab. Each touchpoint decides which of the tools it gets and whether a call needs confirmation.
+
+The search queries the assistant writes are sent to Brave. Add the tools only to touchpoints where sending those queries to a public search service is acceptable.
+
+## Limits
+
+- Every search counts against your Brave Search API plan's quota and rate limit. When the plan refuses a call, the tool call fails and the assistant carries on without results.
+- The extension's configuration takes one connector, so all touchpoints that use its tools share one key and one quota.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| The Brave Search extension card shows **Configuration needed** | The extension has no connector selected. Open its configuration and select the connector in **BRAVE API KEY**. |
+| *"No connectors available"* in the connector field | No Brave Search connector exists yet. Create one in **Settings** → **Connectors**, then open the configuration again. |
+| The assistant never searches the web | The Brave Search tools aren't added to that touchpoint. Check its **Tools** tab. |
+| Search tool calls fail | The key is revoked, or your Brave Search API plan is out of quota or doesn't include that kind of search. Check the key in the Brave Search API dashboard, then enter it again in the connector's **Configuration** and select **Save**. |
+
+## Next steps
+
+- [Manage extensions](/operational-guides/manage-extensions): configure, update, or turn off the Brave Search extension.
+- [Configure touchpoints](/operational-guides/configure-touchpoints): choose the tools an assistant can use and when it asks first.
+- [Configure connectors](/operational-guides/configure-connectors): edit, check, or delete a connector.

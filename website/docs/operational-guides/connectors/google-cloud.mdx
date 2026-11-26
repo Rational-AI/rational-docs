@@ -1,0 +1,67 @@
+---
+title: Connect Google Cloud Storage
+description: Store a Google Cloud service account key so a Google Cloud Storage source can sync bucket files into a Knowledge.
+type: how-to
+audience: [admin]
+---
+
+The **Google Service Account Key** connector holds the key of a Google Cloud service account, which a Google Cloud Storage source uses to sync files from your buckets into a Knowledge.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, and **Create** on the **Sources** row to add the source (see [Manage roles and users](/operational-guides/roles-and-users)).
+- **In Google Cloud:** someone who can create service accounts and their keys in the project, and grant roles on the buckets.
+
+## What you need
+
+- A service account used only by Rational AI.
+- A JSON key for that service account.
+- The **project number** of the Google Cloud project that holds the buckets, shown on the project's dashboard. It's the numeric one, not the project ID.
+
+Give the service account read access, and only on the buckets you sync:
+
+| Permission | Why it's needed |
+|---|---|
+| **Storage Object Viewer** (`roles/storage.objectViewer`) on each bucket | Lists and downloads the files to sync. |
+
+{/* TODO(verify): whether a source whose Root names no bucket lists the project's buckets, which would also need storage.buckets.list on the project. */}
+
+The connector's description in Rational AI mentions BigQuery, but only Google Cloud Storage sources use this connector.
+
+## Set up
+
+1. In the Google Cloud console, go to **IAM & Admin** → **Service accounts** and create a service account for Rational AI. Don't grant it a project role.
+2. On each bucket to sync, go to **Permissions** and grant the service account **Storage Object Viewer**.
+3. Open the service account, go to **Keys**, and add a key of type JSON. Google Cloud downloads the key file once.
+4. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **Google Service Account Key**, then select **Add**.
+5. Enter a **Name** and an optional **Description**. In **API Key**, paste the whole content of the JSON key file, braces included.
+6. Select **Add**.
+7. Go to **Settings** → **Sources** and add a source of type **Google Cloud Storage** with this connector. Enter the **Project number** and, in **Root**, the bucket, and an optional folder, to sync. See [Configure data sources](/operational-guides/configure-sources).
+
+{/* TODO(verify): the exact format of Root for a Google Cloud Storage source (bucket name, with or without a leading slash, then a folder). */}
+
+After the key is stored, delete the downloaded file. Rational AI never shows the key again.
+
+## What it powers in Rational AI
+
+- **Google Cloud Storage sources:** each source reads one bucket path with the connector's key and syncs the files into the Knowledge it feeds. The connector's **Sources** count shows how many sources use it.
+
+## Limits
+
+- Google Cloud Storage sources sync **Periodic** or **Manual** only, not **Automatic**. See [Configure data sources](/operational-guides/configure-sources).
+- The connector stores one key. To rotate it, create a new key in Google Cloud, paste it into the connector's **Configuration**, select **Save**, then delete the old key in Google Cloud.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| Google Cloud refuses to create a key for the service account | An organization policy blocks service account keys. Ask your Google Cloud administrator for an exception for this project. |
+| The source fails with a permission error | The service account lacks **Storage Object Viewer** on the bucket, or **Root** names another bucket. |
+| The source fails to read the key | **API Key** holds part of the file, or the key was deleted in Google Cloud. Paste the full JSON again in the connector's **Configuration** and select **Save**. |
+| **Google Cloud Storage** isn't offered as a source type | No **Google Service Account Key** connector exists yet. Create one first. |
+
+## Next steps
+
+- [Configure data sources](/operational-guides/configure-sources): choose what a source syncs and when.
+- [Create a Knowledge](/operational-guides/create-knowledge): give the synced files a Knowledge to live in.
+- [Configure connectors](/operational-guides/configure-connectors): edit, check, or delete a connector.

@@ -1,0 +1,84 @@
+---
+title: Connect Amazon S3
+sidebar_label: Amazon S3
+description: Sync objects from an Amazon S3 bucket, or an S3-compatible store, into a Knowledge with an AWS connector and an Amazon S3 source.
+type: how-to
+audience: [admin]
+---
+
+The AWS connector holds the access key of an IAM user, so an Amazon S3 source can sync objects from a bucket into a [Knowledge](/operational-guides/create-knowledge).
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Connectors** row to add the connector, **Create** on the **Sources** row and **Use** on the **Connectors** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **In AWS:** someone who can create IAM users, policies, and access keys in the account that owns the bucket.
+
+## What you need
+
+- The bucket name and its region, for example `my-bucket` in `eu-central-1`.
+- An IAM user for Rational AI with an access key and a policy limited to that bucket.
+- A Knowledge to receive the files.
+
+| Permission | Why it's needed |
+|---|---|
+| `s3:ListBucket` on `arn:aws:s3:::my-bucket` | Lists the objects, for the file panel and for each sync. |
+| `s3:GetObject` on `arn:aws:s3:::my-bucket/*` | Downloads the objects. |
+| `kms:Decrypt` on the bucket's KMS key | Only if the bucket encrypts objects with a customer-managed KMS key. |
+
+Rational AI never writes to the bucket, so the policy needs no write actions.
+
+## Set up
+
+1. In the AWS Management Console, go to **IAM** → **Policies** and create a policy with this JSON, replacing `my-bucket`:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       { "Effect": "Allow", "Action": "s3:ListBucket", "Resource": "arn:aws:s3:::my-bucket" },
+       { "Effect": "Allow", "Action": "s3:GetObject", "Resource": "arn:aws:s3:::my-bucket/*" }
+     ]
+   }
+   ```
+
+2. Go to **IAM** → **Users**, create a user for Rational AI, and attach the policy to it directly.
+3. Open the user, go to **Security credentials**, and create an access key for an application running outside AWS.
+4. Copy the **Access key** and the **Secret access key**. AWS shows the secret only once.
+5. In Rational AI, go to **Settings** → **Connectors**, select **Add**, select **AWS**, then select **Add**.
+6. Enter a **Name**, paste the keys into **Access Key** and **Secret Key**, and select **Add**.
+7. Go to **Settings** → **Sources** and select **Add**.
+8. Enter a **Name**. In **Type**, find **Amazon S3** and select your connector under it.
+9. Enter the **Bucket** and the **Region**. The file panel loads once both the connector and the region are set.
+10. For an S3-compatible store, such as MinIO, select **Advanced settings** and enter its address in **Endpoint**. Leave **Endpoint** empty for Amazon S3.
+11. In the file panel, select the folders and objects to sync, then select **Add**. Rational AI creates the source and runs its first sync.
+12. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*.
+13. Open the source's menu on that tab and select **Process now**.
+
+A new source syncs only when you select **Sync now**. To sync on a schedule, see [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## What gets synced
+
+- **The folders and objects you selected** in the bucket. A selected folder includes everything under its prefix, also objects added later.
+- **Changes** on each sync. Amazon S3 sources support **Periodic** and **Manual** only: a bucket can't report changes without event notifications set up in your AWS account.
+
+Rational AI never writes to the bucket. Objects deleted from the bucket leave the Knowledge too when the source's **On delete** setting is **Cascade delete**, the default.
+
+## Limits
+
+- One source reads one bucket. To sync several buckets, add one source per bucket. The connector can serve all of them if its policy allows it.
+- If you leave **Bucket** empty, the file panel lists every bucket, which needs `s3:ListAllMyBuckets` as well.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| The file panel stays on *No files to show yet* | The source has no connector or no **Region**. Both are needed before the panel loads. |
+| The file panel shows *Connection failed* | The keys are wrong or inactive, the policy doesn't allow `s3:ListBucket` on the bucket, or the **Region** isn't the bucket's region. Check the user's access key and policy in IAM. |
+| The source syncs but some objects are missing | The objects are encrypted with a KMS key the user can't use. Add `kms:Decrypt` on that key to the policy. |
+| **Automatic** isn't offered in **Sync settings** | Amazon S3 sources support **Periodic** and **Manual** only. Choose **Periodic** with a schedule. |
+
+## Next steps
+
+- [Configure data sources](/operational-guides/configure-sources): sync modes, failing syncs, and processing on change.
+- [Connect Azure Blob Storage](/operational-guides/connectors/azure-blob-storage): sync files from Azure storage.
+- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the synced files in a Knowledge.

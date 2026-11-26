@@ -1,0 +1,55 @@
+---
+title: Connect HTTP addresses
+sidebar_label: HTTP
+description: Sync files published at fixed web addresses into a Knowledge with an HTTP source. No connector is needed.
+type: how-to
+audience: [admin]
+---
+
+An HTTP source downloads the files at a list of web addresses into a [Knowledge](/operational-guides/create-knowledge). It needs no connector: Rational AI fetches each address without signing in.
+
+## Who can set it up
+
+- **In Rational AI:** a role with **Create** on the **Sources** row to add the source, and **Update** on the **Knowledge** row to attach it. **Sources** needs the Knowledge module in your license. See [Manage roles and users](/operational-guides/roles-and-users).
+- **On the web server:** nothing. The files must be reachable from Rational AI without a password, a token, or a sign-in page.
+
+## What you need
+
+- The full address of each file, starting with `http://` or `https://`, for example `https://example.com/data/price-list.pdf`.
+- A Knowledge to receive the files.
+
+## Set up
+
+1. Go to **Settings** → **Sources** and select **Add**.
+2. Enter a **Name**, and select **HTTP** in **Type**.
+3. Enter the first address in **Url**. To add more, select **Add new** and enter the next one.
+4. Select **Add**. Rational AI creates the source and runs its first sync.
+5. Go to **Settings** → **Knowledge**, open the Knowledge, select the **Sources** tab, and pick the source in *Add source...*.
+6. Open the source's menu on that tab and select **Process now**.
+
+A new source syncs only when you select **Sync now**. To keep it current, see [Choose when a source syncs](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## What gets synced
+
+- **One file per address.** Each file is named after the last part of its address. Rational AI doesn't follow links, so an address of a web page brings in that page only, not the pages it links to.
+- **Changes**, according to the source's sync mode. HTTP sources support **Automatic**, **Periodic**, and **Manual**. With **Automatic**, Rational AI checks each address every two minutes. It compares the `ETag`, `Last-Modified`, and `Content-Length` headers, or a digest of the content when the server sends neither of the first two, and syncs only when something changed.
+
+## Limits
+
+- The source can't send credentials or custom headers. For files behind a sign-in, use a connector-based source such as [Amazon S3](/operational-guides/connectors/amazon-s3) or [OneDrive and SharePoint](/operational-guides/connectors/onedrive-sharepoint).
+- With **Automatic**, an address whose server sends no `ETag` or `Last-Modified` header is downloaded in full at every check, to compute its digest.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| *"Enter a valid URL starting with http:// or https://"* | An address is missing its scheme or has a typo. Correct it, or remove the field. |
+| *"Add at least one URL."* | All the **Url** fields are empty. Enter at least one address. |
+| The sync fails for one address | The server refused the request, needs a sign-in, or can't be reached from Rational AI. Open the address from a browser on the same network to check. |
+| The Knowledge holds a login page instead of the file | The address redirects to a sign-in page. The HTTP source can't sign in. |
+
+## Next steps
+
+- [Configure data sources](/operational-guides/configure-sources): sync modes, failing syncs, and processing on change.
+- [Connect a Git repository](/operational-guides/connectors/git): sync documentation kept in a repository.
+- [Add and manage content](/operational-guides/manage-knowledge-resources): work with the synced files in a Knowledge.
