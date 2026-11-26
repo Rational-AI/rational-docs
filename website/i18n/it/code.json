@@ -486,5 +486,20 @@
 	},
 	"home.link.limits-and-quotas": {
 		"message": "Limiti e quote"
+	},
+	"footer.language": {
+		"message": "Lingua"
+	},
+	"footer.theme": {
+		"message": "Tema"
+	},
+	"footer.theme.light": {
+		"message": "Chiaro"
+	},
+	"footer.theme.dark": {
+		"message": "Scuro"
+	},
+	"footer.theme.system": {
+		"message": "Sistema"
 	}
 }

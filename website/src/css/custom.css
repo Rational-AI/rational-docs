@@ -3,6 +3,7 @@
 @import "./toc";
 @import "./table";
 @import "./home";
+@import "./search";
 
 /**
  * Any CSS included here will be global. The classic template
@@ -11,23 +12,117 @@
  */
 
 /* You can override the default Infima variables here. */
+/* Brand tokens from rational.is (src/styles/global.css there): keep in sync. */
 :root {
-	--ifm-color-primary: #00a398;
-	--ifm-color-primary-dark: #00847a;
-	--ifm-color-primary-darker: #00645c;
-	--ifm-color-primary-darkest: #00433d;
-	--ifm-color-primary-light: #41c3b7;
-	--ifm-color-primary-lighter: #67e4d7;
-	--ifm-color-primary-lightest: #8ff0e6;
-	--ifm-code-font-size: 95%;
+	--color-ink: #050a0a;
+	--color-ink-soft: #102020;
+	--color-night: #161940;
+	--color-muted: #686d6d;
+	--color-paper: #ffffff;
+	--color-canvas: #fdfcfc;
+	--color-sand: #f5f2f1;
+	--color-line: #e3e8e8;
+	--color-teal: #00a398;
+	--color-teal-deep: #11615c;
+	--color-mint: #f3f7f6;
+
+	/* Teal-deep, not teal: #00a398 on white fails AA contrast for link text */
+	--ifm-color-primary: #11615c;
+	--ifm-color-primary-dark: #0f5753;
+	--ifm-color-primary-darker: #0e524e;
+	--ifm-color-primary-darkest: #0c4440;
+	--ifm-color-primary-light: #136b65;
+	--ifm-color-primary-lighter: #14706a;
+	--ifm-color-primary-lightest: #00a398;
+	--ifm-link-hover-color: var(--color-ink);
+
+	--ifm-font-family-base:
+		"Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+	--ifm-heading-font-family: var(--ifm-font-family-base);
+	--ifm-font-family-monospace:
+		"Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+	/* The brand uses Medium for every title */
+	--ifm-heading-font-weight: 500;
+	--ifm-font-weight-bold: 500;
+	--ifm-global-radius: 0.375rem;
+	--ifm-button-border-radius: 0.375rem;
+	--ifm-code-font-size: 90%;
+	--ifm-code-border-radius: 0.25rem;
 	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* Infima leaves the light background transparent, so a dark browser or OS
    canvas showed through and light mode rendered dark text on dark. Paint it. */
 html[data-theme="light"] {
-	--ifm-background-color: #ffffff;
-	--ifm-background-surface-color: #ffffff;
+	--ifm-background-color: var(--color-canvas);
+	--ifm-background-surface-color: var(--color-canvas);
+	--ifm-font-color-base: var(--color-ink-soft);
+	--ifm-heading-color: var(--color-ink);
+	--ifm-color-content-secondary: var(--color-muted);
+	--ifm-toc-border-color: var(--color-line);
+	--ifm-hr-background-color: var(--color-line);
+	--ifm-table-border-color: var(--color-line);
+	--ifm-code-background: var(--color-mint);
+	--ifm-color-emphasis-200: var(--color-line);
+	--ifm-menu-color-background-active: var(--color-mint);
+	--ifm-menu-color-background-hover: var(--color-mint);
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	letter-spacing: -0.025em;
+	text-wrap: balance;
+}
+
+/* Like rational.is: section titles (H2) in a serif, regular weight */
+.markdown h2 {
+	font-family: "Georgia Pro", Georgia, serif;
+	font-weight: 400;
+	letter-spacing: -0.015em;
+}
+
+/* Underlined links in the page body, as in the site's articles */
+.markdown a {
+	font-weight: 500;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* Buttons in the shadcn style of the site: deep teal, ink on hover */
+.button {
+	font-weight: 500;
+}
+.button--primary {
+	--ifm-button-background-color: var(--color-teal-deep);
+	--ifm-button-border-color: var(--color-teal-deep);
+}
+.button--primary:hover {
+	--ifm-button-background-color: var(--color-ink);
+	--ifm-button-border-color: var(--color-ink);
+}
+
+/* Images, code blocks and cards: squircle corners where supported */
+.markdown img,
+.theme-code-block,
+.card {
+	/* biome-ignore lint/correctness/noUnknownProperty: new CSS property, ignored by browsers without support */
+	corner-shape: squircle;
+}
+.markdown img {
+	border-radius: 0.75rem;
+}
+.theme-code-block {
+	--ifm-code-border-radius: 0.75rem;
+}
+html[data-theme="light"] .theme-code-block {
+	box-shadow: 0 0 0 1px var(--color-line);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -164,7 +259,7 @@ html[data-theme="light"] {
    the sidebar section labels, muted links that turn teal on hover. */
 .footer {
 	--ifm-footer-background-color: var(--ifm-background-surface-color);
-	--ifm-footer-link-color: var(--ifm-color-emphasis-700);
+	--ifm-footer-link-color: var(--ifm-font-color-base);
 	--ifm-footer-link-hover-color: var(--ifm-color-primary);
 	--ifm-footer-title-color: var(--ifm-heading-color);
 	--ifm-footer-padding-vertical: 3rem;
@@ -172,10 +267,10 @@ html[data-theme="light"] {
 	font-size: 0.9rem;
 }
 .footer__title {
-	text-transform: uppercase;
-	font-size: 0.75rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
+	/* Eyebrow like rational.is: small, muted, sentence case */
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: var(--ifm-color-content-secondary);
 	margin-bottom: 0.75rem;
 }
 .footer__item {
@@ -192,18 +287,78 @@ html[data-theme="light"] {
 	padding-top: 1.5rem;
 	border-top: 1px solid var(--ifm-color-emphasis-200);
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
+	gap: 1rem 1.5rem;
 	color: var(--ifm-color-emphasis-600);
 	font-size: 0.8rem;
 }
 .footer__logo {
-	max-width: 28px;
+	height: 1.5rem;
+	width: auto;
 	margin: 0;
 }
-.footer__bottom .margin-bottom--sm {
-	margin: 0 !important;
+/* Docusaurus fades the footer logo to 50%: keep it at full strength */
+.footer__bottom a[class*="footerLogoLink"] {
+	opacity: 1;
+}
+/* Copyright line under "Website" in the Rational AI column */
+.footer__copyright {
+	color: var(--ifm-color-content-secondary);
+}
+
+.footer__switches {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-left: auto;
+}
+
+/* MARK: Tabs, as on rational.is/componenti#tab (shadcn new-york look) */
+.tabs-list {
+	margin: 0;
+	min-width: 0;
+	border: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.125rem;
+	padding: 3px;
+	border-radius: 0.5rem;
+	background: var(--ifm-color-emphasis-200);
+}
+.tabs-trigger {
+	display: inline-flex;
+	align-items: center;
+	height: 2rem;
+	padding: 0 0.75rem;
+	border: 1px solid transparent;
+	border-radius: 0.375rem;
+	background: transparent;
+	color: var(--ifm-color-content-secondary);
+	font: inherit;
+	font-size: 0.875rem;
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: pointer;
+	transition:
+		color 0.15s ease,
+		box-shadow 0.15s ease;
+}
+.tabs-trigger:hover {
+	color: var(--ifm-heading-color);
+	text-decoration: none;
+}
+.tabs-trigger[aria-pressed="true"],
+.tabs-trigger[aria-current="page"] {
+	background: var(--ifm-background-surface-color);
+	color: var(--ifm-heading-color);
+	box-shadow:
+		0 1px 3px rgb(5 10 10 / 0.1),
+		0 1px 2px rgb(5 10 10 / 0.06);
+}
+html[data-theme="light"] .tabs-trigger[aria-pressed="true"],
+html[data-theme="light"] .tabs-trigger[aria-current="page"] {
+	background: var(--color-paper);
 }
 
 /* Footer on narrow screens: two columns (2 + 2) instead of one long stack */
@@ -215,27 +370,14 @@ html[data-theme="light"] {
 	}
 }
 
-/* The home page has no sidebar, so the mobile menu would only hold the language switcher, which is already in the bar */
-html.plugin-pages .navbar__toggle {
-	display: none;
-}
-
-/* Language switcher: icon only. font-size 0 hides the label visually but keeps it for screen readers */
-.navbar__link.navbar-locale {
-	font-size: 0;
-	display: flex;
-	align-items: center;
-	min-height: 2rem;
-}
-.navbar__link.navbar-locale::after {
-	display: none;
-}
-/* The icon's right margin only spaced it from the label, now hidden */
-.navbar__link.navbar-locale svg {
-	margin-right: 0;
-}
-
 /* The search plugin's input otherwise falls back to the browser default (Arial) */
 .navbar__search-input {
 	font-family: inherit;
+}
+
+/* Vertical hairline between sidebar and page content, like the rails on rational.is */
+@media (min-width: 997px) {
+	main[class*="docMainContainer"] {
+		border-left: 1px solid var(--ifm-toc-border-color);
+	}
 }

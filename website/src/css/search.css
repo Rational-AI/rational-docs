@@ -1,0 +1,178 @@
+/* MARK: Search field — like the site's .field. Home hero: as wide as the column */
+.searchField {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+	height: 3rem;
+	padding: 0 1rem;
+	cursor: text;
+	border-radius: 0.375rem;
+	background: var(--ifm-background-surface-color);
+	border: 1px solid var(--ifm-toc-border-color);
+	box-shadow: 0 1px 2px rgb(5 10 10 / 0.05);
+	transition:
+		border-color 0.15s ease,
+		box-shadow 0.15s ease;
+}
+
+html[data-theme="light"] .searchField {
+	background: var(--color-paper);
+}
+
+.searchField:focus-within {
+	border-color: var(--color-teal);
+	box-shadow: 0 0 0 3px rgb(0 163 152 / 0.3);
+}
+
+.searchField__icon {
+	flex: 0 0 auto;
+	width: 16px;
+	height: 16px;
+	color: var(--ifm-color-content-secondary);
+}
+
+/* MARK: Hero search — reused @theme/SearchBar (live result preview) */
+
+/* .searchField is the positioning context for the autocomplete dropdown */
+.searchField {
+	position: relative;
+}
+
+/* The reused SearchBar fills the pill where the plain input used to be.
+   position:static so the dropdown anchors to .searchField (full pill width). */
+/* SearchBar and its autocomplete <span> fill the field's full height, so the
+   input centers its text on the same line as the icon (align-items: center) */
+.searchField .navbar__search {
+	position: static;
+	flex: 1 1 auto;
+	align-self: stretch;
+	min-width: 0;
+	margin: 0;
+	display: block;
+}
+
+.searchField .navbar__search > span {
+	display: block !important;
+	width: 100%;
+	height: 100%;
+}
+
+/* The search plugin collapses its input to an icon-sized box on small screens;
+   in the hero it must always fill the pill, or the placeholder reads "Sea". */
+.searchField .navbar__search .navbar__search-input {
+	width: 100% !important;
+}
+
+.searchField .navbar__search-input {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	background-image: none; /* SearchIcon already supplies the magnifier */
+	color: var(--ifm-font-color-base);
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: normal;
+}
+
+.searchField .navbar__search-input::placeholder {
+	color: var(--ifm-color-content-secondary);
+	font-weight: 400;
+}
+
+.searchField .navbar__search-input:focus {
+	outline: none;
+}
+
+/* Drop the plugin's ⌘K shortcut hint inside the hero search */
+.searchField [class*="searchHintContainer"] {
+	display: none;
+}
+
+/* Result preview: full pill width, dropped just below the pill. The 3-class
+   selector outranks the plugin's `.searchBar .dropdownMenu`; the plugin keeps
+   its own !important left/right anchor, so width:100% fills the pill either way. */
+.searchField .navbar__search [class*="dropdownMenu"] {
+	position: absolute;
+	top: calc(100% + 12px);
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	text-align: left;
+	z-index: 5;
+}
+
+/* Home hero: right under the title */
+.homeHero .searchField {
+	margin-top: 2rem;
+}
+
+/* MARK: Floating search on docs pages: bottom center, results open upward */
+.searchField--floating {
+	position: fixed;
+	bottom: 1.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: calc(var(--ifm-z-index-fixed) - 1);
+	width: min(36rem, calc(100vw - 2rem));
+	border-radius: 0.75rem;
+	box-shadow:
+		0 12px 32px -12px rgb(5 10 10 / 0.25),
+		0 1px 2px rgb(5 10 10 / 0.05);
+}
+/* !important: autocomplete.js sets top: 100% as an inline style */
+.searchField--floating .navbar__search [class*="dropdownMenu"] {
+	top: auto !important;
+	bottom: calc(100% + 8px);
+	margin: 0;
+	/* Long result lists scroll instead of running off the top of the screen */
+	max-height: calc(100vh - 8rem);
+	overflow-y: auto;
+}
+/* Room at the end of docs pages so the floating field never covers the footer text */
+.footer {
+	padding-bottom: 6rem;
+}
+html.plugin-pages .footer {
+	padding-bottom: var(--ifm-footer-padding-vertical);
+}
+
+/* MARK: Results, in the site's look: white panel with a hairline and soft shadow,
+   plain rows, mint for the selected one. Variables from docusaurus-search-local. */
+.searchField {
+	--search-local-modal-background: var(--ifm-background-surface-color);
+	--search-local-modal-shadow:
+		0 0 0 1px var(--ifm-toc-border-color), 0 12px 32px -12px rgb(5 10 10 / 0.25);
+	--search-local-spacing: 6px;
+	--search-local-hit-background: transparent;
+	--search-local-hit-shadow: none;
+	--search-local-hit-color: var(--ifm-font-color-base);
+	--search-local-hit-height: 52px;
+	--search-local-highlight-color: var(--color-mint);
+	--search-local-hit-active-color: var(--ifm-heading-color);
+	--search-local-muted-color: var(--ifm-color-content-secondary);
+}
+html[data-theme="light"] .searchField {
+	--search-local-modal-background: var(--color-paper);
+}
+html[data-theme="dark"] .searchField {
+	--search-local-highlight-color: var(--ifm-color-emphasis-200);
+}
+.searchField [class*="dropdownMenu"] {
+	border-radius: 0.75rem;
+	font-size: 0.9375rem;
+}
+.searchField [class*="dropdownMenu"] [class*="suggestion"] {
+	border-radius: 0.375rem;
+}
+/* Matched words: deep teal, medium (the variable above is the row highlight) */
+.searchField [class*="dropdownMenu"] mark {
+	color: var(--ifm-color-primary);
+	font-weight: 500;
+}
+html[data-theme="dark"] .searchField [class*="dropdownMenu"] mark {
+	color: var(--color-teal);
+}

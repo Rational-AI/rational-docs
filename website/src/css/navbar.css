@@ -1,106 +1,82 @@
+/* No top bar on desktop: the brand sits at the top of the sidebar
+   (src/theme/DocSidebar/Desktop/Content), search floats at the bottom,
+   language and theme are in the footer. The bar stays on mobile only, where it opens
+   the sidebar drawer. The home page has its own brand in the hero, so no bar at all. */
+:root {
+	--ifm-navbar-height: 4rem;
+}
+@media (min-width: 997px) {
+	:root {
+		--ifm-navbar-height: 0px;
+	}
+	nav.theme-layout-navbar {
+		display: none;
+	}
+}
+html.plugin-pages nav.theme-layout-navbar {
+	display: none;
+}
+
 nav.theme-layout-navbar.navbar.navbar--fixed-top {
-	/* Solid (opaque) background so scrolling content doesn't bleed through the
-	   sticky bar. Themed var = solid white in light mode, dark surface in dark. */
 	background-color: var(--ifm-background-surface-color);
 	box-shadow: none;
 	border-bottom: 1px solid var(--ifm-table-border-color);
 }
+/* Light theme: translucent canvas with blur, like the rational.is header */
+html[data-theme="light"] nav.theme-layout-navbar.navbar.navbar--fixed-top {
+	background-color: color-mix(in srgb, var(--color-canvas) 90%, transparent);
+	backdrop-filter: blur(8px);
+}
 
-/* Navbar search (auto-injected by the local-search theme) on every docs page.
-   Only the home page hides it, because its hero has the big search box. */
-html.plugin-pages .navbar [class*="navbarSearchContainer"] {
+/* The theme switch lives in the footer: hide the one Docusaurus puts in the bar and drawer */
+.navbar [class*="colorModeToggle"],
+.navbar-sidebar [class*="colorModeToggle"] {
+	display: none;
+}
+/* Search floats at the bottom of the page instead */
+.navbar [class*="navbarSearchContainer"] {
 	display: none;
 }
 
-/* Docusaurus moves the light/dark toggle into the mobile drawer; keep it in the
-   bar next to the search, where people look for it. */
-@media (max-width: 996px) {
-	.navbar__items--right [class*="colorModeToggle"] {
-		display: block;
-	}
-	/* The search plugin pins its button to the corner on small screens, on top
-	   of the toggle: put it back in the flow so the two sit side by side. */
-	.navbar__items--right [class*="navbarSearchContainer"] {
-		position: static;
-	}
+/* MARK: Brand (wordmark + "DOCS"): mobile bar, top of the sidebar, home hero.
+   They share a baseline: the logo's is its bottom edge (flex synthesizes it). */
+.navbar__brand,
+.brand {
+	--logo-height: 1.5rem;
+	display: flex;
+	align-items: baseline;
+	color: inherit;
+	text-decoration: none;
+}
+.navbar__logo,
+.brand__logo {
+	display: flex;
+	height: var(--logo-height);
+	margin-right: 0.625rem;
+}
+.brand__logo img {
+	height: 100%;
+	width: auto;
+}
+/* Sidebar brand: where the old bar was, aligned with the menu's text */
+.brand--sidebar {
+	min-height: 4rem;
+	padding: 1.5rem 1.5rem 0.5rem
+		calc(1.5rem + var(--ifm-menu-link-padding-horizontal));
 }
 
-/* The language switcher also stays in the bar on small screens, where
-   Docusaurus would only show it in the drawer. Icon only there, to fit. */
-@media (max-width: 996px) {
-	/* The className lands on the link, not on its wrapper */
-	.navbar__items--right .navbar__item:has(> .navbar-locale) {
-		display: block;
-		/* 16px each side: the toggle adds 12px of its own on the right */
-		padding: 4px 4px 4px 16px;
-	}
-	.navbar__link.navbar-locale {
-		display: flex;
-		font-size: 0;
-	}
-	.navbar__link.navbar-locale::after {
-		display: none;
-	}
-	.navbar__link.navbar-locale > svg {
-		margin: 0;
-	}
+/* "DOCS" next to the wordmark, in the brand accent. The wordmark's text sits
+   on y=28 of its 32-unit viewBox, so lift DOCS by 4/32 of the logo height. */
+.navbar__title,
+.brand__docs {
+	color: var(--color-teal);
+	font-size: 1rem;
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	/* 2px above the computed baseline: set by eye */
+	transform: translateY(calc(var(--logo-height) * -4 / 32 - 2px));
 }
-
-/* Search, language switcher, theme toggle at the far right, at every width */
-.navbar__items--right [class*="navbarSearchContainer"] {
-	order: 1;
-}
-.navbar__items--right .navbar__item:has(> .navbar-locale) {
-	order: 2;
-}
-.navbar__items--right [class*="colorModeToggle"] {
-	order: 3;
-	margin-left: 0.5rem;
-}
-
-/* Search box. Infima's magnifier is an SVG background with
-   fill="currentColor", which always renders black, so each theme gets an
-   icon in its own placeholder color. */
-:root {
-	--ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="%23606770" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
-}
-html[data-theme="dark"] {
-	--ifm-navbar-search-input-icon: url('data:image/svg+xml;utf8,<svg fill="%23bec3c9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16px" width="16px"><path d="M6.02945,10.20327a4.17382,4.17382,0,1,1,4.17382-4.17382A4.15609,4.15609,0,0,1,6.02945,10.20327Zm9.69195,4.2199L10.8989,9.59979A5.88021,5.88021,0,0,0,12.058,6.02856,6.00467,6.00467,0,1,0,9.59979,10.8989l4.82338,4.82338a.89729.89729,0,0,0,1.29912,0,.89749.89749,0,0,0-.00087-1.29909Z" /></svg>');
-}
-
-/* Light theme: an active-looking field (white, hairline border), not the
-   gray fill that reads as disabled. */
-html[data-theme="light"] .navbar .navbar__search-input {
-	background-color: #ffffff;
-	box-shadow: inset 0 0 0 1px var(--ifm-color-emphasis-300);
-	color: var(--ifm-font-color-base);
-}
-html[data-theme="light"] .navbar .navbar__search-input::placeholder {
-	color: var(--ifm-color-emphasis-600);
-}
-html[data-theme="light"] .navbar .navbar__search-input:focus {
-	box-shadow: inset 0 0 0 1px var(--ifm-color-primary);
-}
-
-/* Room for the ⌘K hint so it doesn't touch the word "Search"; phones don't
-   get the keyboard hint at all. */
-@media (min-width: 576px) {
-	.navbar .navbar__search-input {
-		width: 12.5rem;
-		padding-right: 4rem;
-	}
-}
-@media (max-width: 575px) {
-	.navbar [class*="searchHintContainer"] {
-		display: none;
-	}
-}
-
-/* ⌘K keys in light mode: white keys with a hairline, like the field, not the
-   gray fill that reads as disabled. */
-html[data-theme="light"] .navbar [class*="searchHint_"] {
-	background-color: #ffffff;
-	border-color: var(--ifm-color-emphasis-300);
-	box-shadow: inset 0 -1px 0 var(--ifm-color-emphasis-300);
-	color: var(--ifm-color-emphasis-700);
+.navbar__brand:hover .navbar__title {
+	color: var(--color-teal);
 }

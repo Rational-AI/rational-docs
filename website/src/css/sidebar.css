@@ -3,9 +3,9 @@ aside,
 	--ifm-toc-border-color: transparent;
 
 	/* Deep teal used for active text and the accent bar */
-	--sidebar-active-color: #11615c;
+	--sidebar-active-color: var(--color-teal-deep);
 	/* Rest colour for page and folder labels */
-	--sidebar-text-rest: #71717a;
+	--sidebar-text-rest: var(--color-muted);
 	/* Thin right-pointing chevron used as a mask for folder toggles */
 	--sidebar-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 3.5 10.5 8 6 12.5'/%3E%3C/svg%3E");
 	/* Mint tint used for the active item background, derived from the brand teal */
@@ -69,11 +69,10 @@ aside,
 
 			> .menu__list-item-collapsible > .menu__link,
 			> .menu__link {
-				text-transform: uppercase;
-				font-weight: 700;
-				font-size: 0.78rem;
-				letter-spacing: 0.04em;
-				color: var(--ifm-heading-color);
+				/* Eyebrow like rational.is: small, muted, sentence case */
+				font-weight: 400;
+				font-size: 0.875rem;
+				color: var(--ifm-color-content-secondary);
 				padding: 6px;
 				margin: 0;
 
@@ -83,7 +82,7 @@ aside,
 				}
 
 				&.menu__link--active {
-					color: var(--ifm-heading-color);
+					color: var(--ifm-color-content-secondary);
 					background: transparent;
 				}
 			}
