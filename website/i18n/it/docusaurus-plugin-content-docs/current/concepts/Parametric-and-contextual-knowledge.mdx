@@ -1,0 +1,21 @@
+---
+sidebar_position: 26
+sidebar_label: Conoscenza parametrica e contestuale
+title: Conoscenza parametrica e contestuale
+description: I due tipi di conoscenza da cui un modello risponde, quella appresa durante l'addestramento e quella che legge nella richiesta, e come Rational AI usa la seconda.
+type: concept
+audience: [user, builder]
+---
+
+# Conoscenza parametrica e contestuale
+
+Un modello risponde a partire da due tipi di conoscenza.
+
+- La **conoscenza parametrica** è ciò che il modello ha appreso durante l'[addestramento](/concepts/Model-training) e porta con sé al suo interno. È ampia ed è sempre disponibile, ma si ferma alla [data limite delle conoscenze](/concepts/Knowledge-cutoff) del modello, non conosce nulla della tua organizzazione e non può indicare una fonte.
+- La **conoscenza contestuale** è ciò che il modello legge nella sua [finestra di contesto](/concepts/Context-window) per questa richiesta: i documenti, i record e la conversazione che gli fornisci. È attuale e specifica, e puoi verificare da dove proviene, ma conta solo ciò che rientra nella finestra.
+
+Per modificare la conoscenza parametrica, esegui il [fine-tuning](/concepts/Finetuning) del modello. Per modificare la conoscenza contestuale, cambi ciò che entra nella richiesta.
+
+## In Rational AI {#in-rational-ai}
+
+Una [Knowledge](/concepts/Knowledge) trasforma i tuoi contenuti in conoscenza contestuale. Il meccanismo [RAG](/concepts/RAG) recupera i passaggi che corrispondono a una domanda e li inserisce nella finestra di contesto, così l'assistente risponde a partire dal tuo materiale attuale e la Chat mostra le fonti usate. La pagina [Knowledge](/concepts/Knowledge) confronta fianco a fianco la conoscenza integrata di un modello con una Knowledge.

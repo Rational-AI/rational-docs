@@ -1,0 +1,66 @@
+---
+sidebar_position: 29
+sidebar_label: Imposta la conservazione dei dati
+type: how-to
+audience: [admin]
+---
+
+# Imposta per quanto tempo i dati vengono conservati
+
+Rational AI conserva ciò che registra finché non imposti un limite. Usa **Impostazioni** → **Conservazione dei dati** per stabilire per quanto tempo restano conservati i contenuti di prompt e risposte, i record delle chiamate al modello e le conversazioni chiuse, e il **Tracciamento dei payload** di ogni modello per decidere se i contenuti di prompt e risposte vengono memorizzati.
+
+:::danger[L'eliminazione è definitiva]
+Ogni periodo parte vuoto, il che significa *conserva per sempre*. Una volta impostato un periodo, i dati più vecchi vengono eliminati e non possono essere recuperati.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Accesso amministrativo:** la politica di conservazione è riservata agli amministratori.
+- **Una decisione su cosa devi conservare**, idealmente da chi si occupa della protezione dei dati nella tua organizzazione.
+
+## Decidi cosa memorizza ogni chiamata al modello {#decide-what-each-model-call-stores}
+
+Ogni richiesta a un modello viene registrata nella [traccia di audit](/operational-guides/audit-trail). Il **Tracciamento dei payload** decide se anche il contenuto di quelle richieste viene memorizzato. È impostato per ogni modello, sia per quelli di terze parti sia per quelli self-hosted.
+
+1. Vai su **Impostazioni** → **Registro modelli AI**, apri il modello e scorri fino a **Tracciamento dei payload**.
+2. Per **Payload delle richieste** (cosa è stato inviato) e **Payload delle risposte** (cosa ha risposto il modello), scegli **Mai**, **Solo quando la richiesta fallisce**, **Solo quando la richiesta va a buon fine** o **Sempre**.
+
+La scelta viene salvata subito. Quando una voce di audit dice che un payload non è stato registrato, rimanda a questa sezione del modello.
+
+:::warning[I payload possono contenere dati personali]
+Prompt e risposte contengono tutto ciò che le persone hanno scritto e tutti i documenti inviati. Preferisci **Solo quando la richiesta fallisce** a **Sempre**, e imposta un periodo breve per **Contenuto di prompt e risposte**.
+:::
+
+## Imposta i periodi di conservazione {#set-the-retention-periods}
+
+1. Vai su **Impostazioni** → **Conservazione dei dati**.
+2. Inserisci un numero di giorni per ciascun periodo che vuoi limitare. Lascia vuoto un campo per conservare quei dati per sempre.
+3. Seleziona **Salva**.
+
+| Periodo | Cosa rimuove | Cosa resta |
+|---------|--------------|------------|
+| **Contenuto di prompt e risposte** | Il testo di prompt e risposte memorizzato dal tracciamento dei payload | Il record della chiamata: chi, quando, quale modello, quanti token, quanto è costata |
+| **Record delle chiamate al modello** | L'intero record della chiamata, contenuto compreso | Nulla di quella chiamata |
+| **Conversazioni chiuse** | Le conversazioni terminate, con i loro messaggi e gli artefatti di Canvas | Nulla di quella conversazione |
+
+I campi suggeriscono 30 giorni per **Contenuto di prompt e risposte** e 365 giorni per **Record delle chiamate al modello**. I suggerimenti non vengono mai applicati automaticamente. I dashboard di Governance e i report sui costi leggono i record delle chiamate, quindi cancellare i contenuti non li modifica.
+
+Il periodo dei contenuti non può essere più lungo di quello dei **Record delle chiamate al modello**: la pagina rifiuta il salvataggio.
+
+Il periodo delle conversazioni chiuse conta dall'ultima attività di ciascuna conversazione. Una conversazione aperta non viene mai eliminata, qualunque sia la sua età.
+
+## Verifica che l'eliminazione sia attiva {#check-that-deletion-is-running}
+
+L'eliminazione viene eseguita ogni ora. L'intestazione della pagina mostra **Ultimo sweep** e quanti record ha rimosso quell'esecuzione. Finché non c'è stata una prima esecuzione, mostra *Nessuno sweep è ancora stato eseguito.* La maggior parte delle esecuzioni non rimuove nulla quando i dati più vecchi sono già stati cancellati, quindi un conteggio pari a zero è normale.
+
+## Cosa non copre la conservazione {#what-retention-does-not-cover}
+
+- **File della Knowledge.** Per eliminarli, vedi [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources).
+- **La [traccia di audit](/operational-guides/audit-trail).** Le sue voci non vengono mai rimosse da questi periodi.
+- **Blocco legale.** Non puoi escludere una singola conversazione dalla conservazione. Esporta tutto ciò che devi preservare prima che il suo periodo finisca.
+
+## Prossimi passi {#next-steps}
+
+- [Consulta la traccia di audit](/operational-guides/audit-trail): chi ha letto o modificato cosa.
+- [Cancella i dati di una persona](/operational-guides/erase-personal-data): cancellazione immediata e mirata per una richiesta dell'interessato.
+- [Monitora utilizzo e costi](/operational-guides/governance): i dashboard che leggono i record delle chiamate.

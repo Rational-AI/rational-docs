@@ -1,0 +1,55 @@
+---
+title: Connetti indirizzi HTTP
+sidebar_label: HTTP
+description: Sincronizza in una Knowledge i file pubblicati a indirizzi web fissi con una fonte HTTP. Non serve alcun connettore.
+type: how-to
+audience: [admin]
+---
+
+Una fonte HTTP scarica in una [Knowledge](/operational-guides/create-knowledge) i file che si trovano a un elenco di indirizzi web. Non richiede un connettore: Rational AI recupera ogni indirizzo senza accedere.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Fonti** per aggiungere la fonte, e **Modifica** sulla riga **Knowledge** per collegarla. **Fonti** richiede il modulo Knowledge nella tua licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Sul server web:** nulla. I file devono essere raggiungibili da Rational AI senza password, token o pagina di accesso.
+
+## Cosa ti serve {#what-you-need}
+
+- L'indirizzo completo di ogni file, che inizi con `http://` o `https://`, per esempio `https://example.com/data/price-list.pdf`.
+- Una Knowledge che riceva i file.
+
+## Configura {#set-up}
+
+1. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
+2. Inserisci un **Nome** e seleziona **HTTP** in **Tipo**.
+3. Inserisci il primo indirizzo in **Url**. Per aggiungerne altri, seleziona **Aggiungi** e inserisci il successivo.
+4. Seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+5. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge, seleziona la scheda **Fonti** e scegli la fonte in *Aggiungi fonte...*.
+6. Apri il menu della fonte in quella scheda e seleziona **Processa ora**.
+
+Una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per mantenerla aggiornata, vedi [Scegli quando sincronizzare una fonte](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## Cosa viene sincronizzato {#what-gets-synced}
+
+- **Un file per indirizzo.** Ogni file prende il nome dall'ultima parte del suo indirizzo. Rational AI non segue i link, quindi l'indirizzo di una pagina web importa solo quella pagina, non le pagine a cui rimanda.
+- **Le modifiche**, secondo la modalità di sincronizzazione della fonte. Le fonti HTTP supportano **Automatico**, **Periodica** e **Manuale**. Con **Automatico**, Rational AI controlla ogni indirizzo ogni due minuti. Confronta le intestazioni `ETag`, `Last-Modified` e `Content-Length`, oppure un digest del contenuto quando il server non invia nessuna delle prime due, e sincronizza solo se qualcosa è cambiato.
+
+## Limiti {#limits}
+
+- La fonte non può inviare credenziali o intestazioni personalizzate. Per file protetti da accesso, usa una fonte basata su connettore, come [Amazon S3](/operational-guides/connectors/amazon-s3) o [OneDrive e SharePoint](/operational-guides/connectors/onedrive-sharepoint).
+- Con **Automatico**, un indirizzo il cui server non invia un'intestazione `ETag` o `Last-Modified` viene scaricato per intero a ogni controllo, per calcolarne il digest.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| *"Inserisci un URL valido che inizi con http:// o https://"* | Un indirizzo non ha lo schema o contiene un errore di battitura. Correggilo oppure rimuovi il campo. |
+| *"Aggiungi almeno un URL."* | Tutti i campi **Url** sono vuoti. Inserisci almeno un indirizzo. |
+| La sincronizzazione fallisce per un indirizzo | Il server ha rifiutato la richiesta, richiede un accesso oppure non è raggiungibile da Rational AI. Apri l'indirizzo da un browser sulla stessa rete per verificare. |
+| La Knowledge contiene una pagina di accesso invece del file | L'indirizzo reindirizza a una pagina di accesso. La fonte HTTP non può accedere. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura le fonti di dati](/operational-guides/configure-sources): modalità di sincronizzazione, sincronizzazioni non riuscite ed elaborazione alle modifiche.
+- [Connetti un repository Git](/operational-guides/connectors/git): sincronizza la documentazione conservata in un repository.
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources): lavora con i file sincronizzati in una Knowledge.

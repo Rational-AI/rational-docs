@@ -1,0 +1,51 @@
+---
+sidebar_position: 5
+sidebar_label: Fonti e risorse
+title: Fonti e risorse
+description: Cosa sono le fonti e le risorse, in cosa si differenziano e come mantengono aggiornata la tua conoscenza in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Fonti e risorse
+
+**Fonti** e **risorse** sono le due parti con cui i tuoi dati entrano in un sistema di AI. Una **fonte** indica *da dove* arrivano i dati: è una connessione a un sistema esterno, come un bucket cloud o un'unità condivisa. Una **risorsa** indica *cosa* fornisce la fonte: è un singolo elemento, come un documento, un foglio di calcolo o un'immagine.
+
+Il rapporto è semplice: una fonte è un tubo, e le risorse sono ciò che vi scorre dentro. Una fonte può fornire molte risorse, e continua a farlo nel tempo, man mano che il sistema sottostante cambia.
+
+## Fonti {#sources}
+
+Una fonte è una connessione attiva a un sistema che contiene i tuoi contenuti, per esempio un bucket Amazon S3 o una cartella di Google Drive. Il suo compito è **mantenere sincronizzati i tuoi dati**. Automaticamente quando la fonte cambia, in base a una pianificazione oppure su tua richiesta, controlla il sistema esterno e porta nella piattaforma gli elementi nuovi o modificati, così la tua conoscenza non diventa obsoleta. Sincronizzare una fonte ed elaborare i suoi file in una Knowledge sono due passaggi distinti. Le fonti fanno la differenza tra un'importazione una tantum e una conoscenza sempre aggiornata.
+
+## Risorse {#resources}
+
+Una risorsa è un singolo contenuto, una volta entrato nella piattaforma. Ogni risorsa porta con sé più del solo testo grezzo:
+
+* **Metadati**, come nome, categoria e tag.
+* Un collegamento alla sua **fonte originale** e l'ora dell'ultima sincronizzazione.
+* I **[chunk ed embedding](./Embeddings-chunks-and-annotations.mdx)** creati a partire da essa durante l'ingestione.
+* **Relazioni** con altre risorse, che un recupero più avanzato può seguire.
+
+## Fonti e risorse in Rational AI {#sources-and-resources-in-rational-ai}
+
+Gestisci le connessioni nella sezione [Fonti](../cr/settings/sources.mdx), dove aggiungi una fonte, imposti ogni quanto si sincronizza e controlli ogni sincronizzazione. Una fonte può essere collegata a Knowledge, touchpoint e progetti di Rational BI. Le risorse che porta in una Knowledge finiscono nel modulo [Knowledge](../cr/Knowledge.mdx), dove puoi esplorarle, modificarne i metadati e vedere come sono collegate. Insieme, fanno sì che i tuoi agenti lavorino su materiale aggiornato e ben organizzato.
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Impostazioni Fonti](../cr/settings/sources.mdx): collega i sistemi esterni e pianifica la sincronizzazione.
+* [Knowledge](../cr/Knowledge.mdx): esplora e organizza le risorse fornite dalle tue fonti.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Connettori", to: "/concepts/Connectors" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+		{ label: "Embedding, chunk e annotazioni", to: "/concepts/Embeddings-chunks-and-annotations" },
+	]}
+/>

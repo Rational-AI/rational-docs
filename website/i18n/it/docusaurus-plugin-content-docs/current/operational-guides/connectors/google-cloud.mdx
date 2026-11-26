@@ -1,0 +1,67 @@
+---
+title: Connetti Google Cloud Storage
+description: Salva una chiave dell'account di servizio Google Cloud così che una fonte Google Cloud Storage possa sincronizzare i file dei bucket in una Knowledge.
+type: how-to
+audience: [admin]
+---
+
+Il connettore **Google Service Account Key** conserva la chiave di un account di servizio Google Cloud, che una fonte Google Cloud Storage usa per sincronizzare i file dei tuoi bucket in una Knowledge.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore, e **Crea** sulla riga **Fonti** per aggiungere la fonte (vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users)).
+- **In Google Cloud:** chi può creare account di servizio e le loro chiavi nel progetto, e concedere ruoli sui bucket.
+
+## Cosa ti serve {#what-you-need}
+
+- Un account di servizio usato solo da Rational AI.
+- Una chiave JSON per quell'account di servizio.
+- Il **project number** (numero di progetto) del progetto Google Cloud che contiene i bucket, mostrato nella dashboard del progetto. È quello numerico, non l'ID del progetto.
+
+Concedi all'account di servizio l'accesso in lettura, e solo sui bucket che sincronizzi:
+
+| Permesso | Perché serve |
+|---|---|
+| **Storage Object Viewer** (`roles/storage.objectViewer`) su ogni bucket | Elenca e scarica i file da sincronizzare. |
+
+{/* TODO(verify): whether a source whose Root names no bucket lists the project's buckets, which would also need storage.buckets.list on the project. */}
+
+La descrizione del connettore in Rational AI cita BigQuery, ma solo le fonti Google Cloud Storage usano questo connettore.
+
+## Configura {#set-up}
+
+1. Nella console Google Cloud, vai su **IAM & Admin** → **Service accounts** e crea un account di servizio per Rational AI. Non concedergli un ruolo a livello di progetto.
+2. Su ogni bucket da sincronizzare, vai su **Permissions** e concedi all'account di servizio **Storage Object Viewer**.
+3. Apri l'account di servizio, vai su **Keys** e aggiungi una chiave di tipo JSON. Google Cloud scarica il file della chiave una sola volta.
+4. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Google Service Account Key**, poi seleziona **Aggiungi**.
+5. Inserisci un **Nome** e una **Descrizione** facoltativa. In **API Key**, incolla l'intero contenuto del file JSON della chiave, parentesi graffe incluse.
+6. Seleziona **Aggiungi**.
+7. Vai su **Impostazioni** → **Fonti** e aggiungi una fonte di tipo **Google Cloud Storage** con questo connettore. Inserisci il **Numero progetto** e, in **Root**, il bucket e una cartella facoltativa da sincronizzare. Vedi [Configura le fonti di dati](/operational-guides/configure-sources).
+
+{/* TODO(verify): the exact format of Root for a Google Cloud Storage source (bucket name, with or without a leading slash, then a folder). */}
+
+Dopo aver salvato la chiave, elimina il file scaricato. Rational AI non mostra mai più la chiave.
+
+## Cosa alimenta in Rational AI {#what-it-powers-in-rational-ai}
+
+- **Fonti Google Cloud Storage:** ogni fonte legge un percorso di un bucket con la chiave del connettore e sincronizza i file nella Knowledge che alimenta. Il contatore **Sources** del connettore mostra quante fonti lo usano.
+
+## Limiti {#limits}
+
+- Le fonti Google Cloud Storage si sincronizzano solo in modalità **Periodica** o **Manuale**, non **Automatico**. Vedi [Configura le fonti di dati](/operational-guides/configure-sources).
+- Il connettore conserva una sola chiave. Per sostituirla, crea una nuova chiave in Google Cloud, incollala nella **Configurazione** del connettore, seleziona **Salva**, poi elimina la vecchia chiave in Google Cloud.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Google Cloud rifiuta di creare una chiave per l'account di servizio | Una policy dell'organizzazione blocca le chiavi degli account di servizio. Chiedi al tuo amministratore Google Cloud un'eccezione per questo progetto. |
+| La fonte fallisce con un errore di permessi | All'account di servizio manca **Storage Object Viewer** sul bucket, oppure **Root** indica un altro bucket. |
+| La fonte non riesce a leggere la chiave | **API Key** contiene solo una parte del file, oppure la chiave è stata eliminata in Google Cloud. Incolla di nuovo il JSON completo nella **Configurazione** del connettore e seleziona **Salva**. |
+| **Google Cloud Storage** non compare tra i tipi di fonte | Non esiste ancora un connettore **Google Service Account Key**. Creane prima uno. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura le fonti di dati](/operational-guides/configure-sources): scegli cosa sincronizza una fonte e quando.
+- [Crea una Knowledge](/operational-guides/create-knowledge): dai ai file sincronizzati una Knowledge in cui vivere.
+- [Configura connettori](/operational-guides/configure-connectors): modifica, verifica o elimina un connettore.

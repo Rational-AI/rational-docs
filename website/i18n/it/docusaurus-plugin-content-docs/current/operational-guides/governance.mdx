@@ -1,0 +1,116 @@
+---
+sidebar_position: 23
+sidebar_label: Monitora utilizzo e costi
+type: how-to
+audience: [admin]
+---
+
+# Monitora utilizzo, costi e audit log
+
+Usa il modulo **Governance** per vedere quanto viene usata la tua AI, quanto costa, quanto è veloce a rispondere e cosa è successo su una singola richiesta.
+
+:::note[Che cos'è la governance?]
+La governance è un'area della navigazione superiore, riservata agli amministratori, che riporta l'utilizzo della tua AI e contiene le decisioni su quali applicazioni possono chiamare i tuoi modelli. Ciò che ogni persona può fare è stabilito dal suo [ruolo](/operational-guides/roles-and-users), non qui. La governance è inclusa in ogni piano e non è un modulo di licenza come Knowledge o [BI](/operational-guides/rational-bi). Ha cinque schede: **Panoramica** per ciò che richiede attenzione e le cifre principali, **Utilizzo** per i grafici nel tempo, **Applicazioni** per l'inventario di ciò che chiama la tua AI, **Audit log** per il registro richiesta per richiesta, e **Costi** per il registro dei costi.
+:::
+
+Questi termini compaiono in tutto il modulo:
+
+- Un'**inferenza** è una singola chiamata a un modello: una domanda in ingresso, una risposta in uscita.
+- Un **token** è il piccolo pezzo di testo che i modelli leggono e scrivono, e l'unità con cui vengono fatturati. Una frase breve è qualche token; un documento lungo ne ha migliaia.
+- Il **proxy** è il punto di ingresso unico attraverso cui passa ogni richiesta a un modello, dalle chat, dagli agenti, dai touchpoint e dalle chiamate API dirette. Rational AI registra ogni richiesta lì.
+
+## Prerequisiti {#prerequisites}
+
+- **Accesso amministrativo:** l'area Governance è riservata agli amministratori.
+- **Traffico tramite il proxy:** le cifre si costruiscono dalle richieste ai modelli che Rational AI acquisisce, quindi un workspace nuovo mostra poco finché qualcosa non chiama un modello.
+
+## Parti dalla Panoramica {#start-from-the-overview}
+
+Apri **Governance**. Si apre per prima la scheda **Panoramica**.
+
+1. Se qualcosa non va, in alto c'è un pannello **Da verificare**, compresso in una riga che conta i problemi, per esempio *1 applicazione non registrata · 412 richieste senza prezzo*. Seleziona **Mostra** per elencarli. Ogni problema ha un pulsante che ti porta direttamente alla correzione:
+
+   | Problema | Pulsante | Dove porta |
+   |---|---|---|
+   | Applicazioni viste nel traffico del proxy che nessuno ha registrato | **Registra app** | **Applicazioni**, filtrata su quelle non registrate |
+   | Richieste il cui modello non ha un prezzo | **Imposta i prezzi** | **Costi** |
+   | Un tasso di errore elevato | **Vedi richieste** | **Audit log**, filtrato sulle richieste non riuscite |
+   | Esecuzioni dei workflow non riuscite o scadute | **Vedi esecuzioni** | **Audit log** → **Esecuzioni dei workflow** |
+
+2. Leggi i totali del periodo: **Costi totali** in testa, seguiti da **Inferenze totali**, **Token in ingresso totali** e **Token in uscita totali**.
+3. Accanto al grafico in evidenza, controlla la **Composizione dei costi**, i costi registrati nel periodo per fonte con il loro totale, e lo **Stato della governance**: **Copertura dei costi** (quanto del tuo utilizzo Rational AI sa prezzare), **Richieste senza prezzo**, **Tasso di errore** e **Tasso di cache hit**.
+4. In fondo, **Applicazioni principali** elenca le applicazioni più attive per richieste, con stato, ambiente, token e costo. **Vedi tutte** apre la scheda **Applicazioni**.
+
+Il pannello **Da verificare** compare solo quando qualcosa richiede un'azione.
+
+## Segui le tendenze nella scheda Utilizzo {#follow-trends-on-the-usage-tab}
+
+La scheda **Utilizzo** contiene i grafici. Scegli il tipo di traffico con il selettore in alto:
+
+- **API** mostra il traffico dei modelli tramite il proxy, raggruppato in **Volume** (token e inferenze), **Velocità** (token al secondo medi e tempo medio al primo token) e **Economia unitaria** (costi, costo del modello per inferenza e costo per modello).
+- **Conversazioni** mostra le chat sui tuoi [touchpoint](/operational-guides/configure-touchpoints), raggruppate in **Engagement** (utenti attivi, conversazioni attive e messaggi degli utenti) e **Qualità** (argomenti e sentiment).
+
+Passa il puntatore su un grafico per leggere il valore di un singolo giorno o intervallo di tempo.
+
+## Filtra ciò che stai guardando {#filter-what-youre-looking-at}
+
+I filtri si trovano nel pannello **Filtri**, che resta chiuso finché non lo apri.
+
+1. Seleziona **Filtri** nella barra degli strumenti. Il pulsante mostra quanti filtri sono attivi.
+2. Imposta i filtri che ti servono. Il pannello elenca solo i filtri che cambiano la scheda aperta:
+   - **Touchpoint**, **Modelli** e **Applicazioni**: fino a quattro per ciascuno. Si applicano a **Panoramica**, **Utilizzo** e all'elenco delle richieste in **Audit log**. **Touchpoint** e **Modelli** si escludono a vicenda, e **Modelli** e **Applicazioni** non sono disponibili per l'utilizzo conversazionale.
+   - **Periodo**: *Ultime 24 ore*, *Ultimi 7 giorni*, *Ultimi 30 giorni* (predefinito), *Ultimi 3 mesi*, *Ultimi 6 mesi*, *Ultimo anno* o *Sempre*. Si applica a tutte le schede tranne **Costi**.
+3. Seleziona **Applica**. Non si ricarica nulla finché non lo fai.
+
+Per ricominciare, seleziona **Pulisci**. Azzera i filtri della scheda aperta e lascia gli altri alle schede che li usano.
+
+Per esempio, per capire quale touchpoint fa crescere la spesa, filtra un touchpoint alla volta e osserva il grafico **Costi** in **Utilizzo**.
+
+## Ispeziona le singole richieste nell'audit log {#inspect-individual-requests-in-the-audit-log}
+
+La scheda **Audit log** elenca ogni richiesta a un modello fatta tramite il proxy, dalla più recente, entro i filtri correnti.
+
+L'**Audit log** ha una riga per ogni richiesta a un modello. Chi ha aperto o modificato un record si trova nella [traccia di audit](/operational-guides/audit-trail) (**Impostazioni** → **Traccia di audit**).
+
+1. Scegli quali richieste elencare con il selettore in alto: **Tutte**, **Errori** (richieste che non si sono concluse con uno stato di successo, come le conta il **Tasso di errore**) oppure **Senza prezzo** (richieste senza un costo completo, come le conta **Richieste senza prezzo**).
+2. Leggi le colonne:
+   - **Data e ora**: quando è stata fatta la richiesta.
+   - **Modello**: quale modello l'ha gestita.
+   - **Applicazione**: l'[applicazione governata](/operational-guides/govern-ai-applications) a cui è stata attribuita la richiesta, oppure **Diretta** quando non aveva un'applicazione.
+   - **Token**: il conteggio in ingresso, poi in uscita (input → output).
+   - **Costi**: quanto è costata la richiesta, nella valuta di reporting. Passa il puntatore sul valore per vedere l'importo originale e il tasso di cambio usato.
+   - **TTFT**: *time to first token*, quanto tempo è passato prima che tornasse il primo pezzo della risposta.
+   - **Latenza E2E**: *end-to-end latency*, il tempo totale dalla richiesta alla risposta completa.
+   - **Velocità**: velocità di generazione in token al secondo.
+   - **Concluso**: perché la risposta si è chiusa: **Completata**, **Troncata**, **Chiamata strumenti** o **Filtrata**.
+3. Seleziona un'intestazione di colonna per ordinare.
+4. Seleziona una riga per aprire la richiesta in un pannello affiancato all'elenco. Il pannello raggruppa ciò che è stato acquisito:
+   - **Richiesta**: l'ora, lo stato e l'operazione (per esempio **Completamento chat** o **Embedding**).
+   - **Origine**: il modello, l'applicazione, il touchpoint, l'utente e la sessione.
+   - **Utilizzo e costi**: token in ingresso e in uscita, e il costo. Una richiesta senza prezzo risulta **Non prezzata**, con una scorciatoia per impostare la tariffa del modello.
+   - **Prestazioni**: TTFT, latenza E2E e velocità.
+   - **Corpo della richiesta** e **Corpo della risposta**: i payload, quando il tracciamento dei payload del modello li ha registrati. Per impostazione predefinita non lo fa; vedi [Decidi cosa memorizza ogni chiamata al modello](/operational-guides/data-retention#decide-what-each-model-call-stores).
+
+:::note[TTFT e latenza E2E]
+Un **TTFT** alto significa che il modello ha impiegato un po' a iniziare a rispondere. Una **latenza E2E** alta con un TTFT basso di solito indica una risposta lunga arrivata in modo continuo. Quando un touchpoint sembra lento, controlla prima il TTFT.
+:::
+
+Le nuove richieste compaiono man mano che vengono acquisite, senza ricaricare la pagina. Per portare il registro altrove, seleziona **Esporta** per scaricare in CSV ogni riga che corrisponde ai filtri correnti. Il pulsante è disabilitato quando i filtri non restituiscono nulla da esportare.
+
+### Esamina le esecuzioni dei workflow {#review-workflow-runs}
+
+Passa da **Richieste** a **Esecuzioni dei workflow** nell'**Audit log** per vedere ogni esecuzione dei tuoi workflow nel periodo, con **Avvio**, **Stato**, **Workflow**, **Durata** ed **Errore**. Seleziona un'esecuzione per aprirne i dettagli nel pannello affiancato, incluso il passo corrente e il codice di errore di un'esecuzione non riuscita.
+
+In cima a questa vista compare il tempo di runtime dei workflow usato in questo mese solare, rispetto al tuo limite o alla quota del tuo piano. L'acquisizione dei file, gli agenti e le esecuzioni dei workflow consumano tutti questi minuti. Per limitarli, inserisci un numero in **Limite mensile, minuti** e seleziona **Salva limite**: una volta raggiunto il limite, le nuove esecuzioni dei workflow si fermano. Quando i minuti del piano sono esauriti, il lavoro continua con una priorità più bassa.
+
+## Verifica i costi nel registro dei costi {#review-costs-in-the-cost-ledger}
+
+La scheda **Costi**, intitolata **Registro dei costi**, contiene ogni tariffa, fattura e asset che alimenta le cifre dei costi. Mostra da dove vengono i tuoi costi (**Runtime infrastrutturale**, **Struttura e gestione**, **Cespiti ammortizzati** e **Abbonamenti provider**), e ha una sezione per ogni tipo di voce: **Storico delle tariffe**, **Costi registrati**, **Cespiti ammortizzati** e **Pool di nodi**.
+
+Tutti i costi di governance vengono mostrati in un'unica valuta di reporting, che scegli con **Importi in** in alto a destra di questa scheda. Vedi [Governa le applicazioni AI](/operational-guides/govern-ai-applications#choose-the-reporting-currency) per come vengono convertiti i costi.
+
+## Prossimi passi {#next-steps}
+
+- [Governa le applicazioni AI](/operational-guides/govern-ai-applications): registra le applicazioni elencate in queste tabelle e dai un prezzo a ciò che usano.
+- [Consulta la traccia di audit](/operational-guides/audit-trail): chi ha aperto o modificato un record.
+- [Imposta la conservazione dei dati](/operational-guides/data-retention): per quanto tempo vengono conservate le richieste acquisite e i payload.

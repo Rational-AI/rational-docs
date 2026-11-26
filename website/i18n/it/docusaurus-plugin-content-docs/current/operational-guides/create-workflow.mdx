@@ -1,0 +1,130 @@
+---
+sidebar_position: 2
+sidebar_label: Crea un workflow
+title: Crea un workflow
+description: Scrivi uno step, collega gli step in un workflow e imposta il workflow come default di una Knowledge.
+type: how-to
+audience: [builder]
+---
+
+# Crea un workflow
+
+I workflow decidono cosa succede a ogni file aggiunto a una Knowledge: quale testo viene estratto, quali risorse vengono create e di cosa vengono creati chunk ed embedding per la ricerca. Questa guida mostra come scrivere uno step, collegare gli step in un workflow e impostare quel workflow come default di una Knowledge.
+
+**Impostazioni** → **Workflow** contiene due tipi di oggetti:
+
+- Uno **step** è uno script Python. Riceve un file e le sue opzioni, svolge il lavoro e può restituire testo da cui la Knowledge crea chunk ed embedding.
+- Un **workflow** è un grafo che collega step, nodi di controllo del flusso e operazioni integrate. Una Knowledge lo esegue su ogni file quando è il suo **Workflow di default**.
+
+Una Knowledge che mantiene la **Pipeline classica** come default non esegue alcun grafo: la sua [regola di processing](/operational-guides/create-processing-rule) sceglie uno step per ogni file. Vedi [Workflow e regole di processing](/concepts/Workflows-and-processing-rules) per capire come si incastrano le parti.
+
+## Prima di iniziare {#before-you-begin}
+
+- Ruolo: **Crea** e **Modifica** sulla riga **Workflow** del tuo ruolo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Una [Knowledge](/operational-guides/create-knowledge) con alcuni file, per provare lo step ed eseguire il workflow.
+
+<img
+  src={require('@site/static/img/screens/workflows.png').default}
+  alt="La scheda Workflows con gli elenchi Workflows, Steps, Control flow e Builtins a sinistra e l'editor del codice dello step selezionato a destra"
+  style={{
+    width: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
+    border: '1px solid #E4E4E7',
+    borderRadius: '6px',
+    boxSizing: 'border-box',
+    }}
+/>
+
+## Crea uno step {#create-a-step}
+
+1. Vai su **Impostazioni** → **Workflow**.
+2. Accanto a **Steps**, seleziona **+**, poi **Da zero**. Su una pagina vuota, seleziona **Aggiungi**. **Importa JSON** carica invece uno step esportato da un altro ambiente.
+3. Sostituisci *Nuovo workflow* con un nome che dica cosa fa lo step, per esempio `Markdown to resource`. Le regole di processing e i workflow richiamano lo step con questo nome.
+4. Facoltativo: inserisci una descrizione.
+5. Scrivi il codice dello step nell'editor. La sezione successiva contiene un esempio.
+6. Seleziona **Salva**.
+
+Un nuovo step è già attivo. Solo gli step attivi possono essere eseguiti e compaiono dove scegli uno step.
+
+### Scrivi il codice dello step {#write-the-step-code}
+
+Questo step legge un file di testo, crea per lui una risorsa nella Knowledge del file e restituisce il testo, da cui la Knowledge crea chunk ed embedding:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "rational-client",
+# ]
+# ///
+
+from rational_client.core import File, Knowledge
+from rational_client.utils import run
+
+
+def process(document: File, options: dict):
+    text = document.get_data().decode("utf-8")
+
+    knowledge = Knowledge(document.knowledge_id)
+    resource = knowledge.create_resource(
+        name=document.name,
+        category="Document",
+        file_id=document.id,
+    )
+
+    # Resource ID -> text to chunk and embed
+    return {str(resource.resource_id): text}
+
+
+run(process)
+```
+
+- L'intestazione elenca i pacchetti che lo step richiede. Aggiungi a `dependencies` ogni pacchetto che il tuo codice importa.
+- `run(process)` chiama `process` con il file da elaborare e le opzioni dello step.
+- Il pacchetto `rational-client` dà allo step accesso alla Knowledge, per esempio per creare risorse.
+- Il dizionario restituito associa a ogni ID di risorsa il suo testo in Markdown o in testo semplice. Rational AI crea chunk ed embedding di quel testo con le impostazioni della Knowledge. Non restituire nulla se lo step non crea testo ricercabile.
+
+### Assegna le capacità allo step {#tag-the-steps-capabilities}
+
+**Capacità** (*Seleziona le capacità*) registra i tipi di annotazione che lo step produce, come immagini o tabelle. I tag compaiono accanto al nome dello step ovunque tu scelga uno step, per esempio quando imposti l'annotazione automatica. Descrivono lo step e non cambiano il suo funzionamento.
+
+### Prova lo step {#test-the-step}
+
+1. Salva lo step. Uno step mai salvato non può essere eseguito.
+2. Seleziona **Esecuzione di prova** (l'icona play).
+3. In **Input (JSON)**, inserisci l'input. `"file_id"` viene caricato come documento, e ogni altra chiave viene passata come opzione. Usa `{}` per uno step che non riceve input.
+4. Seleziona **Esegui**.
+
+**Output** mostra il risultato e la durata dell'esecuzione. Se l'esecuzione fallisce, mostra l'**Errore** e il **Traceback / STDERR**.
+
+Il menu **⋮** dello step contiene anche **Scarica** (il file `.py`), **Esporta (JSON)**, **Impostazioni workflow** e **Elimina**. Vedi [Importa, esporta e imposta i timeout](/operational-guides/workflow-rules).
+
+## Collega gli step in un workflow {#connect-steps-into-a-workflow}
+
+1. In **Impostazioni** → **Workflow**, seleziona **+** accanto a **Workflows** (**Add workflow**). Rational AI crea *Untitled workflow*, disattivato, e lo apre.
+2. Costruisci il grafo in uno dei due modi:
+   - Sulla tela **Graph**, trascina gli step da **Steps**, e i nodi da **Control flow** e **Builtins**, sulla tela. Trascina da una porta all'altra per collegare due nodi. Premi **Del** per rimuovere il nodo o la connessione selezionati.
+   - Nell'editor del codice, scrivi il grafo con il workflow builder, partendo da `f = Flow()`. Seleziona un nodo in **Control flow** o **Builtins** per vedere le sezioni **Usage**, **Parameters**, **Inputs** e **Outputs**.
+3. Seleziona **Salva**. Rational AI compila il codice e ridisegna il grafo. Se il codice non compila, l'errore compare in un messaggio e non viene salvato nulla.
+4. Nell'elenco, attiva l'interruttore del workflow.
+
+Una Knowledge può selezionare un workflow solo mentre è attivo.
+
+## Rendi un workflow il default di una Knowledge {#make-a-workflow-the-default-for-a-knowledge}
+
+1. Vai su **Impostazioni** → **Knowledge** e apri la Knowledge.
+2. Seleziona la scheda **Fonti**.
+3. In **Workflow di default**, seleziona il tuo workflow. L'elenco mostra i workflow attivi che appartengono a questa Knowledge o all'intero workspace. **Pipeline classica** instrada invece ogni file con la **Regola di processing di default**.
+4. Seleziona **Salva**.
+
+Il workflow ora viene eseguito su ogni file aggiunto alla Knowledge: caricamenti dalla Control Room, file importati dalla sincronizzazione di una fonte e richieste di rielaborazione che non indicano un altro workflow. Quando rielabori una Knowledge dalla Control Room, puoi ancora scegliere un **Workflow** diverso per quella esecuzione.
+
+Eliminare un workflow lascia senza workflow di default ogni Knowledge che lo usava.
+
+## Prossimi passi {#next-steps}
+
+- [Crea una regola di processing](/operational-guides/create-processing-rule) per scegliere uno step per ogni file nella pipeline classica.
+- [Importa, esporta e imposta i timeout](/operational-guides/workflow-rules) per spostare gli step tra ambienti e limitarne il tempo di esecuzione.
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources) per seguire l'elaborazione di ogni file.

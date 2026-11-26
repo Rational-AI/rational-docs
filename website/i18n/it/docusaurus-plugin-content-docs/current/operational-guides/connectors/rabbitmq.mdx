@@ -1,0 +1,91 @@
+---
+title: Connetti RabbitMQ
+sidebar_label: RabbitMQ
+description: Elabora i file che un altro sistema annuncia su una coda RabbitMQ e pubblica ogni risultato su una coda dei risultati.
+type: how-to
+audience: [admin]
+---
+
+Il connettore RabbitMQ conserva l'indirizzo e l'utente di un broker, così che una fonte con coda RabbitMQ possa ricevere gli annunci dei file da una coda, elaborare ogni file in una [Knowledge](/operational-guides/create-knowledge) e pubblicare il risultato su un'altra coda.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore, **Crea** sulla riga **Fonti** e **Usa** sulla riga **Connettori** per aggiungere la fonte, e **Modifica** sulla riga **Knowledge** per collegarla. **Fonti** richiede il modulo Knowledge nella tua licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Sul broker:** l'amministratore del broker, che crea l'utente e le code.
+
+## Cosa ti serve {#what-you-need}
+
+- L'host, la porta e il virtual host del broker, e se richiede TLS.
+- La coda che annuncia i file, per esempio `pod-uploaded`, e la coda per i risultati, per esempio `pod-processed`. Rational AI non crea code, quindi entrambe devono esistere.
+- Messaggi che sono oggetti JSON con un campo che contiene l'URL `http://` o `https://` di ogni file.
+- Se gli URL dei file richiedono autenticazione, un token che Rational AI può inviare come Bearer token.
+- Una Knowledge che riceva i file.
+
+Concedi all'utente di Rational AI solo questi permessi sul suo virtual host:
+
+| Permesso | Perché serve |
+|---|---|
+| **Read** sulla coda degli annunci | Prende i messaggi dalla coda. |
+| **Write** sull'exchange su cui vanno i risultati, `amq.default` per l'exchange predefinito | Pubblica ogni risultato. Non serve se lasci vuota la **Coda dei risultati**. |
+| Nessun permesso **Configure** | Rational AI non dichiara né elimina mai code o exchange. |
+
+## Configura {#set-up}
+
+1. Sul broker, crea un utente per Rational AI e imposta i suoi permessi sul virtual host. Per esempio, con `rabbitmqctl`: `rabbitmqctl set_permissions -p / rational "" "^amq\.default$" "^pod-uploaded$"`.
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **RabbitMQ**, poi seleziona **Aggiungi**.
+3. Inserisci un **Nome** e l'**Host**, per esempio `rabbitmq.example.com`. Inserisci la **Porta** solo se non è `5672`, o `5671` con TLS, e attiva **Usa TLS** se il broker lo richiede.
+4. Inserisci il **Virtual host** (predefinito `/`), il **Nome utente** e la **Password**.
+5. Facoltativamente, inserisci un **Token di download dei file**. Rational AI lo invia come Bearer token quando scarica i file a cui puntano i messaggi.
+6. Seleziona **Aggiungi**.
+7. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**. Inserisci un **Nome**. In **Tipo**, trova **RabbitMQ queue** e seleziona il tuo connettore sotto di essa.
+8. Compila le impostazioni della coda:
+
+   | Campo | Cosa inserire |
+   |---|---|
+   | **Coda** | La coda da consumare. Obbligatoria. |
+   | **Coda dei risultati** | Dove vengono pubblicati i risultati. Lascia vuoto per non pubblicare nulla. |
+   | **Exchange dei risultati (facoltativo)** | Lascia vuoto per l'exchange predefinito. Altrimenti i risultati vanno a questo exchange, con la coda dei risultati come routing key. |
+   | **Campo con l'URL del file** | Il campo del messaggio che contiene l'URL del file, per esempio `url` (il predefinito) o `pod.downloadUrl`. |
+   | **Campo con l'ID del messaggio (facoltativo)** | Il campo che identifica il messaggio, per esempio `requestId`. Se vuoto, usa l'ID del messaggio impostato sul broker. |
+   | **File in elaborazione** | Quanti file possono attendere un risultato contemporaneamente, da 1 a 256. Predefinito `16`. |
+   | **Elimina ogni file dopo averne pubblicato il risultato** | Rimuove il file dalla Knowledge dopo l'invio del suo risultato. Richiede una **Coda dei risultati**. |
+
+9. Seleziona **Aggiungi**.
+10. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge, seleziona la scheda **Fonti** e scegli la fonte in *Aggiungi fonte...*.
+11. In **Impostazioni** → **Fonti**, apri la fonte e seleziona **Sincronizza ora** per iniziare a consumare la coda.
+
+## Cosa viene sincronizzato {#what-gets-synced}
+
+Ogni messaggio annuncia un file. Rational AI scarica il file nella Knowledge con il messaggio salvato accanto, lo elabora e pubblica un risultato. Il messaggio di risultato contiene:
+
+- `messageId`, e il messaggio originale come `request`
+- `status`, `processed` o `error`, e il testo di `error` quando presente
+- `file`, con l'ID del file, il nome e l'ID della Knowledge
+- `attributes`, gli attributi estratti dal file
+- i timestamp `receivedAt`, `processedAt` e `publishedAt`
+
+Una fonte avviata continua a consumare la coda, anche dopo un riavvio della piattaforma, finché non selezioni **Interrompi sincronizzazione**. Non ha una pianificazione di sincronizzazione né le modalità **Automatico** o **Periodica**. Rational AI prende nuovi messaggi solo finché i file in attesa di un risultato sono meno del valore di **File in elaborazione**, così l'arretrato resta nella coda.
+
+## Limiti {#limits}
+
+- La fonte scrive ogni file nella prima Knowledge a cui è stata collegata. Finché non è collegata, i messaggi attendono nella coda.
+- La consegna è almeno una volta in entrambe le direzioni. Il tuo sistema potrebbe ricevere lo stesso risultato due volte, quindi confronta i risultati tramite `messageId` e ignora i duplicati.
+- Un messaggio che non è un oggetto JSON o non ha un URL valido riceve un risultato con `error`. Lo stesso vale per un file il cui server rifiuta il download, o il cui download, dopo tre tentativi, fallisce ancora per un errore del server o di rete.
+- **Porta** e **Usa TLS** si impostano quando aggiungi il connettore. Per cambiarli, aggiungi un nuovo connettore. Puoi modificare host, virtual host, nome utente, password e token.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| *"The host must be a host name or an IP address, for example rabbitmq.example.com"* | Rimuovi schema, porta o percorso da **Host**. La porta ha un suo campo. |
+| *"Inserisci la coda da consumare."* | **Coda** è vuota. Inserisci il nome di una coda esistente. |
+| *"Files can only be deleted after publishing when there is a result queue to publish to."* | Inserisci una **Coda dei risultati**, oppure deseleziona **Elimina ogni file dopo averne pubblicato il risultato**. |
+| La fonte mostra uno stato di errore | La coda non può essere consumata. Seleziona lo stato per leggere il motivo: credenziali errate, una coda mancante, il permesso **Read** mancante, o un'impostazione TLS non corrispondente. Rational AI riprova con un ritardo crescente. |
+| I messaggi restano nella coda | La fonte non è collegata a una Knowledge, oppure non è mai stata avviata. Collegala, poi seleziona **Sincronizza ora**. |
+| I risultati tornano con *"The message has no 'url' field with the file URL."* | Il **Campo con l'URL del file** non corrisponde ai tuoi messaggi. Inserisci il percorso con i punti del campo, per esempio `pod.downloadUrl`. |
+
+## Prossimi passi {#next-steps}
+
+- [Crea una regola di processing](/operational-guides/create-processing-rule): scegli quale workflow estrae gli attributi restituiti in ogni risultato.
+- [Configura le fonti di dati](/operational-guides/configure-sources): impostazioni delle fonti comuni a ogni tipo.
+- [Connetti indirizzi HTTP](/operational-guides/connectors/http): sincronizza invece i file da indirizzi web fissi.

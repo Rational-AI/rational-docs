@@ -1,0 +1,22 @@
+---
+sidebar_position: 15
+sidebar_label: Elaborazione del linguaggio naturale
+title: Elaborazione del linguaggio naturale (NLP)
+description: Cos'è l'elaborazione del linguaggio naturale, come un computer trasforma il testo in qualcosa con cui può lavorare, e dove compare in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Elaborazione del linguaggio naturale (NLP)
+
+L'**elaborazione del linguaggio naturale (NLP)** è il campo dell'AI che si occupa del linguaggio umano: comprenderlo, tradurlo, riassumerlo e scriverlo.
+
+I primi sistemi NLP seguivano regole scritte a mano e gestivano una lingua e un compito alla volta. L'NLP moderno impara i pattern da grandissime quantità di testo, quindi un solo modello può gestire molti compiti in molte lingue. I [large language model](/concepts/LLMs) sono il risultato attuale di questo lavoro.
+
+## Come un computer legge il testo {#how-a-computer-reads-text}
+
+Un modello non può lavorare direttamente con le parole. Prima divide il testo in [token](/concepts/Tokens), poi li trasforma in numeri che catturano il significato, così che "fattura" e "bolletta" finiscano vicine. Questi numeri si chiamano [embedding](/concepts/Embeddings-chunks-and-annotations).
+
+## In Rational AI {#in-rational-ai}
+
+L'NLP sta alla base della maggior parte di ciò che Rational AI fa con il testo. [Chat](/cr/Chats) risponde alle domande in linguaggio naturale, una [Knowledge](/concepts/Knowledge) trova il passaggio che corrisponde a una domanda anche quando usa parole diverse, e [Conversazioni](/cr/Conversations) assegna alle conversazioni argomenti e sentiment.

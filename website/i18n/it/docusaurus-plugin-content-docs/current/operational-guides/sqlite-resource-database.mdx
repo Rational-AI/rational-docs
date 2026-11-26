@@ -1,0 +1,54 @@
+---
+sidebar_position: 13
+sidebar_label: Lavora con il database SQLite
+title: Lavora con il database di una risorsa SQLite
+description: Sfoglia, interroga e modifica un file SQLite archiviato in una Knowledge senza scaricarlo.
+type: how-to
+audience: [builder]
+---
+
+# Lavora con il database di una risorsa SQLite
+
+Quando aggiungi un file SQLite a una Knowledge, Rational AI lo carica in un database che appartiene alla Knowledge. Il visualizzatore delle risorse apre quindi quel database al posto di un'anteprima del file, così puoi sfogliare le tabelle, eseguire SQL e filtrare e ordinare le righe nella Control Room. Gli amministratori possono anche modificare i dati.
+
+## Prima di iniziare {#before-you-begin}
+
+- Una Knowledge con un file SQLite al suo interno, elaborato. Vedi [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources).
+- Ruolo: **Leggi** sulla riga **Knowledge** del tuo ruolo. Modificare i dati richiede un account amministratore. Per gli altri utenti il visualizzatore mostra **Read only** e le istruzioni SQL vengono eseguite come query in sola lettura.
+
+## Apri il visualizzatore {#open-the-viewer}
+
+1. Vai a **Knowledge** e seleziona la scheda della Knowledge.
+2. Nella **Griglia**, seleziona l'icona di apertura all'inizio della riga della risorsa SQLite.
+
+## Sfoglia tabelle e viste {#browse-tables-and-views}
+
+Ogni tabella, vista o query che apri diventa una scheda.
+
+1. Seleziona **+** (**Open table or query**) e scegli una tabella o una vista. Usa **Search tables…** per restringere l'elenco.
+2. Seleziona un'intestazione di colonna per ordinare per quella colonna. Passaci sopra per vedere il tipo della colonna.
+3. Per filtrare, seleziona l'icona del filtro in un'intestazione di colonna, inserisci un valore e seleziona **Apply**. Con più filtri, seleziona **AND** per passare a **OR**.
+
+Per vedere l'istruzione che definisce una tabella o una vista, apri **+ Actions** e seleziona **View schema**.
+
+## Esegui SQL {#run-sql}
+
+1. Seleziona **+**, poi **New SQL query**. **+ Actions** → **New query** fa lo stesso.
+2. Inserisci un'istruzione. Racchiudi tra virgolette doppie i nomi che contengono spazi, ad esempio `"Location HQ"`.
+3. Seleziona **Run**, oppure premi Cmd+Invio (Ctrl+Invio su Windows e Linux).
+
+Se il risultato ha più righe di quelle restituite dal server, vengono mostrate solo le prime righe e la scheda è contrassegnata come **truncated**. Aggiungi una clausola `LIMIT` o `WHERE` per restringere il risultato. Gli amministratori possono selezionare **Save query as view** per conservare la query come vista SQL.
+
+## Modifica i dati {#edit-data}
+
+Ti serve un account amministratore. Le viste sono sempre in sola lettura.
+
+1. In una scheda di tabella, fai doppio clic su una cella e cambiane il valore.
+2. Seleziona **Save changes** per salvare le modifiche, oppure **Discard** per scartarle.
+
+Per gli amministratori, **+ Actions** contiene anche **Add row**, **Delete selected**, **New table…** e **Drop table**. Tutti possono usare **Export CSV**, **Export JSON** ed **Export SQL inserts** nello stesso menu.
+
+## Prossimi passi {#next-steps}
+
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources)
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)

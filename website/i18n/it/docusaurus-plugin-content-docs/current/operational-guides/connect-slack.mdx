@@ -1,0 +1,85 @@
+---
+title: Collega un'app Slack
+description: Metti l'assistente di un touchpoint dietro la tua app Slack, nei messaggi diretti e nei canali in cui le persone lo menzionano.
+type: how-to
+audience: [builder, admin]
+---
+
+Un canale Slack permette alle persone di chattare con un [touchpoint](/operational-guides/configure-touchpoints) in Slack: in un messaggio diretto alla tua app, oppure menzionandola in un canale Slack. Ogni scambio compare in [Conversazioni](/cr/Conversations) come tutti gli altri.
+
+## Prima di iniziare {#before-you-begin}
+
+- **Ruolo:** un ruolo con le azioni **Crea** e **Modifica** sulla riga **Canali** (vedi [Ruoli e utenti](/operational-guides/roles-and-users)). **Modifica** serve per collegare il canale e per cambiarlo in seguito.
+- **Un indirizzo HTTPS pubblico per Rational AI.** Slack consegna gli eventi alla tua installazione via internet, quindi l'indirizzo che Rational AI mostra per il canale deve essere raggiungibile dall'esterno della tua rete.
+- **Un'app Slack nel tuo workspace con un utente bot**, e il permesso di installarla. Dai al bot questi scope nella pagina **OAuth & Permissions** dell'app:
+  - `app_mentions:read`
+  - `chat:write`
+  - `im:history`
+  - `im:read`
+- **Un touchpoint che risponda**, oppure il piano di crearne uno. Il canale trasporta solo i messaggi; il touchpoint contiene il prompt, la knowledge e gli strumenti.
+
+## Crea il canale {#create-the-channel}
+
+1. In Slack, installa l'app nel tuo workspace e copia due valori:
+   - Il **Bot User OAuth Token** (inizia con `xoxb-`), da **OAuth & Permissions**.
+   - Il **Signing Secret**, da **Basic Information**.
+2. In Rational AI, vai in **Impostazioni** → **Canali** e seleziona **Aggiungi**.
+3. In **Tipo di canale**, seleziona **Slack**.
+4. Inserisci un **Nome**. Deve essere unico tra i tuoi canali.
+5. In **Configurazione**, inserisci il **Bot token** e il **Signing secret**. Entrambi sono obbligatori.
+6. Facoltativo: compila **Mittenti ammessi** e **Mittenti bloccati** (vedi [Controlla chi può scrivere](#control-who-can-write-in)), e imposta **Dividi le risposte** su **Sì** per inviare una risposta come alcuni messaggi brevi.
+7. Seleziona una **Modalità di risposta**: **Automatico** lascia che l'assistente risponda da solo; **Manuale** tiene una persona responsabile di ogni risposta. Vedi [Scegli la modalità](/operational-guides/manage-channels#choose-the-mode).
+8. Seleziona **Salva**.
+
+## Iscrivi l'app Slack agli eventi {#subscribe-the-slack-app-to-events}
+
+1. In **Impostazioni** → **Canali**, apri il canale che hai creato e copia il **Request URL** dalla sezione **Connessione**.
+2. Nelle impostazioni dell'app Slack, apri **Event Subscriptions**, attiva gli eventi e incolla l'indirizzo come **Request URL**. Slack lo verifica subito; funziona anche prima di collegare il canale, purché il **Signing secret** sia salvato.
+3. Tra gli eventi del bot, iscriviti a `app_mention` e `message.im`, poi salva.
+4. Se le persone devono scrivere all'app nei messaggi diretti, consenti i messaggi nelle impostazioni **App Home** dell'app in Slack.
+
+## Collega il canale {#connect-the-channel}
+
+1. Nei dettagli del canale, seleziona **Connetti**. Rational AI verifica il bot token con Slack e registra il workspace a cui appartiene.
+2. Controlla che i dettagli mostrino **Connesso**.
+3. Apri il touchpoint che deve rispondere e, nella sua scheda **Impostazioni**, seleziona questo canale come **Canale**. Il touchpoint deve essere attivo. Se più touchpoint attivi usano il canale, risponde quello creato per primo.
+4. Invita l'app in ogni canale Slack in cui le persone devono menzionarla.
+
+I messaggi Slack raggiungono l'assistente solo mentre il canale è collegato. **Disconnetti** li blocca; **Riconnetti** verifica di nuovo il token. Gli eventi provenienti da un workspace diverso da quello registrato al momento del collegamento vengono rifiutati, quindi seleziona **Riconnetti** dopo aver cambiato il **Bot token**.
+
+## Come vengono gestiti i messaggi Slack {#how-slack-messages-are-handled}
+
+- **Messaggi diretti:** l'assistente risponde a ogni messaggio. Ogni conversazione diretta con l'app è una conversazione in Rational AI.
+- **Canali Slack:** l'assistente risponde solo ai messaggi che menzionano l'app. Una menzione avvia un thread, la risposta va in quel thread, e ogni thread è una conversazione a sé. L'assistente non risponde mai al primo livello di un canale.
+- **Messaggi ignorati:** i messaggi modificati, i messaggi dei bot (compresa la stessa app) e altri tipi di messaggio speciali.
+- **Le persone compaiono con il loro ID utente Slack.** L'app non chiede lo scope `users:read`, quindi le conversazioni prendono il nome dall'ID dell'utente o del canale Slack, per esempio `Slack DM U024BE7LH`.
+- **Le risposte** vengono convertite nella formattazione di Slack: grassetto, corsivo, barrato, codice, link e citazioni; i titoli diventano grassetto e gli elementi di elenco diventano punti elenco.
+- **Nessun duplicato.** Se Slack consegna di nuovo lo stesso evento, l'assistente risponde una sola volta.
+
+## Controlla chi può scrivere {#control-who-can-write-in}
+
+Lascia **Mittenti ammessi** vuoto per rispondere a chiunque possa raggiungere l'app. Per limitarla, elenca gli ID utente o canale Slack (per esempio `U024BE7LH, C0LAN2Q65`), uno per riga o separati da virgole. **Mittenti bloccati** accetta gli stessi ID e prevale sulla lista degli ammessi.
+
+Puoi cambiare entrambe le liste anche in seguito dai dettagli del canale, nella sezione **Filtro di risposta**, e selezionare **Salva filtro di risposta**.
+
+## Cosa non supporta il canale {#what-the-channel-doesnt-support}
+
+- **Solo testo.** L'assistente legge il testo di un messaggio. File e immagini non gli vengono passati, e un messaggio diretto inviato con un file allegato non riceve risposta. Il canale non ha impostazioni per gli allegati.
+- **Solo risposte di testo.** L'assistente non può inviare file.
+- **Nessun ritardo di risposta.** Ogni messaggio riceve la sua risposta; l'impostazione **Reply delay (seconds)** non è offerta per Slack.
+- **Nessun messaggio di prova.** L'azione **Prova** nei dettagli del canale non è disponibile per Slack. Invia un messaggio all'app da Slack.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| **Errore durante la connessione del canale** dopo **Connetti** | Slack ha rifiutato il bot token. Copia di nuovo il **Bot User OAuth Token** (reinstallare l'app può cambiarlo), seleziona **Modifica configurazione**, inseriscilo come **Bot token**, salva e seleziona di nuovo **Connetti**. |
+| Slack non riesce a verificare il **Request URL** | Controlla che l'indirizzo sia esattamente il **Request URL** mostrato nei dettagli del canale, che Rational AI sia raggiungibile da internet via HTTPS, e che il **Signing secret** salvato nel canale corrisponda a quello della pagina **Basic Information** dell'app. |
+| Una menzione in un canale Slack non riceve risposta | Controlla che l'app sia membro di quel canale, che sia iscritta a `app_mention`, e che il mittente non sia filtrato da **Filtro di risposta**. |
+| I messaggi arrivano in Conversazioni ma nessuno risponde | Controlla che il canale mostri **Connesso**, che un touchpoint attivo usi questo canale e che la **Modalità di risposta** sia **Automatico**. |
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci i canali](/operational-guides/manage-channels): modalità, risposte divise e ciò che hanno in comune tutti i canali.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): imposta l'assistente che risponde su Slack.
+- [Conversazioni](/cr/Conversations): leggi e prendi in carico ciò che arriva.

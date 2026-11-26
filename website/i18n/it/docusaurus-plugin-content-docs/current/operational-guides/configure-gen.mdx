@@ -1,0 +1,81 @@
+---
+sidebar_position: 43
+sidebar_label: Configura Gen
+type: how-to
+audience: [admin]
+---
+
+# Configura Gen per il tuo team
+
+In **Impostazioni** → **Gen**, un amministratore decide una volta per tutte quali modelli usa Gen, come si presenta un'immagine predefinita valida, da quali stili del brand e template partono le persone, e come si comportano gli assistenti per i documenti. Così tutti gli altri possono descrivere ciò che vogliono.
+
+:::note[Impostazioni predefinite, preset e template]
+Le impostazioni di Gen funzionano a livelli. Le **Impostazioni predefinite di generazione** sono il punto di partenza di ogni nuova immagine. Un **preset di stile** è un aspetto riutilizzabile (un testo di stile, un prompt negativo e le immagini di riferimento) che le persone possono attivare nell'editor. Un **template** è un punto di partenza completo per un tipo di immagine: modello, impostazioni, prompt e stile del brand insieme. Le persone scelgono un template; il template usa le impostazioni predefinite per tutto ciò che non definisce.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Il modulo Gen nella tua licenza:** senza di esso, **Gen** non compare nemmeno in **Impostazioni**.
+- **Accesso amministrativo:** gli altri utenti con il modulo possono aprire **Impostazioni** → **Gen** e leggere la scheda **Foto e video**, ma le altre schede risultano disattivate per loro e solo gli amministratori possono modificare qualcosa.
+- **Modelli:** un modello di generazione di immagini e un modello di generazione di testo per la riscrittura dei prompt con AI e per gli assistenti dei documenti, nel [Registro modelli AI](/operational-guides/ai-model-registry-features).
+
+## Apri le impostazioni di Gen {#open-the-gen-settings}
+
+Vai in **Impostazioni** e seleziona **Gen**, nella sezione **Funzionalità**. La pagina ha una scheda per ogni area di Gen: **Foto e video**, **Testo**, **Presentazioni**, **Canvas** e **Social**.
+
+## Imposta i valori predefiniti per le immagini {#set-the-image-defaults}
+
+1. In **Foto e video**, apri **Impostazioni predefinite del prompt**, poi **Impostazioni predefinite di generazione**. In un workspace nuovo vedrai *"La generazione di immagini non è ancora configurata"*: seleziona **Configura la generazione di immagini**.
+2. Scegli il **Modello** e le impostazioni predefinite da cui parte ogni nuova immagine: **Proporzioni**, **Numero di output**, **Dimensione**, **Qualità**, **Sfondo**, **Formato di output** e le altre. Come nell'editor, vengono proposte solo le impostazioni supportate dal modello.
+3. Decidi se attivare **Lascia che l'AI riscriva i prompt brevi**: *"Espande le frasi brevi in un prompt più completo prima di generare."* Si applica ai prompt di dodici parole o meno.
+4. Salva.
+
+Con la riscrittura attiva, un modello di testo aggiunge composizione, luce e atmosfera ai prompt brevi prima che il modello di immagini li riceva. I prompt più lunghi di dodici parole vengono sempre inviati così come sono scritti.
+
+## Crea preset di stile {#create-style-presets}
+
+1. In **Impostazioni predefinite del prompt**, apri **Preset di stile** e aggiungi un preset.
+2. Compila **Nome**, **Descrizione**, **Testo dello stile**, **Prompt negativo**, **Intensità** e **Immagini di riferimento**.
+3. Usa **Imposta come predefinito** sul preset che le nuove immagini devono usare, a meno che qualcuno non ne scelga un altro. **Duplica** è il modo rapido per creare una variante.
+
+## Crea un template per le immagini {#create-an-image-template}
+
+1. In **Foto e video**, seleziona **Nuovo** per creare un nuovo template.
+2. Nella scheda **Generale**, scegli il **Modello**, le sue impostazioni per le immagini e il **Prompt di generazione** che viene aggiunto a qualsiasi cosa descriva l'utente.
+3. Nella scheda **Stile**, imposta il brand: **Colori del brand**, **Tipografia del brand** (file `.otf`, `.ttf` o `.woff`), **Riferimento di stile** e il **Prompt di stile**.
+4. Salva, e assicurati che il template sia attivo: in **Da un template** vengono proposti solo i template attivi.
+
+Usa **Abilita** o **Disabilita**, **Duplica** ed **Elimina** sul template per gestirlo in seguito. Gli amministratori possono anche salvare un template direttamente dall'editor di immagini con **Salva come template**.
+
+## Configura gli strumenti AI {#configure-the-ai-tools}
+
+Gli strumenti proposti nel menu **Strumenti AI** dell'editor di immagini si configurano in **Strumenti AI**, con una scheda per ogni strumento: **Espandi**, **Rimuovi sfondo**, **Dipingi** e **Migliora qualità**. Per ciascuno imposta:
+
+- **Modello**: il modello di immagini che esegue lo strumento.
+- **Prompt**: l'istruzione che lo strumento invia insieme all'immagine.
+- **Attivo**.
+
+:::note[Uno strumento senza prompt non viene proposto]
+Uno strumento compare nell'editor solo quando ha un prompt.
+:::
+
+## Configura Testo, Presentazioni e Canvas {#configure-text-slides-and-canvas}
+
+Ogni area dei documenti ha il proprio assistente, configurato nella sua scheda. Le modifiche valgono per i documenti creati da quel momento in poi.
+
+1. Apri la scheda **Testo**, **Presentazioni** o **Canvas** e vai in **Impostazioni predefinite della sezione**.
+2. In **Generazione**, scegli il **Modello** e scrivi il **Prompt di base** (stile della casa, tono, lunghezza). **Istruzioni della sezione** mostra, in sola lettura, le istruzioni che la piattaforma stessa dà all'assistente per questo tipo di documento.
+3. In **Skill**, controlla le skill che l'assistente può usare. La skill che crea il file (**docx**, **pptx** o **web-design**) è sempre attiva; aggiungi le [skill](/operational-guides/agent-skills) di supporto che ti servono.
+4. In **Strumenti**, aggiungi i server MCP i cui strumenti l'assistente può chiamare, configurali oppure rimuovili.
+5. Seleziona **Salva**. Finché non lo fai, le modifiche restano una bozza.
+
+Ogni area ha anche **Template** (un **Nome**, una **Descrizione** e un **Prompt**) che le persone scelgono con **Da un template** quando creano un documento.
+
+## Configura i template social {#set-up-social-templates}
+
+La scheda **Social** contiene i template con cui [Social studio](/operational-guides/social-studio) crea i post. Sono descritti in [Crea template social](/operational-guides/social-studio#create-social-templates).
+
+## Prossimi passi {#next-steps}
+
+* [Genera immagini con Gen](/operational-guides/gen-images): cosa vedono le persone una volta configurato Gen.
+* [Genera documenti, slide e pagine web](/operational-guides/gen-documents): le aree Testo, Presentazioni e Canvas.

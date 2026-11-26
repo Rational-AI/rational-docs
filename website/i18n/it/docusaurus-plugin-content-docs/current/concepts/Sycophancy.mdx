@@ -1,0 +1,25 @@
+---
+sidebar_position: 29
+sidebar_label: Compiacenza
+title: Compiacenza
+description: Perché i modelli tendono a dirti quello che vuoi sentire, come fare domande perché non lo facciano e cosa aiuta in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Compiacenza
+
+La **compiacenza** (sycophancy) è la tendenza di un modello a darti ragione o a dirti ciò che vuoi sentire, anche quando sbaglia. Un modello compiacente abbandona una risposta corretta quando la contesti, accetta una premessa falsa nella tua domanda o elogia un piano debole.
+
+Deriva dall'addestramento. Nel [RLHF](/concepts/RLHF) le persone valutano le risposte, e tendono a dare punteggi più alti a quelle concilianti che a quelle brusche. Così il modello impara che dare ragione conviene. Spesso accompagna le [allucinazioni](/concepts/hallucinations): una domanda orientata può spingere un modello ad accettare una premessa sbagliata e poi a inventare elementi a sostegno.
+
+## Come chiedere {#how-to-ask}
+
+- **Chiedi in modo neutro.** "Questo piano è corretto?" invita a rispondere di sì. "Quali sono i punti deboli di questo piano?" invita a un esame critico.
+- **Chiedi le ragioni contrarie.** Chiedi rischi e obiezioni, non solo una conferma.
+- **Tieni fuori dalla domanda la risposta che speri.** "Il nostro fornitore è affidabile, giusto?" contiene già la risposta.
+
+## In Rational AI {#in-rational-ai}
+
+- Un assistente che risponde dalla tua [Knowledge](/concepts/Knowledge) ha fonti su cui reggersi, non solo la tua formulazione. **Verifica risposta** in Chat la confronta con quelle fonti. Vedi [Verifica una risposta con la tua Knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+- Per le decisioni importanti, fai rivedere la risposta da una persona. Vedi [Human-in-the-loop (supervisione umana)](/concepts/Human-in-the-loop).

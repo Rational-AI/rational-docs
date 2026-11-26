@@ -1,0 +1,33 @@
+---
+sidebar_position: 13
+sidebar_label: AI sovrana
+title: AI sovrana
+description: Cosa significa AI sovrana e come Rational AI mantiene sotto il tuo controllo i dati, i modelli e i luoghi in cui girano.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# AI sovrana
+
+**AI sovrana** (*Sovereign AI*) significa mantenere il controllo dell'AI a cui si affida la tua organizzazione: i dati, i modelli e i luoghi in cui girano. Puoi stabilire dove risiedono i tuoi dati, chi può vederli e quale provider, se ce n'è uno, li elabora.
+
+## In Rational AI {#in-rational-ai}
+
+- **La tua macchina.** Un'[installazione on-premise](/operational-guides/on-premises-installation) esegue l'intera piattaforma su una macchina della tua rete, e i tuoi dati restano lì.
+- **I tuoi modelli.** I modelli possono girare sull'hardware di quella macchina. Vedi [Esegui i modelli sui tuoi server](/operational-guides/run-models-on-premise).
+- **Provider solo se lo scegli tu.** I provider di modelli esterni vengono raggiunti solo tramite i [connettori](./Connectors.mdx) che un amministratore configura.
+- **Una registrazione di ogni chiamata.** [Governance](../cr/Governance.mdx) registra utilizzo e costo dei modelli, e l'audit log elenca ogni richiesta.
+- **Cosa esce dalla macchina.** Un'installazione on-premise invia a Rational AI lo stato di salute e l'uso della licenza, mai i tuoi contenuti. Vedi [Cosa invia un'installazione a Rational AI](/operational-guides/data-sent-to-rational-ai).
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Connettori", to: "/concepts/Connectors" },
+		{ label: "Knowledge", to: "/concepts/Knowledge" },
+	]}
+/>

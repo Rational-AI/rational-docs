@@ -1,0 +1,27 @@
+---
+sidebar_position: 20
+sidebar_label: Dataset e dati di addestramento
+title: Dataset e dati di addestramento
+description: Cosa sono i dati di addestramento e i dataset, cosa rende un buon dataset per il fine-tuning, e in cosa i dataset si differenziano da una Knowledge in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Dataset e dati di addestramento
+
+I **dati di addestramento** sono l'insieme di esempi da cui un modello impara. Un **dataset** è una raccolta di quegli esempi preparata per uno scopo preciso, per esempio insegnare a un modello a rispondere nello stile del tuo team di supporto.
+
+Un modello impara i pattern presenti nei suoi dati, compresi gli errori e gli squilibri. Se la maggior parte degli esempi riguarda una linea di prodotti, il modello risponde meglio su quella linea di prodotti.
+
+## Cosa rende buono un dataset per il fine-tuning {#what-makes-a-good-fine-tuning-dataset}
+
+- **Pertinente**: gli esempi somigliano alle domande reali che il modello riceve durante l'uso.
+- **Corretto e coerente**: invieresti volentieri ogni risposta, e tutte hanno lo stesso formato.
+- **Vario**: copre la gamma dei casi, anche quelli difficili, invece di ripetere la stessa domanda cento volte.
+- **Pulito**: nessun duplicato, e nessun dato personale che non vuoi che il modello ripeta.
+
+## In Rational AI {#in-rational-ai}
+
+Un dataset è il materiale di addestramento per il [fine-tuning](/concepts/Finetuning). Gestisci i dataset in **Impostazioni** → **Dataset**: ne crei uno **Da file** (in formato Alpaca o ShareGPT) oppure **Da eventi**, che costruisce gli esempi a partire dalle conversazioni passate nel tuo workspace. Vedi [Dataset](/cr/settings/datasets) e [Esegui il fine-tuning di un modello](/operational-guides/fine-tune-a-model).
+
+Un dataset non è una [Knowledge](/concepts/Knowledge). Una Knowledge contiene i documenti in cui un assistente cerca quando risponde; un dataset contiene gli esempi su cui un modello si addestra.

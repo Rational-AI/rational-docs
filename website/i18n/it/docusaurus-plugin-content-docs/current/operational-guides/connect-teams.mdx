@@ -1,0 +1,79 @@
+---
+title: Collega un bot Microsoft Teams
+description: Metti l'assistente di un touchpoint dietro un bot Microsoft Teams, usando un Azure Bot del tuo tenant.
+type: how-to
+audience: [builder, admin]
+---
+
+Un canale Microsoft Teams permette alle persone di chattare con un [touchpoint](/operational-guides/configure-touchpoints) in Teams: in una chat one-to-one con il bot, oppure menzionandolo con @ in una chat di gruppo o in un canale. Ogni scambio compare in [Conversazioni](/cr/Conversations) come tutti gli altri.
+
+## Prima di iniziare {#before-you-begin}
+
+- **Ruolo:** un ruolo con le azioni **Crea** e **Modifica** sulla riga **Canali** (vedi [Ruoli e utenti](/operational-guides/roles-and-users)). **Modifica** serve per collegare il canale e per cambiarlo in seguito.
+- **Un indirizzo HTTPS pubblico per Rational AI.** Microsoft consegna i messaggi di Teams alla tua installazione via internet, quindi l'indirizzo che Rational AI mostra per il canale deve essere raggiungibile dall'esterno della tua rete.
+- **Un Azure Bot nel tuo tenant Microsoft Entra**, creato come bot **single-tenant**, con il canale **Microsoft Teams** attivo. Ti servono tre valori:
+  - Il **Microsoft App ID** e l'**App Tenant ID**, mostrati nella pagina **Configuration** del bot su Azure.
+  - Un client secret, creato da **Manage Password** nella stessa pagina.
+- **Un touchpoint che risponda**, oppure il piano di crearne uno. Il canale trasporta solo i messaggi; il touchpoint contiene il prompt, la knowledge e gli strumenti.
+
+## Crea il canale {#create-the-channel}
+
+1. Vai in **Impostazioni** → **Canali** e seleziona **Aggiungi**.
+2. In **Tipo di canale**, seleziona **Microsoft Teams**.
+3. Inserisci un **Nome**. Deve essere unico tra i tuoi canali.
+4. In **Configurazione**, inserisci il **Microsoft App ID**, il **Client secret** e l'**ID tenant**. Tutti e tre sono obbligatori.
+5. Facoltativo: compila **Mittenti ammessi** e **Mittenti bloccati** (vedi [Controlla chi può scrivere](#control-who-can-write-in)), e imposta **Dividi le risposte** su **Sì** per inviare una risposta come alcuni messaggi brevi.
+6. Seleziona una **Modalità di risposta**: **Automatico** lascia che l'assistente risponda da solo; **Manuale** tiene una persona responsabile di ogni risposta. Vedi [Scegli la modalità](/operational-guides/manage-channels#choose-the-mode).
+7. Seleziona **Salva**.
+
+## Imposta l'endpoint di messaggistica su Azure {#set-the-messaging-endpoint-in-azure}
+
+1. In **Impostazioni** → **Canali**, apri il canale che hai creato.
+2. Copia l'**Endpoint di messaggistica** dalla sezione **Connessione**.
+3. Su Azure, incollalo come endpoint di messaggistica nella pagina **Configuration** dell'Azure Bot e salva.
+
+## Collega il canale {#connect-the-channel}
+
+1. Nei dettagli del canale, seleziona **Connetti**. Rational AI verifica il **Microsoft App ID**, il **Client secret** e l'**ID tenant** con Microsoft prima di far entrare i messaggi.
+2. Controlla che i dettagli mostrino **Connesso**.
+3. Apri il touchpoint che deve rispondere e, nella sua scheda **Impostazioni**, seleziona questo canale come **Canale**. Il touchpoint deve essere attivo. Se più touchpoint attivi usano il canale, risponde quello creato per primo.
+
+I messaggi di Teams raggiungono l'assistente solo mentre il canale è collegato. **Disconnetti** li blocca; **Riconnetti** verifica di nuovo le credenziali.
+
+Le persone raggiungono il bot quando è disponibile per loro in Teams. Come la tua organizzazione distribuisce un bot ai suoi utenti (per esempio come app di Teams) è gestito dal lato Microsoft.
+
+## Come vengono gestiti i messaggi di Teams {#how-teams-messages-are-handled}
+
+- **Chat one-to-one:** l'assistente risponde a ogni messaggio.
+- **Chat di gruppo e canali:** l'assistente risponde solo ai messaggi che menzionano con @ il bot. Gli altri messaggi della conversazione vengono ignorati.
+- **Una conversazione per ogni conversazione di Teams.** Una chat one-to-one, una chat di gruppo e un thread di canale diventano ciascuno una conversazione a sé in Rational AI. Nelle chat di gruppo e nei canali, ogni messaggio riporta il nome del mittente, così l'assistente sa chi sta parlando.
+- **Le risposte** rispondono al messaggio che ha raggiunto l'assistente e vengono inviate in Markdown, così elenchi ed enfasi si vedono correttamente in Teams.
+- **Solo il tuo tenant.** I messaggi provenienti da un tenant Microsoft Entra diverso dall'**ID tenant** che hai inserito vengono rifiutati.
+- **Nessun duplicato.** Se Microsoft consegna due volte lo stesso messaggio, l'assistente risponde una sola volta.
+
+## Controlla chi può scrivere {#control-who-can-write-in}
+
+Lascia **Mittenti ammessi** vuoto per rispondere a chiunque nel tuo tenant possa raggiungere il bot. Per limitarla, elenca gli object ID degli utenti Microsoft Entra o gli ID delle conversazioni Teams, uno per riga o separati da virgole. **Mittenti bloccati** accetta gli stessi ID e prevale sulla lista degli ammessi.
+
+Puoi cambiare entrambe le liste anche in seguito dai dettagli del canale, nella sezione **Filtro di risposta**, e selezionare **Salva filtro di risposta**.
+
+## Cosa non supporta il canale {#what-the-channel-doesnt-support}
+
+- **Solo testo.** L'assistente legge il testo di un messaggio. File, immagini e messaggi vocali non gli vengono passati, e un messaggio senza testo non riceve risposta. Il canale non ha impostazioni per gli allegati.
+- **Solo risposte di testo.** L'assistente non può inviare file.
+- **Nessun ritardo di risposta.** Ogni messaggio riceve la sua risposta; l'impostazione **Reply delay (seconds)** non è offerta per Teams.
+- **Nessun messaggio di prova.** L'azione **Prova** nei dettagli del canale non è disponibile per Teams. Invia un messaggio al bot da Teams.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| **Errore durante la connessione del canale** dopo **Connetti** | Microsoft ha rifiutato le credenziali. Controlla il **Microsoft App ID**, l'**ID tenant** e che il client secret non sia scaduto. Seleziona **Modifica configurazione**, inserisci un nuovo **Client secret** se serve, salva e seleziona di nuovo **Connetti**. |
+| Il bot riceve messaggi ma non risponde mai | Controlla che il canale mostri **Connesso**, che un touchpoint attivo usi questo canale e che la **Modalità di risposta** sia **Automatico**. In una chat di gruppo o in un canale, controlla che il messaggio menzioni con @ il bot. |
+| In Conversazioni non arriva nulla | Controlla che l'endpoint di messaggistica dell'Azure Bot sia esattamente l'**Endpoint di messaggistica** mostrato nei dettagli del canale, che Rational AI sia raggiungibile da internet via HTTPS, e che il mittente non sia filtrato da **Filtro di risposta**. |
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci i canali](/operational-guides/manage-channels): modalità, risposte divise e ciò che hanno in comune tutti i canali.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): imposta l'assistente che risponde su Teams.
+- [Conversazioni](/cr/Conversations): leggi e prendi in carico ciò che arriva.

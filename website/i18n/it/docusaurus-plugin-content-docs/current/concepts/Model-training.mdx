@@ -1,0 +1,28 @@
+---
+sidebar_position: 18
+sidebar_label: Addestramento del modello
+title: Addestramento del modello
+description: Come si costruisce un modello a partire dagli esempi, le fasi dal pre-training all'allineamento e la sola fase che puoi eseguire in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Addestramento del modello
+
+L'**addestramento** è il processo con cui si costruisce un modello. Il modello legge un numero enorme di esempi, prova a indovinare cosa viene dopo e, a ogni tentativo, si corregge un po' per indovinare meglio. Nessuno scrive a mano le sue regole: il modello riconosce i pattern nei suoi [dati di addestramento](/concepts/Dataset-and-training-data).
+
+L'obiettivo è un modello capace di rispondere a domande che non ha mai visto, non uno che memorizza gli esempi.
+
+## Le fasi {#the-stages}
+
+| Fase | Cosa succede | Chi la esegue |
+| :-- | :-- | :-- |
+| Pre-training | Il modello impara il linguaggio generale da una raccolta di testi molto ampia e varia | Il produttore del modello |
+| Fine-tuning | Impara un compito, un formato o un dominio da un insieme più piccolo di esempi | Il produttore del modello, oppure tu |
+| Allineamento | Le valutazioni delle persone gli insegnano a dare risposte utili e sicure ([RLHF](/concepts/RLHF)) | Il produttore del modello |
+
+L'addestramento cambia il modello. L'uso del modello no: vedi [Inferenza](/concepts/Inference).
+
+## In Rational AI {#in-rational-ai}
+
+In Rational AI non fai il pre-training dei modelli, ma puoi fare il fine-tuning di uno. In **Impostazioni** → **Fine-Tuning** scegli un **Modello base** e un **Dataset**, poi avvii l'addestramento. Vedi [Fine-tuning](/concepts/Finetuning) e [Esegui il fine-tuning di un modello](/operational-guides/fine-tune-a-model).

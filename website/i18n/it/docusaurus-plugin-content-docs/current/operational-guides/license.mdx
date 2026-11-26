@@ -1,0 +1,72 @@
+---
+sidebar_position: 33
+sidebar_label: Licenza e attivazione
+type: how-to
+audience: [admin]
+---
+
+# Attiva la licenza di un'installazione on-premise
+
+Prima che la sua licenza venga attivata, un'installazione offre solo Chat, Conversazioni, Governance, le impostazioni collegate e i modelli che colleghi con le tue credenziali del provider. L'attivazione di una licenza aggiunge i modelli essenziali ospitati da Rational AI e i moduli inclusi nel tuo piano (Knowledge, Rational BI, Agenti, Gen). La licenza si installa da **Impostazioni** → **Licenza**, con un codice di attivazione oppure, su una macchina senza accesso a internet, con un file di licenza; entrambi sono emessi da Rational AI per il tuo contratto.
+
+:::note[Solo on-premise]
+La pagina **Licenza** viene mostrata dove l'installazione prevede una licenza, cioè sulle installazioni on-premise. Sul cloud gestito il piano viene applicato dalla piattaforma e la pagina non viene mostrata.
+:::
+
+<img
+  alt="La pagina della licenza nelle Impostazioni di un'installazione non ancora attivata, che chiede il codice di attivazione"
+  src={require('@site/static/img/screens/license-activation.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+## Come funziona {#how-it-works}
+
+| Elemento | Cosa fa |
+|-------|--------------|
+| **Codice di attivazione** | Una chiave di prodotto (`RAI-XXXXX-XXXXX-XXXXX-XXXXX`) emessa da Rational AI per la tua licenza. Viene riscattata una sola volta: la prima installazione che la usa vi viene associata, e nessun'altra installazione può usarla in seguito. |
+| **Licenza** | Un documento firmato che stabilisce cosa include il tuo contratto: i moduli, il numero di posti, i modelli self-hosted, la validità. Firmato da Rational AI, verificato dall'installazione; non può essere alterato. |
+| **Aggiornamento** | Quando Rational AI modifica la tua licenza (un modulo aggiunto, più posti), premi **Aggiorna licenza** nella pagina: l'installazione scarica quella attuale. Non serve altro. |
+| **Rendicontazione** | Un'installazione attivata invia a Rational AI la sua licenza, la sua release e l'utilizzo dei posti, una volta al giorno. Vedi [Cosa invia un'installazione a Rational AI](./data-sent-to-rational-ai). |
+| **Periodo di tolleranza** | Quando una licenza scade, tutto continua a funzionare per sette giorni; dopo, l'installazione torna allo stato non attivato finché la licenza non viene rinnovata. Nessun dato va perso. Una prova termina il giorno stesso della scadenza. |
+
+## Attiva con un codice {#activate-with-a-code}
+
+1. Accedi come amministratore e apri **Impostazioni** → **Licenza**. Su un'installazione non attivata la pagina chiede il codice.
+2. Inserisci il codice che hai ricevuto e premi **Attiva**. Spazi, trattini e maiuscole non contano.
+3. La pagina mostra la licenza in vigore: a chi è intestata, il piano, i posti, la validità e i moduli inclusi. La navigazione mostra subito i moduli sbloccati.
+
+La macchina ha bisogno di accesso HTTPS in uscita verso `control-room.rational.is` per questo passaggio.
+
+## Installa un file di licenza (senza accesso a internet) {#install-a-license-file-no-internet-access}
+
+Su una macchina che non può raggiungere internet, Rational AI emette la licenza come file. In **Impostazioni** → **Licenza** scegli **Installa un file licenza**, incolla il contenuto del file e premi **Installa file licenza**. Il file viene verificato sulla macchina; non viene inviato da nessuna parte. Gli aggiornamenti della licenza funzionano allo stesso modo: un nuovo file da incollare.
+
+:::note[Una licenza vale per una sola installazione]
+Un file di licenza emesso dopo un'attivazione è associato a quell'installazione e viene rifiutato su qualsiasi altra. Installalo dove è stato attivato.
+:::
+
+## Piani {#plans}
+
+| | Non attivata | Free | Standard | Enterprise |
+|---|---|---|---|---|
+| Chat, Conversazioni, Governance, Impostazioni | sì | sì | sì | sì |
+| Modelli tramite le tue credenziali del provider | sì | sì | sì | sì |
+| Modelli essenziali ospitati da Rational AI | no | sì | sì | sì |
+| Moduli (Knowledge, Rational BI, Agenti, Gen) | nessuno | nessuno | quelli del contratto, uno incluso | tutti |
+| **Modelli self-hosted su questa macchina (enterprise)** | no | no | no | sì |
+| Posti | 3 | 3 | 25 | 250 |
+| Minuti di workflow al mese | 30 | 30 | 1.800 | illimitati |
+
+Il diritto ai modelli self-hosted viene verificato solo per i modelli ospitati sulle GPU di Rational AI. Un'installazione on-premise distribuisce i modelli sul proprio hardware qualunque sia il suo piano (vedi [Esegui i modelli sui tuoi server](./run-models-on-premise)), anche se l'etichetta nella pagina non lo distingue.
+
+Una prova è una licenza standard con tutti i moduli per 30 giorni (almeno 15); Rational AI può estenderla in qualsiasi momento, e **Aggiorna licenza** ne recepisce l'estensione.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---------|---------------|
+| *The platform does not know this code.* | Il codice così come stampato da Rational AI. Un codice già usato su un'altra installazione, revocato o scaduto riceve la stessa risposta. |
+| Il file di licenza viene rifiutato perché non supera la verifica | Il file incollato è incompleto, è stato alterato, oppure non è una licenza di Rational AI. Incolla l'intero contenuto del file. |
+| Il file di licenza viene rifiutato perché è stato emesso per un'altra installazione | Il file è associato a un'attivazione diversa. Chiedi a Rational AI un file emesso per questa installazione. |
+| **Aggiorna licenza** non è disponibile | La licenza è stata installata da un file, non attivata con un codice: l'installazione non ha un'identità sulla piattaforma, quindi gli aggiornamenti arrivano come file. |
+| Un modulo resta nascosto dopo un'attivazione | La licenza in vigore non lo include; l'elenco **Moduli** nella pagina indica quali include. Premi **Aggiorna licenza** se Rational AI ha modificato di recente il tuo contratto. |

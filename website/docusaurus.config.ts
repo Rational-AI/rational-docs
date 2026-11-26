@@ -18,6 +18,7 @@ const config: Config = {
 				hashed: true,
 				indexBlog: false,
 				docsRouteBasePath: "/",
+				language: ["en", "it"],
 			},
 		],
 	],
@@ -86,10 +87,10 @@ const config: Config = {
 	// may want to replace "en" with "zh-Hans".
 	i18n: {
 		defaultLocale: "en",
-		// Italian locale removed for now (was declared but untranslated). Re-add
-		// "it" here and restore the localeDropdown navbar item when ready to
-		// translate the site.
-		locales: ["en"],
+		locales: ["en", "it"],
+		localeConfigs: {
+			it: { label: "Italiano", htmlLang: "it-IT" },
+		},
 	},
 
 	presets: [
@@ -178,6 +179,12 @@ const config: Config = {
 				src: "img/logo.svg",
 			},
 			items: [
+				// The search box is added after the configured items, so this sits before it
+				{
+					type: "localeDropdown",
+					position: "right",
+					className: "navbar-locale",
+				},
 				// {
 				// type: 'dropdown',
 				// label: 'Documentazione',

@@ -1,0 +1,59 @@
+---
+sidebar_position: 31
+sidebar_label: Cancella i dati di una persona
+type: how-to
+audience: [admin]
+---
+
+# Cancella i dati di una persona
+
+Quando qualcuno esercita il diritto alla cancellazione, chiudere il suo account non basta: devono essere eliminate anche le sue conversazioni e i suoi identificativi nelle chiamate ai modelli registrate. **Cancella tutti i dati** rimuove tutto questo insieme all'account.
+
+:::danger[Irreversibile]
+La cancellazione elimina in modo definitivo le conversazioni della persona. Non c'è modo di annullarla. Prima di eseguirla, assicurati che la richiesta sia autentica e di avere la persona giusta.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- Il permesso **Elimina** sulla riga **Utenti** del tuo [ruolo](/operational-guides/roles-and-users), oppure un account amministratore. Chi può eliminare un utente può anche cancellarne i dati.
+- **Una richiesta verificata.** Verificare che chi fa la richiesta sia chi dice di essere fa parte del tuo processo interno.
+- **Tutto ciò che devi conservare, già esportato.** La cancellazione non verifica i tuoi obblighi di legge.
+
+## Scegli tra Elimina e Cancella {#choose-between-delete-and-erase}
+
+Il menu della riga in **Impostazioni** → **Utenti** offre due modi per rimuovere una persona:
+
+| | **Elimina utente** | **Cancella tutti i dati** |
+|---|---|---|
+| **Usalo quando** | Una persona lascia l'organizzazione | Una persona esercita il diritto alla cancellazione |
+| **L'account** | Rimosso | Rimosso |
+| **Le sue conversazioni** | Conservate | Eliminate, insieme agli artefatti del Canvas |
+| **I suoi identificativi nelle chiamate ai modelli registrate** | Conservati || Rimossi ||
+| **Si può annullare** | No, ma puoi invitare di nuovo la stessa email | No |
+
+Entrambe le opzioni rimuovono anche l'account dal tuo provider di identità, a meno che un altro workspace usi ancora lo stesso accesso. Nessuna delle due può rimuovere l'ultimo amministratore.
+
+## Cancella i dati di una persona {#erase-a-persons-data}
+
+1. Vai in **Impostazioni** → **Utenti** e trova la persona.
+2. Apri il menu della riga e seleziona **Cancella tutti i dati**.
+3. Leggi la conferma. Elenca ciò che viene rimosso: le sue conversazioni, il suo identificativo nelle chiamate ai modelli registrate e l'account.
+4. Conferma.
+
+Al termine, un messaggio indica quante conversazioni sono state eliminate e da quante chiamate registrate è stato rimosso l'identificativo. Verifica che i numeri corrispondano a quanto ti aspettavi.
+
+## Cosa rimane {#what-stays}
+
+Le chiamate ai modelli registrate conservano modello, token, costo e tempi, senza l'identificativo della persona, così i report di utilizzo e costi restano completi.
+
+La cancellazione viene scritta nella [traccia di audit](/operational-guides/audit-trail) prima che venga eliminato qualcosa, e quella voce riporta il nome della persona. Resta come prova che hai rispettato la richiesta.
+
+## Se il provider di identità non risponde {#if-the-identity-provider-is-unreachable}
+
+Se il provider di identità non è raggiungibile, la richiesta non va a buon fine e non cambia nulla né in Rational AI né nel provider. Eseguila di nuovo quando il provider torna disponibile. Un account già rimosso dal provider viene considerato rimosso.
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci ruoli e utenti](/operational-guides/roles-and-users): account, ruoli e gruppi.
+- [Consulta la traccia di audit](/operational-guides/audit-trail): dove viene registrata la cancellazione.
+- [Imposta la conservazione dei dati](/operational-guides/data-retention): rimuovere i dati di tutti in base all'età, invece di quelli di una persona su richiesta.

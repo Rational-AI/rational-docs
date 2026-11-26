@@ -1,0 +1,179 @@
+---
+sidebar_position: 14
+sidebar_label: Gestisci i modelli AI
+type: how-to
+audience: [admin, builder]
+---
+
+# Gestisci i modelli AI nel registro
+
+Il Registro modelli AI elenca ogni modello AI che Rational AI può usare. Da qui registri i modelli dei tuoi provider, descrivi cosa sa fare ciascun modello, vedi dove è usato, lo approvi e scegli i modelli predefiniti. Per distribuire ed eseguire i modelli che ospiti tu, vedi [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments).
+
+:::note[Che cos'è il Registro modelli AI?]
+Un [large language model](/reference/glossary#large-language-model-llm), o LLM, è l'AI che genera effettivamente testo, embedding o immagini. Questi modelli arrivano dai provider (OpenAI, OpenRouter, Xference e altri), e ogni provider è collegato tramite un *connettore*. Il registro elenca i modelli che questi connettori espongono, con ciò che ciascuno sa fare, quanto costa e chi lo ha approvato.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Permessi**: la riga **Registro modelli AI** del tuo ruolo, con **Crea**, **Modifica** o **Elimina** per le modifiche che fai.
+- **Almeno un connettore**: un provider configurato (per esempio OpenAI, OpenRouter, Xference o un endpoint OpenAI Compatible), così il registro ha dei modelli da elencare.
+
+## Ispeziona un modello {#inspect-a-model}
+
+Vai su **Impostazioni** → **Registro modelli AI** e seleziona un modello per aprirne i dettagli.
+
+### Leggi il prezzo di un modello {#read-a-models-pricing}
+
+La sezione **Prezzi** nella panoramica di un modello mostra i costi impostati per il modello, come **Costo per richiesta** o **Costo per 1M di token di input**. Le righe senza costo sono nascoste. Per impostare i prezzi, vedi [Misurazione dei costi](/cr/settings/ai-model-registry#cost-metering) e [Stabilisci il prezzo di ciò che usi](/operational-guides/govern-ai-applications#price-what-you-are-using).
+
+### Leggi editore e architettura {#read-publisher-and-architecture}
+
+Nel selettore dei modelli, ogni voce mostra un chip **Editore** e un chip **Architettura**. L'architettura è la famiglia di design del modello, per esempio Llama o Mistral. Una volta registrato il modello, la sua panoramica mostra i campi **Editore** e **Architettura**.
+
+<img
+  src={require('@site/static/img/screens/model-picker.png').default}
+  alt="Il selettore dei modelli che mostra editore e architettura di ciascun modello"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+### Verifica dove è usato un modello {#see-where-a-model-is-used}
+
+Prima di cambiare o rimuovere un modello, controlla cosa lo usa. La sezione **Utilizzato in** elenca ogni utilizzatore, i ruoli che il modello ricopre lì e un link:
+
+- **Touchpoint**: come modello predefinito, disponibile, di sentiment, di argomento o per i titoli.
+- **Knowledge**: come modello di embedding.
+- **Conversazioni** (configurazione della room): come modello conversazionale, di sentiment, di argomento o per i titoli.
+- **Fine-tuning**: come modello di base.
+
+<img
+  src={require('@site/static/img/screens/model-used-in.png').default}
+  alt="Dettagli del modello: la sezione Utilizzato in elenca ogni touchpoint che fa riferimento al modello"
+  style={{ width: '100%', maxWidth: '560px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+## Descrivi cosa sa fare un modello {#describe-what-a-model-can-do}
+
+Quello che il registro dice che un modello sa fare decide se una chat può allegare immagini, se vengono inviati gli strumenti, quali livelli di ragionamento mostra il selettore e quali dimensioni vengono richieste a un modello di generazione immagini. Per un modello self-hosted, il registro spesso indovina dal nome. Correggilo quando sbaglia.
+
+### Modifica capacità e livelli di ragionamento {#edit-capabilities-and-reasoning-levels}
+
+1. Vai su **Impostazioni** → **Registro modelli AI**, apri il menu della riga del modello e seleziona **Modifica dettagli**.
+2. In **Capacità**, aggiungi o rimuovi **Vision** (legge le immagini), **Tool use** (può chiamare strumenti) e **Reasoning** (ragiona prima di rispondere). Funziona per ogni modello, di terze parti o self-hosted.
+3. Per un modello di ragionamento, controlla **Livelli di ragionamento**: *"I livelli che si possono chiedere a questo modello, con i nomi del provider."* Sono stimati dalla famiglia del modello; modificali per correggere la stima.
+4. Seleziona **Salva**.
+
+### Imposta i default per le inferenze e i limiti di output {#set-inference-defaults-and-output-caps}
+
+La stessa finestra **Modifica dettagli** contiene **Default per le inferenze**, applicati a ogni richiesta al modello: **Seed**, **Temperatura**, **Top P**, **Penalità per la presenza** e **Token di output massimi**: *"Limite al numero di token generati dal modello, inclusi sia quelli di ragionamento che di risposta."* I limiti di generazione propri di un touchpoint sostituiscono questi valori per quel touchpoint.
+
+La panoramica del modello mostra anche la sua **Lunghezza contesto** e i **Token massimi in output** così come li riporta il provider.
+
+### Descrivi un modello di generazione immagini {#describe-an-image-model}
+
+Un modello di generazione immagini porta con sé una descrizione di ciò che può ricevere: dimensioni di output, immagini per richiesta, immagini di riferimento, seed, prompt negativo, formati di output, livelli di qualità e altro. Gli strumenti per le immagini offrono solo ciò che il modello dichiara.
+
+1. Apri un modello di generazione immagini (**Generazione immagini** nella colonna **Scopo**) e trova la sezione **Capability immagine**. Un chip indica da dove arrivano i valori: **Dal provider** oppure **Impostate a mano**. Un modello che nessuno ha descritto lo dice, e ogni impostazione resta disponibile.
+2. Seleziona **Modifica cosa accetta questo modello** per aprire il modulo completo nella sua pagina.
+3. Attiva ogni impostazione che il modello supporta e compila i suoi valori. Per **Dimensione dell'output**, scegli come viene dimensionato il modello: **Forme** (proporzioni), **Taglie fisse** (scritte come `1024x1536`) oppure **Dimensioni libere**.
+4. Seleziona **Salva**.
+
+:::note[I valori impostati a mano non vengono più aggiornati dal provider]
+Una volta salvato il modulo, il catalogo del provider smette di sovrascrivere il modello, quindi una correzione che hai fatto resta. Per tornare indietro, seleziona **Ripristina i valori del provider**: quanto inserito viene scartato e sostituito con ciò che riporta il provider, che potrebbe anche essere nulla.
+:::
+
+### Usa i modelli di decisione {#use-decision-models}
+
+Un modello di **Decisione** non conversa: riceve una domanda strutturata, con immagini se servono, e restituisce una decisione. I modelli di decisione arrivano da un connettore System One Compatible o OpenRouter e mostrano **Decisione** nella colonna **Scopo**. Impostane uno come **Modello di decisione** predefinito (più sotto) in modo che le decisioni che non indicano un modello, come quelle avviate dalle [viste personalizzate della Knowledge](/operational-guides/knowledge-custom-views), ne abbiano uno da usare.
+
+## Documenta e approva un modello {#document-and-approve-a-model}
+
+I dettagli di ogni modello hanno una sezione **Governance** in cui registri quale modello esatto viene eseguito, con quale licenza, per quale uso e chi lo ha approvato. Vale anche per i modelli di terze parti.
+
+### Il record {#the-record}
+
+| Campo | Cosa registra |
+|-------|---------------|
+| **Versione** | La versione specifica in uso |
+| **Digest dei pesi** | L'impronta dei pesi esatti in esecuzione |
+| **Licenza** | Le condizioni con cui il modello viene usato |
+| **Provenienza** | Da dove viene il modello |
+| **Finalità d'uso** | Per cosa il modello può essere usato, in forma di testo |
+| **Usi vietati** | Per cosa non deve essere usato |
+| **Limiti noti** | Dove è noto che funziona male o in modo inaffidabile |
+| **Valutazione** | Quali test sono stati fatti e cosa hanno mostrato |
+
+Non confondere **Finalità d'uso** con **Scopo**, che compare più in alto nei dettagli: **Scopo** è il tipo tecnico (generazione di testo, embedding e così via), mentre **Finalità d'uso** descrive l'uso consentito, come *"redigere risposte alle email dei clienti"*.
+
+### Approva un modello {#approve-a-model}
+
+**Salva** memorizza il record. **Approva** registra l'approvazione con chi ha approvato il modello e quando. **Approva** resta disattivato finché il modello non ha una **Finalità d'uso**.
+
+Lo stato di approvazione compare come chip: **Approvato**, **Non revisionato** oppure **Revocato**.
+
+:::warning[Modificare un record approvato ne revoca l'approvazione]
+Salvare una modifica a un campo sostanziale di un modello approvato lo riporta a **Non revisionato**. La sezione ti avvisa prima che salvi. Revocare un'approvazione ti chiede di confermare prima.
+:::
+
+## Imposta i modelli predefiniti della piattaforma per tipo di attività {#set-default-platform-models-per-task-type}
+
+Scegli il modello a cui la piattaforma ricorre quando un consumatore specifico non ne ha fissato uno proprio. Sono valori di ripiego: un [touchpoint](/operational-guides/configure-touchpoints) o una Knowledge con un proprio modello prevale sempre.
+
+1. Vai su **Impostazioni** → **Registro modelli AI**.
+2. Apri il pannello **Modelli predefiniti** sopra la tabella dei modelli (*"Scegli il modello usato per impostazione predefinita per ogni tipo di attività."*).
+3. Imposta uno qualsiasi di questi campi. Tutti sono facoltativi e si possono svuotare. Ciascuno elenca solo i modelli attivi dello scopo corrispondente:
+   - **Modello conversazionale**: il predefinito per le conversazioni. Elenca i modelli di **Generazione testo**. Lo usa la chat quando un touchpoint non ha un modello proprio.
+   - **Modello di codice**: il predefinito per la generazione di codice. Elenca i modelli di **Generazione testo**.
+   - **Modello per gli agenti**: *"Usato dagli agenti senza un modello specifico."* Elenca i modelli di **Generazione testo**.
+   - **Modello di embedding**: il predefinito per gli embedding. Elenca i modelli di **Embedding**. Lo usa la creazione di una Knowledge quando non viene fornito un modello di embedding.
+   - **Modello di generazione immagini**: il predefinito per la generazione di immagini. Elenca i modelli di **Generazione immagini**. Lo usano le richieste di immagini che non indicano un modello proprio.
+   - **Modello di decisione**: il predefinito per le decisioni. Elenca i modelli di **Decisione**. Lo usano le decisioni che non indicano un modello, come quelle delle viste della Knowledge.
+4. Seleziona **Salva**.
+
+## Richiedi l'approvazione prima che un modello risponda {#require-approval-before-a-model-answers}
+
+Quando **Richiedi approvazione** è attivo, un modello risponde a chat, agenti, chiamate API ed elaborazione della Knowledge solo dopo essere stato approvato (vedi [Approva un modello](#approve-a-model)).
+
+1. Vai su **Impostazioni** → **Registro modelli AI**.
+2. Nella sezione **Approvazione dei modelli**, leggi lo stato attuale. Indica i modelli che non sono stati revisionati.
+3. Attiva **Richiedi approvazione**.
+4. Leggi la conferma. Elenca i modelli che rifiuteranno ogni richiesta finché qualcuno non li approva.
+5. Seleziona **Richiedi approvazione** per confermare.
+
+| Stato di approvazione | **Richiedi approvazione** disattivato (predefinito) | **Richiedi approvazione** attivato |
+|---|---|---|
+| **Approvato** | Risponde | Risponde |
+| **Non revisionato** | Risponde | Rifiuta le richieste |
+| **Revocato** | Rifiuta le richieste | Rifiuta le richieste |
+
+Mentre l'approvazione è richiesta, l'elenco dei modelli mostra una colonna **Approvazione**, e i selettori dei modelli offrono solo i modelli che possono rispondere. Modificare il record di un modello approvato ne revoca l'approvazione, quindi con **Richiedi approvazione** attivo il modello rifiuta le richieste finché non viene approvato di nuovo.
+
+Le approvazioni, le revoche e le modifiche alla policy vengono registrate nella [traccia di audit](/operational-guides/audit-trail).
+
+## Aggiungi un connettore di provider {#add-a-provider-connector}
+
+Un connettore è il ponte tra il registro e un provider di modelli esterno. Vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi** e scegli il connettore che corrisponde al tuo provider. I due casi seguenti sono quelli in cui la configurazione non è ovvia.
+
+### Aggiungi Xference {#add-xference}
+
+Xference richiede solo una chiave API, senza un endpoint da inserire.
+
+1. Nella finestra **Aggiungi un nuovo connettore**, scegli **Xference**.
+2. Inserisci la tua **API Key**.
+3. Salva. I modelli disponibili vengono rilevati da Xference.
+
+### Aggiungi un provider OpenAI Compatible {#add-an-openai-compatible-provider}
+
+Usalo quando il tuo provider offre un'API compatibile con OpenAI ma non ha un connettore dedicato.
+
+1. Nella finestra **Aggiungi un nuovo connettore**, scegli **OpenAI Compatible**.
+2. Compila entrambi i campi obbligatori:
+   - **Base URL**: l'endpoint compatibile con OpenAI del tuo provider.
+   - **API Key**: la chiave per quell'endpoint.
+3. Salva.
+
+## Prossimi passi {#next-steps}
+
+* [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments): esegui un modello open source sul tuo hardware.
+* [Governance delle applicazioni AI](/operational-guides/govern-ai-applications): come l'approvazione dei modelli si inserisce nel resto della governance AI.

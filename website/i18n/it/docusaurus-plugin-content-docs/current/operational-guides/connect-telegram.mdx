@@ -1,0 +1,72 @@
+---
+sidebar_position: 21
+sidebar_label: Collega un bot Telegram
+type: how-to
+audience: [builder]
+---
+
+# Collega un bot Telegram
+
+Un canale Telegram permette alle persone di chattare con un [touchpoint](/operational-guides/configure-touchpoints) tramite un bot Telegram. Ogni scambio compare in [Conversazioni](/cr/Conversations).
+
+## Prerequisiti {#prerequisites}
+
+- **Un bot token di BotFather.** Scrivi a [@BotFather](https://t.me/BotFather) su Telegram, crea un bot e copia il token che ti viene dato.
+- **Permessi:** un ruolo con **Crea** e **Modifica** sulla riga **Canali**.
+- **Un touchpoint che risponda**, oppure il piano di crearne uno.
+
+## Collega il bot {#connect-the-bot}
+
+1. Vai in **Impostazioni** → **Canali** e seleziona **Aggiungi**.
+2. Scegli **Telegram** come **Tipo di canale**.
+3. Inserisci un **Nome** e incolla il token in **Token del bot**.
+4. Scegli la [modalità di risposta](/operational-guides/manage-channels#choose-the-mode): **Automatico** se l'assistente deve rispondere da solo.
+5. Lascia **Trasporto** su **polling**, che non richiede un indirizzo pubblico. Scegli **webhook** solo se Rational AI è raggiungibile da internet via HTTPS.
+6. Seleziona **Salva**. Rational AI verifica il token con Telegram, e il canale non viene creato se la verifica fallisce.
+7. Apri il touchpoint che deve rispondere e, nella sua scheda **Impostazioni**, seleziona questo canale come **Canale**. Il touchpoint deve essere attivo. Se più touchpoint attivi usano il canale, risponde quello creato per primo.
+
+I dettagli del canale mostrano lo **@username** del bot e un QR code `t.me` che puoi condividere con le persone che devono usare il bot.
+
+## Cosa può ricevere l'assistente {#what-the-assistant-can-receive}
+
+- **Testo e didascalie.**
+- **Foto, documenti, video, audio, messaggi vocali e video note**, entro le [impostazioni degli allegati](/operational-guides/manage-channels#control-what-can-be-sent-in) del canale. Il limite di dimensione è 20 MB per impostazione predefinita, il massimo che un bot Telegram può scaricare. L'assistente legge il testo dei documenti e la trascrizione dei messaggi vocali.
+- **Posizioni, contatti e sondaggi**, trasformati in testo.
+
+Le foto inviate insieme come album arrivano all'assistente come un unico messaggio, quindi risponde una volta sola.
+
+## Come vengono raggruppate le conversazioni {#how-conversations-are-grouped}
+
+Ogni chat Telegram è una conversazione a sé. Nei gruppi con argomenti, anche ogni argomento è una conversazione a sé.
+
+Gli utenti possono inviare questi comandi:
+
+- **`/reset`** chiude la conversazione corrente, così il messaggio successivo ne avvia una nuova.
+- **`/start`** e **`/help`** rispondono con il testo che inserisci in **Messaggio di benvenuto**.
+
+## Controlla le risposte nei gruppi {#control-replies-in-group-chats}
+
+Nei gruppi, il bot risponde solo quando viene menzionato con @, quando riceve una risposta, oppure quando riceve un comando rivolto a lui. Gli altri messaggi vengono saltati senza risposta, e il bot non risponde mai agli altri bot.
+
+- Per fargli rispondere a ogni messaggio di un gruppo, imposta **Risposte nei gruppi** su **sempre** invece del valore predefinito **mention (solo se interpellato)**.
+- **Limite messaggi (al minuto per chat)** limita quanti messaggi può inviare una chat al minuto. Il valore predefinito è 20; `0` disattiva il limite. I messaggi oltre il limite non ricevono risposta.
+
+## Dai istruzioni specifiche a singole chat {#give-specific-chats-their-own-instructions}
+
+In **Prompt per chat**, inserisci una riga per chat: l'ID della chat, una barra verticale e le istruzioni, per esempio `-100987654321 | Answer in French.` Per un gruppo, l'ID della chat compare nel nome della conversazione. Le istruzioni si aggiungono al prompt di sistema del touchpoint solo per quella chat, quindi un solo bot può rispondere in modo diverso a un gruppo interno e a uno pubblico.
+
+## Come appaiono le risposte {#what-replies-look-like}
+
+Le risposte usano la formattazione supportata da Telegram: i titoli diventano grassetto e gli elenchi diventano punti elenco. Una risposta più lunga del limite di 4.096 caratteri di Telegram viene divisa in più messaggi nei punti di interruzione tra i paragrafi.
+
+- Nei gruppi, le risposte citano il messaggio a cui rispondono.
+- Una reazione 👀 indica che il messaggio è stato ricevuto e diventa ✅ quando la risposta viene consegnata.
+- L'indicatore di scrittura compare mentre l'assistente scrive.
+
+L'assistente non può inviare file, e ogni risposta arriva completa invece che parola per parola.
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci i canali](/operational-guides/manage-channels): modalità, mittenti ammessi e impostazioni degli allegati.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): imposta l'assistente che risponde su Telegram.
+- [Conversazioni](/cr/Conversations): leggi e prendi in carico ciò che arriva.

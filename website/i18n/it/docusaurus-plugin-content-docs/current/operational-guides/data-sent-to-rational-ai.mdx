@@ -1,0 +1,60 @@
+---
+title: Cosa invia un'installazione a Rational AI
+sidebar_label: Dati inviati a Rational AI
+description: Tutto ciò che un'installazione on-premise invia a Rational AI in autonomia, per le verifiche di privacy e sicurezza.
+type: reference
+audience: [admin]
+---
+
+# Cosa invia un'installazione a Rational AI
+
+Questa pagina elenca tutto ciò che un'[installazione on-premise](./on-premises-installation) invia da sola a Rational AI. Usala per le verifiche di privacy e sicurezza.
+
+## Cosa non viene mai inviato {#what-is-never-sent}
+
+Nessuno di questi report contiene dati dei clienti: nessuna conversazione, messaggio, documento, contenuto di Knowledge, file o dato sugli utenti. Il report di salute contiene conteggi, versioni, stati e i nomi dei componenti propri dell'installazione (modelli, fonti dati, controlli).
+
+## Il check-in ogni minuto {#the-minute-check-in}
+
+Un'installazione collegata a Rational AI esegue un check-in ogni minuto. Il check-in è firmato con la chiave dell'installazione e contiene:
+
+- l'ID dell'installazione e la release installata;
+- la chiave pubblica del tunnel, l'impostazione in **Impostazioni** → **Tunnel**, e l'indirizzo della macchina nella tua rete;
+- un **report di salute**:
+  - se l'applicazione è in salute e quali dei suoi servizi non sono in esecuzione;
+  - il nome e lo stato di ciascun modello che l'installazione esegue, e se è presente una GPU;
+  - utilizzo di disco e memoria in percentuale, e spazio libero su disco;
+  - lo stato della licenza;
+  - i **nomi** delle fonti dati il cui ultimo sync è fallito, con l'ora;
+  - l'ora del backup locale più recente, e se è impostato un backup off-site, con l'esito e l'ora della sua ultima esecuzione;
+- il riepilogo dei controlli orari: quanti sono passati e quanti falliti, e i **titoli** di quelli falliti;
+- l'esito dell'ultimo aggiornamento (aggiornato, ripristinato, fallito oppure nessuna versione più recente), le release coinvolte e i titoli dei controlli che hanno smesso di funzionare.
+
+Rational AI usa questo report per vedere ogni installazione come in salute, da controllare o non raggiungibile. Quando la macchina viene spenta o riavviata, invia un ultimo check-in che dice solo che si sta spegnendo, così Rational AI la vede come spenta e non come non raggiungibile.
+
+La risposta al check-in restituisce l'indirizzo pubblico dell'installazione, il suo certificato e le impostazioni del tunnel.
+
+## Il report giornaliero della licenza {#the-daily-license-report}
+
+Una volta al giorno, l'applicazione comunica il proprio ID di installazione, l'ID della licenza e la release; il numero di tenant e il numero di posti usati in ciascuno; il suo uptime; e il sistema operativo e l'architettura.
+
+## Report di errore {#error-reports}
+
+Quando l'applicazione incontra un errore imprevisto, sul server o nel browser di un utente, invia un report di errore al tracker degli errori di Rational AI, dove ogni cliente ha uno spazio proprio. Un report contiene:
+
+- il messaggio di errore e il punto del codice in cui si è verificato;
+- le righe di log che hanno portato all'errore;
+- la release e l'indirizzo a cui è servita l'installazione;
+- quando un utente era connesso, l'ID interno di quell'utente.
+
+Non include nome o email dell'utente, né il contenuto delle richieste. Gli errori previsti (una sessione scaduta, un permesso negato, un elemento mancante) non vengono segnalati.
+
+Un messaggio di errore è scritto dal codice che ha fallito e può citare un valore che stava gestendo. Se i report di errore devono restare nella tua rete, chiedi a Rational AI di inviarli a un tracker degli errori tuo (GlitchTip o Sentry).
+
+## L'avviso di aggiornamento {#the-update-alert}
+
+Un aggiornamento fallito o ripristinato invia un solo evento allo stesso tracker degli errori, con l'indirizzo dell'installazione, le due release e i titoli dei controlli che hanno smesso di funzionare. Rational AI può inviarlo a un tracker tuo, oppure disattivarlo.
+
+:::note[Un'installazione sul tuo dominio non esegue il check-in]
+Un'installazione servita su un nome DNS tuo, senza connessione a Rational AI, non invia né il check-in ogni minuto né il report giornaliero della licenza. Scarica comunque le nuove release quando si aggiorna, e continua a inviare report di errore a meno che non vadano al tuo tracker.
+:::

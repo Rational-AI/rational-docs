@@ -1,0 +1,96 @@
+---
+sidebar_position: 8
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Touchpoint
+
+Un touchpoint è un assistente configurato con cui le persone parlano, per esempio uno che risponde a domande su un prodotto specifico o gestisce un flusso di assistenza clienti. Ogni touchpoint lega insieme un canale, un modello e un prompt di sistema, le fonti della Knowledge a cui può attingere, gli strumenti e le skill che può usare e la sua memoria. Usa questa sezione per creare touchpoint e personalizzarli per un caso d'uso specifico.
+
+I touchpoint non sono gli agenti della sezione [Agenti](../Agents.mdx), che svolgono lavori in esecuzioni sul proprio computer.
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Disponibile con <a href="/pricing">qualsiasi piano</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Chi ha nel proprio ruolo <span className="featureBox__pill">Crea</span> e <span className="featureBox__pill">Modifica</span>
+      sulla riga <strong>Touchpoint</strong> può creare e gestire i touchpoint
+    </div>
+  </div>
+
+</div>
+
+## Sfogliare i touchpoint {#browse-touchpoints}
+
+La pagina Touchpoint elenca ogni touchpoint come scheda. Ogni scheda mostra il nome, il canale che usa (per esempio *Rational AI Chat*) e quante fonti e quanti strumenti ha. Con **Modifica** su **Touchpoint**, la scheda ha anche un interruttore per attivarlo o disattivarlo. Usa il campo di ricerca per filtrare l'elenco, e seleziona una scheda per aprirne i dettagli.
+
+## Creare un touchpoint {#create-a-touchpoint}
+
+Seleziona **Nuovo**. Viene creato un touchpoint chiamato *New touchpoint* sul tuo primo [canale](/operational-guides/manage-channels), attivo e aperto per configurarlo nelle schede descritte in [Configurare un touchpoint](#configure-a-touchpoint). **Nuovo** non è disponibile finché non esiste almeno un canale. Il nuovo touchpoint riceve il modello conversazionale predefinito della piattaforma. Seleziona **Salva** per conservare le modifiche, oppure **Annulla** per scartarle.
+
+Il pulsante **Touchpoint predefinito** in cima all'elenco apre l'assistente del workspace usato dalla [Chat](../Chats.mdx) principale, così puoi [modificarne il prompt](/operational-guides/configure-touchpoints#change-the-workspace-assistants-prompt).
+
+## Configurare un touchpoint {#configure-a-touchpoint}
+
+Il pannello dei dettagli è organizzato in sette schede:
+
+### Impostazioni {#settings}
+
+* **ID touchpoint**: l'identificatore univoco del touchpoint (usa l'icona di copia per copiarlo, per esempio quando integri un client esterno).
+* **Canale**: il canale attraverso cui il touchpoint è esposto.
+* **Accesso API**: sui touchpoint che usano il canale **API**, l'URL di base e la [chiave API](/operational-guides/api-access#give-an-application-its-own-touchpoint-key) propria del touchpoint, con **Genera chiave**, **Ruota** e **Revoca**.
+* **Consenti accesso anonimo**: permette alle persone di avviare una conversazione senza accedere. Disattivato per impostazione predefinita.
+* **Modalità Canvas**, **Modifica messaggi**, **Allegati** e **Rigenera risposta**: permettono agli utenti di aprire il Canvas, modificare un messaggio inviato, allegare file e rigenerare una risposta. Tutte e quattro sono attive per impostazione predefinita.
+
+### Modelli {#models}
+
+* **Prompt di sistema**: le istruzioni che definiscono il ruolo e il comportamento dell'assistente per questo touchpoint, con i pulsanti **Mostra modifiche non salvate** ed **Espandi l'editor**. Nel touchpoint predefinito, **Ripristina default** riporta le istruzioni originali di Rational AI.
+* **Modello di default** e la tabella dei modelli: il modello che alimenta le risposte del touchpoint e gli altri modelli che può usare.
+* **Apri le impostazioni avanzate**: **Limiti di generazione** (**Numero massimo di token in output**, **Interrompi la generazione in caso di output ripetitivo**, il livello predefinito di **Reasoning** e se gli utenti possono cambiarlo per ogni conversazione; vedi [Regola la generazione delle risposte](/operational-guides/touchpoint-generation)), poi **Modello di generazione del titolo**, **Analisi del sentiment** e **Rilevamento argomenti**. Ognuna di queste tre segue le impostazioni predefinite delle [Impostazioni Conversazioni](conversations.mdx) finché non disattivi la relativa opzione di configurazione predefinita (per il titolo, **Usa la configurazione di default per generare il titolo delle chat**).
+* **Verifica della risposta**: permette agli utenti di verificare una risposta rispetto alla knowledge recuperata.
+* **Domande di suggerimento**: domande di esempio proposte a chi inizia una chat, mostrate quando è attivo **Abilita le domande di suggerimento**.
+
+### Fonti {#sources}
+
+Scegli quali [fonti di knowledge](sources.mdx) il touchpoint può usare per rispondere, così l'assistente usa solo i dati pertinenti al suo caso d'uso. **Può modificare i record** consente all'assistente anche di [creare e aggiornare record](/operational-guides/configure-touchpoints#let-the-assistant-change-a-knowledge) in una Knowledge. Nel touchpoint predefinito la scheda mostra invece **Tutte le knowledge accessibili**: ogni utente riceve automaticamente tutte le Knowledge abilitate che può leggere.
+
+### Strumenti {#tools}
+
+Abilita gli [strumenti](extensions.mdx) che l'assistente può chiamare durante una conversazione, scegli **Quando chiedere conferma** e imposta **Quanto tempo può impiegare un tool**. Solo gli amministratori possono aggiungere, modificare o rimuovere gli strumenti di un touchpoint o contrassegnarli come **Sensibile**.
+
+### Skill {#skills}
+
+Aggiungi le [skill](/operational-guides/agent-skills) che l'assistente può usare, che gli utenti possono anche scegliere con `/` nella chat.
+
+### Memoria {#memory}
+
+Attiva **Memoria personale** e **Memoria condivisa**, cura le memorie condivise e scegli cosa succede con **Conversazioni lunghe**. Vedi [Memoria e chat lunghe](/operational-guides/touchpoint-memory).
+
+### Test {#test-runs}
+
+Riproduci le conversazioni passate con una modifica prima che vada online. Vedi [Testa una modifica al touchpoint](/operational-guides/test-touchpoint-changes).
+
+## Gestire un touchpoint {#manage-a-touchpoint}
+
+Usa l'interruttore su ogni scheda per attivare o disattivare un touchpoint, oppure apri il menu delle opzioni (i tre punti verticali) accanto al nome del touchpoint. Ogni azione richiede il permesso corrispondente su **Touchpoint**: **Modifica** per disabilitare o abilitare, **Crea** per duplicare, **Elimina** per eliminare.
+
+| Azione | Descrizione |
+|--------|-------------|
+| **Disabilita** / **Abilita** | Mette il touchpoint fuori servizio senza eliminarlo, oppure lo rimette in servizio. |
+| **Duplica** | Crea una copia disabilitata del touchpoint, con i suoi strumenti e le sue skill, chiamata come l'originale con *(copy)* alla fine. |
+| **Elimina** | Rimuove in modo permanente il touchpoint con le sue impostazioni di strumenti e skill e la sua memoria. Le sue conversazioni vengono conservate. Se elimini il touchpoint di una Knowledge o di un progetto BI, la Knowledge o il progetto riceve un nuovo touchpoint con impostazioni predefinite. Il touchpoint predefinito non ha **Elimina**. |

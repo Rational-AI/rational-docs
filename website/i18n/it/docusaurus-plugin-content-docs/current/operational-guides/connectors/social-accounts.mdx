@@ -1,0 +1,93 @@
+---
+title: Connetti LinkedIn, Instagram e Facebook
+description: Collega una pagina aziendale LinkedIn, un account business o creator di Instagram, o una pagina Facebook tramite una tua app, così Social studio può pubblicare su di essa.
+type: how-to
+audience: [admin]
+---
+
+I connettori **LinkedIn**, **Instagram** e **Facebook** permettono a [Social studio](/operational-guides/social-studio) di pubblicare post su una pagina aziendale, un account business o una pagina, tramite un'app per sviluppatori di proprietà della tua organizzazione.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore, e **Modifica** per collegarlo o ricollegarlo (vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users)). Chi pubblica da Social studio ha bisogno di **Usa** sul connettore.
+- **Sul social network:** uno sviluppatore che può creare un'app per la tua organizzazione e, per accedere, un account che amministra la pagina su cui pubblichi.
+
+## Cosa ti serve {#what-you-need}
+
+Ogni connettore corrisponde a una pagina o a un account. Per pubblicare su più pagine, aggiungi un connettore per ciascuna. Possono condividere la stessa app, perché l'URL di reindirizzamento è lo stesso per ogni connettore del tuo workspace.
+
+### LinkedIn {#linkedin}
+
+- Un'app LinkedIn nel portale per sviluppatori di LinkedIn, associata alla tua pagina aziendale, con il prodotto **Community Management API** approvato da LinkedIn.
+- Un membro LinkedIn che sia amministratore approvato della pagina aziendale.
+
+| Ambito | Perché serve |
+|---|---|
+| `r_organization_social` | Legge i post della pagina aziendale. |
+| `w_organization_social` | Pubblica post e immagini come pagina aziendale. |
+| `rw_organization_admin` | Elenca le pagine aziendali che il membro amministra, con nomi e loghi, così puoi sceglierne una. |
+
+### Instagram {#instagram}
+
+- Un'app Business in Meta for Developers con il prodotto Instagram configurato come **API setup with Instagram login**.
+- Un account business o creator di Instagram.
+
+| Ambito | Perché serve |
+|---|---|
+| `instagram_business_basic` | Legge il nome, lo username e la foto dell'account. |
+| `instagram_business_content_publish` | Pubblica post, carousel e storie. |
+
+### Facebook {#facebook}
+
+- Un'app Business in Meta for Developers con **Facebook Login for Business**. Una configurazione è facoltativa.
+- Un account Facebook che gestisce la pagina.
+
+| Permesso | Perché serve |
+|---|---|
+| `pages_show_list` | Elenca le pagine gestite dall'account, così puoi sceglierne una. |
+| `pages_manage_posts` | Pubblica post sulla pagina. |
+| `pages_read_engagement` | Legge i contenuti e i metadati della pagina. |
+
+Se inserisci un **ID configurazione**, l'accesso chiede invece i permessi di quella configurazione di Facebook Login for Business. Includi in essa i tre permessi.
+
+## Configura {#set-up}
+
+1. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **LinkedIn**, **Instagram** o **Facebook**, poi seleziona **Aggiungi**.
+2. Sotto **URL di reindirizzamento da aggiungere all'app**, seleziona **Copia**.
+3. Sul portale per sviluppatori del social, crea l'app come descritto in [Cosa ti serve](#what-you-need) e aggiungi l'URL copiato agli URL di reindirizzamento consentiti. Deve corrispondere carattere per carattere.
+4. Copia l'ID app e il secret dell'app. Per Instagram, usa l'ID app e il secret di Instagram, non quelli dell'app Meta.
+5. Torna in Rational AI e inserisci un **Nome** (per esempio il nome della pagina), una **Descrizione** facoltativa, e incolla l'**ID app** e il **Secret dell'app**. Per Facebook, inserisci anche l'**ID configurazione (facoltativo)** se ne hai creato uno.
+6. Seleziona **Aggiungi e autorizza** e accedi sul social con l'account che amministra la pagina.
+7. Se l'account gestisce più pagine, Rational AI mostra *"Il tuo login gestisce più pagine: scegli quella come cui pubblica questo connettore."* Seleziona la pagina.
+
+Il campo **Pubblica come** del connettore mostra la pagina e lo stato **Collegato**. Se esci dall'accesso prima che sia completato, il connettore resta su *"Non ancora collegato: fai il login per scegliere la pagina come cui pubblicare."* Seleziona **Collega** per accedere di nuovo.
+
+## Cosa alimenta in Rational AI {#what-it-powers-in-rational-ai}
+
+- **Pubblicazione da Social studio:** Social studio verifica e pubblica i post tramite il connettore del social del post: post, carousel e storie di Instagram, post LinkedIn sulla pagina aziendale e post Facebook sulla pagina. Senza un connettore puoi comunque creare i post e scaricarli.
+- **Avvisi di ricollegamento:** il connettore mostra **Ricollega a breve** nei 14 giorni prima che l'accesso scada. Una volta scaduto, Social studio ti chiede di ricollegarlo in **Impostazioni** → **Connettori** prima di poter pubblicare.
+
+## Limiti {#limits}
+
+- **LinkedIn:** l'accesso dura finché scade il refresh token di LinkedIn, circa un anno. Poi seleziona **Ricollega**.
+- **Instagram:** l'accesso dura 60 giorni. Rational AI lo rinnova quando verifichi o pubblichi un post nell'ultima settimana; altrimenti seleziona **Ricollega** alla scadenza.
+- **Facebook:** l'accesso di una pagina non scade. Rational AI elenca al massimo 100 pagine da un solo accesso.
+- Instagram scarica ogni immagine dal tuo indirizzo di Rational AI, quindi per pubblicare su Instagram quell'indirizzo deve essere raggiungibile da internet.
+- Un connettore pubblica come una sola pagina o account. Per cambiare pagina devi accedere di nuovo con **Ricollega**.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Il social mostra un errore sull'URL di reindirizzamento durante l'accesso | L'URL di reindirizzamento nell'app non corrisponde. Copialo di nuovo da **URL di reindirizzamento da aggiungere all'app** e incollalo senza modifiche. |
+| *"Il login non è andato a buon fine"* | Leggi il motivo sotto il messaggio. L'ID o il secret dell'app potrebbero essere sbagliati, la persona potrebbe aver rifiutato, oppure, per LinkedIn, l'app potrebbe non avere la Community Management API. |
+| *"Questo account non gestisce pagine su cui l'app possa pubblicare"* | Accedi con un amministratore della pagina aziendale, oppure controlla che l'app abbia i permessi di [Cosa ti serve](#what-you-need). |
+| *"Non è stato possibile collegare questa pagina: rifai il login"* | L'elenco delle pagine non è aggiornato. Seleziona **Ricollega** e accedi di nuovo. |
+| Il connettore mostra **Login scaduto** o **Ricollega a breve** | Seleziona **Ricollega** sul connettore e accedi con lo stesso account. |
+| *"Si è verificato un errore durante l'autenticazione"* quando selezioni **Aggiungi e autorizza** | Il connettore è stato salvato, ma l'accesso non è potuto partire. Apri il connettore e seleziona **Collega**. |
+
+## Prossimi passi {#next-steps}
+
+- [Social studio](/operational-guides/social-studio): crea, verifica e pubblica un post.
+- [Configura connettori](/operational-guides/configure-connectors): modifica, controlla o elimina un connettore.
+- [Gestisci ruoli e utenti](/operational-guides/roles-and-users): dai **Usa** sul connettore alle persone che devono pubblicare.

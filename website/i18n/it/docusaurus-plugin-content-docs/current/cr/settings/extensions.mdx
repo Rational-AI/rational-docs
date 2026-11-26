@@ -1,0 +1,67 @@
+---
+sidebar_position: 4
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Estensioni
+
+Le estensioni aggiungono nuove funzionalità a Rational AI. A seconda di quella che installi, un'estensione può dare ai tuoi agenti nuovi **strumenti** da usare in una conversazione (per esempio per leggere una pagina web, interrogare un database o cercare sul web), **skill** a cui attingere, un **canale** con cui gli utenti possono scrivere all'assistente (come Telegram), una **fonte** da cui le tue Knowledge sincronizzano i file, oppure un **workflow** che elabora i file in arrivo. Anche le soluzioni del [Marketplace](/operational-guides/marketplace) sono estensioni: installarne una può creare anche una Knowledge con le sue viste e i suoi record, agenti, dashboard BI e un widget per il sito. Usa questa sezione per installare estensioni dal catalogo o dai tuoi file di pacchetto, attivarle o disattivarle, configurarne le impostazioni e vedere cosa fornisce ciascuna. Per mantenere aggiornate quelle che hai, vedi [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates).
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Non richiede un modulo di licenza
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      I ruoli con la riga <strong>Estensioni</strong> possono visualizzare questa pagina. In questa pagina solo gli amministratori possono installare, attivare, configurare, aggiornare o sviluppare estensioni
+    </div>
+  </div>
+
+</div>
+
+## Sfogliare le estensioni installate {#browse-installed-extensions}
+
+La pagina Estensioni ha tre viste: **Installate**, **Aggiornamenti** e **Sfoglia**. **Installate** elenca ogni estensione installata come scheda con nome, icona e versione, e contatori per gli strumenti, le fonti e i canali che fornisce. Una scheda mostra anche **Da configurare** quando il suo server richiede ancora dei parametri, e **Aggiornamento disponibile** oppure **Revisione richiesta** quando esiste una release più recente.
+
+* **Cerca**: usa la casella di ricerca per filtrare le estensioni per nome.
+* **Seleziona**: seleziona una scheda per aprirne i dettagli: una **Panoramica** di ciò che fornisce (ogni strumento con una breve descrizione), **Note di rilascio**, **Versioni** e **Attività**.
+
+## Aggiungere e configurare un'estensione {#add-and-configure-an-extension}
+
+**Installa** apre le estensioni che puoi installare, contrassegnate **Catalogo Rational AI** o **Locale**. **Aggiungi estensione privata** installa un pacchetto da un file. Un'estensione che richiede ancora dei valori mostra **Da configurare**. Per i passaggi, vedi [Gestisci le estensioni](/operational-guides/manage-extensions).
+
+Gli amministratori vedono una scheda **Sviluppo** su un'estensione installata, per modificarne i file. Gli aggiornamenti restano in pausa mentre la modalità sviluppo è attiva.
+
+## Attivare o disattivare un'estensione {#enable-or-disable-an-extension}
+
+Usa l'interruttore su ogni scheda di estensione per attivarla o disattivarla. Un'estensione disattivata resta installata e mantiene la sua configurazione, ma i suoi strumenti non sono disponibili agli agenti finché non la riattivi. Usala per mettere un'estensione fuori servizio per un certo periodo senza disinstallarla.
+
+## Gestire un'estensione {#manage-an-extension}
+
+Con un'estensione selezionata, **Criterio di aggiornamento** definisce come arrivano gli aggiornamenti: **Aggiornamenti compatibili automatici**, **Avvisami** (il predefinito) oppure **Bloccata**. Quando è disponibile un aggiornamento, accanto alla versione compare un pulsante **Aggiorna**.
+
+Il menu delle opzioni (i tre punti verticali) contiene:
+
+| Azione | Descrizione |
+|--------|-------------|
+| **Impostazioni** | Visualizza e modifica la configurazione dell'estensione (per esempio credenziali o dettagli di connessione). Non disponibile quando non c'è nulla da configurare. |
+| **Aggiorna i tool remoti** | Rileggi l'elenco degli strumenti dai server MCP remoti dell'estensione. Solo per le estensioni con un server remoto. |
+| **Aggiorna all'ultima versione** | Passa l'estensione alla release più recente. Non disponibile quando è già aggiornata. |
+| **Installa una versione diversa** | Scegli un'altra release pubblicata, più vecchia o più recente. |
+| **Ripristina versione precedente** | Torna all'ultima release che funzionava. Non disponibile quando non ce n'è una. |
+| **Disinstalla** | Rimuovi l'estensione, i suoi server MCP, le sue configurazioni e i suoi strumenti. I touchpoint che usavano i suoi strumenti continuano a funzionare senza di essi. |
+
+Per capire cos'è un aggiornamento compatibile e come ripristinare una versione precedente, vedi [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates).

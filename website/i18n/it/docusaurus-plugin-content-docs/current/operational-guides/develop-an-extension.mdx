@@ -1,0 +1,131 @@
+---
+sidebar_label: Sviluppa un'estensione
+type: how-to
+audience: [developer]
+---
+
+# Sviluppa un'estensione
+
+La modalità sviluppo ti permette di modificare sul posto i file di un'estensione installata ed eseguire subito ogni modifica, senza creare un pacchetto né reinstallare. Modifica nella Control Room, dal computer con la CLI delle Estensioni o tramite API, poi salva il risultato in Git al termine.
+
+La modalità sviluppo si applica a una sola installazione in un solo workspace. Le modifiche salvate hanno effetto su tutti gli utenti di quell'installazione, e gli aggiornamenti automatici si mettono in pausa finché la modalità è attiva. Per sperimentare senza influire sugli utenti, installa l'estensione in un workspace di test e sviluppa lì.
+
+## Prima di iniziare {#before-you-begin}
+
+- Un account amministratore. Solo gli amministratori vedono la scheda **Sviluppo** e possono attivare lo sviluppo o modificare i file. Chi può leggere l'estensione può elencarne e scaricarne i file.
+- L'estensione installata nel workspace. Per crearne una da zero, vedi [Crea un'estensione](/operational-guides/build-an-extension).
+
+## Modifica nella Control Room {#edit-in-the-control-room}
+
+1. Vai a **Impostazioni** → **Estensioni**, apri l'estensione installata e seleziona la scheda **Sviluppo**.
+2. Seleziona **Attiva sviluppo** e conferma. La finestra mostra questo avviso: *"Le modifiche saranno eseguite in questa installazione attiva e influiranno sui suoi utenti. Gli aggiornamenti automatici saranno sospesi. Usa un tenant di test per sviluppare separatamente."*
+3. Seleziona un file in **File dell’estensione**, modificalo e seleziona **Salva e applica**. Usa **Nuovo file** per aggiungere un file e **Elimina file** per rimuoverne uno.
+
+Ogni salvataggio sostituisce il file nell'installazione e aggiorna gli strumenti e i widget dell'estensione. Se qualcun altro ha modificato il file dopo che l'hai aperto, il salvataggio viene rifiutato con *"Il file remoto è cambiato. Copia il testo non salvato prima di riaprire il file per esaminare quello attuale."* Quando un salvataggio modifica i widget dell'estensione, le pagine aperte mostrano un avviso con **Ricarica**.
+
+L'editor apre i file di testo fino a 2 MiB. Modifica i file più grandi o binari con la CLI o con l'API.
+
+Seleziona **Scarica estensione installata** per ottenere uno ZIP dei file correnti.
+
+Alcune modifiche vengono rifiutate e il file precedente resta al suo posto:
+
+- Un `manifest.json` che modifica `id`, `nameIdentifier` o `version` dell'estensione. Pubblica una nuova release per farlo.
+- Eliminare `manifest.json`.
+- Una modifica che rimuove un server MCP, uno strumento o una skill che un touchpoint usa ancora, oppure che rompe i parametri degli strumenti di un touchpoint.
+- Una modifica che rimuove un provider di fonti che una fonte usa ancora.
+
+## Modifica dal computer {#edit-from-your-computer}
+
+La CLI delle Estensioni (`rationalai-cli-extensions`) scarica i file di un'installazione, invia le tue modifiche e osserva una cartella. TODO(verify): come gli sviluppatori ottengono il file binario `rationalai-cli-extensions`.
+
+1. Inserisci una chiave API nella variabile d'ambiente `RATIONAL_API_TOKEN`. Vedi [Crea una chiave API](/operational-guides/api-access#create-an-api-key).
+2. Salva un profilo per l'indirizzo API del workspace:
+
+   ```sh
+   rationalai-cli-extensions extensions dev login --profile remote --url https://your-workspace.example/api
+   ```
+
+   Il profilo salva il nome della variabile, non la chiave. Usa `--token-env` per leggere un'altra variabile e `--auth bearer` per inviare un token di accesso invece di una chiave API.
+
+3. Scarica i file e attiva lo sviluppo:
+
+   ```sh
+   rationalai-cli-extensions extensions dev download --profile remote --id EXTENSION_ID --directory ./extension
+   rationalai-cli-extensions extensions dev enable --profile remote --directory ./extension
+   ```
+
+4. Invia le modifiche, un file alla volta o in modo continuo:
+
+   ```sh
+   rationalai-cli-extensions extensions dev push --profile remote --directory ./extension --file src/index.ts
+   rationalai-cli-extensions extensions dev watch --profile remote --directory ./extension
+   ```
+
+`push` senza `--file` carica ogni file modificato ed **elimina i file remoti che non esistono più in locale**. In un checkout Git, considera i file che Git traccia o che aggiungerebbe. Non carica mai i file `.env` né `.rational-development.json`. Se un file remoto è cambiato dall'ultimo download, `push` si ferma e ti chiede di eseguire prima il pull.
+
+Rational AI non compila nulla al salvataggio. Per un'estensione compilata, esegui il compilatore o la sua modalità watch in locale e invia i file generati.
+
+`extensions dev status` mostra se lo sviluppo è attivo. Fermare `watch` non disattiva lo sviluppo.
+
+Per fare una prova su un'altra installazione di Rational AI, crea un secondo profilo e installa lì lo ZIP scaricato con `extensions dev install --profile local --file downloaded.zip`.
+
+## Salva il risultato in Git {#save-the-result-in-git}
+
+1. Se hai modificato nella Control Room, scarica i file nel tuo checkout:
+
+   ```sh
+   rationalai-cli-extensions extensions dev pull --profile remote --directory ./extension
+   ```
+
+   `pull` rifiuta di sovrascrivere le modifiche locali che entrano in conflitto con quelle remote.
+
+2. Controlla le differenze con `git diff`, poi fai commit e push come di consueto.
+3. Aggiungi `.rational-development.json` a `.git/info/exclude`. La CLI lo usa per identificare l'installazione e gli hash dei file.
+
+Un download contiene i file installati. Se l'estensione include JavaScript compilato, i sorgenti TypeScript non sono inclusi: conservali nel tuo repository. Per distribuire le modifiche, aumenta la versione e crea un nuovo pacchetto.
+
+## Disattiva lo sviluppo {#turn-development-off}
+
+Seleziona **Disattiva sviluppo** nella scheda **Sviluppo**, oppure esegui:
+
+```sh
+rationalai-cli-extensions extensions dev stop --profile remote --directory ./extension
+```
+
+Le modifiche ai file vengono bloccate e la policy di aggiornamento riprende. I file correnti restano al loro posto finché un aggiornamento o una reinstallazione non li sostituisce, e non esiste una cronologia da cui recuperare i file sovrascritti. Prima, scarica il tuo lavoro o fanne il commit.
+
+Finché lo sviluppo è attivo, l'estensione non può essere aggiornata né disinstallata.
+
+## Usa l'API {#use-the-api}
+
+Questi percorsi sono relativi a `/api/management/v0`. La lettura richiede l'accesso in lettura all'estensione. Attivare o disattivare lo sviluppo e modificare i file richiedono il ruolo di amministratore.
+
+| Metodo e percorso | Scopo |
+|---|---|
+| `GET /extensions/{id}/development` | Legge `{extensionId, enabled}` |
+| `PUT /extensions/{id}/development` | Invia `{"enabled": true}` o `{"enabled": false}` |
+| `GET /extensions/{id}/development/files` | Elenca i percorsi relativi, le dimensioni e gli hash SHA-256 |
+| `GET /extensions/{id}/development/file?path=…` | Scarica un file, con il suo hash come `ETag`. Aggiungi `download=true` per un allegato, o `maxBytes=N` per ricevere `413` per un file più grande |
+| `PUT /extensions/{id}/development/file?path=…` | Crea o sostituisce un file. Il corpo è il contenuto grezzo del file |
+| `DELETE /extensions/{id}/development/file?path=…` | Elimina un file |
+| `GET /extensions/{id}/development/export` | Scarica uno ZIP dei file installati |
+
+Per sostituire o eliminare un file solo se non è cambiato, invia `If-Match: "<sha256>"` con il suo hash attuale. Per creare un file solo se non esiste, invia `If-None-Match: *`. Una precondizione non soddisfatta restituisce `412`. Scrivere mentre lo sviluppo è disattivato restituisce `409`.
+
+I percorsi sono relativi, al massimo di 512 caratteri, e non possono puntare dentro `.git`, seguire un link simbolico né differire da un percorso esistente solo per le maiuscole. L'installazione è limitata a 2 GiB e 100.000 file, e `manifest.json` a 2 MiB.
+
+Per seguire le modifiche in tempo reale, connettiti a `/api/extensions/events` con un client SignalR. Chiama `Subscribe(extensionId)` per un'installazione, `SubscribeAll()` per tutte quelle che puoi leggere e `Unsubscribe(extensionId)` per annullare l'iscrizione. L'evento `ExtensionChanged` riporta `{extensionId, path}`, con `path` nullo quando lo sviluppo viene attivato o disattivato. Dopo la connessione o la riconnessione, prima iscriviti e poi leggi l'elenco dei file, così non perdi le modifiche fatte mentre eri disconnesso.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| *"File edits require development mode on this installation."* | Lo sviluppo è disattivato. Attivalo dalla scheda **Sviluppo** o con `extensions dev enable`. |
+| *"Development must preserve installed identity and version. Publish a new release to change them."* | Il tuo `manifest.json` modifica `id`, `nameIdentifier` o `version`. Ripristinali. |
+| *"Exit development mode before updating this extension."* | Disattiva lo sviluppo prima di aggiornare o disinstallare l'estensione. |
+| `push` si ferma e ti chiede di eseguire il pull | Un file remoto è cambiato dall'ultimo download. Esegui `extensions dev pull`, risolvi i conflitti tra le modifiche, poi esegui di nuovo il push. |
+
+## Prossimi passi {#next-steps}
+
+- [Crea un'estensione](/operational-guides/build-an-extension): il manifest e il formato del pacchetto.
+- [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates): cosa succede all'installazione dopo lo sviluppo.

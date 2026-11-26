@@ -1,0 +1,403 @@
+---
+sidebar_position: 6
+sidebar_label: Crea un'estensione
+type: how-to
+audience: [developer]
+---
+
+# Crea un'estensione
+
+Un'estensione è un pacchetto che aggiunge funzionalità a Rational AI: strumenti MCP per gli agenti, skill, un canale di messaggistica, una fonte da cui una Knowledge sincronizza i file o un workflow di processing. Scrivi un `manifest.json` che dichiara cosa fornisce il pacchetto, aggiungi il codice che esegue, crea il pacchetto e installalo dalla Control Room.
+
+Per installare o configurare un'estensione creata da qualcun altro, vedi [Gestisci le estensioni](/operational-guides/manage-extensions).
+
+## Prima di iniziare {#before-you-begin}
+
+- Un account amministratore nella Control Room. Solo gli amministratori possono aggiungere estensioni private.
+- Un UUID per l'estensione (`uuidgen`). Generalo una volta e conservalo per ogni release.
+
+## Organizza il pacchetto {#lay-out-the-package}
+
+Tieni una cartella sorgente per ogni estensione:
+
+```
+my-extension/
+├── manifest.json        # identity and providers (required)
+├── icon.png             # icon shown in the Extensions list
+├── skills/              # optional: one folder per skill, each with a SKILL.md
+└── dist/                # built code the manifest points at
+```
+
+Un'estensione MCP remota non contiene codice. Il solo `manifest.json` è il pacchetto.
+
+## Scrivi il manifest {#write-the-manifest}
+
+Ogni manifest inizia con gli stessi campi:
+
+| Campo | Obbligatorio | Descrizione |
+|---|---|---|
+| `id` | Sì | L'UUID dell'estensione. Conservalo per tutta la vita dell'estensione. |
+| `nameIdentifier` | Sì | Un breve slug, come `time`. Insieme a `version` dà il nome alla radice del pacchetto. |
+| `version` | Sì | La versione della release, come `1.0.0`. |
+| `name` | Sì | Il nome mostrato nella Control Room. |
+| `description` | No | Cosa fa l'estensione, mostrato prima dell'installazione. |
+| `icon` | No | Un URL di immagine o un URI `data:`. Lascialo vuoto per usare l'`icon.png` incluso. |
+| `channelProviders`, `mcpServerProviders` | Sì | Array di provider. Includili, vuoti se non li usi. |
+| `sourceProviders`, `workflowProviders`, `ruleProviders`, `knowledgeProviders`, `widgetProviders` | No | Altri array di provider. Ometti quelli che non usi. |
+| `listing` | No | Come l'estensione appare nel Marketplace. Vedi [Presenta l'estensione nel Marketplace](#list-the-extension-in-the-marketplace). |
+
+Cosa fa l'estensione dipende dagli array di provider che compili:
+
+| Array di provider | Cosa aggiunge |
+|---|---|
+| `mcpServerProviders` | Strumenti che agenti e touchpoint chiamano, da un processo locale o da un server MCP remoto |
+| `channelProviders` | Un canale di messaggistica con cui gli utenti parlano con l'assistente |
+| `sourceProviders` | Una fonte da cui una Knowledge sincronizza i file |
+| `workflowProviders` | Un workflow di processing per i file di una Knowledge |
+| `ruleProviders` | Una regola di processing che instrada i file verso i workflow |
+| `knowledgeProviders` | Una Knowledge pronta all'uso, con le sue viste, collezioni, record, agenti e dashboard BI, come nelle soluzioni del Marketplace |
+| `widgetProviders` | Un elemento personalizzato che mostra le chiamate di uno strumento nella chat |
+
+Le skill non richiedono un provider. Rational AI registra ogni `skills/<name>/SKILL.md` del pacchetto quando l'estensione viene installata. Legge `name`, `description` e `version` dal front matter del file e usa il nome della cartella quando `name` manca. Per offrire le skill in chat, vedi [Usa le skill in chat](/operational-guides/agent-skills).
+
+### Aggiungi un server MCP locale {#add-a-local-mcp-server}
+
+Un server locale è un processo che Rational AI avvia tramite stdio. Ometti `transportType` e indica `command` e `arguments`:
+
+```json
+{
+  "id": "fcb66d0a-1557-4041-8f93-2adc1999608f",
+  "nameIdentifier": "time",
+  "version": "1.0.0",
+  "name": "Time",
+  "description": "Get the current time and convert between IANA time zones.",
+  "icon": "",
+  "channelProviders": [],
+  "mcpServerProviders": [
+    {
+      "id": "time-server",
+      "name": "Time-server",
+      "path": "",
+      "command": "uvx",
+      "arguments": ["mcp-server-time", "--local-timezone=Europe/Rome"],
+      "configuration": {}
+    }
+  ]
+}
+```
+
+| Campo | Descrizione |
+|---|---|
+| `id` | Un'identità stabile del server tra le release. I manifest più vecchi non lo includono, e viene usato il `name`. |
+| `command`, `arguments` | Il processo da avviare e i suoi argomenti. |
+| `path` | La cartella di lavoro, relativa alla radice del pacchetto, come `dist`. |
+| `environment` | Variabili d'ambiente per il processo. |
+| `installScript`, `uninstallScript` | Comandi eseguiti una volta quando l'estensione viene installata o rimossa. |
+| `beforeCallScript`, `afterCallScript` | Comandi eseguiti prima e dopo ogni chiamata a uno strumento. |
+| `configuration` | I valori che l'amministratore inserisce. Vedi [Dichiara i campi di configurazione](#declare-configuration-fields). |
+
+### Aggiungi un server MCP remoto {#add-a-remote-mcp-server}
+
+Un server remoto gira già altrove, e Rational AI si connette a esso tramite HTTP. Imposta `transportType` su `http` e indica un `url` e, se servono, `headers`:
+
+```json
+{
+  "id": "407134fe-a77a-4fe5-8d9e-5ab08c4a01ad",
+  "nameIdentifier": "github-remote",
+  "version": "1.0.0",
+  "name": "GitHub (Remote)",
+  "icon": "https://example.com/github.svg",
+  "channelProviders": [],
+  "mcpServerProviders": [
+    {
+      "name": "GitHub Remote MCP Server",
+      "transportType": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${accessToken}" },
+      "configuration": {
+        "accessToken": {
+          "title": "GitHub Personal Access Token",
+          "provider": { "kind": "value", "type": "{ \"type\": \"string\" }" },
+          "isRequired": true,
+          "isHidden": false
+        }
+      }
+    }
+  ]
+}
+```
+
+Un server remoto si autentica con un valore inviato in un header, come un token o una chiave. Un manifest non può descrivere un flusso OAuth interattivo, quindi usa un server che accetta un token.
+
+### Aggiungi un canale {#add-a-channel}
+
+Un canale permette agli utenti di raggiungere l'assistente tramite un servizio di messaggistica. Dichiaralo in `channelProviders`:
+
+```json
+{
+  "channelProviders": [
+    {
+      "id": "4c0369fa-ac30-4851-993f-ada2965d5e0c",
+      "name": "Telegram chat service",
+      "description": "Exchange messages through Telegram.",
+      "type": "Telegram",
+      "configuration": {
+        "token": {
+          "alias": "Bot Token",
+          "description": "The bot token issued by BotFather.",
+          "type": "{\"type\": \"string\"}",
+          "isRequired": true,
+          "isHidden": false
+        }
+      }
+    }
+  ]
+}
+```
+
+`type` è uno tra `Telegram`, `Whatsapp`, `Email`, `Teams`, `Slack`, `RationalAI`, `OpenAIApi` o `None`. Un canale con un blocco `runtime` è guidato da un programma: Rational AI esegue il tuo programma tramite stdio con il protocollo `channel-rpc-v1` per creare il canale, ricevere i messaggi e inviare le risposte. TODO(verify): la forma delle richieste e delle risposte di `channel-rpc-v1`.
+
+### Aggiungi una fonte {#add-a-source}
+
+Un provider di fonti diventa un tipo di fonte che puoi collegare a una Knowledge. A ogni sincronizzazione, Rational AI esegue il programma in `runtime`, scrive la configurazione della fonte in formato JSON sul suo stdin e legge dal suo stdout un elenco `{ "files": [...] }`. Poi Rational AI scarica i file da sé.
+
+```json
+{
+  "sourceProviders": [
+    {
+      "id": "c0b2f8d3-4e5a-4b7c-9d2e-3f6a8b0c1d22",
+      "name": "ArXiv Catchup",
+      "description": "Download arXiv PDFs matching a category and time window.",
+      "runtime": {
+        "path": "dist",
+        "command": "uv",
+        "arguments": ["run", "arxiv_catchup.py", "list"],
+        "protocol": "list-json-v1"
+      },
+      "expiry": { "mode": "window" },
+      "configuration": {
+        "category": {
+          "alias": "Category",
+          "description": "arXiv category to fetch, for example cs.AI.",
+          "type": "{\"type\":\"string\"}",
+          "isRequired": true,
+          "isHidden": false
+        }
+      }
+    }
+  ]
+}
+```
+
+| Campo | Descrizione |
+|---|---|
+| `runtime.command`, `runtime.arguments` | Il programma che elenca i file. |
+| `runtime.path` | La sua cartella di lavoro, relativa alla radice del pacchetto. |
+| `runtime.protocol` | La versione del contratto. Usa `list-json-v1`. |
+| `expiry.mode` | `window` elimina i file già sincronizzati che il programma non restituisce più. `none` (il valore predefinito) non elimina mai nulla. |
+
+Ogni voce in `files` richiede un `filename` univoco e, in più, un `url` da cui scaricarlo oppure il `content` del file codificato in base64. Può includere anche `mimeType`, `submittedDate` e `loadAsResource`:
+
+```json
+{
+  "files": [
+    { "filename": "piece.jpg", "url": "https://example.com/piece.jpg", "mimeType": "image/jpeg" },
+    { "filename": "piece.json", "content": "eyJ0aXRsZSI6ICIuLi4ifQ==", "mimeType": "application/json", "loadAsResource": false }
+  ]
+}
+```
+
+Un file con `loadAsResource` omesso o `true` diventa una risorsa della Knowledge ed è elaborato. Un file con `false` viene salvato insieme agli altri perché un workflow lo legga, e non diventa mai una risorsa. Imposta `false` sui file di metadati e sui file accessori, altrimenti arrivano come risorse vuote. Una regola di processing non può impedire che un file venga caricato. Se cambi il flag su un file già sincronizzato, la modifica ha effetto alla sincronizzazione successiva.
+
+Una sincronizzazione fallisce se il programma non scrive nulla su stdout o stderr per 30 minuti.
+
+### Aggiungi un workflow {#add-a-workflow}
+
+Un provider di workflow punta a uno script nel pacchetto. All'installazione, Rational AI lo registra come [workflow di processing](/operational-guides/create-workflow) che può essere assegnato ai file della Knowledge.
+
+```json
+{
+  "workflowProviders": [
+    {
+      "id": "transcribe-media",
+      "name": "Transcribe Audio/Video",
+      "description": "Transcribe an audio or video file into a Markdown resource.",
+      "path": "dist",
+      "script": "transcribe_workflow.py",
+      "timeout": 30,
+      "isActive": true
+    }
+  ]
+}
+```
+
+| Campo | Descrizione |
+|---|---|
+| `path` | La cartella del pacchetto che contiene lo script, come `dist`. |
+| `script` | Il nome file dello script, relativo a `path`. |
+| `timeout` | Il timeout di ogni esecuzione, in minuti. |
+| `isActive` | Se il workflow può essere assegnato subito dopo l'installazione. Predefinito: `true`. |
+
+Lo script è un workflow normale: una funzione `process(document, options)` passata a `run`, con le sue dipendenze dichiarate in linea nel formato [PEP 723](https://peps.python.org/pep-0723/):
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["rational-client", "faster-whisper"]
+# ///
+from rational_client.core import File, Knowledge
+from rational_client.utils import run
+
+
+def process(document: File, options: dict):
+    knowledge = Knowledge(document.knowledge_id)
+    resource = knowledge.create_resource(name=document.name, file_id=document.id)
+    markdown = transcribe(document.get_data())  # your logic here
+    return {str(resource.resource_id): markdown}
+
+
+run(process)
+```
+
+Un workflow installato da un'estensione compare in **Impostazioni** → **Workflow** e può essere assegnato, ma è di sola lettura. Disinstallare l'estensione elimina il workflow, a meno che una Knowledge lo usi. In quel caso il workflow resta e diventa modificabile.
+
+Un provider di regole ha gli stessi campi `id`, `name`, `path` e `script` e registra una [regola di processing](/operational-guides/create-processing-rule). Installare una release più recente aggiorna una regola il cui codice è cambiato.
+
+### Aggiungi un widget alla chat {#add-a-chat-widget}
+
+Un provider di widget fornisce uno script che definisce un elemento personalizzato. Quando un agente chiama uno strumento con lo stesso nome dell'elemento, la chat mostra la chiamata con il tuo elemento invece degli argomenti grezzi.
+
+```json
+{
+  "widgetProviders": [
+    { "tagName": "ticket-routing", "path": "dist/widget/tickets.js", "description": "Pick the office that handles a ticket." }
+  ]
+}
+```
+
+`tagName` deve coincidere con il nome dello strumento, e il nome di un elemento personalizzato deve contenere un trattino, quindi dai allo strumento un nome adeguato. `path` è relativo alla radice del pacchetto.
+
+## Dichiara i campi di configurazione {#declare-configuration-fields}
+
+Un provider che richiede valori (credenziali, endpoint, opzioni) dichiara una mappa `configuration`. Ogni chiave è un campo del modulo che l'amministratore compila dopo l'installazione.
+
+| Campo | Descrizione |
+|---|---|
+| `title` (server MCP), `alias` (canali e fonti) | L'etichetta del campo. |
+| `description` | Testo di aiuto. Sono ammessi link HTML. |
+| `isRequired` | Se il valore è obbligatorio. |
+| `isHidden` | `true` per i valori che l'amministratore non inserisce, come un URL di webhook. |
+| `defaultValue` | Il valore precompilato. |
+| `type` (canali e fonti) | Uno JSON Schema **codificato come stringa**, come `"{\"type\":\"string\"}"`. |
+| `provider` (server MCP) | Da dove arriva il valore. `{ "kind": "value", "type": "<JSON Schema as a string>" }` è digitato a mano. `{ "kind": "connector", "type": "braveApiKey" }` è un [connettore](/operational-guides/configure-connectors) salvato di quel tipo. |
+
+Un campo nascosto con `{ "kind": "connector", "type": "rational" }` viene compilato con il connettore integrato di Rational AI. Usalo per un server che chiama l'API di Rational AI. Il suo valore contiene `baseUrl` e `apiKey`.
+
+Usa il valore di un campo altrove nella voce del server MCP con `${fieldName}`, in `environment`, `arguments`, `url` e `headers`. Per accedere a un elemento interno di un valore di tipo oggetto, usa il punto:
+
+```json
+"environment": {
+  "BACKEND_ADDRESS": "${rationalai.baseUrl}",
+  "BACKEND_API_KEY": "${rationalai.apiKey}"
+}
+```
+
+In `arguments`, `${fieldName?--flag}` aggiunge `--flag` solo quando il valore è impostato e non è `false`. Un argomento che si risolve in una stringa vuota viene scartato.
+
+## Presenta l'estensione nel Marketplace {#list-the-extension-in-the-marketplace}
+
+Un manifest con un blocco `listing` diventa una soluzione nel [Marketplace](/operational-guides/marketplace) quando la sua release viene pubblicata nel **Catalogo Rational AI**. Un caricamento privato non conserva la scheda del Marketplace. I testi sono mappe con chiave per lingua, e le sole chiavi ammesse sono `it` e `en`.
+
+```json
+{
+  "listing": {
+    "tagline": { "en": "Companies, contacts and pipelines in one place.", "it": "Aziende, contatti e pipeline in un solo posto." },
+    "industries": ["services"],
+    "useCases": ["customer-service", "sales"],
+    "description": "listing/description.{lang}.md",
+    "screenshots": [
+      { "path": "listing/pipeline.{lang}.png", "label": { "en": "Pipeline" }, "caption": { "en": "Opportunities by stage" } }
+    ],
+    "setup": [
+      { "key": "owners", "title": { "en": "Assign the owners" }, "text": { "en": "Set Owner on companies and contacts." } }
+    ]
+  }
+}
+```
+
+| Campo | Descrizione |
+|---|---|
+| `tagline` | La riga sotto il nome. |
+| `industries` | Chiavi di un elenco fisso: `manufacturing`, `public-sector`, `retail`, `culture`, `defense`, `energy`, `healthcare`, `finance`, `services`. |
+| `useCases` | Chiavi di un elenco fisso, come `compliance`, `sales`, `customer-service` o `document-processing`. Una chiave sconosciuta viene rifiutata al caricamento, e l'errore elenca quelle ammesse. |
+| `description` | Il percorso di un file Markdown nel pacchetto. `{lang}` viene sostituito con ogni lingua. |
+| `summary`, `steps` | La sezione **Come funziona**: un breve paragrafo e i passaggi con `when`, `title` e `text`. |
+| `collections` | Le collezioni che la soluzione crea, ciascuna con il suo `name`, una `description` e i nomi delle sue `views`. |
+| `screenshots` | Immagini con `path`, `label` e `caption`. PNG, JPEG o WebP, fino a 5 MB ciascuna. `{lang}` nel percorso seleziona un'immagine per lingua. |
+| `cover` | Un'immagine di copertina facoltativa: un PNG 16:9 da 1600×900 a 7680×4320 pixel. |
+| `setup` | La checklist mostrata dopo l'installazione. Ogni passaggio ha una `key` univoca di lettere minuscole, cifre e trattini, più `title` e `text`. |
+| `source` | La fonte esterna che la soluzione legge: `name`, `schedule` e `reads`. |
+| `questions` | Domande di esempio per l'assistente. |
+
+Nome, versione e icona vengono dal manifest. I conteggi di viste, dashboard, strumenti, skill, workflow e record di esempio vengono calcolati dal pacchetto al caricamento.
+
+## Crea il pacchetto dell'estensione {#package-the-extension}
+
+Il pacchetto è un `.tar.bz2` (o `.zip`) con esattamente una cartella radice chiamata `<nameIdentifier>-<version>`, che contiene `manifest.json`. I percorsi nel manifest, come `dist`, sono relativi a quella cartella. Il pacchetto non può contenere link simbolici ed è limitato a 1 GiB compressi, 2 GiB espansi e 100.000 file.
+
+1. Compila il tuo codice in `dist/`.
+2. Crea l'archivio. Questo `make-tar.sh` legge nome e versione dal manifest e impacchetta `manifest.json`, `icon.png` e `dist/`. Aggiungi altre cartelle, come `skills/`, a `payload`.
+
+   ```sh
+   #!/bin/sh
+   set -eu
+   cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+   python3 - <<'PYTHON'
+   import json, re, tarfile
+   from pathlib import Path
+
+   manifest = json.loads(Path("manifest.json").read_text())
+   identity = [manifest["nameIdentifier"], manifest["version"]]
+   if not all(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) for value in identity):
+       raise ValueError("Invalid package identity")
+   package_name = "-".join(identity)
+   payload = [Path("manifest.json"), Path("icon.png"), Path("dist")]
+   output = Path("artifacts")
+   output.mkdir(exist_ok=True)
+   with tarfile.open(output / f"{package_name}.tar.bz2", "w:bz2") as archive:
+       for path in payload:
+           archive.add(path, arcname=f"{package_name}/{path}")
+   print(output / f"{package_name}.tar.bz2")
+   PYTHON
+   ```
+
+3. Esegui `sh make-tar.sh`. L'archivio viene scritto in `artifacts/`. Tieni quella cartella fuori da Git.
+
+Un'estensione MCP remota non richiede alcun pacchetto: carica il suo `manifest.json`.
+
+## Installa e prova l'estensione {#install-and-test-the-extension}
+
+1. Vai in **Impostazioni** → **Estensioni** e seleziona **Aggiungi estensione privata**.
+2. Scegli l'archivio, oppure il manifest per un'estensione remota. Puoi anche trascinare il file nella pagina.
+3. Se la scheda mostra **Da configurare**, apri l'estensione, seleziona **Impostazioni** dal suo menu delle opzioni, compila i campi e salva. Il salvataggio avvia l'estensione ed elenca i suoi strumenti.
+
+Per rilasciare una modifica, aumenta `version` e carica di nuovo: installare una versione già installata riusa quella release. Per modificare direttamente i file installati mentre provi, vedi [Sviluppa un'estensione](/operational-guides/develop-an-extension).
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| *"Package must contain exactly one extension root directory."* | L'archivio ha file al suo primo livello, oppure più cartelle. Metti tutto dentro un'unica cartella `<nameIdentifier>-<version>/`. |
+| *"Package root must be named '…'."* | La cartella radice non corrisponde a `nameIdentifier` e `version` nel manifest. Ricrea l'archivio dopo aver cambiato uno dei due. |
+| *"Unsupported file. Use a .tar.bz2, .zip, .mcpb or manifest .json bundle."* | Il file ha un'estensione diversa. Carica un pacchetto `.tar.bz2`, `.zip` o `.mcpb`, oppure un `manifest.json`. |
+| *"Workflow '…' already exists and is not owned by this extension."* | Nel workspace esiste già un workflow con lo stesso nome. Rinomina il provider del workflow oppure il workflow esistente. |
+| Le modifiche non compaiono dopo un nuovo caricamento | Il campo `version` non è cambiato, quindi viene riusata la release già installata. Aumenta la versione. |
+| Un valore `${fieldName}` arriva al server vuoto | Il nome non corrisponde a una chiave di `configuration`, oppure il campo non ha un valore. |
+| I file di metadati sincronizzati compaiono come risorse vuote | La fonte li restituisce senza `"loadAsResource": false`. |
+
+## Prossimi passi {#next-steps}
+
+- [Sviluppa un'estensione](/operational-guides/develop-an-extension): modifica i file di un'estensione installata senza ricrearne il pacchetto.
+- [Gestisci le estensioni](/operational-guides/manage-extensions): installa, configura, attiva e disattiva le estensioni.
+- [Crea un workflow](/operational-guides/create-workflow): scrivi il workflow che un provider di workflow fornisce.

@@ -1,0 +1,22 @@
+---
+sidebar_position: 28
+sidebar_label: Non determinismo
+title: Non determinismo
+description: Perché la stessa domanda può ottenere risposte diverse, cosa fa la temperatura e dove la controlli in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Non determinismo
+
+Con **non determinismo** si intende che la stessa domanda può ottenere risposte diverse. Un modello sceglie ogni parola con un certo grado di casualità tra le opzioni più probabili, quindi due esecuzioni con lo stesso input possono differire.
+
+Un'impostazione chiamata **temperatura** controlla quanto variano. Una temperatura bassa mantiene il modello sulle scelte più probabili e rende le risposte più ripetibili; una temperatura più alta le rende più varie. Anche con una temperatura bassa, non è garantito che le risposte siano identiche.
+
+Due risposte diverse possono essere entrambe corrette. Valuta ogni risposta in base alla sua correttezza, non in base al fatto che coincida con la precedente.
+
+## In Rational AI {#in-rational-ai}
+
+- **Temperatura** e **Seed** fanno parte dei **Default per le inferenze** di un modello, nella sua pagina in **Impostazioni** → **Registro modelli AI**.
+- Un assistente che risponde partendo dalla tua [Knowledge](/concepts/Knowledge) mantiene coerenti i fatti anche quando cambia la formulazione. Vedi [RAG](/concepts/RAG).
+- In Chat puoi chiedere un'altra versione di una risposta. Vedi [Genera una risposta alternativa](/operational-guides/chat-experience#generate-an-alternative-answer).

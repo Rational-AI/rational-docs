@@ -25,12 +25,36 @@ html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	}
 }
 
-/* Search first, theme toggle at the far right, at every width */
+/* The language switcher also stays in the bar on small screens, where
+   Docusaurus would only show it in the drawer. Icon only there, to fit. */
+@media (max-width: 996px) {
+	/* The className lands on the link, not on its wrapper */
+	.navbar__items--right .navbar__item:has(> .navbar-locale) {
+		display: block;
+		/* 16px each side: the toggle adds 12px of its own on the right */
+		padding: 4px 4px 4px 16px;
+	}
+	.navbar__link.navbar-locale {
+		display: flex;
+		font-size: 0;
+	}
+	.navbar__link.navbar-locale::after {
+		display: none;
+	}
+	.navbar__link.navbar-locale > svg {
+		margin: 0;
+	}
+}
+
+/* Search, language switcher, theme toggle at the far right, at every width */
 .navbar__items--right [class*="navbarSearchContainer"] {
 	order: 1;
 }
-.navbar__items--right [class*="colorModeToggle"] {
+.navbar__items--right .navbar__item:has(> .navbar-locale) {
 	order: 2;
+}
+.navbar__items--right [class*="colorModeToggle"] {
+	order: 3;
 	margin-left: 0.5rem;
 }
 

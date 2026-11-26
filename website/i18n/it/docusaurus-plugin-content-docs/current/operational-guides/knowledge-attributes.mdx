@@ -1,0 +1,128 @@
+---
+sidebar_position: 7
+sidebar_label: Tipi di attributo
+type: how-to
+audience: [builder]
+---
+
+# Scegli il tipo di attributo giusto
+
+Una griglia fatta solo di colonne di testo presto raggiunge i suoi limiti: riscrivi il nome di un cliente in ogni contratto, calcoli a mano le date di rinnovo e non riesci a capire a colpo d'occhio quanto vale ciascun cliente. In una [Knowledge](/operational-guides/create-knowledge) di Rational AI, ogni attributo ha un tipo. Oltre a testo, numeri e date, esistono tipi che collegano i record e calcolano valori al posto tuo: i **collegamenti** tra collezioni, i **campi collegati** che leggono attraverso un collegamento, le **formule**, le **aggregazioni** che contano o sommano i record collegati, e le **persone**. Questa guida spiega ogni tipo, come crearlo e come rinominare un attributo in sicurezza.
+
+:::note[Che cos'è un attributo?]
+Un attributo è un campo con nome dei record della Knowledge, come *Status*, *Amount* o *Account manager*, mostrato come colonna nella [griglia](/operational-guides/knowledge-collections-and-grid). Gli attributi appartengono alla Knowledge; ogni [collezione](/operational-guides/knowledge-collections-and-grid#organize-records-into-collections) sceglie quali mostrare. Il suo **tipo** decide quali valori accetta, come si modifica e come può essere filtrato, ordinato, raggruppato e riassunto. Alcuni tipi sono valori memorizzati che modifichi; altri (Campo collegato, Formula, Aggregazione) sono calcolati e in sola lettura.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Diritti di aggiornamento sulla Knowledge:** creare, modificare e rimuovere attributi richiede il permesso **Modifica** sulla Knowledge.
+- **Collezioni, per i collegamenti:** gli attributi di tipo Collegamento, Campo collegato e Aggregazione collegano i record delle collezioni, quindi crea prima le collezioni. Vedi [Collezioni e viste a griglia](/operational-guides/knowledge-collections-and-grid).
+
+## Crea un attributo {#create-an-attribute}
+
+Lo stesso editor si apre da tre punti: il **+** alla fine dell'intestazione della griglia (*"Nuovo attributo"*), **Cambia tipo** nel menu di una colonna, e **Nuovo attributo** nella scheda delle impostazioni **Attributi** della Knowledge.
+
+1. Inserisci un **Nome**.
+2. Sotto **Tipo**, scegli un tipo: **Testo**, **Numero**, **Valuta**, **Data**, **Data e ora**, **Casella di controllo**, **Selezione singola**, **Selezione multipla**, **Elenco**, **Collegamento**, **Campo collegato**, **Formula**, **Aggregazione** o **Persona**.
+3. Compila le opzioni del tipo, descritte di seguito.
+4. Seleziona **Crea** (oppure **Salva** quando modifichi un attributo esistente).
+
+Per **Selezione singola** e **Selezione multipla**, aggiungi le **Opzioni** con **+ Aggiungi opzione** e assegna un colore a ciascuna. Puoi anche creare nuove opzioni in seguito, direttamente da una cella.
+
+Per le rare impostazioni che il modulo non offre, come un filtro su un'aggregazione, seleziona **Modifica come JSON Schema**. Seleziona **Scegli un tipo** per tornare al modulo.
+
+## Collegamento {#link}
+
+Un attributo **Collegamento** collega un record ai record di una collezione: un contratto alla sua *Company*, un'opportunità ai suoi *Contacts*.
+
+- **Record di**: la collezione a cui punta il collegamento.
+- **Si possono collegare più record**: attivalo per un collegamento molti-a-molti, come i contatti di una riunione.
+- **Tipo di relazione**: il nome della relazione alla base del collegamento, per impostazione predefinita il nome dell'attributo. Anche le relazioni di questo tipo create dai workflow o nel grafo compaiono nella colonna.
+
+Nella griglia, i record collegati compaiono come chip che aprono il record. L'editor della cella cerca nella collezione di destinazione; se il nome che digiti non corrisponde a nessun record, **Crea "…"** aggiunge un nuovo record a quella collezione, salvato insieme alle altre modifiche.
+
+:::note[Un collegamento è una relazione, quindi compare nel grafo]
+Un collegamento è memorizzato come relazione tra due risorse, non come valore di testo. Per questo compare nel [grafo della Knowledge](/operational-guides/knowledge-graph), nella sezione **Collegato da** del record collegato, e per questo rinominare il record collegato non lo interrompe mai.
+:::
+
+## Campo collegato {#linked-field}
+
+Un **Campo collegato** mostra un attributo del record collegato, come il *Sector* dell'azienda di un contratto, senza copiarlo.
+
+- **Attraverso il collegamento**: uno dei tuoi attributi di tipo Collegamento.
+- **Mostra del record collegato**: l'attributo da leggere.
+
+La colonna è in sola lettura e sempre aggiornata. Può leggere attributi memorizzati, ma non altri attributi calcolati (collegamenti, campi collegati o formule). Se non hai ancora un collegamento, l'editor ti chiede di crearne prima uno.
+
+## Formula {#formula}
+
+Una **Formula** calcola un valore dagli altri attributi del record ogni volta che i record vengono letti, quindi non è mai obsoleta.
+
+- **Formula**: l'espressione, per esempio `DATE_ADD({End date}, -{Notice days}, "days")`.
+- **Tipo di risultato**: **Numero**, **Valuta**, **Testo**, **Data**, **Data e ora** o **Casella di controllo**. Filtri, ordinamento, raggruppamenti e riepiloghi trattano la colonna come questo tipo.
+
+Mentre digiti, Rational AI controlla la formula e mostra un'**Anteprima** del risultato sui primi cinque record; un errore indica il carattere in cui si trova.
+
+| Elemento | Come scriverlo |
+| --- | --- |
+| Attributi | Tra parentesi graffe: `{Amount}`, `{Renewal date}`. Funzionano anche i campi collegati, le aggregazioni e le altre formule, così come `{Name}` e `{Created}`. |
+| Valori | Numeri, `"text in quotes"`, `TRUE`, `FALSE`. |
+| Operatori | `+ - * /`, `&` per unire testo, `= != < <= > >=`. |
+| Logica | `IF(condition, then, else)`, `AND(…)`, `OR(…)`, `NOT(x)`, `BLANK()`, `IS_BLANK(x)`. |
+| Numeri | `ROUND(n, digits)`, `ABS(n)`, `MIN(…)`, `MAX(…)`. |
+| Date | `TODAY()`, `DATE_ADD(date, n, "unit")`, `DATE_DIFF(date1, date2, "unit")`, con le unità `days`, `months`, `years`, `hours`, `minutes`. |
+| Testo | `CONCAT(…)`, `UPPER(text)`, `LOWER(text)`, `LEN(text)`. |
+
+Ad esempio, `IF({Amount} > 10000, "Key account", "Standard")` etichetta i grandi clienti, e `DATE_DIFF({Renewal date}, TODAY(), "days")` conta i giorni che mancano a un rinnovo.
+
+:::note[Una formula non fallisce mai su un record]
+Un input vuoto, una divisione per zero o un valore fuori intervallo produce una cella vuota invece di un errore, quindi un record incompleto non interrompe la colonna. Una formula non può fare riferimento a se stessa, né direttamente né attraverso altre formule.
+:::
+
+## Aggregazione {#rollup}
+
+Un'**Aggregazione** riassume i record collegati a questo: quante opportunità ha un'azienda, il loro valore totale, la data dell'ultima riunione.
+
+- **Sui record**: i record collegati da riassumere. Puoi seguire uno dei collegamenti di questo record (*"Companies (i record di Companies a cui rimanda)"*) oppure i record il cui collegamento punta *a* questo record (*"Opportunities il cui Company è questo record"*).
+- **Calcola**: **Conta i record**, **Conta i compilati**, **Conta i vuoti**, **Conta i valori distinti**, **Somma**, **Media**, **Minimo**, **Massimo**, **Data più vecchia** o **Data più recente**.
+- **Sull'attributo**: l'attributo su cui calcolare (non serve per **Conta i record**). Somme e medie accettano numeri, **Data più vecchia** e **Data più recente** accettano date; l'elenco propone solo gli attributi compatibili.
+
+Un'aggregazione può riassumere attributi memorizzati, campi collegati e formule, ma non un collegamento né un'altra aggregazione. La colonna è in sola lettura; seleziona una cella per [vedere i record da cui deriva](/operational-guides/knowledge-collections-and-grid#follow-a-rollup-to-its-records).
+
+## Persona {#person}
+
+Un attributo **Persona** indica gli utenti del workspace: l'account manager di un cliente, il proprietario di un'attività.
+
+- **Si possono indicare più persone**: attivalo per consentire più di una persona.
+
+Il selettore elenca gli utenti che possono leggere la Knowledge, più una scorciatoia **Io**. Ogni persona indicata in un record riceve una notifica nell'app, a meno che non si sia indicata da sola. Gli attributi Persona abilitano anche altre due funzionalità:
+
+- **Filtra per "Io":** una vista della griglia filtrata su *Account manager* **è uno tra** **Io** mostra a ciascun utente i propri record.
+- **Promemoria alle persone del record:** un [promemoria](/operational-guides/knowledge-reminders) può avvisare chiunque sia indicato nel record.
+
+## Rinomina un attributo {#rename-an-attribute}
+
+Rinominare cambia l'attributo ovunque Rational AI possa trovarlo, ma non nel codice.
+
+1. Nella griglia, apri il menu della colonna e scegli **Rinomina**.
+2. Inserisci il nuovo nome.
+3. Leggi l'elenco **Codice che usa questo nome**: i workflow e le viste personalizzate che fanno riferimento all'attributo. Quelli che provengono da un'estensione sono contrassegnati come *sola lettura*.
+4. Seleziona **Rinomina**.
+
+Vengono aggiornati i valori di ogni record, gli elenchi di attributi delle collezioni, le viste della griglia salvate e i collegamenti, i campi collegati, le aggregazioni e le formule che usano l'attributo. Le voci della **Cronologia** precedenti mantengono il nome che avevano al momento.
+
+:::warning[Aggiorna il codice che usa il vecchio nome]
+I workflow e le viste personalizzate continuano a usare il vecchio nome finché non li modifichi. Un'estrazione AI in esecuzione mentre rinomini scrive ancora il vecchio nome e le sue risorse vengono rifiutate: eseguila di nuovo quando la rinomina è completata.
+:::
+
+## Rimuovi un attributo {#remove-an-attribute}
+
+Scegli **Rimuovi attributo** nel menu della colonna. L'attributo esce dalla griglia, dalle collezioni e dall'estrazione AI, ma i record conservano i loro valori: creare un attributo con lo stesso nome li mostra di nuovo.
+
+## Prossimi passi {#next-steps}
+
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)
+- [Imposta promemoria sulle date](/operational-guides/knowledge-reminders)
+- [Esplora una Knowledge come grafo](/operational-guides/knowledge-graph)

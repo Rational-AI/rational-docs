@@ -1,0 +1,55 @@
+---
+sidebar_position: 9
+sidebar_label: Registro modelli AI
+title: Registro modelli AI
+description: Cos'è un registro dei modelli, perché centralizzarli è importante e come funziona il Registro modelli AI in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Registro modelli AI
+
+Un **registro modelli AI** è un catalogo centrale dei modelli che un'organizzazione può usare. Invece di collegare ogni modello a ciascuna applicazione separatamente, registri un modello una sola volta e poi lo richiami dovunque serva.
+
+Pensalo come una biblioteca con uno schedario. I modelli sono i libri; il registro è il sistema che tiene traccia di cosa hai, di dove si trova ciascuno e di chi può usarlo. Senza registro, ogni team finisce con il proprio scaffale e nessuno sa con certezza quale copia sia aggiornata.
+
+## Perché un registro è importante {#why-a-registry-matters}
+
+Non appena entra in gioco più di un modello, emergono alcuni problemi: quali modelli sono approvati, quale versione è attiva, quanto costa ciascuno e chi è autorizzato a usarlo. Un registro risponde a queste domande in un unico punto e ti offre:
+
+* **Coerenza:** lo stesso modello, richiamato allo stesso modo, in chat, agenti, strumenti e workflow.
+* **Controllo:** un unico punto da cui decidere quali modelli sono disponibili e quali sono approvati per l'uso.
+* **Visibilità:** le informazioni chiave, come tipo, dimensione e ultimo aggiornamento, raccolte insieme.
+* **Manutenibilità:** la possibilità di aggiungere, sostituire o ritirare modelli senza riconfigurare tutto ciò che li usa.
+
+## I modelli hanno tipi diversi {#models-come-in-types}
+
+Un registro contiene in genere più tipi di modelli, perché compiti diversi richiedono [architetture](/reference/glossary#model) diverse:
+
+* **Modelli generativi** che producono risposte.
+* **Modelli di embedding** che trasformano il testo in vettori per il retrieval.
+* **Modelli di reranking** che riordinano i passaggi recuperati in base alla pertinenza.
+* **Modelli di generazione di immagini** che creano immagini a partire da un prompt.
+
+Il registro di Rational AI contiene anche modelli **Decisione**, che restituiscono una risposta strutturata invece di un testo discorsivo. Tenerli tutti nello stesso catalogo permette a un sistema [RAG](./RAG.mdx) di combinare retrieval e generazione in modo ordinato.
+
+## Il Registro modelli AI in Rational AI {#the-ai-model-registry-in-rational-ai}
+
+Nella piattaforma, il [Registro modelli AI](../cr/settings/ai-model-registry.mdx) è il punto in cui aggiungi i modelli una volta sola e li riusi in modo coerente in tutto il prodotto. Controlli quali modelli sono disponibili, consulti i dettagli principali e gestisci le modifiche nel tempo. I modelli che crei con il [fine-tuning](./Finetuning.mdx) compaiono anche qui, dopo che li hai distribuiti, insieme ai modelli base che hai registrato.
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Impostazioni del Registro modelli AI](../cr/settings/ai-model-registry.mdx): aggiungi e gestisci i modelli disponibili nella piattaforma.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Connettori", to: "/concepts/Connectors" },
+	]}
+/>

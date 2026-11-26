@@ -1,0 +1,109 @@
+---
+sidebar_label: Guida rapida per amministratori
+description: La tua prima ora come amministratore di un nuovo workspace di Rational AI, dal primo accesso a modelli, persone, governance e conservazione dei dati.
+type: tutorial
+audience: [admin]
+---
+
+# Guida rapida per amministratori
+
+In circa un'ora puoi portare un nuovo workspace di Rational AI da vuoto a pronto per i tuoi colleghi: modelli collegati, persone invitate con l'accesso giusto, regole su ciò che le applicazioni AI possono fare e una politica di conservazione. Ogni sezione rimanda alla guida completa, così puoi fermarti in qualsiasi punto e riprendere dopo.
+
+Due sezioni valgono solo per un'installazione on-premise, cioè una che gira su una macchina della tua rete. Sul cloud gestito, Rational AI applica il tuo piano e fa il backup dei dati, quindi le salti.
+
+## Prerequisiti {#prerequisites}
+
+- **Un account amministratore** sul workspace.
+- **Per un'installazione on-premise:** la macchina che Rational AI ha installato per te (vedi [La tua installazione on-premise](/operational-guides/on-premises-installation)).
+- **Per i modelli di un provider:** la chiave API del provider, per esempio di OpenAI o Anthropic.
+
+## 1. Accedi e trova Impostazioni {#1-sign-in-and-find-settings}
+
+1. Apri l'indirizzo della tua AI Control Room e accedi con il tuo account amministratore.
+2. Seleziona **Impostazioni**, l'ingranaggio nell'intestazione in alto.
+
+La barra laterale **Impostazioni** raggruppa tutto ciò che usa questa guida: **Modelli**, **Knowledge**, **Funzionalità**, **Distribuzione**, **Governance** e **Accesso**. Il tuo account si trova in fondo alla barra laterale: seleziona il tuo nome, poi **Impostazioni profilo**. Vedi [Gestisci il tuo account](/operational-guides/manage-your-account).
+
+## 2. Attiva la licenza (solo on-premise) {#2-activate-the-license-on-premises-only}
+
+Una nuova installazione non è attivata. Chat, Conversazioni, Governance e i modelli che colleghi con le tue credenziali del provider funzionano, ma i moduli del tuo piano (Knowledge, Rational BI, Agenti, Gen) restano nascosti, e il workspace ha tre postazioni. Attiva prima di invitare chiunque.
+
+1. Vai su **Impostazioni** → **Licenza**, l'ultima voce del gruppo **Accesso**.
+2. Inserisci il tuo codice di attivazione e seleziona **Attiva**.
+3. Controlla il piano, le postazioni e i moduli elencati nella pagina. I moduli compaiono subito nella navigazione in alto.
+
+Una macchina senza accesso a internet installa invece un file di licenza. Vedi [Attiva la licenza di un'installazione on-premise](/operational-guides/license).
+
+## 3. Collega i modelli {#3-connect-models}
+
+Ogni assistente richiede un modello per la generazione di testo, e ogni Knowledge richiede un modello di embedding. Un'installazione on-premise parte senza nessuno dei due.
+
+1. Vai su **Impostazioni** → **Registro modelli AI** e seleziona **Nuovo**.
+2. Aggiungi un modello di un provider tramite un [connettore](/operational-guides/configure-connectors), oppure, sui tuoi server, un modello open source che distribuisci sulla GPU della macchina (vedi [Esegui i modelli sui tuoi server](/operational-guides/run-models-on-premise)).
+3. Ripeti finché non hai almeno un modello per la generazione di testo e un modello di embedding.
+4. Nel pannello **Modelli predefiniti**, imposta il **Modello conversazionale** e il **Modello di embedding**, poi seleziona **Salva**.
+
+I modelli predefiniti sono valori di riserva: un touchpoint o una Knowledge con un modello proprio usa sempre quel modello. Il pannello ha predefiniti anche per gli agenti, la generazione di immagini e le decisioni. Vedi [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type).
+
+## 4. Aggiungi persone e decidi cosa possono fare {#4-add-people-and-decide-what-they-can-do}
+
+In Rational AI l'accesso dipende da tre elementi:
+
+- **Admin** è un flag, non un ruolo. Un amministratore ha tutti i permessi e aggira la matrice dei ruoli. Alcune aree sono riservate agli amministratori, qualunque cosa dicano i ruoli: l'area **Governance**, **Conservazione dei dati**, **Traccia di audit**, **Backup**, la pagina della licenza e la creazione di chiavi API.
+- Un **ruolo** è un insieme di permessi. Per ogni riga di funzionalità, come **Knowledge** o **Touchpoint**, concede azioni (**Elenco**, **Leggi**, **Crea**, **Modifica**, **Elimina**, **Usa**, **Condividi**), ciascuna con ambito **Nessuno**, **Tutti**, **Propri** o **ID selezionati**. I permessi di un utente sono la somma dei suoi ruoli.
+- Un **gruppo** non porta permessi. Decide quali elementi raggiunge un ruolo con ambito **Propri**: condividi una Knowledge con un gruppo, e ogni membro può usarla come se fosse sua.
+
+Configura prima i ruoli, così i nuovi utenti ricevono l'accesso giusto dal primo accesso:
+
+1. Vai su **Impostazioni** → **Ruoli**, seleziona un ruolo e imposta le celle della matrice. Vedi [Configura un ruolo](/operational-guides/roles-and-users#configure-a-role).
+2. Vai su **Impostazioni** → **Utenti** e seleziona **Aggiungi**.
+3. Scegli come aggiungere le persone:
+   - **Invita utenti**: scegli uno o più ruoli in **Ruolo**, inserisci gli **Indirizzi email** e seleziona **Invia invito**. Ogni indirizzo riceve un'email di invito, valida per 7 giorni.
+   - **Crea utente**: inserisci nome e indirizzo email, scegli il **Ruolo**, lascia la **Password temporanea** e seleziona **Crea**. Condividi tu la password con l'utente.
+4. Vai su **Impostazioni** → **Gruppi**, seleziona **Nuovo** e aggiungi i membri di ogni team.
+
+In **Ruolo**, **Admin** rende l'utente amministratore e **Utente** aggiunge un account senza ruolo. Ogni utente abilitato occupa una postazione della tua licenza, e gli inviti vengono rifiutati quando non ne restano. Dettagli completi: [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+:::tip
+Per verificare un ruolo, crea un utente di prova con solo quel ruolo e accedi come lui. Ogni sezione disabilitata di **Impostazioni** corrisponde a un permesso che il ruolo non ha.
+:::
+
+## 5. Decidi cosa possono fare le applicazioni AI {#5-decide-what-ai-applications-may-do}
+
+Ogni chiamata a un modello passa da Rational AI, quindi decidi quali applicazioni e quali modelli vengono serviti prima che i colleghi ci costruiscano sopra.
+
+1. **Registra le applicazioni.** Apri **Governance**, seleziona la scheda **Applicazioni** e registra ogni applicazione con un responsabile, uno **Stato** e un **Livello di rischio**. Un'applicazione **Bloccata**, oppure con livello **Inaccettabile**, non riceve alcuna risposta. Un livello **Alto** su un touchpoint fa attendere ogni chiamata a uno strumento l'approvazione di una persona. Vedi [Governa le applicazioni AI](/operational-guides/govern-ai-applications).
+2. **Approva i modelli.** In **Impostazioni** → **Registro modelli AI**, documenta e approva i modelli che consenti, poi attiva **Richiedi approvazione** nel pannello **Approvazione dei modelli**. Da quel momento, un modello che nessuno ha approvato rifiuta ogni richiesta. Vedi [Richiedi approvazione per i modelli](/operational-guides/govern-ai-applications#require-approval-for-models).
+3. **Controlla le chiamate agli strumenti.** Nella scheda **Strumenti** di ogni touchpoint, **Quando chiedere conferma** decide quali chiamate agli strumenti un utente deve approvare prima che vengano eseguite. Il valore predefinito, **Smart: solo per i tool sensibili (consigliato)**, chiede conferma solo per gli strumenti che modificano qualcosa. Vedi [Approva le chiamate agli strumenti prima che vengano eseguite](/operational-guides/approve-tool-calls).
+
+L'area **Governance** mostra anche utilizzo, costo e un registro di audit per ogni chiamata. Vedi [Monitora utilizzo, costi e audit log](/operational-guides/governance).
+
+## 6. Imposta per quanto tempo vengono conservati i dati {#6-set-how-long-data-is-kept}
+
+Rational AI conserva le chiamate ai modelli e le conversazioni finché non imposti un limite. Ogni periodo parte vuoto, e vuoto significa conservare per sempre.
+
+1. Vai su **Impostazioni** → **Conservazione dei dati**.
+2. Inserisci un numero di giorni per i periodi che vuoi: **Contenuto di prompt e risposte**, **Record delle chiamate al modello** e **Conversazioni chiuse**.
+3. Salva e torna dopo un'ora: l'intestazione della pagina mostra **Ultimo sweep** e quanti record ha rimosso.
+
+:::danger[L'eliminazione è definitiva]
+I record rimossi da un periodo di conservazione non possono essere recuperati. Concorda i periodi con chi si occupa della protezione dei dati nella tua organizzazione prima di impostarli.
+:::
+
+I contenuti non possono essere conservati più a lungo dei record delle chiamate, e la pagina rifiuta questa combinazione. Vedi [Imposta per quanto tempo i dati vengono conservati](/operational-guides/data-retention).
+
+## 7. Controlla backup e aggiornamenti (solo on-premise) {#7-check-backups-and-updates-on-premises-only}
+
+Un'installazione on-premise si aggiorna da sola ogni notte e fa un backup locale prima di ogni aggiornamento. Quel backup locale si trova sullo stesso disco dell'installazione, quindi non sopravvive alla perdita della macchina.
+
+1. Vai su **Impostazioni** → **Backup** e imposta una destinazione di tua proprietà: una condivisione di rete, un bucket S3 oppure un server FTP o SFTP.
+2. Seleziona **Prova destinazione**, poi **Esegui backup ora**, e verifica che il backup compaia nell'elenco.
+
+Il ripristino lo fa Rational AI. Vedi [Esegui backup e ripristino di un'installazione on-premise](/operational-guides/backup-and-restore) e [La tua installazione on-premise](/operational-guides/on-premises-installation).
+
+## Dove andare dopo {#where-to-go-next}
+
+- **Costruisci il primo assistente**: una Knowledge con i tuoi contenuti e una chat sopra. Vedi [Inizia con Rational AI](/operational-guides/get-started).
+- **Raggiungi i tuoi clienti**: collega un touchpoint a Microsoft Teams, Slack, Telegram o email. Vedi [Gestisci i canali](/operational-guides/manage-channels).
+- **Dimostra cosa è successo**: le decisioni di governance, gli utenti eliminati e chi ha letto una conversazione vengono registrati. Vedi [Consulta la traccia di audit](/operational-guides/audit-trail).
+- **Passa il lavoro agli sviluppatori**: chiavi API e gateway compatibile con OpenAI. Vedi [Guida rapida per sviluppatori](/operational-guides/quickstart-developer).

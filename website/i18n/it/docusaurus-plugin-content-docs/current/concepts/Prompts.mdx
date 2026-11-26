@@ -1,0 +1,48 @@
+---
+sidebar_position: 30
+sidebar_label: Prompt
+title: Prompt
+description: Come scrivere in Chat un prompt che ottiene una risposta utile, con esempi prima e dopo, e in che cosa si differenzia dal prompt di sistema di un touchpoint.
+type: concept
+audience: [user, builder]
+---
+
+# Prompt
+
+Un **prompt** è il messaggio o l'istruzione che invii a un modello. Il modello lavora solo a partire dal tuo prompt, dalla conversazione finora e da ciò che l'assistente recupera. Per questo un prompt chiaro ottiene una risposta più utile di uno vago.
+
+## Scrivi un buon prompt {#write-a-good-prompt}
+
+- **Indica esattamente cosa vuoi.** Nomina il compito, l'argomento e il lettore: "un riepilogo di 150 parole per il team commerciale", non "un riepilogo".
+- **Fornisci il contesto.** Indica per chi è, a cosa serve e cosa sai già. Il modello non può indovinare la tua situazione.
+- **Indica il formato.** Una tabella, cinque punti elenco, un'email sotto le 100 parole, una risposta in italiano.
+- **Indica le tue fonti.** Allega un file o nomina la Knowledge che l'assistente deve usare, e scrivi "usa solo il contratto allegato" quando conta.
+- **Correggi nel messaggio successivo.** Se la prima risposta non va, di' cosa cambiare ("più breve", "aggiungi le date di consegna") invece di ricominciare da capo.
+
+## Prima e dopo {#before-and-after}
+
+**Riassumi un documento**
+
+- Prima: "Riassumi questo."
+- Dopo: "Riassumi in cinque punti elenco il contratto con il fornitore allegato per il team acquisti: prezzi, tempi di consegna, penali, rinnovo e recesso."
+
+**Scrivi una risposta**
+
+- Prima: "Scrivi un'email al cliente."
+- Dopo: "Scrivi una risposta a un cliente il cui ordine di viti M8 è arrivato con tre giorni di ritardo. Scusati, conferma la nuova data di consegna del 12 marzo e offri la spedizione gratuita sul prossimo ordine. Sotto le 120 parole, cordiale ma formale."
+
+**Chiedi informazioni sui tuoi dati**
+
+- Prima: "Qual è la nostra politica sui resi?"
+- Dopo: "Secondo la nostra politica sui resi, un cliente business può restituire parti tagliate su misura? Cita il passaggio su cui ti basi."
+
+## Prompt e prompt di sistema {#prompts-and-system-prompts}
+
+Un prompt è ciò che scrivi in un messaggio. Il [prompt di sistema](/concepts/System-prompt) di un touchpoint è l'insieme di istruzioni fisse impostato una volta nelle impostazioni del touchpoint: il suo ruolo, il tono e le regole. Il modello lo legge prima di ogni conversazione, e le persone che chattano non lo vedono.
+
+Metti nel prompt di sistema ciò che vale per ogni conversazione, come "Rispondi nella lingua del cliente" o "Se la Knowledge non copre una domanda, dillo". Metti nel prompt ciò che vale per una singola richiesta.
+
+## In Rational AI {#in-rational-ai}
+
+- In [Chat](/cr/Chats), il menu degli strumenti (**+**) ha **Aggiungi file e foto** per allegare un file e **Knowledge base** per vedere o scegliere le Knowledge in cui l'assistente cerca. Digita `/` per iniziare un messaggio con una skill. Vedi [Componi la richiesta nel composer](/operational-guides/chat-experience#shape-your-request-in-the-composer).
+- Il prompt di sistema è il campo **Prompt di sistema** nella scheda **Modelli** di un touchpoint. Vedi [Modifica il prompt di sistema](/operational-guides/configure-touchpoints#edit-the-system-prompt).

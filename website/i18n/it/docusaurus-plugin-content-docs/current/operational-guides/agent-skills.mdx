@@ -1,0 +1,71 @@
+---
+sidebar_position: 17
+sidebar_label: Usa le skill in chat
+type: how-to
+audience: [user, builder]
+---
+
+# Usa le skill in chat
+
+Una skill è una procedura pronta per svolgere un tipo di lavoro, come costruire un foglio di calcolo, scrivere un documento Word o progettare una pagina web. Quando chiedi quel lavoro in una chat, l'assistente segue le istruzioni della skill e ti consegna il file finito. Questa guida mostra come usare le skill in **Chat** e nella chat di una Knowledge, e come un builder le rende disponibili.
+
+Le skill appartengono a un [touchpoint](/operational-guides/configure-touchpoints), cioè l'assistente che risponde in una conversazione, quindi vedi le skill del touchpoint su cui gira la tua chat. Sono separate dalle skill degli agenti della sezione [Agenti](/cr/Agents), che si concedono in **Agenti** → **Libreria** (vedi [Crea un agente](/operational-guides/create-an-agent#browse-the-library)).
+
+## Prerequisiti {#prerequisites}
+
+- **Per usare le skill:** una chat il cui touchpoint abbia almeno una skill.
+- **Per aggiungere skill a un touchpoint:** un ruolo con **Modifica** su **Touchpoint**. Le skill arrivano dalle [estensioni](/operational-guides/manage-extensions), che installa un amministratore.
+
+## Chiedi un lavoro {#ask-for-a-job}
+
+Non devi nominare una skill. Chiedi ciò che vuoi con parole semplici, per esempio *"costruisci un foglio di calcolo per il budget familiare"*, e l'assistente decide se una delle skill del touchpoint è adatta e la esegue.
+
+### Scegli una skill con `/` {#pick-a-skill-with-}
+
+Quando sai quale skill serve al lavoro, scegliela tu.
+
+1. In un campo di scrittura vuoto, digita `/`. Un menu **Skill** elenca le skill attive sul touchpoint della chat, con una descrizione di quella evidenziata.
+2. Continua a digitare per filtrare per nome, poi scegli una skill con un clic, **Invio** o **Tab**. **Esc** chiude il menu.
+3. La skill diventa un chip all'inizio del messaggio. Scrivi la tua richiesta dopo di essa e invia.
+
+Lo stesso elenco si trova sotto **Skill** nel menu **+** del campo di scrittura, che conserva il testo già digitato. Per togliere la skill prima dell'invio, seleziona la **✕** del chip, oppure premi **Backspace** in un campo di scrittura vuoto.
+
+Scegliere una skill dice all'assistente di seguire quella skill per questa richiesta; il testo dopo il chip è ancora ciò su cui l'assistente agisce. Se il menu dice *"Nessuna skill abilitata per questa chat"*, il touchpoint non ha ancora skill.
+
+### Segui cosa succede {#follow-what-happened}
+
+Il lavoro della skill compare nella riga compressa sopra la risposta, per esempio *"Ragionato per 12s, usata la skill xlsx, 4 steps"*. Aprila per leggere i passaggi in parole semplici: lettura delle istruzioni della skill, scrittura ed esecuzione di uno script, salvataggio di un file, e ogni tentativo fallito e ripetuto. I file creati dalla skill lungo il percorso sono elencati tra i file di lavoro, ciascuno con **Scarica**.
+
+Il file che hai chiesto ottiene una scheda sotto la risposta, con il suo tipo, nome e dimensione:
+
+- **Apri** lo mostra nel pannello [Canvas](#preview-web-pages-in-canvas), per i tipi che si possono visualizzare in anteprima.
+- **Scarica** lo salva.
+- **Salva nella knowledge** lo archivia in una [Knowledge](/operational-guides/create-knowledge).
+
+Se la skill si ferma prima di produrre il file, la risposta dice *"Nessun file è stato creato."* Da lì puoi aprire **Dettagli tecnici**, riprovare, oppure selezionare **Cambia modello**, utile quando un modello più piccolo fatica con una skill lunga.
+
+## Visualizza in anteprima le pagine web in Canvas {#preview-web-pages-in-canvas}
+
+Quando una skill costruisce una pagina web o un'immagine SVG, **Canvas** la mostra in tempo reale in un pannello accanto alla conversazione.
+
+1. Nel menu **+** del campo di scrittura, seleziona **Canvas** prima di inviare. Nel campo di scrittura compare un chip **Canvas**.
+2. Chiedi una pagina web o un design.
+3. Quando la pagina è pronta, il pannello Canvas si apre da solo.
+
+L'assistente usa Canvas anche per le richieste web e di interfaccia inviate senza il chip. La voce **Canvas** compare solo quando il touchpoint ha la **Modalità Canvas** attiva.
+
+Nel pannello, passa tra **Anteprima** e **Codice**, spostati tra le versioni con **Versione precedente** e **Versione successiva**, e usa **Schermo intero**, **Aggiorna**, **Copia**, **Scarica** e **Chiudi**. Le versioni sono salvate nel tuo browser. L'anteprima funziona solo nella chat: chi rivede la conversazione in [Conversazioni](/operational-guides/conversations) non vede il pannello Canvas.
+
+## Aggiungi skill a un touchpoint {#add-skills-to-a-touchpoint}
+
+1. Verifica che l'estensione che contiene la skill sia installata (**Impostazioni** → **Estensioni**). Disinstallare un'estensione rimuove le sue skill.
+2. Vai su **Impostazioni** → **Touchpoint** e apri il touchpoint.
+3. Apri la scheda **Skill**. La sua tabella elenca le skill già attive, con **Skill**, **Descrizione**, **Versione** ed **Estensione**.
+4. Nel selettore **Aggiungi skill**, dove le skill sono raggruppate per estensione, seleziona quelle che ti servono.
+
+Per smettere di offrire una skill, seleziona **Rimuovi skill** nel menu della sua riga. La skill resta installata per gli altri touchpoint.
+
+## Prossimi passi {#next-steps}
+
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): le altre schede del touchpoint a cui appartengono le skill.
+- [Gestisci le estensioni](/operational-guides/manage-extensions): installa, aggiorna e rimuovi le estensioni che contengono skill.

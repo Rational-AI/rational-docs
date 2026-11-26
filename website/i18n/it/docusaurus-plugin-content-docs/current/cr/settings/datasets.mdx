@@ -1,0 +1,102 @@
+---
+sidebar_position: 3
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Dataset
+
+I dataset sono le raccolte curate di esempi che usi per il fine-tuning dei modelli in Rational AI. Ogni dataset memorizza le sue voci in un formato di addestramento standard, conserva la cronologia completa delle versioni man mano che aggiungi dati e può essere scaricato o riutilizzato in più job di fine-tuning. Usa questa sezione per creare, organizzare e mantenere i dati di addestramento che alimentano i tuoi modelli personalizzati.
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Richiede il modulo Rational BI nella tua <a href="/operational-guides/license">licenza</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      La riga <strong>Dataset</strong> del tuo ruolo decide chi può visualizzare, creare, modificare ed eliminare i dataset
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <CrossIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Senza il modulo Rational BI, <strong>Dataset</strong> non compare in <strong>Impostazioni</strong> e anche il fine-tuning viene rifiutato
+    </div>
+  </div>
+
+</div>
+
+## Formati supportati {#supported-formats}
+
+Quando crei un dataset scegli il formato che seguono le sue voci. La struttura di qualsiasi file che carichi deve corrispondere al formato selezionato:
+
+| Formato | Descrizione |
+|--------|-------------|
+| **Alpaca** | Voci in stile istruzione, ognuna con un'istruzione (e un input facoltativo) abbinata alla risposta attesa. Ideale per il fine-tuning a singolo turno, orientato al compito. |
+| **ShareGPT** | Voci in stile conversazione, ognuna con un elenco di turni etichettati per ruolo (per esempio `human`, `gpt`). Ideale per il fine-tuning multi-turno, orientato alla chat. |
+
+## Creare un dataset {#create-a-dataset}
+
+Seleziona **Nuovo** e scegli come vuoi costruire il dataset:
+
+* **Da file**: carica un file JSON esistente di voci di addestramento.
+* **Da eventi**: genera un dataset dagli eventi conversazionali già acquisiti dalla piattaforma.
+* **Dal traffico registrato**: crea un dataset dalle richieste ai modelli che Rational AI ha registrato, inclusi i prompt di sistema e le chiamate agli strumenti. Vedi [Fai il fine-tuning di un modello](/operational-guides/fine-tune-a-model#from-recorded-traffic).
+
+### Creare da file {#create-from-file}
+
+* Scegli **Da file**
+* Inserisci un **Nome** e una **Descrizione** facoltativa
+* Scegli il **Formato** (Alpaca o ShareGPT) che corrisponde al tuo file
+* Trascina un file nell'area di caricamento, oppure seleziona **Clicca o trascina qui il tuo dataset** per sceglierne uno dal computer
+* Seleziona **Salva**
+
+Il file caricato deve seguire la struttura del formato selezionato, altrimenti l'importazione viene rifiutata.
+
+### Creare da eventi {#create-from-events}
+
+Scegli **Da eventi** per assemblare un dataset da conversazioni e interazioni già avvenute in Rational AI. Inserisci un **Nome**, una **Descrizione** facoltativa e un **Prompt** facoltativo. Poi, in **Seleziona tipi di evento**, scegli quali tipi di evento estrarre e seleziona **Salva**.
+
+## Lavorare con un dataset {#work-with-a-dataset}
+
+Seleziona una riga del dataset per aprirne la vista di dettaglio. La pagina mostra il nome del dataset, la sua descrizione, la versione corrente e il numero di **Esempi**. Seleziona un esempio nell'elenco per leggerlo: compare come **Esempio #** seguito dal suo numero. Il suo menu offre **Modifica esempio**, che lo apre come JSON, e **Rimuovi esempio**.
+
+### Gestire le versioni {#manage-versions}
+
+L'etichetta della versione accanto al nome del dataset (per esempio **v1**) mostra la versione corrente. Il numero sale a ogni aggiunta, modifica o rimozione di esempi. La pagina mostra solo la versione corrente.
+
+### Aggiungere nuove voci {#append-new-entries}
+
+Usa **Aggiungi nuove voci** (dal menu della riga o dalla vista di dettaglio) per aggiungere altri esempi a un dataset esistente. Aggiungere voci crea una nuova versione.
+
+## Gestire i dataset {#manage-datasets}
+
+Apri il menu delle opzioni (i tre punti verticali) su qualsiasi riga del dataset, oppure il menu nella vista di dettaglio, per accedere alle seguenti azioni:
+
+| Azione | Descrizione |
+|--------|-------------|
+| **Aggiungi nuove voci** | Aggiunge altre voci al dataset e crea una nuova versione. |
+| **Rinomina** | Cambia il nome del dataset. |
+| **Duplica** | Copia il dataset. Solo nel menu della riga nell'elenco. |
+| **Scarica** | Esporta il dataset in un file JSON nel suo formato corrente. |
+| **Elimina** | Rimuove in modo permanente il dataset. |
+
+## Sfogliare i dataset {#browse-datasets}
+
+L'elenco dei dataset mostra ogni dataset con colonne per **Nome**, **Formato**, **Voci** (il numero di esempi di addestramento), **Creato il**, **Aggiornato il** e **Versione corrente**.
+
+* **Cerca**: usa la casella di ricerca per filtrare i dataset per nome.
+* **Ordina**: seleziona le frecce accanto a qualsiasi intestazione di colonna per ordinare l'elenco per quella colonna.

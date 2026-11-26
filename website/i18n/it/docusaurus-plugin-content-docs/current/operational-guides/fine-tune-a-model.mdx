@@ -1,0 +1,157 @@
+---
+sidebar_position: 25
+sidebar_label: Esegui il fine-tuning di un modello
+type: how-to
+audience: [admin, builder]
+---
+
+# Esegui il fine-tuning di un modello con i tuoi dati
+
+Il fine-tuning addestra ulteriormente un modello AI generico sui tuoi esempi, così diventa più preciso sui tuoi compiti. Costruisci un dataset di esempi, avvii un'esecuzione di fine-tuning su di esso e distribuisci il risultato nel Registro modelli AI.
+
+:::note[Che cos'è il fine-tuning?]
+Un *modello base* è un modello AI generico e preaddestrato (vedi [LLM](/reference/glossary#large-language-model-llm)) che sa già molto, ma nulla del tuo caso d'uso specifico. Il *fine-tuning* orienta quel modello base verso i tuoi dati, mostrandogli più esempi. Gli esempi sono raccolti in un *dataset*: una raccolta di input e degli output che vorresti il modello producesse. In Rational AI il lavoro si divide in due parti: costruisci un dataset in **Dataset**, poi lo usi per l'addestramento in **Fine-Tuning**.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, verifica di avere:
+
+- **Il modulo Rational BI nella tua licenza:** dataset e fine-tuning vengono rifiutati senza di esso (vedi [Licenza e attivazione](/operational-guides/license)).
+- **Permessi:** le righe **Dataset** e **Fine-Tuning** del tuo ruolo, con **Crea** per costruire dataset e avviare esecuzioni.
+- **Un modello base disponibile:** almeno un modello da cui addestrare, visibile nel [Registro modelli AI](/operational-guides/ai-model-registry-features).
+- **Esempi di addestramento pronti:** un file di dataset da caricare, oppure traffico registrato ed eventi da cui costruire un dataset.
+
+## Crea un dataset {#create-a-dataset}
+
+Un dataset è il materiale di addestramento da cui impara un'esecuzione di fine-tuning. Vai in **Impostazioni** → **Dataset** e seleziona **Nuovo**. Per ogni campo e formato, vedi [Dataset](/cr/settings/datasets).
+
+<img
+  src={require('@site/static/img/screens/dataset-new-menu.png').default}
+  alt="Il menu Nuovo nella pagina Dataset, con le opzioni Da file e Da eventi"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Creare un dataset: carica un file, oppure costruiscilo a partire dall'attività che Rational AI ha già registrato.*
+
+### Da un file {#from-a-file}
+
+Scegli **Da file** quando hai già preparato gli esempi come file di dataset. Carica il file e Rational AI legge le sue voci in un nuovo dataset.
+
+### Dal traffico registrato {#from-recorded-traffic}
+
+Usa questa opzione per fare il fine-tuning di un **agente**. Ogni chiamata a un modello registrata è la conversazione che il modello ha visto, **incluso il prompt di sistema, le chiamate agli strumenti che ha fatto e ciò che quegli strumenti hanno restituito**, quindi il dataset cattura il comportamento reale dell'agente.
+
+Seleziona **Nuovo** → **Dal traffico registrato**, poi filtra gli esempi che ti interessano:
+
+- **Touchpoint**: il traffico di quali agenti. Lascia **Tutti** per ogni touchpoint.
+- **Modelli**: quali modelli lo hanno prodotto.
+- **Da**: il periodo da cui prendere il traffico.
+- **Solo chiamate riuscite**: esclude le chiamate rifiutate dal provider.
+- **Numero massimo di esempi** e **Riservati (%)**: quanti esempi tenere, e quale quota riservare per misurare.
+
+I conteggi si aggiornano mentre digiti: quante richieste corrispondono, quanti diventano esempi di addestramento e quanti sono riservati. Seleziona **Crea dataset**.
+
+Le voci del dataset sono copie del contenuto da cui sono state costruite, quindi i periodi di [conservazione dei dati](/operational-guides/data-retention) non le rimuovono.
+
+### Da eventi {#from-events}
+
+**Da eventi** costruisce un dataset dai messaggi delle conversazioni. Funziona quando non sono state registrate chiamate ai modelli. Ogni messaggio contiene solo il testo di un turno, senza prompt di sistema, chiamate agli strumenti o risultati, quindi non può insegnare a un agente a usare gli strumenti. Usa il traffico registrato dove è disponibile.
+
+## Cura un dataset {#curate-a-dataset}
+
+Un dataset costruito dal traffico reale contiene esempi che non vuoi usare per l'addestramento. Apri il dataset per vedere le sue voci come conversazioni, ciascuna con un'etichetta che indica se è un esempio di **Addestramento** o **Riservato**.
+
+- Per rimuovere un esempio, seleziona **Rimuovi esempio** su di esso.
+- Per correggerlo, seleziona **Modifica esempio**. Si apre in JSON. Se un formato non può essere modificato, viene indicato.
+
+Gli esempi riservati non vengono mai usati per l'addestramento. L'esecuzione viene valutata su di essi, quindi il punteggio riflette esempi che il modello non ha mai visto. La suddivisione viene impostata alla creazione del dataset e distribuita sull'intero dataset.
+
+## Avvia un'esecuzione di fine-tuning {#start-a-fine-tuning-run}
+
+Con un dataset pronto, vai in **Impostazioni** → **Fine-Tuning**. La tabella elenca le tue esecuzioni per **Nome**, **Modello base**, **Dataset di training** e **Creato il**.
+
+Seleziona **Nuovo** per aprire la finestra **Nuovo fine-tuning**, poi compilala:
+
+1. Inserisci un **Nome** chiaro e una breve **Descrizione**, così il tuo team potrà distinguere le esecuzioni in seguito.
+2. Scegli un **Modello base** (il modello esistente che vuoi addestrare ulteriormente).
+3. Seleziona un **Dataset**, il materiale di addestramento da cui imparerà il modello.
+4. Controlla i parametri di addestramento e dell'adattatore (spiegati sotto), poi seleziona **Lancia**.
+5. Conferma con **Avvia training**. Vedrai *"Fine-tuning lanciato"* e l'esecuzione comparirà nell'elenco.
+
+Se il job di addestramento non può essere avviato, l'esecuzione viene comunque salvata. Controlla il suo stato, poi seleziona **Avvia training** su di essa invece di creare una nuova esecuzione.
+
+<img
+  src={require('@site/static/img/screens/fine-tuning-new.png').default}
+  alt="La finestra Nuovo fine-tuning con i campi per modello base, dataset e parametri di addestramento"
+  style={{ width: '100%', maxWidth: '620px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Avvio di un'esecuzione di fine-tuning: scegli un **Modello base** e un **Dataset**, imposta i parametri di addestramento, poi **Lancia**.*
+
+### Parametri di addestramento {#training-parameters}
+
+Queste impostazioni controllano come si svolge l'addestramento:
+
+- **Learning Rate**: quanto il modello si corregge a ogni passo, scelto da un elenco di valori da `1e-5` a `5e-4`. Il valore predefinito è `2e-4`.
+- **Batch Size**: quanti esempi il modello osserva prima di ogni correzione. Il valore predefinito è 1.
+- **Epochs**: quanti passaggi completi l'esecuzione fa sull'intero dataset. Il valore predefinito è 1.
+
+### Impostazioni dell'adattatore {#adapter-settings}
+
+Il fine-tuning addestra un piccolo **adattatore** (un adattatore LoRA) sopra il modello base. Tre impostazioni, nella sezione comprimibile **Parametri LoRA**, controllano quanto l'adattatore può imparare:
+
+- **Rank**: quanta capacità ha l'adattatore, 16 per impostazione predefinita. Aumentalo quando un'esecuzione non impara abbastanza dai tuoi esempi o quando il compito è più vario.
+- **Alpha**: quanto fortemente viene scalato il contributo dell'adattatore, 16 per impostazione predefinita. Di solito è uguale al rank, quindi finché i due valori sono uguali, cambiare **Rank** cambia anche **Alpha**.
+- **Dropout**: quanta regolarizzazione viene applicata durante l'addestramento, tra 0 e 0,99, 0 per impostazione predefinita. Aumentalo se il modello inizia a memorizzare i tuoi esempi invece di imparare da essi.
+
+Parti dai valori predefiniti e cambia un parametro alla volta, una volta che hai un primo risultato con cui confrontarti.
+
+## Segui un'esecuzione {#watch-a-run}
+
+Seleziona un'esecuzione nell'elenco per aprirne il pannello. Il pannello si aggiorna ogni pochi secondi finché l'esecuzione è attiva:
+
+- **Stato**: **In attesa**, **In training**, **Completato**, **Fallito** o **Annullato**, insieme a chi ha creato l'esecuzione e alla sua **Durata**.
+- **Avanzamento**: una barra con la percentuale, il passo attuale e l'ultima loss.
+- **Curve di apprendimento**: un grafico di **Loss di training** e **Loss di validazione** passo per passo. Se la loss di training scende mentre quella di validazione si appiattisce o sale, il modello sta andando in overfitting, ed è il segnale per fermarsi.
+- **Errore**: il motivo del fallimento, se l'esecuzione fallisce.
+- **Parametri**: batch size, epoche, learning rate e impostazioni LoRA che l'esecuzione ha usato davvero.
+
+Il grafico mostra le ultime 2.000 misurazioni; la cronologia completa si trova negli artefatti di addestramento dell'esecuzione (vedi sotto). Se le misurazioni non si caricano, il pannello lo segnala e offre **Ricarica misurazioni** per riprovare.
+
+Il menu **⋮** del pannello contiene le azioni disponibili per l'esecuzione:
+
+| Azione | Quando è disponibile | Cosa fa |
+|---|---|---|
+| **Annulla esecuzione** | Durante l'addestramento | Ferma il job di addestramento e libera le sue GPU. I checkpoint salvati vengono conservati. |
+| **Riprova esecuzione** | Fallita o annullata | Avvia di nuovo la stessa esecuzione, dall'ultimo checkpoint completo se ce n'è uno. |
+| **Avvia training** | In attesa | Acquisisce il dataset così com'è ora e avvia l'addestramento. |
+| **Rilancia** | Sempre | Apre la finestra precompilata con le impostazioni di questa esecuzione, per lanciarne una *nuova* con parametri diversi. |
+| **Modifica dettagli** | Sempre | Cambia solo il nome e la descrizione. |
+| **Scarica artefatti del training** | Completata o fallita | Scarica tutto il necessario per verificare o riprodurre l'esecuzione. |
+| **Elimina** | Non durante l'addestramento | Rimuove l'esecuzione. |
+
+Annulla un'esecuzione da cui hai già imparato, per liberare le sue GPU.
+
+### Riprendi un'esecuzione invece di ricominciare {#resume-a-run-instead-of-starting-over}
+
+Durante l'addestramento, un'esecuzione salva un checkpoint ogni 100 passi, e la prima volta che parte acquisisce i suoi input di addestramento: le voci del dataset, il modello e la configurazione.
+
+**Riprova esecuzione** riprende dall'ultimo checkpoint completo, usando quegli stessi input acquisiti. Se non è ancora stato salvato alcun checkpoint, l'addestramento riparte da capo.
+
+Un nuovo tentativo si addestra sugli input acquisiti quando l'esecuzione è partita per la prima volta, quindi modificare il dataset in seguito non lo cambia. Per usare dati diversi, un altro modello base o nuovi parametri, seleziona **Rilancia** per creare una nuova esecuzione.
+
+## Usa il modello con fine-tuning {#use-your-fine-tuned-model}
+
+Quando l'esecuzione termina, **Distribuisci** nel suo pannello rende il modello con fine-tuning disponibile nel [Registro modelli AI](/operational-guides/ai-model-registry-features), accanto agli altri modelli. Da lì lo usi come qualsiasi altro modello.
+
+### Porta con te i pesi {#take-the-weights-with-you}
+
+Per eseguire il modello altrove, o per conservarne una copia fuori dalla piattaforma, apri il menu **⋮** dell'esecuzione nell'elenco e seleziona **Scarica i pesi**. È attivo quando l'esecuzione è in stato **Completato**, e scarica `<run name>-weights.tar.gz`: l'adattatore LoRA addestrato, la sua configurazione e il tokenizer, pronti da caricare sopra lo stesso modello base.
+
+**Scarica artefatti del training**, nel pannello, è il pacchetto più grande: `<run name>-training.tar.gz`, con gli input acquisiti, i checkpoint ripristinabili, la configurazione e la cronologia completa delle misurazioni. Richiede l'accesso in lettura sia all'esecuzione sia al suo dataset, perché contiene i dati di addestramento.
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features): dove finisce un modello distribuito.
+- [Monitora utilizzo e costi](/operational-guides/governance): il traffico registrato da cui si può costruire un dataset.

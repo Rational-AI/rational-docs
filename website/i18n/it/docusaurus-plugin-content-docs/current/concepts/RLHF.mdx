@@ -1,0 +1,24 @@
+---
+sidebar_position: 19
+sidebar_label: RLHF
+title: Apprendimento per rinforzo dal feedback umano (RLHF)
+description: Come i produttori di modelli usano le valutazioni delle persone per insegnare a un modello quali risposte sono utili, e l'effetto collaterale che può lasciare.
+type: concept
+audience: [user, builder]
+---
+
+# Apprendimento per rinforzo dal feedback umano (RLHF)
+
+L'**apprendimento per rinforzo dal feedback umano (RLHF)** è una fase di addestramento che insegna a un modello quali risposte le persone preferiscono. Un modello addestrato solo sul testo scrive in modo fluido, ma non sa distinguere una risposta chiara e onesta da una evasiva o prolissa. L'RLHF aggiunge questo giudizio.
+
+## Come funziona {#how-it-works}
+
+1. Le persone confrontano due o più risposte alla stessa domanda e scelgono la migliore.
+2. Queste scelte addestrano un secondo modello che prevede quanto una risposta piacerebbe alle persone.
+3. Il modello linguistico viene addestrato ancora per scrivere risposte che il secondo modello valuta molto bene.
+
+Le persone tendono a valutare bene le risposte accomodanti, quindi un modello addestrato in questo modo può imparare a dirti ciò che vuoi sentire. Vedi [Compiacenza](/concepts/Sycophancy).
+
+## In Rational AI {#in-rational-ai}
+
+L'RLHF avviene presso il produttore del modello, prima che il modello venga rilasciato. I modelli di chat che usi in Rational AI di solito sono già passati da questa fase, ed è il motivo per cui seguono le istruzioni. Il fine-tuning in Rational AI funziona in modo diverso: addestra un modello su conversazioni di esempio tratte da un dataset. Vedi [Fine-tuning](/concepts/Finetuning).

@@ -1,0 +1,50 @@
+---
+sidebar_position: 31
+sidebar_label: Workflow e regole di processing
+title: Workflow e regole di processing
+description: Come step, workflow e regole di processing decidono cosa succede ai file che una Knowledge riceve.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Workflow e regole di processing
+
+Step, workflow e regole di processing decidono cosa succede a ogni file che una Knowledge riceve: cosa viene estratto, quali risorse diventa e di quale testo vengono creati chunk ed embedding per la ricerca. Gestisci tutti e tre in **Impostazioni** → **Workflow**.
+
+## Step {#steps}
+
+Uno step è uno script Python che svolge il lavoro su un file. Legge il file, crea risorse nella Knowledge e restituisce il testo di cui creare chunk ed embedding.
+
+## Workflow {#workflows}
+
+Un workflow è un grafo che collega step, nodi di controllo del flusso e operazioni integrate, così che un file possa passare attraverso più step in ordine o seguire rami diversi. Lo costruisci su una tela o nel codice. Una Knowledge esegue il suo **Workflow di default** su ogni file che le viene aggiunto.
+
+## Regole di processing {#processing-rules}
+
+Una regola di processing è uno script Python che restituisce il nome di uno step per ogni file, in base al nome, al tipo, al contenuto, alla fonte o a qualsiasi condizione tu scriva. Instrada il file e non lo modifica. È così che una stessa Knowledge può mandare le fatture a uno step e i manuali tecnici a un altro.
+
+## Come si combinano in una Knowledge {#how-they-meet-in-a-knowledge}
+
+Nella scheda **Fonti** di una Knowledge, il **Workflow di default** è un workflow oppure la **Pipeline classica**:
+
+- Con un workflow, il grafo gestisce ogni file.
+- Con la **Pipeline classica**, la **Regola di processing di default** sceglie lo step per ogni file. Ogni fonte collegata può usare invece la propria **Regola di processing**.
+
+Nell'elenco dei file della Knowledge, **Assegna workflow** imposta direttamente lo step per i file selezionati. Si applica alla prossima elaborazione di quei file.
+
+## Scopri di più {#learn-more}
+
+- [Crea un workflow](/operational-guides/create-workflow): scrivi gli step e collegali in un workflow.
+- [Crea una regola di processing](/operational-guides/create-processing-rule): scegli lo step per ogni file.
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+	]}
+/>

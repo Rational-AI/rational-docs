@@ -1,0 +1,57 @@
+---
+sidebar_position: 22
+sidebar_label: Importa, esporta e imposta i timeout
+title: Importa, esporta e imposta i timeout
+description: Sposta step e regole di processing tra ambienti come file JSON, e limita quanto può durare uno step.
+type: how-to
+audience: [builder]
+---
+
+# Importa, esporta e imposta i timeout
+
+Esporta uno [step](/operational-guides/create-workflow) o una [regola di processing](/operational-guides/create-processing-rule) per copiarlo in un altro ambiente o passarlo a un collega. Lì puoi importarlo dal file JSON. Puoi anche assegnare a uno step un timeout, così un'esecuzione bloccata viene interrotta.
+
+I grafi dei workflow non hanno esportazione, importazione o timeout.
+
+<img
+  src={require('@site/static/img/screens/workflows-settings.png').default}
+  alt="La scheda Workflow delle Impostazioni con uno step selezionato e il suo editor di codice aperto"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+## Prima di iniziare {#before-you-begin}
+
+- Ruolo: nella riga **Workflow** del tuo ruolo, **Leggi** per esportare, **Crea** per importare e **Modifica** per impostare un timeout. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+## Esporta uno step o una regola {#export-a-step-or-rule}
+
+1. Vai su **Impostazioni** → **Workflow**. Per una regola di processing, seleziona la scheda **Processing rules**.
+2. Seleziona lo step o la regola.
+3. Apri il menu **⋮** e seleziona una di queste voci:
+   - **Esporta (JSON)** salva la definizione come file JSON. È l'unico formato che puoi importare.
+   - **Scarica** salva il codice Python come file `.py`, da leggere o eseguire sul tuo computer.
+
+## Importa da JSON {#import-from-json}
+
+1. Vai su **Impostazioni** → **Workflow**.
+2. Avvia l'importazione:
+   - Per uno step, seleziona **+** accanto a **Steps**, poi **Importa JSON**.
+   - Per una regola di processing, seleziona la scheda **Processing rules**, seleziona **Nuovo**, poi **Importa JSON**.
+3. Seleziona uno o più file JSON.
+
+Ogni file si apre come bozza nell'elenco. Non viene creato nulla finché non apri una bozza e selezioni **Salva**. Se un file non è JSON valido, compare il messaggio *An error occurred. Please, refresh and try again*, e gli altri file vengono importati comunque.
+
+## Imposta un timeout per uno step {#set-a-step-timeout}
+
+1. Vai su **Impostazioni** → **Workflow** e seleziona uno step in **Steps**.
+2. Apri il suo menu **⋮** e seleziona **Impostazioni workflow**.
+3. In **Timeout (minuti)**, inserisci un numero intero di 1 o più. Lascia il campo vuoto per mantenere il valore predefinito di 5 minuti per tentativo.
+4. Facoltativamente, deseleziona **Conta il tempo di esecuzione nella quota del tenant** per gli step di manutenzione o sincronizzazione che non devono consumare i minuti mensili dei workflow.
+5. Seleziona **Salva**.
+
+Il timeout si applica a tutte le esecuzioni successive dello step. Un'esecuzione che lo raggiunge viene interrotta e riprovata, fino a tre tentativi in tutto. Le regole di processing non hanno un'impostazione di timeout.
+
+## Prossimi passi {#next-steps}
+
+- [Crea un workflow](/operational-guides/create-workflow)
+- [Crea una regola di processing](/operational-guides/create-processing-rule)

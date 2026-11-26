@@ -1,0 +1,101 @@
+---
+sidebar_position: 7
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Conversazioni
+
+Le impostazioni Conversazioni controllano come Rational AI arricchisce ed elabora le conversazioni degli utenti finali, in background. Da qui configuri quattro analisi automatiche (**generazione del titolo**, **rilevamento degli argomenti**, **analisi del sentiment** e **generazione del riepilogo**), ognuna attivabile in modo indipendente e con un proprio modello e prompt. Definisci anche le regole di **supervisione umana** che segnalano le conversazioni da rivedere, e gli **stati** che una conversazione può avere. Queste impostazioni sono predefinite di piattaforma: ogni [touchpoint](touchpoints.mdx) può sostituire la generazione del titolo, il rilevamento degli argomenti e l'analisi del sentiment nella sua scheda **Modelli**.
+
+Il modello che scrive le risposte che vedono gli utenti è il **Modello conversazionale** predefinito nel [Registro modelli AI](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type), a meno che un [touchpoint](touchpoints.mdx) non ne scelga uno proprio.
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Disponibile con <a href="/pricing">qualsiasi piano</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      La pagina si apre per chiunque abbia nel proprio ruolo l'accesso a <strong>Conversazioni</strong>, e mostra <strong>Salva</strong> ai ruoli con <span className="featureBox__pill">Modifica</span> su di essa. Salvare le analisi e le regole, e qualsiasi modifica a uno stato, è consentito solo agli amministratori
+    </div>
+  </div>
+
+</div>
+
+## Scegliere un modello per ogni analisi {#choosing-a-model-for-each-analysis}
+
+Ogni analisi ha un proprio selettore del modello. Oltre ai modelli nel registro, il selettore offre due valori predefiniti:
+
+* **Modello predefinito della piattaforma**: usa il **Modello conversazionale** della piattaforma, impostato nel [Registro modelli AI](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type).
+* **Modello predefinito del touchpoint**: usa il modello del touchpoint a cui appartiene la conversazione. È anche ciò che significa un selettore vuoto.
+
+Un modello specifico che scegli ha sempre la precedenza su entrambi i valori predefiniti. Se il valore predefinito che hai scelto non corrisponde a nessun modello, quell'analisi viene saltata per la conversazione.
+
+## Impostazioni della generazione del titolo {#title-generation-settings}
+
+Quando è attiva, Rational AI genera automaticamente un titolo breve per ogni conversazione, così puoi riconoscerla in seguito.
+
+* **Abilita generazione del titolo**: attiva o disattiva la funzione.
+* **Modello di generazione del titolo**: il modello usato per produrre il titolo.
+* **Frequenza di calcolo**: quanti messaggi dell'utente ricevere prima che venga generato un titolo, impostato come **Ogni** *N* **messaggi**. Il primo messaggio genera sempre un titolo.
+* **Numero di messaggi da considerare**: il numero dei messaggi più recenti usati per generare il titolo.
+* **Prompt template di generazione del titolo**: l'istruzione inviata al modello. **Ripristina predefinito** riporta il prompt predefinito fornito con il prodotto.
+
+Un titolo scritto a mano non viene mai sostituito.
+
+## Impostazioni del rilevamento degli argomenti {#topics-detection-settings}
+
+Quando è attivo, a ogni conversazione vengono assegnati fino a tre argomenti da un elenco definito, utile per filtrare, creare report e instradare.
+
+* **Abilita rilevamento argomenti**: attiva o disattiva la funzione.
+* **Modello di rilevamento argomenti**: il modello usato per classificare la conversazione.
+* **Frequenza di calcolo**: quanti messaggi ricevere prima che vengano rilevati gli argomenti.
+* **Numero di messaggi da considerare**: il numero dei messaggi più recenti usati per la classificazione.
+* **Elenco argomenti**: l'insieme degli argomenti ammessi (per esempio *Order Status*, *Billing Request*, *Tech Support*). Rimuovi un argomento con la sua **×**, oppure aggiungine uno tuo con **Nuovo**.
+* **Prompt di rilevamento degli argomenti**: l'istruzione inviata al modello. Il modello restituisce le etichette corrispondenti, scritte esattamente come compaiono nell'elenco degli argomenti, come oggetto JSON. **Ripristina predefinito** riporta il prompt predefinito.
+
+## Impostazioni dell'analisi del sentiment {#sentiment-analysis-settings}
+
+Quando è attiva, Rational AI stima il tono emotivo dei messaggi in arrivo, così le conversazioni urgenti o negative possono avere la priorità.
+
+* **Abilita analisi del sentiment**: attiva o disattiva la funzione.
+* **Modello di analisi del sentiment**: il modello usato per calcolare il sentiment dei messaggi degli utenti.
+* **Frequenza di calcolo** e **Numero di messaggi da considerare**: come per titoli e argomenti.
+* **Elenco sentimenti**: i sentimenti tra cui il modello può scegliere, ciascuno con una propria etichetta e un proprio colore. Aggiungine uno con **Nuovo sentiment…**.
+* **Prompt template per l'analisi del sentiment**: l'istruzione inviata al modello, con **Ripristina predefinito**.
+
+## Impostazioni della generazione del riepilogo {#summary-generation-settings}
+
+Quando è attiva, gli amministratori possono generare un riepilogo strutturato di una conversazione da rivedere prima di prenderne il controllo. I riepiloghi usano sempre queste impostazioni: i touchpoint non possono sostituirle.
+
+* **Abilita generazione del riepilogo**: attiva o disattiva la funzione.
+* **Modello di generazione del riepilogo**: il modello usato per scrivere i riepiloghi. I modelli con ragionamento non sono consigliati per questo compito.
+* **Numero di messaggi da considerare**: quanti dei messaggi più recenti includere (`0` significa tutti).
+* **Prompt template per la generazione del riepilogo**: l'istruzione inviata al modello, con **Ripristina predefinito**.
+
+## Supervisione umana {#human-oversight}
+
+Quando è attiva, le conversazioni che corrispondono alle tue regole vengono contrassegnate **Da supervisionare** e restano così finché qualcuno non registra una decisione su di esse.
+
+* **Abilita le regole di supervisione umana**: attiva o disattiva la funzione.
+* **Regole**: uno o più gruppi di condizioni. Usa **Aggiungi gruppo di condizioni** e **Aggiungi condizione** per descrivere le conversazioni che richiedono una persona. Ogni condizione controlla il **Topic**, il **Sentiment** o il **Message text**.
+
+Vedi [Registra le decisioni di supervisione](/operational-guides/human-oversight) per sapere cosa fanno i revisori con una conversazione segnalata.
+
+## Stato delle conversazioni {#conversations-status}
+
+Definisci le fasi di una conversazione e il modo in cui compaiono nell'elenco delle conversazioni. Ogni workspace parte con **Aperta** e **Chiusa**, che non si possono eliminare. Scrivi un nuovo stato in **Scrivi nuovo…**, scegli un'icona per ciascuno e contrassegna come **Stato chiuso** quelli che concludono una conversazione. Uno stato che le conversazioni usano ancora non si può eliminare.
+
+Le modifiche agli stati vengono salvate man mano che le fai. Usa **Salva** per applicare le modifiche ad analisi e regole, oppure **Annulla** per scartarle.

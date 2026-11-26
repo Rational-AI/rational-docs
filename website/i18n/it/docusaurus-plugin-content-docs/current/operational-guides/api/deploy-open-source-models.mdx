@@ -1,0 +1,211 @@
+---
+sidebar_position: 1
+sidebar_label: Distribuisci modelli open source via API
+type: how-to
+audience: [developer]
+---
+
+# Distribuisci modelli open source via API
+
+Registra un modello open source da Hugging Face, distribuiscilo, attendi che sia pronto e modificane la scala o fermalo, tutto con la Management API. Usala per automatizzare ciò che [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments) fa nella Control Room, per esempio per configurare più workspace nello stesso modo.
+
+Un modello self-hosted ha due parti. Il **modello** è il record nel registro: il suo nome, i pesi che esegue (il suo *artifact*) e i suoi *parametri di deployment*. Il **deployment** è la copia in esecuzione di quei pesi, con le sue repliche e la sua fase. Un modello ha al massimo un deployment, in `/models/{id}/deployment`.
+
+```
+POST  /management/v0/models                    -> creates the model, returns its id and deployRevision
+POST  /management/v0/models/{id}/deployment    -> deploys that revision
+GET   /management/v0/models/{id}/deployment    -> phase, replicas, reason
+PATCH /management/v0/models/{id}/deployment    -> changes the scale, or stops it
+```
+
+La Management API è disponibile sotto `/api` all'indirizzo della tua Control Room, per esempio `https://control-room.example.com/api`. Puoi consultarla nella Swagger UI all'indirizzo `/api/swagger/index.html` (gruppo `backend-management-v0`).
+
+## Prima di iniziare {#before-you-begin}
+
+- **Una chiave API o una sessione autenticata.** Una chiave del workspace da **Impostazioni** → **Chiavi API** agisce come amministratore. Un utente ha bisogno di **Crea** sulla riga **Registro modelli AI** del proprio ruolo per creare e distribuire modelli, e di **Modifica** per cambiarne la scala. Gli esempi inviano la chiave come `Authorization: Bearer $TOKEN`. Vedi [Accedi a Rational AI tramite API](/operational-guides/api-access#create-an-api-key).
+- **Il repository Hugging Face del modello**, per esempio `Qwen/Qwen3-8B`. L'API salva il nome come lo invii, quindi verifica che esista su [huggingface.co](https://huggingface.co).
+- **Un piano che include i modelli self-hosted**, sul cloud di Rational AI. Senza, il deployment viene rifiutato con *"This workspace's plan does not include hosting your own models on our GPUs."*
+
+## Verifica cosa può distribuire il tuo hosting {#check-what-your-hosting-can-deploy}
+
+Ogni installazione ha una sola piattaforma di hosting per i suoi modelli. Prima di creare qualsiasi cosa, chiedile cosa accetta:
+
+```bash
+curl -s "https://control-room.example.com/api/management/v0/models/hosting" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+La risposta elenca i target di hosting (oggi uno), ciascuno con il suo `provider`, le sue `capabilities` e il suo `defaultIdleTimeoutSeconds`:
+
+| Capacità | Significato |
+|---|---|
+| `artifactSources` | Da dove possono provenire i pesi: `huggingFace`, `registry` (un tag Ollama) o `upload` |
+| `huggingFaceFormats` | I formati dei pesi Hugging Face che carica, per esempio `base` (safetensors) e `awq` |
+| `uploadFormats` | I formati che accetta come upload, per esempio `gguf`. Vuoto quando non ne accetta nessuno |
+| `gpu` | Se i deployment possono avere GPU |
+| `maxReplicas` | Il numero massimo di repliche che un deployment può avere |
+| `scaleToZero` | Se un deployment inattivo rilascia il proprio hardware |
+| `scalesOnDemand` | Se la piattaforma avvia e rilascia repliche da sola |
+| `deployParameters` | Uno JSON Schema dei parametri del provider che accetta, con i loro valori predefiniti |
+
+`defaultIdleTimeoutSeconds` indica per quanto tempo un deployment on demand attende senza richieste prima di rilasciare il proprio hardware, quando il deployment non imposta un timeout proprio.
+
+## Crea il modello {#create-the-model}
+
+Invia `POST /management/v0/models` con il discriminatore `rationalAI` e i pesi in `artifact`:
+
+```bash
+curl -s -X POST "https://control-room.example.com/api/management/v0/models" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "discriminator": "rationalAI",
+    "name": "Qwen3 8B",
+    "purpose": "textGeneration",
+    "publisher": "Qwen",
+    "artifact": { "source": "huggingFace", "repository": "Qwen/Qwen3-8B" },
+    "deployParameters": { "contextLength": 32768 }
+  }'
+```
+
+La risposta è `201 Created` con il modello. Salva il suo `id` e il suo `deployRevision`.
+
+| Campo | Note |
+|---|---|
+| `discriminator` | `rationalAI` per un modello che Rational AI distribuisce. `thirdParty` è per un modello che un provider serve tramite un connettore |
+| `name` | Il nome visibile agli utenti. Deve essere univoco. Il valore predefinito è `modelIdentifier` |
+| `modelIdentifier` | Il valore che i chiamanti API inviano come `model`. Deve essere univoco. Il valore predefinito è `name`, poi il repository |
+| `purpose` | `textGeneration`, `embedding`, `reranking`, `imageGeneration` o `decision`. Se omesso, viene dedotto dal repository |
+| `artifact` | `source` con `repository` (e, facoltativamente, `revision` e `file`) per `huggingFace`, `reference` per `registry`, oppure `format` per `upload` |
+| `type` | Il formato dei pesi: `base`, `awq`, `ggml` o `gguf`. Se omesso, viene dedotto dal repository |
+| `deployParameters` | `contextLength`, `gpuCount` (con `0` il modello gira sulla CPU) e `providerParameters`, le chiavi dichiarate dallo schema dell'hosting |
+
+Creare un modello non lo distribuisce mai, e non lo fa nemmeno modificarlo con `PATCH /models/{id}`. Nulla arriva alla piattaforma di hosting finché non distribuisci.
+
+Se il tuo workspace richiede l'approvazione dei modelli, il modello risponde solo dopo essere stato approvato. Vedi [Richiedi l'approvazione prima che un modello risponda](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers).
+
+### Carica invece i pesi {#upload-the-weights-instead}
+
+Se `uploadFormats` non è vuoto, crea il modello con `"artifact": { "source": "upload", "format": "gguf" }` e un `name`, poi invia il file in streaming:
+
+```bash
+curl -s -X PUT "https://control-room.example.com/api/management/v0/models/<MODEL_ID>/artifact" \
+  -H "Content-Type: application/octet-stream" \
+  -H "Authorization: Bearer $TOKEN" \
+  --data-binary @my-model.gguf
+```
+
+Un modello accetta un solo upload. Non può essere distribuito finché l'upload non è completato.
+
+## Distribuisci il modello {#deploy-the-model}
+
+Invia `POST /management/v0/models/{id}/deployment` con la `revision` che stai confermando, che deve coincidere con il `deployRevision` del modello, e facoltativamente una `scale`:
+
+```bash
+curl -s -X POST "https://control-room.example.com/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{ "revision": 1, "scale": { "min": 0, "max": 1 } }'
+```
+
+La risposta è `201 Created`. La stessa chiamata applica i nuovi parametri di deployment a un deployment esistente, oppure lo riavvia se non è cambiato nulla.
+
+Se qualcuno ha modificato il modello dopo che lo hai letto, il suo `deployRevision` è cambiato e il deployment viene rifiutato con `409 Conflict`. Leggi di nuovo il modello e distribuisci la nuova revisione. In questo modo un deployment esegue sempre impostazioni che qualcuno ha confermato.
+
+L'oggetto `scale` imposta quante repliche il deployment può eseguire:
+
+| Scala | Comportamento |
+|---|---|
+| `min` = `max` = n | Sempre n repliche. `0` e `0` indica un deployment fermo |
+| `min` = 0, `max` ≥ 1 | On demand: rilascia il proprio hardware dopo `idleTimeout` senza richieste, e riparte alla richiesta successiva |
+| `min` ≥ 1 | Mantiene sempre attive almeno `min` repliche |
+
+`idleTimeout` è una durata, per esempio `"00:15:00"`. Omettilo per usare `defaultIdleTimeoutSeconds` (600 secondi, salvo che la tua installazione lo abbia cambiato). La piattaforma limita l'intervallo al suo `maxReplicas`.
+
+## Segui il deployment {#follow-the-deployment}
+
+```bash
+curl -s "https://control-room.example.com/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+La risposta contiene il `deployment`, più `outOfDate` e `changedFields`, che indicano se i parametri di deployment del modello sono cambiati dopo la distribuzione. Il deployment contiene:
+
+| Campo | Significato |
+|---|---|
+| `phase` | A che punto si trova nel suo ciclo di vita (vedi la tabella successiva) |
+| `readyReplicas`, `desiredReplicas` | Quante repliche rispondono, su quante dovrebbero essere in esecuzione |
+| `reason`, `message` | Perché è in attesa o è fallito, per esempio `WaitingForCapacity`, `SlowStart`, `OutOfMemory` o `Crashed` |
+| `progress` | Cosa sta facendo ora la piattaforma, per esempio scaricare un'immagine |
+| `lastTransitionAt`, `lastUsedAt` | Quando è entrato nella sua fase e quando ha servito l'ultima richiesta |
+
+| Fase | Significato |
+|---|---|
+| `provisioning` | Primo avvio di queste impostazioni: download di pesi e immagini |
+| `starting` | Un deployment che era già pronto si sta riavviando |
+| `ready` | Almeno una replica risponde alle richieste |
+| `idle` | Nessuna replica in esecuzione. La richiesta successiva ne avvia una |
+| `stopping` | Sta scendendo a zero repliche |
+| `stopped` | Nessuna replica in esecuzione, e le richieste non ne avviano una |
+| `failed` | Le impostazioni non possono essere eseguite. `reason` e `message` spiegano il motivo. Resta in errore finché non distribuisci di nuovo |
+| `deleting` | Il deployment è in fase di eliminazione |
+
+Il primo deployment può richiedere diversi minuti, il tempo di scaricare i pesi. I problemi temporanei, come l'attesa di una GPU libera, compaiono in `reason` senza cambiare la fase.
+
+## Modifica la scala o ferma il deployment {#change-the-scale-or-stop-the-deployment}
+
+`PATCH /management/v0/models/{id}/deployment` modifica subito la scala, senza riavviare le repliche in esecuzione. Il campo facoltativo `replicas` imposta quante eseguirne ora, entro il nuovo intervallo:
+
+```bash
+# Stop: no replicas, and requests don't start one
+curl -s -X PATCH "https://control-room.example.com/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{ "scale": { "min": 0, "max": 0 } }'
+
+# Resume on demand, and start one replica now so the first request doesn't wait
+curl -s -X PATCH "https://control-room.example.com/api/management/v0/models/<MODEL_ID>/deployment" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" \
+  -d '{ "scale": { "min": 0, "max": 1 }, "replicas": 1 }'
+```
+
+`"replicas": 0` rilascia l'hardware di un deployment on demand fino alla richiesta successiva. Una piattaforma che scala da sola on demand (`scalesOnDemand`) rifiuta `replicas`.
+
+## Riferimento degli endpoint {#endpoint-reference}
+
+Tutti i percorsi sono relativi a `/api/management/v0`.
+
+| Azione | Endpoint |
+|---|---|
+| Elenca i modelli | `GET /models` (filtri: `query`, `purpose`, `usable`, `hosting`, `phase`) |
+| Leggi un modello | `GET /models/{id}` |
+| Crea un modello | `POST /models` |
+| Carica i pesi | `PUT /models/{id}/artifact` |
+| Modifica un modello (non distribuisce mai) | `PATCH /models/{id}` |
+| Mostra in anteprima il valore predefinito di ogni parametro di deployment | `POST /models/{id}/deploy-defaults` |
+| Imposta l'approvazione | `POST /models/{id}/approval` |
+| Hosting e relative capacità | `GET /models/hosting` |
+| Leggi il deployment | `GET /models/{id}/deployment` |
+| Distribuisci, aggiorna o riavvia | `POST /models/{id}/deployment` |
+| Modifica la scala, ferma o riprendi | `PATCH /models/{id}/deployment` |
+| Elimina il deployment (conserva il modello) | `DELETE /models/{id}/deployment` |
+| Invia una richiesta di test a un modello pronto (non distribuisce mai) | `POST /models/{id}/test` |
+| Sposta gli utilizzi di un modello su un altro modello | `POST /models/{id}/replace` |
+| Elimina un modello | `DELETE /models/{id}` |
+| Cerca i modelli installabili (solo amministratori) | `GET /supported` |
+
+`PATCH /models/{id}` con `"enabled": false` disattiva un modello: le sue richieste vengono rifiutate subito e i selettori dei modelli smettono di proporlo, mentre il suo deployment resta com'è.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| `404` su ogni chiamata | L'indirizzo. Le chiamate vanno a `/api/management/v0/...` sull'host della Control Room. |
+| `409` in creazione | Un altro modello ha quel nome. Elenca i modelli e riusane uno, oppure scegli un altro nome. |
+| `409` in distribuzione | La `revision` che hai inviato non è più aggiornata. Leggi il modello e distribuisci il suo `deployRevision` attuale. |
+| Bloccato in `provisioning` con `WaitingForCapacity` | Nessuna GPU ha spazio per il modello. Ferma un altro deployment, oppure abbassa `gpuCount`. |
+| `failed` con `OutOfMemory` o `Crashed` | `message` contiene l'errore del runner. Abbassa `contextLength`, oppure scegli un modello più piccolo o quantizzato, poi distribuisci di nuovo. |
+
+## Prossimi passi {#next-steps}
+
+- [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments): le stesse attività nella Control Room.
+- [Accedi a Rational AI tramite API](/operational-guides/api-access#call-a-model): chiama il modello distribuito tramite l'API compatibile con OpenAI.

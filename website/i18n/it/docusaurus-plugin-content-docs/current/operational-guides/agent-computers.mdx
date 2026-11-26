@@ -1,0 +1,67 @@
+---
+sidebar_position: 40
+sidebar_label: Computer degli agenti
+type: how-to
+audience: [builder]
+---
+
+# Computer degli agenti
+
+Un agente svolge il proprio lavoro su un computer tutto suo: una macchina Linux con un desktop e un browser, dove esegue comandi, scrive file e riprende domani da dove ha lasciato oggi. Questa guida mostra come controllare e gestire quei computer.
+
+Il computer di ogni agente mantiene i suoi file e le skill installate tra un'esecuzione e l'altra. Si avvia quando un'esecuzione ne ha bisogno e si ferma dopo un periodo di inattività, senza eliminare nulla. Esegue un lavoro alla volta, quindi le altre esecuzioni dello stesso agente attendono in coda.
+
+## Prerequisiti {#prerequisites}
+
+- **Computer degli agenti abilitati sulla tua installazione.** Quando non lo sono, il pannello del computer mostra *"I computer non sono attivi su questo server. Contatta l’amministratore per configurare il servizio."*
+- **Permesso di modifica sull'agente** per avviare, fermare o aprire il suo computer.
+
+## Controlla lo stato dei computer {#check-the-computers}
+
+Apri **Agenti** → **Computer**.
+
+<img
+  alt="La pagina Computer: il computer di Ada non ancora creato con Avvia computer, il computer di Iris in esecuzione con Mostra desktop, Apri desktop e Ferma"
+  src={require('@site/static/img/screens/agents-computers.png').default}
+  style={{ maxWidth: '100%', borderRadius: 8, border: '1px solid #e5e7eb' }}
+/>
+
+La pagina elenca ogni agente con il suo computer e la sua esecuzione aperta, se presente. Il conteggio in alto mostra quante esecuzioni sono aperte (*N esecuzioni aperte*).
+
+- **Con un'esecuzione aperta**, la scheda mostra *Esecuzione aperta* e il suo stato, con **Vedi esecuzione** e **Interrompi esecuzione**.
+- **Senza un'esecuzione aperta**, dice *Nessuna esecuzione aperta*; lo stato del computer stesso è mostrato nel suo pannello **Computer**.
+
+Lo stesso pannello **Computer** è presente nella pagina di ogni agente.
+
+| Stato | Significa |
+|-------|-----------|
+| **Non ancora avviato** | L'agente non ha mai avuto bisogno del suo computer. La prima esecuzione, oppure **Avvia computer**, lo crea. |
+| **Acceso** | Attivo e pronto. |
+| **Inattivo** | Attivo, senza lavoro; si ferma da solo. |
+| **Fermo** | Spento; file e skill sono conservati. |
+| **Disattivato** | I computer non sono abilitati su questa installazione. |
+
+## Gestisci un computer {#control-a-computer}
+
+- **Avvia computer** lo avvia prima di un'esecuzione, così il primo passo non deve attendere.
+- **Mostra desktop** apre il desktop del computer nella pagina, **Apri desktop** in una nuova scheda. Guardare il desktop mentre un'esecuzione lavora è il modo più rapido per vedere cosa fa l'agente nel suo browser.
+- **Ferma** lo spegne. I file restano.
+- **Altre azioni del computer** contiene **Installa gli strumenti browser**, che installa sul computer un toolkit pronto all'uso di automazione del browser e di skill (**Reinstalla gli strumenti browser** per aggiornarlo), oltre a **Ripara** e **Riavvia il desktop**. L'installazione può richiedere diversi minuti; le skill installate sono elencate sotto *N skill installate*. Riavviare il desktop chiude le sue finestre aperte e conserva i file.
+
+:::warning[Il desktop è dell'agente, non tuo]
+Tutto ciò che fai sul desktop accade sulla macchina dell'agente, nel mezzo del suo lavoro. Usalo per osservare, oppure per sbloccare qualcosa su cui l'agente ti ha chiesto un intervento (una pagina di accesso, una conferma), non per lavorare a fianco dell'agente mentre un'esecuzione è in corso. Nella pagina dell'esecuzione, **Prendi il controllo** ti permette di usare il desktop e **Restituisci all'agente** lo restituisce.
+:::
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---------|---------------|
+| *"Il servizio Computer non è stato trovato…"* o *"Il server non riesce a raggiungere il servizio Computer…"* | Il servizio dei computer è inattivo o non configurato. Contatta il tuo amministratore; **Riprova la connessione** prova di nuovo. |
+| *"Il servizio Computer non ha risposto in tempo."* | Un computer si sta avviando o è sotto carico. **Riprova la connessione** dopo alcuni secondi. |
+| Le esecuzioni restano *In coda* | Un'altra esecuzione dello stesso agente sta usando il computer. Controlla **Computer**; interrompi l'esecuzione aperta se è bloccata. |
+| Il desktop mostra *Disconnected* | Seleziona **Ricollega**. Se continua a disconnettersi, aprilo in una nuova scheda con **Apri desktop**. |
+
+## Prossimi passi {#next-steps}
+
+- [Crea un agente](./create-an-agent): scegli gli strumenti che l'agente usa sul suo computer.
+- [Segui le esecuzioni e approva le azioni](./agent-runs): osserva un'esecuzione e prendi il controllo del desktop quando l'agente lo chiede.

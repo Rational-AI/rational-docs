@@ -1,0 +1,21 @@
+---
+sidebar_position: 27
+sidebar_label: Data limite delle conoscenze
+title: Data limite delle conoscenze (knowledge cutoff)
+description: Cos'è la data limite delle conoscenze di un modello, perché porta a risposte sicure ma superate e come Rational AI aggira il problema.
+type: concept
+audience: [user, builder]
+---
+
+# Data limite delle conoscenze (knowledge cutoff)
+
+La **data limite delle conoscenze** (knowledge cutoff) di un modello è la data in cui finiscono i suoi dati di addestramento. Il modello non sa nulla di ciò che è accaduto, è cambiato o è stato pubblicato dopo quella data, a meno che tu non gli fornisca quelle informazioni.
+
+Un modello raramente dichiara che una domanda supera la sua data limite. Se gli chiedi di una nuova normativa o del listino prezzi del mese scorso, spesso risponde comunque, con informazioni più vecchie o con una supposizione plausibile, e con la sicurezza di sempre. Tratta con cautela le risposte su fatti recenti o in rapida evoluzione.
+
+## In Rational AI {#in-rational-ai}
+
+- La tua [Knowledge](/concepts/Knowledge) contiene contenuti aggiornati, sincronizzati dalle sue [fonti](/concepts/Source-and-resources), e [RAG](/concepts/RAG) fornisce al modello i passaggi pertinenti. Le risposte sulla tua organizzazione non dipendono dalla data limite.
+- In Chat, **Ricerca web** nel menu degli strumenti (**+**) permette all'assistente del workspace di cercare informazioni pubbliche recenti. Vedi [Componi la richiesta nel composer](/operational-guides/chat-experience#shape-your-request-in-the-composer).
+
+Per la differenza tra ciò che un modello ha appreso e ciò che legge, vedi [Conoscenza parametrica e contestuale](/concepts/Parametric-and-contextual-knowledge).

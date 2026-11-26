@@ -1,0 +1,25 @@
+---
+sidebar_position: 17
+sidebar_label: Architettura del modello
+title: Architettura del modello
+description: Cos'è l'architettura di un modello, i due tipi di modello che incontri in Rational AI e cosa conta quando ne scegli uno.
+type: concept
+audience: [user, builder]
+---
+
+# Architettura del modello
+
+L'**architettura** di un modello è il suo progetto: come sono disposte le sue parti e come il testo le attraversa. L'architettura stabilisce per quale tipo di lavoro è costruito un modello, come la planimetria stabilisce se un edificio è un magazzino o una casa.
+
+Quasi ogni large language model oggi usa lo stesso progetto, chiamato **transformer**. La sua idea principale, l'*attention*, permette al modello di valutare il peso di ogni parola dell'input rispetto a tutte le altre. Così il modello tiene traccia di ciò a cui si riferiscono "esso" o "il contratto" anche in un passaggio esteso.
+
+## Due tipi di modello {#two-kinds-of-model}
+
+| | Modello di generazione di testo | Modello di embedding |
+| :-- | :-- | :-- |
+| Cosa fa | Scrive testo, un [token](/concepts/Tokens) alla volta | Trasforma un testo in una lista di numeri che ne cattura il significato |
+| Usato per | Risposte in Chat e nei touchpoint | Rendere ricercabile una Knowledge |
+
+## In Rational AI {#in-rational-ai}
+
+**Impostazioni** → **Registro modelli AI** elenca ogni modello con la sua funzione, per esempio **Generazione testo**, **Embedding** o **Reranking**. In **Modelli predefiniti**, il **Modello conversazionale** scrive le risposte e il **Modello di embedding** rende ricercabile la tua [Knowledge](/concepts/Knowledge). Per scegliere un modello non serve conoscerne i dettagli interni: guarda la sua funzione, la sua [finestra di contesto](/concepts/Context-window), la sua velocità e il suo costo. Vedi [Registro modelli AI](/cr/settings/ai-model-registry).

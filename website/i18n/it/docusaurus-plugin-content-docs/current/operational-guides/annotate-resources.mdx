@@ -1,0 +1,84 @@
+---
+sidebar_position: 12
+sidebar_label: Annota le risorse
+type: how-to
+audience: [builder]
+---
+
+# Annota le risorse
+
+Evidenzia un passaggio di una risorsa di testo e assegnagli un'etichetta e un colore, oppure lascia un commento su un PDF, così tu e i tuoi colleghi potrete ritrovarlo in seguito. Le annotazioni compaiono in linea nel visualizzatore e sono elencate nella barra laterale **Annotazioni**. Un workflow può anche crearle per te, anche su immagini e tabelle (**Annota automaticamente**).
+
+## Prerequisiti {#prerequisites}
+
+- **Permessi sulla Knowledge:** **Leggi** nella riga **Knowledge** del tuo ruolo per vedere le annotazioni, **Crea** per aggiungerle, **Modifica** per modificarle ed **Elimina** per rimuoverle. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Una risorsa di testo** in un formato supportato: `.txt` o `.md`. Altri formati, come `json`, `xml` e `html`, si aprono nell'editor con evidenziazione della sintassi e qui non si possono annotare.
+- **Una risorsa PDF**, se vuoi lasciare commenti su un documento.
+
+## Apri una risorsa di testo {#open-a-text-resource}
+
+1. Apri la scheda **Knowledge** e seleziona la scheda della Knowledge che contiene la tua risorsa.
+2. Apri la risorsa `.txt` o `.md`. Un file `.txt` mostra il testo selezionabile. Un file `.md` si apre su **Anteprima**: seleziona **Sorgente** per annotarlo.
+
+Modificare il sorgente Markdown dopo averlo annotato può spostare le evidenziazioni esistenti, perché non seguono il testo.
+
+## Crea un'annotazione {#create-an-annotation}
+
+1. Nel visualizzatore, **seleziona il testo** che vuoi annotare trascinando sopra di esso.
+2. Quando rilasci la selezione, si apre il **popover di etichetta e colore**.
+3. Scegli o inserisci un'**etichetta** e un **colore**.
+4. Conferma per creare l'annotazione.
+
+Il passaggio selezionato viene evidenziato in linea con il colore scelto, e la nuova annotazione viene aggiunta alla barra laterale **Annotazioni** con la sua etichetta e il suo colore.
+
+Le annotazioni non possono sovrapporsi né essere annidate.
+
+## Esamina e gestisci le annotazioni {#review-and-manage-annotations}
+
+Nella barra laterale **Annotazioni**:
+
+- Seleziona una voce per far scorrere il visualizzatore fino a quel passaggio e far lampeggiare la sua evidenziazione.
+- Elimina una voce per rimuovere la sua evidenziazione dal testo.
+
+## Commenta un PDF {#comment-on-a-pdf}
+
+Un commento collega una nota a un passaggio o a un'area di una pagina PDF, dove la vedono i tuoi colleghi.
+
+1. Apri una risorsa PDF nella Knowledge.
+2. Nella barra degli strumenti accanto al documento, apri la piccola freccia sul pulsante **Commento** (*"Opzioni commento"*) e scegli un gesto. Il pulsante ricorda la tua scelta, quindi la volta successiva basta un clic:
+   - **Comment on the text**: seleziona il passaggio da commentare. Il testo selezionato viene conservato come citazione.
+   - **Comment on an area**: disegna un rettangolo attorno a una regione, per esempio un grafico o una firma, che non ha testo selezionabile.
+3. Nel popover, scrivi la nota nel campo *"Scrivi un commento"*.
+4. Seleziona **Salva**. Il commento compare nella pagina come una nota che contiene il suo testo, e scorre e si ingrandisce con il documento.
+
+Se chiudi il popover senza salvare, il commento non viene creato.
+
+### Esamina e modifica i commenti {#review-and-edit-comments}
+
+Il pannello **Annotazioni** elenca i commenti raggruppati per pagina, ciascuno con la sua nota e, per un commento su testo, il passaggio a cui si riferisce sotto di essa.
+
+- **Modifica un commento:** cambia la nota direttamente nel pannello.
+- **Vai a un commento:** seleziona la sua icona di **ispezione** per far scorrere il documento fino a lì.
+- **Rimuovi un commento:** seleziona la sua icona **Elimina** e conferma nella finestra **Elimina annotazione**.
+
+### Mostra o nascondi le annotazioni nella pagina {#show-or-hide-annotations-on-the-page}
+
+1. Seleziona il pulsante con l'**occhio** (*"Mostra o nascondi le annotazioni"*).
+2. Attiva o disattiva **Testo**, **Immagini**, **Tabelle** o **Commenti**, oppure usa **Nascondi tutto** e **Mostra tutto**.
+
+Questo cambia solo ciò che viene disegnato sul documento: il pannello **Annotazioni** continua a elencare tutto.
+
+## Verifica che i chunk siano pronti per la ricerca {#check-that-chunks-are-ready-for-search}
+
+Apri una risorsa e seleziona la scheda **Chunk**. Il punto su ogni scheda di chunk indica se la [ricerca](/operational-guides/configure-rag) può trovarlo:
+
+| Punto | Significato |
+|-------|-------------|
+| Verde | La ricerca può trovare il chunk. |
+| Colore di avviso | La ricerca non può ancora trovare il chunk. [Rielabora il file](/operational-guides/manage-knowledge-resources#recover-a-file-that-failed) per risolvere il problema. |
+| Grigio | Il chunk è disattivato, quindi la ricerca lo ignora. |
+
+## Prossimi passi {#next-steps}
+
+- [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources)
+- [Configura Graph RAG](/operational-guides/configure-rag)

@@ -1,0 +1,71 @@
+---
+title: Connetti un repository Git
+sidebar_label: Git
+description: Sincronizza i file di un branch, un tag o un commit di un repository Git in una Knowledge, con un connettore Credenziali Git per i repository privati.
+type: how-to
+audience: [admin]
+---
+
+Una fonte repository Git sincronizza i file di un branch, un tag o un commit in una [Knowledge](/operational-guides/create-knowledge). I repository pubblici non richiedono un connettore. Quelli privati richiedono un connettore Credenziali Git che conserva un token di accesso in sola lettura.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere un connettore, **Crea** sulla riga **Fonti** e **Usa** sulla riga **Connettori** per aggiungere la fonte, e **Modifica** sulla riga **Knowledge** per collegarla. **Fonti** richiede il modulo Knowledge nella tua licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Sull'host Git:** per un repository privato, un account che può leggerlo e creare un token di accesso.
+
+## Cosa ti serve {#what-you-need}
+
+- L'URL HTTPS di clonazione del repository, per esempio `https://github.com/acme/handbook.git`. Gli URL SSH non sono supportati.
+- Per un repository privato, un token di accesso con accesso in lettura al repository:
+
+| Host | Token | Permesso | Perché serve |
+|---|---|---|---|
+| GitHub | Fine-grained personal access token, limitato ai repository che sincronizzi | **Contents**: Read-only | Clona e recupera il repository. GitHub aggiunge da solo **Metadata**: Read-only. |
+| GitLab | Project access token, oppure personal access token | `read_repository` | Clona e recupera il repository. Un project access token richiede anche almeno il ruolo **Reporter**. |
+
+Rational AI legge soltanto il repository, quindi il token non richiede permessi di scrittura.
+
+## Configura {#set-up}
+
+1. Crea il token sull'host Git, limitato ai repository che vuoi sincronizzare, e copialo. Salta questo passo per un repository pubblico.
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Credenziali Git**, poi seleziona **Aggiungi**.
+3. Inserisci un **Nome** e l'**Host Git**, per esempio `github.com`. L'host deve essere lo stesso dell'host dell'URL del repository.
+4. Lascia **Nome utente** come `x-access-token` per GitHub. Per GitLab, inserisci il tuo nome utente GitLab.
+5. Incolla il token in **Token di accesso** e seleziona **Aggiungi**.
+6. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**. Inserisci un **Nome**.
+7. In **Tipo**, trova **Git repository** e seleziona il tuo connettore sotto di esso, oppure **Repository pubblico** per un repository pubblico.
+8. Inserisci l'**URL del repository**. In **Branch, tag o commit**, inserisci ciò che vuoi sincronizzare, oppure lascia vuoto per il branch predefinito.
+9. Seleziona **Includi i submodule Git** se anche i submodule del repository devono essere sincronizzati.
+10. Seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+11. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge, seleziona la scheda **Fonti** e scegli la fonte in *Aggiungi fonte...*. Apri il menu della fonte in quella scheda e seleziona **Processa ora**.
+
+Una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per tenerla aggiornata, vedi [Scegli quando sincronizzare una fonte](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## Cosa viene sincronizzato {#what-gets-synced}
+
+- **Ogni file dell'ultimo commit** del branch o del tag che hai inserito, oppure del commit che hai inserito. La cartella `.git` e la cronologia non vengono sincronizzate.
+- **I submodule**, quando è selezionato **Includi i submodule Git**.
+- **Le modifiche**, secondo la modalità di sincronizzazione della fonte. Le fonti Git supportano **Automatico**, **Periodica** e **Manuale**. Con **Automatico**, Rational AI controlla ogni due minuti a quale commit punta il branch o il tag, e sincronizza solo quando cambia.
+
+Rational AI non esegue mai push sul repository. I file eliminati in un nuovo commit vengono rimossi anche dalla Knowledge quando l'impostazione della fonte **Prima di essere eliminata** è **Elimina a cascata**, che è il valore predefinito.
+
+## Limiti {#limits}
+
+- Una fonte sincronizza l'intero repository. Non puoi scegliere le cartelle, perché la finestra di dialogo non ha un pannello dei file per le fonti Git.
+- Una fonte fissata a un commit non cambia mai, quindi **Automatico** non trova mai nulla di nuovo per essa.
+- Il token del connettore viene inviato solo al suo host. Un submodule ospitato altrove deve essere pubblico.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| *"Inserisci un URL HTTPS del repository senza credenziali incorporate."* | L'URL usa SSH, HTTP semplice, oppure contiene un nome utente o un token. Usa l'URL di clonazione `https://` e inserisci il token nel connettore. |
+| *"The Git credentials connector host must match the repository host."* | L'**Host Git** del connettore è diverso dall'host dell'URL del repository. Inserisci lo stesso host, senza `https://`. |
+| La prima sincronizzazione fallisce con un errore di autenticazione | Il token è scaduto, è stato revocato o non può leggere questo repository. Crea un nuovo token e inseriscilo nella **Configurazione** del connettore. |
+| La fonte mantiene i file vecchi dopo che hai cambiato il branch | La fonte si sincronizza solo con **Sincronizza ora** o secondo la sua pianificazione. Seleziona **Sincronizza ora**. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura le fonti di dati](/operational-guides/configure-sources): modalità di sincronizzazione, sincronizzazioni non riuscite ed elaborazione alle modifiche.
+- [Crea un grafo del codice con Graphify](/operational-guides/graphify-code-graph): mappa una codebase sincronizzata.
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources): lavora con i file sincronizzati in una Knowledge.

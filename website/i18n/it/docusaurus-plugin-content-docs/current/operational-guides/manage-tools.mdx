@@ -1,0 +1,66 @@
+---
+sidebar_position: 28
+sidebar_label: Sfoglia gli strumenti
+type: how-to
+audience: [builder, developer]
+---
+
+# Sfoglia gli strumenti che i tuoi touchpoint possono usare
+
+**Impostazioni** → **Strumenti** è il catalogo degli strumenti MCP che i tuoi [touchpoint](/operational-guides/configure-touchpoints) possono chiamare oltre alla chat: cercare in una Knowledge, eseguire una query di sola lettura, recuperare un documento e altro.
+
+Gli agenti della sezione [Agenti](/cr/Agents) ricevono strumenti nel loro profilo, e **Agenti** → **Libreria** elenca quelli che possono ricevere (vedi [Sfoglia la libreria](/operational-guides/create-an-agent#browse-the-library)).
+
+:::note[Che cos'è uno strumento?]
+Uno strumento è un'azione che l'AI può compiere durante una conversazione, per esempio cercare in una Knowledge o recuperare un documento. Gli strumenti arrivano dalle [estensioni](/operational-guides/manage-extensions): un'estensione avvia un **server MCP** (MCP è lo standard aperto per collegare i modelli AI agli strumenti), e quel server fornisce gli strumenti.
+:::
+
+## Sfoglia gli strumenti disponibili {#browse-available-tools}
+
+Vai su **Impostazioni** → **Strumenti**. La pagina è un elenco con ricerca di tutti gli strumenti disponibili nel tuo ambiente, raggruppati per configurazione del server MCP. Ogni riga di gruppo mostra il nome del server MCP (per esempio **RAG MCP server**) e il nome della configurazione. La configurazione creata quando un'estensione viene installata si chiama **Predefinita**. I gruppi partono chiusi; espandine uno per vedere i suoi strumenti.
+
+Ogni riga di strumento mostra:
+
+- **Nome:** l'identificatore dello strumento.
+- **Descrizione:** una breve spiegazione di cosa fa lo strumento e di quando l'AI lo chiamerebbe.
+- Menu **⋮**: **Vedi dettagli** apre la pagina dello strumento, con i suoi parametri e un modulo **Prova strumento** per provarlo con **Esegui test**.
+
+Usa la casella di ricerca per trovare uno strumento. Mentre cerchi, tutti i gruppi sono espansi.
+
+<img
+  src={require('@site/static/img/screens/tools-list.png').default}
+  alt="Il registro degli strumenti raggruppato per server MCP"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Il registro degli strumenti: ogni strumento disponibile per i tuoi touchpoint, raggruppato per server MCP (estensione) che lo fornisce.*
+
+Il **RAG MCP server**, installato di default, fornisce gli strumenti che cercano e interrogano le tue Knowledge.
+
+## Da dove arrivano gli strumenti {#where-tools-come-from}
+
+Le estensioni forniscono gli strumenti, questa pagina elenca tutti gli strumenti disponibili, e un [touchpoint](/operational-guides/configure-touchpoints) è il punto in cui scegli quali strumenti un assistente può chiamare. Uno strumento elencato qui viene usato solo dai touchpoint che lo abilitano. Per installare o rimuovere estensioni, vedi [Gestisci le estensioni](/operational-guides/manage-extensions). Per sapere cosa succede agli strumenti quando un'estensione si aggiorna, vedi [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates).
+
+## Concedi più tempo a un server MCP lento {#give-a-slow-mcp-server-more-time}
+
+Ogni chiamata a uno strumento ha un limite di tempo. Uno strumento che non risponde in tempo viene segnalato all'assistente come fallito, e la conversazione prosegue. Il limite si imposta sul touchpoint e si applica a ogni server MCP che il touchpoint usa (vedi [Configura i touchpoint](/operational-guides/configure-touchpoints)). Quando un singolo server è lento, per esempio uno che esegue una query lunga o chiama un servizio esterno lento, concedi più tempo solo a quel server:
+
+1. Vai su **Impostazioni** → **Touchpoint**, seleziona il touchpoint e apri la scheda **Strumenti**.
+2. Nel menu `⋮` della configurazione, seleziona **Configura MCP server**. Per creare invece una nuova configurazione, usa **Aggiungi una configurazione server MCP...** → **Crea una nuova configurazione**.
+3. In **Limite di tempo per le chiamate ai tool**, inserisci il numero di secondi, da 1 a 600. Il testo di aiuto mostra il limite che il server applica se lasci il campo vuoto: *"Vale solo per questo server. Lascia vuoto per seguire il limite del touchpoint di … secondi."*
+4. Seleziona **Salva**.
+
+| Dove si imposta il limite | Quando si applica |
+|------------------------|-----------------|
+| **Limite di tempo per le chiamate ai tool** sulla configurazione del server MCP | Sempre, per gli strumenti di quella configurazione. |
+| **Quanto tempo può impiegare un tool** sul touchpoint | Per ogni configurazione di server che non ha un proprio limite. |
+| Predefinito della piattaforma (120 secondi) | Quando nessuno dei due precedenti è impostato. |
+
+:::note[Un campo vuoto non significa mai nessun limite]
+Lasciare il campo vuoto fa sì che il server segua il limite del touchpoint, poi il predefinito della piattaforma. Ogni chiamata ha un limite.
+:::
+
+## Prossimi passi {#next-steps}
+
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): abilita gli strumenti su un assistente e imposta quando deve chiedere conferma prima di eseguirli.
+- [Gestisci le estensioni](/operational-guides/manage-extensions): installa le estensioni che portano nuovi strumenti.

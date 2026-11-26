@@ -1,0 +1,68 @@
+---
+sidebar_position: 11
+sidebar_label: Aggiungi e gestisci i contenuti
+type: how-to
+audience: [builder]
+---
+
+# Aggiungi e gestisci i contenuti in una Knowledge
+
+Carica i file in una [Knowledge](/operational-guides/create-knowledge), segui la loro elaborazione, correggi i file che falliscono ed elimina quelli che non ti servono più. Ogni file elaborato diventa una risorsa che l'AI può cercare e citare. Il pulsante **File** nell'intestazione della Knowledge apre la tabella dei file di input e del loro stato di elaborazione.
+
+## Prerequisiti {#prerequisites}
+
+- **Leggi** sulla riga **Knowledge** del tuo ruolo per sfogliare i file, **Crea** per caricarli, **Modifica** per rielaborarli o modificarli, ed **Elimina** per eliminarli. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+## Carica i file {#upload-files}
+
+1. Apri la Knowledge e seleziona **Aggiungi file** nel menu **Opzioni** (nella **Griglia**, il menu si chiama **Azioni**).
+2. In **Aggiungi file**, aggiungi i file o una cartella e seleziona **Upload**.
+3. In **Revisione workflow**, per ogni file, scegli un **workflow** oppure lascialo su **Skip workflow** e seleziona **Aggiungi come risorsa** per salvare il file così com'è.
+4. Seleziona **Conferma**.
+
+Se la Knowledge ha una regola di processing, Rational AI salta il passaggio di revisione e la regola assegna a ogni file il suo workflow. Se selezioni **Annulla** in **Revisione workflow**, i file caricati vengono eliminati.
+
+Per tenere una Knowledge sincronizzata con una cartella o un servizio, vedi [Connetti Google Drive](/operational-guides/integrate-data).
+
+## Segui un'elaborazione {#follow-a-processing-run}
+
+Un'elaborazione è un passaggio della pipeline della Knowledge sui suoi file. Parte quando selezioni **Elabora knowledge** nel menu **Opzioni**, quando una fonte termina una sincronizzazione o quando un client API la richiede.
+
+1. Apri la Knowledge e seleziona **File**. Un chip di stato dell'ultima elaborazione compare nell'intestazione della cartella: su **Locale** quando la Knowledge non ha fonti, altrimenti sulla cartella di ciascuna fonte.
+2. Mentre l'elaborazione è in corso, il chip mostra il passo attuale, e la barra e il contatore mostrano i file completati sul totale (per esempio *120 / 480*). Si aggiornano ogni 30 secondi.
+3. Quando l'elaborazione termina, compare un avviso con *"Elaborazione completata"*, oppure *"Elaborazione non riuscita"* con il nome della Knowledge e il motivo. Compare anche se nel frattempo sei passato a un'altra scheda.
+4. Se l'elaborazione è fallita, è stata annullata o è scaduta, il chip diventa un chip **Errore**. Passa il cursore sopra per leggere la causa.
+
+La colonna **Ultima elaborazione** mostra quanto è durato l'ultimo tentativo di ogni file, con la data sotto. Usala per trovare i file più lenti.
+
+### Recupera un file non riuscito {#recover-a-file-that-failed}
+
+1. Nella tabella dei file, trova il file con il chip **Errore** nella colonna **Stato**. Passa il cursore sul testo dell'errore per leggerlo per intero.
+2. Seleziona **Riprocessa** sotto l'errore.
+3. Scegli come elaborare il file e conferma.
+
+Se il testo dell'errore non basta, apri il menu **⋮** della riga e seleziona **Vedi i dettagli dei log**. La finestra **Log di elaborazione** elenca ogni tentativo con la sua **Ora**, il suo **Stato** e i suoi **Dettagli**.
+
+## Elimina i file {#delete-files}
+
+1. Nella tabella dei file, seleziona le righe da eliminare. Per andare oltre la pagina, seleziona la casella di intestazione, poi **Select all N**: seleziona tutti i file che corrispondono ai tuoi filtri.
+2. Apri il menu **⋮** accanto al numero di elementi selezionati e seleziona **Elimina selezionati**.
+3. Leggi il conteggio nella finestra **Elimina risorse** e conferma.
+
+Dopo **Select all N**, cambiare una singola casella cancella l'intera selezione, quindi restringi i filtri prima di selezionare tutto. Le colonne **Nome**, **Aggiornato il** e **Dimensione** si possono ordinare, il che aiuta a trovare i file più grandi o più vecchi.
+
+:::danger[L'eliminazione non si può annullare]
+Eliminare un file elimina anche tutto ciò che è stato estratto da esso: chunk, embedding e annotazioni.
+:::
+
+## Modifica una risorsa {#edit-a-resource}
+
+Quando modifichi il contenuto di un file nella Knowledge e salvi, Rational AI ricalcola i chunk e gli embedding del nuovo testo, così la [ricerca](/operational-guides/configure-rag) riflette la tua modifica. Non riesegue il workflow del file né la sua regola di processing, quindi il contenuto scritto a mano, le annotazioni e gli attributi del record restano invariati.
+
+Per rieseguire l'intera pipeline, rielabora la Knowledge. Una [fonte](/operational-guides/configure-sources) impostata sulla modalità di sincronizzazione **Automatico** nelle sue **Impostazioni di processing dati** rielabora i file che importa ogni volta che cambiano.
+
+## Prossimi passi {#next-steps}
+
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)
+- [Annota le risorse](/operational-guides/annotate-resources)
+- [Configura le fonti di dati](/operational-guides/configure-sources)

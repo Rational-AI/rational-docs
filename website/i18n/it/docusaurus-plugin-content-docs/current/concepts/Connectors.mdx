@@ -1,0 +1,57 @@
+---
+sidebar_position: 8
+sidebar_label: Connettori
+title: Connettori
+description: Cos'è un connettore, perché le credenziali sono centralizzate e come i connettori collegano la piattaforma ai fornitori esterni in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Connettori
+
+Un **connettore** conserva le credenziali e la configurazione necessarie per comunicare con un fornitore esterno, come una piattaforma cloud, un fornitore di modelli o un servizio di ricerca. Una volta configurato, un connettore può essere riutilizzato in tutta la piattaforma ovunque serva quel fornitore.
+
+Un connettore è come un accesso salvato in un unico posto sicuro. Invece di inserire le stesse chiavi in ogni funzione che le richiede, le salvi una volta e lasci che ogni funzione faccia riferimento al connettore. Il segreto resta in un'unica posizione controllata.
+
+## Perché centralizzare le credenziali {#why-centralize-credentials}
+
+Sparpagliare chiavi API e password in molte impostazioni è rischioso e difficile da mantenere. Un connettore risolve il problema e ti offre:
+
+* **Sicurezza:** le credenziali sensibili sono conservate in un solo posto invece di essere copiate in giro.
+* **Riutilizzo:** la stessa connessione può servire più funzioni contemporaneamente.
+* **Visibilità:** puoi vedere dove viene usato ogni connettore prima di modificarlo o rimuoverlo.
+* **Controllo:** la rotazione o la revoca dell'accesso si fa una sola volta, in un unico punto.
+
+## A cosa si collegano i connettori {#what-connectors-link-to}
+
+Una volta configurato, un connettore può essere usato da parti diverse della piattaforma:
+
+* **[Modelli](./AI-model-registry.mdx):** per raggiungere l'API di un fornitore di modelli.
+* **[Fonti](./Source-and-resources.mdx):** per leggere dati da un sistema esterno.
+* **Strumenti:** per permettere a un assistente o a un agente di chiamare un servizio esterno.
+* **Database virtuali:** per leggere le viste che una Knowledge espone su un database SQL esterno.
+
+Anche per l'[AI sovrana (Sovereign AI)](./Sovereign-AI.mdx) questo conta: ogni connessione esterna è esplicita, quindi sai esattamente quali fornitori ricevono i tuoi dati.
+
+## Connettori in Rational AI {#connectors-in-rational-ai}
+
+La sezione [Connettori](../cr/settings/connectors.mdx) è dove aggiungi i connettori e controlli dove viene usato ciascuno, così il resto della piattaforma può raggiungere l'esterno senza mai gestire direttamente le credenziali.
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Impostazioni dei connettori](../cr/settings/connectors.mdx): aggiungi e gestisci le connessioni ai fornitori esterni.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Fonti e risorse", to: "/concepts/Source-and-resources" },
+		{ label: "AI sovrana", to: "/concepts/Sovereign-AI" },
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+	]}
+/>

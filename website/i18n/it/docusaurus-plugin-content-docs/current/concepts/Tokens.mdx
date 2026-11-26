@@ -1,0 +1,24 @@
+---
+sidebar_position: 21
+sidebar_label: Token
+title: Token
+description: Cosa sono i token, perché limiti, costi e velocità si misurano in token, e dove li vedi in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Token
+
+Un **token** è l'unità di testo che un modello legge e scrive. Prima che un modello legga il tuo messaggio, il testo viene diviso in token, e il modello scrive la risposta un token alla volta.
+
+Un token è spesso una parola comune intera, oppure un pezzo di una parola più lunga. Un token equivale a circa quattro caratteri in inglese, quindi 1.000 token corrispondono a circa 750 parole. Altre lingue spesso richiedono più token per lo stesso testo, e ogni modello divide il testo a modo suo.
+
+## Perché i token contano {#why-tokens-matter}
+
+- **Limiti**: la [finestra di contesto](/concepts/Context-window) e la lunghezza di una risposta si misurano in token.
+- **Costi**: i provider addebitano per token, di solito più per i token che un modello scrive che per quelli che legge.
+- **Velocità**: un modello scrive token per token, quindi una risposta più lunga richiede più tempo.
+
+## In Rational AI {#in-rational-ai}
+
+[Governance](/cr/Governance) mostra l'utilizzo dei token e il costo per modello. Su un touchpoint, **Numero massimo di token in output** limita la lunghezza di una risposta; vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).

@@ -1,0 +1,25 @@
+---
+sidebar_position: 24
+sidebar_label: Model serving
+title: Model serving
+description: Cos'è il model serving, i due posti in cui un modello può girare per Rational AI e i compromessi tra velocità, costo e qualità.
+type: concept
+audience: [user, builder]
+---
+
+# Model serving
+
+Il **model serving** consiste nel mantenere un modello in esecuzione, in modo che le applicazioni possano inviargli richieste e ricevere risposte. Ogni richiesta a cui risponde è un'[inferenza](/concepts/Inference).
+
+## Dove gira il modello {#where-the-model-runs}
+
+- **Presso un provider.** Un modello di un provider come OpenAI o Anthropic gira sulle macchine del provider. Rational AI invia ogni richiesta tramite un [connettore](/concepts/Connectors).
+- **Sulla tua installazione.** Un modello open source o fine-tuned gira su hardware controllato dalla tua installazione. La copia in esecuzione è il **deployment** del modello.
+
+Un modello self-hosted occupa il suo hardware solo mentre è in esecuzione. Puoi tenerlo attivo, così ogni richiesta riceve subito una risposta, oppure lasciare che rilasci l'hardware quando è inattivo. In quel caso la richiesta successiva attende che il modello si riavvii.
+
+Velocità, costo e qualità si contrappongono. Un modello più grande spesso risponde meglio, ma più lentamente e a un costo più alto.
+
+## In Rational AI {#in-rational-ai}
+
+Aggiungi i modelli in **Impostazioni** → **Registro modelli AI** e distribuisci quelli self-hosted dalla pagina del modello. Vedi [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments). Per vedere quanto è veloce e costoso ogni modello nella pratica, usa [Governance](/cr/Governance).

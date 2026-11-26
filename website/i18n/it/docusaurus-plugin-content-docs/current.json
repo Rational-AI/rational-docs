@@ -1,0 +1,102 @@
+{
+	"version.label": {
+		"message": "Prossima",
+		"description": "The label for version current"
+	},
+	"sidebar.docsSidebar.category.Get started": {
+		"message": "Inizia",
+		"description": "The label for category 'Get started' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.The modules": {
+		"message": "I moduli",
+		"description": "The label for category 'The modules' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Use Rational AI": {
+		"message": "Usare Rational AI",
+		"description": "The label for category 'Use Rational AI' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Chat": {
+		"message": "Chat",
+		"description": "The label for category 'Chat' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Knowledge": {
+		"message": "Knowledge",
+		"description": "The label for category 'Knowledge' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Data sources & connectors": {
+		"message": "Fonti dati e connettori",
+		"description": "The label for category 'Data sources & connectors' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Touchpoints": {
+		"message": "Touchpoint",
+		"description": "The label for category 'Touchpoints' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Channels & conversations": {
+		"message": "Canali e conversazioni",
+		"description": "The label for category 'Channels & conversations' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Agents": {
+		"message": "Agenti",
+		"description": "The label for category 'Agents' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Workflows": {
+		"message": "Workflow",
+		"description": "The label for category 'Workflows' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Rational BI": {
+		"message": "Rational BI",
+		"description": "The label for category 'Rational BI' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Rational Gen": {
+		"message": "Rational Gen",
+		"description": "The label for category 'Rational Gen' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Models & fine-tuning": {
+		"message": "Modelli e fine-tuning",
+		"description": "The label for category 'Models & fine-tuning' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Extensions & Marketplace": {
+		"message": "Estensioni e Marketplace",
+		"description": "The label for category 'Extensions & Marketplace' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Administration & security": {
+		"message": "Amministrazione e sicurezza",
+		"description": "The label for category 'Administration & security' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Install & operate": {
+		"message": "Installazione e gestione",
+		"description": "The label for category 'Install & operate' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Users & access": {
+		"message": "Utenti e accessi",
+		"description": "The label for category 'Users & access' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Governance": {
+		"message": "Governance",
+		"description": "The label for category 'Governance' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Data & compliance": {
+		"message": "Dati e conformità",
+		"description": "The label for category 'Data & compliance' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Developers": {
+		"message": "Sviluppatori",
+		"description": "The label for category 'Developers' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Concepts": {
+		"message": "Concetti",
+		"description": "The label for category 'Concepts' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Reference": {
+		"message": "Riferimento",
+		"description": "The label for category 'Reference' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Settings": {
+		"message": "Impostazioni",
+		"description": "The label for category 'Settings' in sidebar 'docsSidebar'"
+	},
+	"sidebar.docsSidebar.category.Help": {
+		"message": "Aiuto",
+		"description": "The label for category 'Help' in sidebar 'docsSidebar'"
+	}
+}

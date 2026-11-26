@@ -1,0 +1,66 @@
+---
+sidebar_position: 1
+sidebar_label: Chat
+type: reference
+audience: [user, builder]
+---
+
+# Chat
+
+**Chat** è il punto in cui le persone della tua organizzazione parlano con Rational AI, ed è la pagina su cui si apre la Control Room. Ogni utente che ha effettuato l'accesso può usarla, con l'assistente del workspace (**Rational Chat**) oppure con qualsiasi [touchpoint](./settings/touchpoints.mdx) a cui ha accesso. I tuoi clienti non chattano qui: raggiungono i touchpoint tramite i canali, e il personale rivede quelle chat in [Conversazioni](./Conversations.mdx).
+
+<video className="doc-video" controls preload="metadata" aria-label="Video guida di Chat" poster="/img/videos/chat.jpg" src="/videos/chat_eng.mp4" />
+
+## Avvia una chat {#start-a-chat}
+
+Apri la sezione **Chat** dalla barra di navigazione in alto della Control Room. Per iniziare:
+
+* **Scegli un touchpoint** selezionando il nome dell'assistente in cima alla pagina. **Rational Chat**, l'assistente del workspace, è il primo, seguito dai touchpoint abilitati a cui puoi accedere. Questa scelta stabilisce con quale assistente stai parlando, insieme alle Knowledge e alle fonti dati a cui può accedere.
+* **Fai una domanda**, oppure seleziona una delle **domande suggerite** (al massimo tre) sotto il campo di scrittura. I suggerimenti sono definiti per ciascun touchpoint.
+
+L'assistente risponde nel thread, attingendo alle fonti collegate. Mentre lavora, una riga sopra la risposta riassume cosa sta facendo (ragionamento, ricerca nella tua Knowledge, uso di strumenti o esecuzione di una [skill](/operational-guides/agent-skills)). Puoi aprirla in seguito per vedere ogni passaggio.
+
+## Il campo di scrittura {#the-composer}
+
+Un'unica casella di testo serve sia la schermata della nuova chat sia ogni conversazione:
+
+| Controllo | Cosa fa |
+| :------ | :----------- |
+| **+** (*Apri menu strumenti*) | Allega file e foto, scegli **Knowledge base**, attiva **Ricerca web**, **Ricerca approfondita**, **Canvas**, **Conversazione vocale** o **Modalità avanzata**, scegli una **Skill** e disattiva la memoria per una nuova chat. Ogni opzione attiva appare come un chip rimovibile. **Knowledge base**, **Ricerca web** e **Ricerca approfondita** funzionano solo con l'assistente del workspace. |
+| **`/`** | Digitato in un messaggio vuoto, elenca le skill del touchpoint. La skill che scegli diventa un chip all'inizio del messaggio. |
+| **Modello e ragionamento** | Mostra il modello e il livello di ragionamento in uso. Il modello si può cambiare solo nelle tue chat con l'assistente del workspace; il livello di ragionamento, dove il touchpoint lo consente. |
+| **Microfono** | Detta un messaggio (oppure tieni premuto **Ctrl+Shift+D**). La freccia accanto imposta la **Lingua audio**. |
+| **Invia** / **Interrompi generazione** | Invia il messaggio, oppure interrompi una risposta ancora in scrittura. |
+
+**Modalità avanzata** espande i passaggi di ogni risposta con i dettagli tecnici, come le fasi di una ricerca nella Knowledge. Gli amministratori vedono anche gli argomenti e l'output grezzo di ogni chiamata a uno strumento; gli altri utenti vedono solo i nomi degli strumenti.
+
+## La barra laterale {#the-sidebar}
+
+La barra laterale tiene le tue chat a portata di mano. Puoi comprimerla o espanderla con l'interruttore in alto.
+
+* **Nuova chat** avvia una nuova conversazione con l'assistente del workspace.
+* **Cerca** trova una chat precedente in base al suo contenuto.
+* L'elenco mostra le tue chat, ognuna con un titolo automatico, raggruppate in **Oggi**, **Ieri**, **Ultimi 7 giorni** e **Meno recenti**. Gli amministratori, e i ruoli che possono vedere tutte le conversazioni, vedono ogni chat del workspace. Apri il menu delle opzioni (tre puntini) su una chat e scegli **Rinomina chat** o **Elimina**.
+
+Seleziona il titolo di una chat in cima alla pagina per usare **Rinomina**, **Copia link alla chat**, **Esporta chat** (come file JSON) o **Elimina**, oppure per gestire la sua **Memoria**. Puoi rinominare le tue chat e cambiare il loro interruttore **Memoria**.
+
+## Lavorare in una conversazione {#working-in-a-conversation}
+
+Ogni thread mostra i tuoi messaggi insieme alle risposte dell'assistente, in ordine. Sotto ogni risposta puoi copiarla, valutarla, rigenerarla, passare tra le sue versioni e aprire il pannello **Fonti**, che elenca le risorse della Knowledge e le pagine web usate.
+
+Il menu **⋯** della risposta aggiunge **Leggi ad alta voce**, **Verifica risposta** (che evidenzia le frasi supportate, non supportate e smentite, e apre **Verifica della risposta**) e **Crea un ramo in una nuova chat**. Quando una risposta si interrompe prima del tempo, un breve messaggio ne spiega il motivo, di solito con **Rigenera risposta**.
+
+I documenti creati dall'assistente si aprono nel pannello **Canvas** accanto alla chat. Lì puoi modificare i file Office, scaricarli (anche in PDF), rinominarli o usare **Salva nella knowledge**.
+
+Ogni chat è anche una registrazione di conversazione, quindi chi ha accesso a [Conversazioni](./Conversations.mdx) può rivederla, etichettarla e controllarla.
+
+
+---
+
+## Vedi anche {#related-resources}
+
+* [Usa Chat](/operational-guides/chat-experience): guida passo passo a ogni funzione della chat.
+* [Touchpoint](./settings/touchpoints.mdx): configura gli assistenti, la Knowledge e le domande suggerite disponibili in Chat.
+* [Conversazioni](./Conversations.mdx): rivedi, etichetta e controlla le conversazioni avute dai touchpoint.
+* [Knowledge](./Knowledge.mdx): gestisci le informazioni a cui gli assistenti attingono per rispondere.
+* [Governance](./Governance.mdx): tieni traccia di utilizzo, costi e prestazioni nelle conversazioni.

@@ -1,0 +1,66 @@
+---
+sidebar_position: 42
+sidebar_label: Genera documenti
+type: how-to
+audience: [user]
+---
+
+# Genera documenti, slide e pagine web
+
+Nelle aree **Testo**, **Slide** e **Canvas** di Gen descrivi un documento in una chat accanto al documento, e l'assistente scrive il file (un documento Word, una presentazione PowerPoint o una pagina HTML), conservando ogni versione così puoi tornare a una precedente.
+
+:::note[Che cos'è una sessione di documento?]
+Ogni documento in Gen è una **sessione**: una chat con l'assistente più i file che ha scritto. Ogni volta che l'assistente scrive il file, il risultato diventa una nuova **versione** del documento. Continui a parlare (*"accorcia l'introduzione"*, *"aggiungi una slide sui prezzi"*) e ogni risposta produce la versione successiva, mentre le precedenti restano disponibili.
+:::
+
+## Prerequisiti {#prerequisites}
+
+- **Il modulo Gen nella tua licenza.**
+- **Accesso amministrativo:** le aree **Testo**, **Slide** e **Canvas** sono disponibili solo agli amministratori; per gli altri utenti sono disabilitate.
+- **Le skill di output installate:** ogni area scrive i suoi file con una [skill](/operational-guides/agent-skills) (**docx** per Testo, **pptx** per Slide, **web-design** per Canvas). Se la skill manca, la creazione di un documento fallisce con un messaggio che chiede a un amministratore di installarla.
+
+## Scegli l'area {#choose-the-area}
+
+| Area | Cosa scrive l'assistente | Quando usarla |
+|---|---|---|
+| **Testo** | Documenti Word | Report, proposte, lettere, politiche. |
+| **Slide** | Presentazioni PowerPoint | Presentazioni complete e singole slide. |
+| **Canvas** | Una pagina HTML o un'immagine SVG | Landing page, pagine di sintesi, diagrammi, mock-up. |
+
+L'area **Canvas** di Gen conserva ogni pagina come documento salvato con le sue versioni. È separata dal pannello **Canvas** che si apre accanto a una chat per mostrare in anteprima una pagina costruita da una skill (vedi [Visualizza in anteprima le pagine web in Canvas](/operational-guides/agent-skills#preview-web-pages-in-canvas)).
+
+## Crea un documento {#create-a-document}
+
+1. Seleziona la scheda **Gen**, poi **Testo**, **Slide** o **Canvas**.
+2. Seleziona la tessera **Genera** e scegli **Documento vuoto**, oppure **Da un template** per partire dalle istruzioni salvate da un amministratore.
+3. L'editor si apre con il documento accanto alla chat. Finché non esiste il primo file mostra *"Chiedi il documento nella conversazione. Ogni file che l'assistente scrive compare qui come nuova versione."*
+4. Descrivi nella chat ciò che ti serve. Sii preciso su destinatari, lunghezza e struttura.
+5. Per basare il documento sui tuoi materiali, seleziona **Aggiungi knowledge**, scegli i file da una [Knowledge](/operational-guides/create-knowledge) e seleziona **Conferma**.
+
+L'assistente scrive il file e compare nell'editor. Continua a chiedere modifiche nella chat: ogni file che scrive diventa una nuova versione.
+
+## Lavora con le versioni {#work-with-versions}
+
+Quando un documento ha più di una versione, sopra di esso compare un menu delle versioni: scegline una per visualizzarla. Le schede della galleria mostrano a che punto è il documento: *"Bozza"* prima del primo file, poi *"1 versione"*, *"2 versioni"* e così via.
+
+- Le versioni di **Testo** e **Slide** si aprono nell'editor di ufficio integrato, così vedi il documento esattamente come lo mostrerebbero Word o PowerPoint.
+- Le versioni di **Canvas** si possono vedere in **Anteprima**, con la pagina visualizzata in una sandbox sicura, oppure in **Codice**, che ne mostra il sorgente.
+
+:::note[Chiedere una modifica non sovrascrive mai]
+Una nuova versione si aggiunge accanto alle vecchie invece di sostituirle. Se l'assistente prende una richiesta nella direzione sbagliata, seleziona la versione precedente e continua da lì: non si perde nulla.
+:::
+
+## Scarica un documento {#download-a-document}
+
+Seleziona **Scarica** per salvare la versione che stai guardando: un `.docx` da Testo, un `.pptx` da Slide, un file `.html` o `.svg` da Canvas.
+
+Per rimuovere un documento dalla galleria, apri il menu della sua scheda, seleziona **Elimina** e conferma con **Elimina documento**. Il documento, la sua conversazione e tutte le sue versioni vengono eliminati, e l'operazione non si può annullare.
+
+:::note[Il comportamento dell'assistente è impostato per area]
+Il modello che scrive i documenti, il prompt di base che segue, e le skill e gli strumenti extra che può usare, si configurano separatamente per Testo, Slide e Canvas in **Impostazioni** → **Gen**. Vedi [Configura Gen](/operational-guides/configure-gen#configure-text-slides-and-canvas).
+:::
+
+## Prossimi passi {#next-steps}
+
+* [Configura Gen](/operational-guides/configure-gen#configure-text-slides-and-canvas): scegli il modello e le istruzioni per ogni area.
+* [Crea e pubblica post social](/operational-guides/social-studio): trasforma un brief in post per i tuoi canali social.

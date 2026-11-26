@@ -1,0 +1,150 @@
+---
+sidebar_position: 14
+sidebar_label: Viste
+type: how-to
+audience: [builder]
+---
+
+# Configura le viste di una Knowledge
+
+Oltre alle viste integrate **Grafo** e **Griglia**, una [Knowledge](/operational-guides/create-knowledge) può mostrare i suoi record in griglie salvate, calendari, una dashboard incorporata e viste personalizzate scritte in codice da te o dall'AI, come una mappa, una bacheca a schede o una timeline. Le viste appartengono alla Knowledge, quindi le vede chiunque possa aprirla.
+
+## Prerequisiti {#prerequisites}
+
+- **Modifica** sulla riga **Knowledge** del tuo ruolo per creare e modificare le viste. **Leggi** è sufficiente per usarle. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Alcuni record nella Knowledge. Vedi [Collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid) o [Aggiungi e gestisci contenuti](/operational-guides/manage-knowledge-resources).
+
+## Passa da una vista all'altra {#switch-between-views}
+
+Nella pagina della Knowledge, l'intestazione mostra un pulsante con l'icona e il nome della vista corrente. Il pulsante **File** accanto ad esso apre sempre i file di input della Knowledge.
+
+1. Seleziona il pulsante della vista per aprire il pannello delle viste.
+2. Trova una vista sotto **Fissate**, **Predefinite** (le viste integrate **Grafo** e **Griglia**) o **Viste**, oppure digita nella casella di ricerca. Usa i tasti freccia e **Invio** per aprirne una senza il mouse.
+3. Per tenere una vista come scheda sotto l'intestazione, seleziona la stella accanto ad essa. Vedi [Fissa le viste che usi di più](/operational-guides/knowledge-collections-and-grid#pin-the-views-you-use-most).
+
+<img
+  src={require('@site/static/img/screens/knowledge-views-dropdown.png').default}
+  alt="Il selettore delle viste aperto nella pagina della Knowledge, con l'elenco delle viste disponibili e il pulsante File accanto"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Il selettore delle viste, con **File** tenuto separato.*
+
+## Gestisci le viste nelle impostazioni {#manage-views-in-settings}
+
+Apri le impostazioni della Knowledge e seleziona la scheda **Viste**. Ha queste sezioni:
+
+- **Viste integrate**: **Vista grafo** e **Vista griglia**, ciascuna con un interruttore di attivazione.
+- **Viste personalizzate**: le viste che hai creato, incluse le viste griglia e calendario salvate, ciascuna con un interruttore di attivazione.
+- **Dashboard da incorporare**: una dashboard di [Rational BI](/operational-guides/rational-bi) da mostrare dentro la Knowledge (**Seleziona una dashboard**).
+
+### Scegli la vista con cui si apre una Knowledge {#choose-the-view-a-knowledge-opens-in}
+
+Apri il menu **⋮** di una vista e seleziona **Imposta come vista predefinita**. La vista deve essere attiva, e da quel momento mostra l'etichetta **Predefinita**. La scelta vale per chiunque apra la Knowledge. Se disattivi una vista integrata che è la predefinita, l'altra vista integrata diventa la predefinita, purché sia attiva.
+
+<img
+  src={require('@site/static/img/screens/knowledge-views-settings.png').default}
+  alt="La scheda Viste delle impostazioni con le sezioni Viste integrate e Viste personalizzate"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*La scheda **Viste** delle impostazioni, con le viste integrate e quelle personalizzate.*
+
+### Attiva o disattiva una vista integrata {#turn-a-built-in-view-on-or-off}
+
+Nella sezione **Viste integrate**, attiva o disattiva **Vista grafo** o **Vista griglia**. Una vista disattivata scompare subito dalla pagina della Knowledge. Il pulsante **File** non è una vista, quindi resta sempre visibile.
+
+## Crea una vista personalizzata {#create-a-custom-view}
+
+1. Nella scheda **Viste**, seleziona **+** nell'intestazione **Viste personalizzate**.
+2. Dai alla vista un **Nome**.
+3. Scegli un **Motore**:
+   - **HTML + JavaScript semplice**: un unico documento HTML autonomo.
+   - **React (JSX)**: un componente React chiamato `View`, compilato per te nel browser.
+   - **Web Component**: un elemento personalizzato che ospiti tu, indicato da un URL.
+   - **Dashboard BI**: una delle tue dashboard di [Rational BI](/operational-guides/rational-bi), mostrata in sola lettura dentro la Knowledge.
+   - **Vista griglia**: una griglia salvata senza codice; imposti colonne e filtri nella pagina della Knowledge. Puoi crearne una anche dalla griglia con **Salva come vista**.
+4. Seleziona **Crea**. Le viste di codice si aprono nell'editor con un piccolo modello di partenza.
+
+Una vista di codice riceve i record della Knowledge e può leggerne altri, salvare modifiche, aprire record o chiedere all'assistente, sempre con i permessi della persona che la guarda.
+
+<img
+  src={require('@site/static/img/screens/knowledge-view-create.png').default}
+  alt="La finestra di nuova vista personalizzata con un campo nome e le opzioni del motore"
+  style={{ width: '100%', maxWidth: '460px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Creazione di una vista personalizzata: scegli un nome e un motore.*
+
+## Mostra i record su un calendario {#show-records-on-a-calendar}
+
+Una vista calendario colloca i record su giorni e orari in base a uno dei loro attributi data: contenuti da pubblicare, sopralluoghi, scadenze di contratti.
+
+1. Apri la **Griglia**, seleziona la scheda della collezione e imposta il filtro che vuoi mostrare nel calendario.
+2. Seleziona **Salva come vista** (oppure **Salva come nuova vista** in una vista griglia salvata).
+3. Inserisci un **Nome** e, in **Mostra come**, scegli **Calendario**. L'opzione è disponibile quando la griglia ha una colonna data o data e ora.
+4. Scegli la **Data** che colloca ogni record e, facoltativamente, una **Fine**, un **Colore** (un attributo a selezione singola le cui opzioni colorano i record) e **Pieno se spuntato** (una casella di controllo, come *Pubblicato*, che mostra pieni i record spuntati e con il solo contorno gli altri).
+5. Seleziona **Crea**.
+
+Il calendario passa tra **Giorno**, **Settimana** e **Mese**. Con i permessi di modifica puoi trascinare un record su un altro giorno o orario, allungarlo per cambiarne la fine, fare doppio clic per spuntarne la casella, oppure selezionare uno slot vuoto per aggiungervi un record. Seleziona un record per modificarlo o eliminarlo. Le opzioni di colore compaiono come chip con i rispettivi conteggi, per filtrare ciò che mostra il calendario.
+
+Seleziona l'ingranaggio (**Impostazioni calendario**) per cambiare gli attributi **Inizio** e **Fine**, **Colore per** e **Pieno quando**, come si chiama un record (ad esempio *"contenuto"* e *"contenuti"* invece di *"evento"*), quali record mostra e se **Si apre su** un giorno, una settimana o un mese. Le modifiche valgono per chiunque apra la vista.
+
+:::note[Un calendario mostra fino a 1000 record alla volta]
+Se l'intervallo visualizzato contiene di più, il calendario lo segnala: restringi il filtro della vista, oppure passa a un intervallo più breve. I record con una data ma senza orario compaiono come tutto il giorno; i record con un orario e senza fine durano un'ora.
+:::
+
+## Modifica e salva il codice di una vista {#edit-and-save-a-views-code}
+
+1. Nella scheda **Viste**, seleziona il **chevron** di una vista personalizzata per espanderla.
+2. Modifica il codice nell'**editor** (ha evidenziazione della sintassi e numeri di riga).
+3. Seleziona **Salva** per conservare le modifiche, oppure **Annulla** per scartarle e comprimere la vista.
+
+<img
+  src={require('@site/static/img/screens/knowledge-view-editor.png').default}
+  alt="Una vista personalizzata espansa con l'editor del codice e la barra di salvataggio"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*L'editor della vista personalizzata con la sua barra di salvataggio.*
+
+### Migliora una vista con l'AI {#improve-a-view-with-ai}
+
+Se preferisci descrivere una vista invece di scriverla, lascia che il modello scriva una bozza del codice.
+
+1. Con una vista espansa, seleziona **Migliora con AI**.
+2. In **Modifiche da apportare**, descrivi ciò che vuoi, ad esempio *"Mostra i contratti come schede raggruppate per fornitore, con la data di rinnovo in rosso quando mancano meno di 30 giorni"*.
+3. Seleziona **Migliora vista**. Il modello riscrive il codice per il motore della vista, usando come contesto gli attributi reali della Knowledge, le categorie e i record di esempio, e mantiene tutto ciò che la tua richiesta non tocca.
+4. **Rivedi** il codice nell'editor, poi seleziona **Salva** per conservarlo. L'AI non salva mai da sola.
+
+**Migliora con AI** usa il modello conversazionale predefinito del workspace. Se non ne è configurato uno, l'azione mostra un errore.
+
+## Rinomina, visualizza in anteprima, copia o elimina una vista {#rename-preview-copy-or-delete-a-view}
+
+Il menu **⋮** di ogni vista personalizzata contiene le altre azioni:
+
+- **Rinomina**: cambia il nome della vista.
+- **Anteprima**: passa alla vista mostrata nella pagina della Knowledge.
+- **Copia codice**: copia il sorgente della vista negli appunti.
+- **Elimina**: rimuove la vista (dopo una conferma).
+
+## Usa una vista personalizzata {#use-a-custom-view}
+
+Quando una vista è attiva, aprila dal pannello delle viste come una vista integrata. Disegna i record reali della Knowledge.
+
+<img
+  src={require('@site/static/img/screens/knowledge-custom-view-runtime.png').default}
+  alt="Una vista personalizzata mostrata nella pagina della Knowledge, con risorse tratte dalla Knowledge"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Una vista personalizzata in esecuzione nella pagina della Knowledge, che disegna i record della Knowledge stessa.*
+
+Se la Knowledge ha collezioni ma sono ancora vuote, la vista mostra *"Compila le tabelle per vedere questa vista"* con un link a ciascuna collezione, così chi la apre sa dove aggiungere record o [importare un foglio di calcolo](/operational-guides/import-knowledge). Una collezione può anche usare una vista personalizzata come pagina di ciascuno dei suoi record: vedi [Apri i record di una collezione in una vista personalizzata](/operational-guides/knowledge-collections-and-grid#open-a-collections-records-in-a-custom-view).
+
+Le viste HTML e React girano in un frame isolato, quindi una vista può caricare le librerie di cui ha bisogno senza influire sulla tua sessione. I Web Component si caricano direttamente, quindi usali solo per elementi che ospiti tu e di cui ti fidi.
+
+## Prossimi passi {#next-steps}
+
+- [Incorpora una Knowledge](/operational-guides/embed-knowledge) per condividere queste viste, o una chat sulla stessa Knowledge, in un sito web tuo.
+- [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid)

@@ -1,0 +1,49 @@
+---
+sidebar_position: 2
+sidebar_label: Canali
+title: Canali
+description: Cos'è un canale, quali canali ha Rational AI e come i canali si combinano con i touchpoint.
+type: concept
+audience: [user, builder]
+---
+
+import ConnectsTo from "@site/src/components/ConnectsTo";
+
+# Canali
+
+Un **canale** è il mezzo attraverso cui le persone raggiungono un assistente: la superficie su cui avviene la conversazione. Un bot Telegram, una casella di posta, un bot di Microsoft Teams o Slack, la chat web e l'API compatibile con OpenAI sono tutti canali. Il canale non porta con sé prompt, Knowledge o strumenti. Cambia *dove* e *come* le persone parlano con l'assistente, non *che cosa* sa l'assistente.
+
+## Perché i canali sono importanti {#why-channels-matter}
+
+Tenere il canale separato dall'assistente significa:
+
+* **Portata:** raggiungi le persone dove si trovano già, nell'app di messaggistica o nella casella di posta che usano.
+* **Riutilizzo:** il collegamento a una superficie si configura una volta sola, con le proprie credenziali, i filtri sui mittenti e la modalità di risposta, e su di esso si può collegare qualsiasi touchpoint.
+* **Adattamento:** ogni canale adatta la conversazione alla propria superficie, per esempio dividendo le risposte in messaggi brevi su un'app di chat.
+
+## Canali e touchpoint {#channels-and-touchpoints}
+
+Un [touchpoint](./Touchpoint.mdx) è l'assistente: i suoi modelli, il prompt di sistema, le fonti, gli strumenti e la memoria. Ogni touchpoint ha esattamente un canale, scelto nelle sue impostazioni. Per offrire lo stesso assistente su due superfici, crea un touchpoint per ciascun canale.
+
+Più touchpoint possono condividere un canale, ma i messaggi in arrivo su quel canale vanno al touchpoint abilitato più vecchio tra quelli. Un canale Email o di messaggistica può anche essere associato a un agente in [Agenti](../cr/Agents.mdx), che poi invia i messaggi attraverso di esso.
+
+## Canali in Rational AI {#channels-in-rational-ai}
+
+Telegram, Email, Microsoft Teams e Slack sono tipi di canale nativi che crei in **Impostazioni** → **Canali**. Le estensioni installate possono aggiungerne altri. La chat web e l'API compatibile con OpenAI sono integrate, e non puoi crearne altri. Vedi [Gestisci i canali](../operational-guides/manage-channels.mdx).
+
+## Risorse aggiuntive {#additional-resources}
+
+* [Gestisci i canali](../operational-guides/manage-channels.mdx): crea un canale, scegli la modalità di risposta e controlla chi può scrivere.
+* [Impostazioni dei touchpoint](../cr/settings/touchpoints.mdx): scegli il canale su cui risponde un touchpoint.
+
+
+---
+
+## Vedi anche {#connects-to}
+
+<ConnectsTo
+	items={[
+		{ label: "Touchpoint", to: "/concepts/Touchpoint" },
+		{ label: "Connettori", to: "/concepts/Connectors" },
+	]}
+/>

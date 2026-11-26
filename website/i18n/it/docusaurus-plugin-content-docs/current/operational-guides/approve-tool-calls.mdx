@@ -1,0 +1,78 @@
+---
+sidebar_position: 26
+sidebar_label: Approva chiamate agli strumenti
+type: how-to
+audience: [builder]
+---
+
+# Approva le chiamate agli strumenti prima che vengano eseguite
+
+Puoi fidarti di un assistente che può solo leggere. Non appena può anche scrivere (inviare un messaggio, aggiornare un record, eliminare un file), vuoi una supervisione umana per le chiamate che contano. Rational AI ti permette di decidere, per [touchpoint](/operational-guides/configure-touchpoints), quali chiamate agli strumenti richiedono un sì da parte di una persona: l'assistente si ferma, l'utente approva o rifiuta, e solo allora lo strumento viene eseguito.
+
+:::note[Che cos'è un gate di approvazione?]
+Quando l'assistente decide di usare uno strumento, normalmente lo chiama e prosegue. Un **gate di approvazione** blocca invece la chiamata: il turno si ferma, nella chat compare una scheda di approvazione e lo strumento viene eseguito solo se l'utente seleziona **Approva**. Quali chiamate passano dal gate lo decide la policy di approvazione del touchpoint, combinata con il fatto che il singolo strumento sia considerato **sensibile**: uno strumento che modifica qualcosa invece di limitarsi a leggere.
+
+Gli agenti della sezione [Agenti](/cr/Agents) non usano questa policy: le loro approvazioni arrivano dagli strumenti contrassegnati **Chiedimi prima** nel profilo di ciascun agente (vedi [Approva ciò che l'agente vuole fare](/operational-guides/agent-runs#approve-what-the-agent-wants-to-do)).
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Permesso di modificare il touchpoint:** un ruolo con **Modifica** su **Touchpoint** per impostare la policy. Contrassegnare uno strumento come **Sensibile** richiede il ruolo di amministratore.
+- **Un touchpoint con strumenti:** la policy non ha nulla da sottoporre al gate finché il touchpoint non ha strumenti. Vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).
+
+## Scegli quando l'assistente chiede {#choose-when-the-assistant-asks}
+
+La policy si trova insieme agli strumenti che regola, in cima alla scheda **Strumenti** del touchpoint.
+
+1. Vai su **Impostazioni** → **Touchpoint** e apri il touchpoint.
+2. Apri la scheda **Strumenti** e trova **Quando chiedere conferma**, descritto come *"Prima di eseguire un tool, l'assistente può chiedere conferma all'utente."*
+3. Scegli una delle tre opzioni:
+   - **Mai: i tool vengono eseguiti senza chiedere**. Nessun gate; ogni chiamata viene eseguita subito.
+   - **Smart: solo per i tool sensibili (consigliato)**. È l'impostazione predefinita. Gli strumenti di sola lettura passano direttamente; quelli contrassegnati come sensibili attendono una decisione.
+   - **Sempre: chiedi prima di ogni tool**. Ogni singola chiamata passa dal gate, incluse le ricerche innocue.
+4. Salva il touchpoint.
+
+Un touchpoint registrato come applicazione ad alto rischio in [Governance](/operational-guides/governance) chiede conferma prima di ogni chiamata a uno strumento, qualunque opzione tu scelga qui, e la scheda lo indica.
+
+:::note[Sempre richiede più interazioni di quanto sembri]
+Una singola risposta può comportare più chiamate a strumenti, e **Sempre** si ferma a ciascuna. È la scelta giusta mentre verifichi cosa fa un assistente, ma per l'uso quotidiano **Smart** ti dà la sicurezza di un gate senza una conversazione che richiede un clic per ogni frase.
+:::
+
+## Contrassegna uno strumento come sensibile {#mark-a-tool-as-sensitive}
+
+Con **Smart**, "sensibile" è l'intera decisione, quindi devi poterla impostare tu.
+
+Ogni riga di strumento nella scheda **Strumenti** riporta un badge **Sensibile**. Selezionalo per contrassegnare lo strumento come sensibile o non sensibile. La modifica viene salvata subito, e il badge può essere aggiunto o rimosso qualunque sia la policy del touchpoint, così puoi preparare l'elenco prima di attivare la policy.
+
+Passa il mouse sul badge e il tooltip ti dice da dove arriva la risposta attuale:
+
+- **Hai contrassegnato questo tool come sensibile.** La tua eccezione esplicita.
+- **Hai contrassegnato questo tool come non sensibile.** La tua eccezione esplicita, nel senso opposto.
+- **Dichiarato come sensibile dal server MCP.** L'annotazione del server, che non hai sovrascritto.
+- **Dichiarato come non sensibile dal server MCP.** Lo stesso, nel senso opposto.
+- **Non dichiarato come sensibile dal server MCP.** Il server non ha indicato nulla, quindi lo strumento è trattato come non sensibile.
+
+:::note[L'annotazione del server MCP è un suggerimento, non un verdetto]
+Un server MCP può dichiarare i propri strumenti in sola lettura o distruttivi, ma quella dichiarazione è scritta da chi ha costruito il server, quindi Rational AI la tratta come un suggerimento. La tua eccezione è il confine di fiducia: una volta impostato il badge di uno strumento, la tua scelta resta. Gli strumenti che non tocchi seguono la dichiarazione del server, anche quando l'estensione viene sincronizzata di nuovo e le sue annotazioni cambiano.
+:::
+
+## Cosa vede l'utente in chat {#what-the-user-sees-in-the-chat}
+
+Quando l'assistente raggiunge una chiamata sottoposta a gate, la generazione si ferma e una scheda di approvazione viene fissata sopra il campo di scrittura:
+
+- *"L'assistente vuole usare"*, seguito dal **nome dello strumento**.
+- *"Questo è uno strumento sensibile."* quando lo strumento è contrassegnato come sensibile.
+- Pulsanti **Rifiuta** e **Approva**. Nella Control Room, li vedono solo le persone il cui ruolo ha **Modifica** su **Conversazioni**.
+
+Selezionando **Approva** lo strumento viene eseguito, e il pulsante mostra **In corso…** mentre è in esecuzione. Selezionando **Rifiuta** viene registrato un rifiuto che l'assistente vede come risposta dello strumento, così prosegue senza il risultato invece di riprovare in silenzio. In entrambi i casi, quando ogni chiamata in attesa nel turno ha ricevuto risposta, la generazione riprende da sola e la scheda scompare; l'esito è poi visibile nella conversazione come risposta dello strumento.
+
+- **Solo le chiamate sottoposte a gate attendono.** Se un turno fa tre chiamate a strumenti e una di queste è sensibile, le altre due vengono eseguite normalmente mentre quella attende la tua decisione.
+- **Nulla viene eseguito due volte.** Una chiamata esce dallo stato di attesa nello stesso momento in cui viene registrata la sua risposta, quindi un ricaricamento, un doppio clic o un crash durante la decisione non può eseguirla una seconda volta.
+- **Interrompere la generazione svuota la coda.** Se selezioni **Interrompi generazione** mentre ci sono chiamate in attesa, vengono abbandonate invece di restare in sospeso per sempre.
+
+## Prossimi passi {#next-steps}
+
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): aggiungi gli strumenti a cui si applica la policy.
+- [Governa le applicazioni AI](/operational-guides/govern-ai-applications): registra un touchpoint come ad alto rischio.

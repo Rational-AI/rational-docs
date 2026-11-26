@@ -1,0 +1,50 @@
+---
+sidebar_position: 30
+sidebar_label: Consulta la traccia di audit
+type: how-to
+audience: [admin]
+---
+
+# Consulta la traccia di audit
+
+**Impostazioni** → **Traccia di audit** registra chi ha letto o modificato un record in Rational AI, per esempio chi ha aperto una conversazione o chi ha eliminato un utente. Le voci non possono essere modificate una volta scritte.
+
+La traccia di audit non è l'**Audit log** di [Governance](/operational-guides/governance), che ha una riga per ogni richiesta a un modello, con modello, token e costo.
+
+## Prerequisiti {#prerequisites}
+
+- **Accesso amministrativo:** la traccia di audit è riservata agli amministratori.
+
+## Leggi la traccia {#read-the-trail}
+
+Vai su **Impostazioni** → **Traccia di audit**. Ogni voce mostra:
+
+- **Quando:** il momento in cui è avvenuta l'azione.
+- **Chi:** chi l'ha compiuta. Una voce senza persona mostra **Sistema**, per le attività in background. Il nome viene conservato così com'era, quindi resta corretto anche dopo l'eliminazione dell'utente.
+- **Azione:** cosa è stato fatto.
+- **Risorsa:** su cosa è stata eseguita l'azione.
+- **Dettaglio:** un riepilogo di una riga.
+
+L'elenco mostra per primo le voci più recenti. Per restringerlo, filtra per azione: **Lettura**, **Creazione**, **Modifica**, **Cancellazione**, **Avvio**, **Annullamento**, **Approvazione** o **Rifiuto**. Le cancellazioni sono evidenziate a colori.
+
+Una voce **Lettura** viene scritta solo quando l'accesso è consentito, quindi i tentativi rifiutati non compaiono come letture. Nessuna funzione del prodotto elimina le voci di audit: i periodi di [conservazione dei dati](/operational-guides/data-retention) non si applicano a loro.
+
+## Cosa viene registrato {#what-is-recorded}
+
+- **Lettura di una conversazione.**
+- **Eliminazione di un utente**, incluso un utente che elimina il proprio account.
+- **Cancellazione dei dati di una persona**, registrata prima che qualcosa venga cancellato. Vedi [Cancella i dati di una persona](/operational-guides/erase-personal-data).
+- **Decisioni di governance**: registrazione, modifica ed eliminazione di una [applicazione sotto governance](/operational-guides/govern-ai-applications), con ogni cambio di stato o livello di rischio; approvazione di un modello, un'approvazione revocata da una modifica, e ogni modifica alla policy di approvazione dei modelli.
+- **Modifiche a [dashboard BI](/operational-guides/rational-bi) e [viste della Knowledge](/operational-guides/knowledge-custom-views)**: ogni aggiornamento ed eliminazione, incluse le modifiche fatte dall'assistente del workspace. La voce conserva il contenuto prima e dopo la modifica. Un salvataggio che non cambia nulla non registra nulla.
+- **Memoria del touchpoint**: aggiunta, modifica, approvazione, scarto ed eliminazione di una memoria condivisa, e la richiesta di un utente all'assistente di dimenticare ciò che aveva ricordato su di lui.
+- **[Agenti](/operational-guides/create-an-agent)**: creazione, modifica, pausa ed eliminazione di un agente; avvio e annullamento delle sue esecuzioni; approvazione o rifiuto delle sue chiamate agli strumenti; e le email e i messaggi inviati da un'esecuzione.
+
+Le azioni non elencate qui non sono ancora registrate.
+
+L'elenco non mostra il contenuto prima e dopo una modifica, perché potrebbe contenere proprio i dati che la voce protegge. Per recuperare una versione precedente di una dashboard o di una vista, chiedi a Rational AI. Ogni lettura di quel contenuto è a sua volta registrata come voce **Lettura**.
+
+## Prossimi passi {#next-steps}
+
+- [Imposta la conservazione dei dati](/operational-guides/data-retention): per quanto tempo vengono conservate le chiamate ai modelli e le conversazioni.
+- [Cancella i dati di una persona](/operational-guides/erase-personal-data): una cancellazione viene registrata qui prima di essere eseguita.
+- [Monitora utilizzo e costi](/operational-guides/governance): l'**Audit log**, con una riga per ogni richiesta a un modello.

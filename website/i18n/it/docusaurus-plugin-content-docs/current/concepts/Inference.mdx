@@ -1,0 +1,18 @@
+---
+sidebar_position: 23
+sidebar_label: Inferenza
+title: Inferenza
+description: Cos'è l'inferenza, perché non modifica il modello e come Rational AI la misura.
+type: concept
+audience: [user, builder]
+---
+
+# Inferenza
+
+L'**inferenza** è l'esecuzione di un modello per ottenere una risposta. Ogni domanda che fai, ogni riepilogo e ogni titolo di chat generato da un touchpoint è un'inferenza. L'[addestramento](/concepts/Model-training) costruisce il modello una volta sola; l'inferenza lo usa a ogni richiesta.
+
+L'inferenza non modifica il modello. Il modello legge il tuo input, scrive la risposta e non conserva nulla. Per cambiare ciò che il modello sa, devi [fare il fine-tuning](/concepts/Finetuning) del modello, oppure inserire le informazioni nella richiesta, come fa [RAG](/concepts/RAG).
+
+## In Rational AI {#in-rational-ai}
+
+Ogni inferenza passa dal gateway di Rational AI, che la registra. [Governance](/cr/Governance) mostra l'utilizzo e il costo per modello e per [token](/concepts/Tokens), e la velocità con cui ogni modello risponde: **Tempo medio al primo token** (quanto passa prima che la risposta inizi) e **Token al secondo medi** (quanto velocemente poi appare). Dove viene eseguito il modello è spiegato in [Model serving](/concepts/Model-serving).

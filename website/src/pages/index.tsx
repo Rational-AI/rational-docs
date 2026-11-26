@@ -24,114 +24,243 @@ type Category = {
 const CATEGORIES: Category[] = [
 	{
 		icon: "🚀",
-		title: "Get started",
-		description:
-			"Build your first assistant, then take a tour of the modules in the top navigation.",
+		title: translate({ id: "home.title.get-started", message: "Get started" }),
+		description: translate({
+			id: "home.description.build-your-first-assistant-then-take-a-t",
+			message:
+				"Build your first assistant, then take a tour of the modules in the top navigation.",
+		}),
 		to: "/operational-guides/get-started",
 		items: [
-			{ label: "Quickstart", to: "/operational-guides/get-started" },
 			{
-				label: "Quickstart for administrators",
+				label: translate({ id: "home.link.quickstart", message: "Quickstart" }),
+				to: "/operational-guides/get-started",
+			},
+			{
+				label: translate({
+					id: "home.link.quickstart-for-administrators",
+					message: "Quickstart for administrators",
+				}),
 				to: "/operational-guides/quickstart-admin",
 			},
 			{
-				label: "Quickstart for developers",
+				label: translate({
+					id: "home.link.quickstart-for-developers",
+					message: "Quickstart for developers",
+				}),
 				to: "/operational-guides/quickstart-developer",
 			},
-			{ label: "The modules", to: "/cr/Chats" },
+			{
+				label: translate({
+					id: "home.link.the-modules",
+					message: "The modules",
+				}),
+				to: "/cr/Chats",
+			},
 		],
 	},
 	{
 		icon: "🛠️",
-		title: "Use Rational AI",
-		description:
-			"Step-by-step guides to chat, build Knowledge bases and touchpoints, connect data and channels, and work with agents.",
+		title: translate({
+			id: "home.title.use-rational-ai",
+			message: "Use Rational AI",
+		}),
+		description: translate({
+			id: "home.description.step-by-step-guides-to-chat-build-knowle",
+			message:
+				"Step-by-step guides to chat, build Knowledge bases and touchpoints, connect data and channels, and work with agents.",
+		}),
 		to: "/operational-guides/chat-experience",
 		items: [
-			{ label: "Use Chat", to: "/operational-guides/chat-experience" },
 			{
-				label: "Create a Knowledge",
+				label: translate({ id: "home.link.use-chat", message: "Use Chat" }),
+				to: "/operational-guides/chat-experience",
+			},
+			{
+				label: translate({
+					id: "home.link.create-a-knowledge",
+					message: "Create a Knowledge",
+				}),
 				to: "/operational-guides/create-knowledge",
 			},
 			{
-				label: "Integrate external data",
+				label: translate({
+					id: "home.link.integrate-external-data",
+					message: "Integrate external data",
+				}),
 				to: "/operational-guides/integrate-data",
 			},
 			{
-				label: "Configure touchpoints",
+				label: translate({
+					id: "home.link.configure-touchpoints",
+					message: "Configure touchpoints",
+				}),
 				to: "/operational-guides/configure-touchpoints",
 			},
-			{ label: "Manage channels", to: "/operational-guides/manage-channels" },
+			{
+				label: translate({
+					id: "home.link.manage-channels",
+					message: "Manage channels",
+				}),
+				to: "/operational-guides/manage-channels",
+			},
 		],
 	},
 	{
 		icon: "🔐",
-		title: "Administration & security",
-		description:
-			"Install and run Rational AI, manage people and roles, govern AI use, and keep your data compliant.",
+		title: translate({
+			id: "home.title.administration-security",
+			message: "Administration & security",
+		}),
+		description: translate({
+			id: "home.description.install-and-run-rational-ai-manage-peopl",
+			message:
+				"Install and run Rational AI, manage people and roles, govern AI use, and keep your data compliant.",
+		}),
 		to: "/operational-guides/on-premises-installation",
 		items: [
 			{
-				label: "Manage roles and users",
+				label: translate({
+					id: "home.link.manage-roles-and-users",
+					message: "Manage roles and users",
+				}),
 				to: "/operational-guides/roles-and-users",
 			},
-			{ label: "Monitor usage and cost", to: "/operational-guides/governance" },
-			{ label: "Data retention", to: "/operational-guides/data-retention" },
-			{ label: "Audit trail", to: "/operational-guides/audit-trail" },
 			{
-				label: "Your on-premises installation",
+				label: translate({
+					id: "home.link.monitor-usage-and-cost",
+					message: "Monitor usage and cost",
+				}),
+				to: "/operational-guides/governance",
+			},
+			{
+				label: translate({
+					id: "home.link.data-retention",
+					message: "Data retention",
+				}),
+				to: "/operational-guides/data-retention",
+			},
+			{
+				label: translate({
+					id: "home.link.audit-trail",
+					message: "Audit trail",
+				}),
+				to: "/operational-guides/audit-trail",
+			},
+			{
+				label: translate({
+					id: "home.link.your-on-premises-installation",
+					message: "Your on-premises installation",
+				}),
 				to: "/operational-guides/on-premises-installation",
 			},
 		],
 	},
 	{
 		icon: "🧩",
-		title: "Developers",
-		description:
-			"Call Rational AI from your own code, and extend it with your own extensions.",
+		title: translate({ id: "home.title.developers", message: "Developers" }),
+		description: translate({
+			id: "home.description.call-rational-ai-from-your-own-code-and",
+			message:
+				"Call Rational AI from your own code, and extend it with your own extensions.",
+		}),
 		to: "/operational-guides/api-access",
 		items: [
 			{
-				label: "Quickstart for developers",
+				label: translate({
+					id: "home.link.quickstart-for-developers",
+					message: "Quickstart for developers",
+				}),
 				to: "/operational-guides/quickstart-developer",
 			},
 			{
-				label: "Access Rational AI via API",
+				label: translate({
+					id: "home.link.access-rational-ai-via-api",
+					message: "Access Rational AI via API",
+				}),
 				to: "/operational-guides/api-access",
 			},
 			{
-				label: "Build an extension",
+				label: translate({
+					id: "home.link.build-an-extension",
+					message: "Build an extension",
+				}),
 				to: "/operational-guides/build-an-extension",
 			},
 			{
-				label: "Deploy models via API",
+				label: translate({
+					id: "home.link.deploy-models-via-api",
+					message: "Deploy models via API",
+				}),
 				to: "/operational-guides/api/deploy-open-source-models",
 			},
 		],
 	},
 	{
 		icon: "📖",
-		title: "Concepts",
-		description:
-			"Learn the ideas behind the platform, so the rest of the docs make sense.",
+		title: translate({ id: "home.title.concepts", message: "Concepts" }),
+		description: translate({
+			id: "home.description.learn-the-ideas-behind-the-platform-so-t",
+			message:
+				"Learn the ideas behind the platform, so the rest of the docs make sense.",
+		}),
 		to: "/concepts/Touchpoint",
 		items: [
-			{ label: "Retrieval-augmented generation", to: "/concepts/RAG" },
-			{ label: "Touchpoints", to: "/concepts/Touchpoint" },
-			{ label: "Knowledge", to: "/concepts/Knowledge" },
-			{ label: "Glossary", to: "/reference/glossary" },
+			{
+				label: translate({
+					id: "home.link.retrieval-augmented-generation",
+					message: "Retrieval-augmented generation",
+				}),
+				to: "/concepts/RAG",
+			},
+			{
+				label: translate({
+					id: "home.link.touchpoints",
+					message: "Touchpoints",
+				}),
+				to: "/concepts/Touchpoint",
+			},
+			{
+				label: translate({ id: "home.link.knowledge", message: "Knowledge" }),
+				to: "/concepts/Knowledge",
+			},
+			{
+				label: translate({ id: "home.link.glossary", message: "Glossary" }),
+				to: "/reference/glossary",
+			},
 		],
 	},
 	{
 		icon: "🧭",
-		title: "Help",
-		description:
-			"Find the fix for a problem by its symptom or error message, and check the limits you can run into.",
+		title: translate({ id: "home.title.help", message: "Help" }),
+		description: translate({
+			id: "home.description.find-the-fix-for-a-problem-by-its-sympto",
+			message:
+				"Find the fix for a problem by its symptom or error message, and check the limits you can run into.",
+		}),
 		to: "/troubleshooting",
 		items: [
-			{ label: "Troubleshooting", to: "/troubleshooting" },
-			{ label: "Error messages", to: "/reference/error-messages" },
-			{ label: "Limits and quotas", to: "/reference/limits" },
+			{
+				label: translate({
+					id: "home.link.troubleshooting",
+					message: "Troubleshooting",
+				}),
+				to: "/troubleshooting",
+			},
+			{
+				label: translate({
+					id: "home.link.error-messages",
+					message: "Error messages",
+				}),
+				to: "/reference/error-messages",
+			},
+			{
+				label: translate({
+					id: "home.link.limits-and-quotas",
+					message: "Limits and quotas",
+				}),
+				to: "/reference/limits",
+			},
 		],
 	},
 ];
@@ -290,7 +419,7 @@ export default function Home(): React.ReactElement {
 					</h2>
 					<div className="homeGrid">
 						{CATEGORIES.map((category) => (
-							<CategoryCard category={category} key={category.title} />
+							<CategoryCard category={category} key={category.icon} />
 						))}
 					</div>
 				</section>

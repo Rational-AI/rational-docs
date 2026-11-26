@@ -1,0 +1,115 @@
+---
+sidebar_position: 10
+sidebar_label: Gestisci le conversazioni
+type: how-to
+audience: [builder]
+---
+
+# Gestisci le conversazioni
+
+**Conversazioni** elenca gli scambi che i tuoi [touchpoint](/operational-guides/configure-touchpoints) hanno con gli utenti, con chi hanno parlato, com'è andata e di cosa si è discusso. Da qui rivedi le conversazioni e prendi in carico quelle che richiedono una persona. Le chat con gli agenti di [Agenti](/cr/Agents) non compaiono qui; vedi [Chatta con gli agenti](/operational-guides/agent-chats).
+
+## Prerequisiti {#prerequisites}
+
+- **Accesso alla pagina Conversazioni**: un ruolo con accesso a **Conversazioni**. Un ruolo che concede tutte le conversazioni le mostra tutte; altrimenti vedi solo le tue. Mettere una conversazione tra i preferiti, **Ricalcola etichette**, **Prendi in carico** e **Genera riepilogo** sono riservati agli amministratori, e **Elimina** richiede il permesso **Elimina** su **Conversazioni**.
+- **Almeno una conversazione** gestita dalla tua AI, così la tabella ha righe con cui lavorare.
+
+## Apri la pagina Conversazioni {#open-the-conversations-page}
+
+Nella navigazione in alto, seleziona **Conversazioni**. L'intestazione mostra un pulsante **Filtri** e un campo di ricerca sopra la tabella delle conversazioni.
+
+## Leggi la tabella {#read-the-table}
+
+Ogni riga corrisponde a una conversazione:
+
+<img
+  src={require('@site/static/img/screens/conversations-list.png').default}
+  alt="Tabella dell'elenco delle conversazioni"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*L'elenco di Conversazioni: ogni conversazione con gli argomenti rilevati, il sentiment e lo stato, ordinabile e ricercabile.*
+
+- **Conversazione**: il titolo e un'anteprima dell'ultimo messaggio.
+- **Utente e touchpoint**: con chi è stata la conversazione, e il [touchpoint](/operational-guides/configure-touchpoints) da cui è passata.
+- **Argomenti**: un chip per ogni tema trattato nella conversazione (vedi la sezione successiva).
+- **Sentiment**: lo stato d'animo rilevato dall'AI nella conversazione.
+- **Stato**: per esempio **Aperta** o **Chiusa**.
+- **Ultimo messaggio**: quando la conversazione è stata attiva per l'ultima volta. La tabella è ordinata su questa colonna, dalla più recente.
+
+Due icone accanto al titolo indicano che una conversazione richiede una persona: una mano per **Da supervisionare** (anche la riga è evidenziata con il colore di avviso) e una cuffia per **Con un operatore**.
+
+Gli argomenti e il sentiment mostrati qui derivano dalle analisi descritte in [Configura l'elaborazione delle conversazioni](/operational-guides/conversation-processing). Una conversazione senza sentiment mostra **Non disponibile**.
+
+## Lavora con più argomenti {#work-with-multiple-topics}
+
+Quando il rilevamento degli argomenti è attivo, un modello assegna a ogni conversazione degli argomenti dalla tua lista. La colonna **Argomenti** mostra un chip per ciascuno:
+
+- Una conversazione **con un solo argomento** mostra un chip, per esempio `Billing`.
+- Una conversazione **con più argomenti** mostra fino a due chip e un chip **+N** per gli altri; selezionalo per vederli tutti.
+- Una conversazione **senza argomenti** mostra **Nessuno**.
+
+## Filtra e cerca {#filter-and-search}
+
+### Cerca {#search}
+
+Usa il campo **ricerca** nell'intestazione per trovare conversazioni. Cerca nei titoli e nel contenuto dei messaggi, oltre che nei nomi degli utenti.
+
+### Applica i filtri {#apply-filters}
+
+1. Seleziona **Filtri** nell'intestazione. Il pannello dei filtri si apre accanto alla tabella.
+2. Imposta i filtri che ti servono:
+   - **Utente**, **Touchpoint** e **Argomenti**: seleziona uno o più valori.
+   - **Sentiment** e **Stato**: scegli un solo valore.
+   - **Mostra solo**: seleziona **Preferite** o **Da supervisionare**.
+3. Seleziona **Applica**. La tabella mostra solo le conversazioni corrispondenti, con il conteggio di quante corrispondono.
+
+Per ricominciare, seleziona **Pulisci** nel pannello, poi **Applica**. Puoi salvare nei segnalibri una vista filtrata.
+
+## Apri una conversazione {#open-a-conversation}
+
+1. Seleziona una riga. La tabella si riduce a un elenco stretto e la conversazione occupa il resto della pagina.
+2. Leggi il thread: i messaggi dell'utente sono separati dalle risposte, ogni risposta dell'assistente indica chi ha risposto, e le risposte dell'operatore hanno uno stile proprio, con lo stato inviato o non riuscito.
+3. Seleziona **Dettagli** nell'intestazione della conversazione per aprire il cassetto dei dettagli: utente, touchpoint, stato, sentiment, date di inizio e dell'ultimo messaggio, numero di messaggi, ID, argomenti (con **Ricalcola etichette**) e, se la generazione del riepilogo è attiva, il riepilogo.
+4. Usa **Altre azioni sulla conversazione** per **Modalità avanzata** (le chiamate agli strumenti grezze e gli errori dietro ogni risposta), **Copia ID conversazione** o **Elimina conversazione**.
+
+Se la conversazione è segnalata per la supervisione, il pannello di revisione si trova in fondo al cassetto dei dettagli. Vedi [Registra le decisioni di supervisione](/operational-guides/human-oversight).
+
+## Prendi in carico una conversazione gestita dall'AI {#take-over-an-ai-managed-conversation}
+
+Mentre l'assistente è responsabile di una conversazione, una barra di presa in carico occupa il posto della casella del messaggio e indica chi la tiene: *"L'AI gestisce questa conversazione"*, *"L'AI sta rispondendo all'utente"*, *"Un altro operatore sta gestendo questa conversazione"* oppure *"Questa conversazione è chiusa"*. Prendere in carico, restituire la conversazione e generare un riepilogo sono azioni riservate agli amministratori.
+
+### Interveni e rispondi {#step-in-and-reply}
+
+1. Seleziona **Prendi in carico**. La conversazione viene assegnata a te, l'assistente si ferma e compare la casella del messaggio.
+2. Rispondi come serve. **Ctrl+Invio** (**Cmd+Invio** su macOS) invia.
+3. Quando hai finito, seleziona **Restituisci all'AI**. Se hai lasciato una bozza non inviata, conferma con **Scarta bozza e restituisci**.
+
+Una conversazione può essere gestita da un solo operatore alla volta. Se la tiene già un altro, non c'è il pulsante **Prendi in carico**. La conversazione torna all'assistente solo quando la restituisci.
+
+### Interrompi una risposta senza prendere in carico {#stop-an-answer-without-taking-over}
+
+Se l'assistente è bloccato su una risposta, per esempio in un loop o in attesa di uno strumento guasto, seleziona **Interrompi generazione** nella barra di presa in carico. La risposta termina e l'assistente risponde normalmente al messaggio successivo dell'utente. **Interrompi generazione** è presente anche nella barra dell'operatore dopo che hai preso in carico la conversazione.
+
+### Leggi il riepilogo della conversazione {#read-the-conversation-summary}
+
+1. Seleziona **Genera riepilogo** nella barra di presa in carico. Il riepilogo copre il problema principale, i punti chiave e lo stato di risoluzione, con un badge di stato (**Aperto**, **In corso** o **Risolto**) e il sentiment della conversazione.
+2. Seleziona **Copia riepilogo** per copiarlo, oppure **Prendi in carico** per proseguire tu la conversazione da lì.
+
+I riepiloghi sono elencati anche sotto **Riepilogo** nel cassetto **Dettagli**, che offre anche **Genera riepilogo**. Non vengono salvati, quindi il cassetto elenca solo quelli generati nella tua sessione corrente. Per attivare i riepiloghi e scegliere il loro modello, vedi [Configura l'elaborazione delle conversazioni](/operational-guides/conversation-processing#summary-generation).
+
+## Esegui azioni su più conversazioni {#run-bulk-actions}
+
+1. Seleziona le righe che ti servono con le loro caselle di controllo. Per selezionare un intervallo, seleziona la prima casella, poi tieni premuto **Maiusc** e seleziona l'ultima.
+2. Apri il menu **Azioni**, che compare accanto all'intestazione quando selezioni delle righe e indica quante ne hai scelte.
+3. Scegli una delle opzioni:
+   - **Ricalcola etichette**: riesegue l'analisi automatica (come sentiment e argomenti) sulle conversazioni selezionate.
+   - **Aggiungi ai preferiti** o **Rimuovi dai preferiti**.
+   - **Elimina**: rimuove le conversazioni selezionate, con i loro messaggi e allegati. La conferma indica quante conversazioni verranno eliminate.
+
+Le righe restano selezionate quando ordini la tabella o cambi i filtri, quindi un'eliminazione può includere righe che in quel momento non vedi. Controlla il conteggio nella conferma.
+
+## Prossimi passi {#next-steps}
+
+- [Configura l'elaborazione delle conversazioni](/operational-guides/conversation-processing): scegli quali analisi eseguire e con quale modello.
+- [Registra le decisioni di supervisione](/operational-guides/human-oversight): rivedi le conversazioni segnalate dalle tue regole.

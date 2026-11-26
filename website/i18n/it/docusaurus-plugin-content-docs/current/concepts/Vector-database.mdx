@@ -1,0 +1,18 @@
+---
+sidebar_position: 25
+sidebar_label: Database vettoriale
+title: Database vettoriale
+description: Che cos'è un database vettoriale, come trova il testo in base al significato e il suo posto alla base della Knowledge in Rational AI.
+type: concept
+audience: [user, builder]
+---
+
+# Database vettoriale
+
+Un **database vettoriale** memorizza gli [embedding](/concepts/Embeddings-chunks-and-annotations), cioè le liste di numeri che rappresentano il significato di ogni passaggio, e trova quelli più vicini per significato a una domanda.
+
+Un database normale trova le righe in base a valori esatti, come "ordini con totale superiore a 100". Un database vettoriale trova i passaggi in base al significato: una ricerca di "consegne in ritardo" trova anche "la spedizione è arrivata due settimane dopo la scadenza".
+
+## In Rational AI {#in-rational-ai}
+
+Rational AI gestisce il database vettoriale per te, quindi non devi mai gestirlo direttamente. Quando aggiungi contenuti a una [Knowledge](/concepts/Knowledge), i loro embedding vengono memorizzati lì, e il meccanismo [RAG](/concepts/RAG) li interroga per trovare i passaggi per una risposta. Per i valori esatti, gli assistenti interrogano invece i dati strutturati della Knowledge.

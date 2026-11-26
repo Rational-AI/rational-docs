@@ -1,0 +1,73 @@
+---
+sidebar_position: 19
+sidebar_label: Testa una modifica al touchpoint
+type: how-to
+audience: [builder]
+---
+
+# Testa una modifica al touchpoint prima che vada online
+
+Il test di replay riesegue le conversazioni passate di un touchpoint con una modifica in sospeso al suo prompt o ai suoi modelli, e mostra cosa risulta diverso prima che la vedano i tuoi utenti. La base di confronto è ciò che l'assistente ha fatto nelle conversazioni reali, quindi un'esecuzione ti dice se il comportamento è cambiato, non se una risposta è buona.
+
+## Prerequisiti {#prerequisites}
+
+- **Permesso di modificare il touchpoint.** Senza di esso il modulo del touchpoint è in sola lettura.
+- **Un touchpoint con uno storico.** Il test viene proposto quando il touchpoint ha almeno cinque conversazioni passate che può riprodurre.
+- **Una modifica al prompt di sistema, al modello predefinito o al pool di modelli.** Le altre modifiche, come la descrizione, si salvano senza la proposta.
+
+## Esegui un test {#run-a-test}
+
+1. Apporta la modifica al touchpoint e seleziona **Salva**. Una finestra chiede *"Provare prima la modifica?"*. Il **Touchpoint predefinito** non lo chiede mai: le sue modifiche vengono salvate subito.
+2. Scegli quali conversazioni riprodurre:
+   - **Le conversazioni più recenti, al massimo** un numero che imposti: 20 per impostazione predefinita.
+   - **Solo le conversazioni con feedback negativo**: quelle che gli utenti hanno già valutato male.
+   - **Scegli le conversazioni manualmente**: seleziona tra le 100 conversazioni più recenti del touchpoint.
+3. Controlla lo **Costo stimato**, che si aggiorna con la tua selezione. Un'esecuzione riproduce al massimo 100 conversazioni.
+4. Seleziona **Prova prima**. Per saltare il test seleziona **Salva senza testare**; per non salvare nulla seleziona **Annulla**.
+
+Se la stima del costo non può essere caricata, la finestra non compare e la modifica si salva normalmente.
+
+## Cosa succede durante un'esecuzione {#what-happens-during-a-run}
+
+La modifica viene applicata a una copia temporanea del touchpoint. Il touchpoint reale resta com'era finché non selezioni **Applica la modifica**.
+
+Durante un replay gli strumenti non vengono mai chiamati. Quando l'assistente chiama uno strumento, riceve il risultato che lo strumento aveva restituito nella conversazione originale, quindi nessuna email viene inviata due volte e nessun record viene scritto di nuovo. Se l'assistente modificato prova una chiamata a uno strumento che la conversazione originale non aveva mai fatto, non c'è un risultato da dargli: il caso viene contrassegnato come **Divergente** e si ferma, e puoi vedere quale chiamata voleva fare.
+
+Le conversazioni riprodotte non compaiono nei tuoi elenchi di conversazioni o nelle statistiche, non ricevono titoli, argomenti o sentiment, e non vengono mai inviate a un canale. Il loro costo di modello compare in [Governance](/operational-guides/governance) come voce separata, quindi non si somma alla spesa del touchpoint in produzione.
+
+## Leggi i risultati {#read-the-results}
+
+Ogni conversazione riceve un esito:
+
+| Esito | Significato |
+|---------|---------|
+| **Invariata** | Nessuna differenza significativa. |
+| **Cambiata** | Il comportamento è diverso su almeno un segnale. |
+| **Divergente** | L'assistente ha provato una chiamata a uno strumento che l'originale non aveva fatto, quindi il caso si è fermato. |
+| **Fallita** | Il caso non ha potuto essere completato. |
+
+I casi divergenti e cambiati compaiono per primi. Espandi una riga per vedere la conversazione originale (**Adesso**) e quella riprodotta (**Dopo la modifica**) affiancate. Per interrompere un'esecuzione in corso, seleziona **Annulla esecuzione**.
+
+Un caso risulta cambiato quando l'assistente ha chiamato strumenti diversi, ha citato fonti diverse, ha restituito un errore o una risposta vuota, oppure ha cambiato la forma della risposta (per esempio, non è più JSON valido, oppure è molto più corta o più lunga). La sola differenza di formulazione non conta. Costi e tempi di risposta vengono mostrati e segnalati quando più che raddoppiano, ma non influenzano l'esito.
+
+In una conversazione con più turni, confronta solo fino alla prima differenza. Dopo, il replay risponde a una conversazione diversa dall'originale.
+
+## Applica o scarta {#apply-or-discard}
+
+Al termine dell'esecuzione, il piè di pagina riassume gli esiti e il costo.
+
+- **Applica la modifica** salva le tue modifiche sul touchpoint.
+- **Scarta** elimina la modifica.
+
+Le esecuzioni passate restano disponibili, in sola lettura, nella scheda **Test** del touchpoint, con data, stato, riepilogo e costo.
+
+## Limiti {#limits}
+
+- Le conversazioni anonime sono escluse dalle selezioni delle più recenti e con feedback negativo.
+- Gli allegati non vengono riprodotti, quindi un caso che dipendeva da un documento non è una riproduzione fedele.
+
+## Prossimi passi {#next-steps}
+
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): le impostazioni che un'esecuzione di replay testa.
+- [Monitora utilizzo e costi](/operational-guides/governance): dove compare il costo di un'esecuzione.
+- [Valuta una risposta](/operational-guides/chat-experience#rate-an-answer): il feedback negativo da cui puoi ripartire per il replay.

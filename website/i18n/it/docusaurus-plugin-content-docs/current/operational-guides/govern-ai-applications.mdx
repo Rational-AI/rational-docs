@@ -1,0 +1,163 @@
+---
+sidebar_position: 25
+sidebar_label: Governa le applicazioni AI
+type: how-to
+audience: [admin]
+---
+
+# Governa le applicazioni AI e i costi dei provider
+
+Usa il modulo **Governance** per elencare le applicazioni che chiamano modelli tramite Rational AI, assegnare a ciascuna un proprietario, uno stato e un livello di rischio che Rational AI applica, e inserire i prezzi dei provider che trasformano il conteggio dei token in costi.
+
+:::note[Che cos'è un'applicazione governata?]
+Un'**applicazione** è qualunque cosa chiami modelli tramite il proxy di Rational AI, il punto di ingresso unico che attraversa ogni richiesta a un modello: un copilota interno, un job batch, un assistente rivolto ai clienti. Ogni chiamata porta una **chiave applicativa**, che Rational AI registra. Un [touchpoint](/operational-guides/configure-touchpoints) è anch'esso un'applicazione: le sue conversazioni usano l'id del touchpoint come chiave. Le chiavi che nessuno ha registrato compaiono come **Non registrata**: vengono conteggiate e ne viene calcolato il costo, ma nessuno le ha ancora rivendicate. **Registrare** una chiave associa i metadati di governance (nome visualizzato, proprietario, unità di business, stato, ambiente, livello di rischio, tag), e lo stato e il livello di rischio decidono se e come l'applicazione viene servita.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Accesso amministrativo:** l'area Governance, la policy di approvazione dei modelli e la valuta di reporting sono riservate agli amministratori.
+- **Traffico tramite il proxy:** l'inventario si costruisce dalle richieste osservate, quindi un workspace appena creato non elenca nulla finché qualcosa non chiama un modello.
+- **Prezzi dei provider a portata di mano** se vuoi completare il quadro dei costi: le tariffe del contratto, i piani in abbonamento o i costi di hosting.
+
+## Fai l'inventario delle applicazioni {#take-inventory-of-your-applications}
+
+Apri **Governance** e seleziona la scheda **Applicazioni**. L'elenco si costruisce dalle richieste che Rational AI ha visto, quindi include anche applicazioni che nessuno ha dichiarato.
+
+1. Se una chiave non è stata registrata, un avviso in alto indica quante applicazioni usano modelli tramite il proxy senza essere governate. Seleziona **Mostra le non registrate** per elencare solo quelle.
+2. Restringi l'elenco con il selettore di stato: **Tutte**, **Approvate**, **In attesa di revisione**, **Bloccate** o **Non registrate**. Ogni opzione mostra il suo conteggio.
+3. Per trovare un'applicazione specifica, scrivi nella casella di ricerca. La ricerca considera nome, chiave, proprietario e tag.
+
+Ogni riga mostra:
+
+- **Applicazione**: il nome visualizzato, la chiave grezza sotto di esso e un badge **Touchpoint** quando la chiave appartiene a un touchpoint.
+- **Stato**: **In attesa di revisione**, **Approvata**, **Bloccata** o **Non registrata** per una chiave che non è mai stata rivendicata.
+- **Rischio**, **Proprietario**, **Ambiente** e **Tag**: i metadati di governance che hai registrato.
+- **Richieste**, **Token** e **Costo**: quanto ha consumato nel periodo selezionato, con il costo nella valuta di reporting.
+
+Il menu delle azioni di ogni riga offre **Modifica** (oppure **Registra** per una chiave non registrata), **Vedi le sue richieste**, che apre l'**Audit log** filtrato su quell'applicazione, **Copia la chiave** e **Elimina** per una registrazione.
+
+:::note[L'inventario segue il periodo]
+Le colonne **Richieste**, **Token** e **Costo** coprono il **Periodo** impostato nei filtri di Governance.
+:::
+
+## Registra un'applicazione {#register-an-application}
+
+Registra una chiave per trasformare una stringa anonima nell'inventario in qualcosa con un proprietario a cui puoi chiedere informazioni.
+
+1. Nella scheda **Applicazioni**, seleziona **Registra applicazione**, oppure seleziona **Registra** nel menu delle azioni di una riga non registrata, che compila la sua chiave. Il modulo si apre in un pannello affiancato all'elenco.
+2. Compila la **Chiave applicativa**. *Deve corrispondere esattamente al tag dell'applicazione inviato al proxy di Rational AI.* Per un touchpoint, la chiave è l'id del touchpoint.
+3. Aggiungi un **Nome visualizzato** e imposta il **Proprietario**: un team o una persona.
+4. Facoltativamente, aggiungi un'**Unità di business**.
+5. Scegli lo **Stato**: **In attesa di revisione** (predefinito), **Approvata** o **Bloccata**.
+6. Scegli l'**Ambiente**: **Sviluppo**, **Test**, **Staging** o **Produzione** (predefinito).
+7. Scegli il **Livello di rischio**: **Basso**, **Limitato** (predefinito), **Alto** o **Inaccettabile**. Il pannello spiega cosa fa il livello scelto per questa applicazione.
+8. Aggiungi i **Tag**, premendo Invio dopo ciascuno, per esempio `customer-facing`, `pii`, `critical`.
+9. Facoltativamente, aggiungi una **Descrizione**.
+10. Seleziona **Salva applicazione**.
+
+Per cambiare queste informazioni in seguito, seleziona **Modifica** nel menu delle azioni della riga. Lo stesso pannello si apre con l'utilizzo dell'applicazione nel periodo e un collegamento alle sue richieste.
+
+## Decidi cosa può fare ogni applicazione {#decide-what-each-application-may-do}
+
+Rational AI controlla lo stato e il livello di rischio a ogni richiesta a un modello, che provenga da una chat, da un agente, dall'API di un touchpoint o da una chiamata diretta al proxy.
+
+| Impostazione | Cosa succede alle nuove richieste |
+|---|---|
+| Stato **In attesa di revisione** o **Approvata** | Servite normalmente. Lo stato registra la tua revisione. |
+| Stato **Bloccata** | Rifiutate. Ogni nuova richiesta a un modello inviata con la chiave dell'applicazione riceve un errore. Per un touchpoint, ogni nuovo turno di conversazione riceve un errore. |
+| Livello di rischio **Basso** o **Limitato** | Servite normalmente. Il livello viene registrato. |
+| Livello di rischio **Alto** | Su un touchpoint, ogni chiamata a uno strumento attende l'approvazione di una persona, indipendentemente dall'impostazione di approvazione del touchpoint, e ai chiamanti della sua API non vengono offerti strumenti. Su qualsiasi altra applicazione, il livello viene solo registrato. |
+| Livello di rischio **Inaccettabile** | Rifiutate, come un'applicazione bloccata. |
+
+:::warning[Bloccare un'applicazione la ferma subito]
+Un blocco si applica alla richiesta successiva. Le richieste e i turni di conversazione già in corso terminano, ma non viene servito nulla di nuovo finché non riporti lo stato al valore precedente. Prima di bloccare un touchpoint, assicurati che nessuno dipenda da esso in questo momento.
+:::
+
+Rational AI può trattenere una chiamata a uno strumento in attesa di approvazione solo dove esegue lei stessa gli strumenti, cioè nelle conversazioni di un touchpoint. Un'applicazione che chiama i modelli direttamente esegue i propri strumenti, quindi per essa il livello **Alto** viene solo registrato. Vedi [Approva le chiamate agli strumenti prima che vengano eseguite](/operational-guides/approve-tool-calls).
+
+Nella chat, un turno rifiutato spiega il motivo del rifiuto.
+
+Ogni registrazione, modifica ed eliminazione di un'applicazione viene scritta nella [traccia di audit](/operational-guides/audit-trail), e una modifica di stato o di livello di rischio è indicata nella voce.
+
+## Richiedi approvazione per i modelli {#require-approval-for-models}
+
+Per fare in modo che ogni modello rifiuti le richieste finché un amministratore non lo ha approvato, attiva **Richiedi approvazione** in **Impostazioni** → **Registro modelli AI**. Vedi [Richiedi approvazione prima che un modello risponda](/operational-guides/ai-model-registry-features#require-approval-before-a-model-answers).
+
+## Attribuisci una richiesta a un'applicazione {#attribute-a-request-to-an-application}
+
+Rational AI attribuisce ogni richiesta alla chiave applicativa che il chiamante invia. Le conversazioni di un touchpoint inviano l'id del touchpoint. Una richiesta senza chiave compare come **Diretta** nell'**Audit log**.
+
+## Esporta l'inventario {#export-the-inventory}
+
+1. Nella scheda **Applicazioni**, seleziona **Esporta**.
+2. Viene scaricato un CSV chiamato `governed-ai-applications-` seguito dalla data di oggi.
+
+La scheda **Audit log** ha un proprio **Esporta** per il registro richiesta per richiesta; è disabilitato quando i filtri correnti non restituiscono righe.
+
+## Dai un prezzo a ciò che usi {#price-what-you-are-using}
+
+I conteggi dei token diventano costi solo quando Rational AI sa quanto addebitano i tuoi provider. Quando le richieste non hanno un prezzo, il pannello **Da verificare** nella **Panoramica** lo segnala, e **Imposta i prezzi** apre la scheda **Costi**. La sezione **Storico delle tariffe** elenca ogni modello con la tariffa in vigore e la sua copertura, segnalando i buchi come richieste senza prezzo; apri un modello per vedere, correggere o retrodatare i prezzi con cui è stato addebitato.
+
+### Prezzi dei modelli {#model-prices}
+
+L'editor dei prezzi copre questi modi di fatturazione:
+
+- La **valuta** in cui il provider addebita. I costi vengono convertiti nella valuta di reporting per la visualizzazione, e l'importo originale viene conservato.
+- **Tariffe a token**, per 1M di token: **Input**, **Output**, **Input in cache**, **Scrittura in cache** e **Ragionamento**, ciascuna con un prezzo separato.
+- I prezzi **Per richiesta**, **Per immagine** e **Per ricerca web**.
+- La fatturazione a tempo (**Esecuzione**) per i modelli self-hosted, addebitata per ora, minuto o secondo. **Quando il tempo viene fatturato** stabilisce se viene addebitato **Solo mentre è in esecuzione** oppure **Capacità riservata, sempre fatturata**.
+- Una **Origine** per la tariffa: **Manuale**, **Listino del provider** o **Contratto**.
+
+Per i provider che pubblicano un listino, i prezzi si possono importare invece di inserirli a mano: un connettore **OpenRouter** può sincronizzare i prezzi dei modelli su richiesta, e le tariffe la cui origine è **Manuale** o **Contratto** vengono conservate, non sovrascritte.
+
+### Abbonamenti dei provider {#provider-subscriptions}
+
+Per la spesa che non varia a ogni chiamata, come un piano API mensile o un pool di token annuale, aggiungi un abbonamento nel connettore del provider. **Abbonamenti dei provider** nella **Panoramica** apre gli abbonamenti del connettore che serve il maggior numero di modelli, in **Impostazioni** → **Connettori**.
+
+1. Apri il connettore del provider in **Impostazioni** → **Connettori** e, in **Prezzi e abbonamenti dei provider**, seleziona **Aggiungi piano**.
+2. Inserisci un **Nome del piano**, la **Valuta**, il **Costo ricorrente** e il suo **Periodo di fatturazione** (**Mensile** o **Annuale**), e le date di **Inizio** e, facoltativamente, di **Fine**.
+3. Scegli la **Ripartizione dei costi**: **Ripartisci in base all'utilizzo delle applicazioni** distribuisce la quota fissa tra le applicazioni in proporzione a ciò che hanno usato, e **Mantieni come costo condiviso del provider** la lascia non ripartita.
+4. In **Utilizzo incluso ed eccedenza**, seleziona **Aggiungi quota** per ogni tipo di utilizzo (per esempio **Tutti i token**, **Token di input**, **Richieste** o **Immagini**), e inserisci quanto è **Incluso**, la **Scala** (**unità**, **milioni** o **miliardi**) e la tariffa di eccedenza addebitata oltre il limite: **Eccedenza / 1M** per i token, **Eccedenza / unità** per gli altri.
+5. Seleziona **Salva piano**.
+
+<img
+  src={require('@site/static/img/screens/provider-subscription.png').default}
+  alt="La finestra Abbonamento del provider con periodo di fatturazione, ripartizione dei costi e righe di utilizzo incluso ed eccedenza"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*La finestra **Abbonamento del provider**: un piano ricorrente, ciò che include e cosa succede quando lo superi.*
+
+:::note[Lascia vuota l'eccedenza quando non c'è]
+Ogni quota si azzera all'inizio del periodo di fatturazione. Se il provider non pubblica una tariffa di eccedenza, lascia vuoto il campo.
+:::
+
+## Scegli la valuta di reporting {#choose-the-reporting-currency}
+
+Governance riporta ogni costo in un'unica valuta: l'euro, a meno che tu non ne scelga un'altra.
+
+1. Apri **Governance** e seleziona la scheda **Costi**.
+2. Seleziona **Importi in** in alto a destra. La lista mostra le valute per cui ci sono tassi di cambio, e la data degli ultimi tassi.
+3. Scegli una valuta.
+
+Ogni cifra di governance viene mostrata in quella valuta: i totali, la composizione dei costi, la colonna **Costo** delle applicazioni, l'audit log e i grafici dei costi. Le tariffe e le fatture che hai inserito mantengono la loro valuta originale.
+
+:::note[I costi vengono convertiti al tasso del giorno in cui sono stati sostenuti]
+Ogni costo viene convertito al tasso di riferimento in euro della Banca centrale europea del giorno in cui è stato sostenuto, o all'ultimo tasso pubblicato prima di quel giorno, il che copre weekend e festività. Passa il puntatore su un totale per vedere gli importi originali e come sono stati convertiti; su una singola richiesta, il suggerimento indica il tasso e la sua data.
+
+Un costo non viene mai convertito a un tasso ipotizzato. Se per il suo giorno non c'è un tasso, per esempio perché l'installazione non riesce a raggiungere internet per scaricare i tassi, l'importo resta nella sua valuta e viene mostrato accanto al totale convertito.
+:::
+
+## Verifica quanto sono completi i tuoi costi {#check-how-complete-your-costs-are}
+
+La scheda **Stato della governance** nella **Panoramica** riporta la **Copertura dei costi** come percentuale e le **Richieste senza prezzo** come conteggio: richieste di cui Rational AI non può calcolare il costo perché il modello non ha un prezzo. Per vederle, apri l'**Audit log**, seleziona **Senza prezzo**, poi inserisci i prezzi mancanti.
+
+La stessa scheda mostra anche il **Tasso di errore** e il **Tasso di cache hit** del periodo.
+
+## Prossimi passi {#next-steps}
+
+- [Monitora utilizzo, costi e audit log](/operational-guides/governance): segui il traffico delle applicazioni che hai registrato.
+- [Documenta e approva un modello](/operational-guides/ai-model-registry-features#document-and-approve-a-model): l'approvazione del modello che controlla **Richiedi approvazione**.
+- [Approva le chiamate agli strumenti prima che vengano eseguite](/operational-guides/approve-tool-calls): ciò che vede una persona quando un touchpoint a rischio **Alto** attende l'approvazione.

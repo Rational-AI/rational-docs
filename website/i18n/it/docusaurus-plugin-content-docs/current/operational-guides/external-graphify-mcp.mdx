@@ -1,0 +1,96 @@
+---
+sidebar_position: 17
+sidebar_label: Graphify MCP esterno
+type: how-to
+audience: [developer]
+---
+
+# Usa Graphify da un client MCP esterno
+
+Collega un agente di programmazione, come Claude Code o Codex, al [grafo del codice](/operational-guides/graphify-code-graph) di una Knowledge Graphify. L'agente ottiene lo strumento `query_graph` e risponde alle domande sul repository (*"dov'è il ciclo principale e cosa richiama?"*) usando il grafo.
+
+Il server MCP di Graphify per le query viene eseguito sul tuo computer, avviato dall'agente tramite stdio. Si autentica con la chiave embed della Knowledge, quindi non richiede una chiave API. Con una chiave embed, `query_graph` risponde solo per quella Knowledge, scarica il suo grafo in sola lettura e non richiede un ID Knowledge.
+
+## Prima di iniziare {#before-you-begin}
+
+- Una Knowledge Graphify che ha terminato l'elaborazione: una fonte repository Git elaborata con la regola **Graphify repository**. Vedi [Crea un grafo del codice con Graphify](/operational-guides/graphify-code-graph).
+- **Modifica** sulla riga **Knowledge** del tuo ruolo, per generare la chiave embed. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Una copia di `mcp_server.py` dall'estensione **Graphify Query**. Un amministratore può scaricare i file dell'estensione con **Scarica estensione installata** nella scheda **Sviluppo**. Vedi [Sviluppa un'estensione](/operational-guides/develop-an-extension).
+- [`uv`](https://docs.astral.sh/uv/) sul tuo computer. A ogni query il server esegue la CLI di Graphify tramite `uvx`, quindi la prima query richiede l'accesso a internet per scaricarla.
+
+## Ottieni la chiave embed {#get-the-embed-key}
+
+1. Apri le impostazioni della Knowledge e seleziona la scheda **Incorpora**.
+2. In **Generale**, se non c'è ancora alcun codice, seleziona **Genera codice embed**. Questo salva le impostazioni e crea la chiave embed.
+3. Copia il valore `ek-…` dal codice embed.
+
+La chiave dà accesso in lettura al grafo, che rivela la struttura e i simboli del repository. Non salvarla nel controllo di versione. Per togliere l'accesso a tutti i client che la usano, seleziona **Rigenera chiave** nella scheda **Incorpora**. Vedi [Rigenera la chiave embed](/operational-guides/embed-knowledge#rotate-the-embed-key).
+
+## Configura il client MCP {#configure-the-mcp-client}
+
+Il client avvia il server con due variabili d'ambiente:
+
+| Variabile | Valore |
+|---|---|
+| `RATIONAL_AI_URL` | L'indirizzo API del tuo workspace, che termina con `/api/`, ad esempio `https://example.rational.is/api/` |
+| `RATIONAL_AI_EMBED_KEY` | La chiave embed |
+
+Sostituisci `/path/to/mcp_server.py` negli esempi con il percorso reale. Mantieni `--no-project`: senza questa opzione, `uv` può usare il progetto Python della cartella in cui l'agente è eseguito.
+
+Per **Claude Code**, aggiungi il server al file `.mcp.json` del progetto:
+
+```json
+{
+  "mcpServers": {
+    "graphify": {
+      "command": "uv",
+      "args": ["run", "--python", "3.12", "--no-project", "/path/to/mcp_server.py"],
+      "env": {
+        "RATIONAL_AI_URL": "https://<workspace-host>/api/",
+        "RATIONAL_AI_EMBED_KEY": "<embed-key>"
+      }
+    }
+  }
+}
+```
+
+Per **Codex**, aggiungilo a `config.toml`:
+
+```toml
+[mcp_servers.graphify]
+command = "uv"
+args = ["run", "--python", "3.12", "--no-project", "/path/to/mcp_server.py"]
+
+[mcp_servers.graphify.env]
+RATIONAL_AI_URL = "https://<workspace-host>/api/"
+RATIONAL_AI_EMBED_KEY = "<embed-key>"
+```
+
+## Fai una domanda al grafo {#ask-the-graph-a-question}
+
+1. Riavvia l'agente di programmazione perché carichi il server.
+2. Fai una domanda che richiede il grafo. Per una Knowledge costruita dal repository pubblico di DOOM:
+
+   ```text
+   Where is the main game loop in DOOM, and what important functions does it call?
+   ```
+
+L'agente chiama `query_graph`, che trova `D_DoomLoop()` in `linuxdoom-1.10/d_main.c` e le funzioni che richiama, come `TryRunTics`, `D_Display` e `S_UpdateSounds`.
+
+`query_graph` accetta un parametro `question` di massimo 4.000 caratteri. Argomenti facoltativi: `mode` (`bfs` per il contesto ampio, valore predefinito, oppure `dfs` per seguire un solo percorso), `token_budget` (da 100 a 8.000, predefinito 2.000) e `context_filter` (un elenco di valori passati all'opzione `--context` di Graphify).
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Il server non raggiunge Rational AI | `RATIONAL_AI_URL` è l'indirizzo del tuo workspace e termina con `/api/`. |
+| L'autenticazione fallisce, o l'accesso smette di funzionare | La chiave embed manca, è scritta male o è stata rigenerata. Copia la chiave attuale dalla scheda **Incorpora**. |
+| `query_graph` non restituisce nulla, o il grafo non viene trovato | L'elaborazione non è terminata, oppure la fonte non usa la regola **Graphify repository**. |
+| Lo strumento chiede un `knowledgeId` | `RATIONAL_AI_EMBED_KEY` non arriva al server. Controlla il blocco `env` della configurazione del client. |
+| `uv` non riesce ad avviare il server, o carica l'ambiente sbagliato | Nel comando manca `--no-project`. |
+| *"graphify query failed"* | `uvx` non è riuscito a scaricare o eseguire la CLI di Graphify. Controlla la connessione a internet del computer. |
+
+## Prossimi passi {#next-steps}
+
+- [Crea un grafo del codice con Graphify](/operational-guides/graphify-code-graph): cosa contiene il grafo e come viene costruito.
+- [Incorpora una Knowledge](/operational-guides/embed-knowledge): gestisci la chiave embed e le altre impostazioni di incorporamento.

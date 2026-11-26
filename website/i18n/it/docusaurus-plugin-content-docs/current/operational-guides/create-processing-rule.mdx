@@ -1,0 +1,94 @@
+---
+sidebar_position: 3
+sidebar_label: Crea una regola di processing
+title: Crea una regola di processing
+description: Scrivi una regola di processing che sceglie lo step per ogni file che una Knowledge riceve nella pipeline classica.
+type: how-to
+audience: [builder]
+---
+
+# Crea una regola di processing
+
+Una regola di processing è uno script Python che sceglie quale [step](/operational-guides/create-workflow) elabora ogni file che una Knowledge riceve. Decide in base al nome, al tipo e al contenuto del file, alla sua fonte o a qualsiasi altra condizione che puoi scrivere in codice. La regola si limita a instradare il file, e lo step scelto esegue il lavoro.
+
+Una Knowledge usa le regole di processing quando il suo **Workflow di default** è la **Pipeline classica**. Se la Knowledge esegue invece un grafo di workflow, è il grafo a decidere cosa succede a ogni file e la regola non viene usata.
+
+## Prima di iniziare {#before-you-begin}
+
+- Ruolo: **Crea** e **Modifica** sulla riga **Workflow** del tuo ruolo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Gli step verso cui la regola instrada. Ognuno deve esistere ed essere attivo. Vedi [Crea un workflow](/operational-guides/create-workflow).
+
+<img
+  src={require('@site/static/img/screens/processing-rules.png').default}
+  alt="La scheda Processing rules con l'elenco delle regole a sinistra e il codice Python della regola selezionata a destra"
+  style={{
+    width: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
+    border: '1px solid #E4E4E7',
+    borderRadius: '6px',
+    boxSizing: 'border-box',
+    }}
+/>
+
+## Crea la regola {#create-the-rule}
+
+1. Vai su **Impostazioni** → **Workflow** e seleziona la scheda **Processing rules**.
+2. Seleziona **Nuovo**, poi **Da zero**. In una pagina vuota, seleziona **Aggiungi**. **Importa JSON** carica invece una regola esportata da un altro ambiente.
+3. Sostituisci *Regola di elaborazione senza nome* con un nome, per esempio `Route by file type`.
+4. Scrivi il codice della regola nell'editor. La sezione successiva contiene un esempio.
+5. Seleziona **Salva**.
+
+Le regole di processing non hanno un interruttore: una regola viene eseguita ogni volta che la usa una Knowledge o una delle sue fonti. Il menu **⋮** della regola contiene **Scarica** (il file `.py`), **Esporta (JSON)** ed **Elimina**. Eliminare una regola non elimina le esecuzioni che l'hanno usata.
+
+## Scrivi il codice della regola {#write-the-rule-code}
+
+La regola restituisce il nome dello step da eseguire, esattamente come appare nell'elenco **Steps**. Questa regola invia i file PDF a uno step, i file Word a un altro, e salta tutto il resto:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "rational-client",
+# ]
+# ///
+
+from rational_client.core import File
+from rational_client.utils import run
+
+
+def router(resource: File, options: dict):
+    name = (resource.name or "").lower()
+
+    if name.endswith(".pdf"):
+        return "PDF extraction"
+    if name.endswith((".doc", ".docx")):
+        return "Word extraction"
+    return None
+
+
+run(router)
+```
+
+- `run(router)` chiama `router` con il file e le opzioni della regola.
+- Restituisci il nome di uno step per eseguirlo sul file. Lo step deve esistere ed essere attivo.
+- Restituisci `None` per lasciare il file senza step. Da quel file non viene estratto nulla.
+- Per passare anche opzioni allo step, restituisci invece un dizionario: `{"workflow": "PDF extraction", "options": {...}}`.
+
+## Usa la regola in una Knowledge {#use-the-rule-in-a-knowledge}
+
+1. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge e seleziona la scheda **Fonti**.
+2. Lascia **Workflow di default** impostato su **Pipeline classica**.
+3. In **Regola di processing di default**, seleziona la tua regola.
+4. Seleziona **Salva**.
+
+Per instradare diversamente una singola fonte collegata, apri il menu **⋮** di quella fonte, seleziona **Impostazioni di processing dati** e scegli la sua **Regola di processing**. La regola propria di una fonte ha la precedenza sul valore predefinito della Knowledge.
+
+La regola viene eseguita sui file aggiunti dopo il salvataggio. Per applicarla anche ai file già presenti nella Knowledge, seleziona **Elabora knowledge** nel menu **Opzioni** della Knowledge. Vedi [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources).
+
+## Prossimi passi {#next-steps}
+
+- [Crea un workflow](/operational-guides/create-workflow) per scrivere gli step verso cui instrada una regola.
+- [Importa, esporta e imposta i timeout](/operational-guides/workflow-rules) per spostare le regole tra ambienti.
+- [Workflow e regole di processing](/concepts/Workflows-and-processing-rules) per capire come si collegano regole, step e workflow.

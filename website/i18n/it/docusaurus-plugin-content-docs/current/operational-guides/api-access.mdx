@@ -1,0 +1,162 @@
+---
+sidebar_position: 15
+sidebar_label: Accesso via API
+type: how-to
+audience: [developer]
+---
+
+# Accedi a Rational AI tramite API
+
+Le tue applicazioni possono chiamare i modelli di Rational AI con una chiave API. Usa questa guida per creare e gestire le chiavi, copiare uno snippet di codice funzionante per un modello e assegnare a un'applicazione una chiave che raggiunge un solo [touchpoint](/operational-guides/configure-touchpoints).
+
+:::note[Che cos'è l'accesso API?]
+Un'API (Application Programming Interface) è il canale che le tue applicazioni e i tuoi script usano per parlare direttamente con i modelli di Rational AI, invece di una persona che scrive nell'interfaccia di chat. Ti identifichi con una **chiave API** (una lunga stringa segreta che generi in **Impostazioni**) e invii le richieste al gateway del tuo workspace.
+
+Il gateway è **compatibile con OpenAI**: accetta le stesse richieste dell'API di OpenAI, quindi puoi usare gli SDK OpenAI standard e gli strumenti esistenti.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, assicurati di avere:
+
+- **Un account amministratore per creare una chiave del workspace.** Gli altri utenti possono aprire **Impostazioni** → **Chiavi API** se il loro ruolo include la riga **Chiavi API**, ma solo un amministratore può creare una chiave.
+- **Almeno un modello attivo.** Un modello configurato nel **Registro modelli AI** che intendi chiamare. Vedi [Funzionalità del Registro modelli AI](/operational-guides/ai-model-registry-features) se devi configurarne uno.
+- **Un client HTTP o un SDK OpenAI.** Per esempio cURL, l'SDK OpenAI per Python o l'SDK OpenAI per TypeScript.
+- **Per una chiave touchpoint:** un touchpoint sul canale **API** e il permesso di modificarlo.
+
+## Gestisci le tue chiavi API {#manage-your-api-keys}
+
+**Impostazioni** → **Chiavi API** elenca ogni chiave con il suo nome, un valore mascherato, la data di creazione e se è **Attiva** o **Disattivata**.
+
+<img
+  src={require('@site/static/img/screens/apikeys-settings.png').default}
+  alt="La pagina Chiavi API nelle impostazioni"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*La pagina **Chiavi API**: crea e gestisci le chiavi usate per l'accesso programmatico.*
+
+### Crea una chiave API {#create-an-api-key}
+
+Assegna a ogni applicazione, script o persona una chiave con un nome proprio, così puoi revocarne una senza interrompere le altre.
+
+1. Vai su **Impostazioni** → **Chiavi API**.
+2. Seleziona **Nuovo** (**Aggiungi** quando l'elenco è vuoto).
+3. Nella finestra **Genera nuova chiave**, inserisci un **Nome** per la chiave, per esempio `My personal API key`.
+4. Seleziona **Crea**.
+5. La finestra **Genera nuova chiave segreta** mostra la chiave completa. Usa il pulsante di copia per copiarla e conservala in un posto sicuro, poi seleziona **Fine**.
+
+:::note[La chiave viene mostrata una sola volta]
+Dopo aver selezionato **Fine**, l'elenco mostra solo un valore mascherato e la chiave non può più essere visualizzata. Se la perdi, elimina la chiave e generane una nuova.
+:::
+
+:::warning[Una chiave creata da questa pagina agisce con i diritti di amministratore]
+Le chiavi create in **Impostazioni** → **Chiavi API** appartengono al workspace, non a una singola applicazione: si autenticano come amministratore, chiunque le abbia create, e raggiungono l'intera API di Rational AI, non solo il gateway dei modelli e le API dei touchpoint. Chi ne possiede una può leggere e modificare tutto ciò che può fare un amministratore. Quando un'applicazione deve solo parlare con un assistente, usa invece una [chiave touchpoint](#give-an-application-its-own-touchpoint-key).
+:::
+
+### Disattiva o elimina una chiave API {#disable-or-delete-an-api-key}
+
+Disattiva una chiave appena non serve più o se potrebbe essere compromessa.
+
+1. Vai su **Impostazioni** → **Chiavi API**.
+2. Apri il menu sulla riga della chiave.
+3. Scegli l'operazione:
+   - **Disattiva** blocca l'autenticazione della chiave ma la mantiene nell'elenco, così puoi usare **Attiva** per riattivarla in seguito.
+   - **Modifica** rinomina la chiave.
+   - **Elimina** la rimuove in modo definitivo. Conferma nella finestra di dialogo **Elimina chiave API**.
+
+:::note[L'eliminazione è definitiva]
+Una chiave eliminata non può essere visualizzata né recuperata, e ogni richiesta che la usa ancora viene rifiutata. Se vuoi solo bloccare una chiave mentre fai verifiche, disattivala.
+:::
+
+## Chiama un modello {#call-a-model}
+
+### Trova il codice per un modello {#find-the-code-for-a-model}
+
+1. Apri il **Registro modelli AI** e seleziona il modello che vuoi chiamare per aprire il pannello dei dettagli.
+2. Nella panoramica del modello, espandi la sezione **Usa via API**.
+3. Scegli la scheda per il tuo linguaggio:
+   - **cURL**
+   - **Python** (SDK OpenAI)
+   - **TypeScript** (SDK OpenAI)
+4. Usa il pulsante **copy-to-clipboard** sullo snippet per copiarlo.
+
+<img
+  src={require('@site/static/img/screens/model-use-via-api.png').default}
+  alt="La sezione Usa via API con gli snippet di codice"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+***Usa via API**: snippet pronti in cURL, Python e TypeScript che chiamano il modello tramite l'API compatibile con OpenAI.*
+
+Ogni snippet punta già al gateway del tuo workspace, con il campo `model` impostato all'identificativo del modello.
+
+### Autentica le richieste {#authenticate-your-requests}
+
+Invia la chiave API come **Bearer token** nell'header `Authorization`:
+
+```
+Authorization: Bearer $RATIONAL_AI_API_KEY
+```
+
+Imposta la variabile d'ambiente `RATIONAL_AI_API_KEY` (o il tuo archivio segreti) con il valore della chiave mostrato nella finestra di dialogo, che viene visualizzata una sola volta. Lo snippet copiato legge la chiave da questa variabile, quindi, una volta impostata, lo snippet si autentica da solo.
+
+## Scegli tra Chat completions e Responses {#choose-between-chat-completions-and-responses}
+
+Il gateway accetta entrambe le API di OpenAI, **Chat completions** e **Responses**, con la stessa chiave e lo stesso URL di base. Gli snippet nel registro usano Chat completions. Ogni chiamata viene registrata in [Governance](/operational-guides/governance) con utilizzo e costo, qualunque API tu usi.
+
+## Assegna a un'applicazione una propria chiave touchpoint {#give-an-application-its-own-touchpoint-key}
+
+Una chiave del workspace apre tutto. Quando un'applicazione ha bisogno di un solo assistente, assegnale invece una chiave per un touchpoint sul canale **API**.
+
+:::note[Che cos'è una chiave touchpoint?]
+Una chiave touchpoint è un segreto che si autentica su **un** solo touchpoint e su nient'altro. Apre l'API compatibile con OpenAI di quel touchpoint e il suo [server MCP](#use-a-touchpoints-tools-from-an-mcp-client). Non può chiamare il gateway del workspace, un altro touchpoint o un'API di gestione. Ogni touchpoint ha al massimo una chiave alla volta.
+:::
+
+1. Vai su **Impostazioni** → **Touchpoint** e apri un touchpoint il cui **Canale** è **API**.
+2. Nella scheda **Impostazioni**, trova la sezione **Accesso API**. Mostra l'**URL di base** del touchpoint, con un pulsante di copia, e il campo **Chiave API**.
+3. Seleziona **Genera chiave**.
+4. Copia la chiave dalla finestra **Genera nuova chiave segreta** e seleziona **Fine**. Come per le chiavi del workspace, viene mostrata una sola volta; dopo, il campo mostra un valore mascherato come `sk-a...9f3c`.
+5. In **Usa via API**, scegli **Chat Completions** o **Responses**, poi la scheda **cURL**, **Python** o **TypeScript**, e copia lo snippet. Punta già all'URL di base del touchpoint e al suo modello predefinito, e legge la chiave da `RATIONAL_AI_API_KEY`.
+
+La chiave può essere inviata come `Authorization: Bearer <key>` oppure in un header `X-API-KEY`.
+
+:::note[L'applicazione parla con il tuo assistente, non con un modello nudo]
+Le richieste tramite un touchpoint usano il suo prompt di sistema e i suoi strumenti attivi, quindi l'applicazione ottiene lo stesso assistente che i tuoi utenti usano in chat. Gli strumenti che richiedono l'approvazione di una persona e le skill sono esclusi.
+:::
+
+### Ruota o revoca una chiave touchpoint {#rotate-or-revoke-a-touchpoint-key}
+
+| Azione | Quando usarla | Cosa succede |
+|--------|----------------|--------------|
+| **Ruota** | La chiave potrebbe essere trapelata, oppure ruoti i segreti secondo una pianificazione | Viene generata e mostrata una nuova chiave, una sola volta. La vecchia chiave smette di funzionare subito, senza sovrapposizioni. |
+| **Revoca** | Nessuna applicazione deve più usare questo touchpoint | La chiave viene eliminata. Finché non ne generi una nuova, solo gli operatori possono chiamare l'API del touchpoint. |
+
+Entrambe le operazioni chiedono una conferma (**Ruota chiave API**, **Revoca chiave API**) e non possono essere annullate. Ruotare o revocare richiede il permesso di modificare il touchpoint.
+
+:::note[Senza chiave, l'API è riservata agli operatori]
+Un touchpoint senza chiave mostra *"Nessuna chiave. Solo gli operatori possono chiamare questa API."* Gli operatori sono amministratori e titolari di una chiave del workspace dalla pagina **Impostazioni** → **Chiavi API**; possono chiamare l'API di ogni touchpoint, con o senza chiave touchpoint.
+:::
+
+## Usa gli strumenti di un touchpoint da un client MCP {#use-a-touchpoints-tools-from-an-mcp-client}
+
+Lo stesso touchpoint è anche esposto come server MCP, quindi qualunque client che parla il Model Context Protocol (un assistente IDE, un'app AI desktop, un altro agente) può usare gli strumenti che hai configurato.
+
+- **URL:** l'**URL di base** del touchpoint con `/openai` alla fine sostituito da `/mcp`.
+- **Trasporto:** Streamable HTTP, senza stato.
+- **Autenticazione:** la chiave touchpoint (o le credenziali di operatore), esattamente come per l'API OpenAI del touchpoint.
+- **Cosa offre:** gli strumenti attivi del touchpoint, e nient'altro (nessuna skill, prompt o risorsa).
+
+:::note[L'approvazione passa al client MCP]
+Il server MCP elenca gli strumenti che richiedono approvazione nella [policy di conferma](/operational-guides/configure-touchpoints#decide-when-a-tool-needs-confirmation) del touchpoint, contrassegnati come tali. Il client MCP è responsabile di chiedere conferma al proprio utente, quindi collega solo client di cui ti fidi.
+:::
+
+Un touchpoint che la [governance delle applicazioni AI](/operational-guides/govern-ai-applications) blocca, o classifica come a rischio inaccettabile, rifiuta le chiamate MCP.
+
+## Interroga un modello Decisione tramite l'API compatibile con System One {#ask-a-decision-model-through-the-system-one-compatible-api}
+
+I modelli **Decisione** restituiscono una scelta, un punteggio o una risposta sì/no invece della prosa. Chiamali con una chiave del workspace: le chiavi touchpoint non funzionano. Gli snippet **Usa via API** su un modello Decisione nel [Registro modelli AI](/operational-guides/ai-model-registry-features) sono pronti all'uso.
+
+## Prossimi passi {#next-steps}
+
+* [Configura i touchpoint](/operational-guides/configure-touchpoints): imposta l'assistente dietro una chiave touchpoint.

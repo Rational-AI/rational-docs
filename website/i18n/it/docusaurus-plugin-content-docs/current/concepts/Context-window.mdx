@@ -1,0 +1,26 @@
+---
+sidebar_position: 22
+sidebar_label: Finestra di contesto
+title: Finestra di contesto
+description: Cos'è la finestra di contesto di un modello, perché il limite conta e come Rational AI mantiene conoscenza e chat lunghe al suo interno.
+type: concept
+audience: [user, builder]
+---
+
+# Finestra di contesto
+
+La **finestra di contesto** è la quantità massima di testo che un modello può considerare in una singola richiesta, misurata in [token](/concepts/Tokens). Contiene il [prompt di sistema](/concepts/System-prompt), i passaggi recuperati da una Knowledge, la conversazione fino a quel momento, la tua domanda e la risposta. Il modello non vede ciò che non ci sta.
+
+Ogni modello ha una propria dimensione della finestra, e la risposta condivide questo spazio con tutto ciò che invii. Un input molto lungo lascia meno spazio alla risposta.
+
+## Perché il limite conta {#why-the-limit-matters}
+
+- **Più testo non significa risposte migliori**: riempire la finestra con materiale poco pertinente può nascondere il passaggio che risponde alla domanda.
+- **Le conversazioni lunghe esauriscono lo spazio**: i messaggi più vecchi, alla fine, non ci stanno più.
+- **Costo e velocità**: il modello elabora ogni token della finestra a ogni richiesta.
+
+## In Rational AI {#in-rational-ai}
+
+- Una Knowledge non invia interi documenti al modello. Li divide in [chunk ed embedding](/concepts/Embeddings-chunks-and-annotations), e [RAG](/concepts/RAG) invia solo i passaggi che corrispondono meglio alla domanda.
+- Quando una chat diventa troppo lunga, l'assistente di solito continua a partire da un riepilogo dei messaggi precedenti. Alcuni touchpoint si fermano invece e propongono **Nuova conversazione**. Vedi [Continua una conversazione lunga](/operational-guides/chat-experience#keep-going-in-a-long-conversation).
+- La pagina di un modello in **Impostazioni** → **Registro modelli AI** mostra la sua **Lunghezza contesto**.

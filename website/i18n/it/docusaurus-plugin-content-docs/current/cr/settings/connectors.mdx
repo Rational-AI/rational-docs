@@ -1,0 +1,83 @@
+---
+sidebar_position: 6
+type: reference
+audience: [admin, builder]
+---
+
+import UsersIcon from '@site/static/img/users.svg';
+import LockIcon from '@site/static/img/lock.svg';
+import CrossIcon from '@site/static/img/cross.svg';
+
+
+# Connettori
+
+Un connettore memorizza le credenziali e la configurazione necessarie per comunicare con un provider esterno. Una volta configurato, può essere riutilizzato in tutta la piattaforma: dai [modelli AI](ai-model-registry.mdx) (per raggiungere l'API di un provider), dalle [fonti](sources.mdx) (per leggere i tuoi dati) e dagli [strumenti](extensions.mdx). Per configurarne uno, vedi [Configura connettori](/operational-guides/configure-connectors).
+
+<div className="featureBox">
+  <div className="featureBox__title">Chi può usare questa funzione</div>
+
+  <div className="featureBox__row">
+    <UsersIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Disponibile con <a href="/pricing">qualsiasi piano</a>
+    </div>
+  </div>
+
+  <div className="featureBox__row">
+    <LockIcon className="featureBox__icon" aria-hidden />
+    <div>
+      Chiunque abbia nel proprio ruolo <span className="featureBox__pill">Crea</span>
+      o <span className="featureBox__pill">Aggiorna</span> sulla riga <strong>Connettori</strong> può aggiungere e gestire i connettori
+    </div>
+  </div>
+
+</div>
+
+## Sfoglia connettori {#browse-connectors}
+
+<img
+  src={require('/img/screens/connectors.png').default}
+  style={{
+    border: '1px solid #e4e4e7',
+    borderRadius: '10px',
+  }}
+  alt="La pagina Connettori con l'elenco dei connettori e il pannello dei dettagli con provider, servizi e riepilogo dell'utilizzo"
+/>
+
+La pagina Connettori mostra ogni connettore come una scheda, con il suo nome e l'icona del provider. Usa la casella **Cerca** per filtrare per nome, e seleziona una scheda per aprirne i dettagli.
+
+Il pannello dei dettagli mostra la descrizione del connettore, il suo **Provider** e quante volte viene usato. Un riepilogo dell'utilizzo indica quanti **Modelli AI**, **Sources** e **Tools** dipendono dal connettore, così puoi vedere cosa verrebbe coinvolto prima di modificarlo o rimuoverlo.
+
+Non puoi eliminare un connettore finché lo usano modelli AI, fonti, abbonamenti dei provider o configurazioni di estensioni. Gli abbonamenti dei provider non rientrano nel riepilogo dell'utilizzo, quindi controlla anche la sezione **Prezzi e abbonamenti dei provider** del connettore prima di eliminarlo.
+
+## Campi per provider {#fields-by-provider}
+
+Seleziona **Aggiungi** per aprire **Aggiungi un nuovo connettore**, seleziona un provider in **Sfoglia connettori**, poi compila i suoi campi. Ogni provider chiede anche un **Nome** e una **Descrizione** facoltativa. Per i passaggi sul servizio esterno, vedi [Provider disponibili](/operational-guides/configure-connectors#available-providers).
+
+| Provider | Campi da compilare all'aggiunta | Non modificabili dopo la creazione |
+|---|---|---|
+| **OpenAI**, **Anthropic**, **OpenRouter**, **Xference**, **MiniMax**, **Brave Search**, **Google Service Account Key** | **API Key** | |
+| **OpenAI Compatible** | **Base URL**, **API Key** | |
+| **Compatibile System One** | **Base URL**, **API Key** (facoltativa) | |
+| **Google Vertex AI** | **ID progetto**, **Region** (una sola regione). Nessuna chiave | |
+| **Google** | **Client ID**, **Client Secret**, poi accesso | |
+| **AWS** | **Access Key**, **Secret Key** | |
+| **Azure** | **Client ID**, **Client Secret** | |
+| **Microsoft OneDrive** | **Client ID**, **Client Secret**, **Modalità di autenticazione**, **Tenant ID** (solo permessi di applicazione) | **Modalità di autenticazione** |
+| **LinkedIn**, **Instagram** | **ID app**, **Secret dell'app**, poi accesso | |
+| **Facebook** | **ID app**, **Secret dell'app**, **ID configurazione (facoltativo)**, poi accesso | |
+| **Credenziali Git** | **Host Git**, **Nome utente**, **Token di accesso** | |
+| **RabbitMQ** | **Host**, **Porta**, **Usa TLS**, **Virtual host**, **Nome utente**, **Password**, **Token di download dei file** (facoltativo) | **Porta**, **Usa TLS** |
+| **Microsoft SQL Server** | **Host**, **Porta**, **Istanza**, **Database**, **Nome utente**, **Password**, **Cifra la connessione** | **Porta** |
+| **Database SQL** | **Motore**, poi **Percorso del file** (SQLite, DuckDB) oppure **Host**, **Porta**, **Database**, **Nome utente**, **Password** | **Motore**, **Porta**, **Percorso del file** |
+
+## Gestisci un connettore {#manage-a-connector}
+
+Per cambiare un connettore, modifica i campi in **Configurazione** nel pannello dei dettagli e seleziona **Salva**, oppure **Annulla** per scartare le modifiche. I campi segreti non vengono mai mostrati: inserisci un nuovo valore solo per sostituire quello salvato. Per un connettore **Database SQL**, **Prova connessione** ed **Esplora schema** verificano le impostazioni salvate.
+
+Apri il menu delle opzioni (i tre puntini verticali) nel pannello dei dettagli per:
+
+| Azione | Descrizione |
+|--------|-------------|
+| **Completa l'autenticazione** | Completa l'accesso per un connettore che lo richiede ancora (mostrato solo in quel caso). |
+| **Elimina** | Rimuove il connettore dalla piattaforma. |

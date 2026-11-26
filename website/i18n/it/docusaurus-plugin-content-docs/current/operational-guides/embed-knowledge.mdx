@@ -1,0 +1,196 @@
+---
+sidebar_position: 15
+sidebar_label: Incorpora una Knowledge
+type: how-to
+audience: [builder]
+---
+
+# Incorpora una Knowledge
+
+La funzione **Incorpora** inserisce una [Knowledge](/operational-guides/create-knowledge) in una pagina web qualsiasi, come widget autonomo. I visitatori sfogliano i suoi record, aprono quello che gli serve e fanno domande al suo assistente sul tuo sito, senza dover accedere.
+
+:::note[Che cos'è il widget di incorporamento?]
+Il widget di incorporamento è una finestra pubblica su una sola Knowledge. Scegli che cosa mostra (quali viste, in quale ordine, se i visitatori possono cercare, filtrare o aprire un record, se è disponibile una chat), e Rational AI ti fornisce un unico tag `<script>` da incollare nel tuo sito. Il widget si carica in un frame isolato e comunica con la Knowledge tramite una sola **chiave embed**, quindi i visitatori non devono mai accedere alla Control Room. Non possono modificare i tuoi record, nemmeno nelle griglie. Possono aggiungerne di nuovi tramite il modulo di contatto, che scrive nella collezione che scegli, e il costo della loro chat conta sul **Budget mensile**.
+:::
+
+## Prerequisiti {#prerequisites}
+
+Prima di iniziare, verifica di avere:
+
+- **Permesso di aggiornamento sulla Knowledge:** **Modifica** sulla riga **Knowledge** del tuo ruolo. Senza questo permesso la scheda **Incorpora** si apre in sola lettura. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Una Knowledge da pubblicare:** con i record o le risorse che vuoi far vedere ai visitatori, e le [viste](/operational-guides/knowledge-custom-views) che vuoi mostrare.
+- **Un punto in cui inserire il tag:** l'accesso all'HTML della pagina in cui deve comparire il widget, oppure un sito WordPress con il plugin **Rational AI Observatory**.
+
+## Apri le impostazioni di incorporamento {#open-the-embed-settings}
+
+Apri la Knowledge, vai alle sue impostazioni e seleziona la scheda **Incorpora**. La scheda è una sola pagina divisa in sezioni, dall'alto in basso:
+
+| Sezione | Cosa imposti |
+| --- | --- |
+| **Generale** | Se il widget mostra tutte le sue viste o una sola, il prompt di sistema dell'assistente e il codice di incorporamento. |
+| **Viste pubblicate** | Quali viste i visitatori possono scegliere, e in quale ordine. |
+| **Aspetto** | Colori chiari o scuri e colore principale. |
+| **Azioni** | Filtri, selettore delle viste, ricerca e dettagli dei record. |
+| **Chat** | Se c'è una chat, le sue opzioni e i limiti di spesa per i visitatori. |
+| **Statistiche** | Una collezione che riceve un record di attività al giorno. |
+| **Contatti dei visitatori** | Una collezione che riceve i dati lasciati dai visitatori, e il modulo da compilare. |
+
+Le modifiche si applicano con **Salva** nel piè di pagina delle impostazioni.
+
+<img
+  src={require('@site/static/img/screens/knowledge-embed-settings.png').default}
+  alt="La scheda Incorpora delle impostazioni, con il prompt di sistema, il codice di incorporamento e gli interruttori"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*La scheda **Incorpora** delle impostazioni, a partire dalla sezione **Generale**.*
+
+## Scegli tra il widget e una singola vista {#choose-between-the-widget-and-a-single-view}
+
+Il menu **Vista incorporata** in **Generale** decide la forma del widget.
+
+- **Widget con le sue viste** (predefinito): un'intestazione con il nome della Knowledge, una barra degli strumenti e tutte le viste che pubblichi in **Viste pubblicate**.
+- **Una delle tue viste**: solo quella vista, a schermo intero, *"senza intestazione e selettore delle viste"*. Usala quando la pagina deve mostrare una sola vista personalizzata, come una mappa o un calcolatore, e nient'altro. Quando è pubblicata una sola vista, il widget adatta l'altezza al contenuto della vista.
+
+Le viste a griglia, dashboard e grafo non possono essere pubblicate da sole: sono disponibili solo all'interno del widget.
+
+## Imposta il prompt di sistema {#set-the-system-prompt}
+
+Il prompt di sistema determina come risponde la chat del widget. Usalo per dare all'assistente il suo ruolo e le sue regole.
+
+1. Nella sezione **Generale**, scrivi un **Prompt di sistema personalizzato**, per esempio chiedendo all'assistente di rispondere solo in base ai contenuti di questa Knowledge.
+2. Seleziona **Salva** nel piè di pagina delle impostazioni.
+
+## Pubblica e ordina le viste {#publish-and-order-the-views}
+
+La sezione **Viste pubblicate** elenca le viste della Knowledge che possono comparire in una pagina pubblica, ciascuna con una maniglia di trascinamento e un interruttore.
+
+1. Attiva gli interruttori delle viste che i visitatori devono poter vedere.
+2. Trascina le righe nell'ordine desiderato. La prima vista attivata è contrassegnata **Si apre per prima**: è quella che il widget mostra al caricamento.
+3. Seleziona **Salva**.
+
+:::note[Le griglie vengono pubblicate solo se le attivi]
+Finché non modifichi l'elenco, ogni vista personalizzata e ogni dashboard è pubblicata, ma nessuna [vista a griglia](/operational-guides/knowledge-collections-and-grid) lo è: una griglia mostra i tuoi record, quindi diventa pubblica solo quando la attivi esplicitamente per nome. Una griglia pubblicata è in sola lettura, con colonne, gruppi e filtri salvati nella vista; i visitatori possono cercarla, filtrarla e ordinarla, ma non modificarla. Le viste di calendario e grafo non vengono mai offerte.
+:::
+
+Disattivare tutte le viste disattiva anche **Viste** in **Azioni**, e attivarne una la riattiva. La vista a griglia integrata (indicata come **Attributi** nel widget) e la vista **Grafo** compaiono nel selettore del widget dopo le tue viste pubblicate, quando sono abilitate per la Knowledge stessa nella sua scheda **Viste**.
+
+## Imposta l'aspetto {#set-the-appearance}
+
+In **Aspetto**:
+
+- **Colori**: **Come il dispositivo del visitatore** (predefinito), **Chiari** o **Scuri**.
+- **Colore principale**: il colore di *"Pulsanti, link, record aperto e pulsante della chat."* Scegli **Rational** (predefinito), **Blu**, **Indaco**, **Rosso**, **Arancione** o **Grafite** per adattarlo al tuo sito.
+
+## Scegli che cosa possono fare i visitatori {#choose-what-visitors-can-do}
+
+Gli interruttori di **Azioni** decidono quali controlli compaiono nella barra degli strumenti e nei pannelli del widget.
+
+| Interruttore | Cosa attiva |
+| --- | --- |
+| **Filtri** | Filtra le risorse per categoria, tag e relazioni. |
+| **Viste** | Un selettore delle viste, così i visitatori passano tra le viste pubblicate. |
+| **Ricerca** | Una barra di ricerca sulle risorse. |
+| **Dettagli risorsa** | Un pannello laterale con i dettagli di un record, le annotazioni e i chunk. È anche ciò che rende funzionanti i link ai record. |
+
+### Condividi il link a un record {#share-a-link-to-a-record}
+
+Quando **Dettagli risorsa** è attivo, aprire un record nel widget scrive nell'indirizzo della tua pagina `#r=` seguito dall'ID del record, e chiuderlo lo rimuove. Un visitatore che vuole inviare qualcuno direttamente a quel record copia l'indirizzo della pagina dal browser: chi lo apre atterra sulla tua pagina con lo stesso record già aperto.
+
+## Configura la chat {#set-up-the-chat}
+
+La sezione **Chat** controlla la conversazione e quanto ti può costare.
+
+| Opzione | Cosa fa |
+| --- | --- |
+| **Chat** | *"Mostra l'assistente nella pagina."* Attiva di default. Disattivala per un widget che mostra solo contenuti, come un registro pubblico o una pagina di segnalazione. Le altre opzioni della chat mantengono i loro valori mentre è disattivata. |
+| **Domande suggerite** | Domande di partenza mostrate all'apertura della chat. |
+| **Visibilità delle fonti** | Mostra quali fonti sono state usate per generare ogni risposta. |
+| **Copia** | Un pulsante di copia su ogni messaggio. |
+| **Feedback** | Permette ai visitatori di valutare e segnalare le risposte dell'AI. |
+| **Messaggi per visitatore al giorno** | Quante domande può fare un visitatore in 24 ore. Il valore predefinito è **20**; lascia il campo vuoto per nessun limite. |
+| **Budget mensile** | Quando la chat ha superato questa cifra in un mese solare (UTC), si mette in pausa fino al mese successivo. Vuoto, il valore predefinito, significa nessun tetto. |
+
+:::note[Il budget è calcolato nella valuta in cui vengono riportati i costi]
+Il campo non ha un simbolo di valuta: l'importo viene confrontato con i costi dei modelli che Rational AI registra per le conversazioni di questo widget, nella stessa valuta in cui [Governance](/operational-guides/governance) li riporta. Poiché il controllo usa i costi registrati, le risposte già in generazione quando il budget si esaurisce vengono completate, quindi il mese può chiudere leggermente sopra la cifra che hai impostato.
+:::
+
+Quando un visitatore raggiunge il limite giornaliero, il campo di input della chat viene bloccato con *"Hai raggiunto il limite di messaggi di oggi. Torna domani per fare altre domande."*; quando il budget si esaurisce, compare *"La chat è in pausa per questo mese. Puoi continuare a consultare i contenuti."* Tutto il resto del widget continua a funzionare e, se raccogli i contatti dei visitatori, il modulo si apre sotto l'avviso.
+
+## Raccogli i contatti dei visitatori {#collect-visitor-contacts}
+
+Il widget può invitare i visitatori a lasciare i loro dati e salvare ciascuno come record in una collezione che scegli (per esempio la collezione dei contatti di una Knowledge CRM).
+
+1. In **Contatti dei visitatori**, scegli una collezione in **Salva i contatti in**. Qualsiasi collezione di qualsiasi Knowledge del tuo workspace può riceverli.
+2. Inserisci l'URL dell'**Informativa privacy**. È collegata alla casella del consenso ed è obbligatoria.
+3. Facoltativo: imposta il **Titolo del modulo** e il **Testo del modulo**.
+4. Disponi i **Campi del modulo**. Il modulo parte con **Nome**, **Email** e **Organizzazione**: trascinali per riordinarli, rinomina l'etichetta che leggono i visitatori, attiva o disattiva **Obbligatorio**, rimuovi un campo oppure aggiungine un altro da **Aggiungi un campo dalla collection** (attributi di testo, data, numero e scelta). Un attributo che la collezione non ha ancora è contrassegnato *"verrà creato"* e viene aggiunto al salvataggio.
+5. Seleziona **Salva**.
+
+Nel widget, un pulsante a campanella nell'intestazione della chat apre il modulo. Il visitatore spunta la casella del consenso e seleziona **Iscriviti**.
+
+:::note[Mantieni il campo email per riconoscere i visitatori che tornano]
+Un visitatore che invia di nuovo il modulo con la stessa email aggiorna il suo record esistente invece di crearne uno nuovo: i valori che hai impostato tu su quel record vengono conservati, e le nuove risposte si aggiungono come nota. Senza un campo email, ogni invio è un nuovo record. Ogni visitatore può inviare al massimo cinque volte all'ora. Il modulo si trova nel pannello della chat, quindi non è disponibile quando **Chat** è disattivata.
+:::
+
+## Conserva le statistiche giornaliere {#keep-daily-statistics}
+
+Per vedere come viene usato il widget, scegli una collezione in **Salva le statistiche in**, nella sezione **Statistiche**. Ogni notte Rational AI scrive lì un record per il giorno precedente, con il nome della Knowledge e la data, che contiene:
+
+- **Aperture**: quante volte il widget è stato aperto.
+- **Record aperti**, e i cinque più aperti.
+- **Ricerche**, e le cinque più frequenti.
+- **Conversazioni** avviate e **Messaggi** inviati nella chat.
+- **Contatti**: visitatori che hanno lasciato i loro dati.
+
+I giorni senza attività non ricevono alcun record. Le statistiche sono solo totali: nulla al loro interno identifica un visitatore. Poiché sono record normali, puoi creare grafici in una griglia o in una dashboard di [Rational BI](/operational-guides/rational-bi).
+
+## Aggiungi il widget al tuo sito {#add-the-widget-to-your-site}
+
+1. In **Generale**, se non esiste ancora un codice, seleziona **Genera codice embed**. Questo salva le impostazioni e crea la chiave embed del widget.
+2. Scegli dove inserire il widget con il pulsante **HTML** o **WordPress**.
+3. Seleziona **Copia codice embed** e incollalo nella tua pagina.
+
+Per **HTML**, il codice è un solo tag:
+
+```html
+<script src="https://control-room.example.com/embed.js" data-embed="ek-…" data-lang="en" async></script>
+```
+
+Il widget compare esattamente nel punto in cui si trova il tag. `data-lang` imposta la lingua del widget e parte dalla lingua della tua Control Room: cambiala per adattarla alla pagina.
+
+Per **WordPress**, il codice è uno shortcode del plugin **Rational AI Observatory**:
+
+```text
+[rational_observatory embed="ek-…" origin="https://control-room.example.com"]
+```
+
+La pagina contiene anche, come testo semplice, i record della prima vista a griglia pubblicata, così i motori di ricerca possono leggerli; il widget sostituisce quel testo una volta caricato. La lingua segue quella della pagina.
+
+## Guarda il widget {#see-the-widget}
+
+Nella pagina, il widget mostra il nome della Knowledge, la barra degli strumenti che hai configurato (selettore delle viste, ricerca, filtri), le viste pubblicate, un pulsante chat nell'angolo se la chat è attiva, e un link **Apri vista completa** che apre il widget in una scheda propria.
+
+<img
+  src={require('@site/static/img/screens/knowledge-embed-widget.png').default}
+  alt="Il widget della Knowledge incorporato in una pagina, con la tabella delle risorse, la barra degli strumenti e il pulsante della chat"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Il widget incorporato: i record della Knowledge, la barra degli strumenti configurata e il pulsante della chat.*
+
+## Rigenera la chiave embed {#rotate-the-embed-key}
+
+La chiave embed è ciò che collega un tag pubblicato alla tua Knowledge. Se un tag viene condiviso dove non dovrebbe, rigenera la chiave per interromperne l'uso.
+
+1. In **Generale**, seleziona il pulsante **Rigenera chiave** accanto al codice di incorporamento.
+2. Conferma nella finestra **Rigenera chiave embed**.
+3. Copia il nuovo codice e sostituiscilo ovunque il widget sia incorporato.
+
+:::warning[Rigenerare interrompe subito tutti i tag pubblicati]
+Ogni pagina che usa ancora la chiave precedente mostra subito *"Questo widget non è disponibile"*. Rigenera solo quando sei pronto a sostituire il codice ovunque sia pubblicato.
+:::
+
+## Prossimi passi {#next-steps}
+
+- Costruisci le viste che pubblichi: vedi [Viste personalizzate](/operational-guides/knowledge-custom-views) e [Lavora con i record in collezioni e viste griglia](/operational-guides/knowledge-collections-and-grid).

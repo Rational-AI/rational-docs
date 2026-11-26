@@ -1,0 +1,93 @@
+---
+sidebar_position: 26
+sidebar_label: Configura connettori
+type: how-to
+audience: [admin, builder]
+---
+
+# Configura connettori
+
+Un connettore memorizza le credenziali che Rational AI usa per raggiungere un servizio esterno, come una chiave API, un accesso a un database o un accesso OAuth. Lo configuri una volta in **Impostazioni** → **Connettori**, e ogni [modello AI](/operational-guides/ai-model-registry-features), [fonte](/operational-guides/configure-sources) e strumento che richiede quel servizio lo usa. Quando sostituisci una chiave nel connettore, la aggiorni per tutti.
+
+Aggiungere un connettore richiede **Crea** sulla riga **Connettori** del tuo ruolo, modificarlo richiede **Modifica** ed eliminarlo richiede **Elimina**. Non serve alcun modulo di licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+
+<img
+  src={require('@site/static/img/screens/connectors-list.png').default}
+  alt="La pagina Connettori con l'elenco dei connettori configurati e i relativi dettagli"
+  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*La pagina **Connettori**: ogni connettore, il suo provider e cosa alimenta.*
+
+## Aggiungi un connettore {#add-a-connector}
+
+Ogni provider ha una pagina propria con cosa preparare sul servizio esterno e i campi da compilare. I passaggi in Rational AI sono gli stessi per tutti:
+
+1. Vai su **Impostazioni** → **Connettori** e seleziona **Aggiungi**. Anche quando non ci sono ancora connettori, il pulsante si chiama **Aggiungi**.
+2. In **Sfoglia connettori**, seleziona il provider, poi seleziona **Aggiungi**. Vedi [Provider disponibili](#available-providers).
+3. Inserisci un **Nome**, una **Descrizione** facoltativa e le credenziali richieste dal provider.
+4. Seleziona **Aggiungi**. Per i provider che accedono con OAuth (Google, Microsoft OneDrive con accesso utente, LinkedIn, Instagram e Facebook), il pulsante diventa **Aggiungi e autorizza** e apre l'accesso del provider.
+
+<img
+  src={require('@site/static/img/screens/connectors-add.png').default}
+  alt="La galleria dei provider da cui aggiungere un nuovo connettore"
+  style={{ width: '100%', maxWidth: '620px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
+*Aggiungere un connettore: scegli un provider dalla galleria.*
+
+Un connettore da solo non fa nulla. Poi usalo dove serve: aggiungi modelli nel Registro modelli AI, aggiungi una fonte, selezionalo nella configurazione di un'estensione, oppure pubblica da Social studio. Ogni pagina di provider termina con questo passaggio.
+
+## Provider disponibili {#available-providers}
+
+| Provider in Rational AI | Cosa collega | Configurazione |
+|---|---|---|
+| **Google** | Google Drive, per le fonti Drive | [Connetti Google Drive](/operational-guides/integrate-data) |
+| **AWS** | Bucket Amazon S3, per le fonti S3 | [Connetti Amazon S3](/operational-guides/connectors/amazon-s3) |
+| **OpenAI**, **Anthropic**, **OpenRouter**, **Xference**, **MiniMax**, **OpenAI Compatible**, **Google Vertex AI** | Modelli AI ospitati per il Registro modelli AI | [Connetti un provider di modelli](/operational-guides/connectors/model-providers) |
+| **Compatibile System One** | Un'API di decisione i cui modelli di decisione sono elencati nel Registro modelli AI | [Usa i modelli di decisione](/operational-guides/ai-model-registry-features#use-decision-models) |
+| **Brave Search** | Ricerca web, notizie, immagini, video e locale, per l'estensione Brave Search | [Connetti Brave Search](/operational-guides/connectors/brave-search) |
+| **Google Service Account Key** | Bucket di Google Cloud Storage, per le fonti Google Cloud Storage | [Connetti Google Cloud Storage](/operational-guides/connectors/google-cloud) |
+| **Azure** | Container di Azure Blob Storage, per le fonti Azure Blob Storage | [Connetti Azure Blob Storage](/operational-guides/connectors/azure-blob-storage) |
+| **Microsoft OneDrive** | File di OneDrive e SharePoint, per le fonti OneDrive | [Connetti OneDrive e SharePoint](/operational-guides/connectors/onedrive-sharepoint) |
+| **LinkedIn**, **Instagram**, **Facebook** | Una pagina o un account business su cui Social studio pubblica | [Connetti LinkedIn, Instagram e Facebook](/operational-guides/connectors/social-accounts) |
+| **Credenziali Git** | Repository Git privati, per le fonti Git | [Connetti un repository Git](/operational-guides/connectors/git) |
+| **Database SQL**, **Microsoft SQL Server** | Un database letto da database virtuali o estensioni | [Connetti un database SQL](/operational-guides/connectors/sql-databases) |
+| **RabbitMQ** | Un broker le cui code segnalano i file da elaborare, per le fonti a coda RabbitMQ | [Connetti RabbitMQ](/operational-guides/connectors/rabbitmq) |
+
+Se il tuo provider di modelli non è in elenco ma offre un'API in formato OpenAI, usa **OpenAI Compatible**.
+
+## Modifica un connettore {#edit-a-connector}
+
+1. Vai su **Impostazioni** → **Connettori** e seleziona il connettore.
+2. Modifica nome, descrizione o i campi in **Configurazione**.
+3. Seleziona **Salva**, oppure **Annulla** per scartare le modifiche.
+
+I campi segreti, come chiavi, secret, password e token, non vengono mai mostrati. Lascia vuoto un campo per mantenere il valore salvato, oppure inserisci un nuovo valore per sostituirlo.
+
+Alcune impostazioni sono fisse alla creazione del connettore: la modalità di autenticazione di un connettore Microsoft OneDrive, la porta e TLS di un connettore RabbitMQ, la porta di un connettore Microsoft SQL Server, e il motore, la porta e il percorso del file di un connettore Database SQL. Per modificarle, crea un nuovo connettore e sposta ciò che usa quello vecchio.
+
+Quando un connettore che accede con OAuth richiede ancora l'accesso, mostra **Autenticazione assente**. Apri il menu delle opzioni (i tre puntini verticali) e seleziona **Completa l'autenticazione**.
+
+## Controlla cosa alimenta un connettore {#see-what-a-connector-powers}
+
+Seleziona un connettore per vedere cosa dipende da lui prima di modificarlo o eliminarlo. **Usato N volte** somma tre conteggi:
+
+- **Modelli AI**: modelli aggiunti dal connettore nel [Registro modelli AI](/operational-guides/ai-model-registry-features).
+- **Sources**: [fonti](/operational-guides/configure-sources) che si sincronizzano tramite il connettore.
+- **Tools**: strumenti di [estensioni](/operational-guides/manage-extensions) installate la cui configurazione seleziona il connettore.
+
+La sezione **Prezzi e abbonamenti dei provider** del connettore elenca i piani che tracci per esso, con **Aggiungi piano**. I piani non rientrano nei conteggi, ma impediscono di eliminare il connettore.
+
+## Elimina un connettore {#delete-a-connector}
+
+1. Seleziona il connettore, apri il menu delle opzioni (i tre puntini verticali) e seleziona **Elimina**.
+2. Conferma con **Elimina connettore**.
+
+L'eliminazione viene rifiutata finché modelli, fonti, piani dei provider o configurazioni di estensioni usano ancora il connettore, e i connettori integrati non possono essere eliminati. Rimuovi o sposta prima questi elementi. Un connettore eliminato non può essere ripristinato.
+
+## Prossimi passi {#next-steps}
+
+- [Connetti un provider di modelli](/operational-guides/connectors/model-providers): aggiungi i modelli con cui rispondono i tuoi assistenti.
+- [Connetti Google Drive](/operational-guides/integrate-data): collega Google Drive e sincronizzalo in una Knowledge.
+- [Configura le fonti di dati](/operational-guides/configure-sources): scegli cosa sincronizza una fonte e quando.

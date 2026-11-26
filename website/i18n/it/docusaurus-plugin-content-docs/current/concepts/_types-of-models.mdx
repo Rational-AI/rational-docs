@@ -1,0 +1,28 @@
+---
+sidebar_position: 4
+---
+
+
+# Tipi di modello
+In Rational AI puoi aggiungere tre tipi di modello: fine-tuned, open source e di terze parti.
+
+## 1) Modello fine-tuned {#1-fine-tuned-model}
+
+Un modello che è stato **addestrato ulteriormente sui tuoi dati** (o su un dataset specifico) per comportarsi in un certo modo: tono, conoscenza del dominio, formati, policy e così via.
+
+* **Ideale per:** comportamento coerente in un caso d'uso specifico (assistenza, strumenti interni, stile aziendale).
+* **Cosa gestisci di solito:** quale fine-tuning usare e la sua discendenza dal modello base.
+
+## 2) Modello open source {#2-open-source-model}
+
+Un modello che **scarichi ed esegui tu stesso** (di solito da Hugging Face), spesso in un formato file locale come GGUF, con una quantizzazione scelta.
+
+* **Ideale per:** esecuzione sulla tua infrastruttura, controllo dei costi, uso offline o in ambienti isolati, personalizzazione.
+* **Compromessi:** hosting, calcolo e archiviazione sono a tuo carico, e i modelli possono essere molto grandi.
+
+## 3) Modello di terze parti (proxy) {#3-third-party-model-proxy}
+
+Un modello **ospitato da un provider esterno** (ad esempio OpenAI, Anthropic o Google). La piattaforma memorizza una configurazione che instrada le richieste verso quel provider.
+
+* **Ideale per:** configurazione rapida, qualità elevata, nessun onere di hosting.
+* **Concetto chiave:** il modello non si "installa". Configuri l'accesso (provider, modello e chiave), e la piattaforma comunica con la sua API.
