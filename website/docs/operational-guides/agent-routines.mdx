@@ -16,7 +16,7 @@ There is nothing to create besides the agent: its **Trigger** decides what start
 ## Prerequisites
 
 - **An agent with instructions**: see [Build an agent](./create-an-agent). Write them for a run nobody is watching, and say where the result goes and what "done" means.
-- **For GitHub:** admin rights on the repository, to add a webhook, and the webhook URL and secret from your administrator.
+- **For GitHub:** admin rights on the repository, to add a webhook.
 - **For API calls:** an API key from **Settings** → **API Keys** (see [Access Rational AI via API](/operational-guides/api-access#create-an-api-key)).
 - **For new emails:** an Email channel (see [Connect a mailbox](/operational-guides/connect-email)).
 - **For new files and changed records:** a Knowledge base the agent may use.
@@ -43,8 +43,8 @@ Select a routine to open its panel: **Run now** starts it immediately, **Edit** 
 
 1. Open the agent's profile (**Edit**), or create it with **New routine**.
 2. Under **Trigger & execution**, set **Trigger** to **Schedule**.
-3. Under **Schedule**, keep **Cron** and enter the expression: `0 8 * * 1-5`.
-4. Set the **Time zone**, for example `Europe/Rome`. Without one, the schedule runs on UTC.
+3. Under **Schedule**, enter the cron expression: `0 8 * * 1-5`.
+4. Set the **Time zone**, for example `Europe/Rome`. Leave it empty to use your browser's time zone, which is saved with the schedule.
 5. Select **Save** (or **Create agent** for a new one).
 
 <img
@@ -66,7 +66,7 @@ If a scheduled run is due while the previous one is still going, it is not stack
 
 ## See what's coming in the calendar
 
-**Agents** → **Calendar** (also the third view on the **Tasks** page) lays the upcoming scheduled runs on a week calendar next to past runs and approvals. The calendar always shows Central European time (Rome), whatever time zone the schedules use.
+**Agents** → **Calendar** (also the third view on the **Tasks** page) lays the upcoming scheduled runs on a week calendar next to past runs and approvals. The calendar shows your browser's time zone, whatever time zone the schedules use.
 
 <img
   alt="The week calendar with Scout's 08:00 briefing on each weekday"
@@ -96,7 +96,11 @@ If a scheduled run is due while the previous one is still going, it is not stack
 
 ### Connect the repository
 
-The repository needs a webhook that sends its events to Rational AI, signed with a secret that belongs to the agent. The Control Room does not show the payload URL or the secret: ask your administrator for both. Then, in the repository, go to **Settings** → **Webhooks** → **Add webhook**, paste the URL and the secret, set **Content type** to `application/json` and pick the events you listed on the agent.
+The repository needs a webhook that sends its events to Rational AI, signed with a key that belongs to the agent.
+
+1. After you save the agent, its **Trigger & execution** section shows the webhook **Address**. Select **Copy**.
+2. Select **Generate key** and copy the key. It is shown only once: if you lose it, select **Rotate key** and update the webhook in GitHub.
+3. In the repository, go to **Settings** → **Webhooks** → **Add webhook**. Paste the address as the **Payload URL** and the key as the **Secret**, set **Content type** to `application/json` and pick the events you listed on the agent.
 
 GitHub sends a test delivery when you save the webhook. From then on, each matching event starts a run that appears in **History**, started by *GitHub event*. Events from paused agents, or from agents over their monthly budget, start no run.
 
