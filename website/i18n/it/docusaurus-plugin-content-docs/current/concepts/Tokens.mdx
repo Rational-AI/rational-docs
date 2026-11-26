@@ -1,47 +1,24 @@
 ---
 sidebar_position: 21
-sidebar_label: Tokens
-title: Tokens
-description: What tokens are, how text is split into them, and why they govern context limits, cost and speed in Rational AI.
+sidebar_label: Token
+title: Token
+description: Cosa sono i token, perché limiti, costi e velocità si misurano in token, e dove li vedi in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Token
 
+Un **token** è l'unità di testo che un modello legge e scrive. Prima che un modello legga il tuo messaggio, il testo viene diviso in token, e il modello scrive la risposta un token alla volta.
 
-# Tokens
+Un token è spesso una parola comune intera, oppure un pezzo di una parola più lunga. Un token equivale a circa quattro caratteri in inglese, quindi 1.000 token corrispondono a circa 750 parole. Altre lingue spesso richiedono più token per lo stesso testo, e ogni modello divide il testo a modo suo.
 
-A **token** is the atomic unit of text a model reads and writes. Before a model can process your input, the text is broken into tokens; the model then generates its reply one token at a time. Tokens are the currency of everything a model does: limits, cost and speed are all measured in them.
+## Perché i token contano {#why-tokens-matter}
 
-A token is roughly word-sized, but not exactly. Common words are often a single token, while longer or rarer words are split into pieces. As a rough guide, one token is about four characters of English, so 1,000 tokens is roughly 750 words. Punctuation, spaces and line breaks count too.
+- **Limiti**: la [finestra di contesto](/concepts/Context-window) e la lunghezza di una risposta si misurano in token.
+- **Costi**: i provider addebitano per token, di solito più per i token che un modello scrive che per quelli che legge.
+- **Velocità**: un modello scrive token per token, quindi una risposta più lunga richiede più tempo.
 
-:::note[Tokens are not words]
-Splitting text into tokens (called *tokenization*) is language- and model-specific. The same sentence can become a different number of tokens depending on the model, and non-English text often uses more tokens per word.
-:::
+## In Rational AI {#in-rational-ai}
 
-## Why tokens matter {#why-tokens-matter}
-
-Almost every practical limit you meet comes back to tokens:
-
-* **Context limits:** the [context window](/concepts/Context-window) is measured in tokens, and it is shared between the text you send in and the answer the model writes back.
-* **Cost:** providers bill per token, and usually charge more for the tokens a model generates (output) than for the tokens you send (input).
-* **Speed:** a model produces output token by token, so longer answers take longer to appear.
-
-## Tokens in Rational AI {#tokens-in-rational-ai}
-
-Wherever the platform talks about how much text a [model](/concepts/Model-architecture) can handle, or how much knowledge to retrieve for a request, it is ultimately budgeting tokens. Retrieving only the most relevant resources through [RAG](/concepts/RAG), rather than sending everything, keeps each request within the model's token budget and controls cost.
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Context window", to: "/concepts/Context-window" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Inference", to: "/concepts/Inference" },
-	]}
-/>
+[Governance](/cr/Governance) mostra l'utilizzo dei token e il costo per modello. Su un touchpoint, **Numero massimo di token in output** limita la lunghezza di una risposta; vedi [Configura i touchpoint](/operational-guides/configure-touchpoints).

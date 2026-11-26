@@ -48,17 +48,97 @@ Se il problema non è elencato, cerca il messaggio in [Messaggi di errore](/refe
 
 ## Modelli e API {#models-and-the-api}
 
-**[Distribuisci modelli open source tramite API](/operational-guides/api/deploy-open-source-models#troubleshooting)**
+**[Distribuisci modelli open source via API](/operational-guides/api/deploy-open-source-models#troubleshooting)**
 - `404` a ogni chiamata, oppure `409` alla creazione o al deployment
 - Un deployment è bloccato in `provisioning` con `WaitingForCapacity`
 - Un deployment finisce in `failed` con `OutOfMemory` o `Crashed`
 
-## Sorgenti dati {#data-sources}
+## Connettori e fonti dati {#connectors-and-data-sources}
 
-**[Integra dati da Google Drive](/operational-guides/integrate-data#troubleshooting)**
-- Un'icona rossa di link interrotto accanto al connettore
-- Il pannello dei file non mostra cartelle
-- Google mostra un errore di redirect URI durante l'accesso
+**[Google Drive](/operational-guides/integrate-data#troubleshooting)**
+- Un'icona di link spezzato (**Autenticazione assente**) accanto al connettore
+- Google mostra *redirect_uri_mismatch* durante l'accesso
+- Google mostra *access blocked* o *app not verified*
+- Il pannello dei file mostra *Connessione fallita*
+- La cartella che vuoi non compare nel pannello dei file
+- Le sincronizzazioni falliscono dopo aver funzionato per alcuni giorni
+
+**[Amazon S3](/operational-guides/connectors/amazon-s3#troubleshooting)**
+- Il pannello dei file resta su *Ancora nessun file da mostrare*
+- Il pannello dei file mostra *Connessione fallita*
+- La fonte si sincronizza ma mancano alcuni oggetti
+- **Automatico** non è offerto in **Impostazioni di sincronizzazione**
+
+**[Azure Blob Storage](/operational-guides/connectors/azure-blob-storage#troubleshooting)**
+- Il pannello dei file resta su *Ancora nessun file da mostrare*
+- La prima sincronizzazione fallisce
+- L'errore di sincronizzazione parla di autorizzazione o di uno stato 403
+- L'errore di sincronizzazione riguarda il client secret
+
+**[OneDrive e SharePoint](/operational-guides/connectors/onedrive-sharepoint#troubleshooting)**
+- Microsoft mostra *AADSTS50194* durante l'accesso
+- Microsoft mostra un errore sull'URI di reindirizzamento durante l'accesso
+- *"Il Tenant ID è obbligatorio per i connettori con permessi applicazione."*
+- Il pannello dei file resta su *Ancora nessun file da mostrare*
+- Il pannello dei file mostra *Connessione fallita*
+- Un'icona di link spezzato (**Autenticazione assente**) accanto al connettore
+
+**[Google Cloud Storage](/operational-guides/connectors/google-cloud#troubleshooting)**
+- Google Cloud rifiuta di creare una chiave per l'account di servizio
+- La fonte fallisce con un errore di permessi
+- La fonte non riesce a leggere la chiave
+- **Google Cloud Storage** non compare tra i tipi di fonte
+
+**[Repository Git](/operational-guides/connectors/git#troubleshooting)**
+- *"Inserisci un URL HTTPS del repository senza credenziali incorporate."*
+- *"The Git credentials connector host must match the repository host."*
+- La prima sincronizzazione fallisce con un errore di autenticazione
+- La fonte mantiene i file vecchi dopo che hai cambiato il branch
+
+**[Database SQL](/operational-guides/connectors/sql-databases#troubleshooting)**
+- **Prova connessione** non è disponibile
+- **Prova connessione** mostra **Non connesso**
+- **Account di sola lettura** mostra *No: l'account può scrivere sul database*
+- *"Nessun connettore database SQL: aggiungine prima uno nelle impostazioni."* in **Nuovo database virtuale**
+- *"The host must be a host name or an IP address…"*
+
+**[Indirizzi HTTP](/operational-guides/connectors/http#troubleshooting)**
+- *"Inserisci un URL valido che inizi con http:// o https://"*
+- *"Aggiungi almeno un URL."*
+- La sincronizzazione fallisce per un indirizzo
+- La Knowledge contiene una pagina di accesso invece del file
+
+**[RabbitMQ](/operational-guides/connectors/rabbitmq#troubleshooting)**
+- *"The host must be a host name or an IP address, for example rabbitmq.example.com"*
+- *"Inserisci la coda da consumare."*
+- *"Files can only be deleted after publishing when there is a result queue to publish to."*
+- La fonte mostra uno stato di errore
+- I messaggi restano nella coda
+- I risultati tornano con *"The message has no 'url' field with the file URL."*
+
+**[Provider di modelli](/operational-guides/connectors/model-providers#troubleshooting)**
+- *"Impossibile elencare i modelli del provider"* quando apri **Modello**, con *"… responded 401 Unauthorized"*
+- *"Impossibile elencare i modelli del provider"* con *"Could not reach …/models"*
+- *"Inserisci un URL assoluto comprensivo di schema, ad es. https://api.example.com/v1"*
+- *"Inserisci una sola region Google Cloud, ad es. europe-west8: non global né una multi-region come eu"*
+- *"Inserisci un ID progetto Google Cloud, ad es. my-project-123"*
+- *"Could not get a Google access token for this backend"*
+- Un errore Vertex AI che termina con *"responded 403 Forbidden"*
+- *"Modello già esistente"*
+
+**[Brave Search](/operational-guides/connectors/brave-search#troubleshooting)**
+- La scheda dell'estensione Brave Search mostra **Da configurare**
+- *"Nessun connettore disponibile"* nel campo del connettore
+- L'assistente non cerca mai sul web
+- Le chiamate agli strumenti di ricerca falliscono
+
+**[LinkedIn, Instagram e Facebook](/operational-guides/connectors/social-accounts#troubleshooting)**
+- Il social mostra un errore sull'URL di reindirizzamento durante l'accesso
+- *"Il login non è andato a buon fine"*
+- *"Questo account non gestisce pagine su cui l'app possa pubblicare"*
+- *"Non è stato possibile collegare questa pagina: rifai il login"*
+- Il connettore mostra **Login scaduto** o **Ricollega a breve**
+- *"Si è verificato un errore durante l'autenticazione"* quando selezioni **Aggiungi e autorizza**
 
 ## Canali {#channels}
 
@@ -77,13 +157,31 @@ Se il problema non è elencato, cerca il messaggio in [Messaggi di errore](/refe
 - Slack non riesce a verificare il **Request URL**
 - Una menzione in un canale Slack non riceve risposta, oppure i messaggi arrivano ma nessuno risponde
 
+## Estensioni {#extensions}
+
+**[Crea un'estensione](/operational-guides/build-an-extension#troubleshooting)**
+- *"Package must contain exactly one extension root directory."* oppure *"Package root must be named '…'."*
+- *"Unsupported file…"* quando carichi il pacchetto
+- *"Workflow '…' already exists and is not owned by this extension."*
+- Le modifiche non compaiono dopo un nuovo caricamento
+- Un valore `${fieldName}` arriva al server vuoto
+- I file di metadati sincronizzati compaiono come risorse vuote
+
+**[Sviluppa un'estensione](/operational-guides/develop-an-extension#troubleshooting)**
+- *"File edits require development mode on this installation."*
+- *"Development must preserve installed identity and version…"*
+- *"Exit development mode before updating this extension."*
+- `push` si ferma e ti chiede di eseguire il pull
+
 ## Integrazioni {#integrations}
 
 **[Server MCP Graphify](/operational-guides/external-graphify-mcp#troubleshooting)**
-- Il server non riesce a raggiungere Rational AI, oppure l'autenticazione fallisce
-- `query_graph` non restituisce nulla
+- Il server non raggiunge Rational AI, oppure l'autenticazione fallisce
+- `query_graph` non restituisce nulla, oppure lo strumento chiede un `knowledgeId`
 - `uv` non riesce ad avviare il server
+- *"graphify query failed"*
 
 **[Pannello dei dettagli utente](/operational-guides/personalize-user-details#troubleshooting)**
-- Si vede solo Basic info, oppure un widget è vuoto o non compare mai
-- Le tue modifiche sono sparite con l'aggiornamento successivo
+- Si vedono solo i campi predefiniti, oppure un widget è vuoto o non compare mai
+- I widget sono scomparsi dopo un aggiornamento
+- Il nome dell'utente è cambiato dopo un aggiornamento

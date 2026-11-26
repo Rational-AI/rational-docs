@@ -1,70 +1,54 @@
 ---
 sidebar_position: 3
-sidebar_label: Create a processing rule
+sidebar_label: Crea una regola di processing
+title: Crea una regola di processing
+description: Scrivi una regola di processing che sceglie lo step per ogni file che una Knowledge riceve nella pipeline classica.
 type: how-to
 audience: [builder]
 ---
 
+# Crea una regola di processing
 
-# Create a processing rule
-This guide explains how to create, configure, and manage processing rules in the AI Control Room. 
+Una regola di processing è uno script Python che sceglie quale [step](/operational-guides/create-workflow) elabora ogni file che una Knowledge riceve. Decide in base al nome, al tipo e al contenuto del file, alla sua fonte o a qualsiasi altra condizione che puoi scrivere in codice. La regola si limita a instradare il file, e lo step scelto esegue il lavoro.
 
+Una Knowledge usa le regole di processing quando il suo **Workflow di default** è la **Pipeline classica**. Se la Knowledge esegue invece un grafo di workflow, è il grafo a decidere cosa succede a ogni file e la regola non viene usata.
 
-:::note[Glossary]
-What is a **processing rule**?  
-A processing rule is a Python script that picks which step processes each file, based on document type, content, source or any custom rule. It routes files and doesn't transform them: the step it picks does the work.
-A Knowledge uses its processing rule when its **Default workflow** is the **Classic pipeline**. Set the **Default processing rule** on the Knowledge's **Sources** tab, and override it for one attached source if needed.
-:::
+## Prima di iniziare {#before-you-begin}
 
-To manage processing rules, open the **Settings** area and navigate to **Workflows** from the left sidebar. 
-Then switch to the **Processing rules** tab.
-
-## Understanding the interface {#understanding-the-interface}
-The **Processing rules** tab follows the same structure as the **Workflows** tab and has two main areas.
+- Ruolo: **Crea** e **Modifica** sulla riga **Workflow** del tuo ruolo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Gli step verso cui la regola instrada. Ognuno deve esistere ed essere attivo. Vedi [Crea un workflow](/operational-guides/create-workflow).
 
 <img
   src={require('@site/static/img/screens/processing-rules.png').default}
-  alt="Dashboard interface displaying the Workflow page."
-  style={{ 
-    width: '100%', 
-    maxHeight: '100%', 
+  alt="La scheda Processing rules con l'elenco delle regole a sinistra e il codice Python della regola selezionata a destra"
+  style={{
+    width: '100%',
+    maxHeight: '100%',
     objectFit: 'contain',
     border: '1px solid #E4E4E7',
     borderRadius: '6px',
     boxSizing: 'border-box',
     }}
-/> 
+/>
 
-### Rules list {#rules-list}
-The list shows all processing rules that have been created, by name, with a search box. Processing rules have no enable switch: a rule runs when a Knowledge or one of its sources uses it.
+## Crea la regola {#create-the-rule}
 
-### Rule editor {#rule-editor}
-When you select a rule, its editor opens.
+1. Vai su **Impostazioni** → **Workflow** e seleziona la scheda **Processing rules**.
+2. Seleziona **Nuovo**, poi **Da zero**. In una pagina vuota, seleziona **Aggiungi**. **Importa JSON** carica invece una regola esportata da un altro ambiente.
+3. Sostituisci *Regola di elaborazione senza nome* con un nome, per esempio `Route by file type`.
+4. Scrivi il codice della regola nell'editor. La sezione successiva contiene un esempio.
+5. Seleziona **Salva**.
 
-The editor includes:
-* The rule name.
-* The rule's Python code.
-* **Save** and **Undo** for your changes.
-* A **⋮** menu with **Open in Lab**, **Download** (the `.py` file), **Export (JSON)** and **Delete**. Deleting a rule keeps the workflow runs that used it.
+Le regole di processing non hanno un interruttore: una regola viene eseguita ogni volta che la usa una Knowledge o una delle sue fonti. Il menu **⋮** della regola contiene **Scarica** (il file `.py`), **Esporta (JSON)** ed **Elimina**. Eliminare una regola non elimina le esecuzioni che l'hanno usata.
 
-## Creating your first processing rule {#creating-your-first-processing-rule}
-If you're a new user, the page shows *"No processing rules"*. Create your first rule in a few steps:
-* Select **New** (or **Add new** on the empty page), then **From scratch**. **Import JSON** loads a rule exported elsewhere.
-* Replace *Untitled processing rule* with a clear and descriptive **name**: for example `MyProcessingRule`.
-* Define the **rule logic** in the code editor.
-* Select **Save**.
+## Scrivi il codice della regola {#write-the-rule-code}
 
-To put the rule to work, select it as the **Default processing rule** on a Knowledge's **Sources** tab, or as the **Processing rule** in a source's **Data processing settings**.
-
-## Processing rule logic {#processing-rule-logic}
-
-A processing rule allows to devise which workflow to apply to the Knowledge documents.
-Being code, you can develop arbitrarily complex conditions to decide which workflow applies to your document, for example:
+La regola restituisce il nome dello step da eseguire, esattamente come appare nell'elenco **Steps**. Questa regola invia i file PDF a uno step, i file Word a un altro, e salta tutto il resto:
 
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12,<3.13"
+# requires-python = ">=3.12"
 # dependencies = [
 #     "rational-client",
 # ]
@@ -75,37 +59,36 @@ from rational_client.utils import run
 
 
 def router(resource: File, options: dict):
-    """Routes the resource to the correct workflow based on file extension."""
-    filename = resource.name
-    if not filename:
-        return None
+    name = (resource.name or "").lower()
 
-    # Main switch
-    if filename == "orders.json":
-        workflow = "Workflow Orders"
-    elif filename == "products.json":
-        workflow = "Workflow Products"
-    elif filename == "orgchart.json":
-        workflow = "Workflow Orgchart"
-    elif filename == "stores.json":
-        workflow = "Workflow Stores"
-    elif filename.endswith(".pdf"):
-        workflow = "Workflow PDF"
-    elif filename.endswith(".doc") or filename.endswith(".docx"):
-        workflow = "Workflow Docling"
-    elif filename.endswith(".urls"):
-        workflow = "Workflow Urls"
-    else:
-        workflow = None
+    if name.endswith(".pdf"):
+        return "PDF extraction"
+    if name.endswith((".doc", ".docx")):
+        return "Word extraction"
+    return None
 
-    return workflow
 
 run(router)
 ```
 
-As for the workflows, the entrypoint is the `run` function which triggers the processing rule business logic, the `router` function.
-Basically, here we decide the workflow to apply, based on some characteristics of the Knowledge document, for example, its filename.
+- `run(router)` chiama `router` con il file e le opzioni della regola.
+- Restituisci il nome di uno step per eseguirlo sul file. Lo step deve esistere ed essere attivo.
+- Restituisci `None` per lasciare il file senza step. Da quel file non viene estratto nulla.
+- Per passare anche opzioni allo step, restituisci invece un dizionario: `{"workflow": "PDF extraction", "options": {...}}`.
 
-## Next steps {#next-steps}
+## Usa la regola in una Knowledge {#use-the-rule-in-a-knowledge}
 
-- [Create a workflow](/operational-guides/create-workflow)
+1. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge e seleziona la scheda **Fonti**.
+2. Lascia **Workflow di default** impostato su **Pipeline classica**.
+3. In **Regola di processing di default**, seleziona la tua regola.
+4. Seleziona **Salva**.
+
+Per instradare diversamente una singola fonte collegata, apri il menu **⋮** di quella fonte, seleziona **Impostazioni di processing dati** e scegli la sua **Regola di processing**. La regola propria di una fonte ha la precedenza sul valore predefinito della Knowledge.
+
+La regola viene eseguita sui file aggiunti dopo il salvataggio. Per applicarla anche ai file già presenti nella Knowledge, seleziona **Elabora knowledge** nel menu **Opzioni** della Knowledge. Vedi [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources).
+
+## Prossimi passi {#next-steps}
+
+- [Crea un workflow](/operational-guides/create-workflow) per scrivere gli step verso cui instrada una regola.
+- [Importa, esporta e imposta i timeout](/operational-guides/workflow-rules) per spostare le regole tra ambienti.
+- [Workflow e regole di processing](/concepts/Workflows-and-processing-rules) per capire come si collegano regole, step e workflow.

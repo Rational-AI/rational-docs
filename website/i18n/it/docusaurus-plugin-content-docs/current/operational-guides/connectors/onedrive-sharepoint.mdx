@@ -1,0 +1,88 @@
+---
+title: Connetti OneDrive e SharePoint
+sidebar_label: OneDrive e SharePoint
+description: Sincronizza un drive OneDrive o una libreria documentale SharePoint in una Knowledge con un connettore Microsoft OneDrive e una fonte OneDrive.
+type: how-to
+audience: [admin]
+---
+
+Il connettore Microsoft OneDrive conserva le credenziali di un'app di Microsoft Entra. Così una fonte OneDrive può sincronizzare un drive, il OneDrive di un utente o una libreria documentale SharePoint in una [Knowledge](/operational-guides/create-knowledge).
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore, **Crea** sulla riga **Fonti** e **Usa** sulla riga **Connettori** per aggiungere la fonte, e **Modifica** sulla riga **Knowledge** per collegarla. **Fonti** richiede il modulo Knowledge nella tua licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **In Microsoft Entra ID:** qualcuno che può registrare applicazioni. Con i permessi applicazione, concedere il consenso dell'amministratore richiede inoltre un **Privileged Role Administrator** o un **Global Administrator**.
+
+## Cosa ti serve {#what-you-need}
+
+Scegli come il connettore accede. Scegli la **Modalità di autenticazione** quando aggiungi il connettore: non puoi cambiarla in seguito.
+
+| Modalità di autenticazione | Legge i file come | Usala quando |
+|---|---|---|
+| **Accesso utente (OAuth delegato)** | L'account che accede. La fonte vede ciò che quell'account può aprire. | Sincronizzi un OneDrive personale o i drive a cui può accedere un solo account. |
+| **Permessi applicazione (client credentials)** | L'app stessa, senza un utente. | Sincronizzi librerie SharePoint o drive aziendali senza collegare la fonte all'account di una persona. Funziona solo con account di lavoro e di scuola. |
+
+L'app richiede questi permessi di Microsoft Graph:
+
+| Permesso | Perché serve |
+|---|---|
+| `Files.Read.All` (delegato o applicazione) | Elenca e scarica i file del drive. |
+| `Sites.Read.All` (delegato o applicazione) | Legge i siti SharePoint e le loro librerie documentali. |
+| `offline_access` (solo delegato) | Permette a Rational AI di rinnovare l'accesso senza chiedere di nuovo all'utente. |
+
+Ti servono anche il **Drive ID** e il **Tipo drive**, che trovi al passo 9, e una Knowledge in cui ricevere i file.
+
+## Configura {#set-up}
+
+1. Nel [centro di amministrazione di Microsoft Entra](https://entra.microsoft.com/), vai su **App registrations** e seleziona **New registration**.
+2. Scegli i tipi di account supportati. Per **Accesso utente**, scegli un'opzione multitenant, perché Rational AI fa accedere gli utenti tramite l'endpoint comune di Microsoft: **Accounts in any organizational directory**, più gli account Microsoft personali se sincronizzi un OneDrive personale. Per **Permessi applicazione**, basta **Accounts in this organizational directory only**.
+3. Solo per **Accesso utente**, aggiungi un URI di reindirizzamento di tipo **Web**: l'indirizzo di Rational AI seguito da `/api/management/v0/oauth/callback`, per esempio `https://ai.example.com/api/management/v0/oauth/callback`.
+4. Registra l'app. In **Overview** copia l'**Application (client) ID** e, per **Permessi applicazione**, il **Directory (tenant) ID**.
+5. In **Certificates & secrets**, crea un client secret e copia il suo **Value**. Entra lo mostra una sola volta.
+6. In **API permissions**, seleziona **Add a permission** → **Microsoft Graph** e aggiungi `Files.Read.All` e `Sites.Read.All`: come **Delegated permissions** più `offline_access` per **Accesso utente**, oppure come **Application permissions**. Per i permessi applicazione, seleziona **Grant admin consent**.
+7. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Microsoft OneDrive**, poi seleziona **Aggiungi**.
+8. Inserisci un **Nome**, incolla il **Client ID** e il **Client Secret**, poi scegli la **Modalità di autenticazione**:
+   - **Accesso utente (OAuth delegato)**: seleziona **Aggiungi e autorizza** e accedi con l'account i cui file vuoi sincronizzare.
+   - **Permessi applicazione (client credentials)**: inserisci il **Tenant ID**, poi seleziona **Aggiungi**.
+9. Cerca il drive in [Graph Explorer](https://developer.microsoft.com/graph/graph-explorer), con l'accesso alla tua organizzazione:
+   - Per il tuo OneDrive, esegui `GET https://graph.microsoft.com/v1.0/me/drive`.
+   - Per una libreria SharePoint, esegui `GET https://graph.microsoft.com/v1.0/sites/contoso.sharepoint.com:/sites/Marketing` per ottenere l'`id` del sito, poi `GET https://graph.microsoft.com/v1.0/sites/{site-id}/drives` per elencarne le librerie.
+
+   Copia l'`id` del drive e il suo `driveType`: `personal`, `business` o `documentLibrary`.
+10. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**. Inserisci un **Nome**. In **Tipo**, trova **OneDrive** e seleziona il tuo connettore sotto di esso.
+11. Inserisci il **Drive ID** e il **Tipo drive**. Lascia vuoto **Site ID**: il **Drive ID** da solo identifica il drive, anche per una libreria SharePoint. Per sfogliare da una cartella invece che dal primo livello del drive, inseriscila in **Cartella root (opzionale)**.
+12. Nel pannello dei file, seleziona le cartelle e i file da sincronizzare, poi seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+13. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge, seleziona la scheda **Fonti** e scegli la fonte in *Aggiungi fonte...*. Apri il menu della fonte in quella scheda e seleziona **Processa ora**.
+
+Una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per tenerla aggiornata, vedi [Scegli quando sincronizzare una fonte](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## Cosa viene sincronizzato {#what-gets-synced}
+
+- **Le cartelle e i file che hai selezionato** in un drive. Una cartella selezionata include tutto ciò che contiene, anche i file aggiunti in seguito.
+- **Le modifiche**, secondo la modalità di sincronizzazione della fonte. Le fonti OneDrive supportano **Automatico**, **Periodica** e **Manuale**. Con **Automatico**, Rational AI controlla il feed delle modifiche del drive ogni due minuti e sincronizza solo quando qualcosa è cambiato.
+
+Rational AI non scrive mai sul drive. I file eliminati dal drive escono anche dalla Knowledge quando l'impostazione **Prima di essere eliminata** della fonte è **Elimina a cascata**, che è il valore predefinito.
+
+## Limiti {#limits}
+
+- Una fonte legge un drive. Per sincronizzare più librerie, aggiungi una fonte per ogni drive. Un solo connettore può servirle tutte.
+- Il pannello dei file si carica solo dopo aver inserito sia il **Drive ID** sia il **Tipo drive**.
+- I **Permessi applicazione** con `Files.Read.All` e `Sites.Read.All` permettono all'app di leggere ogni drive e ogni sito della tua organizzazione, non solo quelli che sincronizzi.
+- Un connettore **Accesso utente** non può essere autorizzato di nuovo una volta che ha un token. Se l'accesso dell'account viene revocato, aggiungi un nuovo connettore e passa la fonte a quello nuovo.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Microsoft mostra *AADSTS50194* durante l'accesso | L'app è single-tenant. Per **Accesso utente**, cambia i tipi di account supportati in un'opzione multitenant in **Authentication**. |
+| Microsoft mostra un errore sull'URI di reindirizzamento durante l'accesso | L'URI di reindirizzamento **Web** dell'app deve essere l'indirizzo di Rational AI seguito da `/api/management/v0/oauth/callback`, esattamente come lo apri nel browser. |
+| *"Il Tenant ID è obbligatorio per i connettori con permessi applicazione."* | Hai scelto **Permessi applicazione** senza un **Tenant ID**. Inserisci il **Directory (tenant) ID**. |
+| Il pannello dei file resta su *Ancora nessun file da mostrare* | Il **Drive ID** o il **Tipo drive** è vuoto. Inserisci entrambi. |
+| Il pannello dei file mostra *Connessione fallita* | Il **Drive ID** o il **Tipo drive** è sbagliato, mancano i permessi, oppure il consenso dell'amministratore non è stato concesso. Controllali in Graph Explorer e in **API permissions**. |
+| Un'icona di link spezzato (**Autenticazione assente**) accanto al connettore | Un connettore **Accesso utente** per cui l'accesso non è stato completato. Aprilo e seleziona **Completa l'autenticazione** nel suo menu. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura le fonti di dati](/operational-guides/configure-sources): modalità di sincronizzazione, sincronizzazioni non riuscite ed elaborazione alla modifica.
+- [Connetti Google Drive](/operational-guides/integrate-data): sincronizza le cartelle di Google Drive nello stesso modo.
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources): lavora con i file sincronizzati in una Knowledge.

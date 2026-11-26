@@ -1,47 +1,47 @@
 ---
 sidebar_position: 31
-sidebar_label: Workflows and processing rules
-title: Workflows and processing rules
-description: What workflows and processing rules are, how automation and conditional logic work together, and how they are used in Rational AI.
+sidebar_label: Workflow e regole di processing
+title: Workflow e regole di processing
+description: Come step, workflow e regole di processing decidono cosa succede ai file che una Knowledge riceve.
 type: concept
 audience: [user, builder]
 ---
 
 import ConnectsTo from "@site/src/components/ConnectsTo";
 
-# Workflows and processing rules
+# Workflow e regole di processing
 
-**Workflows** and **processing rules** are how you automate work in the platform. A **workflow** is a sequence of steps that runs to accomplish a task, while a **processing rule** is the conditional logic that decides what should happen in a given situation. Loosely: the workflow is the recipe, and the processing rules are the "if this, then that" decisions inside it.
+Step, workflow e regole di processing decidono cosa succede a ogni file che una Knowledge riceve: cosa viene estratto, quali risorse diventa e di quale testo vengono creati chunk ed embedding per la ricerca. Gestisci tutti e tre in **Impostazioni** → **Workflow**.
 
-Together they let the platform do more than answer single questions. They turn AI into something that can carry out multi‑step jobs and react to your data automatically.
+## Step {#steps}
 
-## Workflows {#workflows}
+Uno step è uno script Python che svolge il lavoro su un file. Legge il file, crea risorse nella Knowledge e restituisce il testo di cui creare chunk ed embedding.
 
-A workflow chains several steps into one automated process that turns raw files into structured information: converting a document, extracting attributes, annotating it, linking it to other resources. Each step feeds the next, so a workflow can accomplish something no single step could on its own.
+## Workflow {#workflows}
 
-In Rational AI a step is a Python script, and a workflow is a graph that connects steps, control-flow nodes and built-in operations. You edit the graph as code or on a canvas. A Knowledge runs its default workflow on every file added to it.
+Un workflow è un grafo che collega step, nodi di controllo del flusso e operazioni integrate, così che un file possa passare attraverso più step in ordine o seguire rami diversi. Lo costruisci su una tela o nel codice. Una Knowledge esegue il suo **Workflow di default** su ogni file che le viene aggiunto.
 
-## Processing rules {#processing-rules}
+## Regole di processing {#processing-rules}
 
-A processing rule expresses a decision: which processing to run for a given file, based on its document type, content, source or any custom condition. It is a router. It doesn't change the data itself; the step it picks does the work. That is what lets a Knowledge handle an invoice and a technical manual differently instead of treating every input the same way.
+Una regola di processing è uno script Python che restituisce il nome di uno step per ogni file, in base al nome, al tipo, al contenuto, alla fonte o a qualsiasi condizione tu scriva. Instrada il file e non lo modifica. È così che una stessa Knowledge può mandare le fatture a uno step e i manuali tecnici a un altro.
 
-## How they work together {#how-they-work-together}
+## Come si combinano in una Knowledge {#how-they-meet-in-a-knowledge}
 
-In a Knowledge, the two meet in the **Sources** settings. The **Default workflow** is either a workflow graph or the **Classic pipeline**. With the classic pipeline, the **Default processing rule** picks the step for each file, and each attached source can use its own processing rule. You can also assign a workflow to single files from the Knowledge's **Files** view.
+Nella scheda **Fonti** di una Knowledge, il **Workflow di default** è un workflow oppure la **Pipeline classica**:
 
-## In Rational AI {#in-rational-ai}
+- Con un workflow, il grafo gestisce ogni file.
+- Con la **Pipeline classica**, la **Regola di processing di default** sceglie lo step per ogni file. Ogni fonte collegata può usare invece la propria **Regola di processing**.
 
-You manage both in **Settings** → **Workflows**, which has a **Workflows** tab (workflow graphs and steps) and a **Processing rules** tab. See the operational guides on how to [create a workflow](../operational-guides/create-workflow.mdx) and how to [create a processing rule](../operational-guides/create-processing-rule.mdx).
+Nell'elenco dei file della Knowledge, **Assegna workflow** imposta direttamente lo step per i file selezionati. Si applica alla prossima elaborazione di quei file.
 
-## Additional resources {#additional-resources}
+## Scopri di più {#learn-more}
 
-* [Create a workflow](../operational-guides/create-workflow.mdx): build an automated, multi‑step process.
-* [Create a processing rule](../operational-guides/create-processing-rule.mdx): pick the processing for each file.
-
+- [Crea un workflow](/operational-guides/create-workflow): scrivi gli step e collegali in un workflow.
+- [Crea una regola di processing](/operational-guides/create-processing-rule): scegli lo step per ogni file.
 
 ---
 
-## Connects to {#connects-to}
+## Vedi anche {#connects-to}
 
 <ConnectsTo
 	items={[

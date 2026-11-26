@@ -2,71 +2,24 @@
 sidebar_position: 24
 sidebar_label: Model serving
 title: Model serving
-description: What model serving and inference are, where models run, how deployments trade hardware against cold starts, and how serving connects to models and governance in Rational AI.
+description: Cos'è il model serving, i due posti in cui un modello può girare per Rational AI e i compromessi tra velocità, costo e qualità.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
-
 # Model serving
 
-**Model serving** is what makes a trained model usable: it takes a model and runs it behind an interface so that applications can send it a request and get a response back. That act of running the model to produce an output is called **inference**.
+Il **model serving** consiste nel mantenere un modello in esecuzione, in modo che le applicazioni possano inviargli richieste e ricevere risposte. Ogni richiesta a cui risponde è un'[inferenza](/concepts/Inference).
 
-Training and serving are two different jobs. Training is building the model, done once and at great expense. Serving is running it, done constantly, every time a user asks a question. A model that is never served is only a file on disk.
+## Dove gira il modello {#where-the-model-runs}
 
-## What serving has to handle {#what-serving-has-to-handle}
+- **Presso un provider.** Un modello di un provider come OpenAI o Anthropic gira sulle macchine del provider. Rational AI invia ogni richiesta tramite un [connettore](/concepts/Connectors).
+- **Sulla tua installazione.** Un modello open source o fine-tuned gira su hardware controllato dalla tua installazione. La copia in esecuzione è il **deployment** del modello.
 
-Serving a model well is largely about doing inference quickly, reliably and affordably, often for many users at once. The performance of a served model is usually described with a few metrics:
+Un modello self-hosted occupa il suo hardware solo mentre è in esecuzione. Puoi tenerlo attivo, così ogni richiesta riceve subito una risposta, oppure lasciare che rilasci l'hardware quando è inattivo. In quel caso la richiesta successiva attende che il modello si riavvii.
 
-| Metric                   | What it measures                                            |
-| :----------------------- | :--------------------------------------------------------- |
-| **Time to first token**  | How long until the first piece of the response appears      |
-| **Tokens per second**    | How fast the rest of the response streams out               |
-| **End‑to‑end latency**   | The total time to complete a request                        |
-| **Cost per inference**   | What a single request costs to run                          |
+Velocità, costo e qualità si contrappongono. Un modello più grande spesso risponde meglio, ma più lentamente e a un costo più alto.
 
-These trade off against each other, and against quality: a larger model may give better answers but serve them more slowly and at higher cost.
+## In Rational AI {#in-rational-ai}
 
-## Where the model runs {#where-the-model-runs}
-
-A model reaches Rational AI in one of two ways:
-
-- **Served by a provider.** A third-party model, such as one from OpenAI or Anthropic, runs on the provider's infrastructure. Rational AI forwards each request through a [connector](/operational-guides/configure-connectors) and never holds the model itself.
-- **Self-hosted.** An open-source or fine-tuned model runs on hardware the installation controls: Rational AI's infrastructure for a cloud workspace, or your own servers for an [on-premises installation](/operational-guides/run-models-on-premise), where each model is a container on the server's Docker engine. The running copy is the model's **deployment**.
-
-## Deployments, replicas and cold starts {#deployments-replicas-and-cold-starts}
-
-A self-hosted model costs hardware only while it runs, so serving it well is also about deciding *when* it runs. A deployment runs some number of **replicas**, identical copies of the model that share the requests. Rational AI lets you choose between:
-
-- **Always on.** At least one replica keeps running. Every request is answered at once, and the GPU stays taken.
-- **On demand.** With no requests for a while, the deployment releases its hardware and becomes **Idle**. The next request starts it again, and waits while it does: a **cold start**, which can take from seconds to minutes depending on the model's size.
-
-The deployment's **phase** (Provisioning, Starting, Ready, Idle, Stopped, Failed…) says where it is at any moment. Changing a model's settings never touches a running deployment on its own: someone confirms the new settings, and only then are they rolled out. See [Deploy and run self-hosted models](/operational-guides/model-deployments) for how to set this up.
-
-## Serving many users at once {#serving-many-users-at-once}
-
-A served model has a limited number of requests it can process at the same time. Rational AI puts the requests people are waiting on (a chat, an answer in a touchpoint) ahead of background work (indexing documents, processing conversations), so a large import does not slow down a person typing a question. Background work waits its turn, and is retried if it waits too long.
-
-## Serving in Rational AI {#serving-in-rational-ai}
-
-When you register a model and use it in a [touchpoint](../cr/settings/touchpoints.mdx), the platform serves it for you: each message becomes an inference request handled by the model behind the scenes. The [Governance](../cr/Governance.mdx) module then reports exactly these serving metrics, time to first token, tokens per second, latency and cost, so you can see how your models perform in practice and tune your choices accordingly.
-
-## Additional resources {#additional-resources}
-
-* [Governance](../cr/Governance.mdx): monitor serving performance, throughput and cost.
-* [Deploy and run self-hosted models](/operational-guides/model-deployments): phases, replicas and idle release in practice.
-* [Run models on your own servers](/operational-guides/run-models-on-premise): GPUs, weights and multi-machine setups on-premises.
-
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "AI model registry", to: "/concepts/AI-model-registry" },
-		{ label: "Model architecture", to: "/concepts/Model-architecture" },
-		{ label: "Inference", to: "/concepts/Inference" },
-	]}
-/>
+Aggiungi i modelli in **Impostazioni** → **Registro modelli AI** e distribuisci quelli self-hosted dalla pagina del modello. Vedi [Distribuisci ed esegui modelli self-hosted](/operational-guides/model-deployments). Per vedere quanto è veloce e costoso ogni modello nella pratica, usa [Governance](/cr/Governance).

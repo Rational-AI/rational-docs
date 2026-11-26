@@ -1,41 +1,25 @@
 ---
 sidebar_position: 29
-sidebar_label: Sycophancy
-title: Sycophancy
-description: Why models tend to tell you what you want to hear, how it differs from hallucination, and how to guard against it in Rational AI.
+sidebar_label: Compiacenza
+title: Compiacenza
+description: Perché i modelli tendono a dirti quello che vuoi sentire, come fare domande perché non lo facciano e cosa aiuta in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Compiacenza
 
+La **compiacenza** (sycophancy) è la tendenza di un modello a darti ragione o a dirti ciò che vuoi sentire, anche quando sbaglia. Un modello compiacente abbandona una risposta corretta quando la contesti, accetta una premessa falsa nella tua domanda o elogia un piano debole.
 
-# Sycophancy
+Deriva dall'addestramento. Nel [RLHF](/concepts/RLHF) le persone valutano le risposte, e tendono a dare punteggi più alti a quelle concilianti che a quelle brusche. Così il modello impara che dare ragione conviene. Spesso accompagna le [allucinazioni](/concepts/hallucinations): una domanda orientata può spingere un modello ad accettare una premessa sbagliata e poi a inventare elementi a sostegno.
 
-**Sycophancy** is the tendency of a model to produce confidently agreeable answers, telling you what you seem to want to hear rather than what is most accurate. A sycophantic model may back down from a correct answer when challenged, validate a flawed assumption in your question, or praise a poor idea.
+## Come chiedere {#how-to-ask}
 
-The cause lies in how models are aligned. During [reinforcement learning from human feedback](/concepts/RLHF), models are trained to favour responses that people rated highly, and people tend to rate agreeable, flattering answers more highly than blunt ones. The model learns that agreement is rewarded.
+- **Chiedi in modo neutro.** "Questo piano è corretto?" invita a rispondere di sì. "Quali sono i punti deboli di questo piano?" invita a un esame critico.
+- **Chiedi le ragioni contrarie.** Chiedi rischi e obiezioni, non solo una conferma.
+- **Tieni fuori dalla domanda la risposta che speri.** "Il nostro fornitore è affidabile, giusto?" contiene già la risposta.
 
-:::note[Sycophancy vs hallucination]
-A [hallucination](/concepts/hallucinations) is a confidently wrong statement of fact. Sycophancy is a confidently *agreeable* response shaped by what the user appears to want. The two often appear together: a leading question can nudge a model into agreeing with, and then fabricating support for, an incorrect premise.
-:::
+## In Rational AI {#in-rational-ai}
 
-## How to guard against it {#how-to-guard-against-it}
-
-* **Ask neutrally:** avoid loading the question with the answer you expect. "Is this approach correct?" invites agreement; "What are the weaknesses of this approach?" invites scrutiny.
-* **Ask for the case against:** explicitly request counterarguments or risks, not only confirmation.
-* **Ground the answer:** anchoring responses in retrieved [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) gives the model verified material to lean on instead of your phrasing.
-* **Keep a human in the loop:** for decisions that matter, a [human-in-the-loop](/concepts/Human-in-the-loop) review catches agreeable but wrong answers.
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Hallucinations", to: "/concepts/hallucinations" },
-		{ label: "RLHF", to: "/concepts/RLHF" },
-		{ label: "Human-in-the-loop", to: "/concepts/Human-in-the-loop" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-	]}
-/>
+- Un assistente che risponde dalla tua [Knowledge](/concepts/Knowledge) ha fonti su cui reggersi, non solo la tua formulazione. **Verifica risposta** in Chat la confronta con quelle fonti. Vedi [Verifica una risposta con la tua Knowledge](/operational-guides/chat-experience#check-an-answer-against-your-knowledge).
+- Per le decisioni importanti, fai rivedere la risposta da una persona. Vedi [Human-in-the-loop (supervisione umana)](/concepts/Human-in-the-loop).

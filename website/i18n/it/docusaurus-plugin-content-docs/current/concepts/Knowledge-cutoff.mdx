@@ -1,43 +1,21 @@
 ---
 sidebar_position: 27
-sidebar_label: Knowledge cutoff
-title: Knowledge cutoff
-description: What a model's knowledge cutoff is, why it causes confident mistakes, and how Rational AI works around it.
+sidebar_label: Data limite delle conoscenze
+title: Data limite delle conoscenze (knowledge cutoff)
+description: Cos'è la data limite delle conoscenze di un modello, perché porta a risposte sicure ma superate e come Rational AI aggira il problema.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Data limite delle conoscenze (knowledge cutoff)
 
+La **data limite delle conoscenze** (knowledge cutoff) di un modello è la data in cui finiscono i suoi dati di addestramento. Il modello non sa nulla di ciò che è accaduto, è cambiato o è stato pubblicato dopo quella data, a meno che tu non gli fornisca quelle informazioni.
 
-# Knowledge cutoff
+Un modello raramente dichiara che una domanda supera la sua data limite. Se gli chiedi di una nuova normativa o del listino prezzi del mese scorso, spesso risponde comunque, con informazioni più vecchie o con una supposizione plausibile, e con la sicurezza di sempre. Tratta con cautela le risposte su fatti recenti o in rapida evoluzione.
 
-A model's **knowledge cutoff** is the date past which it has no built-in knowledge. A model only "knows" what was present in its training data, and training stops at a fixed point in time. Anything that happened, changed or was published after that point is invisible to the model unless you provide it.
+## In Rational AI {#in-rational-ai}
 
-This is a frequent source of confident mistakes. Asked about a recent event, a new product or a policy that changed last month, a model will often answer anyway, drawing on outdated information or filling the gap with a plausible guess rather than admitting it does not know.
+- La tua [Knowledge](/concepts/Knowledge) contiene contenuti aggiornati, sincronizzati dalle sue [fonti](/concepts/Source-and-resources), e [RAG](/concepts/RAG) fornisce al modello i passaggi pertinenti. Le risposte sulla tua organizzazione non dipendono dalla data limite.
+- In Chat, **Ricerca web** nel menu degli strumenti (**+**) permette all'assistente del workspace di cercare informazioni pubbliche recenti. Vedi [Componi la richiesta nel composer](/operational-guides/chat-experience#shape-your-request-in-the-composer).
 
-:::note[The model will not always tell you]
-A model rarely says "that is after my cutoff." It tends to answer with the same confidence either way, so an out-of-date answer can look exactly like a current one. Treat questions about recent or fast-changing facts with extra caution.
-:::
-
-## Why it matters in Rational AI {#why-it-matters-in-rational-ai}
-
-The knowledge cutoff is one of the main reasons the platform does not rely on a model's built-in knowledge alone. Instead, it supplies current, organization-specific information at the moment of the request:
-
-* Your [Knowledge](/concepts/Knowledge) holds your own, up-to-date sources, independent of any model's training date.
-* [RAG](/concepts/RAG) retrieves the relevant pieces and places them in the [context window](/concepts/Context-window), so the model answers from your material rather than from stale memory.
-
-This is the distinction between what a model carries in its weights and what it reads at request time, covered in [parametric and contextual knowledge](/concepts/Parametric-and-contextual-knowledge).
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
-		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Knowledge", to: "/concepts/Knowledge" },
-		{ label: "Hallucinations", to: "/concepts/hallucinations" },
-	]}
-/>
+Per la differenza tra ciò che un modello ha appreso e ciò che legge, vedi [Conoscenza parametrica e contestuale](/concepts/Parametric-and-contextual-knowledge).

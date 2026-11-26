@@ -1,50 +1,22 @@
 ---
 sidebar_position: 28
-sidebar_label: Non-determinism
-title: Non-determinism
-description: Why a model can return different answers to the same prompt, what controls it, and what that means for using Rational AI.
+sidebar_label: Non determinismo
+title: Non determinismo
+description: Perché la stessa domanda può ottenere risposte diverse, cosa fa la temperatura e dove la controlli in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Non determinismo
 
+Con **non determinismo** si intende che la stessa domanda può ottenere risposte diverse. Un modello sceglie ogni parola con un certo grado di casualità tra le opzioni più probabili, quindi due esecuzioni con lo stesso input possono differire.
 
-# Non-determinism
+Un'impostazione chiamata **temperatura** controlla quanto variano. Una temperatura bassa mantiene il modello sulle scelte più probabili e rende le risposte più ripetibili; una temperatura più alta le rende più varie. Anche con una temperatura bassa, non è garantito che le risposte siano identiche.
 
-**Non-determinism** is the property that the same input can produce different outputs. Ask a model the same question twice and you may get two different answers, even when nothing else has changed.
+Due risposte diverse possono essere entrambe corrette. Valuta ogni risposta in base alla sua correttezza, non in base al fatto che coincida con la precedente.
 
-This is by design. A model generates text by predicting likely next [tokens](/concepts/Tokens) and then *sampling* from those possibilities rather than always picking the single most likely one. That element of chance is what makes outputs feel varied and natural, but it also means results are not guaranteed to repeat.
+## In Rational AI {#in-rational-ai}
 
-## What controls it {#what-controls-it}
-
-The amount of variation is largely governed by a setting called **temperature**:
-
-* **Lower temperature** makes the model favour its most likely choices, producing more focused and repeatable answers.
-* **Higher temperature** widens the choices, producing more varied and creative answers.
-
-Even at very low temperatures, perfect repeatability is not guaranteed, so non-determinism is best treated as a built-in characteristic rather than a bug.
-
-:::note[Different is not wrong]
-Two different answers can both be correct. Non-determinism means you cannot assume an output is reproducible word for word, so quality is judged by whether each answer is right, not by whether it matches a previous run.
-:::
-
-## Why it matters in Rational AI {#why-it-matters-in-rational-ai}
-
-Because outputs vary, the platform leans on grounding and review rather than expecting identical results every time:
-
-* Grounding answers in retrieved [Knowledge](/concepts/Knowledge) through [RAG](/concepts/RAG) keeps responses anchored to verified sources, narrowing how far they can drift.
-* For sensitive outputs, a [human-in-the-loop](/concepts/Human-in-the-loop) review step catches the occasional off answer that automated checks miss.
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Tokens", to: "/concepts/Tokens" },
-		{ label: "Hallucinations", to: "/concepts/hallucinations" },
-		{ label: "Human-in-the-loop", to: "/concepts/Human-in-the-loop" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-	]}
-/>
+- **Temperatura** e **Seed** fanno parte dei **Default per le inferenze** di un modello, nella sua pagina in **Impostazioni** → **Registro modelli AI**.
+- Un assistente che risponde partendo dalla tua [Knowledge](/concepts/Knowledge) mantiene coerenti i fatti anche quando cambia la formulazione. Vedi [RAG](/concepts/RAG).
+- In Chat puoi chiedere un'altra versione di una risposta. Vedi [Genera una risposta alternativa](/operational-guides/chat-experience#generate-an-alternative-answer).

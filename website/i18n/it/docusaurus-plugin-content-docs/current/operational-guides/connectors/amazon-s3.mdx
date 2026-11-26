@@ -1,0 +1,84 @@
+---
+title: Connetti Amazon S3
+sidebar_label: Amazon S3
+description: Sincronizza gli oggetti di un bucket Amazon S3, o di un archivio compatibile con S3, in una Knowledge con un connettore AWS e una fonte Amazon S3.
+type: how-to
+audience: [admin]
+---
+
+Il connettore AWS conserva la chiave di accesso di un utente IAM, così che una fonte Amazon S3 possa sincronizzare gli oggetti di un bucket in una [Knowledge](/operational-guides/create-knowledge).
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore, **Crea** sulla riga **Fonti** e **Usa** sulla riga **Connettori** per aggiungere la fonte, e **Modifica** sulla riga **Knowledge** per collegarla. **Fonti** richiede il modulo Knowledge nella tua licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **In AWS:** chi può creare utenti IAM, policy e chiavi di accesso nell'account che possiede il bucket.
+
+## Cosa ti serve {#what-you-need}
+
+- Il nome del bucket e la sua regione, per esempio `my-bucket` in `eu-central-1`.
+- Un utente IAM per Rational AI, con una chiave di accesso e una policy limitata a quel bucket.
+- Una Knowledge che riceva i file.
+
+| Permesso | Perché serve |
+|---|---|
+| `s3:ListBucket` su `arn:aws:s3:::my-bucket` | Elenca gli oggetti, per il pannello dei file e per ogni sincronizzazione. |
+| `s3:GetObject` su `arn:aws:s3:::my-bucket/*` | Scarica gli oggetti. |
+| `kms:Decrypt` sulla chiave KMS del bucket | Solo se il bucket cifra gli oggetti con una chiave KMS gestita dal cliente. |
+
+Rational AI non scrive mai nel bucket, quindi la policy non richiede azioni di scrittura.
+
+## Configura {#set-up}
+
+1. Nella AWS Management Console, vai su **IAM** → **Policies** e crea una policy con questo JSON, sostituendo `my-bucket`:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       { "Effect": "Allow", "Action": "s3:ListBucket", "Resource": "arn:aws:s3:::my-bucket" },
+       { "Effect": "Allow", "Action": "s3:GetObject", "Resource": "arn:aws:s3:::my-bucket/*" }
+     ]
+   }
+   ```
+
+2. Vai su **IAM** → **Users**, crea un utente per Rational AI e collegagli la policy direttamente.
+3. Apri l'utente, vai su **Security credentials** e crea una chiave di accesso per un'applicazione che gira fuori da AWS.
+4. Copia la **Access key** e la **Secret access key**. AWS mostra il secret una sola volta.
+5. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **AWS**, poi seleziona **Aggiungi**.
+6. Inserisci un **Nome**, incolla le chiavi in **Access Key** e **Secret Key**, poi seleziona **Aggiungi**.
+7. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
+8. Inserisci un **Nome**. In **Tipo**, trova **Amazon S3** e seleziona il tuo connettore sotto di esso.
+9. Inserisci il **Bucket** e la **Region**. Il pannello dei file si carica quando sono impostati sia il connettore sia la regione.
+10. Per un archivio compatibile con S3, come MinIO, seleziona **Impostazioni avanzate** e inserisci il suo indirizzo in **Endpoint**. Lascia **Endpoint** vuoto per Amazon S3.
+11. Nel pannello dei file, seleziona le cartelle e gli oggetti da sincronizzare, poi seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+12. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge, seleziona la scheda **Fonti** e scegli la fonte in *Aggiungi fonte...*.
+13. Apri il menu della fonte in quella scheda e seleziona **Processa ora**.
+
+Una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per sincronizzare secondo una pianificazione, vedi [Scegli quando sincronizzare una fonte](/operational-guides/configure-sources#choose-when-a-source-syncs).
+
+## Cosa viene sincronizzato {#what-gets-synced}
+
+- **Le cartelle e gli oggetti che hai selezionato** nel bucket. Una cartella selezionata include tutto ciò che sta sotto il suo prefisso, anche gli oggetti aggiunti in seguito.
+- **Le modifiche** a ogni sincronizzazione. Le fonti Amazon S3 supportano solo **Periodica** e **Manuale**: un bucket non può segnalare le modifiche senza notifiche di evento configurate nel tuo account AWS.
+
+Rational AI non scrive mai nel bucket. Gli oggetti eliminati dal bucket vengono rimossi anche dalla Knowledge se l'impostazione **Prima di essere eliminata** della fonte è **Elimina a cascata**, il valore predefinito.
+
+## Limiti {#limits}
+
+- Una fonte legge un bucket. Per sincronizzare più bucket, aggiungi una fonte per ogni bucket. Il connettore può servirli tutti, se la sua policy lo consente.
+- Se lasci vuoto il **Bucket**, il pannello dei file elenca tutti i bucket, il che richiede anche `s3:ListAllMyBuckets`.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| Il pannello dei file resta su *Ancora nessun file da mostrare* | La fonte non ha un connettore o non ha la **Region**. Servono entrambi prima che il pannello si carichi. |
+| Il pannello dei file mostra *Connessione fallita* | Le chiavi sono errate o inattive, la policy non consente `s3:ListBucket` sul bucket, oppure la **Region** non è la regione del bucket. Controlla la chiave di accesso e la policy dell'utente in IAM. |
+| La fonte si sincronizza ma mancano alcuni oggetti | Gli oggetti sono cifrati con una chiave KMS che l'utente non può usare. Aggiungi `kms:Decrypt` su quella chiave alla policy. |
+| **Automatico** non è offerto in **Impostazioni di sincronizzazione** | Le fonti Amazon S3 supportano solo **Periodica** e **Manuale**. Scegli **Periodica** con una pianificazione. |
+
+## Prossimi passi {#next-steps}
+
+- [Configura le fonti di dati](/operational-guides/configure-sources): modalità di sincronizzazione, sincronizzazioni non riuscite ed elaborazione alle modifiche.
+- [Connetti Azure Blob Storage](/operational-guides/connectors/azure-blob-storage): sincronizza i file dallo storage Azure.
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources): lavora con i file sincronizzati in una Knowledge.

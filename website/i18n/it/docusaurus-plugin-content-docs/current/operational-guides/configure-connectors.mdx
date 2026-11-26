@@ -5,11 +5,11 @@ type: how-to
 audience: [admin, builder]
 ---
 
-# Configura un connettore
+# Configura connettori
 
-Un connettore memorizza le credenziali che Rational AI usa per raggiungere un provider esterno, per esempio una chiave API o un accesso OAuth. Un connettore può alimentare più cose contemporaneamente: [modelli AI](/operational-guides/ai-model-registry-features), [fonti dati](/operational-guides/configure-sources) e strumenti.
+Un connettore memorizza le credenziali che Rational AI usa per raggiungere un servizio esterno, come una chiave API, un accesso a un database o un accesso OAuth. Lo configuri una volta in **Impostazioni** → **Connettori**, e ogni [modello AI](/operational-guides/ai-model-registry-features), [fonte](/operational-guides/configure-sources) e strumento che richiede quel servizio lo usa. Quando sostituisci una chiave nel connettore, la aggiorni per tutti.
 
-I connettori si trovano in **Impostazioni** → **Connettori**. Per aggiungerne o modificarne uno servono **Crea** o **Modifica** sulla riga **Connettori** del tuo ruolo; non è richiesto alcun modulo di licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+Aggiungere un connettore richiede **Crea** sulla riga **Connettori** del tuo ruolo, modificarlo richiede **Modifica** ed eliminarlo richiede **Elimina**. Non serve alcun modulo di licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
 
 <img
   src={require('@site/static/img/screens/connectors-list.png').default}
@@ -17,127 +17,77 @@ I connettori si trovano in **Impostazioni** → **Connettori**. Per aggiungerne 
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*La pagina **Connettori**: ogni connettore, il suo provider e ciò che alimenta (modelli, fonti, strumenti).*
+*La pagina **Connettori**: ogni connettore, il suo provider e cosa alimenta.*
 
 ## Aggiungi un connettore {#add-a-connector}
 
-1. Vai in **Impostazioni** → **Connettori** e seleziona **Aggiungi**. Si apre **Aggiungi un nuovo connettore**.
-2. In **Sfoglia connettori**, scegli un **provider**. Ogni opzione ha una descrizione di una riga che ti aiuta a scegliere (vedi [Provider disponibili](#available-providers)).
-3. Inserisci un **Nome** e, facoltativamente, una **Descrizione**, poi inserisci le credenziali del provider, di solito una chiave API presa dalla dashboard del provider.
-4. Seleziona **Aggiungi**. Per i provider che usano l'accesso OAuth, come Google, il pulsante riporta **Aggiungi e autorizza** e apre l'accesso del provider.
+Ogni provider ha una pagina propria con cosa preparare sul servizio esterno e i campi da compilare. I passaggi in Rational AI sono gli stessi per tutti:
+
+1. Vai su **Impostazioni** → **Connettori** e seleziona **Aggiungi**. Anche quando non ci sono ancora connettori, il pulsante si chiama **Aggiungi**.
+2. In **Sfoglia connettori**, seleziona il provider, poi seleziona **Aggiungi**. Vedi [Provider disponibili](#available-providers).
+3. Inserisci un **Nome**, una **Descrizione** facoltativa e le credenziali richieste dal provider.
+4. Seleziona **Aggiungi**. Per i provider che accedono con OAuth (Google, Microsoft OneDrive con accesso utente, LinkedIn, Instagram e Facebook), il pulsante diventa **Aggiungi e autorizza** e apre l'accesso del provider.
 
 <img
   src={require('@site/static/img/screens/connectors-add.png').default}
-  alt="La galleria dei provider in Aggiungi un nuovo connettore"
+  alt="La galleria dei provider da cui aggiungere un nuovo connettore"
   style={{ width: '100%', maxWidth: '620px', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
 *Aggiungere un connettore: scegli un provider dalla galleria.*
 
-Se il tuo provider non è elencato con il suo nome ma offre un'API in stile OpenAI, scegli **OpenAI Compatible** e inserisci il suo URL di base e la chiave.
+Un connettore da solo non fa nulla. Poi usalo dove serve: aggiungi modelli nel Registro modelli AI, aggiungi una fonte, selezionalo nella configurazione di un'estensione, oppure pubblica da Social studio. Ogni pagina di provider termina con questo passaggio.
 
 ## Provider disponibili {#available-providers}
 
-| Provider | Cosa collega | Cosa fornisci |
-|----------|------------------|-----------------|
-| **Google** | Un account Google, per Drive, Gmail e Calendar. | ID client e segreto OAuth, poi l'accesso (vedi [Integra dati esterni](/operational-guides/integrate-data)). |
-| **AWS** | Un account AWS, per le fonti Amazon S3. | **Access Key** e **Secret Key** (vedi [Ottieni le chiavi AWS](#get-aws-keys-for-amazon-s3)). |
-| **OpenAI** | Modelli OpenAI. | Chiave API. |
-| **Anthropic** | I modelli Claude di Anthropic. | Chiave API. |
-| **OpenRouter** | Modelli di molti provider tramite un'unica chiave. | Chiave API. |
-| **Xference** | Modelli compatibili con OpenAI ospitati da Xference. | Chiave API. |
-| **MiniMax** | Modelli compatibili con OpenAI ospitati da MiniMax. | Chiave API. |
-| **OpenAI Compatible** | Qualsiasi API che segue il formato OpenAI: modelli self-hosted, proxy, altri provider. | URL di base e chiave API. |
-| **Google Vertex AI** | Modelli Gemini su Vertex AI, fissati a una sola regione di Google Cloud. | ID progetto e regione. Nessuna chiave. |
-| **Brave Search** | Ricerca web, notizie, immagini, video e locale. | Chiave API. |
-| **Google Service Account Key** | Servizi Google Cloud come Storage e BigQuery. | Chiave dell'account di servizio. |
-| **Azure** | Un account Azure, per le fonti Azure Blob Storage. | Credenziali client. |
-| **Microsoft OneDrive** | File di OneDrive e SharePoint, per le fonti OneDrive. | ID client e segreto, con accesso utente o permessi applicativi. |
-| **LinkedIn**, **Instagram**, **Facebook** | Una pagina aziendale o un account business su cui pubblicare i post di Social studio. | ID e segreto della tua app, poi l'accesso. |
-| **Credenziali Git** | Repository Git privati, per le fonti Git. | Host e un token HTTPS. I repository pubblici non richiedono un connettore. |
-| **RabbitMQ** | Un message broker le cui code annunciano i file da elaborare. | Host, utente e password. |
-| **Database SQL** | Un database PostgreSQL, MySQL, SQLite, SQL Server, Oracle o IBM i che i database virtuali leggono. | Dettagli di connessione e un account che può solo leggere. |
-| **Microsoft SQL Server** | Un database SQL Server che le estensioni leggono. | Host, database e un accesso in sola lettura. |
+| Provider in Rational AI | Cosa collega | Configurazione |
+|---|---|---|
+| **Google** | Google Drive, per le fonti Drive | [Connetti Google Drive](/operational-guides/integrate-data) |
+| **AWS** | Bucket Amazon S3, per le fonti S3 | [Connetti Amazon S3](/operational-guides/connectors/amazon-s3) |
+| **OpenAI**, **Anthropic**, **OpenRouter**, **Xference**, **MiniMax**, **OpenAI Compatible**, **Google Vertex AI** | Modelli AI ospitati per il Registro modelli AI | [Connetti un provider di modelli](/operational-guides/connectors/model-providers) |
+| **Compatibile System One** | Un'API di decisione i cui modelli di decisione sono elencati nel Registro modelli AI | [Usa i modelli di decisione](/operational-guides/ai-model-registry-features#use-decision-models) |
+| **Brave Search** | Ricerca web, notizie, immagini, video e locale, per l'estensione Brave Search | [Connetti Brave Search](/operational-guides/connectors/brave-search) |
+| **Google Service Account Key** | Bucket di Google Cloud Storage, per le fonti Google Cloud Storage | [Connetti Google Cloud Storage](/operational-guides/connectors/google-cloud) |
+| **Azure** | Container di Azure Blob Storage, per le fonti Azure Blob Storage | [Connetti Azure Blob Storage](/operational-guides/connectors/azure-blob-storage) |
+| **Microsoft OneDrive** | File di OneDrive e SharePoint, per le fonti OneDrive | [Connetti OneDrive e SharePoint](/operational-guides/connectors/onedrive-sharepoint) |
+| **LinkedIn**, **Instagram**, **Facebook** | Una pagina o un account business su cui Social studio pubblica | [Connetti LinkedIn, Instagram e Facebook](/operational-guides/connectors/social-accounts) |
+| **Credenziali Git** | Repository Git privati, per le fonti Git | [Connetti un repository Git](/operational-guides/connectors/git) |
+| **Database SQL**, **Microsoft SQL Server** | Un database letto da database virtuali o estensioni | [Connetti un database SQL](/operational-guides/connectors/sql-databases) |
+| **RabbitMQ** | Un broker le cui code segnalano i file da elaborare, per le fonti a coda RabbitMQ | [Connetti RabbitMQ](/operational-guides/connectors/rabbitmq) |
 
-I provider qui sotto richiedono più di una chiave. I loro passaggi seguono.
+Se il tuo provider di modelli non è in elenco ma offre un'API in formato OpenAI, usa **OpenAI Compatible**.
 
-### Ottieni le chiavi AWS per Amazon S3 {#get-aws-keys-for-amazon-s3}
+## Modifica un connettore {#edit-a-connector}
 
-Il connettore **AWS** richiede la access key di un utente IAM che può leggere i bucket che vuoi sincronizzare.
+1. Vai su **Impostazioni** → **Connettori** e seleziona il connettore.
+2. Modifica nome, descrizione o i campi in **Configurazione**.
+3. Seleziona **Salva**, oppure **Annulla** per scartare le modifiche.
 
-1. Nella AWS Management Console, vai in **IAM** → **Users** e crea un utente.
-2. In **Permissions options**, seleziona **Attach policies directly** e collega `AmazonS3ReadOnlyAccess`, oppure una policy limitata ai bucket che sincronizzi.
-3. Apri l'utente e, in **Security credentials**, crea una access key per un'applicazione che gira fuori da AWS.
-4. Copia la **Access key** e la **Secret access key**. AWS mostra il segreto una sola volta.
-5. In **Aggiungi un nuovo connettore**, scegli **AWS**, incolla le due chiavi in **Access Key** e **Secret Key**, e seleziona **Aggiungi**.
+I campi segreti, come chiavi, secret, password e token, non vengono mai mostrati. Lascia vuoto un campo per mantenere il valore salvato, oppure inserisci un nuovo valore per sostituirlo.
 
-### Collega i modelli Gemini su Vertex AI {#connect-gemini-models-on-vertex-ai}
+Alcune impostazioni sono fisse alla creazione del connettore: la modalità di autenticazione di un connettore Microsoft OneDrive, la porta e TLS di un connettore RabbitMQ, la porta di un connettore Microsoft SQL Server, e il motore, la porta e il percorso del file di un connettore Database SQL. Per modificarle, crea un nuovo connettore e sposta ciò che usa quello vecchio.
 
-Usa **Google Vertex AI** quando il traffico Gemini deve restare in una sola regione di Google Cloud, per esempio per la residenza dei dati. Il connettore non memorizza alcuna credenziale: Rational AI chiama Vertex AI con l'identità Google Cloud con cui gira la sua installazione.
+Quando un connettore che accede con OAuth richiede ancora l'accesso, mostra **Autenticazione assente**. Apri il menu delle opzioni (i tre puntini verticali) e seleziona **Completa l'autenticazione**.
 
-{/* TODO(verify): dove un amministratore trova l'identità Google Cloud di un'installazione on-premises. */}
+## Controlla cosa alimenta un connettore {#see-what-a-connector-powers}
 
-1. In Google Cloud, assegna a quell'identità il ruolo **Vertex AI User** sul tuo progetto.
-2. In **Aggiungi un nuovo connettore**, scegli **Google Vertex AI**.
-3. Inserisci l'**ID progetto** (per esempio `my-project-123`) e la **Region**: una sola regione, come `europe-west8`.
-4. Seleziona **Aggiungi**, poi aggiungi i modelli che ti servono nel [Registro modelli AI](/operational-guides/ai-model-registry-features). L'elenco offre i modelli chat Gemini disponibili in quella regione.
+Seleziona un connettore per vedere cosa dipende da lui prima di modificarlo o eliminarlo. **Usato N volte** somma tre conteggi:
 
-:::note[Una sola regione, mai global]
-**Region** rifiuta `global` e le multi-regioni come `eu` o `us`: fissare una sola regione è lo scopo del connettore. Verso Vertex AI vengono inviate solo le chat completions.
-:::
+- **Modelli AI**: modelli aggiunti dal connettore nel [Registro modelli AI](/operational-guides/ai-model-registry-features).
+- **Sources**: [fonti](/operational-guides/configure-sources) che si sincronizzano tramite il connettore.
+- **Tools**: strumenti di [estensioni](/operational-guides/manage-extensions) installate la cui configurazione seleziona il connettore.
 
-### Collega un database Microsoft SQL Server {#connect-a-microsoft-sql-server-database}
+La sezione **Prezzi e abbonamenti dei provider** del connettore elenca i piani che tracci per esso, con **Aggiungi piano**. I piani non rientrano nei conteggi, ma impediscono di eliminare il connettore.
 
-Usa **Microsoft SQL Server** per consentire alle estensioni di dare ai modelli accesso in sola lettura alle tabelle di un database, per esempio con l'estensione **SQL Server**, che elenca le tabelle, ne descrive la struttura ed esegue un singolo `SELECT`.
+## Elimina un connettore {#delete-a-connector}
 
-1. In **Aggiungi un nuovo connettore**, scegli **Microsoft SQL Server**.
-2. Inserisci l'**Host** (un nome o un indirizzo IP, per esempio `sql01.example.local`) e il **Database**.
-3. Lascia vuota **Porta** per la porta predefinita `1433`, e vuota **Istanza** per l'istanza predefinita; altrimenti inseriscile (per esempio `SQLEXPRESS`).
-4. Inserisci **Nome utente** e **Password** di un accesso SQL Server con permessi di sola lettura sul database.
-5. Attiva **Cifra la connessione** per richiedere la cifratura per l'intera sessione.
-6. Seleziona **Aggiungi**.
+1. Seleziona il connettore, apri il menu delle opzioni (i tre puntini verticali) e seleziona **Elimina**.
+2. Conferma con **Elimina connettore**.
 
-:::warning[Usa un accesso che può solo leggere]
-L'estensione rifiuta qualsiasi cosa che non sia un singolo `SELECT`, ma si tratta di un controllo sul testo, non di una garanzia. I permessi dell'accesso sono la protezione reale: assegnagli il ruolo `db_datareader`, oppure `SELECT` sugli schemi di cui ha bisogno, e nessun accesso ai server collegati.
-:::
-
-Con **Cifra la connessione** attiva, il traffico viene cifrato, ma il certificato del server non viene verificato. Con l'opzione disattivata, la cifratura viene comunque richiesta per l'accesso.
-
-### Collega un broker RabbitMQ {#connect-a-rabbitmq-broker}
-
-Usa **RabbitMQ** quando un altro sistema annuncia su una coda i documenti da elaborare. Il connettore contiene il broker; una [fonte da coda RabbitMQ](/operational-guides/configure-sources#process-files-announced-on-a-rabbitmq-queue) sceglie la coda.
-
-1. In **Aggiungi un nuovo connettore**, scegli **RabbitMQ**.
-2. Inserisci l'**Host** (per esempio `rabbitmq.example.com`) e, se diversa dal valore predefinito, la **Porta** (`5672`, oppure `5671` con TLS). Attiva **Usa TLS** se il broker lo richiede.
-3. Inserisci il **Virtual host** (predefinito `/`), oltre al **Nome utente** e alla **Password** che il proprietario del broker ha creato per Rational AI.
-4. *(Facoltativo)* Inserisci un **Token di download dei file**: viene inviato come token Bearer quando si scaricano i file a cui puntano i messaggi.
-5. Seleziona **Aggiungi**.
-
-:::note[Porta e TLS si impostano una sola volta]
-Dopo la creazione puoi modificare host, virtual host, nome utente, password e token, ma non la porta né TLS. Per cambiare questi valori, crea un nuovo connettore.
-:::
-
-### Collega un account social per la pubblicazione {#connect-a-social-account-for-publishing}
-
-I connettori **LinkedIn**, **Instagram** e **Facebook** permettono a Social studio di pubblicare post tramite la tua app di sviluppo.
-
-1. Crea l'app sul portale sviluppatori del provider, seguendo le indicazioni della finestra: un'app LinkedIn con la Community Management API per una pagina aziendale, oppure un'app Meta Business con Instagram login o Facebook Login for Business.
-2. In **Aggiungi un nuovo connettore**, scegli il social network e copia l'**URL di reindirizzamento da aggiungere all'app** nelle impostazioni della tua app.
-3. Inserisci un **Nome**, e l'ID e il segreto della tua app. Per Facebook, inserisci anche l'ID di configurazione se ne hai creato uno.
-4. Seleziona **Aggiungi e autorizza** e accedi con un account che amministra la pagina o l'account su cui vuoi pubblicare.
-
-## Verifica cosa alimenta un connettore {#see-what-a-connector-powers}
-
-Prima di modificare o rimuovere un connettore, controlla cosa ne dipende. Selezionalo nell'elenco e guarda i contatori **Modelli AI**, **Fonti** e **Strumenti**, oltre al contatore **Usato N volte**:
-
-- **Modelli AI**: un connettore è ciò a cui punta un proxy di modello. Quando aggiungi un modello di terze parti nel [Registro modelli AI](/operational-guides/ai-model-registry-features) usando **Aggiungi un proxy a un modello di terze parti**, selezioni il connettore che raggiunge il provider.
-- **Fonti**: alcune [Fonti](/operational-guides/configure-sources) usano un connettore per raggiungere il sistema esterno che contiene i tuoi dati.
-- **Strumenti**: alcuni strumenti (per esempio uno strumento di ricerca web basato su Brave Search) si affidano a un connettore per l'accesso.
-
-L'eliminazione viene rifiutata finché modelli AI, fonti o abbonamenti del provider usano ancora il connettore, e gli abbonamenti non fanno parte dei contatori, quindi controllali a parte.
+L'eliminazione viene rifiutata finché modelli, fonti, piani dei provider o configurazioni di estensioni usano ancora il connettore, e i connettori integrati non possono essere eliminati. Rimuovi o sposta prima questi elementi. Un connettore eliminato non può essere ripristinato.
 
 ## Prossimi passi {#next-steps}
 
-- Aggiungi un modello di terze parti che usa il tuo nuovo connettore nel [Registro modelli AI](/operational-guides/ai-model-registry-features).
-- [Integra dati esterni](/operational-guides/integrate-data): collega Google Drive e sincronizzalo in una Knowledge.
-- [Configura le fonti dei dati](/operational-guides/configure-sources): scegli quando una fonte si sincronizza.
+- [Connetti un provider di modelli](/operational-guides/connectors/model-providers): aggiungi i modelli con cui rispondono i tuoi assistenti.
+- [Connetti Google Drive](/operational-guides/integrate-data): collega Google Drive e sincronizzalo in una Knowledge.
+- [Configura le fonti di dati](/operational-guides/configure-sources): scegli cosa sincronizza una fonte e quando.

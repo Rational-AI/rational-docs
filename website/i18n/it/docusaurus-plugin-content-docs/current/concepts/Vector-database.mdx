@@ -1,54 +1,18 @@
 ---
 sidebar_position: 25
-sidebar_label: Vector database
-title: Vector database
-description: What a vector database is, how similarity search works, how it differs from a traditional database, and its role in retrieval in Rational AI.
+sidebar_label: Database vettoriale
+title: Database vettoriale
+description: Che cos'è un database vettoriale, come trova il testo in base al significato e il suo posto alla base della Knowledge in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Database vettoriale
 
-# Vector database
+Un **database vettoriale** memorizza gli [embedding](/concepts/Embeddings-chunks-and-annotations), cioè le liste di numeri che rappresentano il significato di ogni passaggio, e trova quelli più vicini per significato a una domanda.
 
-A **vector database** is a database built to store and search [embeddings](./Embeddings-chunks-and-annotations.mdx), the numerical vectors that represent the meaning of text. Its special skill is finding, very quickly, the items whose meaning is closest to a query, even across millions of entries.
-
-Where a traditional database answers "find the rows where this field equals that value", a vector database answers a different question: "find the items most **similar in meaning** to this one". That shift, from exact matching to similarity, is what makes semantic search possible.
-
-## How similarity search works {#how-similarity-search-works}
-
-Every chunk of your knowledge is stored as a vector, a point in a high‑dimensional space. When a query arrives, it is turned into a vector too, and the database returns the **nearest** stored vectors, the ones whose meaning is closest. These nearest matches are the most relevant pieces of knowledge for that query.
-
-To stay fast at scale, vector databases use specialised indexes that find near‑neighbours without comparing against every single entry.
-
-## Vector database vs traditional database {#vector-database-vs-traditional-database}
-
-| | Traditional database | Vector database |
-| :-- | :-- | :-- |
-| **Stores** | Structured rows and fields | Vectors (embeddings) |
-| **Finds by** | Exact values and ranges | Similarity of meaning |
-| **Best for** | Precise, structured queries | Open‑ended, semantic search |
-| **Example query** | "orders where total > 100" | "passages about late deliveries" |
-
-The two are complementary, not rivals: structured questions still belong in a traditional database, which is why retrieval and SQL tools often work side by side.
+Un database normale trova le righe in base a valori esatti, come "ordini con totale superiore a 100". Un database vettoriale trova i passaggi in base al significato: una ricerca di "consegne in ritardo" trova anche "la spedizione è arrivata due settimane dopo la scadenza".
 
 ## In Rational AI {#in-rational-ai}
 
-The vector database is the engine behind [retrieval](./RAG.mdx). The embeddings generated from your [Knowledge](../cr/Knowledge.mdx) are stored there, and at answer time it supplies the most relevant chunks as context for the model. You don't manage it directly; it works quietly underneath the Knowledge and RAG features.
-
-## Additional resources {#additional-resources}
-
-* [Knowledge](../cr/Knowledge.mdx): the source of the vectors that get searched.
-
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
-		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Knowledge", to: "/concepts/Knowledge" },
-	]}
-/>
+Rational AI gestisce il database vettoriale per te, quindi non devi mai gestirlo direttamente. Quando aggiungi contenuti a una [Knowledge](/concepts/Knowledge), i loro embedding vengono memorizzati lì, e il meccanismo [RAG](/concepts/RAG) li interroga per trovare i passaggi per una risposta. Per i valori esatti, gli assistenti interrogano invece i dati strutturati della Knowledge.

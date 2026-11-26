@@ -1,44 +1,24 @@
 ---
 sidebar_position: 16
-sidebar_label: Large Language Models
+sidebar_label: Large language model
+title: Large language model (LLM)
+description: Che cos'è un large language model, che cosa può e non può fare da solo e come Rational AI lo usa per scrivere le risposte.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Large language model (LLM)
 
-# Large language models (LLMs)
-Large Language Models (LLMs) are a class of advanced artificial intelligence systems designed to understand, generate, and reason over natural language at scale.
+Un **large language model (LLM)** è un modello addestrato su enormi quantità di testo per leggere e scrivere in linguaggio naturale. Gli parli con parole semplici, e lo stesso modello può rispondere a una domanda, riassumere un report, preparare la bozza di un'email o scrivere codice senza essere riprogrammato per ogni compito.
 
-They are based primarily on deep neural networks (most commonly transformer architectures) and are trained on massive volumes of text data to learn linguistic patterns, semantic relationships, and contextual dependencies. 
+"Large" si riferisce al numero di valori interni, chiamati parametri, che il modello regola durante l'[addestramento](/concepts/Model-training). I modelli attuali ne hanno miliardi. Più parametri permettono a un modello di cogliere più schemi, ma lo rendono anche più lento e costoso da eseguire.
 
-LLMs are the evolution of Natural Language Processing and Generative AI into general-purpose language systems capable of performing a wide range of cognitive tasks.
+## Cosa un LLM non può fare da solo {#what-an-llm-cant-do-on-its-own}
 
-LLMs are distinguished by:
-* Very large model size (billions to trillions of parameters)
-* Training on diverse, large-scale text datasets
-* Ability to perform multiple tasks without reprogramming
-* Natural languages the primary interface
+- Conosce solo ciò che era nei dati di addestramento, fino alla sua [data limite delle conoscenze](/concepts/Knowledge-cutoff), e nulla della tua organizzazione.
+- Legge una quantità limitata di testo alla volta, la sua [finestra di contesto](/concepts/Context-window).
+- Può affermare cose sbagliate con sicurezza. Vedi [Allucinazioni](/concepts/hallucinations).
 
-#### Comparative view {#comparative-view}
-| Aspect        | Traditional NLP models | Modern LLMs            |  
-|:--------------|:-----------------------|:-----------------------|  
-| Model size    | Thousands to millions  | Billions+              |  
-| Training data | Task specific          | Web-scale multi-domain |
-| Task handling | One model per task     | Multi-task             |
-| Adaptability  | Limited                | High                   |
-| Interaction   | Structured inputs      | Natural language       |
+## In Rational AI {#in-rational-ai}
 
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Generative AI", to: "/concepts/Generative-AI" },
-		{ label: "Natural Language Processing", to: "/concepts/NLP" },
-		{ label: "Model architecture", to: "/concepts/Model-architecture" },
-		{ label: "Context window", to: "/concepts/Context-window" },
-		{ label: "Tokens", to: "/concepts/Tokens" },
-	]}
-/>
+La Chat e i touchpoint usano un LLM per scrivere le risposte. I modelli si aggiungono in **Impostazioni** → **Registro modelli AI**, sia da un provider come OpenAI o Anthropic sia come modello open source che la tua installazione esegue da sola. Il **Modello conversazionale** del registro è il predefinito del workspace, e ogni touchpoint può impostare un proprio **Modello di default**. Vedi [Registro modelli AI](/cr/settings/ai-model-registry).

@@ -1,55 +1,26 @@
 ---
 sidebar_position: 22
-sidebar_label: Context window
-title: Context window
-description: What a context window is, why it is limited, how tokens are counted, and how it shapes retrieval, conversations and prompts in Rational AI.
+sidebar_label: Finestra di contesto
+title: Finestra di contesto
+description: Cos'è la finestra di contesto di un modello, perché il limite conta e come Rational AI mantiene conoscenza e chat lunghe al suo interno.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Finestra di contesto
 
+La **finestra di contesto** è la quantità massima di testo che un modello può considerare in una singola richiesta, misurata in [token](/concepts/Tokens). Contiene il [prompt di sistema](/concepts/System-prompt), i passaggi recuperati da una Knowledge, la conversazione fino a quel momento, la tua domanda e la risposta. Il modello non vede ciò che non ci sta.
 
-# Context window
+Ogni modello ha una propria dimensione della finestra, e la risposta condivide questo spazio con tutto ciò che invii. Un input molto lungo lascia meno spazio alla risposta.
 
-The **context window** is the maximum amount of text a model can consider at one time. It covers everything the model reads and writes for a single request: the system instructions, the knowledge retrieved for it, the conversation so far, the user's latest question and the reply it generates. Anything that doesn't fit in the window is invisible to the model.
+## Perché il limite conta {#why-the-limit-matters}
 
-Think of it as the model's short‑term memory, or the size of its desk. A larger desk lets you spread out more documents and work with all of them at once; a smaller one forces you to put some away. The model is not "forgetting", it never sees what is left off the desk.
+- **Più testo non significa risposte migliori**: riempire la finestra con materiale poco pertinente può nascondere il passaggio che risponde alla domanda.
+- **Le conversazioni lunghe esauriscono lo spazio**: i messaggi più vecchi, alla fine, non ci stanno più.
+- **Costo e velocità**: il modello elabora ogni token della finestra a ogni richiesta.
 
-## Tokens, not words {#tokens-not-words}
+## In Rational AI {#in-rational-ai}
 
-Context windows are measured in **tokens**, not words or characters. A token is a chunk of text, often a word or part of a word. As a rough guide, one token is about four characters of English, so 1,000 tokens is roughly 750 words. The window size (for example, 8K, 32K or 128K tokens) is a property of the model, and it is shared between the input and the output: a very long prompt leaves less room for a long answer.
-
-## Why the limit matters {#why-the-limit-matters}
-
-Working within the context window is a constant trade‑off:
-
-* **Relevance over volume:** sending more text is not always better. Filling the window with loosely related material can bury the parts that actually matter and degrade the answer.
-* **Long conversations drift:** once a chat grows past the window, the earliest messages fall out of view, so the model may lose track of something said much earlier.
-* **Cost and latency:** more tokens in the window means more computation, so larger contexts are slower and more expensive to run.
-
-## The context window in Rational AI {#the-context-window-in-rational-ai}
-
-The platform is designed to make the most of whatever window a model has:
-
-* In a [RAG](./RAG.mdx) system, retrieval selects only the most relevant resources from your [Knowledge](../cr/Knowledge.mdx) and fits them into the window as context, rather than handing the model everything. Splitting documents into [embeddings and chunks](./RAG.mdx) is what makes this selection possible.
-* In [Conversations settings](../cr/settings/conversations.mdx), analyses such as title generation and topic detection let you set how many recent **messages to analyze**, keeping each request within a sensible context.
-* Choosing a [model](./Model-architecture.mdx) with a larger window lets a touchpoint reason over more knowledge or a longer conversation at once, at the cost of more tokens per request.
-
-:::note[Bigger is not always better]
-A large context window is useful, but a focused, well‑retrieved context usually produces better answers than stuffing the window full. Quality of context beats quantity.
-:::
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Tokens", to: "/concepts/Tokens" },
-		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-		{ label: "Parametric and contextual knowledge", to: "/concepts/Parametric-and-contextual-knowledge" },
-	]}
-/>
+- Una Knowledge non invia interi documenti al modello. Li divide in [chunk ed embedding](/concepts/Embeddings-chunks-and-annotations), e [RAG](/concepts/RAG) invia solo i passaggi che corrispondono meglio alla domanda.
+- Quando una chat diventa troppo lunga, l'assistente di solito continua a partire da un riepilogo dei messaggi precedenti. Alcuni touchpoint si fermano invece e propongono **Nuova conversazione**. Vedi [Continua una conversazione lunga](/operational-guides/chat-experience#keep-going-in-a-long-conversation).
+- La pagina di un modello in **Impostazioni** → **Registro modelli AI** mostra la sua **Lunghezza contesto**.

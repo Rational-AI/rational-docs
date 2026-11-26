@@ -1,0 +1,191 @@
+---
+title: Connetti un provider di modelli
+description: Connetti OpenAI, Anthropic, OpenRouter, Xference, MiniMax, un'API compatibile con OpenAI o Google Vertex AI, e aggiungi i loro modelli al Registro modelli AI.
+type: how-to
+audience: [admin]
+---
+
+Un connettore per provider di modelli permette a Rational AI di chiamare i modelli di un provider ospitato. Poi aggiungi quei modelli al [Registro modelli AI](/operational-guides/ai-model-registry-features), per i touchpoint, gli agenti e le altre funzioni che usano modelli.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **Per aggiungere il connettore:** un ruolo con **Crea** sulla riga **Connettori** (vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users)).
+- **Per aggiungere i modelli del provider:** un amministratore con **Crea** sulla riga **Registro modelli AI**. L'elenco dei modelli di un provider è mostrato solo agli amministratori.
+- **Presso il provider:** un account che può creare chiavi API. Per Google Vertex AI, qualcuno che può assegnare ruoli nel progetto Google Cloud.
+
+## Scegli un provider {#choose-a-provider}
+
+| Provider in Rational AI | Usalo per | Cosa fornisci |
+|---|---|---|
+| **OpenAI** | Modelli OpenAI | Chiave API |
+| **Anthropic** | I modelli Claude di Anthropic | Chiave API |
+| **OpenRouter** | Modelli di molti provider con un'unica chiave | Chiave API |
+| **Xference** | Modelli ospitati compatibili con OpenAI di Xference | Chiave API |
+| **MiniMax** | Modelli ospitati compatibili con OpenAI di MiniMax | Chiave API |
+| **OpenAI Compatible** | Qualsiasi API che segue il formato OpenAI: modelli self-hosted, proxy, altri provider | Base URL e chiave API |
+| **Google Vertex AI** | Modelli Gemini in una sola regione di Google Cloud | ID progetto e region, senza chiave |
+
+Ogni sezione di provider segue lo stesso ordine: cosa ti serve presso il provider, poi il connettore. Dopo ciascuna, [aggiungi i modelli del provider](#add-the-providers-models).
+
+## Connetti OpenAI {#connect-openai}
+
+### Cosa ti serve {#what-you-need}
+
+Una chiave API di OpenAI, creata nella piattaforma OpenAI in **API keys**. Usa una chiave di progetto per un progetto usato solo da Rational AI, così utilizzo e limiti restano separati.
+
+Se crei una chiave con restrizioni, assegnale almeno questi permessi:
+
+| Permesso | Perché serve |
+|---|---|
+| **Models**: Read | Elenca i modelli che puoi aggiungere al Registro modelli AI. |
+| **Model capabilities**: Write | Invia richieste di chat, embedding e immagini. |
+
+{/* TODO(verify): se Rational AI chiami anche l'endpoint Responses di OpenAI, che richiede un proprio permesso Write su una chiave con restrizioni. */}
+
+### Configura {#set-up}
+
+1. Nella piattaforma OpenAI, crea la chiave API e copiala. OpenAI la mostra una sola volta.
+2. In Rational AI, vai su **Impostazioni** → **Connettori** e seleziona **Aggiungi**.
+3. In **Sfoglia connettori**, seleziona **OpenAI**, poi seleziona **Aggiungi**.
+4. Inserisci un **Nome**, una **Descrizione** facoltativa e incolla la chiave in **API Key**.
+5. Seleziona **Aggiungi**.
+
+## Connetti Anthropic {#connect-anthropic}
+
+### Cosa ti serve {#what-you-need-1}
+
+Una chiave API di Anthropic, creata nella Claude Console. Le chiavi Anthropic non hanno ambiti, quindi crea la chiave in un workspace Anthropic riservato a Rational AI e imposta lì il limite di spesa del workspace.
+
+### Configura {#set-up-1}
+
+1. Nella Claude Console, crea la chiave API e copiala.
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Anthropic**, poi seleziona **Aggiungi**.
+3. Inserisci un **Nome**, una **Descrizione** facoltativa e incolla la chiave in **API Key**.
+4. Seleziona **Aggiungi**.
+
+## Connetti OpenRouter {#connect-openrouter}
+
+### Cosa ti serve {#what-you-need-2}
+
+Una chiave API di OpenRouter. OpenRouter consente di impostare un limite di credito su ogni chiave, che limita quanto Rational AI può spendere tramite quella chiave.
+
+### Configura {#set-up-2}
+
+1. In OpenRouter, crea la chiave API e copiala.
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **OpenRouter**, poi seleziona **Aggiungi**.
+3. Inserisci un **Nome**, una **Descrizione** facoltativa e incolla la chiave in **API Key**.
+4. Seleziona **Aggiungi**.
+
+OpenRouter è l'unico provider i cui prezzi Rational AI importa. Quando aggiungi un modello OpenRouter, il suo prezzo di catalogo viene compilato e mantenuto aggiornato. La sezione **Prezzi e abbonamenti dei provider** del connettore ha un pulsante **Sincronizza i prezzi dei modelli** per aggiornarlo quando serve.
+
+## Connetti Xference {#connect-xference}
+
+### Cosa ti serve {#what-you-need-3}
+
+La chiave API che ti fornisce Xference. L'endpoint è preconfigurato, quindi basta inserire la chiave.
+
+### Configura {#set-up-3}
+
+1. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Xference**, poi seleziona **Aggiungi**.
+2. Inserisci un **Nome**, una **Descrizione** facoltativa e incolla la chiave in **API Key**.
+3. Seleziona **Aggiungi**.
+
+## Connetti MiniMax {#connect-minimax}
+
+### Cosa ti serve {#what-you-need-4}
+
+Una chiave API della piattaforma MiniMax. L'endpoint è preconfigurato, quindi basta inserire la chiave.
+
+### Configura {#set-up-4}
+
+1. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **MiniMax**, poi seleziona **Aggiungi**.
+2. Inserisci un **Nome**, una **Descrizione** facoltativa e incolla la chiave in **API Key**.
+3. Seleziona **Aggiungi**.
+
+## Connetti un'API compatibile con OpenAI {#connect-an-openai-compatible-api}
+
+### Cosa ti serve {#what-you-need-5}
+
+- La **Base URL** dell'API, con il suo percorso di versione, per esempio `https://api.example.com/v1`. Rational AI elenca i modelli aggiungendo `/models` all'URL, quindi l'URL deve essere quello sotto cui si trovano `/models` e `/chat/completions`.
+- Una chiave API per quell'endpoint. Il campo è obbligatorio.
+
+La base URL viene chiamata dal server di Rational AI, non dal tuo browser. `localhost` in essa indica il server di Rational AI stesso.
+
+### Configura {#set-up-5}
+
+1. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **OpenAI Compatible**, poi seleziona **Aggiungi**.
+2. Inserisci un **Nome** e una **Descrizione** facoltativa.
+3. Inserisci la **Base URL** e la **API Key**.
+4. Seleziona **Aggiungi**.
+
+## Connetti Google Vertex AI {#connect-google-vertex-ai}
+
+Usa **Google Vertex AI** quando le richieste Gemini devono restare in una sola regione di Google Cloud, per esempio per la residenza dei dati.
+
+### Cosa ti serve {#what-you-need-6}
+
+Il connettore non memorizza alcuna chiave. Rational AI chiama Vertex AI con l'identità di Google Cloud con cui viene eseguita la sua installazione, quindi quell'identità deve avere accesso al tuo progetto.
+
+| Permesso | Perché serve |
+|---|---|
+| **Vertex AI User** (`roles/aiplatform.user`) sul progetto | Elenca i modelli Gemini serviti nella regione e invia le richieste di chat. |
+
+{/* TODO(verify): dove un amministratore di un'installazione on-premise trova l'identità di Google Cloud con cui viene eseguito Rational AI. */}
+
+Ti serve anche l'**ID progetto** del progetto Google Cloud e l'unica regione da chiamare, per esempio `europe-west8`.
+
+### Configura {#set-up-6}
+
+1. Nella console Google Cloud, vai su **IAM & Admin** → **IAM** per il tuo progetto e assegna all'identità di Rational AI il ruolo **Vertex AI User**.
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Google Vertex AI**, poi seleziona **Aggiungi**.
+3. Inserisci un **Nome** e una **Descrizione** facoltativa.
+4. Inserisci l'**ID progetto**, per esempio `my-project-123`.
+5. Inserisci la **Region**: una sola regione, per esempio `europe-west8`. `global` e le multi-regioni come `eu` o `us` vengono rifiutate.
+6. Seleziona **Aggiungi**.
+
+## Aggiungi i modelli del provider {#add-the-providers-models}
+
+Un connettore da solo non aggiunge alcun modello. Aggiungi ogni modello che ti serve nel Registro modelli AI:
+
+1. Vai su **Impostazioni** → **Registro modelli AI** e seleziona **Nuovo**.
+2. Seleziona **Aggiungi un proxy a un modello di terze parti**, poi **Avanti**.
+3. In **Provider**, seleziona il tuo connettore per nome.
+4. In **Modello**, seleziona il modello. L'elenco arriva dal provider.
+5. Controlla **Nome**, **Descrizione**, **Identificatore modello** e **Capacità**, compilati con i dati del provider. L'**Identificatore modello** deve essere univoco: per aggiungere due volte lo stesso modello, cambialo oppure seleziona **Genera id univoco**.
+6. Seleziona **Conferma**. Il messaggio *"Proxy al modello commerciale creato"* ne conferma l'aggiunta.
+
+Il modello è poi disponibile ovunque Rational AI offra un modello, per esempio su un [touchpoint](/operational-guides/configure-touchpoints) o come modello predefinito nel registro.
+
+## A cosa serve in Rational AI {#what-it-powers-in-rational-ai}
+
+- **Modelli AI:** ogni modello che aggiungi con **Aggiungi un proxy a un modello di terze parti** invia le sue richieste tramite il connettore. Il conteggio **Modelli AI** del connettore mostra quanti sono.
+- **Modelli di decisione:** un connettore OpenRouter elenca anche i modelli di decisione offerti da OpenRouter. Vedi [Usa i modelli di decisione](/operational-guides/ai-model-registry-features#use-decision-models).
+- **Prezzi:** per OpenRouter, i prezzi di catalogo importati di ogni modello che aggiungi.
+
+Sostituire una chiave nel connettore aggiorna ogni modello che la usa.
+
+## Limiti {#limits}
+
+- Un connettore **Google Vertex AI** serve solo completamenti di chat. Embedding, immagini e altre operazioni inviate ai suoi modelli vengono rifiutate.
+- Un connettore **Google Vertex AI** offre solo modelli di chat Gemini serviti nella sua regione. L'elenco viene aggiornato al massimo una volta all'ora, quindi un modello reso disponibile di recente da Google può richiedere fino a un'ora per comparire.
+- La **Region** di un connettore Vertex AI è una sola regione. Non può essere `global` né una multi-regione.
+- Xference e MiniMax usano sempre l'endpoint preconfigurato. Per raggiungere un altro endpoint, usa **OpenAI Compatible**.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| *"Impossibile elencare i modelli del provider"* quando apri **Modello**, con *"… responded 401 Unauthorized"* | La chiave API è errata, revocata o non ha il permesso di elencare i modelli. Inserisci una nuova chiave in **Configurazione** del connettore e seleziona **Salva**. |
+| *"Impossibile elencare i modelli del provider"* con *"Could not reach …/models"* | La **Base URL** del connettore OpenAI Compatible è errata o non raggiungibile dal server di Rational AI. Controlla il percorso di versione (`/v1`) e che `localhost` non indichi la tua macchina. |
+| *"Inserisci un URL assoluto comprensivo di schema, ad es. https://api.example.com/v1"* | La **Base URL** non ha `https://` o `http://`. |
+| *"Inserisci una sola region Google Cloud, ad es. europe-west8: non global né una multi-region come eu"* | **Region** è `global`, una multi-regione o è scritta in modo errato. Inserisci una sola regione. |
+| *"Inserisci un ID progetto Google Cloud, ad es. my-project-123"* | **ID progetto** contiene lettere maiuscole, inizia con una cifra o è il numero del progetto. Copia l'ID dalla console Google Cloud. |
+| *"Could not get a Google access token for this backend"* | L'installazione di Rational AI non ha un'identità Google Cloud da usare. Vedi la sezione Vertex AI. |
+| Un errore Vertex AI che termina con *"responded 403 Forbidden"* | L'identità di Rational AI non ha **Vertex AI User** sul progetto, oppure l'API Vertex AI non è abilitata nel progetto. |
+| *"Modello già esistente"* | Un modello con questo nome o identificativo è già registrato. Cambia l'**Identificatore modello** oppure seleziona **Genera id univoco**. |
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features): descrivi, approva e imposta i modelli predefiniti.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): scegli il modello con cui risponde un assistente.
+- [Configura connettori](/operational-guides/configure-connectors): modifica, verifica o elimina un connettore.

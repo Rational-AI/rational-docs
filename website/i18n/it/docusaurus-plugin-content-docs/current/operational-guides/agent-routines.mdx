@@ -16,7 +16,7 @@ Non c'è nulla da creare oltre all'agente: la sua **Attivazione** decide cosa lo
 ## Prerequisiti {#prerequisites}
 
 - **Un agente con istruzioni**: vedi [Crea un agente](./create-an-agent). Scrivile per un'esecuzione che nessuno sta guardando, e indica dove va il risultato e cosa vuol dire "completato".
-- **Per GitHub:** diritti di amministratore sul repository, per aggiungere un webhook, e l'URL del webhook e il secret forniti dal tuo amministratore.
+- **Per GitHub:** diritti di amministratore sul repository, per aggiungere un webhook.
 - **Per le chiamate API:** una chiave API da **Impostazioni** → **Chiavi API** (vedi [Accedi a Rational AI tramite API](/operational-guides/api-access#create-an-api-key)).
 - **Per le nuove email:** un canale Email (vedi [Collega una casella email](/operational-guides/connect-email)).
 - **Per i nuovi file e i record modificati:** una Knowledge che l'agente può usare.
@@ -43,8 +43,8 @@ Seleziona un'automazione per aprire il suo pannello: **Esegui ora** la avvia sub
 
 1. Apri il profilo dell'agente (**Modifica**), oppure crealo con **Nuova automazione**.
 2. In **Attivazione ed esecuzione**, imposta **Attivazione** su **Pianificazione**.
-3. In **Pianificazione**, lascia **Cron** e inserisci l'espressione: `0 8 * * 1-5`.
-4. Imposta il **Fuso orario**, per esempio `Europe/Rome`. Senza un fuso orario, la pianificazione usa UTC.
+3. In **Pianificazione**, inserisci l'espressione cron: `0 8 * * 1-5`.
+4. Imposta il **Fuso orario**, per esempio `Europe/Rome`. Se lo lasci vuoto, viene usato il fuso orario del browser, salvato insieme alla pianificazione.
 5. Seleziona **Salva** (oppure **Crea agente** per un nuovo agente).
 
 <img
@@ -66,7 +66,7 @@ Se un'esecuzione pianificata scatta mentre quella precedente è ancora in corso,
 
 ## Visualizza le prossime esecuzioni nel calendario {#see-whats-coming-in-the-calendar}
 
-**Agenti** → **Calendario** (anche la terza vista della pagina **Attività**) mostra le prossime esecuzioni pianificate in un calendario settimanale, accanto alle esecuzioni passate e alle approvazioni. Il calendario mostra sempre l'ora dell'Europa centrale (Roma), qualunque sia il fuso orario delle pianificazioni.
+**Agenti** → **Calendario** (anche la terza vista della pagina **Attività**) mostra le prossime esecuzioni pianificate in un calendario settimanale, accanto alle esecuzioni passate e alle approvazioni. Il calendario usa il fuso orario del tuo browser, qualunque sia il fuso orario delle pianificazioni.
 
 <img
   alt="Il calendario settimanale con il briefing delle 08:00 di Scout in ogni giorno feriale"
@@ -96,7 +96,11 @@ Se un'esecuzione pianificata scatta mentre quella precedente è ancora in corso,
 
 ### Collega il repository {#connect-the-repository}
 
-Il repository deve avere un webhook che invia i suoi eventi a Rational AI, firmato con un secret che appartiene all'agente. La Control Room non mostra l'URL di destinazione né il secret: chiedili al tuo amministratore. Poi, nel repository, vai su **Settings** → **Webhooks** → **Add webhook**, incolla l'URL e il secret, imposta **Content type** su `application/json` e scegli gli eventi che hai elencato nell'agente.
+Il repository deve avere un webhook che invia i suoi eventi a Rational AI, firmato con una chiave che appartiene all'agente.
+
+1. Dopo aver salvato l'agente, la sezione **Attivazione ed esecuzione** mostra l'**Indirizzo** del webhook. Seleziona **Copia**.
+2. Seleziona **Genera la chiave** e copia la chiave. Viene mostrata una sola volta: se la perdi, seleziona **Ruota la chiave** e aggiorna il webhook in GitHub.
+3. Nel repository, vai su **Settings** → **Webhooks** → **Add webhook**. Incolla l'indirizzo come **Payload URL** e la chiave come **Secret**, imposta **Content type** su `application/json` e scegli gli eventi che hai elencato nell'agente.
 
 GitHub invia una consegna di prova quando salvi il webhook. Da quel momento, ogni evento corrispondente avvia un'esecuzione che compare in **Cronologia**, avviata da *Evento GitHub*. Gli eventi di agenti in pausa, o di agenti che hanno superato il budget mensile, non avviano alcuna esecuzione.
 

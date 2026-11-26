@@ -1,47 +1,24 @@
 ---
 sidebar_position: 19
 sidebar_label: RLHF
-title: Reinforcement Learning from Human Feedback (RLHF)
-description: What RLHF is, why it is used to align models with human preferences, how the process works, and how it relates to fine-tuning.
+title: Apprendimento per rinforzo dal feedback umano (RLHF)
+description: Come i produttori di modelli usano le valutazioni delle persone per insegnare a un modello quali risposte sono utili, e l'effetto collaterale che può lasciare.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Apprendimento per rinforzo dal feedback umano (RLHF)
 
-# Reinforcement learning from human feedback (RLHF)
+L'**apprendimento per rinforzo dal feedback umano (RLHF)** è una fase di addestramento che insegna a un modello quali risposte le persone preferiscono. Un modello addestrato solo sul testo scrive in modo fluido, ma non sa distinguere una risposta chiara e onesta da una evasiva o prolissa. L'RLHF aggiunge questo giudizio.
 
-**Reinforcement Learning from Human Feedback (RLHF)** is a technique for aligning a model's behavior with human preferences. Instead of teaching the model only what is correct, RLHF teaches it what people find **helpful, safe and well‑expressed**.
+## Come funziona {#how-it-works}
 
-A model trained purely to predict the next word is fluent, but it has no sense of which of several plausible answers is actually the most useful or appropriate. RLHF adds that sense by learning directly from human judgement.
+1. Le persone confrontano due o più risposte alla stessa domanda e scelgono la migliore.
+2. Queste scelte addestrano un secondo modello che prevede quanto una risposta piacerebbe alle persone.
+3. Il modello linguistico viene addestrato ancora per scrivere risposte che il secondo modello valuta molto bene.
 
-## Why it is needed {#why-it-is-needed}
+Le persone tendono a valutare bene le risposte accomodanti, quindi un modello addestrato in questo modo può imparare a dirti ciò che vuoi sentire. Vedi [Compiacenza](/concepts/Sycophancy).
 
-Two answers can both be grammatically perfect and factually plausible while differing hugely in quality: one is clear, honest and on‑topic; the other is evasive, verbose or subtly unsafe. The training data alone doesn't reliably capture this difference. Human feedback does.
+## In Rational AI {#in-rational-ai}
 
-## How it works {#how-it-works}
-
-RLHF usually proceeds in three steps:
-
-1. **Collect human preferences:** people compare model responses to the same prompt and indicate which they prefer.
-2. **Train a reward model:** those comparisons are used to train a separate model that predicts how much a human would like a given response.
-3. **Optimize the main model:** the language model is then refined to produce responses that score highly with the reward model, while staying close to its original abilities.
-
-The outcome is a model that is capable and **aligned**: more helpful, more honest and less likely to produce harmful or off‑topic output.
-
-## Where RLHF fits {#where-rlhf-fits}
-
-RLHF is a specialised stage of [model training](./Model-training.mdx), applied after pre‑training and ordinary [fine-tuning](./Finetuning.mdx). It is what turns a raw language model into the kind of assistant you can put in front of users. The instruction‑tuned models you select in Rational AI have typically already been through this alignment, which is why they follow [prompts](./Prompts.mdx) and stay on task.
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Model training", to: "/concepts/Model-training" },
-		{ label: "Fine-tuning", to: "/concepts/Finetuning" },
-		{ label: "Prompts", to: "/concepts/Prompts" },
-		{ label: "Sycophancy", to: "/concepts/Sycophancy" },
-	]}
-/>
+L'RLHF avviene presso il produttore del modello, prima che il modello venga rilasciato. I modelli di chat che usi in Rational AI di solito sono già passati da questa fase, ed è il motivo per cui seguono le istruzioni. Il fine-tuning in Rational AI funziona in modo diverso: addestra un modello su conversazioni di esempio tratte da un dataset. Vedi [Fine-tuning](/concepts/Finetuning).

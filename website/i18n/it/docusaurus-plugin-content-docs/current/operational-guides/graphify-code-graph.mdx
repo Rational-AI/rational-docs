@@ -1,100 +1,85 @@
 ---
 sidebar_position: 16
-sidebar_label: Graphify code graph
+sidebar_label: Grafo del codice con Graphify
+title: Crea un grafo del codice con Graphify
+description: Trasforma un repository Git in una Knowledge che puoi esplorare come grafo e a cui puoi fare domande.
 type: how-to
 audience: [builder]
 ---
 
-# Build a code graph with Graphify
+# Crea un grafo del codice con Graphify
 
-A [Knowledge](/operational-guides/create-knowledge) can ingest an entire Git repository and turn it into a **code graph**: every file, symbol, and relationship in the codebase becomes a navigable part of the Knowledge. Graphify analyzes the repository, fills the Knowledge with structured resources, installs an interactive graph viewer, and gives the Knowledge chat a tool that answers questions about the code. This guide takes you from a clone URL to a Knowledge you can browse and query.
+Graphify trasforma un repository Git in un grafo del codice all'interno di una [Knowledge](/operational-guides/create-knowledge). I file e i simboli più significativi (funzioni, classi e così via) diventano risorse, i collegamenti tra di essi diventano relazioni, e la chat della Knowledge risponde alle domande sul codice interrogando il grafo. Questa guida ti porta da un URL di clone a una Knowledge che puoi esplorare e interrogare.
 
-:::note[What is Graphify?]
-Graphify is a code-analysis engine. It parses a repository and builds a graph where nodes are files and symbols (functions, classes, and so on), edges are the relationships between them (defines, references, calls), and **communities** are clusters of files that belong together. In Rational AI, Graphify is a **processing rule** you select when attaching a Git Source to a Knowledge. The graph it produces *is* the Knowledge's content.
-:::
+In Rational AI, Graphify è una regola di processing chiamata **Graphify repository**. La selezioni quando colleghi a una Knowledge una fonte repository Git.
 
-## Prerequisites {#prerequisites}
+## Prima di iniziare {#before-you-begin}
 
-Before you start, make sure you have:
+- L'estensione **Graphify Query** installata. Aggiunge la regola di processing **Graphify repository** e lo strumento che usa la chat. Vedi [Gestisci le estensioni](/operational-guides/manage-extensions).
+- Il modulo Knowledge nella tua licenza, con **Crea** nella riga **Fonti** del tuo ruolo e **Modifica** nella riga **Knowledge**. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- Un URL di clone HTTPS del repository, per esempio `https://github.com/id-Software/DOOM.git`.
+- Per un repository privato, un connettore **Credenziali Git** per l'host del repository, creato in **Impostazioni** → **Connettori**. I repository pubblici non richiedono un connettore.
 
-- **The Knowledge module in your license**, with **Create** on the **Sources** row of your role and **Update** on the **Knowledge** row (to attach the source). See [Manage roles and users](/operational-guides/roles-and-users).
-- **An HTTPS clone URL** for the repository you want to ingest, for example `https://github.com/id-Software/DOOM.git`.
-- **For a private repository:** the credentials needed to create a **Git credentials** connector for the repository host. Public repositories need no connector.
+## Crea una fonte repository Git {#create-a-git-repository-source}
 
-## Create a Git repository Source {#create-a-git-repository-source}
-
-The repository enters the platform as a regular Source. Nothing about the Source itself is Graphify-specific: the same Source could feed other Knowledge bases with other rules.
-
-1. Go to **Settings** → **Sources** and select **Add**.
-2. In **Type**, under **Git repository**, pick **Public repository** for a public repository, or the **Git credentials** connector for the repository host for a private one (create the connector first in **Settings** → **Connectors**).
-3. Enter the **Repository URL** (an HTTPS clone URL).
-4. Optionally set **Branch, tag, or commit** (leave it blank to use the repository's default branch), and turn on **Include Git submodules** if the repository uses them.
+1. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
+2. In **Tipo**, sotto **Git repository**, seleziona **Repository pubblico**, oppure il connettore **Credenziali Git** per un repository privato.
+3. Inserisci l'**URL del repository**.
+4. Facoltativamente, inserisci **Branch, tag o commit**. Lascialo vuoto per usare il branch predefinito del repository. Attiva **Includi i submodule Git** se il repository ne usa.
 
 <img
   src={require('@site/static/img/screens/source-git-repository.png').default}
-  alt="The Add new source dialog with the Git repository type selected and a repository URL filled in"
+  alt="La finestra Aggiungi nuova fonte con il tipo Git repository selezionato e un URL del repository compilato"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*Adding a **Git repository** Source: the clone URL, optional credentials, and an optional branch, tag, or commit.*
+## Collega la fonte con la regola Graphify {#attach-the-source-with-the-graphify-rule}
 
-## Attach the Source with the Graphify rule {#attach-the-source-with-the-graphify-rule}
+1. Crea una Knowledge o apri una esistente, apri le sue impostazioni e collega la fonte repository Git nella scheda **Fonti**.
+2. Seleziona **Graphify repository** come **Regola di processing** della fonte (in **Impostazioni di processing dati**), oppure come **Regola di processing di default** della Knowledge.
+3. Nella riga della fonte, seleziona **Processa ora**. Se la fonte non è mai stata sincronizzata, prima viene sincronizzata.
 
-Graphify comes into play when the Source is attached to a Knowledge: the **Processing rule** you pick decides how the repository is processed.
-
-1. Create a Knowledge (or open an existing one), open its settings, and attach the Git repository Source on the **Sources** tab.
-2. Select **Graphify repository** as the source's **Processing rule** (in the source's **Data processing settings**), or as the Knowledge's **Default processing rule**.
-3. In the source's row, select **Process now** and wait for processing to complete.
+Una Knowledge Graphify contiene esattamente un repository Git. Se colleghi una seconda fonte che usa la regola, o una fonte che non è un repository Git, il salvataggio fallisce con il messaggio *Graphify repository requires exactly one Git source per knowledge.* Per analizzare più repository, crea una Knowledge per ciascuno.
 
 <img
   src={require('@site/static/img/screens/knowledge-graphify-rule.png').default}
-  alt="The Knowledge Sources tab with the Graphify repository processing rule selected and a Git Source attached"
+  alt="La scheda Fonti della Knowledge con una fonte Git collegata e Graphify repository selezionato come regola di processing"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*The Knowledge's **Sources** tab: the Git Source attached with **Graphify repository** as its processing rule.*
+## Verifica cosa ha creato il processing {#check-what-processing-created}
 
-:::note[The first sync runs automatically]
-You don't need to synchronize the Source separately before processing. If the Source has never been synchronized, **Process now** runs the Source sync first, then continues on its own through snapshot creation, graph generation, and view installation.
-:::
+Quando il processing termina, la Knowledge contiene queste risorse:
 
-:::note[One repository per Graphify Knowledge]
-A Graphify Knowledge maps to a single Git repository: the generated graph represents one codebase. To analyze several repositories, create one Graphify Knowledge for each.
-:::
-
-## What processing produces {#what-processing-produces}
-
-During the sync, the repository is checked out, snapshotted, and analyzed by Graphify. The generated graph (`graphify-graph.json.gz`) is stored with the Knowledge, and its contents are materialized as resources and relations:
-
-| Category | What it holds | Relations |
+| Categoria | Cosa contiene | Relazioni |
 | :--- | :--- | :--- |
-| **Overview** | A single codebase overview resource. | None |
-| **Workspace** | One resource per workspace (top-level area) of the repository. | None |
-| *Code files* | One resource per analyzed file, categorized by its workspace. | **references** between files that use each other. |
-| **Community** | A cluster of files that Graphify groups together. | **contains** the files in the cluster. |
-| **Symbol** | A significant function, class, or other symbol. | **defined_in** the file that declares it. |
+| **Overview** | Una panoramica del codebase. | Nessuna |
+| **Workspace** | Una risorsa per ogni area di primo livello del repository. | Nessuna |
+| Il workspace del file | Una risorsa per ogni file analizzato. | **references** verso i file che usa |
+| **Community** | Un gruppo di file collegati tra loro. | **contains** verso i file del gruppo |
+| **Symbol** | Una funzione, una classe o un altro simbolo significativo. | **defined_in** verso il file che lo dichiara |
 
-:::note[No chunking, no embeddings]
-The Graphify rule is a dedicated processing path. It does not chunk, embed, or index the code for [RAG](/operational-guides/configure-rag). Questions are answered by querying the graph directly, so the answers reflect the code's actual structure rather than text similarity.
-:::
+Graphify non divide il codice in chunk e non ne crea gli embedding, quindi la ricerca nei documenti non trova nulla in questa Knowledge. Le risposte arrivano dal grafo.
 
-## Explore the graph {#explore-the-graph}
+## Esplora il grafo {#explore-the-graph}
 
-Processing also installs Graphify's interactive viewer as a [custom view](/operational-guides/knowledge-custom-views) on the Knowledge page. Open the Knowledge and switch to the Graphify view to explore the graph visually: files, symbols, communities, and the edges between them. The resources themselves behave like any other Knowledge content: browse them in the standard views, filter by category, and follow relations from the resource details panel.
+Il processing aggiunge alla Knowledge una vista chiamata **Graphify**. Apri la Knowledge e passa a quella vista per esplorare file, simboli, community e i collegamenti tra di essi. Le risorse funzionano anche come qualsiasi altro contenuto della Knowledge: puoi filtrarle per categoria nelle viste standard e seguire le loro relazioni dai dettagli della risorsa. Vedi [Configura le viste di una Knowledge](/operational-guides/knowledge-custom-views).
 
-## Ask questions about the code {#ask-questions-about-the-code}
+## Fai domande sul codice {#ask-questions-about-the-code}
 
-The Knowledge's touchpoint is equipped with the **`query_graph`** tool, which replaces the generic RAG tools on it. When you chat with the Knowledge, each question is answered by running Graphify's query engine against the stored graph on demand, with no server left running between questions.
+Graphify configura il touchpoint della Knowledge perché risponda dal grafo: assegna al touchpoint lo strumento `query_graph` e un prompt corrispondente, e rimuove gli strumenti RAG generici. Chatta con la Knowledge come al solito.
 
-For a Knowledge built from the public DOOM repository, try:
+Per una Knowledge creata dal repository pubblico DOOM, prova con:
 
 ```text
 Where is the main game loop implemented?
 ```
 
-The graph locates `D_DoomLoop()` in `linuxdoom-1.10/d_main.c`, along with the functions it calls.
+La risposta indica `D_DoomLoop()` in `linuxdoom-1.10/d_main.c` e le funzioni che richiama.
 
-## Next steps {#next-steps}
+Quando il repository cambia, seleziona di nuovo **Processa ora** per ricostruire il grafo.
 
-When the repository changes, select **Process now** again to rebuild the graph.
+## Prossimi passi {#next-steps}
 
+- [Configura le viste di una Knowledge](/operational-guides/knowledge-custom-views)
+- [Configura le fonti di dati](/operational-guides/configure-sources)

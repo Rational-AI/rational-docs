@@ -1,13 +1,13 @@
 ---
 sidebar_position: 21
-sidebar_label: Configura le fonti
+sidebar_label: Configura fonti
 type: how-to
 audience: [admin, builder]
 ---
 
-# Configura le fonti dei dati
+# Configura le fonti di dati
 
-Una fonte definisce quali file esterni Rational AI sincronizza e quando. La colleghi a una [Knowledge](/operational-guides/create-knowledge), a un touchpoint o a un progetto Rational BI, e ogni Knowledge elabora poi i file sincronizzati in un passaggio separato. Alcuni tipi di fonte sono integrati, come **HTTP**; altri arrivano dalle [estensioni](/operational-guides/manage-extensions) installate. Per collegare e sincronizzare un servizio dall'inizio alla fine, vedi [Integra dati esterni](/operational-guides/integrate-data).
+Una fonte definisce quali file esterni Rational AI sincronizza, e quando. La colleghi a una [Knowledge](/operational-guides/create-knowledge), a un touchpoint o a un progetto di Rational BI. Ogni Knowledge poi elabora i file sincronizzati nel proprio passaggio. Alcuni tipi di fonte sono integrati; altri arrivano dalle [estensioni](/operational-guides/manage-extensions) installate. Ogni tipo integrato ha una pagina di configurazione, elencata in [Scegli un tipo di fonte](#pick-a-source-type).
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
@@ -15,115 +15,92 @@ Una fonte definisce quali file esterni Rational AI sincronizza e quando. La coll
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
-*La pagina **Fonti**. Le fonti danno alla tua AI accesso a dati esterni, come lo storage cloud, i database e le API.*
+*La pagina **Fonti**. Le fonti danno alla tua AI accesso a dati esterni, come storage cloud, database e API.*
 
 ## Prerequisiti {#prerequisites}
 
-- **Il modulo Knowledge nella tua licenza:** **Fonti** si trova nella sezione Knowledge di **Impostazioni** ed è nascosto senza questo modulo.
+- **Il modulo Knowledge nella tua licenza:** **Fonti** si trova nella sezione Knowledge di **Impostazioni** ed è nascosta se il modulo non è incluso.
 - **Diritti sulle fonti:** **Crea**, **Modifica** o **Elimina** sulla riga **Fonti** del tuo ruolo, per le modifiche che vuoi fare. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
-- **Dove collegare la fonte:** una Knowledge (vedi **Impostazioni** → **Knowledge**), un touchpoint o un progetto Rational BI.
-- **L'estensione giusta installata** quando configuri una fonte fornita da un'estensione (vedi **Impostazioni** → **Estensioni**).
+- **Un punto in cui collegare la fonte:** una Knowledge (vedi **Impostazioni** → **Knowledge**), un touchpoint o un progetto di Rational BI.
+- **L'estensione corrispondente installata**, quando configuri una fonte fornita da un'estensione (vedi **Impostazioni** → **Estensioni**).
+
+## Scegli un tipo di fonte {#pick-a-source-type}
+
+Ogni tipo integrato ha una pagina con le credenziali necessarie sul servizio esterno e i passaggi per configurarlo.
+
+<span id="configure-an-http-source"></span>
+<span id="process-files-announced-on-a-rabbitmq-queue"></span>
+
+| Tipo in **Aggiungi nuova fonte** | Connettore necessario | Pagina di configurazione |
+|---|---|---|
+| **Google Drive** | **Google** | [Connetti Google Drive](/operational-guides/integrate-data) |
+| **OneDrive** | **Microsoft OneDrive** | [Connetti OneDrive e SharePoint](/operational-guides/connectors/onedrive-sharepoint) |
+| **Amazon S3** | **AWS** | [Connetti Amazon S3](/operational-guides/connectors/amazon-s3) |
+| **Azure Blob Storage** | **Azure** | [Connetti Azure Blob Storage](/operational-guides/connectors/azure-blob-storage) |
+| **Google Cloud Storage** | **Google Service Account Key** | Nessuna pagina per ora |
+| **Git repository** | **Credenziali Git**, oppure nessuna per un repository pubblico | [Connetti un repository Git](/operational-guides/connectors/git) |
+| **HTTP** | Nessuno | [Connetti indirizzi HTTP](/operational-guides/connectors/http) |
+| **RabbitMQ queue** | **RabbitMQ** | [Connetti RabbitMQ](/operational-guides/connectors/rabbitmq) |
+
+I database SQL non sono fonti. Per dare a Rational BI e agli agenti accesso a un database, vedi [Connetti un database SQL](/operational-guides/connectors/sql-databases).
 
 ## Scegli quando sincronizzare una fonte {#choose-when-a-source-syncs}
 
-1. Vai in **Impostazioni** → **Fonti** e seleziona la fonte.
+1. Vai su **Impostazioni** → **Fonti** e seleziona la fonte.
 2. Apri il menu **⋮** e seleziona **Impostazioni di sincronizzazione**.
 3. In **Modalità di sincronizzazione**, scegli una delle opzioni:
 
 | Opzione | Quando usarla |
 |--------|----------------|
-| **Automatico** | Il contenuto cambia in momenti imprevedibili e vuoi che le modifiche vengano recepite entro un paio di minuti. Rational AI controlla la fonte ogni due minuti e sincronizza solo quando qualcosa è cambiato, rielaborando solo ciò che è cambiato. Disponibile per le fonti **Git**, **Google Drive**, **OneDrive** e **HTTP**. |
-| **Periodica** | Vuoi sincronizzazioni a orari fissi, per esempio ogni notte o una volta a settimana. Imposta la **Periodicità di sincronizzazione** che la accompagna: **Ogni numero di minuti** (da 1 a 59), **Ogni numero di ore** (da 1 a 23), **Ogni ora**, **Ogni giorno**, **Settimanale** o **Mensile**. |
+| **Automatico** | Il contenuto cambia in momenti imprevedibili e vuoi che le modifiche vengano rilevate entro un paio di minuti. Rational AI controlla la fonte ogni due minuti e sincronizza solo se qualcosa è cambiato, rielaborando solo ciò che è cambiato. Disponibile per le fonti **Git**, **Google Drive**, **OneDrive** e **HTTP**. |
+| **Periodica** | Vuoi sincronizzazioni a orari fissi, per esempio ogni notte o una volta a settimana. Imposta la **Periodicità di sincronizzazione** che la accompagna: **Ogni numero di minuti** (da 1 a 59), **Ogni numero di ore** (da 1 a 23), **Una volta all'ora**, **Una volta al giorno**, **Settimanale** o **Mensile**. |
 | **Manuale** | Vuoi decidere ogni volta. La fonte si sincronizza solo quando selezioni **Sincronizza ora**. |
 
-4. Scegli il comportamento in **Prima di essere eliminata** (**Elimina a cascata** o **Conserva la fonte**), poi seleziona **Salva**.
+4. In **Prima di essere eliminata**, scegli cosa succede ai file eliminati alla fonte, poi seleziona **Salva**:
+   - **Elimina a cascata**, il valore predefinito: un file eliminato alla fonte viene eliminato da ogni Knowledge che lo ha importato, insieme a tutto ciò che ne deriva.
+   - **Conserva la fonte**: i file restano nella Knowledge dopo essere stati eliminati alla fonte, il che protegge da eliminazioni accidentali.
 
 :::note[Automatico compare solo per le fonti che possono segnalare le modifiche]
-**Automatico** richiede una fonte che possa dire *"nulla è cambiato"* con una sola chiamata. Gli object store come Amazon S3, Azure Blob Storage e Google Cloud Storage, le code RabbitMQ e le fonti delle estensioni non possono farlo senza una configurazione da parte tua, quindi offrono solo **Periodica** e **Manuale**. Una fonte automatica non mostra **Prossima sincronizzazione**, perché il controllo ogni due minuti non è una sincronizzazione.
+**Automatico** richiede una fonte che possa dire *«nessuna modifica»* con una sola chiamata. Gli object store come Amazon S3, Azure Blob Storage e Google Cloud Storage, e le fonti delle estensioni, non possono farlo senza una configurazione da parte tua: per questo offrono solo **Periodica** e **Manuale**. Una coda RabbitMQ non ha alcuna pianificazione: consuma la coda da **Sincronizza ora** fino a **Interrompi sincronizzazione**. Una fonte automatica non mostra **Prossima sincronizzazione**, perché il controllo ogni due minuti non è una sincronizzazione.
 :::
 
 ### Cosa succede quando una sincronizzazione continua a fallire {#what-happens-when-a-sync-keeps-failing}
 
-Dopo una sincronizzazione non riuscita, le sincronizzazioni programmate attendono più a lungo prima di ogni nuovo tentativo, fino a un'ora, finché una sincronizzazione non riesce. **Sincronizza ora** viene sempre eseguita, quindi usalo una volta risolto il problema, per esempio dopo aver rifatto l'autenticazione del [connettore](/operational-guides/configure-connectors).
+Dopo una sincronizzazione non riuscita, le sincronizzazioni programmate attendono più a lungo prima di ogni nuovo tentativo, fino a un'ora, finché una sincronizzazione non riesce. **Sincronizza ora** viene sempre eseguita: usala quando hai risolto il problema, per esempio dopo aver ripetuto l'autenticazione del [connettore](/operational-guides/configure-connectors).
 
-**Sincronizza ora** e ogni modifica al tipo, al connettore, ai percorsi o alla configurazione della fonte eseguono una sincronizzazione completa. Altrimenti una fonte **Automatico** controlla solo ciò che è cambiato.
+**Sincronizza ora** e qualsiasi modifica al tipo, al connettore, ai percorsi o alla configurazione della fonte eseguono una sincronizzazione completa. Altrimenti una fonte in modalità **Automatico** controlla solo ciò che è cambiato.
 
 ### Elabora una Knowledge ogni volta che cambia la sua fonte {#process-a-knowledge-whenever-its-source-changes}
 
-Una fonte porta dentro i file; ogni Knowledge collegata decide quando elaborarli. Nelle impostazioni della Knowledge, nella scheda **Fonti**, apri il menu **⋮** della fonte e seleziona **Impostazioni di processing dati**. Scegli **Automatico** per elaborare di nuovo i dati ogni volta che la fonte porta modifiche. Questa modalità è disponibile per ogni tipo di fonte.
+Una fonte importa i file; ogni Knowledge collegata decide quando elaborarli. Nelle impostazioni della Knowledge, nella scheda **Fonti**, apri il menu **⋮** della fonte e seleziona **Impostazioni di processing dati**. Scegli **Automatico** per elaborare di nuovo i dati ogni volta che la fonte porta delle modifiche. Questa modalità è disponibile per ogni tipo di fonte.
 
 ## Configura una fonte fornita da un'estensione (ArXiv Catchup) {#configure-an-extension-contributed-source-arxiv-catchup}
 
-Le estensioni possono aggiungere tipi di fonte propri. **ArXiv Catchup**, per esempio, scarica i PDF dei nuovi articoli in una categoria arXiv a ogni sincronizzazione.
+Le estensioni possono aggiungere tipi di fonte propri. **ArXiv Catchup**, per esempio, scarica i PDF dei nuovi articoli di una categoria arXiv a ogni sincronizzazione.
 
 ### Installa l'estensione {#install-the-extension}
 
-Vai in **Impostazioni** → **Estensioni** e installa l'estensione **ArXiv Catchup**. Un'estensione che fornisce solo fonti si installa direttamente, senza un passaggio di configurazione aggiuntivo.
+Vai su **Impostazioni** → **Estensioni** e installa l'estensione **ArXiv Catchup**. Un'estensione che fornisce solo fonti si installa direttamente, senza un passaggio di configurazione aggiuntivo.
 
 ### Aggiungi e configura la fonte {#add-and-configure-the-source}
 
-1. Vai in **Impostazioni** → **Fonti**, seleziona **Aggiungi** e scegli il tipo **ArXiv Catchup**. Le fonti delle estensioni compaiono con una propria icona.
-2. Seleziona un **Gruppo**, poi un **Archivio**, poi una **Categoria**. Queste scelte si susseguono nella tassonomia fissa delle materie di arXiv, quindi ogni scelta restringe la successiva.
-3. In **Modifiche da**, scegli fino a quanto indietro cercare gli articoli.
+1. Vai su **Impostazioni** → **Fonti**, seleziona **Aggiungi** e scegli il tipo **ArXiv Catchup**. Le fonti delle estensioni compaiono con una loro icona.
+2. Seleziona un **Gruppo**, poi un **Archivio**, poi una **Categoria**. I tre campi seguono a cascata la tassonomia fissa delle materie di arXiv, quindi ogni scelta restringe la successiva.
+3. In **Modifiche da**, scegli quanto indietro nel tempo cercare gli articoli.
 4. Imposta **Max articoli** (predefinito `500`) per limitare quanti articoli recupera ogni sincronizzazione.
 5. Seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione, che scarica i PDF.
 
 ### Mantienila sincronizzata {#keep-it-in-sync}
 
-Per sincronizzare la fonte automaticamente, apri il suo menu **⋮**, seleziona **Impostazioni di sincronizzazione** e scegli **Periodica** con una **Periodicità di sincronizzazione** (per esempio **Ogni giorno**). Altrimenti seleziona **Sincronizza ora** ogni volta che vuoi gli ultimi articoli.
+Per sincronizzare la fonte in automatico, apri il suo menu **⋮**, seleziona **Impostazioni di sincronizzazione** e scegli **Periodica** con una **Periodicità di sincronizzazione** (per esempio **Una volta al giorno**). Altrimenti seleziona **Sincronizza ora** ogni volta che vuoi gli articoli più recenti.
 
 arXiv limita i download in blocco, quindi tieni **Max articoli** (al massimo `5000`) il più basso possibile.
 
-## Configura una fonte HTTP {#configure-an-http-source}
-
-Usa la fonte **HTTP** quando i contenuti si trovano a uno o più indirizzi web che puoi indicare direttamente a Rational AI.
-
-1. Vai in **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
-2. In **Tipo**, seleziona **HTTP**.
-3. Inserisci almeno un **Url** che inizi con `http://` o `https://`.
-4. Seleziona **Aggiungi**.
-
-## Elabora i file annunciati su una coda RabbitMQ {#process-files-announced-on-a-rabbitmq-queue}
-
-Usa una fonte **RabbitMQ** quando un altro sistema annuncia documenti da elaborare su una coda di messaggi e si aspetta i risultati su un'altra coda. Ogni messaggio punta a un file: Rational AI lo scarica nella Knowledge, lo elabora e pubblica il risultato.
-
-### Prerequisiti {#prerequisites-1}
-
-- **Un connettore RabbitMQ** per il broker (vedi [Configura i connettori](/operational-guides/configure-connectors#connect-a-rabbitmq-broker)).
-- **Una Knowledge** che riceva i file. La fonte registra ogni file nella prima Knowledge a cui è collegata.
-
-### Aggiungi la fonte {#add-the-source}
-
-1. Vai in **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
-2. In **Tipo**, trova **RabbitMQ queue** e scegli il connettore del tuo broker sotto di essa.
-3. Compila le impostazioni della coda:
-
-| Campo | Cosa inserire |
-|-------|---------------|
-| **Coda** | La coda da consumare, per esempio `pod-uploaded`. Obbligatorio. |
-| **Coda dei risultati** | Dove vengono pubblicati i risultati, per esempio `pod-processed`. Lasciala vuota per non pubblicare nulla. |
-| **Exchange dei risultati (facoltativo)** | Lascialo vuoto per usare l'exchange predefinito; altrimenti la coda dei risultati viene usata come routing key. |
-| **Campo con l'URL del file** | Il campo del messaggio che contiene l'URL del file, per esempio `url` o `pod.downloadUrl`. |
-| **Campo con l'ID del messaggio (facoltativo)** | Il campo che identifica il messaggio, per esempio `requestId`. |
-| **File in elaborazione** | Quanti file possono attendere contemporaneamente un risultato (predefinito `16`). |
-| **Elimina ogni file dopo averne pubblicato il risultato** | Selezionalo per rimuovere il file dalla Knowledge dopo l'invio del suo risultato. |
-
-4. Seleziona **Aggiungi**.
-5. Collega la fonte alla Knowledge e seleziona **Sincronizza ora** per iniziare a consumare la coda. **Interrompi sincronizzazione** la ferma.
-
-:::note[Una coda avviata resta attiva]
-Una fonte RabbitMQ non ha una pianificazione: dopo aver selezionato **Sincronizza ora**, continua a consumare la coda, anche dopo un riavvio della piattaforma, finché non selezioni **Interrompi sincronizzazione**. Il suo stato mostra se la coda può essere consumata.
-:::
-
-### Cosa contiene il messaggio del risultato {#what-the-result-message-contains}
-
-Per ogni documento, quando è stato elaborato o è fallito, la coda dei risultati riceve il messaggio originale, lo stato ed eventuali errori, il file, gli attributi estratti da esso e i timestamp. Usa l'ID del messaggio per associare ogni risultato alla sua richiesta. Il tuo sistema potrebbe ricevere lo stesso risultato due volte, quindi fallo ignorare i duplicati.
-
 ## Fai ignorare robots.txt all'estensione Fetch {#let-the-fetch-extension-ignore-robotstxt}
 
-L'estensione **Fetch** rispetta `robots.txt` per impostazione predefinita. Per farle recuperare pagine che il `robots.txt` di un sito vieta, seleziona **Ignore robots.txt** nella configurazione dell'estensione in **Impostazioni** → **Estensioni**.
+L'estensione **Fetch** rispetta `robots.txt` per impostazione predefinita. Per farle scaricare le pagine che il `robots.txt` di un sito vieta, seleziona **Ignore robots.txt** nella configurazione dell'estensione, in **Impostazioni** → **Estensioni**.
 
 ## Prossimi passi {#next-steps}
 
-- [Integra dati esterni](/operational-guides/integrate-data): collega Google Drive e sincronizzalo in una Knowledge.
-- [Configura un connettore](/operational-guides/configure-connectors): le credenziali che usa una fonte.
+- [Connetti Google Drive](/operational-guides/integrate-data): configura una fonte dall'inizio alla fine.
+- [Configura connettori](/operational-guides/configure-connectors): le credenziali usate da una fonte.

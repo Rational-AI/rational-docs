@@ -1,68 +1,84 @@
 ---
-sidebar_position: 1
-sidebar_label: Integra dati esterni
+title: Connetti Google Drive
+sidebar_label: Connetti Google Drive
 slug: /operational-guides/integrate-data
+description: Sincronizza cartelle e file da Google Drive in una Knowledge con un connettore Google e una fonte Google Drive.
 type: how-to
-audience: [admin, builder]
+audience: [admin]
 ---
 
+Il connettore Google accede a un solo account Google con accesso in sola lettura a Drive. Così una fonte Google Drive può sincronizzare le cartelle e i file di quell'account in una [Knowledge](/operational-guides/create-knowledge).
 
-# Integra dati esterni
+## Chi può configurarlo {#who-can-set-it-up}
 
-Per rendere ricercabili in una Knowledge i file di un servizio esterno, colleghi tre elementi: un [connettore](/operational-guides/configure-connectors) che contiene le credenziali, una [fonte](/operational-guides/configure-sources) che indica quali file sincronizzare, e la Knowledge che li elabora. Questa pagina descrive l'intero percorso con Google Drive. Gli altri provider seguono gli stessi passaggi con le proprie credenziali; vedi [Provider disponibili](/operational-guides/configure-connectors#available-providers).
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore, **Crea** sulla riga **Fonti** e **Usa** sulla riga **Connettori** per aggiungere la fonte, e **Modifica** sulla riga **Knowledge** per collegarla. **Fonti** richiede il modulo Knowledge nella tua licenza. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **In Google Cloud:** qualcuno che può attivare API e creare client OAuth in un progetto Google Cloud.
+- **In Google Drive:** l'account che accede quando autorizzi il connettore. La fonte vede ciò che vede quell'account.
 
-## Prerequisiti {#prerequisites}
+## Cosa ti serve {#what-you-need}
 
-- **Crea** sulle righe **Connettori** e **Fonti** del tuo ruolo. Vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
-- **Il modulo Knowledge nella tua licenza.** Senza di esso **Fonti** è nascosto.
-- **Una [Knowledge](/operational-guides/create-knowledge)** che riceva i file.
-- **Un progetto Google Cloud** in cui puoi creare credenziali OAuth.
+- Un progetto Google Cloud che appartiene alla tua organizzazione Google Workspace, così la schermata di consenso OAuth può essere **Internal**.
+- L'indirizzo con cui apri Rational AI, per esempio `https://ai.example.com`.
+- Una Knowledge in cui ricevere i file.
 
-## Integra i dati di Google Drive {#integrate-google-drive-data}
+Il connettore chiede a Google un solo ambito durante l'accesso:
 
-### 1. Crea le credenziali OAuth in Google Cloud {#1-create-oauth-credentials-in-google-cloud}
+| Permesso | Perché serve |
+|---|---|
+| `https://www.googleapis.com/auth/drive.readonly` | Elenca le cartelle e i file visibili all'account, li scarica e legge il feed delle modifiche di Drive per le sincronizzazioni in modalità **Automatico**. Non può creare, modificare o eliminare nulla in Drive. |
 
-1. Nella [Google Cloud Console](https://console.cloud.google.com/), apri il tuo progetto e attiva la **Google Drive API** in **APIs & Services** → **Library**.
-2. In **APIs & Services** → **OAuth consent screen**, configura la schermata di consenso. Scegli **Internal** per limitare l'accesso al tuo Google Workspace.
-3. In **APIs & Services** → **Credentials**, crea un **OAuth client ID** di tipo **Web application**.
-4. In **Authorized redirect URIs**, aggiungi l'indirizzo con cui apri Rational AI, seguito da `/api/management/v0/oauth/callback`. Ad esempio, `https://ai.example.com/api/management/v0/oauth/callback`.
-5. Copia il **Client ID** e il **Client Secret**.
+Il connettore Google serve solo alle fonti Google Drive. La sua descrizione nella galleria dei connettori cita anche Gmail e Calendar, ma non chiede mai l'accesso a questi servizi. Per far rispondere un assistente alle email in una casella Gmail, vedi [Collega una casella email](/operational-guides/connect-email).
 
-### 2. Aggiungi il connettore Google {#2-add-the-google-connector}
+## Configura {#integrate-google-drive-data}
 
-1. In Rational AI, vai su **Impostazioni** → **Connettori** e seleziona **Aggiungi**.
-2. Scegli **Google**.
-3. Inserisci un **Nome**, ad esempio *Marketing Drive*, e incolla il **Client ID** e il **Client Secret**.
-4. Seleziona **Aggiungi e autorizza** e accedi con l'account Google di cui vuoi sincronizzare i file.
+1. Nella [console Google Cloud](https://console.cloud.google.com/), apri il tuo progetto, vai su **APIs & Services** → **Library** e attiva la **Google Drive API**.
+2. Vai su **Google Auth Platform**. Se non è ancora configurata, seleziona **Get started**, inserisci un nome dell'app e un'email di supporto, e scegli **Internal** come **Audience**.
+3. In **Data Access**, seleziona **Add or remove scopes**, aggiungi `https://www.googleapis.com/auth/drive.readonly` e salva.
+4. In **Clients**, crea un client con tipo di applicazione **Web application**. In **Authorized redirect URIs**, aggiungi il tuo indirizzo di Rational AI seguito da `/api/management/v0/oauth/callback`, per esempio `https://ai.example.com/api/management/v0/oauth/callback`.
+5. Copia il **Client ID** e il **Client secret**.
+6. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Google**, poi seleziona **Aggiungi**.
+7. Inserisci un **Nome**, per esempio *Marketing Drive*, e incolla il **Client ID** e il **Client Secret**.
+8. Seleziona **Aggiungi e autorizza** e accedi con l'account Google i cui file vuoi sincronizzare. Dopo che hai consentito l'accesso, Google ti riporta in Rational AI.
+9. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
+10. Inserisci un **Nome**, per esempio *Marketing team Drive*. In **Tipo**, trova **Google Drive** e seleziona il tuo connettore sotto di esso.
+11. Nel pannello dei file, seleziona le cartelle e i file da sincronizzare. Usa *Filtra file e cartelle...* per restringere l'albero.
+12. Seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+13. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge, seleziona la scheda **Fonti** e scegli la fonte in *Aggiungi fonte...*.
+14. Apri il menu della fonte in quella scheda e seleziona **Processa ora** per elaborare i file sincronizzati.
 
-### 3. Aggiungi una fonte Google Drive {#3-add-a-google-drive-source}
+Una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per tenerla aggiornata, imposta la sua modalità di sincronizzazione come descritto in [Scegli quando sincronizzare una fonte](/operational-guides/configure-sources#choose-when-a-source-syncs).
 
-1. Vai su **Impostazioni** → **Fonti** e seleziona **Aggiungi**.
-2. Inserisci un **Nome**, ad esempio *Marketing team Drive*.
-3. In **Tipo**, trova **Google Drive** e seleziona il connettore sotto di esso.
-4. Nel pannello dei file, seleziona le cartelle, i drive condivisi o i file da sincronizzare. Usa *"Filtra file e cartelle..."* per restringere l'albero. Una cartella selezionata viene sincronizzata con tutto ciò che contiene.
-5. Seleziona **Aggiungi**. Rational AI crea la fonte ed esegue la prima sincronizzazione.
+## Cosa viene sincronizzato {#what-gets-synced}
 
-### 4. Scegli quando la fonte si sincronizza {#4-choose-when-the-source-syncs}
+- **Le cartelle e i file che hai selezionato.** Una cartella selezionata include tutto ciò che contiene, anche i file aggiunti in seguito.
+- **Google Docs, Sheets e Slides** come file `.docx`, `.xlsx` e `.pptx`, così la Knowledge può elaborarli come qualsiasi altro documento.
+- **Le modifiche**, secondo la modalità di sincronizzazione della fonte. Le fonti Google Drive supportano **Automatico**, **Periodica** e **Manuale**. Con **Automatico**, Rational AI controlla il feed delle modifiche di Drive dell'account ogni due minuti e sincronizza solo quando qualcosa è cambiato.
 
-Dopo la prima sincronizzazione, una nuova fonte si sincronizza solo quando selezioni **Sincronizza ora**. Per tenerla aggiornata, apri il menu **⋮** della fonte, seleziona **Impostazioni di sincronizzazione** e scegli **Automatico** o **Periodica**. Vedi [Scegli quando una fonte si sincronizza](/operational-guides/configure-sources#choose-when-a-source-syncs).
+Il pannello dei file elenca **My Drive** dell'account che hai usato per accedere. I drive condivisi e i file in **Shared with me** non compaiono.
 
-### 5. Collega la fonte a una Knowledge {#5-attach-the-source-to-a-knowledge}
+{/* TODO(verify): shared drives and "Shared with me" are not listed, because the source sets no shared drive and no shared-with-me option. Confirm on a Workspace account. */}
 
-1. Vai su **Impostazioni** → **Knowledge**, apri la Knowledge e seleziona la scheda **Fonti**.
-2. In **Aggiungi fonte...**, seleziona la fonte. Viene aggiunta subito.
-3. Per elaborare subito i file sincronizzati, apri il menu **⋮** della fonte e seleziona **Processa ora**. Per elaborare le modifiche a ogni sincronizzazione della fonte, vedi [Elabora una Knowledge ogni volta che cambia la sua fonte](/operational-guides/configure-sources#process-a-knowledge-whenever-its-source-changes).
+Rational AI non scrive mai su Drive. I file eliminati da Drive escono anche dalla Knowledge quando l'impostazione della fonte **Prima di essere eliminata** è **Elimina a cascata**, che è il valore predefinito.
+
+## Limiti {#limits}
+
+- Un connettore accede a un solo account Google. Per sincronizzare i file di un altro account, aggiungi un altro connettore.
+- Il feed delle modifiche di Drive copre tutto l'account, non solo le cartelle della fonte. Una modifica altrove nell'account avvia una sincronizzazione che non trova nulla di nuovo.
+- Il connettore non può essere autorizzato di nuovo una volta che ha un token. Se l'accesso dell'account viene revocato, aggiungi un nuovo connettore e passa la fonte a quello nuovo.
 
 ## Risoluzione dei problemi {#troubleshooting}
 
 | Sintomo | Cosa controllare |
 |---|---|
-| Un'icona rossa di link interrotto accanto al connettore | L'accesso non è riuscito o è scaduto. Apri il menu del connettore, seleziona **Completa l'autenticazione** e accedi di nuovo. |
-| Il pannello dei file non elenca alcuna cartella | Il connettore selezionato non riesce a raggiungere il servizio. Correggi la sua autenticazione nella pagina **Connettori**, poi aggiungi di nuovo la fonte. |
-| Google mostra un errore di redirect URI durante l'accesso | La voce **Authorized redirect URIs** deve corrispondere esattamente all'indirizzo con cui apri Rational AI, seguito da `/api/management/v0/oauth/callback`. |
+| Un'icona di link spezzato (**Autenticazione assente**) accanto al connettore | L'accesso Google non è stato completato, quindi il connettore non ha un token. Apri il connettore, seleziona **Completa l'autenticazione** nel suo menu e accedi. |
+| Google mostra *redirect_uri_mismatch* durante l'accesso | Gli **Authorized redirect URIs** del client OAuth devono contenere il tuo indirizzo di Rational AI seguito da `/api/management/v0/oauth/callback`, con lo stesso schema e host che usi nel browser. |
+| Google mostra *access blocked* o *app not verified* | Il pubblico (**Audience**) della schermata di consenso è **External**. Impostalo su **Internal** in **Google Auth Platform** → **Audience**, oppure accedi con un account della tua organizzazione Workspace. |
+| Il pannello dei file mostra *Connessione fallita* | Il connettore non riesce a raggiungere Drive. Controlla che la **Google Drive API** sia attivata nel progetto e che l'accesso sia stato completato. |
+| La cartella che vuoi non compare nel pannello dei file | Si trova in un drive condiviso o in **Shared with me**. Viene elencato solo **My Drive**. |
+| Le sincronizzazioni falliscono dopo aver funzionato per alcuni giorni | L'accesso dell'account è stato revocato, oppure il client secret è stato eliminato in Google Cloud. Aggiungi un nuovo connettore Google, modifica la fonte, seleziona il nuovo connettore in **Tipo** e seleziona di nuovo le cartelle. |
 
 ## Prossimi passi {#next-steps}
 
-- [Configura i connettori](/operational-guides/configure-connectors): ogni provider e ciò che richiede.
-- [Configura le fonti dei dati](/operational-guides/configure-sources): modalità di sincronizzazione e altri tipi di fonte.
-- [Aggiungi e gestisci i contenuti](/operational-guides/manage-knowledge-resources): lavora con i file di una Knowledge.
+- [Configura le fonti di dati](/operational-guides/configure-sources): modalità di sincronizzazione, sincronizzazioni non riuscite ed elaborazione alla modifica.
+- [Aggiungi e gestisci i contenuti in una Knowledge](/operational-guides/manage-knowledge-resources): lavora con i file sincronizzati in una Knowledge.
+- [Connetti OneDrive e SharePoint](/operational-guides/connectors/onedrive-sharepoint): sincronizza allo stesso modo i file di Microsoft 365.

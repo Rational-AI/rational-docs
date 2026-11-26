@@ -1,17 +1,30 @@
 ---
 sidebar_position: 33
-sidebar_label: Generated image provenance
+sidebar_label: Etichetta delle immagini generate
+title: Etichetta delle immagini generate dall'AI
+description: L'etichetta nei metadati che contrassegna le immagini create in Gen come generate dall'AI, e cosa non dimostra.
 type: concept
 audience: [admin]
 ---
 
-# How generated images declare they were made by AI
+# Etichetta delle immagini generate dall'AI
 
-Every image generated in Gen, including the ones a chat creates through Gen, carries a standard metadata label saying a model made it, along with the model's name. The label is written into PNG and JPEG files when they are saved, so it stays with the file after a download, an export or an API response. Search engines and social platforms read this label when they tag content as AI-generated. Images in other formats are stored without it.
+Ogni immagine PNG o JPEG generata da Gen, comprese quelle che una chat crea tramite Gen, contiene un'etichetta nei metadati che indica che un modello l'ha prodotta. Non c'è nulla da attivare o configurare.
 
-The label states what the file is; it does not prove that nobody changed the file since, and anyone can remove it. It is not a signed C2PA provenance record, so it does not meet a requirement that asks for C2PA specifically.
+## Cosa contiene l'etichetta {#what-the-label-contains}
 
-## Next steps {#next-steps}
+L'etichetta è un pacchetto di metadati XMP scritto nel file prima che venga salvato. Contiene due valori:
 
-- [Generate images with Gen](/operational-guides/gen-images): where generated images come from.
-- [Manage AI models in the registry](/operational-guides/ai-model-registry-features): document what a model may be used for.
+- Il tipo di sorgente digitale IPTC `trainedAlgorithmicMedia`, il valore standard per i contenuti creati da un modello addestrato. I motori di ricerca e le piattaforme social lo leggono quando contrassegnano un contenuto come generato dall'AI.
+- L'identificatore del modello che ha creato l'immagine, come strumento creatore, quando è noto.
+
+Poiché l'etichetta è dentro il file, resta con l'immagine dopo un download, un'esportazione o una risposta API. Per verificare un file, aprine i metadati con uno strumento che legge XMP, come ExifTool, e cerca il tipo di sorgente digitale. Le immagini in altri formati vengono salvate senza etichetta.
+
+## Cosa l'etichetta non dimostra {#what-the-label-does-not-prove}
+
+L'etichetta dichiara che cosa è il file. Non è firmata, quindi non dimostra che nessuno abbia modificato il file da allora, e chiunque può rimuoverla. Non è nemmeno un record di provenienza C2PA, quindi non soddisfa un requisito che richiede specificamente C2PA.
+
+## Scopri di più {#learn-more}
+
+- [Genera immagini con Gen](/operational-guides/gen-images)
+- [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features)

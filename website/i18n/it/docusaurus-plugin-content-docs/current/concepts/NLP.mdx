@@ -1,52 +1,22 @@
 ---
 sidebar_position: 15
-sidebar_label: Natural Language Processing
+sidebar_label: Elaborazione del linguaggio naturale
+title: Elaborazione del linguaggio naturale (NLP)
+description: Cos'è l'elaborazione del linguaggio naturale, come un computer trasforma il testo in qualcosa con cui può lavorare, e dove compare in Rational AI.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
+# Elaborazione del linguaggio naturale (NLP)
 
-# Natural language processing (NLP)
-Natural Language Processing (NLP) is a field of artificial intelligence that focuses on enabling computers to 
-understand, interpret, generate, and interact with human language, in both written and spoken form. 
-It bridges the gap between human communication and machine processing.
+L'**elaborazione del linguaggio naturale (NLP)** è il campo dell'AI che si occupa del linguaggio umano: comprenderlo, tradurlo, riassumerlo e scriverlo.
 
-Its objective is to:
-* understand the meaning and intent of text;
-* extract relevant information;
-* generate coherent and context-aware responses;
-* and enable natural human-computer interaction.
+I primi sistemi NLP seguivano regole scritte a mano e gestivano una lingua e un compito alla volta. L'NLP moderno impara i pattern da grandissime quantità di testo, quindi un solo modello può gestire molti compiti in molte lingue. I [large language model](/concepts/LLMs) sono il risultato attuale di questo lavoro.
 
-Unlike traditional rule-based language systems, modern NLP relies primarily on **statistical and deep learning models** 
-trained on large text corpora to learn linguistic patterns, semantics, and context.
+## Come un computer legge il testo {#how-a-computer-reads-text}
 
-#### Comparative view {#comparative-view}
-| Aspect            | Traditional NLP            | Modern NLP           |  
-|:------------------|:---------------------------|:---------------------|  
-| Approach          | Rule-based / feature based | Neural / data-driven |  
-| Flexibility       | Low                        | High                 |
-| Scalability       | Limited                    | High                 |
-| Language support  | Language-specific development        | Multilingual models  |
-| Adaptability      | Low                        | High                 |
+Un modello non può lavorare direttamente con le parole. Prima divide il testo in [token](/concepts/Tokens), poi li trasforma in numeri che catturano il significato, così che "fattura" e "bolletta" finiscano vicine. Questi numeri si chiamano [embedding](/concepts/Embeddings-chunks-and-annotations).
 
-#### How does it work? {#how-does-it-work}
-NLP models process language by transforming text into **numerical representations** (embeddings) 
-that capture **semantic** and **syntactic relationships**.
+## In Rational AI {#in-rational-ai}
 
-These representations are then **used** by machine learning models **to perform language-related tasks** such as classification, 
-generation, or retrieval.
-
-Modern NLP systems are primarily based on transformer architectures, which use self-attention mechanisms to model long-range dependencies in text.
-
----
-
-## Connects to {#connects-to}
-
-<ConnectsTo
-	items={[
-		{ label: "Generative AI", to: "/concepts/Generative-AI" },
-		{ label: "Large Language Models", to: "/concepts/LLMs" },
-		{ label: "Embeddings, chunks and annotations", to: "/concepts/Embeddings-chunks-and-annotations" },
-	]}
-/>
+L'NLP sta alla base della maggior parte di ciò che Rational AI fa con il testo. [Chat](/cr/Chats) risponde alle domande in linguaggio naturale, una [Knowledge](/concepts/Knowledge) trova il passaggio che corrisponde a una domanda anche quando usa parole diverse, e [Conversazioni](/cr/Conversations) assegna alle conversazioni argomenti e sentiment.

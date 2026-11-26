@@ -7,96 +7,96 @@ audience: [admin, builder]
 
 # Gestisci le estensioni
 
-Le estensioni aggiungono funzioni a Rational AI: strumenti che i tuoi agenti possono chiamare, skill, canali, fonti e workflow, e i casi d'uso completi che installano le soluzioni del [Marketplace](/operational-guides/marketplace). Usa questa guida per installare un'estensione dal catalogo o da un file e configurarla in modo che si avvii. Per tenere aggiornata un'estensione installata, vedi [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates).
+Le estensioni aggiungono funzionalità a Rational AI: strumenti che i tuoi agenti possono chiamare, skill, canali, fonti e workflow, oltre ai casi d'uso completi installati dalle soluzioni del [Marketplace](/operational-guides/marketplace). Usa questa guida per installare un'estensione dal catalogo o da un file e configurarla in modo che inizi a funzionare. Per tenere aggiornata un'estensione già installata, vedi [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates).
 
 :::note[Che cos'è un'estensione?]
-Un'estensione è un pacchetto che aggiunge funzioni a Rational AI. Molte estensioni forniscono uno o più server MCP. MCP (Model Context Protocol) è uno standard aperto per collegare gli agenti AI a strumenti e dati, quindi un server MCP è un insieme di strumenti che i tuoi agenti possono chiamare. Altre estensioni sono soluzioni del Marketplace che configurano una Knowledge con le sue viste e i suoi record, gli agenti e le dashboard BI.
+Un'estensione è un pacchetto che aggiunge funzionalità a Rational AI. Molte estensioni forniscono uno o più server MCP. MCP (Model Context Protocol) è uno standard aperto per collegare agenti AI a strumenti e dati, quindi un server MCP è un insieme di strumenti che i tuoi agenti possono chiamare. Altre estensioni sono soluzioni del Marketplace che configurano una Knowledge con le sue viste e i suoi record, gli agenti e le dashboard BI.
 :::
 
-Installare un'estensione e configurarla sono due passi separati. Un'estensione installata si avvia solo dopo essere stata configurata.
+Installare un'estensione e configurarla sono due passaggi separati. Un'estensione installata inizia a funzionare solo quando è configurata.
 
 ## Da dove arrivano le estensioni {#where-extensions-come-from}
 
-- **Catalogo Rational AI**: le release pubblicate da Rational AI, uguali per ogni workspace.
-- **Locale**: pacchetti che hai installato da un file. Li vede solo il tuo workspace.
-- **Fonti remote**: registri di terze parti che Rational AI può collegare per la tua organizzazione. I loro pacchetti compaiono insieme agli altri.
+- **Catalogo Rational AI**: le release pubblicate da Rational AI, uguali per tutti i workspace.
+- **Locale**: pacchetti installati da un file. Li vede solo il tuo workspace.
+- **Fonti remote**: registri di terze parti che Rational AI può collegare per la tua organizzazione. I loro pacchetti compaiono accanto agli altri.
 
 ## Prerequisiti {#prerequisites}
 
-Prima di iniziare, assicurati di avere:
+Prima di iniziare, verifica di avere:
 
-- **Accesso amministrativo:** un account con privilegi di gestione delle estensioni.
-- **Il pacchetto dell'estensione (solo se installi una tua estensione):** un file `.tar.bz2`, `.zip` o `.mcpb`, oppure un `manifest.json` da solo.
-- **I valori di configurazione richiesti:** per i server MCP remoti raggiunti in rete, l'URL dell'endpoint più il token o l'header di autenticazione che il server richiede.
+- **Accesso amministrativo:** un account con i privilegi per gestire le estensioni.
+- **Il pacchetto dell'estensione (solo se installi una tua estensione):** un file `.tar.bz2`, `.zip` o `.mcpb`, oppure un file `manifest.json` da solo.
+- **Eventuali valori di configurazione richiesti:** per i server MCP remoti raggiungibili in rete, l'URL dell'endpoint e il token di autenticazione o l'header che il server si aspetta.
 
 ## Leggi la scheda di un'estensione {#read-an-extension-card}
 
-Ogni estensione installata compare come scheda nella vista **Installate** della pagina **Estensioni**. La scheda mostra la versione dell'estensione accanto al nome, e **Da configurare** quando il server dell'estensione richiede ancora dei parametri, **Aggiornamento disponibile** o **Revisione richiesta** quando esiste una release più recente, e un interruttore per attivare o disattivare l'estensione.
+Ogni estensione installata compare come scheda nella vista **Installata** della pagina **Estensioni**. La scheda mostra la versione dell'estensione accanto al nome, **Da configurare** quando il server dell'estensione richiede ancora dei parametri, **Aggiornamento disponibile** o **Revisione richiesta** quando esiste una release più recente, e un interruttore per attivare o disattivare l'estensione.
 
 ## Installa un'estensione dal catalogo {#install-an-extension-from-the-catalog}
 
 1. Vai su **Impostazioni** → **Estensioni** e seleziona **Installa**.
-2. Sfoglia le estensioni disponibili. Ognuna è marcata **Catalogo Rational AI** o **Locale** (un pacchetto caricato nel tuo workspace).
-3. Seleziona l'estensione che ti serve, poi **Configura estensione**.
-4. Se l'estensione avvia un server MCP, compila il modulo **Imposta configurazione predefinita**: chiavi API, stringhe di connessione, endpoint. I valori obbligatori vanno compilati prima di poter proseguire.
+2. Sfoglia le estensioni disponibili. Ciascuna è contrassegnata come **Catalogo Rational AI** o **Locale** (un pacchetto caricato nel tuo workspace).
+3. Seleziona l'estensione che ti interessa, poi **Configura estensione**.
+4. Se l'estensione esegue un server MCP, compila il modulo **Imposta configurazione predefinita**: chiavi API, stringhe di connessione, endpoint. I valori obbligatori vanno compilati prima di poter continuare.
 5. Seleziona **Installa estensione**. L'estensione parte con i valori che hai inserito.
 
 Un'estensione senza server da configurare si installa appena selezioni **Configura estensione**.
 
-Le estensioni che hai già installato restano nell'elenco con il tag **Già installato** e non si possono più selezionare.
+Le estensioni che hai già installato restano nell'elenco con il tag **Già installato** e non possono essere selezionate di nuovo.
 
 ## Installa un pacchetto da un file {#install-a-package-from-a-file}
 
 Installa da un file quando hai un pacchetto tuo. Diventa un pacchetto **Locale** che vede solo il tuo workspace.
 
 1. Vai su **Impostazioni** → **Estensioni**.
-2. Seleziona **Aggiungi estensione privata** e scegli il file, oppure trascina il pacchetto nella pagina. Mentre trascini, la pagina mostra *"Rilascia per installare un'estensione"*.
+2. Seleziona **Aggiungi estensione privata** e scegli il file, oppure trascina il pacchetto nella pagina. Mentre lo trascini, la pagina mostra *"Rilascia per installare un'estensione"*.
 
-Puoi anche trascinare un pacchetto nell'elenco all'interno della finestra **Installa**. Il pacchetto viene aggiunto e selezionato per te, pronto per essere configurato e installato.
+Puoi anche trascinare un pacchetto nell'elenco della finestra **Installa**. Il pacchetto viene aggiunto e selezionato automaticamente, pronto per essere configurato e installato.
 
 Se trascini un file in un altro formato, compare un avviso e non viene caricato nulla. Per cambiare il contenuto di un pacchetto, assegnagli un nuovo numero di versione: installare di nuovo la stessa versione riusa la release già installata.
 
 ## Modifica i file di un'estensione installata {#edit-an-installed-extensions-files}
 
-Selezionando **Attiva modalità dev** su un'estensione installata, qualcuno può modificarne i file. Gli aggiornamenti di quell'estensione restano in pausa finché la modalità di sviluppo non viene disattivata.
+Selezionando **Attiva sviluppo** su un'estensione installata, un utente può modificarne i file. Gli aggiornamenti di quell'estensione restano in pausa finché la modalità sviluppo non viene disattivata.
 
-## Configura un'estensione perché si avvii {#configure-an-extension-so-it-starts-running}
+## Configura un'estensione perché inizi a funzionare {#configure-an-extension-so-it-starts-running}
 
-Un pacchetto installato da un file viene installato senza configurazione. Se richiede dei valori, resta installato ma non in esecuzione, e la sua scheda mostra **Da configurare**: puoi installarlo ora e configurarlo quando hai le credenziali. Salvare la prima configurazione avvia l'estensione e ne elenca gli strumenti.
+Un pacchetto che installi da un file viene aggiunto senza alcuna configurazione. Se richiede dei valori, resta installato ma non in esecuzione, e la sua scheda mostra **Da configurare**. Così puoi installarlo subito e configurarlo quando hai le credenziali. Salvando la prima configurazione, l'estensione parte e mostra i suoi strumenti.
 
 1. Apri l'estensione in **Impostazioni** → **Estensioni**.
-2. Apri **Impostazioni** dal suo menu delle opzioni e compila ciò che l'estensione chiede: chiavi API, stringhe di connessione, endpoint.
-3. Salva. L'estensione si avvia attiva e i suoi strumenti compaiono.
+2. Apri **Impostazioni** dal suo menu delle opzioni e compila i campi richiesti: chiavi API, stringhe di connessione, endpoint.
+3. Salva. L'estensione si avvia attivata e i suoi strumenti compaiono.
 
-Un'estensione i cui parametri hanno tutti un valore predefinito si avvia appena la installi.
+Un'estensione i cui parametri hanno tutti un valore predefinito parte appena la installi.
 
-Se manca un valore obbligatorio, il salvataggio viene rifiutato e l'estensione resta disattivata finché non lo correggi e salvi di nuovo.
+Se manca un valore obbligatorio, il salvataggio viene rifiutato e l'estensione resta disattivata finché non correggi il valore e salvi di nuovo.
 
-Un'estensione può avere **più di una** configurazione dello stesso server (un secondo set di credenziali, un secondo endpoint), e ciascuna rileva i propri strumenti. La prima configurazione è quella predefinita e non si può eliminare finché l'estensione è installata; eliminare una delle configurazioni aggiuntive lascia l'estensione attiva sulla predefinita.
+Un'estensione può avere **più di una** configurazione dello stesso server (un secondo set di credenziali, un secondo endpoint), e ciascuna scopre i propri strumenti. La prima configurazione è quella predefinita e non può essere eliminata finché l'estensione è installata. Se elimini una delle configurazioni aggiuntive, l'estensione resta attiva sulla configurazione predefinita.
 
-## Scegli un connettore invece di digitare una credenziale {#pick-a-connector-instead-of-typing-a-credential}
+## Scegli un connettore invece di inserire una credenziale {#pick-a-connector-instead-of-typing-a-credential}
 
-Alcune estensioni non ti chiedono di incollare una chiave API. Il loro manifest chiede invece un **connettore** di un certo tipo: una credenziale che hai già salvato una volta in **Impostazioni** → **Connettori** (vedi [Configura i connettori](/operational-guides/configure-connectors)). Un connettore può servire più estensioni, e la chiave si ruota in un solo punto.
+Alcune estensioni non ti chiedono di incollare una chiave API. Il loro manifest richiede invece un **connettore** di un certo tipo: una credenziale che hai già salvato una volta in **Impostazioni** → **Connettori** (vedi [Configura connettori](/operational-guides/configure-connectors)). Un solo connettore può servire più estensioni, e ruoti la chiave in un unico punto.
 
 1. Crea il connettore in **Impostazioni** → **Connettori**, se non l'hai già fatto.
-2. Apri la configurazione dell'estensione in **Impostazioni** → **Estensioni**. Ogni parametro di connettore è un menu a tendina che elenca solo i connettori del tipo richiesto dall'estensione.
+2. Apri la configurazione dell'estensione in **Impostazioni** → **Estensioni**. Ogni parametro di tipo connettore è un menu a tendina che elenca solo i connettori del tipo richiesto dall'estensione.
 3. Seleziona il connettore e salva.
 
-Fai la stessa scelta quando aggiungi o modifichi una configurazione di server MCP dalla scheda **Strumenti** di un touchpoint: il campo del connettore apre un elenco con ricerca. Se mostra *"Nessun connettore disponibile"*, non esiste ancora un connettore del tipo richiesto; crealo in **Impostazioni** → **Connettori** e riapri la finestra.
+Fai la stessa scelta quando aggiungi o modifichi una configurazione di un server MCP dalla scheda **Strumenti** di un touchpoint: il campo del connettore apre un elenco con ricerca. Se compare *"Nessun connettore disponibile"*, non esiste ancora un connettore del tipo richiesto. Crealo in **Impostazioni** → **Connettori** e apri di nuovo la finestra.
 
 Le estensioni che chiamano Rational AI stessa, come le soluzioni del [Marketplace](/operational-guides/marketplace), ricevono già compilato il connettore Rational AI integrato.
 
 ## Configura i server MCP remoti (HTTP) {#configure-remote-http-mcp-servers}
 
-Alcuni server MCP girano dentro Rational AI (**Locale**), altri si raggiungono in rete (**Remoto**), e una stessa estensione può averli entrambi. Un server remoto richiede il suo URL di endpoint e, di solito, un valore di autenticazione.
+Alcuni server MCP girano dentro Rational AI (**Locale**), altri sono raggiungibili in rete (**Remoto**), e una stessa estensione può averne di entrambi i tipi. Un server remoto richiede l'URL dell'endpoint e, di solito, un valore di autenticazione.
 
-### Distingui i server locali da quelli remoti {#tell-local-and-remote-servers-apart}
+### Distingui i server locali e remoti {#tell-local-and-remote-servers-apart}
 
-Apri la pagina dei **dettagli** dell'estensione e cerca la sezione **Server MCP**. Un server remoto mostra un chip **Remoto** e il suo URL di endpoint; uno locale mostra un chip **Locale**. La stessa vista elenca gli strumenti che l'estensione fornisce.
+Apri la pagina dei **dettagli** dell'estensione e cerca la sezione **Server MCP**. Un server remoto mostra un'etichetta **Remoto** e il suo URL dell'endpoint. Un server locale mostra un'etichetta **Locale**. La stessa vista elenca gli strumenti che l'estensione fornisce.
 
 <img
   src={require('@site/static/img/screens/extension-mcp-tools.png').default}
-  alt="Vista di dettaglio di un'estensione con gli strumenti che fornisce e i server MCP a cui si collega"
+  alt="Una vista di dettaglio di un'estensione che mostra gli strumenti che fornisce e i server MCP a cui si collega"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 *La vista di dettaglio di un'estensione: gli **strumenti** che fornisce e i **server MCP** a cui si collega (locali o remoti).*
@@ -106,10 +106,10 @@ Apri la pagina dei **dettagli** dell'estensione e cerca la sezione **Server MCP*
 Per un server remoto che richiede l'autenticazione, inserisci il token nel modulo di configurazione dell'estensione. Il token viene salvato nella tua configurazione, non nel pacchetto.
 
 :::note[Estensioni remote già pronte]
-Il catalogo include estensioni remote per servizi come GitHub, Linear, Atlassian, Snowflake e Sentry. Ognuna richiede solo un URL di endpoint e un valore di autenticazione. Per collegare qualsiasi altro server MCP remoto, usa l'estensione generica **remote-mcp**.
+Il catalogo include estensioni remote per servizi come GitHub, Linear, Atlassian, Snowflake e Sentry. Ciascuna richiede solo un URL dell'endpoint e un valore di autenticazione. Per collegare qualsiasi altro server MCP remoto, usa l'estensione generica **remote-mcp**.
 :::
 
 ## Prossimi passi {#next-steps}
 
-- [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates): politiche di aggiornamento, compatibilità e ripristino dopo un aggiornamento problematico.
+- [Aggiorna e ripristina le estensioni](/operational-guides/extension-updates): politiche di aggiornamento, compatibilità e come recuperare da un aggiornamento difettoso.
 - [Sfoglia gli strumenti degli agenti](/operational-guides/manage-tools): il catalogo degli strumenti forniti dalle estensioni installate.

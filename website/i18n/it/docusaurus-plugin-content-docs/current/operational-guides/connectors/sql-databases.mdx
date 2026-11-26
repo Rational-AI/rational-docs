@@ -1,0 +1,91 @@
+---
+title: Connetti un database SQL
+sidebar_label: Database SQL
+description: Concedi a Rational BI, agli agenti e alle estensioni l'accesso in sola lettura ai database PostgreSQL, MySQL, SQLite, DuckDB, SQL Server, Oracle o IBM i.
+type: how-to
+audience: [admin]
+---
+
+Un connettore per database SQL conserva l'indirizzo e un account in sola lettura di un database esterno, così che un database virtuale in una [Knowledge](/operational-guides/create-knowledge) possa esporre viste sulle sue tabelle a Rational BI e agli agenti.
+
+## Scegli il connettore {#choose-the-connector}
+
+Rational AI ha due connettori per database. Non sono intercambiabili: ogni funzionalità accetta solo il proprio tipo.
+
+| Connettore | Motori | Cosa lo usa | Scegli questo connettore quando |
+|---|---|---|---|
+| **Database SQL** | PostgreSQL, MySQL, SQLite, DuckDB, SQL Server, Oracle, IBM i (Db2) | Database virtuali in una Knowledge. Rational BI e gli agenti interrogano le viste che definisci lì. | Vuoi viste curate su uno o più database, eventualmente conservate come copia aggiornata secondo una pianificazione. |
+| **Microsoft SQL Server** | SQL Server | Estensioni, come l'estensione **SQL Server**, che dà a un touchpoint degli strumenti per elencare le tabelle, descriverle ed eseguire un singolo `SELECT`. | Un assistente deve esplorare e interrogare da solo un database SQL Server. |
+
+Nessuno dei due è una fonte: il database non viene copiato nella Knowledge come file.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore. Un database virtuale richiede **Modifica** sulla riga **Knowledge**. L'estensione **SQL Server** richiede il permesso di installare estensioni; vedi [Gestisci le estensioni](/operational-guides/manage-extensions). I ruoli sono in [Gestisci ruoli e utenti](/operational-guides/roles-and-users).
+- **Sul database:** un amministratore del database che può creare un login e concedergli l'accesso in lettura.
+
+## Cosa ti serve {#what-you-need}
+
+- Il nome host o l'indirizzo IP del database, la porta se diversa da quella predefinita del motore, e il nome del database. Per SQLite e DuckDB, il percorso del file del database sulla macchina che esegue Rational AI.
+- Un account del database che possa solo leggere. Rational AI non modifica i dati, e a farlo rispettare sono i permessi dell'account.
+
+| Motore | Permesso | Perché serve |
+|---|---|---|
+| PostgreSQL | `CONNECT` sul database, `USAGE` sugli schema, `SELECT` sulle tabelle | Legge le tabelle usate dalle tue viste o query. |
+| MySQL | `SELECT` sul database | Come sopra. |
+| SQL Server | Il ruolo `db_datareader`, oppure `SELECT` sugli schema necessari, e nessun accesso ai server collegati | Come sopra. Un server collegato può associare il login a un login remoto con più diritti. |
+| Oracle | `CREATE SESSION`, e `SELECT` sulle tabelle | Come sopra. |
+| IBM i (Db2) | `SELECT` sulle tabelle delle librerie necessarie | Come sopra. |
+
+## Configura {#set-up}
+
+1. Crea l'account in sola lettura sul database. Per SQL Server:
+
+   ```sql
+   CREATE LOGIN rational_reader WITH PASSWORD = '<password>';
+   USE [<database>];
+   CREATE USER rational_reader FOR LOGIN rational_reader;
+   ALTER ROLE db_datareader ADD MEMBER rational_reader;
+   ```
+
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Database SQL** o **Microsoft SQL Server**, poi seleziona **Aggiungi**.
+3. Compila la connessione e seleziona **Aggiungi**:
+   - **Database SQL**: inserisci un **Nome** e scegli il **Motore**. Per SQLite o DuckDB, inserisci il **Percorso del file**. Per gli altri motori, inserisci **Host**, **Database**, **Nome utente** e **Password**, e lascia vuota la **Porta** per quella predefinita del motore.
+   - **Microsoft SQL Server**: inserisci un **Nome**, l'**Host**, il **Database**, il **Nome utente** e la **Password**. Lascia vuota la **Porta** per `1433`, e vuota l'**Istanza** per l'istanza predefinita; altrimenti inseriscile, per esempio `SQLEXPRESS`. Attiva **Cifra la connessione** per richiedere la cifratura per l'intera sessione.
+4. Per un connettore **Database SQL**, aprilo e seleziona **Prova connessione**. Il risultato mostra **Connesso** con la versione del **Server** e se si tratta di un **Account di sola lettura**, oppure **Non connesso** con il motivo. Seleziona **Esplora schema** per sfogliare le sue tabelle.
+5. Usa il connettore:
+   - **Database SQL**: apri la Knowledge, seleziona **Opzioni** (o **Azioni** nella vista a griglia), poi **Nuovo database virtuale**. Inserisci un **Nome**, seleziona il connettore sotto **Sorgenti** e seleziona **Crea**. Aggiungi viste con **Nuova vista**, poi seleziona **Salva**.
+   - **Microsoft SQL Server**: vai su **Impostazioni** → **Estensioni**, installa l'estensione **SQL Server** e seleziona il connettore in **SQL Server connection**. Poi aggiungi i suoi strumenti a un touchpoint, nella scheda **Strumenti** del touchpoint.
+
+## Cosa viene sincronizzato {#what-gets-synced}
+
+Non viene sincronizzato nulla. Un connettore per database SQL viene letto quando una vista viene interrogata o aggiornata:
+
+- Le viste **In diretta** leggono il database a ogni query.
+- Le viste **Copia, aggiornata** lo leggono solo a ogni aggiornamento, all'intervallo che imposti, oppure quando selezioni **Aggiorna ora**. Nel frattempo, le query leggono la copia.
+
+L'estensione **SQL Server** legge il database ogni volta che l'assistente chiama uno dei suoi strumenti.
+
+## Limiti {#limits}
+
+- Il motore, la porta e il percorso di un file SQLite o DuckDB si impostano quando aggiungi un connettore **Database SQL**. Per cambiarli, aggiungi un nuovo connettore. Puoi modificare host, database, nome utente e password.
+- La porta di un connettore **Microsoft SQL Server** si imposta quando lo aggiungi. Puoi modificare gli altri campi.
+- Con **Cifra la connessione** attiva, il traffico verso SQL Server è cifrato, ma il certificato del server non viene verificato. Con l'opzione disattivata, la cifratura viene comunque richiesta per il login.
+- L'estensione **SQL Server** esegue un `SELECT` per chiamata, restituisce al massimo 1.000 righe e interrompe una query dopo 60 secondi. Rifiuta le altre istruzioni controllando il testo della query, quindi i permessi del login restano la vera protezione.
+- Il nome di un database virtuale accetta lettere, cifre, trattini bassi e trattini, e non può essere cambiato in seguito.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| **Prova connessione** non è disponibile | Il connettore ha modifiche non salvate. Seleziona prima **Salva**: il test usa ciò che è memorizzato. |
+| **Prova connessione** mostra **Non connesso** | Host, porta o credenziali sono errati, oppure un firewall blocca Rational AI verso il database. Leggi il motivo sotto **Non connesso**. |
+| **Account di sola lettura** mostra *No: l'account può scrivere sul database* | L'account ha diritti di scrittura. Sostituiscilo con un account in sola lettura e inserisci le nuove credenziali nella **Configurazione** del connettore. |
+| *"Nessun connettore database SQL: aggiungine prima uno nelle impostazioni."* in **Nuovo database virtuale** | Non esiste un connettore **Database SQL**. Un connettore **Microsoft SQL Server** non conta. Aggiungi un connettore **Database SQL**. |
+| *"The host must be a host name or an IP address…"* | L'host contiene uno schema, una porta, un percorso o un'istanza. Inserisci solo l'host e scrivi porta e istanza nei rispettivi campi. |
+
+## Prossimi passi {#next-steps}
+
+- [Crea dashboard BI](/operational-guides/rational-bi): interroga le viste di un database virtuale.
+- [Gestisci le estensioni](/operational-guides/manage-extensions): installa e configura l'estensione **SQL Server**.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): aggiungi gli strumenti dell'estensione a un assistente.

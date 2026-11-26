@@ -1,0 +1,56 @@
+---
+title: Connetti Brave Search
+description: Salva una chiave API di Brave Search così che l'estensione Brave Search possa dare ai touchpoint la ricerca web, di notizie, immagini, video e locale.
+type: how-to
+audience: [admin]
+---
+
+Il connettore Brave Search conserva la chiave API di Brave Search che l'estensione **Brave Search** usa per dare ai tuoi assistenti la ricerca web, di notizie, di immagini, di video e locale.
+
+## Chi può configurarlo {#who-can-set-it-up}
+
+- **In Rational AI:** un ruolo con **Crea** sulla riga **Connettori** per aggiungere il connettore (vedi [Gestisci ruoli e utenti](/operational-guides/roles-and-users)), e il permesso di installare estensioni. Aggiungere gli strumenti dell'estensione a un touchpoint richiede il ruolo di amministratore.
+- **Su Brave:** un account sull'API di Brave Search con un piano e una chiave API.
+
+## Cosa ti serve {#what-you-need}
+
+- Una chiave API di Brave Search, creata nella dashboard dell'API di Brave Search. La chiave non ha scope: ciò che può chiamare dipende dal piano dell'API di Brave Search.
+- L'estensione **Brave Search**, che installi dal catalogo al passo 4.
+
+## Configura {#set-up}
+
+1. Nella dashboard dell'API di Brave Search, crea una chiave API e copiala.
+2. In Rational AI, vai su **Impostazioni** → **Connettori**, seleziona **Aggiungi**, seleziona **Brave Search**, poi seleziona **Aggiungi**.
+3. Inserisci un **Nome**, una **Descrizione** facoltativa, e incolla la chiave in **API Key**. Seleziona **Aggiungi**.
+4. Vai su **Impostazioni** → **Estensioni**, seleziona **Installa**, seleziona **Brave Search**, poi **Configura estensione**.
+5. In **BRAVE API KEY**, seleziona il connettore che hai creato, poi seleziona **Installa estensione**. L'estensione si avvia e i suoi strumenti compaiono in **Impostazioni** → **Strumenti**.
+6. Apri il touchpoint che deve cercare sul web, vai alla sua scheda **Strumenti**, apri **Aggiungi tool...** e aggiungi gli strumenti di Brave Search che ti servono. Vedi [Scegli gli strumenti che l'assistente può usare](/operational-guides/configure-touchpoints#choose-the-tools-the-assistant-can-use).
+
+Se l'estensione è già installata, apri la sua configurazione in **Impostazioni** → **Estensioni** e seleziona lì il connettore, invece dei passi 4 e 5.
+
+## Cosa alimenta in Rational AI {#what-it-powers-in-rational-ai}
+
+- **L'estensione Brave Search:** i suoi sei strumenti eseguono ricerche tramite l'API di Brave Search con la chiave del connettore. Il contatore **Tools** del connettore mostra quanti strumenti usano la chiave.
+- **Touchpoint:** un assistente può cercare solo dopo che hai aggiunto gli strumenti dell'estensione nella sua scheda **Strumenti**. Ogni touchpoint decide quali strumenti riceve e se una chiamata richiede una conferma.
+
+Le query di ricerca che l'assistente scrive vengono inviate a Brave. Aggiungi gli strumenti solo ai touchpoint per cui è accettabile inviare quelle query a un servizio di ricerca pubblico.
+
+## Limiti {#limits}
+
+- Ogni ricerca conta sulla quota e sul limite di frequenza del tuo piano dell'API di Brave Search. Quando il piano rifiuta una chiamata, la chiamata dello strumento fallisce e l'assistente prosegue senza risultati.
+- La configurazione dell'estensione accetta un solo connettore, quindi tutti i touchpoint che usano i suoi strumenti condividono una chiave e una quota.
+
+## Risoluzione dei problemi {#troubleshooting}
+
+| Sintomo | Cosa controllare |
+|---|---|
+| La scheda dell'estensione Brave Search mostra **Da configurare** | L'estensione non ha un connettore selezionato. Apri la sua configurazione e seleziona il connettore in **BRAVE API KEY**. |
+| *"Nessun connettore disponibile"* nel campo del connettore | Non esiste ancora un connettore Brave Search. Crealo in **Impostazioni** → **Connettori**, poi apri di nuovo la configurazione. |
+| L'assistente non cerca mai sul web | Gli strumenti di Brave Search non sono aggiunti a quel touchpoint. Controlla la sua scheda **Strumenti**. |
+| Le chiamate agli strumenti di ricerca falliscono | La chiave è stata revocata, oppure il tuo piano dell'API di Brave Search ha esaurito la quota o non include quel tipo di ricerca. Controlla la chiave nella dashboard dell'API di Brave Search, poi inseriscila di nuovo nella **Configurazione** del connettore e seleziona **Salva**. |
+
+## Prossimi passi {#next-steps}
+
+- [Gestisci le estensioni](/operational-guides/manage-extensions): configura, aggiorna o disattiva l'estensione Brave Search.
+- [Configura i touchpoint](/operational-guides/configure-touchpoints): scegli gli strumenti che un assistente può usare e quando chiede conferma.
+- [Configura connettori](/operational-guides/configure-connectors): modifica, verifica o elimina un connettore.
