@@ -1,13 +1,30 @@
-/* Apfel Grotezk — homepage hero display font.
-   This file is served statically (not processed by the bundler), so a
-   missing font file degrades gracefully to the fallback stack instead of
-   breaking the build. Drop the files in static/fonts/ matching the names
-   below (see static/fonts/README.md). */
+/* Brand fonts, same files as rational.is (both OFL, licenses next to the files).
+   Served statically, not bundled. */
+@font-face {
+	font-family: "Geist";
+	src: url("/fonts/geist-latin-wght.woff2") format("woff2");
+	font-weight: 100 900;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Geist Mono";
+	src: url("/fonts/geist-mono-latin-wght.woff2") format("woff2");
+	font-weight: 100 900;
+	font-display: swap;
+}
+/* Arial sized like Geist, so the text doesn't reflow while the font loads */
+@font-face {
+	font-family: "Geist Fallback";
+	src: local("Arial"), local("Roboto");
+	ascent-override: 96.88%;
+	descent-override: 28.44%;
+	line-gap-override: 0%;
+	size-adjust: 103.74%;
+}
+/* Homepage hero title */
 @font-face {
 	font-family: "Apfel Grotezk";
-	src:
-		url("/fonts/ApfelGrotezk-Mittel.woff2") format("woff2"),
-		url("/fonts/ApfelGrotezk-Mittel.woff") format("woff");
+	src: url("/fonts/apfel-grotezk-mittel.woff2") format("woff2");
 	font-weight: 500;
 	font-style: normal;
 	font-display: swap;

@@ -9,14 +9,14 @@ table {
 	border-collapse: separate;
 	border-spacing: 0;
 	width: fit-content;
-	border: #e4e4e7 solid 1px;
+	border: 1px solid var(--ifm-table-border-color);
 }
 
 /* Optional: style header and cells */
 th,
 td {
 	border: none;
-	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	border-bottom: 1px solid var(--ifm-table-border-color);
 }
 
 th:first-child,

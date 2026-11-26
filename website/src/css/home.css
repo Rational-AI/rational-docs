@@ -6,11 +6,10 @@
    and the hero will use them automatically. */
 
 :root {
-	--home-hero-radius: 28px;
 	--home-card-radius: 16px;
-	--home-max-width: 1600px;
+	--home-max-width: 80rem;
 	--home-font-display:
-		"Apfel Grotezk", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+		"Apfel Grotezk", "Geist", system-ui, -apple-system, "Segoe UI", Roboto,
 		sans-serif;
 }
 
@@ -19,19 +18,24 @@
 	width: 100%;
 }
 
-.homeHero,
+/* Same column as rational.is (container-page: max-w-7xl, 16/24/32px gutters) */
+.homeHero__inner,
 .homeCategories {
 	max-width: var(--home-max-width);
 	margin-inline: auto;
-	padding-inline: 24px;
+	padding-inline: 1rem;
 }
-
-.homeHero {
-	margin-top: 32px;
-	/* Lift above .homeCategories so the search result-preview dropdown,
-	   which overflows the hero, paints over the cards below. */
-	position: relative;
-	z-index: 1;
+@media (min-width: 640px) {
+	.homeHero__inner,
+	.homeCategories {
+		padding-inline: 1.5rem;
+	}
+}
+@media (min-width: 1024px) {
+	.homeHero__inner,
+	.homeCategories {
+		padding-inline: 2rem;
+	}
 }
 
 .homeCategories {
@@ -39,218 +43,57 @@
 	margin-bottom: 96px;
 }
 
-/* MARK: Hero */
-.homeHero__inner {
-	position: relative;
-	/* visible (was hidden) so the hero search's result-preview dropdown can
-	   overflow the hero; the bg image is kept rounded via .homeHero__bg. */
-	overflow: visible;
-	border-radius: var(--home-hero-radius);
-	padding: clamp(48px, 9vw, 120px) 24px clamp(56px, 9vw, 110px);
-	text-align: center;
-	isolation: isolate;
-	background-color: #0a1340;
-	background-image:
-		radial-gradient(
-			90% 120% at 8% 18%,
-			rgba(96, 86, 230, 0.55) 0%,
-			rgba(96, 86, 230, 0) 55%
-		),
-		radial-gradient(
-			70% 130% at 0% 55%,
-			rgba(70, 120, 230, 0.5) 0%,
-			rgba(70, 120, 230, 0) 50%
-		),
-		radial-gradient(
-			85% 130% at 100% 55%,
-			rgba(22, 165, 145, 0.55) 0%,
-			rgba(22, 165, 145, 0) 55%
-		),
-		radial-gradient(120% 120% at 50% 130%, #050a26 0%, rgba(5, 10, 38, 0) 60%),
-		linear-gradient(115deg, #1a2a86 0%, #101a55 40%, #0b1238 72%, #0c4a48 100%);
-}
-
-/* Hero background image (set inline in index.tsx). Sits above the gradient
-   fallback so that if the file is missing the gradient still shows through. */
-.homeHero__bg {
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	/* Round the image ourselves now that .homeHero__inner no longer clips it */
-	border-radius: var(--home-hero-radius);
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	pointer-events: none;
-}
-
-.homeHero__content {
+/* MARK: Hero — light "Hero pagina" from rational.is/componenti#hero:
+   page background with a hairline below, serif title, search under it */
+.homeHero {
+	border-bottom: 1px solid var(--ifm-toc-border-color);
+	/* Lift above .homeCategories so the search result-preview dropdown,
+	   which overflows the hero, paints over the cards below. */
 	position: relative;
 	z-index: 1;
 }
 
-.homeHero__title {
-	margin: 0 auto;
-	font-family: var(--home-font-display);
-	font-weight: 500;
-	/* Sized to stay on a single line on desktop; wraps naturally on small screens */
-	font-size: clamp(2.25rem, 6.4vw, 6.25rem);
-	line-height: 1.05;
-	letter-spacing: -0.02em;
-	color: #ffffff;
+.homeHero__inner {
+	padding-block: 3rem;
 }
-
-@media (min-width: 640px) {
-	.homeHero__title {
-		white-space: nowrap;
+@media (min-width: 768px) {
+	.homeHero__inner {
+		padding-block: 4rem;
 	}
 }
 
+.homeHero__title {
+	margin: 0;
+	font-family: "Georgia Pro", Georgia, serif;
+	font-weight: 400;
+	font-size: 2.5rem;
+	line-height: 1.04;
+	letter-spacing: -0.02em;
+	color: var(--ifm-heading-color);
+}
+@media (min-width: 768px) {
+	.homeHero__title {
+		font-size: 4rem;
+	}
+}
+
+.homeHero .brand {
+	margin-bottom: 1.5rem;
+}
+
 .homeHero__subtitle {
-	margin: 24px auto 0;
-	max-width: 38ch;
-	font-size: clamp(1.05rem, 1.6vw, 1.4rem);
-	line-height: 1.45;
-	color: rgba(255, 255, 255, 0.82);
-}
-
-/* MARK: Hero search */
-.homeSearch {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	width: min(620px, 100%);
-	margin: clamp(32px, 4vw, 52px) auto 0;
-	padding: 0 24px;
-	height: 60px;
-	cursor: text;
-	border-radius: 999px;
-	background: rgba(7, 13, 40, 0.4);
-	border: 1.5px solid rgba(255, 255, 255, 0.45);
-	box-shadow:
-		0 10px 34px rgba(3, 8, 30, 0.35),
-		inset 0 1px 0 rgba(255, 255, 255, 0.1);
-	backdrop-filter: blur(10px);
-	transition:
-		border-color 0.2s ease,
-		box-shadow 0.2s ease,
-		background 0.2s ease;
-}
-
-.homeSearch:hover {
-	border-color: rgba(255, 255, 255, 0.6);
-}
-
-.homeSearch:focus-within {
-	border-color: #ffffff;
-	background: rgba(7, 13, 40, 0.55);
-	box-shadow:
-		0 10px 34px rgba(3, 8, 30, 0.4),
-		0 0 0 4px rgba(255, 255, 255, 0.12);
-}
-
-.homeSearch__icon {
-	flex: 0 0 auto;
-	color: rgba(255, 255, 255, 0.85);
-}
-
-.homeSearch__input {
-	flex: 1 1 auto;
-	min-width: 0;
-	height: 100%;
-	border: none;
-	outline: none;
-	background: transparent;
-	color: #ffffff;
-	font-size: 1.05rem;
-	font-weight: 500;
-}
-
-.homeSearch__input::placeholder {
-	color: rgba(255, 255, 255, 0.65);
-	font-weight: 400;
-}
-
-/* Hide the native search-input clear button for a cleaner look */
-.homeSearch__input::-webkit-search-cancel-button {
-	-webkit-appearance: none;
-}
-
-/* MARK: Hero search — reused @theme/SearchBar (live result preview) */
-
-/* .homeSearch is the positioning context for the autocomplete dropdown */
-.homeSearch {
-	position: relative;
-}
-
-/* The reused SearchBar fills the pill where the plain input used to be.
-   position:static so the dropdown anchors to .homeSearch (full pill width). */
-.homeSearch .navbar__search {
-	position: static;
-	flex: 1 1 auto;
-	min-width: 0;
-	margin: 0;
-	display: block;
-}
-
-.homeSearch .navbar__search > span {
-	display: block;
-	width: 100%;
-}
-
-/* The search plugin collapses its input to an icon-sized box on small screens;
-   in the hero it must always fill the pill, or the placeholder reads "Sea". */
-.homeSearch .navbar__search .navbar__search-input {
-	width: 100% !important;
-}
-
-.homeSearch .navbar__search-input {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	border: none;
-	background: transparent;
-	background-image: none; /* SearchIcon already supplies the magnifier */
-	color: #ffffff;
-	font-size: 1.05rem;
-	font-weight: 500;
-	/* line-height 1 keeps the text on the icon's centre line */
-	line-height: 1;
-}
-
-.homeSearch .navbar__search-input::placeholder {
-	color: rgba(255, 255, 255, 0.65);
-	font-weight: 400;
-}
-
-.homeSearch .navbar__search-input:focus {
-	outline: none;
-}
-
-/* Drop the plugin's ⌘K shortcut hint inside the hero search */
-.homeSearch [class*="searchHintContainer"] {
-	display: none;
-}
-
-/* Result preview: full pill width, dropped just below the pill. The 3-class
-   selector outranks the plugin's `.searchBar .dropdownMenu`; the plugin keeps
-   its own !important left/right anchor, so width:100% fills the pill either way. */
-.homeSearch .navbar__search [class*="dropdownMenu"] {
-	position: absolute;
-	top: calc(100% + 12px);
-	width: 100%;
-	max-width: none;
-	margin: 0;
-	text-align: left;
-	z-index: 5;
+	margin: 0.75rem 0 0;
+	font-size: 0.875rem;
+	color: var(--ifm-color-content-secondary);
 }
 
 /* MARK: Categories section */
 .homeCategories__title {
-	font-size: clamp(1.6rem, 2.6vw, 2.1rem);
-	font-weight: 800;
-	letter-spacing: -0.01em;
+	/* Serif H2, as on rational.is */
+	font-family: "Georgia Pro", Georgia, serif;
+	font-size: clamp(1.875rem, 3vw, 2.25rem);
+	font-weight: 400;
+	letter-spacing: -0.015em;
 	margin-bottom: 28px;
 	color: var(--ifm-heading-color);
 }
@@ -309,11 +152,6 @@
 	padding-right: 84px;
 }
 
-.homeCard__icon {
-	font-size: 1.5rem;
-	line-height: 1.2;
-}
-
 .homeCard__heading {
 	display: flex;
 	flex-direction: column;
@@ -322,8 +160,12 @@
 }
 
 .homeCard__title {
-	font-size: 1.15rem;
-	font-weight: 700;
+	/* Serif like the site's section titles */
+	font-family: "Georgia Pro", Georgia, serif;
+	font-size: 1.625rem;
+	font-weight: 400;
+	line-height: 1.2;
+	letter-spacing: -0.015em;
 	color: var(--ifm-heading-color);
 }
 

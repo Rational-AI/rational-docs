@@ -169,63 +169,28 @@ const config: Config = {
 			respectPrefersColorScheme: true,
 		},
 		navbar: {
-			title: "Rational AI",
+			// Wordmark from rational.is plus "DOCS" in the accent color (navbar.css)
+			title: "DOCS",
 			logo: {
 				alt: "Rational AI",
-				src: "img/logo.svg",
+				src: "img/logo-wordmark.svg",
+				srcDark: "img/logo-wordmark-white.svg",
+				width: 146,
+				height: 24,
 			},
-			items: [
-				// The search box is added after the configured items, so this sits before it
-				{
-					type: "localeDropdown",
-					position: "right",
-					className: "navbar-locale",
-				},
-				// {
-				// type: 'dropdown',
-				// label: 'Documentazione',
-				// position: 'left',
-				// items: [
-				// 	{
-				// 	type: 'doc',
-				// 	docId: 'quick-start',
-				// 	label: 'Intro',
-				// 	},
-				// 	{
-				// 	href: '/docs/concepts/types-of-models',
-				// 	label: 'Concepts',
-				// 	},
-				// ],
-				// },
-				// {
-				// 	type: "docSidebar",
-				// 	sidebarId: "docsSidebar",
-				// 	position: "left",
-				// 	label: "Docs",
-				// },
-				// The search box is injected by the local-search theme; navbar.css hides it
-				// only on the home page, where the hero has its own.
-				// {
-				// 	type: "search",
-				// 	position: "left",
-				// },
-				// {
-				//   href: "https://github.com/Rational-AI/",
-				//   label: "GitHub",
-				//   position: "right",
-				// },
-				// { to: "/blog", label: "Blog", position: "left" },
-			],
+			// Language and theme switches are in the footer (src/theme/Footer/Layout)
+			items: [],
 		},
 		// Light footer that follows the theme; columns mirror the sidebar sections
 		footer: {
 			style: "light",
 			logo: {
 				alt: "Rational AI",
-				src: "img/logo.svg",
+				src: "img/logo-wordmark.svg",
+				srcDark: "img/logo-wordmark-white.svg",
 				href: "https://rational.is",
-				width: 28,
-				height: 28,
+				width: 146,
+				height: 24,
 			},
 			links: [
 				{
@@ -261,10 +226,15 @@ const config: Config = {
 				},
 				{
 					title: "Rational AI",
-					items: [{ label: "Website", href: "https://rational.is" }],
+					items: [
+						{ label: "Website", href: "https://rational.is" },
+						// Copyright as the column's last line; html items aren't translated, so the year stays live
+						{
+							html: `<span class="footer__copyright">© ${new Date().getFullYear()} Rational AI</span>`,
+						},
+					],
 				},
 			],
-			copyright: `© ${new Date().getFullYear()} Rational AI`,
 		},
 		prism: {
 			theme: prismThemes.github,

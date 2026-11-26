@@ -1,9 +1,9 @@
-import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import Translate, { translate } from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Brand from "@site/src/components/Brand";
+import SearchField from "@site/src/components/SearchField";
 import Layout from "@theme/Layout";
-import SearchBar from "@theme/SearchBar";
 
 type CardItem = {
 	label: string;
@@ -11,7 +11,6 @@ type CardItem = {
 };
 
 type Category = {
-	icon: string;
 	title: string;
 	description: string;
 	to?: string;
@@ -23,7 +22,6 @@ type Category = {
 // No page counts: they went stale with every new page.
 const CATEGORIES: Category[] = [
 	{
-		icon: "🚀",
 		title: translate({ id: "home.title.get-started", message: "Get started" }),
 		description: translate({
 			id: "home.description.build-your-first-assistant-then-take-a-t",
@@ -60,7 +58,6 @@ const CATEGORIES: Category[] = [
 		],
 	},
 	{
-		icon: "🛠️",
 		title: translate({
 			id: "home.title.use-rational-ai",
 			message: "Use Rational AI",
@@ -107,7 +104,6 @@ const CATEGORIES: Category[] = [
 		],
 	},
 	{
-		icon: "🔐",
 		title: translate({
 			id: "home.title.administration-security",
 			message: "Administration & security",
@@ -157,7 +153,6 @@ const CATEGORIES: Category[] = [
 		],
 	},
 	{
-		icon: "🧩",
 		title: translate({ id: "home.title.developers", message: "Developers" }),
 		description: translate({
 			id: "home.description.call-rational-ai-from-your-own-code-and",
@@ -197,7 +192,6 @@ const CATEGORIES: Category[] = [
 		],
 	},
 	{
-		icon: "📖",
 		title: translate({ id: "home.title.concepts", message: "Concepts" }),
 		description: translate({
 			id: "home.description.learn-the-ideas-behind-the-platform-so-t",
@@ -231,7 +225,6 @@ const CATEGORIES: Category[] = [
 		],
 	},
 	{
-		icon: "🧭",
 		title: translate({ id: "home.title.help", message: "Help" }),
 		description: translate({
 			id: "home.description.find-the-fix-for-a-problem-by-its-sympto",
@@ -265,26 +258,6 @@ const CATEGORIES: Category[] = [
 	},
 ];
 
-function SearchIcon() {
-	return (
-		<svg
-			className="homeSearch__icon"
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<circle cx="11" cy="11" r="7" />
-			<line x1="21" y1="21" x2="16.65" y2="16.65" />
-		</svg>
-	);
-}
-
 function DocIcon() {
 	return (
 		<svg
@@ -311,17 +284,14 @@ function Hero() {
 	return (
 		<section className="homeHero">
 			<div className="homeHero__inner">
-				<div
-					className="homeHero__bg"
-					aria-hidden="true"
-					style={{ backgroundImage: "url('/img/hero-bg.jpg')" }}
-				/>
 				<div className="homeHero__content">
+					<Brand />
 					<h1 className="homeHero__title">
 						<Translate id="home.hero.title">
 							Support &amp; documentation
 						</Translate>
 					</h1>
+					<SearchField />
 					{/* TODO: when the docs get an AI chat, bring back "or chat with our AI"
 					    here and in i18n/it/code.json ("o chatta con la nostra AI"). */}
 					<p className="homeHero__subtitle">
@@ -330,14 +300,6 @@ function Hero() {
 							find help.
 						</Translate>
 					</p>
-					{/* Reuse the offline-search SearchBar so typing previews matching
-					    docs inline (autocomplete dropdown), instead of only redirecting
-					    to /search on submit. Styled to fit the hero pill via the
-					    .homeSearch overrides in home.css. */}
-					<search className="homeSearch">
-						<SearchIcon />
-						<SearchBar />
-					</search>
 				</div>
 			</div>
 		</section>
@@ -348,7 +310,6 @@ function CategoryCard({ category }: { category: Category }) {
 	const inner = (
 		<>
 			<div className="homeCard__header">
-				<span className="homeCard__icon">{category.icon}</span>
 				<div className="homeCard__heading">
 					<span className="homeCard__title">{category.title}</span>
 				</div>
@@ -403,14 +364,6 @@ export default function Home(): React.ReactElement {
 			})}
 			description={siteConfig.tagline}
 		>
-			<Head>
-				<link
-					rel="preload"
-					as="image"
-					href="/img/hero-bg.jpg"
-					type="image/jpeg"
-				/>
-			</Head>
 			<main className="homeMain">
 				<Hero />
 				<section className="homeCategories">
@@ -421,7 +374,7 @@ export default function Home(): React.ReactElement {
 					</h2>
 					<div className="homeGrid">
 						{CATEGORIES.map((category) => (
-							<CategoryCard category={category} key={category.icon} />
+							<CategoryCard category={category} key={category.title} />
 						))}
 					</div>
 				</section>
