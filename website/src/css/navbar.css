@@ -50,6 +50,13 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
 	object-fit: cover;
 	object-position: left;
 }
+/* Theme toggle stays on the right, next to the close button */
+.navbar-sidebar__brand > .navbar__brand {
+	margin-right: auto;
+}
+.navbar-sidebar__brand > .navbar-sidebar__close {
+	margin-left: 0;
+}
 /* Search floats at the bottom of the page instead */
 .navbar [class*="navbarSearchContainer"] {
 	display: none;
