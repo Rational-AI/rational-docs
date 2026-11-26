@@ -16,8 +16,20 @@ Carica i file in una [Knowledge](/operational-guides/create-knowledge), segui la
 ## Carica i file {#upload-files}
 
 1. Apri la Knowledge e seleziona **Aggiungi file** nel menu **Opzioni** (nella **Griglia**, il menu si chiama **Azioni**).
+
+   <img
+     src={require('@site/static/img/screens/knowledge-actions-menu.png').default}
+     alt="Il menu Actions di una Knowledge nella Grid, con Add file, New virtual database e Show hidden resources"
+     style={{ width: '100%', maxWidth: '780px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+   />
 2. In **Aggiungi file**, aggiungi i file o una cartella e seleziona **Upload**.
 3. In **Revisione workflow**, per ogni file, scegli un **workflow** oppure lascialo su **Skip workflow** e seleziona **Aggiungi come risorsa** per salvare il file così com'è.
+
+   <img
+     src={require('@site/static/img/screens/knowledge-workflows-review.png').default}
+     alt="Il dialog Workflows review: quattro file, ciascuno su Skip workflow con Add as resource selezionato, e il pulsante Confirm"
+     style={{ width: '100%', maxWidth: '620px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+   />
 4. Seleziona **Conferma**.
 
 Se la Knowledge ha una regola di processing, Rational AI salta il passaggio di revisione e la regola assegna a ogni file il suo workflow. Se selezioni **Annulla** in **Revisione workflow**, i file caricati vengono eliminati.
