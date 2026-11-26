@@ -24,6 +24,12 @@ Due sezioni valgono solo per un'installazione on-premise, cioè una che gira su 
 
 La barra laterale **Impostazioni** raggruppa tutto ciò che usa questa guida: **Modelli**, **Knowledge**, **Funzionalità**, **Distribuzione**, **Governance** e **Accesso**. Il tuo account si trova in fondo alla barra laterale: seleziona il tuo nome, poi **Impostazioni profilo**. Vedi [Gestisci il tuo account](/operational-guides/manage-your-account).
 
+<img
+  src={require('@site/static/img/screens/settings-sidebar.png').default}
+  alt="La barra laterale Impostazioni, divisa in Models, Knowledge, Capabilities e Delivery, con il menu dell'account aperto in fondo: Profile settings, Switch language e Logout"
+  style={{ width: '100%', maxWidth: '780px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
 ## 2. Attiva la licenza (solo on-premise) {#2-activate-the-license-on-premises-only}
 
 Una nuova installazione non è attivata. Chat, Conversazioni, Governance e i modelli che colleghi con le tue credenziali del provider funzionano, ma i moduli del tuo piano (Knowledge, Rational BI, Agenti, Gen) restano nascosti, e il workspace ha tre postazioni. Attiva prima di invitare chiunque.
@@ -42,6 +48,12 @@ Ogni assistente richiede un modello per la generazione di testo, e ogni Knowledg
 2. Aggiungi un modello di un provider tramite un [connettore](/operational-guides/configure-connectors), oppure, sui tuoi server, un modello open source che distribuisci sulla GPU della macchina (vedi [Esegui i modelli sui tuoi server](/operational-guides/run-models-on-premise)).
 3. Ripeti finché non hai almeno un modello per la generazione di testo e un modello di embedding.
 4. Nel pannello **Modelli predefiniti**, imposta il **Modello conversazionale** e il **Modello di embedding**, poi seleziona **Salva**.
+
+<img
+  src={require('@site/static/img/screens/default-models.png').default}
+  alt="Il pannello Default models, con un modello per ogni tipo di attività: conversazione, codice, agenti, embedding, generazione di immagini e decisioni"
+  style={{ width: '100%', maxWidth: '780px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 I modelli predefiniti sono valori di riserva: un touchpoint o una Knowledge con un modello proprio usa sempre quel modello. Il pannello ha predefiniti anche per gli agenti, la generazione di immagini e le decisioni. Vedi [Gestisci i modelli AI nel registro](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type).
 

@@ -21,14 +21,26 @@ A Knowledge holds your organization's information: the files your AI searches wh
 2. Replace the default with a clear name, for example `Data Marketing 2026`.
 3. Add a description of the content and purpose. It appears on one line under the name on the Knowledge's card.
 
+<img
+  src={require('@site/static/img/screens/knowledge-new-menu.png').default}
+  alt="The New menu of the Knowledge tab, with New knowledge and Import knowledge"
+  style={{ width: '100%', maxWidth: '700px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
 ## Configure AI Search
 
 The **AI Search** tab controls how files are prepared so the AI can search them.
 
 1. Turn on **Allow AI search**.
 2. Select an **Embedding model**. It turns each piece of text into numbers so Rational AI can measure how close it is to a question.
-3. Choose a **Chunking type**, which decides how each file is split into smaller pieces before embedding. **Recursive Chunker** is selected by default. To pick another, see [Choose a chunking type](/operational-guides/configure-rag#choose-a-chunking-type).
+3. Choose a **Chunking type**, which decides how each file is split into smaller pieces before embedding. **Semantic Chunker** is selected by default. To pick another, see [Choose a chunking type](/operational-guides/configure-rag#choose-a-chunking-type).
 4. Select **Save**.
+
+<img
+  src={require('@site/static/img/screens/knowledge-ai-search.png').default}
+  alt="The AI Search tab of a Knowledge: Allow AI search on, the baai/bge-m3 embedding model, and Semantic Chunker selected as the chunking type"
+  style={{ width: '100%', maxWidth: '700px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 ## Choose how files are processed
 
