@@ -254,6 +254,11 @@ html[data-theme="light"] .theme-code-block {
 	text-transform: none;
 }
 
+/* Callout icons take the box's dark accent (its left border), not the text color */
+.theme-admonition [class*="admonitionIcon"] svg {
+	fill: var(--ifm-alert-border-color);
+}
+
 /* :::note is light blue: Infima's grey "secondary" box was too faint to read */
 .theme-admonition-note {
 	--ifm-alert-background-color: #eaf3fc;
