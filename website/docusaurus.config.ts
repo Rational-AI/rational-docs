@@ -261,9 +261,7 @@ const config: Config = {
 				},
 				{
 					title: "Rational AI",
-					items: [
-						{ label: "Website", href: "https://rational.is" },
-					],
+					items: [{ label: "Website", href: "https://rational.is" }],
 				},
 			],
 			copyright: `© ${new Date().getFullYear()} Rational AI`,
