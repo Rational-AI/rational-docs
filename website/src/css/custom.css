@@ -254,6 +254,20 @@ html[data-theme="light"] .theme-code-block {
 	text-transform: none;
 }
 
+/* :::note is light blue: Infima's grey "secondary" box was too faint to read */
+.theme-admonition-note {
+	--ifm-alert-background-color: #eaf3fc;
+	--ifm-alert-background-color-highlight: rgba(37, 99, 168, 0.15);
+	--ifm-alert-border-color: #2563a8;
+	--ifm-alert-foreground-color: var(--color-ink-soft);
+}
+html[data-theme="dark"] .theme-admonition-note {
+	--ifm-alert-background-color: #14263a;
+	--ifm-alert-background-color-highlight: rgba(120, 170, 230, 0.2);
+	--ifm-alert-border-color: #6aa3e0;
+	--ifm-alert-foreground-color: #e3ecf5;
+}
+
 /* MARK: Footer
    Quiet, theme-aware footer: a hairline on top, small-caps column titles like
    the sidebar section labels, muted links that turn teal on hover. */
