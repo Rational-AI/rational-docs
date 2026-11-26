@@ -223,6 +223,9 @@ html.plugin-pages .navbar__toggle {
 /* Language switcher: icon only. font-size 0 hides the label visually but keeps it for screen readers */
 .navbar__link.navbar-locale {
 	font-size: 0;
+	display: flex;
+	align-items: center;
+	min-height: 2rem;
 }
 .navbar__link.navbar-locale::after {
 	display: none;
