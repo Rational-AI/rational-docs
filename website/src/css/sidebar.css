@@ -73,7 +73,8 @@ aside,
 				font-weight: 700;
 				font-size: 0.78rem;
 				letter-spacing: 0.04em;
-				color: var(--ifm-heading-color);
+				/* Deep teal in light, readable brand teal in dark */
+				color: var(--ifm-color-primary);
 				padding: 6px;
 				margin: 0;
 
@@ -83,7 +84,7 @@ aside,
 				}
 
 				&.menu__link--active {
-					color: var(--ifm-heading-color);
+					color: var(--ifm-color-primary);
 					background: transparent;
 				}
 			}
