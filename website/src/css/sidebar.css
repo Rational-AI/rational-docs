@@ -69,10 +69,12 @@ aside,
 
 			> .menu__list-item-collapsible > .menu__link,
 			> .menu__link {
-				/* Eyebrow like rational.is: small, muted, sentence case */
-				font-weight: 400;
-				font-size: 0.875rem;
-				color: var(--ifm-color-content-secondary);
+				text-transform: uppercase;
+				font-weight: 700;
+				font-size: 0.78rem;
+				letter-spacing: 0.04em;
+				/* Deep teal in light, readable brand teal in dark */
+				color: var(--ifm-color-primary);
 				padding: 6px;
 				margin: 0;
 
@@ -82,7 +84,7 @@ aside,
 				}
 
 				&.menu__link--active {
-					color: var(--ifm-color-content-secondary);
+					color: var(--ifm-color-primary);
 					background: transparent;
 				}
 			}

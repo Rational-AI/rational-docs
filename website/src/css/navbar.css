@@ -27,11 +27,52 @@ html[data-theme="light"] nav.theme-layout-navbar.navbar.navbar--fixed-top {
 	background-color: color-mix(in srgb, var(--color-canvas) 90%, transparent);
 	backdrop-filter: blur(8px);
 }
+/* backdrop-filter makes the navbar the containing block of the fixed mobile
+   drawer, which then only got the navbar's height. Drop it while the drawer is open. */
+html[data-theme="light"]
+nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
+	backdrop-filter: none;
+}
 
 /* The theme switch lives in the footer: hide the one Docusaurus puts in the bar and drawer */
 .navbar [class*="colorModeToggle"],
 .navbar-sidebar [class*="colorModeToggle"] {
 	display: none;
+}
+/* Drawer header on phones: only the logo mark, so the theme toggle gets room and is
+   easy to tap. Crop the wordmark to its square mark (both themes use the same layout).
+   Wider drawers (tablets) keep the full "Rational AI DOCS". */
+@media (max-width: 576px) {
+	.navbar-sidebar__brand .navbar__title {
+		display: none;
+	}
+	.navbar-sidebar__brand .navbar__logo img {
+		width: 24px;
+		height: 24px;
+		object-fit: cover;
+		object-position: left;
+	}
+}
+.navbar-sidebar__brand {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+/* Theme toggle stays on the right, next to the close button */
+.navbar-sidebar__brand > .navbar__brand {
+	margin-right: auto;
+}
+.navbar-sidebar__brand > .navbar-sidebar__close {
+	margin-left: 0.5rem;
+}
+/* Docusaurus draws the X at 21px in thin grey, which looks bigger and further from
+   the edge than the 24px sun: same ink and weight as the sun, smaller */
+.navbar-sidebar__close svg {
+	width: 16px;
+	height: 16px;
+}
+.navbar-sidebar__close svg g {
+	stroke: var(--ifm-font-color-base);
+	stroke-width: 1.5;
 }
 /* Search floats at the bottom of the page instead */
 .navbar [class*="navbarSearchContainer"] {

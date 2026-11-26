@@ -157,27 +157,27 @@
 		"description": "The label alongside a tag list"
 	},
 	"theme.admonition.caution": {
-		"message": "attenzione",
+		"message": "Attenzione",
 		"description": "The default label used for the Caution admonition (:::caution)"
 	},
 	"theme.admonition.danger": {
-		"message": "pericolo",
+		"message": "Pericolo",
 		"description": "The default label used for the Danger admonition (:::danger)"
 	},
 	"theme.admonition.info": {
-		"message": "informazioni",
+		"message": "Informazioni",
 		"description": "The default label used for the Info admonition (:::info)"
 	},
 	"theme.admonition.note": {
-		"message": "nota",
+		"message": "Nota",
 		"description": "The default label used for the Note admonition (:::note)"
 	},
 	"theme.admonition.tip": {
-		"message": "suggerimento",
+		"message": "Suggerimento",
 		"description": "The default label used for the Tip admonition (:::tip)"
 	},
 	"theme.admonition.warning": {
-		"message": "attenzione",
+		"message": "Attenzione",
 		"description": "The default label used for the Warning admonition (:::warning)"
 	},
 	"theme.AnnouncementBar.closeButtonAriaLabel": {
