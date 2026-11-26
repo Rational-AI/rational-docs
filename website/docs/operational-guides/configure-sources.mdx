@@ -11,7 +11,7 @@ A source defines which external files Rational AI syncs, and when. You attach it
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
-  alt="The Sources page in Rational AI"
+  alt="The Sources page: the list of sources on the left and the selected Google Drive source with its provider, sync mode, schedule, status and last sync"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
@@ -63,6 +63,12 @@ SQL databases aren't sources. To give Rational BI and agents access to a databas
 :::note[Automatic only appears for sources that can report changes]
 **Automatic** needs a source that can say *"nothing changed"* in a single call. Object stores such as Amazon S3, Azure Blob Storage, and Google Cloud Storage, and extension sources, can't do that without setup on your side, so they offer only **Periodic** and **Manual**. A RabbitMQ queue has no schedule at all: it consumes its queue from **Sync now** until **Stop sync**. An automatic source shows no **Next scheduled sync**, because the two-minute check isn't a sync.
 :::
+
+<img
+  src={require('@site/static/img/screens/sync-settings.png').default}
+  alt="The Sync Settings dialog: sync mode Periodic, schedule Every hour at minute 0, and Cascade delete or Keep for deleted files"
+  style={{ width: '100%', maxWidth: '620px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 ### What happens when a sync keeps failing
 

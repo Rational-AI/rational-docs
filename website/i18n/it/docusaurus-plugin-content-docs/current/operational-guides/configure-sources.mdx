@@ -11,7 +11,7 @@ Una fonte definisce quali file esterni Rational AI sincronizza, e quando. La col
 
 <img
   src={require('@site/static/img/screens/sources-settings.png').default}
-  alt="La pagina Fonti in Rational AI"
+  alt="La pagina Sources: l'elenco delle fonti a sinistra e la fonte Google Drive selezionata, con provider, modalità di sincronizzazione, pianificazione, stato e ultima sincronizzazione"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 
@@ -63,6 +63,12 @@ I database SQL non sono fonti. Per dare a Rational BI e agli agenti accesso a un
 :::note[Automatico compare solo per le fonti che possono segnalare le modifiche]
 **Automatico** richiede una fonte che possa dire *«nessuna modifica»* con una sola chiamata. Gli object store come Amazon S3, Azure Blob Storage e Google Cloud Storage, e le fonti delle estensioni, non possono farlo senza una configurazione da parte tua: per questo offrono solo **Periodica** e **Manuale**. Una coda RabbitMQ non ha alcuna pianificazione: consuma la coda da **Sincronizza ora** fino a **Interrompi sincronizzazione**. Una fonte automatica non mostra **Prossima sincronizzazione**, perché il controllo ogni due minuti non è una sincronizzazione.
 :::
+
+<img
+  src={require('@site/static/img/screens/sync-settings.png').default}
+  alt="Il dialog Sync Settings: modalità Periodic, pianificazione ogni ora al minuto 0, e Cascade delete o Keep per i file eliminati"
+  style={{ width: '100%', maxWidth: '620px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 ### Cosa succede quando una sincronizzazione continua a fallire {#what-happens-when-a-sync-keeps-failing}
 
