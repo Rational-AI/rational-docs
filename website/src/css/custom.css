@@ -214,3 +214,28 @@ html[data-theme="light"] {
 		margin-bottom: 1.5rem;
 	}
 }
+
+/* The home page has no sidebar, so the mobile menu would only hold the language switcher, which is already in the bar */
+html.plugin-pages .navbar__toggle {
+	display: none;
+}
+
+/* Language switcher: icon only. font-size 0 hides the label visually but keeps it for screen readers */
+.navbar__link.navbar-locale {
+	font-size: 0;
+	display: flex;
+	align-items: center;
+	min-height: 2rem;
+}
+.navbar__link.navbar-locale::after {
+	display: none;
+}
+/* The icon's right margin only spaced it from the label, now hidden */
+.navbar__link.navbar-locale svg {
+	margin-right: 0;
+}
+
+/* The search plugin's input otherwise falls back to the browser default (Arial) */
+.navbar__search-input {
+	font-family: inherit;
+}

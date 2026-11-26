@@ -102,10 +102,6 @@ const config: Config = {
 					routeBasePath: "/", // Serve the docs at the site's root
 
 					sidebarPath: "./sidebars.ts",
-					// Please change this to your repo.
-					// Remove this to remove the "edit this page" links.
-					editUrl:
-						"https://github.com/Rational-AI/rational-docs/edit/main/website/",
 				},
 				blog: false,
 				// blog: {
@@ -265,13 +261,7 @@ const config: Config = {
 				},
 				{
 					title: "Rational AI",
-					items: [
-						{ label: "Website", href: "https://rational.is" },
-						{
-							label: "Docs on GitHub",
-							href: "https://github.com/Rational-AI/rational-docs",
-						},
-					],
+					items: [{ label: "Website", href: "https://rational.is" }],
 				},
 			],
 			copyright: `© ${new Date().getFullYear()} Rational AI`,

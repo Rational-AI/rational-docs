@@ -59,10 +59,6 @@
 		"message": "Sito web",
 		"description": "The label of footer link with label=Website linking to https://rational.is"
 	},
-	"link.item.label.Docs on GitHub": {
-		"message": "Documentazione su GitHub",
-		"description": "The label of footer link with label=Docs on GitHub linking to https://github.com/Rational-AI/rational-docs"
-	},
 	"logo.alt": {
 		"message": "Rational AI",
 		"description": "The alt text of footer logo"
