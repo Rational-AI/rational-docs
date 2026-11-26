@@ -24,6 +24,12 @@ Two sections apply only to an on-premises installation, one that runs on a machi
 
 The **Settings** sidebar groups everything this guide uses: **Models**, **Knowledge**, **Capabilities**, **Delivery**, **Governance**, and **Access**. Your own account is at the bottom of the sidebar: select your name, then **Profile settings**. See [Manage your own account](/operational-guides/manage-your-account).
 
+<img
+  src={require('@site/static/img/screens/settings-sidebar.png').default}
+  alt="The Settings sidebar, grouped into Models, Knowledge, Capabilities and Delivery, with the account menu open at the bottom: Profile settings, Switch language and Logout"
+  style={{ width: '100%', maxWidth: '240px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
+
 ## 2. Activate the license (on-premises only)
 
 A fresh installation is not activated. Chat, Conversations, Governance, and models you connect with your own provider credentials work, but the modules in your plan (Knowledge, Rational BI, Agents, Gen) stay hidden, and the workspace has three seats. Activate before you invite anyone.
@@ -42,6 +48,12 @@ Every assistant needs a text-generation model, and every Knowledge needs an embe
 2. Add a model from a provider through a [connector](/operational-guides/configure-connectors), or, on your own servers, an open-source model you deploy on the machine's GPU (see [Run models on your own servers](/operational-guides/run-models-on-premise)).
 3. Repeat until you have at least one text-generation model and one embedding model.
 4. In the **Default models** panel, set the **Conversational model** and the **Embedding model**, then select **Save**.
+
+<img
+  src={require('@site/static/img/screens/default-models.png').default}
+  alt="The Default models panel, with a model for each task type: Conversational, Coding, Agents, Embedding, Image generation and Decision"
+  style={{ width: '100%', maxWidth: '780px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 The defaults are fallbacks: a touchpoint or a Knowledge with a model of its own always uses that model. The panel has defaults for agents, image generation, and decisions too. See [Manage AI models in the registry](/operational-guides/ai-model-registry-features#set-default-platform-models-per-task-type).
 
