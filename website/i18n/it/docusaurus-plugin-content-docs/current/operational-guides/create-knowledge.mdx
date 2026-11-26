@@ -33,8 +33,14 @@ La scheda **Ricerca AI** controlla come vengono preparati i file perché l'AI po
 
 1. Attiva **Abilita ricerca AI**.
 2. Seleziona un **Modello di embedding**. Trasforma ogni testo in numeri, così Rational AI può misurare quanto è vicino a una domanda.
-3. Scegli un **Tipo di chunking**, che decide come ogni file viene diviso in pezzi più piccoli prima dell'embedding. **Chunker ricorsivo** è selezionato per impostazione predefinita. Per sceglierne un altro, vedi [Scegli un tipo di chunking](/operational-guides/configure-rag#choose-a-chunking-type).
+3. Scegli un **Tipo di chunking**, che decide come ogni file viene diviso in pezzi più piccoli prima dell'embedding. **Chunker semantico** è selezionato per impostazione predefinita. Per sceglierne un altro, vedi [Scegli un tipo di chunking](/operational-guides/configure-rag#choose-a-chunking-type).
 4. Seleziona **Salva**.
+
+<img
+  src={require('@site/static/img/screens/knowledge-ai-search.png').default}
+  alt="La scheda AI Search di una Knowledge: Allow AI search attivo, il modello di embedding BAAI/bge-m3 e Semantic Chunker selezionato come tipo di chunking"
+  style={{ width: '100%', maxWidth: '700px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 ## Scegli come vengono elaborati i file {#choose-how-files-are-processed}
 
