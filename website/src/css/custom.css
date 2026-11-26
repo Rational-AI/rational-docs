@@ -219,3 +219,11 @@ html[data-theme="light"] {
 html.plugin-pages .navbar__toggle {
 	display: none;
 }
+
+/* Language switcher: icon only. font-size 0 hides the label visually but keeps it for screen readers */
+.navbar__link.navbar-locale {
+	font-size: 0;
+}
+.navbar__link.navbar-locale::after {
+	display: none;
+}
