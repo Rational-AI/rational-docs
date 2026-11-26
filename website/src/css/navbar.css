@@ -44,12 +44,15 @@ html.plugin-pages .navbar [class*="navbarSearchContainer"] {
 	}
 }
 
-/* Search first, theme toggle at the far right, at every width */
+/* Search, language switcher, theme toggle at the far right, at every width */
 .navbar__items--right [class*="navbarSearchContainer"] {
 	order: 1;
 }
-.navbar__items--right [class*="colorModeToggle"] {
+.navbar__items--right .navbar__item:has(> .navbar-locale) {
 	order: 2;
+}
+.navbar__items--right [class*="colorModeToggle"] {
+	order: 3;
 	margin-left: 0.5rem;
 }
 
