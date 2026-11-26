@@ -180,7 +180,11 @@ const config: Config = {
 			},
 			items: [
 				// The search box is added after the configured items, so this sits before it
-				{ type: "localeDropdown", position: "right" },
+				{
+					type: "localeDropdown",
+					position: "right",
+					className: "navbar-locale",
+				},
 				// {
 				// type: 'dropdown',
 				// label: 'Documentazione',
