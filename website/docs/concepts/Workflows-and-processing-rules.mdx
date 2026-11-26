@@ -2,7 +2,7 @@
 sidebar_position: 31
 sidebar_label: Workflows and processing rules
 title: Workflows and processing rules
-description: What workflows and processing rules are, how automation and conditional logic work together, and how they are used in Rational AI.
+description: How steps, workflows, and processing rules decide what happens to the files a Knowledge receives.
 type: concept
 audience: [user, builder]
 ---
@@ -11,33 +11,33 @@ import ConnectsTo from "@site/src/components/ConnectsTo";
 
 # Workflows and processing rules
 
-**Workflows** and **processing rules** are how you automate work in the platform. A **workflow** is a sequence of steps that runs to accomplish a task, while a **processing rule** is the conditional logic that decides what should happen in a given situation. Loosely: the workflow is the recipe, and the processing rules are the "if this, then that" decisions inside it.
+Steps, workflows, and processing rules decide what happens to each file a Knowledge receives: what is extracted from it, which resources it becomes, and what text is chunked and embedded for search. You manage all three in **Settings** → **Workflows**.
 
-Together they let the platform do more than answer single questions. They turn AI into something that can carry out multi‑step jobs and react to your data automatically.
+## Steps
+
+A step is one Python script that does the work on a file. It reads the file, creates resources in the Knowledge, and returns the text to chunk and embed.
 
 ## Workflows
 
-A workflow chains several steps into one automated process that turns raw files into structured information: converting a document, extracting attributes, annotating it, linking it to other resources. Each step feeds the next, so a workflow can accomplish something no single step could on its own.
-
-In Rational AI a step is a Python script, and a workflow is a graph that connects steps, control-flow nodes and built-in operations. You edit the graph as code or on a canvas. A Knowledge runs its default workflow on every file added to it.
+A workflow is a graph that connects steps, control-flow nodes, and built-in operations, so one file can go through several steps in order or take different branches. You build it on a canvas or in code. A Knowledge runs its **Default workflow** on every file added to it.
 
 ## Processing rules
 
-A processing rule expresses a decision: which processing to run for a given file, based on its document type, content, source or any custom condition. It is a router. It doesn't change the data itself; the step it picks does the work. That is what lets a Knowledge handle an invoice and a technical manual differently instead of treating every input the same way.
+A processing rule is a Python script that returns the name of one step for each file, based on its name, type, content, source, or any condition you write. It routes the file and doesn't change it. This is how one Knowledge can send invoices to one step and technical manuals to another.
 
-## How they work together
+## How they meet in a Knowledge
 
-In a Knowledge, the two meet in the **Sources** settings. The **Default workflow** is either a workflow graph or the **Classic pipeline**. With the classic pipeline, the **Default processing rule** picks the step for each file, and each attached source can use its own processing rule. You can also assign a workflow to single files from the Knowledge's **Files** view.
+On a Knowledge's **Sources** tab, **Default workflow** is either a workflow or the **Classic pipeline**:
 
-## In Rational AI
+- With a workflow, the graph handles every file.
+- With the **Classic pipeline**, the **Default processing rule** picks the step for each file. Each attached source can use its own **Processing rule** instead.
 
-You manage both in **Settings** → **Workflows**, which has a **Workflows** tab (workflow graphs and steps) and a **Processing rules** tab. See the operational guides on how to [create a workflow](../operational-guides/create-workflow.mdx) and how to [create a processing rule](../operational-guides/create-processing-rule.mdx).
+In the Knowledge's file list, **Assign workflow** sets the step for the selected files directly. It applies the next time those files are processed.
 
-## Additional resources
+## Learn more
 
-* [Create a workflow](../operational-guides/create-workflow.mdx): build an automated, multi‑step process.
-* [Create a processing rule](../operational-guides/create-processing-rule.mdx): pick the processing for each file.
-
+- [Create a workflow](/operational-guides/create-workflow): write steps and connect them into a workflow.
+- [Create a processing rule](/operational-guides/create-processing-rule): pick the step for each file.
 
 ---
 

@@ -2,49 +2,20 @@
 sidebar_position: 26
 sidebar_label: Parametric and contextual knowledge
 title: Parametric and contextual knowledge
-description: The two kinds of knowledge a model draws on (what is baked into its weights and what it reads at request time) and why the distinction matters in Rational AI.
+description: The two kinds of knowledge a model answers from, what it learned in training and what it reads in the request, and how Rational AI uses the second.
 type: concept
 audience: [user, builder]
 ---
 
-import ConnectsTo from "@site/src/components/ConnectsTo";
-
-
 # Parametric and contextual knowledge
 
-A model answers from two very different sources of knowledge, and telling them apart explains much of how the platform is designed.
+A model answers from two kinds of knowledge.
 
-* **Parametric knowledge** is what the model absorbed during [training](/concepts/Model-training) and stored in its parameters. It is broad and always available, but it is frozen at the model's [knowledge cutoff](/concepts/Knowledge-cutoff), cannot be inspected, and is reconstructed from compressed patterns rather than looked up, which is why it can be subtly wrong.
-* **Contextual knowledge** is what the model reads directly from its [context window](/concepts/Context-window) at the moment of the request: the documents, data and conversation you put in front of it. It is current, specific and traceable to a source, but limited to what fits in the window.
+- **Parametric knowledge** is what the model learned in [training](/concepts/Model-training) and carries inside it. It is broad and always there, but it stops at the model's [knowledge cutoff](/concepts/Knowledge-cutoff), knows nothing about your organization, and can't point to a source.
+- **Contextual knowledge** is what the model reads in its [context window](/concepts/Context-window) for this request: the documents, records, and conversation you give it. It is current and specific, and you can check where it came from, but only what fits in the window counts.
 
-:::note[Why the distinction matters]
-Parametric knowledge is what the model *remembers*; contextual knowledge is what it can *see right now*. When the two disagree, grounding the model in trustworthy contextual knowledge is what keeps answers accurate and verifiable.
-:::
+To change parametric knowledge, you [fine-tune](/concepts/Finetuning) the model. To change contextual knowledge, you change what goes into the request.
 
-## Comparative view
+## In Rational AI
 
-| Aspect | Parametric knowledge | Contextual knowledge |
-| :--- | :--- | :--- |
-| Source | Baked into the model's weights during training | Supplied in the context window at request time |
-| Freshness | Frozen at the knowledge cutoff | As current as the information you provide |
-| Scope | Broad, general | Narrow, specific to the task |
-| Traceable to a source | No | Yes |
-| How to change it | Retrain or fine-tune | Change what you put in the context |
-
-## Why it matters in Rational AI
-
-The whole point of grounding a model in your [Knowledge](/concepts/Knowledge) is to shift answers from parametric to contextual. [RAG](/concepts/RAG) retrieves the most relevant resources and places them in the context window, so the model answers from your current, citable material instead of relying on what it happened to memorise during training.
-
----
-
-## Connects to
-
-<ConnectsTo
-	items={[
-		{ label: "Knowledge cutoff", to: "/concepts/Knowledge-cutoff" },
-		{ label: "Context window", to: "/concepts/Context-window" },
-		{ label: "RAG", to: "/concepts/RAG" },
-		{ label: "Knowledge", to: "/concepts/Knowledge" },
-		{ label: "Hallucinations", to: "/concepts/hallucinations" },
-	]}
-/>
+A [Knowledge](/concepts/Knowledge) turns your content into contextual knowledge. [RAG](/concepts/RAG) retrieves the passages that match a question and puts them in the context window, so the assistant answers from your current material and Chat shows the sources it used. The [Knowledge](/concepts/Knowledge) page compares a model's built-in knowledge with a Knowledge side by side.

@@ -7,92 +7,62 @@ audience: [developer]
 
 # Build an extension
 
-Extensions are how you add new capabilities to Rational AI without changing the
-platform itself. A single extension is a small package (a manifest plus,
-optionally, some code) that the platform installs and wires into the right
-place: a tool an agent can call, a skill, a messaging channel users can write
-to, a source your Knowledge bases sync from, a workflow that processes incoming
-files, or the Knowledge content, views and BI dashboards of a Marketplace
-solution. This guide explains the kinds of extensions you can build, the manifest
-that describes each one, and how to package and install them.
+An extension is a package that adds capabilities to Rational AI: MCP tools for agents, skills, a messaging channel, a source that Knowledge syncs from, or a processing workflow. Write a `manifest.json` that declares what the package provides, add the code it runs, package it, and install it from the Control Room.
 
+To install or configure an extension someone else built, see [Manage extensions](/operational-guides/manage-extensions).
 
-:::note[What is an extension?]
-An extension is a package described by a single `manifest.json`. The manifest
-declares one or more **providers**: capabilities the platform installs. The
-same package can ship several providers at once, but most extensions declare
-only one. Installing an extension reads its manifest and registers whatever it
-provides; uninstalling reverses that.
-:::
+## Before you begin
 
-:::note[Building vs. installing]
-This page is the **authoring** guide: how to *create* an extension. If you only
-need to install, configure, enable or disable extensions from the registry, see
-[Settings → Extensions](/cr/settings/extensions) instead.
-:::
+- An administrator account in the Control Room. Only administrators can add private extensions.
+- A UUID for the extension (`uuidgen`). Generate it once and keep it for every release.
 
-## Provider types
+## Lay out the package
 
-What an extension can do is determined entirely by which provider arrays its
-manifest fills in. The main types are:
-
-| Provider | Manifest key | What it adds | Ships code? |
-|----------|--------------|--------------|-------------|
-| **MCP server** | `mcpServerProviders` | Tools, prompts and resources an agent can call during a conversation (fetch a page, query a database, search the web). | Local: yes. Remote: no. |
-| **Channel** | `channelProviders` | An inbound/outbound messaging channel users talk to the assistant through (for example, Telegram). | No |
-| **Source** | `sourceProviders` | A data source your Knowledge bases sync files from, with an optional retention window. | Usually yes |
-| **Workflow** | `workflowProviders` | A processing workflow that transforms files as they enter a Knowledge base. | Yes |
-
-The manifest also supports `ruleProviders`, `knowledgeProviders` and
-`widgetProviders`. Include the required `channelProviders` and
-`mcpServerProviders` arrays even when empty; unused optional provider arrays
-can be omitted.
-
-## Anatomy of an extension
-
-Keep one stable source directory per extension, such as `my-extension/` (or
-`extension/` in a single-extension repository), with a standard layout:
+Keep one source directory per extension:
 
 ```
 my-extension/
-├── manifest.json        # metadata + provider declarations (required)
-├── icon.png             # extension icon shown in the registry
-├── <name>-server/       # MCP server source (TypeScript or Python)
-├── dist/                # built server / scripts the manifest points at
-└── make-tar.sh          # builds the distributable .tar.bz2
+├── manifest.json        # identity and providers (required)
+├── icon.png             # icon shown in the Extensions list
+├── skills/              # optional: one folder per skill, each with a SKILL.md
+└── dist/                # built code the manifest points at
 ```
 
-A **remote** extension (an MCP server hosted elsewhere) ships no code at all;
-it is only the `manifest.json`.
+A remote MCP extension ships no code. The `manifest.json` alone is the package.
 
-### Common manifest fields
+## Write the manifest
 
-Every manifest starts with the same identifying fields, regardless of which
-providers it declares:
+Every manifest starts with the same fields:
 
 | Field | Required | Description |
-|-------|----------|-------------|
-| `id` | yes | A stable UUID for the extension. Generate it once (`uuidgen`) and keep it for the life of the extension. |
-| `nameIdentifier` | yes | A short machine slug, for example, `time`, `github-remote`. Determines the archive filename and inner root prefix. |
-| `version` | yes | Semantic release version (`1.0.0`); determines the archive filename and inner root suffix. |
-| `name` | yes | Display name shown in the registry. |
-| `description` | no | A sentence or two describing what the extension does. Shown to the user before they install. |
-| `icon` | no | Icon for the extension. May be empty (the bundled `icon.png` is used), a remote URL, or an embedded `data:` URI. |
-| `link` | no | URL to upstream docs or the project homepage. |
-| `listing` | no | How the extension is presented in the Marketplace. See [List your extension in the Marketplace](#list-your-extension-in-the-marketplace). |
+|---|---|---|
+| `id` | Yes | The extension's UUID. Keep it for the life of the extension. |
+| `nameIdentifier` | Yes | A short slug, such as `time`. With `version`, it names the package root. |
+| `version` | Yes | The release version, such as `1.0.0`. |
+| `name` | Yes | The name shown in the Control Room. |
+| `description` | No | What the extension does, shown before install. |
+| `icon` | No | An image URL or a `data:` URI. Leave it empty to use the bundled `icon.png`. |
+| `channelProviders`, `mcpServerProviders` | Yes | Provider arrays. Include them, empty if unused. |
+| `sourceProviders`, `workflowProviders`, `ruleProviders`, `knowledgeProviders`, `widgetProviders` | No | Further provider arrays. Omit the ones you don't use. |
+| `listing` | No | How the extension appears in the Marketplace. See [List the extension in the Marketplace](#list-the-extension-in-the-marketplace). |
 
-The remaining keys are the four provider arrays described below.
+What the extension does depends on which provider arrays you fill:
 
-## 1. MCP server extensions
+| Provider array | What it adds |
+|---|---|
+| `mcpServerProviders` | Tools that agents and touchpoints call, from a local process or a remote MCP server |
+| `channelProviders` | A messaging channel users talk to the assistant through |
+| `sourceProviders` | A source that a Knowledge syncs files from |
+| `workflowProviders` | A processing workflow for Knowledge files |
+| `ruleProviders` | A processing rule that routes files to workflows |
+| `knowledgeProviders` | A ready-to-use Knowledge with its views, collections, records, agents and BI dashboards, as in Marketplace solutions |
+| `widgetProviders` | A custom element that renders a tool's calls in the chat |
 
-The most common kind. An MCP server exposes **tools** (and optionally prompts and
-resources) following the [Model Context Protocol](https://modelcontextprotocol.io);
-agents call them during a conversation. There are two transports.
+Skills don't need a provider. Rational AI registers every `skills/<name>/SKILL.md` in the package when the extension is installed. It reads `name`, `description` and `version` from the file's front matter, and uses the folder name when `name` is missing. To offer skills in chat, see [Use skills in chat](/operational-guides/agent-skills).
 
-### Local (stdio)
+### Add a local MCP server
 
-A local server runs as a process the platform spawns. This is the default: omit
-`transportType` and supply a `command` and `arguments`:
+A local server is a process Rational AI starts over stdio. Omit `transportType` and give the `command` and `arguments`:
 
 ```json
 {
@@ -100,39 +70,35 @@ A local server runs as a process the platform spawns. This is the default: omit
   "nameIdentifier": "time",
   "version": "1.0.0",
   "name": "Time",
-  "description": "Get the current time and convert between IANA timezones.",
+  "description": "Get the current time and convert between IANA time zones.",
   "icon": "",
-  "link": "https://mcp.so/server/time/modelcontextprotocol",
   "channelProviders": [],
   "mcpServerProviders": [
     {
+      "id": "time-server",
       "name": "Time-server",
       "path": "",
       "command": "uvx",
       "arguments": ["mcp-server-time", "--local-timezone=Europe/Rome"],
-      "allowedSources": [],
       "configuration": {}
     }
   ]
 }
 ```
 
-Useful fields on a local `mcpServerProviders` entry:
-
 | Field | Description |
-|-------|-------------|
-| `command` / `arguments` | The process to spawn and its arguments. |
-| `path` | Working directory the process is spawned in, relative to the install dir (for example, `dist`). |
-| `environment` | Environment variables for the process. Values support `${config.*}` interpolation, so secrets come from the user's configuration. |
-| `installScript` / `uninstallScript` | Commands run once when the extension is installed / removed (for example, to fetch dependencies). |
-| `beforeCallScript` / `afterCallScript` | Commands run around each tool call. |
-| `configuration` | The user-facing config schema (see [Configuration fields](#configuration-fields)). |
+|---|---|
+| `id` | A stable identity for the server across releases. Older manifests omit it, and the `name` is used instead. |
+| `command`, `arguments` | The process to start and its arguments. |
+| `path` | The working directory, relative to the package root, such as `dist`. |
+| `environment` | Environment variables for the process. |
+| `installScript`, `uninstallScript` | Commands run once when the extension is installed or removed. |
+| `beforeCallScript`, `afterCallScript` | Commands run around each tool call. |
+| `configuration` | The values the administrator enters. See [Declare configuration fields](#declare-configuration-fields). |
 
-### Remote (HTTP)
+### Add a remote MCP server
 
-A remote server already runs somewhere else; the platform connects to it over
-HTTP instead of spawning anything. Set `transportType` to `"http"` and give a
-`url` and optional `headers`:
+A remote server already runs elsewhere, and Rational AI connects to it over HTTP. Set `transportType` to `http` and give a `url` and optional `headers`:
 
 ```json
 {
@@ -140,7 +106,7 @@ HTTP instead of spawning anything. Set `transportType` to `"http"` and give a
   "nameIdentifier": "github-remote",
   "version": "1.0.0",
   "name": "GitHub (Remote)",
-  "description": "GitHub's official remote MCP server.",
+  "icon": "https://example.com/github.svg",
   "channelProviders": [],
   "mcpServerProviders": [
     {
@@ -161,35 +127,11 @@ HTTP instead of spawning anything. Set `transportType` to `"http"` and give a
 }
 ```
 
-Both `url` and header values support `${config.*}` interpolation, so per-user
-credentials (an access token, a base URL) are filled in from the configuration
-the user provides at install time.
+A remote server authenticates with a value carried in a header, such as a token or key. A manifest can't describe an interactive OAuth flow, so use a server that accepts a token.
 
-:::note[Remote extensions ship no code]
-A remote extension has no server to build, so it is distributed as a **plain
-`manifest.json`**. Upload the file directly, no `.tar.bz2`. With no bundled
-`icon.png`, set the manifest's `icon` field to a URL or an embedded `data:` URI.
-:::
+### Add a channel
 
-:::tip[OAuth is not yet supported]
-Remote providers authenticate with a static value (a token or key) carried in a
-header. Servers that require an interactive OAuth 2.1 / DCR flow can't yet be
-expressed in a manifest, so use a token-based server where one is offered.
-:::
-
-### Agent skills
-
-Agent skills are delivered as a specialised MCP server extension: a sandbox
-server (`mcpServerProviders`) that loads `SKILL.md` skills from the package and
-offers them to the model with progressive disclosure. You author the skills as
-Markdown with frontmatter and bundle them alongside the server. The manifest
-shape is the same local-stdio form shown above.
-
-## 2. Channel extensions
-
-A channel lets users reach the assistant through an external messaging platform.
-Declare it under `channelProviders` and pick a `type` (`Telegram`, `RationalAI`,
-`OpenAIApi`):
+A channel lets users reach the assistant through a messaging service. Declare it under `channelProviders`:
 
 ```json
 {
@@ -197,16 +139,15 @@ Declare it under `channelProviders` and pick a `type` (`Telegram`, `RationalAI`,
     {
       "id": "4c0369fa-ac30-4851-993f-ada2965d5e0c",
       "name": "Telegram chat service",
-      "description": "Exchange messages via Telegram infrastructure.",
+      "description": "Exchange messages through Telegram.",
       "type": "Telegram",
       "configuration": {
         "token": {
           "alias": "Bot Token",
-          "description": "The bot token issued by Telegram's BotFather.",
+          "description": "The bot token issued by BotFather.",
           "type": "{\"type\": \"string\"}",
           "isRequired": true,
-          "isHidden": false,
-          "defaultValue": ""
+          "isHidden": false
         }
       }
     }
@@ -214,16 +155,11 @@ Declare it under `channelProviders` and pick a `type` (`Telegram`, `RationalAI`,
 }
 ```
 
-The channel's `configuration` follows the same field shape as everything else
-(see [Configuration fields](#configuration-fields)). Hidden, pre-filled fields
-(such as a webhook URL the platform owns) are marked `isHidden: true`.
+`type` is one of `Telegram`, `Whatsapp`, `Email`, `Teams`, `Slack`, `RationalAI`, `OpenAIApi` or `None`. A channel with a `runtime` block is program-driven: Rational AI runs your program over stdio with the `channel-rpc-v1` protocol to provision the channel, receive messages, and send replies. TODO(verify): the request and response shapes of `channel-rpc-v1`.
 
-## 3. Source extensions
+### Add a source
 
-A source provider becomes a selectable data source when you create or sync a
-Knowledge base. A source is **program-driven**: at sync time the platform runs
-the program declared in `runtime`, hands it the source configuration as JSON on
-stdin, and reads back a `{ "files": [...] }` list to download.
+A source provider becomes a source type you can attach to a Knowledge. At each sync, Rational AI runs the program in `runtime`, writes the source configuration as JSON to its stdin, and reads a `{ "files": [...] }` list from its stdout. Rational AI then downloads the files itself.
 
 ```json
 {
@@ -242,7 +178,7 @@ stdin, and reads back a `{ "files": [...] }` list to download.
       "configuration": {
         "category": {
           "alias": "Category",
-          "description": "arXiv category to fetch, for example, cs.AI.",
+          "description": "arXiv category to fetch, for example cs.AI.",
           "type": "{\"type\":\"string\"}",
           "isRequired": true,
           "isHidden": false
@@ -254,21 +190,13 @@ stdin, and reads back a `{ "files": [...] }` list to download.
 ```
 
 | Field | Description |
-|-------|-------------|
-| `runtime.command` / `arguments` | The resolver program. It receives the source config on stdin and prints `{ "files": [...] }` on stdout. |
-| `runtime.path` | Working directory for the program, relative to the install dir. |
-| `runtime.protocol` | Contract version the worker expects (`list-json-v1`). |
-| `expiry.mode` | `window` removes any previously synced file the resolver no longer returns; `none` never deletes. |
+|---|---|
+| `runtime.command`, `runtime.arguments` | The program that lists the files. |
+| `runtime.path` | Its working directory, relative to the package root. |
+| `runtime.protocol` | The contract version. Use `list-json-v1`. |
+| `expiry.mode` | `window` deletes previously synced files that the program no longer returns. `none` (the default) never deletes. |
 
-Each entry in the returned `files` list names one file. Besides its `filename`,
-it carries either a `url` the platform downloads or the file's `content` inline,
-encoded in base64, plus
-an optional `mimeType` and `submittedDate`. It can also set `loadAsResource`:
-
-| `loadAsResource` | What happens to the file |
-|------------------|--------------------------|
-| omitted or `true` | The file is a **document**: it is loaded into the Knowledge base as a resource and processed. |
-| `false` | The file is a **companion**: it is stored with the source's files, for a workflow to read, but it does not become a resource of its own. |
+Each entry in `files` needs a unique `filename` and either a `url` to download or the file's `content` encoded in base64. It can also carry `mimeType`, `submittedDate` and `loadAsResource`:
 
 ```json
 {
@@ -279,46 +207,16 @@ an optional `mimeType` and `submittedDate`. It can also set `loadAsResource`:
 }
 ```
 
-:::note[Mark companion files in the resolver, not in a rule]
-A processing rule only chooses a workflow; it cannot stop a file from being
-loaded as a resource. If your source ships metadata or precomputed data next to
-each document, set `loadAsResource: false` on those entries, or they arrive in
-the Knowledge base as empty resources. Changing the flag on a file that was
-already synced marks it for processing again, so the change applies on the next
-sync.
-:::
+A file with `loadAsResource` omitted or `true` becomes a resource of the Knowledge and is processed. A file with `false` is stored next to the others for a workflow to read, and never becomes a resource. Set `false` on metadata and sidecar files, or they arrive as empty resources. A processing rule can't stop a file from being loaded. Changing the flag on a file that already synced takes effect on the next sync.
 
-:::note[The resolver only lists; the platform downloads]
-Your program's job is to return *which* files to sync, not to fetch them. The
-worker downloads each returned file and applies the `expiry` policy, so a
-resolver that returns only items inside the configured window gets out-of-window
-files cleaned up for free.
-:::
+A sync fails if the program writes nothing to stdout or stderr for 30 minutes.
 
-## 4. Workflow extensions
+### Add a workflow
 
-:::note[New]
-Workflow providers are a recent addition to the extension system. They let an
-extension ship a ready-made [processing workflow](/operational-guides/create-workflow)
-that the platform installs and assigns to Knowledge files.
-:::
-
-A workflow provider points at a script in the package; on install, the platform
-reads that script and registers it as a global processing workflow. Because the
-script follows the same stdin/stdout contract as any
-[hand-written workflow](/operational-guides/create-workflow), the existing
-worker runs it unchanged, with no extra wiring.
+A workflow provider points at a script in the package. On install, Rational AI registers it as a [processing workflow](/operational-guides/create-workflow) that can be assigned to Knowledge files.
 
 ```json
 {
-  "id": "565fde73-85e4-4dce-b3a0-19423b472bb9",
-  "nameIdentifier": "transcribe",
-  "version": "1.0.0",
-  "name": "RationalAI Transcribe Extension",
-  "description": "Transcribe audio or video files into Markdown.",
-  "channelProviders": [],
-  "mcpServerProviders": [],
-  "sourceProviders": [],
   "workflowProviders": [
     {
       "id": "transcribe-media",
@@ -334,16 +232,13 @@ worker runs it unchanged, with no extra wiring.
 ```
 
 | Field | Description |
-|-------|-------------|
-| `path` | Directory inside the package the script lives in (for example, `dist`). |
-| `script` | Filename of the workflow script, relative to `path`. |
-| `timeout` | Per-run timeout in minutes passed to the activity. |
-| `isActive` | Whether the workflow is assignable immediately after install. |
+|---|---|
+| `path` | The folder inside the package that holds the script, such as `dist`. |
+| `script` | The script's filename, relative to `path`. |
+| `timeout` | The timeout of each run, in minutes. |
+| `isActive` | Whether the workflow can be assigned right after install. Default: `true`. |
 
-The script itself is an ordinary processing workflow: a `process(document,
-options)` function wired up with `run(process)`, with its dependencies declared
-inline in [PEP 723](https://peps.python.org/pep-0723/) format so the worker
-resolves them at run time:
+The script is an ordinary workflow: a `process(document, options)` function passed to `run`, with its dependencies declared inline in [PEP 723](https://peps.python.org/pep-0723/) format:
 
 ```python
 #!/usr/bin/env -S uv run --script
@@ -365,45 +260,54 @@ def process(document: File, options: dict):
 run(process)
 ```
 
-:::warning[Extension workflows are read-only]
-A workflow installed from an extension is **read-only**: it appears in
-**Settings** → **Workflows** and can be assigned to files, but it can't be edited or
-deleted from the UI, because its owning extension manages it. Uninstalling the
-extension is how you remove it.
-:::
+A workflow installed from an extension appears in **Settings** → **Workflows** and can be assigned, but it is read-only. Uninstalling the extension deletes the workflow, unless a Knowledge uses it. In that case the workflow stays and becomes editable.
 
-## Configuration fields
+A rule provider has the same `id`, `name`, `path` and `script` fields and registers a [processing rule](/operational-guides/create-processing-rule). Installing a newer release updates a rule whose code changed.
 
-Every provider that needs user input (credentials, endpoints, options) declares
-a `configuration` map. Each entry is a field the platform renders at install
-time. The fields are consistent across provider types:
+### Add a chat widget
+
+A widget provider ships a script that defines one custom element. When an agent calls a tool with the same name as the element, the chat renders the call with your element instead of the raw arguments.
+
+```json
+{
+  "widgetProviders": [
+    { "tagName": "ticket-routing", "path": "dist/widget/tickets.js", "description": "Pick the office that handles a ticket." }
+  ]
+}
+```
+
+`tagName` must equal the tool name, and a custom element name must contain a hyphen, so name the tool accordingly. `path` is relative to the package root.
+
+## Declare configuration fields
+
+A provider that needs values (credentials, endpoints, options) declares a `configuration` map. Each key is one field of the form the administrator fills in after install.
 
 | Field | Description |
-|-------|-------------|
-| `title` / `alias` | The label shown to the user. (`title` on MCP providers, `alias` on channels and sources.) |
-| `description` | Help text. Plain HTML links are allowed for "how to get this value" instructions. |
-| `type` | A JSON Schema fragment **encoded as a string**, for example, `"{\"type\":\"string\"}"` or `"{\"type\":\"string\",\"enum\":[\"day\",\"week\"]}"`. |
-| `isRequired` | Whether the user must supply a value. |
-| `isHidden` | `true` for values the platform fills in itself (for example, a webhook URL). They don't appear in the form. |
-| `defaultValue` | Pre-filled value. |
-| `provider` | On MCP providers only: where the value comes from. `{ "kind": "value", ... }` means the user types it directly; `{ "kind": "connector", "type": "braveApiKey" }` means the user picks a saved [connector](/operational-guides/configure-connectors) of that type. |
+|---|---|
+| `title` (MCP servers), `alias` (channels and sources) | The label of the field. |
+| `description` | Help text. HTML links are allowed. |
+| `isRequired` | Whether a value is required. |
+| `isHidden` | `true` for values the administrator doesn't enter, such as a webhook URL. |
+| `defaultValue` | The pre-filled value. |
+| `type` (channels and sources) | A JSON Schema **encoded as a string**, such as `"{\"type\":\"string\"}"`. |
+| `provider` (MCP servers) | Where the value comes from. `{ "kind": "value", "type": "<JSON Schema as a string>" }` is typed in. `{ "kind": "connector", "type": "braveApiKey" }` is a saved [connector](/operational-guides/configure-connectors) of that type. |
 
-A hidden parameter whose provider is `{ "kind": "connector", "type": "rational" }`
-is filled in automatically with the built-in Rational AI connector when the
-extension is first configured. Use it for a server that calls the Rational AI
-API on the tenant's behalf.
+A hidden field with `{ "kind": "connector", "type": "rational" }` is filled with the built-in Rational AI connector. Use it for a server that calls the Rational AI API. Its value has `baseUrl` and `apiKey`.
 
-Reference a configured value elsewhere in the manifest with `${fieldName}`.
-That's how the GitHub example above pulls `accessToken` into its
-`Authorization` header.
+Use a field's value elsewhere in the MCP server entry with `${fieldName}`, in `environment`, `arguments`, `url` and `headers`. Reach inside an object value with a dot:
 
-## List your extension in the Marketplace
+```json
+"environment": {
+  "BACKEND_ADDRESS": "${rationalai.baseUrl}",
+  "BACKEND_API_KEY": "${rationalai.apiKey}"
+}
+```
 
-A manifest with a `listing` block becomes a solution in the
-[Marketplace](/operational-guides/marketplace) once its release is published to
-the shared catalog. A release without `listing` is installable but is not
-listed there. Texts are maps keyed by language, and the only allowed keys are
-`it` and `en`.
+In `arguments`, `${fieldName?--flag}` adds `--flag` only when the value is set and not `false`. An argument that resolves to an empty string is dropped.
+
+## List the extension in the Marketplace
+
+A manifest with a `listing` block becomes a solution in the [Marketplace](/operational-guides/marketplace) when its release is published to the **Rational AI catalogue**. A private upload keeps no listing. Texts are maps keyed by language, and the only allowed keys are `it` and `en`.
 
 ```json
 {
@@ -423,105 +327,77 @@ listed there. Texts are maps keyed by language, and the only allowed keys are
 ```
 
 | Field | Description |
-|-------|-------------|
-| `tagline` | The line under the name on the card and the solution page. |
-| `industries` / `useCases` | Keys from a fixed vocabulary, such as `manufacturing` or `public-sector`, and `compliance` or `sales`. An unknown key is refused on upload, and the error lists the allowed ones. |
-| `description` | Path of a Markdown file in the package; `{lang}` is replaced by each language. At least one file must exist. |
-| `summary`, `steps` | The **How it works** section: a short paragraph and steps with `when`, `title` and `text`. |
-| `collections` | The collections the solution creates, each with the `name` used in the package, a `description` and the names of its `views`. |
-| `screenshots` | Images with `path`, `label` and `caption`: PNG, JPEG or WebP, up to 5 MB each. `{lang}` in the path selects a per-language image. |
-| `cover` | Optional editorial cover: a 16:9 PNG from 1600×900 to 7680×4320 pixels. |
-| `setup` | The checklist users see after installing. Each step has a unique `key` of lowercase letters, numbers and hyphens, plus `title` and `text`. |
-| `source` | The external source the solution reads from: `name`, `schedule` and `reads`. |
+|---|---|
+| `tagline` | The line under the name. |
+| `industries` | Keys from a fixed list: `manufacturing`, `public-sector`, `retail`, `culture`, `defense`, `energy`, `healthcare`, `finance`, `services`. |
+| `useCases` | Keys from a fixed list, such as `compliance`, `sales`, `customer-service` or `document-processing`. An unknown key is refused on upload, and the error lists the allowed ones. |
+| `description` | The path of a Markdown file in the package. `{lang}` is replaced by each language. |
+| `summary`, `steps` | The **How it works** section: a short paragraph, and steps with `when`, `title` and `text`. |
+| `collections` | The collections the solution creates, each with its `name`, a `description` and the names of its `views`. |
+| `screenshots` | Images with `path`, `label` and `caption`. PNG, JPEG or WebP, up to 5 MB each. `{lang}` in the path selects a per-language image. |
+| `cover` | An optional cover image: a 16:9 PNG from 1600×900 to 7680×4320 pixels. |
+| `setup` | The checklist shown after install. Each step has a unique `key` of lowercase letters, digits and hyphens, plus `title` and `text`. |
+| `source` | The outside source the solution reads: `name`, `schedule` and `reads`. |
 | `questions` | Example questions for the assistant. |
 
-You don't declare everything a card shows. The name, version, icon and
-languages come from the manifest and its `locales/` translations. The counts of
-views, dashboards, tools, skills, workflows and example records, and the
-**Includes** features, are computed from the package on upload.
+The name, version, and icon come from the manifest. The counts of views, dashboards, tools, skills, workflows, and example records are computed from the package on upload.
 
-## Package and install
+## Package the extension
 
-Build the extension on your own computer or in CI. Many example projects
-provide a `make-tar.sh` script in their directory. This is a project convention,
-not a platform requirement:
+The package is a `.tar.bz2` (or `.zip`) with exactly one root folder named `<nameIdentifier>-<version>`, which holds `manifest.json`. Paths in the manifest, such as `dist`, are relative to that folder. The package can't contain symbolic links, and is limited to 1 GiB compressed, 2 GiB expanded and 100,000 files.
 
-```bash
-cd my-extension
-sh make-tar.sh
-```
+1. Build your code into `dist/`.
+2. Create the archive. This `make-tar.sh` reads the name and version from the manifest and packages `manifest.json`, `icon.png` and `dist/`. Add other folders, such as `skills/`, to `payload`.
 
-Build any server dependencies and code first. The packaging step must read
-`nameIdentifier` and `version` from `manifest.json`, producing
-`my-extension-1.0.0.tar.bz2` with a single inner root named
-`my-extension-1.0.0/`. Runtime paths such as `dist` remain relative to that
-root. The source directory stays `my-extension/` across releases: update the
-manifest version and keep source history in Git, without copying old version
-folders alongside the current source.
+   ```sh
+   #!/bin/sh
+   set -eu
+   cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+   python3 - <<'PYTHON'
+   import json, re, tarfile
+   from pathlib import Path
 
-For an extension whose runtime files are already built in `dist/`, this
-`make-tar.sh` example uses Python 3 to package the required files. Add other
-assets referenced by your manifest to `payload` as needed. Run it with
-`sh make-tar.sh`; it works regardless of the caller's working directory.
+   manifest = json.loads(Path("manifest.json").read_text())
+   identity = [manifest["nameIdentifier"], manifest["version"]]
+   if not all(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) for value in identity):
+       raise ValueError("Invalid package identity")
+   package_name = "-".join(identity)
+   payload = [Path("manifest.json"), Path("icon.png"), Path("dist")]
+   output = Path("artifacts")
+   output.mkdir(exist_ok=True)
+   with tarfile.open(output / f"{package_name}.tar.bz2", "w:bz2") as archive:
+       for path in payload:
+           archive.add(path, arcname=f"{package_name}/{path}")
+   print(output / f"{package_name}.tar.bz2")
+   PYTHON
+   ```
 
-```sh
-#!/bin/sh
-set -eu
-cd "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-python3 - <<'PYTHON'
-import json
-from pathlib import Path
-import re
-import tarfile
+3. Run `sh make-tar.sh`. The archive is written to `artifacts/`. Keep that folder out of Git.
 
-manifest = json.loads(Path("manifest.json").read_text())
-identity = [manifest["nameIdentifier"], manifest["version"]]
-if not all(isinstance(value, str) and
-           re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value)
-           for value in identity):
-    raise ValueError("Invalid package identity")
-package_name = "-".join(identity)
-payload = [Path("manifest.json"), Path("icon.png"), Path("dist")]
-for path in payload:
-    if not path.exists():
-        raise FileNotFoundError(path)
-# Keep archives outside dist/, which contains the runtime payload.
-output = Path("artifacts")
-output.mkdir(exist_ok=True)
-with tarfile.open(output / f"{package_name}.tar.bz2", "w:bz2") as archive:
-    for path in payload:
-        archive.add(path, arcname=f"{package_name}/{path}")
-print(output / f"{package_name}.tar.bz2")
-PYTHON
-```
+A remote MCP extension needs no packaging: upload its `manifest.json`.
 
-Exclude generated `artifacts/` from Git. A **remote** extension skips packaging
-entirely: its `manifest.json` *is* the distributable.
+## Install and test the extension
 
-Install the result from the Control Room: open **Settings** → **Extensions**,
-select **Add private extension** and choose the archive (or, for a remote
-extension, the manifest), or drag the file onto the page. If the extension needs
-values, its card shows **Configuration needed**: open **Settings** from its
-options menu and save the required fields, which starts it. See
-[Settings → Extensions](/cr/settings/extensions) for the full install,
-configure and management flow.
+1. Go to **Settings** → **Extensions** and select **Add private extension**.
+2. Choose the archive, or the manifest for a remote extension. You can also drag the file onto the page.
+3. If the card shows **Configuration needed**, open the extension, select **Settings** from its options menu, fill in the fields, and save. Saving starts the extension and lists its tools.
 
-:::tip[Start from an existing extension]
-The fastest way to build a new extension is to copy one that already does
-something similar and adjust its manifest. Keep `id` unique (generate a fresh
-UUID). Derive the archive filename and inner root from `nameIdentifier` and
-`version`; keep the source directory name stable.
-:::
+To ship a change, raise `version` and upload again: installing a version that is already installed reuses that release. To edit the installed files in place while you test, see [Develop an extension](/operational-guides/develop-an-extension).
 
-## Develop an installed extension
+## Troubleshooting
 
-You do not need access to the Rational AI server filesystem or Kubernetes.
-Build locally and upload through the UI or tenant management API. For individual
-file edits, remote previews and bringing changes back into Git, see
-[Develop an extension](/operational-guides/develop-an-extension).
+| Symptom | What to check |
+|---|---|
+| *"Package must contain exactly one extension root directory."* | The archive has files at its top level, or more than one folder. Put everything inside one `<nameIdentifier>-<version>/` folder. |
+| *"Package root must be named '…'."* | The root folder doesn't match `nameIdentifier` and `version` in the manifest. Rebuild the archive after changing either. |
+| *"Unsupported file. Use a .tar.bz2, .zip, .mcpb or manifest .json bundle."* | The file has another extension. Upload a `.tar.bz2`, `.zip` or `.mcpb` package, or a `manifest.json`. |
+| *"Workflow '…' already exists and is not owned by this extension."* | A workflow with the same name already exists in the workspace. Rename the workflow provider, or rename the existing workflow. |
+| Your changes don't appear after a new upload | The `version` is unchanged, so the release already installed is reused. Raise the version. |
+| A `${fieldName}` value reaches the server empty | The name doesn't match a key of `configuration`, or the field has no value. |
+| Synced metadata files appear as empty resources | The source returns them without `"loadAsResource": false`. |
 
-## Related guides
+## Next steps
 
-- [Settings → Extensions](/cr/settings/extensions): install and manage extensions.
-- [Create a workflow](/operational-guides/create-workflow): author the processing workflow a workflow extension ships.
-- [Create a processing rule](/operational-guides/create-processing-rule): route files to the right workflow.
+- [Develop an extension](/operational-guides/develop-an-extension): edit an installed extension's files without repackaging.
+- [Manage extensions](/operational-guides/manage-extensions): install, configure, and turn extensions on or off.
+- [Create a workflow](/operational-guides/create-workflow): write the workflow a workflow provider ships.

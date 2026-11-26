@@ -157,13 +157,31 @@ If your problem isn't listed, look the message up in [Error messages](/reference
 - Slack can't verify the **Request URL**
 - A mention in a Slack channel gets no answer, or messages arrive but nobody answers
 
+## Extensions
+
+**[Build an extension](/operational-guides/build-an-extension#troubleshooting)**
+- *"Package must contain exactly one extension root directory."* or *"Package root must be named '…'."*
+- *"Unsupported file…"* when you upload the package
+- *"Workflow '…' already exists and is not owned by this extension."*
+- Your changes don't appear after a new upload
+- A `${fieldName}` value reaches the server empty
+- Synced metadata files appear as empty resources
+
+**[Develop an extension](/operational-guides/develop-an-extension#troubleshooting)**
+- *"File edits require development mode on this installation."*
+- *"Development must preserve installed identity and version…"*
+- *"Exit development mode before updating this extension."*
+- `push` stops and asks you to pull
+
 ## Integrations
 
 **[Graphify MCP server](/operational-guides/external-graphify-mcp#troubleshooting)**
 - The server can't reach Rational AI, or authentication fails
-- `query_graph` returns nothing
+- `query_graph` returns nothing, or the tool asks for a `knowledgeId`
 - `uv` fails to start the server
+- *"graphify query failed"*
 
 **[User details panel](/operational-guides/personalize-user-details#troubleshooting)**
-- Only Basic info shows, or a widget is empty or never appears
-- Your changes disappeared on the next update
+- Only the built-in fields show, or a widget is empty or never appears
+- Widgets disappeared after an update
+- The user's name changed after an update

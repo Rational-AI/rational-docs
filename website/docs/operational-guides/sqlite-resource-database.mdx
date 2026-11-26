@@ -1,77 +1,54 @@
 ---
 sidebar_position: 13
 sidebar_label: Work with the SQLite database
+title: Work with a SQLite resource database
+description: Browse, query, and edit a SQLite file stored in a Knowledge without downloading it.
 type: how-to
 audience: [builder]
 ---
 
 # Work with a SQLite resource database
 
-When a resource is a SQLite file, Rational AI loads it into a knowledge database and renders it directly in the resource detail panel. This guide shows you how to browse, query and edit that database inline, instead of only downloading the file.
+When you add a SQLite file to a Knowledge, Rational AI loads it into a database that belongs to the Knowledge. The resource viewer then opens that database instead of a file preview, so you can browse tables, run SQL, and filter and sort rows in the Control Room. Administrators can also edit the data.
 
-:::note[What is a SQLite resource database?]
-A SQLite resource is a resource whose underlying file is a SQLite database. When such a resource is ingested, Rational AI loads it into a knowledge database named after the resource. The viewer then opens that database, so you can browse tables and views, run SQL, filter, sort and inline-edit the data without leaving the Control Room.
-:::
+## Before you begin
 
-## Prerequisites
-
-Before you start, make sure you have:
-
-- **A Knowledge** containing at least one **SQLite resource** (a resource whose file is recognized as SQLite by its extension or MIME type).
-- **Read** on the **Knowledge** row of your role, to open the Knowledge and its resources.
-- The resource fully ingested, so its knowledge database exists.
+- A Knowledge with a SQLite file in it, processed. See [Add and manage content in a Knowledge](/operational-guides/manage-knowledge-resources).
+- Role: **Read** on the **Knowledge** row of your role. Changing data needs an administrator account. For everyone else the viewer shows **Read only**, and SQL statements run as read-only queries.
 
 ## Open the viewer
 
-The viewer appears automatically when a resource is a database.
-
-1. Open the **Knowledge** tab and select the **card** for the Knowledge that holds your SQLite resource.
-2. In the **Grid**, select the open icon (**Open**) at the start of the resource's row.
-3. The resource viewer opens the database instead of a file preview.
-
-Only administrators can change the data. For everyone else the viewer shows **Read only**, and SQL statements run as read-only queries.
-
-:::note[No download required]
-For other resources the viewer shows the original file. A SQLite resource is loaded into a knowledge database, so you can explore the data in place.
-:::
+1. Go to **Knowledge** and select the card of the Knowledge.
+2. In the **Grid**, select the open icon at the start of the SQLite resource's row.
 
 ## Browse tables and views
 
-Each table, view or query you open becomes a tab in the viewer's tab bar.
+Each table, view, or query you open becomes a tab.
 
-1. Select **+** (**Open table or query**) and pick a table or view from the list. Use **Search tables…** to narrow the list.
-2. Select a column header to sort by it.
-3. Select the filter icon in a column header (**Filter this column**) to add a filter row, enter a value, and select **Apply**. With more than one filter, select the button before them to switch how they combine (**AND** by default).
+1. Select **+** (**Open table or query**) and pick a table or view. Use **Search tables…** to narrow the list.
+2. Select a column header to sort by that column. Hover over it to see the column type.
+3. To filter, select the filter icon in a column header, enter a value, and select **Apply**. With more than one filter, select **AND** to switch to **OR**.
 
-The column type shows as a tooltip when you hover over the column header.
-
-## View a table or view schema
-
-1. Open a table or view tab, then open the **+ Actions** menu.
-2. Select **View schema** to see the statement that defines the selected table or view.
+To see the statement that defines a table or view, open **+ Actions** and select **View schema**.
 
 ## Run SQL
 
-1. Select **+** and then **New SQL query**, or select **New query** in the **+ Actions** menu.
-2. Enter a statement in the editor.
-3. Select **Run**, or press Cmd+Enter (Ctrl+Enter on Windows and Linux). The grid shows the result.
+1. Select **+**, then **New SQL query**. **+ Actions** → **New query** does the same.
+2. Enter a statement. Put names that contain spaces in double quotes, for example `"Location HQ"`.
+3. Select **Run**, or press Cmd+Enter (Ctrl+Enter on Windows and Linux).
 
-If a query returns more rows than the server allows, only the first rows are shown and the tab is marked **truncated**. Add a `LIMIT` or `WHERE` clause to narrow the result. Administrators can also select **Save query as view** to store the query as a read-only SQL view.
+If the result has more rows than the server returns, only the first rows show and the tab is marked **truncated**. Add a `LIMIT` or `WHERE` clause to narrow it. Administrators can select **Save query as view** to keep the query as a SQL view.
 
-:::note[Identifiers with spaces]
-Identifier quoting accepts column and table names that contain spaces, for example `"Location HQ"`. Quote such identifiers in your SQL so they resolve correctly.
-:::
+## Edit data
 
-## Edit data inline
+You need an administrator account. Views are always read-only.
 
-Editing needs an administrator account. Views are always read-only.
+1. In a table tab, double-click a cell and change its value.
+2. Select **Save changes** to write your edits, or **Discard** to drop them.
 
-1. In a table tab, double-click a **cell** and change its value.
-2. Select **Save changes** to write your edits to the knowledge database, or **Discard** to drop them.
-
-The **+ Actions** menu also holds **Add row**, **Delete selected**, **New table…** and **Drop table**, and the exports **Export CSV**, **Export JSON**, and **Export SQL inserts**.
+For administrators, **+ Actions** also holds **Add row**, **Delete selected**, **New table…**, and **Drop table**. Everyone can use **Export CSV**, **Export JSON**, and **Export SQL inserts** in the same menu.
 
 ## Next steps
 
-- [Manage knowledge resources](/operational-guides/manage-knowledge-resources)
+- [Add and manage content in a Knowledge](/operational-guides/manage-knowledge-resources)
 - [Work with records in collections and grid views](/operational-guides/knowledge-collections-and-grid)
