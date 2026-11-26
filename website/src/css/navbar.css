@@ -39,10 +39,16 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
 .navbar-sidebar [class*="colorModeToggle"] {
 	display: none;
 }
-/* The drawer's toggle has no "colorModeToggle" class in this Docusaurus version:
-   keep only the logo and the close button in the drawer header */
-.navbar-sidebar__brand > :not(.navbar__brand):not(.navbar-sidebar__close) {
+/* Drawer header: only the logo mark, so the theme toggle gets room and is easy to tap.
+   Crop the wordmark to its square mark (both themes use the same layout). */
+.navbar-sidebar__brand .navbar__title {
 	display: none;
+}
+.navbar-sidebar__brand .navbar__logo img {
+	width: 24px;
+	height: 24px;
+	object-fit: cover;
+	object-position: left;
 }
 /* Search floats at the bottom of the page instead */
 .navbar [class*="navbarSearchContainer"] {
