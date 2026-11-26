@@ -16,8 +16,20 @@ Upload files to a [Knowledge](/operational-guides/create-knowledge), follow thei
 ## Upload files {#upload-files}
 
 1. Open the Knowledge and select **Add file** in the **Options** menu (in the **Grid**, the menu is **Actions**).
+
+   <img
+     src={require('@site/static/img/screens/knowledge-actions-menu.png').default}
+     alt="The Actions menu of a Knowledge in the Grid, with Add file, New virtual database and Show hidden resources"
+     style={{ width: '100%', maxWidth: '780px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+   />
 2. In **Add file**, add your files or a folder and select **Upload**.
 3. In **Workflows review**, for each file, either pick a **workflow** or leave it on **Skip workflow** and select **Add as resource** to store the file as it is.
+
+   <img
+     src={require('@site/static/img/screens/knowledge-workflows-review.png').default}
+     alt="The Workflows review dialog: four files, each on Skip workflow with Add as resource selected, and the Confirm button"
+     style={{ width: '100%', maxWidth: '620px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+   />
 4. Select **Confirm**.
 
 If the Knowledge has a processing rule, Rational AI skips the review step and the rule assigns each file its workflow. If you select **Cancel** in **Workflows review**, the files you uploaded are deleted.

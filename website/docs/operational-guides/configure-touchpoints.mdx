@@ -75,7 +75,7 @@ Use this to decide whether someone must sign in before they can talk to the assi
 
 <img
   src={require('@site/static/img/screens/touchpoint-anonymous.png').default}
-  alt="The Allow anonymous access toggle on a touchpoint"
+  alt="A touchpoint's Settings tab, below its seven tabs: the touchpoint ID, the channel and switches such as Allow anonymous access"
   style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
 />
 *The Allow anonymous access toggle in the touchpoint configuration panel.*
@@ -128,6 +128,12 @@ At the top of the **Tools** tab, **When to ask for confirmation** sets which too
 Under **Smart**, each tool row has a **Sensitive** badge. Select it to mark the tool sensitive or not on this touchpoint; the change applies at once. Until you do, the tool follows what its extension declares.
 
 When a call needs approval, the chat pauses on an approval card until the user approves it (see [Approve tool calls](/operational-guides/approve-tool-calls)). A touchpoint registered as a high-risk application in [Governance](/operational-guides/governance) asks before every tool call, whatever policy you choose.
+
+<img
+  src={require('@site/static/img/screens/touchpoint-tools.png').default}
+  alt="The Tools tab of a touchpoint: When to ask for confirmation set to Smart, the tool time limit, and the MCP servers it uses"
+  style={{ width: '100%', maxWidth: '780px', border: '1px solid #E4E4E7', borderRadius: '6px', boxSizing: 'border-box' }}
+/>
 
 ## Set how long a tool may take
 
