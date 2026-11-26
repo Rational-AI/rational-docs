@@ -50,17 +50,26 @@ nav.theme-layout-navbar.navbar.navbar--fixed-top.navbar-sidebar--show {
 	object-fit: cover;
 	object-position: left;
 }
+.navbar-sidebar__brand {
+	padding-left: 20px;
+	padding-right: 20px;
+}
 /* Theme toggle stays on the right, next to the close button */
 .navbar-sidebar__brand > .navbar__brand {
 	margin-right: auto;
 }
 .navbar-sidebar__brand > .navbar-sidebar__close {
-	margin-left: 1.5rem;
+	margin-left: 0.5rem;
 }
-/* Docusaurus draws the X at 21px, which looks bigger than the 24px sun */
+/* Docusaurus draws the X at 21px in thin grey, which looks bigger and further from
+   the edge than the 24px sun: same ink and weight as the sun, smaller */
 .navbar-sidebar__close svg {
 	width: 16px;
 	height: 16px;
+}
+.navbar-sidebar__close svg g {
+	stroke: var(--ifm-font-color-base);
+	stroke-width: 1.5;
 }
 /* Search floats at the bottom of the page instead */
 .navbar [class*="navbarSearchContainer"] {
