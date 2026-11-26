@@ -214,3 +214,8 @@ html[data-theme="light"] {
 		margin-bottom: 1.5rem;
 	}
 }
+
+/* The home page has no sidebar, so the mobile menu would only hold the language switcher, which is already in the bar */
+html.plugin-pages .navbar__toggle {
+	display: none;
+}
